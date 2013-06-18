@@ -1,0 +1,2778 @@
+<html>
+<head>
+<title>Schema for database 'eleks'</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+<!--
+body, td { font-family: verdana; font-size: 11px; color: #000000; background-color:#ffffff; margin: 0; }
+h1 { padding: 0; margin: 0; }
+.razdel { height: 30px; font-size: 18px; font-weight: bold; background-color: #CC9933; }
+.tbl { text-indent: 5px; font-size: 12px; font-weight: bold; background-color:#cccccc; }
+.normal { background-color: #ffffff; }
+a { color: Maroon; text-decoration: none; }
+a:hover { text-decoration: underline; }
+br.page { page-break-after: always; }
+.prop_id { font-size: 12px; font-weight: bold; background-color: #ffffff; text-decoration: underline; text-transform: uppercase;}
+.prop_link { font-size: 12px; font-weight: bold; color: #CC3300; background-color: #ffffff; }
+.prop_flag { font-size: 12px; font-weight: bold; color: 009900; background-color: #ffffff; }
+.prop_is { font-size: 12px; font-weight: bold; color: 000099; background-color: #ffffff; }
+.prop { font-size: 12px; font-weight: bold; background-color: #ffffff; }
+//-->
+</style>
+</head>
+<body>
+<table width="100%" border="0" cellspacing="0" cellpadding="10">
+<tr>
+  <td>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="center"><a name="main"></a><h1>eleks</H1></td>
+  </tr>
+  </table>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr valign="top">
+    <td>
+    <table cellspacing="0" cellpadding="2" border="1">
+    <tr>
+      <td class="tbl">Название</td>
+      <td class="tbl">Модуль</td>
+      <td class="tbl">Таблица</td>
+    </tr>
+        <tr>
+      <td colspan="3" align="center"><a class="prop_link" href="#razdel_sistema"><span style="text-transform: uppercase;">Система</span></a></td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_adm_language">Языки</a></td>
+      <td>&nbsp;&nbsp;adm_language</td>
+      <td>&nbsp;&nbsp;Language</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_adm_modsystem">Модули системы</a></td>
+      <td>&nbsp;&nbsp;adm_modsystem</td>
+      <td>&nbsp;&nbsp;ModSystem</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_adm_modsystem_link">Связи</a></td>
+      <td>&nbsp;&nbsp;adm_modsystem_link</td>
+      <td>&nbsp;&nbsp;ModSystem_Links</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_adm_modsystem_prop">Свойства</a></td>
+      <td>&nbsp;&nbsp;adm_modsystem_prop</td>
+      <td>&nbsp;&nbsp;ModSystem_Prop</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_adm_region">Регион</a></td>
+      <td>&nbsp;&nbsp;adm_region</td>
+      <td>&nbsp;&nbsp;Region</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_adm_site">Сайты</a></td>
+      <td>&nbsp;&nbsp;adm_site</td>
+      <td>&nbsp;&nbsp;Site</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_adm_Core_Template">Шаблоны разделов</a></td>
+      <td>&nbsp;&nbsp;adm_Core_Template</td>
+      <td>&nbsp;&nbsp;Core_Template</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_adm_Core_Template_config">Конфигурация шаблонов</a></td>
+      <td>&nbsp;&nbsp;adm_Core_Template_config</td>
+      <td>&nbsp;&nbsp;Core_Template_Config</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_adm_zone">Зоны шаблона</a></td>
+      <td>&nbsp;&nbsp;adm_zone</td>
+      <td>&nbsp;&nbsp;Zone</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod__hello">Начало</a></td>
+      <td>&nbsp;&nbsp;_hello</td>
+      <td>&nbsp;&nbsp;</td>
+    </tr>
+            <tr>
+      <td colspan="3" align="center"><a class="prop_link" href="#razdel_kompaniya"><span style="text-transform: uppercase;">Компания</span></a></td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_adm_access">Права на модуль</a></td>
+      <td>&nbsp;&nbsp;adm_access</td>
+      <td>&nbsp;&nbsp;Access</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_adm_access_prop">Права на свойства</a></td>
+      <td>&nbsp;&nbsp;adm_access_prop</td>
+      <td>&nbsp;&nbsp;Access_Prop</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_adm_client">Организации</a></td>
+      <td>&nbsp;&nbsp;adm_client</td>
+      <td>&nbsp;&nbsp;Client</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_adm_groups">Группы</a></td>
+      <td>&nbsp;&nbsp;adm_groups</td>
+      <td>&nbsp;&nbsp;Groups</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_adm_worker">Сотрудники</a></td>
+      <td>&nbsp;&nbsp;adm_worker</td>
+      <td>&nbsp;&nbsp;Worker</td>
+    </tr>
+            <tr>
+      <td colspan="3" align="center"><a class="prop_link" href="#razdel_biznes"><span style="text-transform: uppercase;">Бизнес</span></a></td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_mod_document_create">Формирование печатных документов</a></td>
+      <td>&nbsp;&nbsp;mod_document_create</td>
+      <td>&nbsp;&nbsp;</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_mod_incoming_calculator">Калькуляторы цен</a></td>
+      <td>&nbsp;&nbsp;mod_incoming_calculator</td>
+      <td>&nbsp;&nbsp;</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_mod_incoming_calculator_kt">Калькулятор КТ</a></td>
+      <td>&nbsp;&nbsp;mod_incoming_calculator_kt</td>
+      <td>&nbsp;&nbsp;</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_mod_incoming_calculator_packing">Калькулятор расфасовки</a></td>
+      <td>&nbsp;&nbsp;mod_incoming_calculator_packing</td>
+      <td>&nbsp;&nbsp;</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_mod_incoming_calculator_rf">Калькулятор РФ</a></td>
+      <td>&nbsp;&nbsp;mod_incoming_calculator_rf</td>
+      <td>&nbsp;&nbsp;</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_mod_incoming_color">Приходование цветов</a></td>
+      <td>&nbsp;&nbsp;mod_incoming_color</td>
+      <td>&nbsp;&nbsp;</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_mod_incoming_invoice_load">Загрузить приход в счет</a></td>
+      <td>&nbsp;&nbsp;mod_incoming_invoice_load</td>
+      <td>&nbsp;&nbsp;</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_mod_incoming_save">Завершить работу прихода</a></td>
+      <td>&nbsp;&nbsp;mod_incoming_save</td>
+      <td>&nbsp;&nbsp;</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_mod_incoming_shimpent_load">Загрузить приход в расход</a></td>
+      <td>&nbsp;&nbsp;mod_incoming_shimpent_load</td>
+      <td>&nbsp;&nbsp;</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_mod_invoice_calculator_discount">Калькулятор скидок в счете</a></td>
+      <td>&nbsp;&nbsp;mod_invoice_calculator_discount</td>
+      <td>&nbsp;&nbsp;</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_mod_invoice_goods_add">Добавить товар в счет</a></td>
+      <td>&nbsp;&nbsp;mod_invoice_goods_add</td>
+      <td>&nbsp;&nbsp;</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_mod_invoice_save">Завершить работу счета</a></td>
+      <td>&nbsp;&nbsp;mod_invoice_save</td>
+      <td>&nbsp;&nbsp;</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_mod_invoice_shimpent_load">Загрузить счет в расход</a></td>
+      <td>&nbsp;&nbsp;mod_invoice_shimpent_load</td>
+      <td>&nbsp;&nbsp;</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_mod_shipment_goods_add">Добавить товар в расход</a></td>
+      <td>&nbsp;&nbsp;mod_shipment_goods_add</td>
+      <td>&nbsp;&nbsp;</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_mod_shipment_incoming_load">Загрузить расход в приход</a></td>
+      <td>&nbsp;&nbsp;mod_shipment_incoming_load</td>
+      <td>&nbsp;&nbsp;</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_mod_shipment_save">Завершить работу расхода</a></td>
+      <td>&nbsp;&nbsp;mod_shipment_save</td>
+      <td>&nbsp;&nbsp;</td>
+    </tr>
+            <tr>
+      <td colspan="3" align="center"><a class="prop_link" href="#razdel_sayt"><span style="text-transform: uppercase;">Сайт</span></a></td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_adm_article">Статьи</a></td>
+      <td>&nbsp;&nbsp;adm_article</td>
+      <td>&nbsp;&nbsp;Article</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_adm_catalog_fashionstyle">Каталог "Мода и Стиль"</a></td>
+      <td>&nbsp;&nbsp;adm_catalog_fashionstyle</td>
+      <td>&nbsp;&nbsp;Catalog_FashionStyle</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_adm_goods_fashionstyle">Продукция "Мода и Стиль"</a></td>
+      <td>&nbsp;&nbsp;adm_goods_fashionstyle</td>
+      <td>&nbsp;&nbsp;Goods_FashionStyle</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_adm_news">Новости</a></td>
+      <td>&nbsp;&nbsp;adm_news</td>
+      <td>&nbsp;&nbsp;News</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_adm_razdel">Разделы</a></td>
+      <td>&nbsp;&nbsp;adm_razdel</td>
+      <td>&nbsp;&nbsp;Razdel</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_adm_razdel_content">Контент блоки</a></td>
+      <td>&nbsp;&nbsp;adm_razdel_content</td>
+      <td>&nbsp;&nbsp;Razdel_Content</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_adm_razdel_language">Раздел мультиязычность</a></td>
+      <td>&nbsp;&nbsp;adm_razdel_language</td>
+      <td>&nbsp;&nbsp;Razdel_Language</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_con_article">Статьи</a></td>
+      <td>&nbsp;&nbsp;con_article</td>
+      <td>&nbsp;&nbsp;</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_con_feedback">Обратная связь</a></td>
+      <td>&nbsp;&nbsp;con_feedback</td>
+      <td>&nbsp;&nbsp;Feedback</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_con_goods_7trav">Продукция "Ларец Лекаря"</a></td>
+      <td>&nbsp;&nbsp;con_goods_7trav</td>
+      <td>&nbsp;&nbsp;</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_con_goods_fashionstyle">Продукция "Мода и Стиль"</a></td>
+      <td>&nbsp;&nbsp;con_goods_fashionstyle</td>
+      <td>&nbsp;&nbsp;</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_con_main">Главная страница</a></td>
+      <td>&nbsp;&nbsp;con_main</td>
+      <td>&nbsp;&nbsp;</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_con_map">Карта сайта</a></td>
+      <td>&nbsp;&nbsp;con_map</td>
+      <td>&nbsp;&nbsp;</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_con_news">Новости</a></td>
+      <td>&nbsp;&nbsp;con_news</td>
+      <td>&nbsp;&nbsp;</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_con_razdel">Контент раздела</a></td>
+      <td>&nbsp;&nbsp;con_razdel</td>
+      <td>&nbsp;&nbsp;</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_con_search">Поиск по сайту</a></td>
+      <td>&nbsp;&nbsp;con_search</td>
+      <td>&nbsp;&nbsp;</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_nav_catalog_7trav">Каталог "Ларец Лекаря"</a></td>
+      <td>&nbsp;&nbsp;nav_catalog_7trav</td>
+      <td>&nbsp;&nbsp;</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_nav_catalog_fashionstyle">Каталог "Мода и Стиль"</a></td>
+      <td>&nbsp;&nbsp;nav_catalog_fashionstyle</td>
+      <td>&nbsp;&nbsp;</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_nav_child">Навигация второстепенная</a></td>
+      <td>&nbsp;&nbsp;nav_child</td>
+      <td>&nbsp;&nbsp;</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_nav_line">Навигация адресная строка</a></td>
+      <td>&nbsp;&nbsp;nav_line</td>
+      <td>&nbsp;&nbsp;</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_nav_news">Новости колонка</a></td>
+      <td>&nbsp;&nbsp;nav_news</td>
+      <td>&nbsp;&nbsp;</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_nav_root">Навигация главная</a></td>
+      <td>&nbsp;&nbsp;nav_root</td>
+      <td>&nbsp;&nbsp;</td>
+    </tr>
+            <tr>
+      <td colspan="3" align="center"><a class="prop_link" href="#razdel_sklad"><span style="text-transform: uppercase;">Склад</span></a></td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_mod_label_print">Печать этикетки</a></td>
+      <td>&nbsp;&nbsp;mod_label_print</td>
+      <td>&nbsp;&nbsp;</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_mod_warehouse_change">Активный склад</a></td>
+      <td>&nbsp;&nbsp;mod_warehouse_change</td>
+      <td>&nbsp;&nbsp;</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_mod_warehouse_stock_goods">Наличие товара на складе по карточке</a></td>
+      <td>&nbsp;&nbsp;mod_warehouse_stock_goods</td>
+      <td>&nbsp;&nbsp;</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_mod_warehouse_stock_goods_adv">Наличие товара на складе по партиям</a></td>
+      <td>&nbsp;&nbsp;mod_warehouse_stock_goods_adv</td>
+      <td>&nbsp;&nbsp;</td>
+    </tr>
+            <tr>
+      <td colspan="3" align="center"><a class="prop_link" href="#razdel_sluzhby"><span style="text-transform: uppercase;">Службы</span></a></td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_adm_cron">Демоны</a></td>
+      <td>&nbsp;&nbsp;adm_cron</td>
+      <td>&nbsp;&nbsp;Cron</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod__file_manager">Файловый менеджер</a></td>
+      <td>&nbsp;&nbsp;_file_manager</td>
+      <td>&nbsp;&nbsp;</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod__service">Обслуживание</a></td>
+      <td>&nbsp;&nbsp;_service</td>
+      <td>&nbsp;&nbsp;</td>
+    </tr>
+            <tr>
+      <td colspan="3" align="center"><a class="prop_link" href="#razdel_spravochniki"><span style="text-transform: uppercase;">Справочники</span></a></td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_adm_modsystem_groups">Группы модулей</a></td>
+      <td>&nbsp;&nbsp;adm_modsystem_groups</td>
+      <td>&nbsp;&nbsp;ModSystem_Groups</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_adm_zone_type">Типы зон сайта</a></td>
+      <td>&nbsp;&nbsp;adm_zone_type</td>
+      <td>&nbsp;&nbsp;Zone_Type</td>
+    </tr>
+            <tr>
+      <td colspan="3" align="center"><a class="prop_link" href="#razdel_statistika"><span style="text-transform: uppercase;">Статистика</span></a></td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_adm_logs">Системные логи</a></td>
+      <td>&nbsp;&nbsp;adm_logs</td>
+      <td>&nbsp;&nbsp;Logs_Db</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_adm_statistic_duwnloadfileclient">Статистика скаченных клиентами файлов</a></td>
+      <td>&nbsp;&nbsp;adm_statistic_duwnloadfileclient</td>
+      <td>&nbsp;&nbsp;Statistic_DuwnLoadFileClient</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_adm_statistic_duwnloadfileworker">Статистика скаченных сотрудниками файлов</a></td>
+      <td>&nbsp;&nbsp;adm_statistic_duwnloadfileworker</td>
+      <td>&nbsp;&nbsp;Statistic_DuwnLoadFileWorker</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_adm_statistic_host">Статистика посещений</a></td>
+      <td>&nbsp;&nbsp;adm_statistic_host</td>
+      <td>&nbsp;&nbsp;Statistic_Host</td>
+    </tr>
+        <tr>
+      <td>&nbsp;&nbsp;<a href="#mod_adm_statistic_razdel">Статистика разделов</a></td>
+      <td>&nbsp;&nbsp;adm_statistic_razdel</td>
+      <td>&nbsp;&nbsp;Statistic_Razdel</td>
+    </tr>
+            </table>
+    </td>
+    <td>
+    <br>- ЛЕГЕНДА -<br><br>
+    <span class="prop_id">ID</span><br>
+    &nbsp;&nbsp;&nbsp;Идентификаторы объектов<br>
+    <span class="prop_link">ModSite_ID, Groups_ID</span><br>
+    &nbsp;&nbsp;&nbsp;Поле реализующее связь с другим объектом<br>
+    <span class="prop_flag">Status, Type</span><br>
+    &nbsp;&nbsp;&nbsp;Поле объеденяющее объекты в группы, по какому-либо признаку<br>
+    <span class="prop_is">IsVisible, IsExist</span><br>
+    &nbsp;&nbsp;&nbsp;Поле реализует различные флаги, технический статус<br>
+    <span class="prop">Name, Description</span><br>
+    &nbsp;&nbsp;&nbsp;Обычное поле, содержащее основную информацию об объекте<br>
+    </td>
+  </tr>
+  </table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+  <td align="right"><a name="razdel_sistema">&nbsp;</a><a href="#razdel_">на раздел выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+  <td class="razdel" align="center">Система</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_adm_language">&nbsp;</a><a href="#mod_">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Система --- Языки --- adm_language --- Language</td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+<tr>
+	<td width="20%" class="prop_id">ID</td>
+  <td width="20%" class="normal">Идентификатор</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Name</td>
+  <td width="20%" class="normal">Название</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Url</td>
+  <td width="20%" class="normal">Ссылка языка</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Img</td>
+  <td width="20%" class="normal">Логотип</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_adm_modsystem">&nbsp;</a><a href="#mod_adm_language">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Система --- Модули системы --- adm_modsystem --- ModSystem</td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">qqqq&nbsp;</td>
+</tr>
+<tr>
+	<td width="20%" class="prop_id">ID</td>
+  <td width="20%" class="normal">Идентификатор</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_link">ModSystem_Groups_ID</td>
+  <td width="20%" class="normal">Группа модуля</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_link">Zone_Type_ID</td>
+  <td width="20%" class="normal">Принадлежность к типу зоны</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Name</td>
+  <td width="20%" class="normal">Название</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Modul</td>
+  <td width="20%" class="normal">Системный модуль</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">ModulUser</td>
+  <td width="20%" class="normal">Пользовательский модуль</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Tbl</td>
+  <td width="20%" class="normal">Обрабатываемая таблица</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_flag">IsVisible</td>
+  <td width="20%" class="normal">В навигации</td>
+	<td width="60%" class="normal"><i>enum('нет','да')</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">EditHeight</td>
+  <td width="20%" class="normal">Высота окна редак-ия</td>
+	<td width="60%" class="normal"><i>smallint(6)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Description</td>
+  <td width="20%" class="normal">Справка разработчика</td>
+	<td width="60%" class="normal"><i>text</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Content</td>
+  <td width="20%" class="normal">Справка пользователя</td>
+	<td width="60%" class="normal"><i>text</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_is">IsProtectedFile</td>
+  <td width="20%" class="normal">Включение прав на файлы</td>
+	<td width="60%" class="normal"><i>tinyint(1)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_is">IsExist</td>
+  <td width="20%" class="normal">Существование модуля</td>
+	<td width="60%" class="normal"><i>tinyint(1)</i><br></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_adm_modsystem_link">&nbsp;</a><a href="#mod_adm_modsystem">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Система --- Связи --- adm_modsystem_link --- ModSystem_Links</td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+<tr>
+	<td width="20%" class="prop_link">ModSystem_P_ID</td>
+  <td width="20%" class="normal">Родительские модули системы</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_link">ModSystem_C_ID</td>
+  <td width="20%" class="normal">Дочерние модули системы</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Name</td>
+  <td width="20%" class="normal">Назавание связи</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">FieldP</td>
+  <td width="20%" class="normal">Родитеськая связь</td>
+	<td width="60%" class="normal"><i>varchar(50)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">FieldC</td>
+  <td width="20%" class="normal">Дочерняя связь</td>
+	<td width="60%" class="normal"><i>varchar(50)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_is">IsList</td>
+  <td width="20%" class="normal">В списке</td>
+	<td width="60%" class="normal"><i>tinyint(1)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_is">IsEdit</td>
+  <td width="20%" class="normal">Внутри</td>
+	<td width="60%" class="normal"><i>tinyint(1)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_flag">Target</td>
+  <td width="20%" class="normal">Где открывать</td>
+	<td width="60%" class="normal"><i>enum('_self','_blank')</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_is">IsLocked</td>
+  <td width="20%" class="normal">Блокировка</td>
+	<td width="60%" class="normal"><i>tinyint(1)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_is">IsExist</td>
+  <td width="20%" class="normal">Существование</td>
+	<td width="60%" class="normal"><i>tinyint(1)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Icon</td>
+  <td width="20%" class="normal">Иконка</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Sort</td>
+  <td width="20%" class="normal">Сортировка</td>
+	<td width="60%" class="normal"><i>smallint(6)</i><br></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_adm_modsystem_prop">&nbsp;</a><a href="#mod_adm_modsystem_link">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Система --- Свойства --- adm_modsystem_prop --- ModSystem_Prop</td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+<tr>
+	<td width="20%" class="prop_id">ID</td>
+  <td width="20%" class="normal">Идентификатор</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_link">ModSystem_ID</td>
+  <td width="20%" class="normal">Модуль</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Name</td>
+  <td width="20%" class="normal">Название</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Prop</td>
+  <td width="20%" class="normal">Свойство</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Type</td>
+  <td width="20%" class="normal">Тип хранения в БД</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">TypeFull</td>
+  <td width="20%" class="normal">Полный тип хранения в БД</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_flag">Form</td>
+  <td width="20%" class="normal">Форма отображения</td>
+	<td width="60%" class="normal"><i>enum('text','hidden','passw','datetime','textarea','fckeditor','select','radio','check','checkbox','file','img','readonly')</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_is">IsVisible</td>
+  <td width="20%" class="normal">Видимость в списке</td>
+	<td width="60%" class="normal"><i>tinyint(1)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_is">IsNull</td>
+  <td width="20%" class="normal">Нулевое значение</td>
+	<td width="60%" class="normal"><i>tinyint(1)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">DefaultValue</td>
+  <td width="20%" class="normal">Значение по умолчанию</td>
+	<td width="60%" class="normal"><i>varchar(50)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_flag">DB</td>
+  <td width="20%" class="normal">Метод обработки</td>
+	<td width="60%" class="normal"><i>enum('I','F','S','T','D')</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Sort</td>
+  <td width="20%" class="normal">Порядок поля в БД</td>
+	<td width="60%" class="normal"><i>smallint(6)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_is">IsLocked</td>
+  <td width="20%" class="normal">Блокировка свойства</td>
+	<td width="60%" class="normal"><i>tinyint(1)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_is">IsFilter</td>
+  <td width="20%" class="normal">Видимость в фильтре</td>
+	<td width="60%" class="normal"><i>tinyint(1)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_is">FilterAdvanced</td>
+  <td width="20%" class="normal">Внешний фильтр</td>
+	<td width="60%" class="normal"><i>tinyint(1)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_flag">Colonka</td>
+  <td width="20%" class="normal">Колонка вывода</td>
+	<td width="60%" class="normal"><i>enum('left','right')</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Content</td>
+  <td width="20%" class="normal">Общая справка</td>
+	<td width="60%" class="normal"><i>text</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_is">IsExist</td>
+  <td width="20%" class="normal">Существование свойства</td>
+	<td width="60%" class="normal"><i>tinyint(1)</i><br></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_adm_region">&nbsp;</a><a href="#mod_adm_modsystem_prop">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Система --- Регион --- adm_region --- Region</td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+<tr>
+	<td width="20%" class="prop_id">ID</td>
+  <td width="20%" class="normal">Идентификатор</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Name</td>
+  <td width="20%" class="normal">Название</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_adm_site">&nbsp;</a><a href="#mod_adm_region">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Система --- Сайты --- adm_site --- Site</td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+<tr>
+	<td width="20%" class="prop_id">ID</td>
+  <td width="20%" class="normal">Идентификатор</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Name</td>
+  <td width="20%" class="normal">Название проекта</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Host</td>
+  <td width="20%" class="normal">Хост</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Pref</td>
+  <td width="20%" class="normal">Префикс домена</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Path</td>
+  <td width="20%" class="normal">Расположение сайта</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">EmailInfo</td>
+  <td width="20%" class="normal">Информационное мыло</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">EmailOrder</td>
+  <td width="20%" class="normal">Мыло для заказов</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">EmailSeo</td>
+  <td width="20%" class="normal">Мыло по раскрутке</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">EmailAdmin</td>
+  <td width="20%" class="normal">Административное мыло</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Phone</td>
+  <td width="20%" class="normal">Телефоны</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Description</td>
+  <td width="20%" class="normal">Описание</td>
+	<td width="60%" class="normal"><i>text</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">SummaOrder</td>
+  <td width="20%" class="normal">Минимальная сумма заказа</td>
+	<td width="60%" class="normal"><i>smallint(6)</i><br></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_adm_Core_Template">&nbsp;</a><a href="#mod_adm_site">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Система --- Шаблоны разделов --- adm_Core_Template --- Core_Template</td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+<tr>
+	<td width="20%" class="prop_id">ID</td>
+  <td width="20%" class="normal">Идентификатор</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_link">Site_ID</td>
+  <td width="20%" class="normal">Сайт</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Name</td>
+  <td width="20%" class="normal">Шаблон</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_adm_Core_Template_config">&nbsp;</a><a href="#mod_adm_Core_Template">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Система --- Конфигурация шаблонов --- adm_Core_Template_config --- Core_Template_Config</td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+<tr>
+	<td width="20%" class="prop_link">Core_Template_ID</td>
+  <td width="20%" class="normal">Шаблон</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_link">ModSystem_ID</td>
+  <td width="20%" class="normal">Модуль</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_link">Zone_ID</td>
+  <td width="20%" class="normal">Зона</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_adm_zone">&nbsp;</a><a href="#mod_adm_Core_Template_config">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Система --- Зоны шаблона --- adm_zone --- Zone</td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+<tr>
+	<td width="20%" class="prop_id">ID</td>
+  <td width="20%" class="normal">Идентификатор</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_link">Core_Template_ID</td>
+  <td width="20%" class="normal">Шаблон</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_link">Zone_Type_ID</td>
+  <td width="20%" class="normal">Тип зоны</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Name</td>
+  <td width="20%" class="normal">Название</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Zone</td>
+  <td width="20%" class="normal">Зона</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_is">Sort</td>
+  <td width="20%" class="normal">Сортировка</td>
+	<td width="60%" class="normal"><i>tinyint(4)</i><br></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod__hello">&nbsp;</a><a href="#mod_adm_zone">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Система --- Начало --- _hello --- </td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+  <td align="right"><a name="razdel_kompaniya">&nbsp;</a><a href="#razdel_sistema">на раздел выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+  <td class="razdel" align="center">Компания</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_adm_access">&nbsp;</a><a href="#mod__hello">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Компания --- Права на модуль --- adm_access --- Access</td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+<tr>
+	<td width="20%" class="prop_link">Groups_ID</td>
+  <td width="20%" class="normal">Группа</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_link">ModSystem_ID</td>
+  <td width="20%" class="normal">Модуль системы</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_is">V</td>
+  <td width="20%" class="normal">Просмотр</td>
+	<td width="60%" class="normal"><i>tinyint(1)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_is">E</td>
+  <td width="20%" class="normal">Изменение</td>
+	<td width="60%" class="normal"><i>tinyint(1)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_is">A</td>
+  <td width="20%" class="normal">Добавление</td>
+	<td width="60%" class="normal"><i>tinyint(1)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_is">R</td>
+  <td width="20%" class="normal">Удаление</td>
+	<td width="60%" class="normal"><i>tinyint(1)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_is">L</td>
+  <td width="20%" class="normal">Связать</td>
+	<td width="60%" class="normal"><i>tinyint(1)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_is">RL</td>
+  <td width="20%" class="normal">Отвязать</td>
+	<td width="60%" class="normal"><i>tinyint(1)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_is">C</td>
+  <td width="20%" class="normal">Копирование</td>
+	<td width="60%" class="normal"><i>tinyint(1)</i><br></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_adm_access_prop">&nbsp;</a><a href="#mod_adm_access">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Компания --- Права на свойства --- adm_access_prop --- Access_Prop</td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+<tr>
+	<td width="20%" class="prop_link">Groups_ID</td>
+  <td width="20%" class="normal">Группа</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_link">ModSystem_Prop_ID</td>
+  <td width="20%" class="normal">Свойство объекта</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_is">V</td>
+  <td width="20%" class="normal">Просмотр</td>
+	<td width="60%" class="normal"><i>tinyint(1)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_is">E</td>
+  <td width="20%" class="normal">Редактирование</td>
+	<td width="60%" class="normal"><i>tinyint(1)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Sort</td>
+  <td width="20%" class="normal">Сортировка</td>
+	<td width="60%" class="normal"><i>smallint(6)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_is">IsVisible</td>
+  <td width="20%" class="normal">Видимость в списке</td>
+	<td width="60%" class="normal"><i>tinyint(1)</i><br></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_adm_client">&nbsp;</a><a href="#mod_adm_access_prop">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Компания --- Организации --- adm_client --- Client</td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3"><p>Справочная информация по работе с Клиентами.</p>&nbsp;</td>
+</tr>
+<tr>
+	<td width="20%" class="prop_id">ID</td>
+  <td width="20%" class="normal">Идентификатор</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_link">Groups_ID</td>
+  <td width="20%" class="normal">Группа</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_link">Worker_ID</td>
+  <td width="20%" class="normal">Сотрудник</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Name</td>
+  <td width="20%" class="normal">ФИО</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Address</td>
+  <td width="20%" class="normal">Адресс</td>
+	<td width="60%" class="normal"><i>text</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Phone</td>
+  <td width="20%" class="normal">Телефон</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Email</td>
+  <td width="20%" class="normal">Электронная почта</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Login</td>
+  <td width="20%" class="normal">Логин</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Passw</td>
+  <td width="20%" class="normal">Пароль</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_flag">Status</td>
+  <td width="20%" class="normal">Статус доступа</td>
+	<td width="60%" class="normal"><i>enum('открыт','закрыт')</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_is">IsCondition</td>
+  <td width="20%" class="normal">Условие клиента</td>
+	<td width="60%" class="normal"><i>tinyint(1)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_is">IsGroups</td>
+  <td width="20%" class="normal">Условие группы</td>
+	<td width="60%" class="normal"><i>tinyint(1)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_flag">StatOnline</td>
+  <td width="20%" class="normal">Статус присутствия</td>
+	<td width="60%" class="normal"><i>enum('нет','да')</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">DateOnline</td>
+  <td width="20%" class="normal">Дата посещения</td>
+	<td width="60%" class="normal"><i>datetime</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Date</td>
+  <td width="20%" class="normal">Дата регистрации</td>
+	<td width="60%" class="normal"><i>timestamp</i><br></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_adm_groups">&nbsp;</a><a href="#mod_adm_client">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Компания --- Группы --- adm_groups --- Groups</td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3"><p>Description Groups</p>&nbsp;</td>
+</tr>
+<tr>
+	<td width="20%" class="prop_id">ID</td>
+  <td width="20%" class="normal">Идентификатор</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Name</td>
+  <td width="20%" class="normal">Название</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Email</td>
+  <td width="20%" class="normal">Email группы</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_flag">Status</td>
+  <td width="20%" class="normal">Статус доступа</td>
+	<td width="60%" class="normal"><i>enum('открыта','закрыта')</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Description</td>
+  <td width="20%" class="normal">Описание</td>
+	<td width="60%" class="normal"><i>text</i><br></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_adm_worker">&nbsp;</a><a href="#mod_adm_groups">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Компания --- Сотрудники --- adm_worker --- Worker</td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3"><p>Справочная информация по работе с Сотрудниками.</p>&nbsp;</td>
+</tr>
+<tr>
+	<td width="20%" class="prop_id">ID</td>
+  <td width="20%" class="normal">Идентификатор</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_link">Groups_ID</td>
+  <td width="20%" class="normal">Группа</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_link">Site_ID</td>
+  <td width="20%" class="normal">Сайт</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Name</td>
+  <td width="20%" class="normal">Имя</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Login</td>
+  <td width="20%" class="normal">Логин</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Passw</td>
+  <td width="20%" class="normal">Пароль</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_flag">Status</td>
+  <td width="20%" class="normal">Статус доступа</td>
+	<td width="60%" class="normal"><i>enum('открыт','закрыт')</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Email</td>
+  <td width="20%" class="normal">E-mail</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Phone</td>
+  <td width="20%" class="normal">Телефон</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Icq</td>
+  <td width="20%" class="normal">Icq</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_is">IsCondition</td>
+  <td width="20%" class="normal">Условие сотрудника</td>
+	<td width="60%" class="normal"><i>tinyint(1)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_is">IsGroups</td>
+  <td width="20%" class="normal">Условие группы</td>
+	<td width="60%" class="normal"><i>tinyint(1)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">ImgAvatar</td>
+  <td width="20%" class="normal">Фото - Аватар</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_flag">StatOnline</td>
+  <td width="20%" class="normal">Статус присутствия</td>
+	<td width="60%" class="normal"><i>enum('нет','да')</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">DateOnline</td>
+  <td width="20%" class="normal">Дата посещения</td>
+	<td width="60%" class="normal"><i>datetime</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Date</td>
+  <td width="20%" class="normal">Дата регистрации</td>
+	<td width="60%" class="normal"><i>timestamp</i><br></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+  <td align="right"><a name="razdel_biznes">&nbsp;</a><a href="#razdel_kompaniya">на раздел выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+  <td class="razdel" align="center">Бизнес</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_mod_document_create">&nbsp;</a><a href="#mod_adm_worker">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Бизнес --- Формирование печатных документов --- mod_document_create --- </td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_mod_incoming_calculator">&nbsp;</a><a href="#mod_mod_document_create">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Бизнес --- Калькуляторы цен --- mod_incoming_calculator --- </td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_mod_incoming_calculator_kt">&nbsp;</a><a href="#mod_mod_incoming_calculator">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Бизнес --- Калькулятор КТ --- mod_incoming_calculator_kt --- </td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_mod_incoming_calculator_packing">&nbsp;</a><a href="#mod_mod_incoming_calculator_kt">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Бизнес --- Калькулятор расфасовки --- mod_incoming_calculator_packing --- </td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_mod_incoming_calculator_rf">&nbsp;</a><a href="#mod_mod_incoming_calculator_packing">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Бизнес --- Калькулятор РФ --- mod_incoming_calculator_rf --- </td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_mod_incoming_color">&nbsp;</a><a href="#mod_mod_incoming_calculator_rf">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Бизнес --- Приходование цветов --- mod_incoming_color --- </td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_mod_incoming_invoice_load">&nbsp;</a><a href="#mod_mod_incoming_color">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Бизнес --- Загрузить приход в счет --- mod_incoming_invoice_load --- </td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_mod_incoming_save">&nbsp;</a><a href="#mod_mod_incoming_invoice_load">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Бизнес --- Завершить работу прихода --- mod_incoming_save --- </td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_mod_incoming_shimpent_load">&nbsp;</a><a href="#mod_mod_incoming_save">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Бизнес --- Загрузить приход в расход --- mod_incoming_shimpent_load --- </td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_mod_invoice_calculator_discount">&nbsp;</a><a href="#mod_mod_incoming_shimpent_load">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Бизнес --- Калькулятор скидок в счете --- mod_invoice_calculator_discount --- </td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_mod_invoice_goods_add">&nbsp;</a><a href="#mod_mod_invoice_calculator_discount">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Бизнес --- Добавить товар в счет --- mod_invoice_goods_add --- </td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_mod_invoice_save">&nbsp;</a><a href="#mod_mod_invoice_goods_add">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Бизнес --- Завершить работу счета --- mod_invoice_save --- </td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_mod_invoice_shimpent_load">&nbsp;</a><a href="#mod_mod_invoice_save">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Бизнес --- Загрузить счет в расход --- mod_invoice_shimpent_load --- </td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_mod_shipment_goods_add">&nbsp;</a><a href="#mod_mod_invoice_shimpent_load">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Бизнес --- Добавить товар в расход --- mod_shipment_goods_add --- </td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_mod_shipment_incoming_load">&nbsp;</a><a href="#mod_mod_shipment_goods_add">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Бизнес --- Загрузить расход в приход --- mod_shipment_incoming_load --- </td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_mod_shipment_save">&nbsp;</a><a href="#mod_mod_shipment_incoming_load">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Бизнес --- Завершить работу расхода --- mod_shipment_save --- </td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+  <td align="right"><a name="razdel_sayt">&nbsp;</a><a href="#razdel_biznes">на раздел выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+  <td class="razdel" align="center">Сайт</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_adm_article">&nbsp;</a><a href="#mod_mod_shipment_save">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Сайт --- Статьи --- adm_article --- Article</td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+<tr>
+	<td width="20%" class="prop_id">ID</td>
+  <td width="20%" class="normal">Идентификатор</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_link">Razdel_ID</td>
+  <td width="20%" class="normal">Раздел</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Name</td>
+  <td width="20%" class="normal">Заголовок</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Title</td>
+  <td width="20%" class="normal">Титул (Title)</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Keywords</td>
+  <td width="20%" class="normal">Ключи индексации (Keywords)</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Description</td>
+  <td width="20%" class="normal">Описание (Description)</td>
+	<td width="60%" class="normal"><i>text</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_flag">IsVisible</td>
+  <td width="20%" class="normal">Видимость на сайте</td>
+	<td width="60%" class="normal"><i>enum('нет','да')</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Content</td>
+  <td width="20%" class="normal">Статья</td>
+	<td width="60%" class="normal"><i>text</i><br></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_adm_catalog_fashionstyle">&nbsp;</a><a href="#mod_adm_article">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Сайт --- Каталог "Мода и Стиль" --- adm_catalog_fashionstyle --- Catalog_FashionStyle</td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+<tr>
+	<td width="20%" class="prop_id">ID</td>
+  <td width="20%" class="normal">Идентификатор</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_link">Catalog_FashionStyle_ID</td>
+  <td width="20%" class="normal">Родительский раздел</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Keyl</td>
+  <td width="20%" class="normal">Левый ключ</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Keyr</td>
+  <td width="20%" class="normal">Правый ключ</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Level</td>
+  <td width="20%" class="normal">Уровень вложенности</td>
+	<td width="60%" class="normal"><i>smallint(5) unsigned</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Name</td>
+  <td width="20%" class="normal">Название</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Title</td>
+  <td width="20%" class="normal">Титул (Title)</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Keywords</td>
+  <td width="20%" class="normal">Ключи индексации (Keywords)</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Description</td>
+  <td width="20%" class="normal">Крактое описание (Descrition)</td>
+	<td width="60%" class="normal"><i>text</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Content</td>
+  <td width="20%" class="normal">Контент</td>
+	<td width="60%" class="normal"><i>text</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">UrlRoot</td>
+  <td width="20%" class="normal">Абсолютная ссылка</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Url</td>
+  <td width="20%" class="normal">Относительная ссылка</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_adm_goods_fashionstyle">&nbsp;</a><a href="#mod_adm_catalog_fashionstyle">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Сайт --- Продукция "Мода и Стиль" --- adm_goods_fashionstyle --- Goods_FashionStyle</td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+<tr>
+	<td width="20%" class="prop_id">ID</td>
+  <td width="20%" class="normal">Идентификатор</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_link">Catalog_FashionStyle_ID</td>
+  <td width="20%" class="normal">Каталог</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Name</td>
+  <td width="20%" class="normal">Название</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Article</td>
+  <td width="20%" class="normal">Артикул</td>
+	<td width="60%" class="normal"><i>varchar(50)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Title</td>
+  <td width="20%" class="normal">Титул (Title)</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Keywords</td>
+  <td width="20%" class="normal">Ключи (Keywords)</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Description</td>
+  <td width="20%" class="normal">Краткое описание (Description)</td>
+	<td width="60%" class="normal"><i>text</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Content</td>
+  <td width="20%" class="normal">Полное описание</td>
+	<td width="60%" class="normal"><i>text</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Price</td>
+  <td width="20%" class="normal">Цена продажи</td>
+	<td width="60%" class="normal"><i>decimal(9,2) unsigned</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Imgs</td>
+  <td width="20%" class="normal">Маленькая картинка</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Imgb</td>
+  <td width="20%" class="normal">Большая картинка</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_adm_news">&nbsp;</a><a href="#mod_adm_goods_fashionstyle">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Сайт --- Новости --- adm_news --- News</td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+<tr>
+	<td width="20%" class="prop_id">ID</td>
+  <td width="20%" class="normal">Идентификатор</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_link">Razdel_ID</td>
+  <td width="20%" class="normal">Раздел</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Name</td>
+  <td width="20%" class="normal">Заголовок</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Title</td>
+  <td width="20%" class="normal">Титул (title)</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Keyword</td>
+  <td width="20%" class="normal">Ключи (keywords)</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Date</td>
+  <td width="20%" class="normal">Дата новости</td>
+	<td width="60%" class="normal"><i>timestamp</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Imgs</td>
+  <td width="20%" class="normal">Маленькая картинка</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_flag">IsVisible</td>
+  <td width="20%" class="normal">Видимость на сайте</td>
+	<td width="60%" class="normal"><i>enum('нет','да')</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Description</td>
+  <td width="20%" class="normal">Описание (description)</td>
+	<td width="60%" class="normal"><i>text</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Content</td>
+  <td width="20%" class="normal">Новость</td>
+	<td width="60%" class="normal"><i>text</i><br></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_adm_razdel">&nbsp;</a><a href="#mod_adm_news">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Сайт --- Разделы --- adm_razdel --- Razdel</td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+<tr>
+	<td width="20%" class="prop_id">ID</td>
+  <td width="20%" class="normal">Идентификатор</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_link">Razdel_ID</td>
+  <td width="20%" class="normal">Родительский раздел</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_link">Core_Template_ID</td>
+  <td width="20%" class="normal">Шаблон</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_link">ModSystem_ID</td>
+  <td width="20%" class="normal">Центральный модуль</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Keyl</td>
+  <td width="20%" class="normal">Левый ключ</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Keyr</td>
+  <td width="20%" class="normal">Правый ключ</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Level</td>
+  <td width="20%" class="normal">Уровень вложенности</td>
+	<td width="60%" class="normal"><i>smallint(5) unsigned</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Name</td>
+  <td width="20%" class="normal">Название</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Title</td>
+  <td width="20%" class="normal">Титул (Title)</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Keywords</td>
+  <td width="20%" class="normal">Ключи индексации (Keywords)</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Description</td>
+  <td width="20%" class="normal">Крактое описание (Descrition)</td>
+	<td width="60%" class="normal"><i>text</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Content</td>
+  <td width="20%" class="normal">Контент</td>
+	<td width="60%" class="normal"><i>text</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">UrlRoot</td>
+  <td width="20%" class="normal">Абсолютная ссылка</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Url</td>
+  <td width="20%" class="normal">Относительная ссылка</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">UrlRedirect</td>
+  <td width="20%" class="normal">Редирект</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_flag">SiteMapFlag</td>
+  <td width="20%" class="normal">Период обновления раздела</td>
+	<td width="60%" class="normal"><i>enum('always','hourly','daily','weekly','monthly','yearly','never')</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_is">IsVisible</td>
+  <td width="20%" class="normal">Видимость в навигации</td>
+	<td width="60%" class="normal"><i>tinyint(1)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_is">IsIndex</td>
+  <td width="20%" class="normal">Индексация раздела</td>
+	<td width="60%" class="normal"><i>tinyint(1)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_is">IsFollow</td>
+  <td width="20%" class="normal">Переход по ссылкам</td>
+	<td width="60%" class="normal"><i>tinyint(1)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_is">IsAccess</td>
+  <td width="20%" class="normal">Доступ открыт</td>
+	<td width="60%" class="normal"><i>tinyint(1)</i><br></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_adm_razdel_content">&nbsp;</a><a href="#mod_adm_razdel">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Сайт --- Контент блоки --- adm_razdel_content --- Razdel_Content</td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+<tr>
+	<td width="20%" class="prop_id">ID</td>
+  <td width="20%" class="normal">Идентификатор</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_link">Zone_ID</td>
+  <td width="20%" class="normal">Зона</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_link">Razdel_ID</td>
+  <td width="20%" class="normal">Разделы</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Name</td>
+  <td width="20%" class="normal">Комментарий - заголвок</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Link</td>
+  <td width="20%" class="normal">Ссылка</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Imgs</td>
+  <td width="20%" class="normal">Картинка</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Description</td>
+  <td width="20%" class="normal">Текст</td>
+	<td width="60%" class="normal"><i>text</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_flag">IsVisible</td>
+  <td width="20%" class="normal">Видимость на сайте</td>
+	<td width="60%" class="normal"><i>enum('нет','да')</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Sort</td>
+  <td width="20%" class="normal">Сортировка</td>
+	<td width="60%" class="normal"><i>smallint(6)</i><br></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_adm_razdel_language">&nbsp;</a><a href="#mod_adm_razdel_content">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Сайт --- Раздел мультиязычность --- adm_razdel_language --- Razdel_Language</td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+<tr>
+	<td width="20%" class="prop_id">ID</td>
+  <td width="20%" class="normal">Идентификатор</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_link">Razdel_ID</td>
+  <td width="20%" class="normal">Раздел</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_link">Language_ID</td>
+  <td width="20%" class="normal">Язык</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Name</td>
+  <td width="20%" class="normal">Название</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Title</td>
+  <td width="20%" class="normal">Титул (Title)</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Keywords</td>
+  <td width="20%" class="normal">Ключи индексации (Keywords)</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Description</td>
+  <td width="20%" class="normal">Крактое описание (Descrition)</td>
+	<td width="60%" class="normal"><i>text</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Content</td>
+  <td width="20%" class="normal">Главаня статья</td>
+	<td width="60%" class="normal"><i>text</i><br></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_con_article">&nbsp;</a><a href="#mod_adm_razdel_language">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Сайт --- Статьи --- con_article --- </td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_con_feedback">&nbsp;</a><a href="#mod_con_article">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Сайт --- Обратная связь --- con_feedback --- Feedback</td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+<tr>
+	<td width="20%" class="prop_id">ID</td>
+  <td width="20%" class="normal">Идентификатор</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Name</td>
+  <td width="20%" class="normal">Тема сообщения</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Message</td>
+  <td width="20%" class="normal">Сообщение</td>
+	<td width="60%" class="normal"><i>text</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Fio</td>
+  <td width="20%" class="normal">Фио</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Email</td>
+  <td width="20%" class="normal">Email</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Date</td>
+  <td width="20%" class="normal">Дата добавления</td>
+	<td width="60%" class="normal"><i>timestamp</i><br></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_con_goods_7trav">&nbsp;</a><a href="#mod_con_feedback">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Сайт --- Продукция "Ларец Лекаря" --- con_goods_7trav --- </td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_con_goods_fashionstyle">&nbsp;</a><a href="#mod_con_goods_7trav">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Сайт --- Продукция "Мода и Стиль" --- con_goods_fashionstyle --- </td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_con_main">&nbsp;</a><a href="#mod_con_goods_fashionstyle">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Сайт --- Главная страница --- con_main --- </td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_con_map">&nbsp;</a><a href="#mod_con_main">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Сайт --- Карта сайта --- con_map --- </td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_con_news">&nbsp;</a><a href="#mod_con_map">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Сайт --- Новости --- con_news --- </td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_con_razdel">&nbsp;</a><a href="#mod_con_news">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Сайт --- Контент раздела --- con_razdel --- </td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_con_search">&nbsp;</a><a href="#mod_con_razdel">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Сайт --- Поиск по сайту --- con_search --- </td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_nav_catalog_7trav">&nbsp;</a><a href="#mod_con_search">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Сайт --- Каталог "Ларец Лекаря" --- nav_catalog_7trav --- </td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_nav_catalog_fashionstyle">&nbsp;</a><a href="#mod_nav_catalog_7trav">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Сайт --- Каталог "Мода и Стиль" --- nav_catalog_fashionstyle --- </td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_nav_child">&nbsp;</a><a href="#mod_nav_catalog_fashionstyle">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Сайт --- Навигация второстепенная --- nav_child --- </td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_nav_line">&nbsp;</a><a href="#mod_nav_child">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Сайт --- Навигация адресная строка --- nav_line --- </td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_nav_news">&nbsp;</a><a href="#mod_nav_line">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Сайт --- Новости колонка --- nav_news --- </td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_nav_root">&nbsp;</a><a href="#mod_nav_news">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Сайт --- Навигация главная --- nav_root --- </td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+  <td align="right"><a name="razdel_sklad">&nbsp;</a><a href="#razdel_sayt">на раздел выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+  <td class="razdel" align="center">Склад</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_mod_label_print">&nbsp;</a><a href="#mod_nav_root">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Склад --- Печать этикетки --- mod_label_print --- </td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_mod_warehouse_change">&nbsp;</a><a href="#mod_mod_label_print">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Склад --- Активный склад --- mod_warehouse_change --- </td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">1
+2
+3
+4
+5
+6
+7&nbsp;</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_mod_warehouse_stock_goods">&nbsp;</a><a href="#mod_mod_warehouse_change">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Склад --- Наличие товара на складе по карточке --- mod_warehouse_stock_goods --- </td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_mod_warehouse_stock_goods_adv">&nbsp;</a><a href="#mod_mod_warehouse_stock_goods">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Склад --- Наличие товара на складе по партиям --- mod_warehouse_stock_goods_adv --- </td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+  <td align="right"><a name="razdel_sluzhby">&nbsp;</a><a href="#razdel_sklad">на раздел выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+  <td class="razdel" align="center">Службы</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_adm_cron">&nbsp;</a><a href="#mod_mod_warehouse_stock_goods_adv">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Службы --- Демоны --- adm_cron --- Cron</td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+<tr>
+	<td width="20%" class="prop_id">ID</td>
+  <td width="20%" class="normal">Идентификатор</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Name</td>
+  <td width="20%" class="normal">Описание</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Demon</td>
+  <td width="20%" class="normal">Демон</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Minute</td>
+  <td width="20%" class="normal">Минуты</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Hour</td>
+  <td width="20%" class="normal">Часы</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Day</td>
+  <td width="20%" class="normal">Дни</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Month</td>
+  <td width="20%" class="normal">Месяцы</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Week</td>
+  <td width="20%" class="normal">Недели</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_flag">IsActiv</td>
+  <td width="20%" class="normal">Статус скрипта</td>
+	<td width="60%" class="normal"><i>enum('отключен','включен')</i><br></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod__file_manager">&nbsp;</a><a href="#mod_adm_cron">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Службы --- Файловый менеджер --- _file_manager --- </td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod__service">&nbsp;</a><a href="#mod__file_manager">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Службы --- Обслуживание --- _service --- </td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+  <td align="right"><a name="razdel_spravochniki">&nbsp;</a><a href="#razdel_sluzhby">на раздел выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+  <td class="razdel" align="center">Справочники</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_adm_modsystem_groups">&nbsp;</a><a href="#mod__service">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Справочники --- Группы модулей --- adm_modsystem_groups --- ModSystem_Groups</td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+<tr>
+	<td width="20%" class="prop_id">ID</td>
+  <td width="20%" class="normal">Идентификатор</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Name</td>
+  <td width="20%" class="normal">Группа модулей</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Description</td>
+  <td width="20%" class="normal">Описание</td>
+	<td width="60%" class="normal"><i>text</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_is">Direction</td>
+  <td width="20%" class="normal">Сортировка</td>
+	<td width="60%" class="normal"><i>tinyint(3) unsigned</i><br></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_adm_zone_type">&nbsp;</a><a href="#mod_adm_modsystem_groups">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Справочники --- Типы зон сайта --- adm_zone_type --- Zone_Type</td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+<tr>
+	<td width="20%" class="prop_id">ID</td>
+  <td width="20%" class="normal">Идентификатор</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Name</td>
+  <td width="20%" class="normal">Название</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Type</td>
+  <td width="20%" class="normal">Тип зоны</td>
+	<td width="60%" class="normal"><i>char(3)</i><br></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+  <td align="right"><a name="razdel_statistika">&nbsp;</a><a href="#razdel_spravochniki">на раздел выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+  <td class="razdel" align="center">Статистика</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_adm_logs">&nbsp;</a><a href="#mod_adm_zone_type">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Статистика --- Системные логи --- adm_logs --- Logs_Db</td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+<tr>
+	<td width="20%" class="prop_id">ID</td>
+  <td width="20%" class="normal">Идентификатор</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_link">Worker_ID</td>
+  <td width="20%" class="normal">Сотрудник</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_link">ModSystem_ID</td>
+  <td width="20%" class="normal">Модуль</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Name</td>
+  <td width="20%" class="normal">Кто работал</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">ModName</td>
+  <td width="20%" class="normal">Где работал</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">ObjectName</td>
+  <td width="20%" class="normal">Над чем работал</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Operation</td>
+  <td width="20%" class="normal">Операция</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Date</td>
+  <td width="20%" class="normal">Дата</td>
+	<td width="60%" class="normal"><i>timestamp</i><br></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_adm_statistic_duwnloadfileclient">&nbsp;</a><a href="#mod_adm_logs">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Статистика --- Статистика скаченных клиентами файлов --- adm_statistic_duwnloadfileclient --- Statistic_DuwnLoadFileClient</td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+<tr>
+	<td width="20%" class="prop_link">Client_ID</td>
+  <td width="20%" class="normal">Клиент</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_link">ModSystem_ID</td>
+  <td width="20%" class="normal">Модуль</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">ObjectID</td>
+  <td width="20%" class="normal">ID объекта</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Date</td>
+  <td width="20%" class="normal">Дата</td>
+	<td width="60%" class="normal"><i>timestamp</i><br></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_adm_statistic_duwnloadfileworker">&nbsp;</a><a href="#mod_adm_statistic_duwnloadfileclient">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Статистика --- Статистика скаченных сотрудниками файлов --- adm_statistic_duwnloadfileworker --- Statistic_DuwnLoadFileWorker</td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+<tr>
+	<td width="20%" class="prop_link">Worker_ID</td>
+  <td width="20%" class="normal">Сотрудник</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_link">ModSystem_ID</td>
+  <td width="20%" class="normal">Модуль</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">ObjectID</td>
+  <td width="20%" class="normal">ID объекта</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Date</td>
+  <td width="20%" class="normal">Дата</td>
+	<td width="60%" class="normal"><i>timestamp</i><br></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_adm_statistic_host">&nbsp;</a><a href="#mod_adm_statistic_duwnloadfileworker">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Статистика --- Статистика посещений --- adm_statistic_host --- Statistic_Host</td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+<tr>
+	<td width="20%" class="prop_id">ID</td>
+  <td width="20%" class="normal">Идентификатор</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_link">Client_ID</td>
+  <td width="20%" class="normal">Клиент</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Ip</td>
+  <td width="20%" class="normal">IP адрес</td>
+	<td width="60%" class="normal"><i>varchar(15)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Name</td>
+  <td width="20%" class="normal">Хост</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Ref</td>
+  <td width="20%" class="normal">От куда пришел</td>
+	<td width="60%" class="normal"><i>varchar(250)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Color</td>
+  <td width="20%" class="normal">Глубина цвета</td>
+	<td width="60%" class="normal"><i>mediumint(9)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Width</td>
+  <td width="20%" class="normal">Ширина</td>
+	<td width="60%" class="normal"><i>mediumint(9)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Height</td>
+  <td width="20%" class="normal">Высота</td>
+	<td width="60%" class="normal"><i>mediumint(9)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Date</td>
+  <td width="20%" class="normal">Дата</td>
+	<td width="60%" class="normal"><i>timestamp</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">OS</td>
+  <td width="20%" class="normal">Операционная система</td>
+	<td width="60%" class="normal"><i>varchar(150)</i><br></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td align="right"><a name="mod_adm_statistic_razdel">&nbsp;</a><a href="#mod_adm_statistic_host">на модуль выше</a>&nbsp;&bull;&nbsp;<a href="#main">в начало</a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tr>
+	<td class="tbl">Статистика --- Статистика разделов --- adm_statistic_razdel --- Statistic_Razdel</td>
+</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="1">
+<tr>
+	<td class="normal" colspan="3">&nbsp;</td>
+</tr>
+<tr>
+	<td width="20%" class="prop_id">ID</td>
+  <td width="20%" class="normal">Идентификатор</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop_link">Statistic_Host_ID</td>
+  <td width="20%" class="normal">Посещение</td>
+	<td width="60%" class="normal"><i>int(11)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Name</td>
+  <td width="20%" class="normal">Страница</td>
+	<td width="60%" class="normal"><i>varchar(250)</i><br></td>
+</tr>
+<tr>
+	<td width="20%" class="prop">Date</td>
+  <td width="20%" class="normal">Дата</td>
+	<td width="60%" class="normal"><i>timestamp</i><br></td>
+</tr>
+</table>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         

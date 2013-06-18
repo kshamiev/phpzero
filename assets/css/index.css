@@ -1,0 +1,226 @@
+body, td
+{
+  font-family: Verdana;
+  font-size: 11px;
+  color: black;
+  overflow-x: auto; overflow-y: visible;
+  margin: 0;
+}
+
+h1
+{
+  text-align: center;
+  color: black;
+  font-size: 16px;
+  margin-top: 0;
+  margin-bottom: 4px;
+}
+
+h2
+{
+  color: #990099;
+  font-size: 14px;
+  margin: 2px;
+  font-weight: normal;
+}
+
+h3
+{
+  color: maroon;
+  font-size: 12px;
+  margin: 0px;
+  font-weight: normal;
+}
+
+/*  Форма добавления и редатирования  */
+
+.tbledit
+{
+  background-color: black;
+}
+
+.tbledit th
+{
+  background-color: #eeeeff;
+  font-size: 12px;
+  color: maroon;
+  padding: 5px;
+  text-align: left;
+  font-weight: normal;
+}
+
+.tbledit td
+{
+  background-color: #fefeee;
+  font-size: 11px;
+  color: black;
+  padding: 4px;
+  height: 26px;
+}
+
+.tbllist
+{
+  background-color: black;
+}
+
+.tbllist th
+{
+  background-color: #eeeeff;
+  font-size: 12px;
+  color: maroon;
+  padding: 5px;
+  text-align: left;
+  font-weight: normal;
+  text-align: center;
+}
+
+.tbllist td
+{
+  background-color: #fefeee;
+  color: black;
+  padding: 3px;
+}
+
+.notpad td
+{
+  padding: 0;
+  height: 18px;
+}
+
+#blockroot, #blocklevel2
+{
+  width: 100%;
+  /*border: #015f80 solid;*/
+}
+
+#blocklevel12
+{
+  float: left;
+  width: 20%;
+  padding: 0px;
+  white-space: nowrap;
+}
+
+#blocklevel25
+{
+  float: left;
+  width: 25%;
+  padding: 0px;
+}
+
+#blocklevel33
+{
+  float: left;
+  width: 33%;
+  padding: 0px;
+}
+
+#blocklevel50
+{
+  float: left;
+  width: 50%;
+  padding: 0px;
+}
+
+form
+{
+  margin: 0;
+  padding: 0;
+}
+
+input, select, textarea
+{
+  font-size: 11px;
+  vertical-align: middle;
+  margin: 0;
+  padding: 1px;
+}
+
+input.field, select.field, textarea.field
+{
+  width: 95%;
+}
+
+/*  Кнопки */
+
+.btn
+{
+  font-family: Tahoma;
+  font-size: 11px;
+  margin: 0;
+  padding: 1px;
+  cursor: pointer;
+}
+
+img.icon
+{
+  vertical-align: bottom;
+}
+
+/*  Ссылки  */
+
+a
+{
+  color: navy;
+  text-decoration: none;
+  font-size: 12px;
+}
+
+a:hover
+{
+  color: #ff0000;
+  text-decoration: underline;
+}
+
+.subj_error
+{
+  color: #ff0000;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.subj_ok
+{
+  color: olive;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.subj_prop_error
+{
+  color: #ff0000;
+}
+
+ol
+{
+  margin: 2px;
+  padding-left: 24px;
+}
+
+/* #990099; */
+
+.tree-plus{
+    background: url('../img/plus.png')  left 2px no-repeat;
+    min-height: 18px;
+    padding-left: 18px;
+    position: relative;
+}
+
+.tree-minus{
+    background: url('../img/minus.png')  left 2px no-repeat;
+    min-height: 18px;
+    padding-left: 18px;
+    position: relative;
+}
+
+.tree-sub-row{
+    padding-left: 32px;
+}
+
+.tree-box{
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    left: 0px;
+    right: 0px;
+}

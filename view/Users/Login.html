@@ -1,0 +1,43 @@
+<script language="Javascript">
+    <!--
+    if ( 0 < {$Users->ID} )
+        document.location.href = "/site/users/profile";
+    //-->
+</script>
+<p align="center" class="message-system">&nbsp;
+    {foreach ($action_message as $message)}
+    <span{if ( 1 == $message[0] )} class="subj_error"{/if}>{$message[1]}</span><br>
+    {/}
+</p>
+<form action="{URL}" method="post">
+    <input type="hidden" name="act" value="Login">
+    <table class="tbledit" width="300px" cellspacing="1" cellpadding="0" border="0" align="center">
+        <tr>
+            <th colspan="2">{translation "Zero_Users" "Enter"}</th>
+        </tr>
+        <tr>
+            <td width="50px">{translation "Zero_Users" "Login"}</td>
+            <td>
+                <input class="field" type="text" name="Login">
+            </td>
+        </tr>
+        <tr>
+            <td>{translation "Zero_Users" "Password"}</td>
+            <td>
+                <input class="field" type="password" name="Password">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center">
+                <input class="btn" type="submit" value="{translation "Zero_Users" "Enter"}">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center">
+                <a href="/site/users/registration">{translation "Zero_Users" "Registration"}</a>
+                |
+                <a href="/site/users/reminder">{translation "Zero_Users" "Reminder"}</a>
+            </td>
+        </tr>
+    </table>
+</form>

@@ -1,0 +1,99 @@
+<?php
+/**
+ * File Language
+ *
+ * model =
+ * model prop Status =
+ * model prop Status validate key1 =
+ * model prop Status validate key2 =
+ * model prop Status option cold =
+ * model prop Status option hot =
+ *
+ * controller Zero_Users_Grid =
+ * controller Zero_Users_Grid action name1 =
+ * controller Zero_Users_Grid action name2 =
+ * controller Zero_Users_Grid message name1 =
+ * controller Zero_Users_Grid message name2 =
+ *
+ * 'translation Key' => 'Translation Value'
+ */
+return [
+    'model' => 'Users',
+    'model prop Date' => 'Date of registration',
+    'model prop DateOnline' => 'Date of Visit',
+    'model prop Email' => 'Email',
+    'model prop Email validate Error_NotValid' => 'The field filled is not  correctly',
+    'model prop Email validate Error_NotRegistration' => 'Address not registered',
+    'model prop Email validate Error_Registration' => 'Address already in use',
+    'model prop ID' => 'Identity',
+    'model prop ImgAvatar' => 'Photo',
+    'model prop ImgAvatar validate Error Upload File' => 'Error loading file',
+    'model prop ImgAvatar validate Error Image Resize' => 'Error processing image',
+    'model prop IsAccess' => 'The access status',
+    'model prop IsAccess option close' => 'close',
+    'model prop IsAccess option open' => 'open',
+    'model prop IsCondition' => 'user condition',
+    'model prop IsCondition option no' => 'no',
+    'model prop IsCondition option yes' => 'yes',
+    'model prop IsOnline' => 'Presence status',
+    'model prop IsOnline option no' => 'no',
+    'model prop IsOnline option yes' => 'yes',
+    'model prop Keystring' => 'Check string',
+    'model prop Keystring validate Error_Keystring' => 'Check string does not match',
+    'model prop Login' => 'Login',
+    'model prop Login validate Error_Exists' => 'Username is already taken',
+    'model prop Name' => 'Name',
+    'model prop Password' => 'Password',
+    'model prop PasswordR' => 'Retry Password',
+    'model prop Password validate Error_PasswordValid' => 'Passwords do not match',
+    'model prop Phone' => 'Phone',
+    'model prop Skype' => 'Skype',
+    'model prop Zero_Groups_ID' => 'Group',
+    'model prop Zero_Users_ID' => 'User',
+	'controller Zero_Users_Edit' => 'Editing Users',
+	'controller Zero_Users_Edit action Add' => 'add',
+	'controller Zero_Users_Edit action Save' => 'save',
+	'controller Zero_Users_Edit message Error_Validate' => 'Validation Error',
+	'controller Zero_Users_Edit message Error_Save' => 'Error saving',
+	'controller Zero_Users_Edit message Save' => 'Saved',
+	'controller Zero_Users_Grid' => 'List users',
+	'controller Zero_Users_Grid action Add' => 'add',
+	'controller Zero_Users_Grid action Edit' => 'edit',
+    'controller Zero_Users_Grid action CatalogMove' => 'move',
+	'controller Zero_Users_Grid action Remove' => 'remove',
+	'controller Zero_Users_Grid message Move' => 'Moved',
+    'controller Zero_Users_Grid message Error_NotParam' => 'Nothing to move',
+	'controller Zero_Users_Grid message Remove' => 'Deleted',
+	'controller Zero_Users_Grid message Error_Remove' => 'Error removing',
+	'controller Zero_Users_Login' => 'User Login',
+	'controller Zero_Users_Login action Login' => 'login',
+	'controller Zero_Users_Login message Error_Registration' => 'Unregistered',
+	'controller Zero_Users_Login message Error_Password' => 'The password is incorrect',
+	'controller Zero_Users_Login message Error_Groups' => 'Account not belong to any group',
+	'controller Zero_Users_Logout' => 'User logout',
+	'controller Zero_Users_Offline' => 'Initialize the online status is not active users',
+	'controller Zero_Users_Profile' => 'User profile',
+	'controller Zero_Users_Profile action Profile' => 'change',
+	'controller Zero_Users_Profile message Error_Validate' => 'Validation Error',
+	'controller Zero_Users_Profile message Profile' => 'profile has been modified',
+	'controller Zero_Users_Registration' => 'New user registration',
+	'controller Zero_Users_Registration action Registration' => 'registration.',
+	'controller Zero_Users_Registration message Error_Validate' => 'Validation Error',
+	'controller Zero_Users_Registration message Registration' => 'New user registration',
+	'controller Zero_Users_Reminder' => 'Recovery of user details',
+	'controller Zero_Users_Reminder action Reminder' => 'recovery',
+	'controller Zero_Users_Reminder message Error_Validate' => 'Validation Error',
+	'controller Zero_Users_Reminder message Reminder' => 'New details are saved and sent to the post office',
+    'translation Img View' => 'View img',
+    'translation File View' => 'View file',
+    'translation Remove' => 'Remove',
+    'translation button profile' => 'Edit Profile',
+    'translation profile' => 'Profile',
+    'translation exit' => 'exit',
+    'translation Reminder' => 'Reminder',
+    'translation Registration' => 'Registration',
+    'translation Login' => 'Login',
+    'translation Enter' => 'Input',
+    'translation Password' => 'Password',
+    'translation Key' => 'Translation Value',
+];

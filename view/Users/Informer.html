@@ -1,0 +1,22 @@
+{if ( 0 < $Users->ID )}
+<table width="100%" cellspacing="0" cellpadding="2" border="0">
+    <form action="{LANG}/site/users/logout" method="post">
+        <tr align="center">
+            <td>
+                <input class="btn" type="submit" value="{translation "Zero_Users" "exit"}" style="text-underline-position: auto;">&nbsp;&nbsp;&nbsp;
+            </td>
+        </tr>
+        <tr align="center">
+            <td>
+                <a href="{LANG}/site/users/profile">{$Users->Login}</a>&nbsp;&nbsp;&nbsp;
+            </td>
+        </tr>
+    </form>
+</table>
+{else}
+<script language="Javascript">
+    <!--
+    document.location.href = "/";
+    //-->
+</script>
+{/if}

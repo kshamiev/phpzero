@@ -1,0 +1,32 @@
+<div style="padding: 4px;">
+    <h3>Системные сообщения</h3>
+    {foreach ($message as $row)}
+    <div style="margin: 2px; background: {if ($row[1] == 'error')}#fadadd{else}#d0f0c0{/if}; padding: 4px;">
+        {if ($row[1] == 'error')}
+            <pre>{$row[0]}</pre>
+        {else}
+            {$row[0]}
+        {/}
+    </div>
+    {/}
+    <br>
+
+    <h3>Время выполнения и расход памяти</h3>
+    {foreach ($output as $row)}
+        <div style="margin: 2px;background: #cccccc; padding: 4px;"><pre>{$row}</pre></div>
+    {/}
+    <br>
+
+    <h3>Массив $_REQUEST</h3>
+    <div style="margin: 2px;background: #cccccc; padding: 4px;"><pre>{$r = print_r($_REQUEST, true)}</pre></div>
+    <br>
+
+    <h3>Массив $_FILES</h3>
+    <div style="margin: 2px;background: #cccccc; padding: 4px;"><pre>{$r = print_r($_FILES, true)}</pre></div>
+    <br>
+
+    <h3>РЕЕСТОР (Сессия)</h3>
+    {foreach ( $iterator_list as $key => $value )}
+        <div>&nbsp;&nbsp;&nbsp;{$key} => {$value}</div>
+    {/}
+</div>

@@ -1,0 +1,278 @@
+<h1>{$Section->Name}</h1>
+
+<form method="post" enctype="multipart/form-data">
+    <input type="hidden" name="act">
+    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+        <tr>
+            <td height="26px" class="toolbar">
+                {if ( isset($Action['Save']) )}
+                <input class="btn" type="button" value="{$Action['Save']['Name']}" onclick="button_form('formedit', '{URL}{$url_parent}-id-{$Object->ID}', 'Save', 0);">
+                {/if}
+                {if ( 0 < $Object->ID )}
+                {if ( isset($Action['Add']) )}
+                <input class="btn" type="button" value="{$Action['Add']['Name']}" onclick="button_form(this.form, '{URL}{$url_parent}', 'Add', 0);">
+                {/if}
+                {plugin "Zero_Crud_Toolbar" Model=$Object Action=$Action url_parent=$url_parent}
+                {foreach ($Interface as $row)}
+                <a href="{URL}{$url_parent}-id-{$Object->ID}/{$row['UrlThis']}-pid-{$Object->ID}" style="vertical-align: middle;">{$row['Name']}</a>&nbsp;&nbsp;
+                {/foreach}
+                {/if}
+            </td>
+            <td width="100px" align="right">{$Object->ID}</td>
+            <td width="25px" align="center"><img src="/zero/assets/img/button/button_id.gif" border="0"></td>
+        </tr>
+    </table>
+</form>
+
+<form id="formedit" method="post" enctype="multipart/form-data">
+<input type="hidden" name="act">
+
+{set $props_content = []}
+{foreach ($Props as $Prop => $row)}
+{if ( 'Content' == $row['Form'] )}
+{set $props_content[$Prop] = $row}
+{/if}
+{/foreach}
+
+<div id="tabs">
+
+{if ( count($props_content) )}
+<script type="text/javascript" src="/zero/assets/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="/zero/assets/ckeditor/config.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#tabs").tabs();
+    });
+</script>
+<ul>
+    <li><a href="#tabs-1">{translation "Zero_App" "Properties"}</a></li>
+    {foreach ($props_content as $Prop => $row)}
+    <li><a href="#tabs-{$Prop}">{$row['Comment']}</a></li>
+    {/foreach}
+</ul>
+{/if}
+
+<div id="tabs-1">
+    <table class="tbledit" width="100%" cellspacing="1" cellpadding="0" border="0">
+        <tr>
+            <th>{translation "Zero_App" "Properties"}</th>
+            <th>{translation "Zero_App" "Data"}</th>
+        </tr>
+        {foreach ($Props as $Prop => $row)}
+        {if ( 'Hidden' != $row['Form'] && 'Content' != $row['Form'] )}
+        <tr>
+            <td width="220px">
+                {$row['Comment']} {if ( 'NO' == $row['IsNull'] )}<span class="subj_error">*</span>{/if}<br>
+                {if ( isset($Error_Validator[$Prop]) )}<span
+                    class="subj_prop_error">{$Error_Validator[$Prop][1]}</span>{/if}
+            </td>
+            <td>
+                {if ( 'ReadOnly' == $row['Form'] )}
+
+                {if ( isset($Filter[$Prop]) )}
+
+                {if ( 'Link' == $Filter[$Prop]['Filter'] || 'LinkMore' == $Filter[$Prop]['Filter'] )}
+                {$Object->$Prop()->Name}
+                {else if ( ( 'Radio' == $Filter[$Prop]['Filter'] || 'Select' == $Filter[$Prop]['Filter'] ) && $Object->$Prop )}
+                {$Filter[$Prop]['List'][$Object->$Prop]}
+                {else}
+                {nl2br($Object->$Prop)}
+                {/}
+
+                {else if ( $Object->$Prop && ( 'Img' == $row['Form'] || 'File' == $row['Form'] ) )}
+                <a href="{HTTPD}/{$Object->$Prop}" title="просмотреть файл" target="_blank">
+                    <img src="/zero/assets/img/button/button_view_file.gif" border="0"></a>
+
+                {else}
+                {nl2br($Object->$Prop)}
+
+                {/}
+
+                {else if ( 'Link' == $row['Form'] )}
+                <select class="field" name="Prop[{$Prop}]" data-link-prop="{$Prop}">
+                    <option value="">{translation "Zero_App" "Not selected"}</option>
+                    {foreach ($Filter[$Prop]['List'] as $id => $name)}
+                    <option value="{$id}"
+                    {if ( $id == $Object->$Prop )} selected{/if}>{$name}</option>{/foreach}
+                </select>
+
+                {else if ( 'Radio' == $row['Form'] )}
+                <div id="blockroot">
+                    {foreach ($Filter[$Prop]['List'] as $key => $name)}
+                    <div id="blocklevel12">
+                        <div id="blocklevel2"><input type="radio" name="Prop[{$Prop}]" value="{$key}"{if ( $key
+                            ==
+                            $Object->$Prop )} checked{/if}>&nbsp;{$name}
+                        </div>
+                    </div>
+                    {/foreach}
+                </div>
+
+                {else if ( 'Select' == $row['Form'] )}
+                <select class="field" name="Prop[{$Prop}]" data-select-prop="{$Prop}">
+                    <option value="">{translation "Zero_App" "Not selected"}</option>
+                    {foreach ($Filter[$Prop]['List'] as $key => $name)}
+                    <option value="{$key}"
+                    {if ( $key == $Object->$Prop )} selected{/if}>{$name}</option>{/foreach}
+                </select>
+
+                {else if ( 'Checkbox' == $row['Form'] )}
+                <div style="max-height: 400px; overflow-y: auto;" data-checkbox-prop="{$Prop}">
+                    <input type="hidden" name="Prop[{$Prop}]" value="">
+                    {foreach ($Filter[$Prop]['List'] as $key => $name)}
+                    <div>
+                        <input type="checkbox" name="Prop[{$Prop}][]" value="{$key}"{if (
+                        is_array($Object->$Prop) &&
+                        in_array($key, $Object->$Prop) )} checked{/if}>&nbsp;{$name}
+                    </div>
+                    {/foreach}
+                </div>
+
+                {else if ( 'Check' == $row['Form'] )}
+                <div id="blockroot">
+                    <input type="hidden" name="Prop[{$Prop}]" value="0">
+
+                    <div id="blocklevel12">
+                        <div id="blocklevel2"><input type="checkbox" name="Prop[{$Prop}]" value="1"{if (
+                            $Object->$Prop )} checked{/if}>
+                        </div>
+                    </div>
+                </div>
+
+                {else if ( 'Textarea' == $row['Form'] )}
+                <textarea class="field" name="Prop[{$Prop}]"
+                          rows="7">{htmlspecialchars($Object->$Prop)}</textarea>
+
+                {else if ( 'DateTime' == $row['Form'] )}
+                <input class="field datetimepicker" type="text" id="{$Prop}" name="Prop[{$Prop}]"
+                       value="{htmlspecialchars($Object->$Prop)}">
+
+                {else if ( 'Date' == $row['Form'] )}
+                <input class="field datepicker" type="text" id="{$Prop}" name="Prop[{$Prop}]"
+                       value="{htmlspecialchars($Object->$Prop)}">
+
+                {else if ( 'Time' == $row['Form'] )}
+                <input class="field timepicker" type="text" id="{$Prop}" name="Prop[{$Prop}]"
+                       value="{htmlspecialchars($Object->$Prop)}">
+
+                {else if ( 'Img' == $row['Form'] )}
+                {if ( $Object->$Prop )}
+                <table class="notpad" width="100%" cellspacing="0" cellpadding="0" border="0">
+                    <input type="hidden" name="Prop[{$Prop}]">
+                    <tr>
+                        <td class="notpad" width="335"><input type="file" name="{$Prop}" size="50"></td>
+                        <td width="25" align="center">
+                            <a href="{HTTPD}/{$Object->$Prop}" title="просмотреть файл" target="_blank">
+                                <img src="/zero/assets/img/button/button_view_file.gif" border="0">
+                            </a>
+                        </td>
+                        <td width="75" align="center">Повернуть:</td>
+                        <td width="50"><select name="Prop[{$Prop}][R]" style="width: 45px;">
+                            <option value="0">нет</option>
+                            <option value="1">+90</option>
+                            <option value="-1">-90</option>
+                            <option value="2">180</option>
+                        </select></td>
+                        <td width="50" align="center">Размер:</td>
+                        <td width="100" align="center">
+                            <input type="text" name="Prop[{$Prop}][X]" size="2">&nbsp;<b>x</b>&nbsp;
+                            <input type="text" name="Prop[{$Prop}][Y]" size="2">
+                        </td>
+                        <td width="55" align="center">Удалить:</td>
+                        <td><input type="checkbox" name="Prop[{$Prop}][Rem]" value="1" title="удалить"></td>
+                    </tr>
+                </table>
+                {else}
+                <table class="notpad" width="90%" cellspacing="0" cellpadding="0" border="0">
+                    <input type="hidden" name="Prop[{$Prop}]">
+                    <tr>
+                        <td width="350"><input type="file" name="{$Prop}" size="50"></td>
+                        <td width="90" align="center">Повернуть:</td>
+                        <td width="60"><select name="Prop[{$Prop}][R]" style="width: 45px;">
+                            <option value="0">нет</option>
+                            <option value="1">+90</option>
+                            <option value="-1">-90</option>
+                            <option value="2">180</option>
+                        </select></td>
+                        <td width="60" align="center">Размер:</td>
+                        <td width="110" align="center">
+                            <input type="text" name="Prop[{$Prop}][X]" size="2">&nbsp;<b>x</b>&nbsp;
+                            <input type="text" name="Prop[{$Prop}][Y]" size="2">
+                        </td>
+                        <td>&nbsp;</td>
+                    </tr>
+                </table>
+                {/if}
+
+                {else if ( 'File' == $row['Form'] )}
+                {if ( $Object->$Prop )}
+                <table class="notpad" width="100%" cellspacing="0" cellpadding="0" border="0">
+                    <input type="hidden" name="Prop[{$Prop}]">
+                    <tr>
+                        <td width="335"><input type="file" name="{$Prop}" size="50"></td>
+                        <td width="25" align="center">
+                            <a href="{HTTPD}/{$Object->$Prop}" title="просмотреть файл" target="_blank">
+                                <img src="/zero/assets/img/button/button_view_file.gif" border="0">
+                            </a>
+                        </td>
+                        <td width="55" align="center">Удалить:</td>
+                        <td><input type="checkbox" name="Prop[{$Prop}][Rem]" value="1" title="удалить"></td>
+                    </tr>
+                </table>
+                {else}
+                <table class="notpad" width="100%" cellspacing="0" cellpadding="0" border="0">
+                    <input type="hidden" name="Prop[{$Prop}]">
+                    <tr>
+                        <td width="335"><input type="file" name="{$Prop}" size="50"></td>
+                        <td>&nbsp;</td>
+                    </tr>
+                </table>
+                {/if}
+
+                {else if ( 'ImgB' == $row['Form'] || 'FileB' == $row['Form'] )}
+                {set $P = substr($Prop, 0, -1)}
+                {if ( $Object->$P )}
+                <a href="/helper/output-file?act=FileUpload&source={$Object->Source}&prop={$P}&id={$Object->ID}" target="_blank">{basename($Object->$P)}</a>
+                {else}
+                -
+                {/if}
+
+                {else if ( 'Password' == $row['Form'] )}
+                <input class="field" type="password" name="Prop[{$Prop}]" value="" maxlength="250">
+
+                {else if ( 'Text' == $row['Form'] || 'Number' == $row['Form'] )}
+                <input class="field" type="text" name="Prop[{$Prop}]" value="{htmlspecialchars($Object->$Prop)}" maxlength="250">
+
+                {/if}
+            </td>
+        </tr>
+        {/if}
+        {/foreach}
+    </table>
+</div>
+
+{foreach ($props_content as $Prop => $row)}
+<div id="tabs-{$Prop}">
+    <table width="100%" cellspacing="1" cellpadding="0" border="0">
+        <tr>
+            <td>
+                <textarea id="ckeditor-{$Prop}" name="Prop[Content]" cols="80" rows="30">{htmlspecialchars($Object->$Prop)}</textarea>
+                <script type="text/javascript">
+                    CKEDITOR.replace('ckeditor-{$Prop}', {
+                        height: 700,
+                        filebrowserBrowseUrl: '/zero/assets/ckfinder/ckfinder.html',
+                        filebrowserImageBrowseUrl: '/zero/assets/ckfinder/ckfinder.html',
+                        filebrowserFlashBrowseUrl: '/zero/assets/ckfinder/ckfinder.html',
+                        filebrowserUploadUrl: '/zero/assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Content',
+                        filebrowserImageUploadUrl: '/zero/assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Content',
+                        filebrowserFlashUploadUrl: '/zero/assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Content'
+                    });
+                </script>
+            </td>
+        </tr>
+    </table>
+</div>
+{/foreach}
+
+</div>
+</form>

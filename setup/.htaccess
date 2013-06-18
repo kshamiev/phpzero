@@ -1,0 +1,28 @@
+php_flag log_errors On
+php_value error_log '<PATH_PHP_ERROR_LOG>'
+
+# Protect hidden files from being viewed
+<Files *.log>
+	Order Deny,Allow
+	Deny From All
+</Files>
+<Files *.ini>
+	Order Deny,Allow
+	Deny From All
+</Files>
+<Files *.sql>
+	Order Deny,Allow
+	Deny From All
+</Files>
+<Files .*>
+	Order Deny,Allow
+	Deny From All
+</Files>
+
+# Allow any files or directories that exist to be displayed directly
+# Rewrite all other URLs to index.php/URL
+RewriteEngine On
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule .* index.php [L,QSA]
