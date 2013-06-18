@@ -195,15 +195,15 @@ class Zero_View
         $template = implode('/', $arr);
 
         $template_exists = '/' . Zero_App::$Config->Themes . '/' . $module . '/' . $template;
-                echo $template . ' [THEMES] => ' . basename(ZERO_PATH_THEMES) . $template_exists . '.html <br><br>';
+//                echo $template . ' [THEMES] => ' . basename(ZERO_PATH_THEMES) . $template_exists . '.html <br><br>';
         if ( !file_exists(ZERO_PATH_THEMES . $template_exists . '.html') )
         {
             $template_exists = '/' . $module . '/view/' . $template;
-                        echo $template . ' [APPLICATION] => ' . basename(ZERO_PATH_APPLICATION) . $template_exists . '.html <br><br>';
+//                        echo $template . ' [APPLICATION] => ' . basename(ZERO_PATH_APPLICATION) . $template_exists . '.html <br><br>';
             if ( !file_exists(ZERO_PATH_APPLICATION . $template_exists . '.html') )
             {
                 $template_exists = '/view/' . $template;
-                                echo $template . ' [PHPZERO] => ' . basename(ZERO_PATH_PHPZERO) . $template_exists . '.html <br><br>';
+//                                echo $template . ' [PHPZERO] => ' . basename(ZERO_PATH_PHPZERO) . $template_exists . '.html <br><br>';
                 if ( !file_exists(ZERO_PATH_PHPZERO . $template_exists . '.html') )
                     return '';
                 else
@@ -236,12 +236,6 @@ class Zero_View
         // Vy`rezaem sluzhebny`e kommentarii
         $template = preg_replace('~{#(.*?)#}~s', '', $template);
         // Parsim konstanty` shabona
-        /*
-                $template = str_replace('{HTTP}', '<' . '?php echo Zero_App::$Config->Http; ?' . '>', $template);
-                $template = str_replace('{HTTPA}', '<' . '?php echo Zero_App::$Config->Http_Assets; ?' . '>', $template);
-                $template = str_replace('{HTTPD}', '<' . '?php echo Zero_App::$Config->Http_Upload; ?' . '>', $template);
-                $template = str_replace('{HTTPH}', '<' . '?php echo Zero_App::$Config->Http_Ref; ?' . '>', $template);
-          */
         $template = str_replace('{URL}', '<' . '?php echo Zero_App::$Route->url; ?' . '>', $template);
         if ( Zero_App::$Route->lang != Zero_App::$Config->LanguageDefault )
             $template = str_replace('{LANG}', '/<' . '?php echo Zero_App::$Route->lang; ?' . '>', $template);
