@@ -141,6 +141,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         $this->View->Assign('Interface', Zero_App::$Section->Get_Navigation_Child());
         $this->View->Assign('Params', $this->Params);
         $this->View->Assign('Object', $this->Model);
+        $this->View->Assign('ObjectID', $this->Model->ID);
         $this->View->Assign('Props', $props_form);
         //  Filter
         $this->View->Assign('Filter', $Filter->Get_Filter());
