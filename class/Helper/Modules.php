@@ -81,6 +81,7 @@ final class Zero_Helper_Modules
         $configuration = [];
         if ( $module )
         {
+            $module = strtolower($module);
             if ( true == $flag && !file_exists($area . '/' . $module . '/setup/INSTALL') )
                 return $configuration;
             if ( $section )
