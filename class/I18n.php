@@ -30,13 +30,13 @@ class Zero_I18n
     {
         if ( '' == $lang )
             $lang = Zero_App::$Route->lang;
-        $path = ZERO_PATH_APPLICATION . '/' . $folder_list[0] . '/i18n/' . $lang . '/' . $folder_list[1] . '.php';
+        $path = ZERO_PATH_APPLICATION . '/' . strtolower($folder_list[0]) . '/i18n/' . $lang . '/' . $folder_list[1] . '.php';
         if ( file_exists($path) )
             return $path;
         $path = ZERO_PATH_PHPZERO . '/i18n/' . $lang . '/' . $folder_list[1] . '.php';
         if ( file_exists($path) )
             return $path;
-        Zero_Logs::Set_Message('I18N NOT FOUND FILE: ' . $lang . ' -> ' . $folder_list[0] . '_' . $folder_list[1], 'warning');
+        Zero_Logs::Set_Message('I18N NOT FOUND FILE: ' . strtolower($folder_list[0]) . '/i18n/' . $lang . '/' . $folder_list[1], 'warning');
         return '';
     }
 
