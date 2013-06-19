@@ -1,0 +1,14 @@
+<table width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tr>
+        <td>
+            {foreach ($navigation as $row)}
+            /&nbsp;<a href="{LANG}{$row['url']}">{$row['name']}</a>&nbsp;
+            {/}
+        </td>
+        <td align="right">
+            {foreach ($action_message as $message)}
+            <span{if ( 1 == $message[0] )} class="subj_error"{/if}>{$message[1]}</span>&nbsp;
+            {/}
+        </td>
+    </tr>
+</table>
