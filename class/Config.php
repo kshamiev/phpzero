@@ -27,6 +27,13 @@ abstract class Zero_Config
     public $System_PathSession = '';
 
     /**
+     * Access for DB (Mysql)
+     *
+     * @var array
+     */
+    public $Db = [];
+
+    /**
      * Site name (of the project)
      *
      * @var string
@@ -41,6 +48,13 @@ abstract class Zero_Config
     public $Site_Email = '';
 
     /**
+     * Timeout online users status
+     *
+     * @var integer
+     */
+    public $Site_UsersTimeoutOnline = 600;
+
+    /**
      * Using a caching system
      *
      * @var bool
@@ -48,11 +62,18 @@ abstract class Zero_Config
     public $Site_IsCache = false;
 
     /**
-     * Timeout online users status
+     * Флаг Parsing the presentation templates
      *
-     * @var integer
+     * @var bool
      */
-    public $Site_UsersTimeoutOnline = 600;
+    public $Site_TemplateParsing = true;
+
+    /**
+     * Default language
+     *
+     * @var string
+     */
+    public $Site_Language = '';
 
     /**
      * Absolute system host a website.
@@ -97,13 +118,6 @@ abstract class Zero_Config
     public $Http_Ref = '';
 
     /**
-     * Access for DB (Mysql)
-     *
-     * @var array
-     */
-    public $Db = [];
-
-    /**
      * Number of items per page
      *
      * @var string
@@ -116,13 +130,6 @@ abstract class Zero_Config
      * @var string
      */
     public $View_PageStep = '';
-
-    /**
-     * Флаг Parsing the presentation templates
-     *
-     * @var bool
-     */
-    public $View_TemplateParsing = true;
 
     /**
      * Monitoring. Fatal errors
@@ -165,13 +172,6 @@ abstract class Zero_Config
      * @var bool
      */
     public $Log_Output_Display = true;
-
-    /**
-     * Default language
-     *
-     * @var string
-     */
-    public $LanguageDefault = '';
 
     /**
      * Languages
@@ -232,17 +232,24 @@ abstract class Zero_Config
         // File storage sessions
         $this->System_PathSession = $Config['System']['PathSession'];
 
+        // Access for DB (Mysql)
+        $this->Db = $Config['Db'];
+
         // Site name (of the project)
         $this->Site_Name = $Config['Site']['Name'];
         // Email the site (by default)
         $this->Site_Email = $Config['Site']['Email'];
-        // Using a caching system
-        $this->Site_IsCache = $Config['Site']['IsCache'];
         // Timeout online users status
         $this->Site_UsersTimeoutOnline = $Config['Site']['UsersTimeoutOnline'];
+        // Using a caching system
+        $this->Site_IsCache = $Config['Site']['IsCache'];
+        // Parsing the presentation templates
+        $this->Site_TemplateParsing = $Config['Site']['TemplateParsing'];
+        //  Default language
+        $this->Site_Language = $Config['Site']['Language'];
 
         //  Absolute system host a website.
-        $this->Host = isset($Config['Domain'][$config]) ? $Config['Domain'][$config] : '';
+        $this->Host = $config;
 
         //  Current Theme.
         $this->Themes = isset($Config['Themes'][$config]) ? $Config['Themes'][$config] : 'default';
@@ -272,15 +279,10 @@ abstract class Zero_Config
         // http referer
         $this->Http_Ref = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : $this->Http;
 
-        // Access for DB (Mysql)
-        $this->Db = $Config['Db'];
-
         //  Number of items per page
         $this->View_PageItem = $Config['View']['PageItem'];
         //  The range of visible pages
         $this->View_PageStep = $Config['View']['PageStep'];
-        // Parsing the presentation templates
-        $this->View_TemplateParsing = $Config['View']['TemplateParsing'];
 
         // Monitoring. Fatal errors
         $this->Log_Profile_Error = $Config['Log']['Profile']['Error'];
@@ -296,7 +298,6 @@ abstract class Zero_Config
         $this->Log_Output_Display = $Config['Log']['Output']['Display'];
 
         // Languages
-        $this->LanguageDefault = $Config['LanguageDefault'];
         $this->Language = $Config['Language'];
 
         // Servers Memcache

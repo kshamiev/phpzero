@@ -154,7 +154,7 @@ class Zero_View
             if ( '' != $html )
             {
                 $tpl = ZERO_PATH_CACHE . '/_tpl/' . $html . '_' . Zero_App::$Route->lang . '.tpl';
-                if ( 1 == Zero_App::$Config->View_TemplateParsing || !file_exists($tpl) )
+                if ( 1 == Zero_App::$Config->Site_TemplateParsing || !file_exists($tpl) )
                     Zero_Helper_FileSystem::File_Save($tpl, $this->_Parsing(file_get_contents(ZERO_PATH_SITE . '/' . $html . '.html')));
                 break;
             }
@@ -164,7 +164,7 @@ class Zero_View
             Zero_Logs::Set_Message("Not found template [{" . implode(', ', $this->_Template) . "}]");
             return '';
         }
-        if ( Zero_App::$Config->View_TemplateParsing )
+        if ( Zero_App::$Config->Site_TemplateParsing )
         {
             $this->_Data['__'] = $this->_Data;
             $this->_Data['_'] = array_keys($this->_Data);
@@ -237,7 +237,7 @@ class Zero_View
         $template = preg_replace('~{#(.*?)#}~s', '', $template);
         // Parsim konstanty` shabona
         $template = str_replace('{URL}', '<' . '?php echo Zero_App::$Route->url; ?' . '>', $template);
-        if ( Zero_App::$Route->lang != Zero_App::$Config->LanguageDefault )
+        if ( Zero_App::$Route->lang != Zero_App::$Config->Site_Language )
             $template = str_replace('{LANG}', '/<' . '?php echo Zero_App::$Route->lang; ?' . '>', $template);
         else
             $template = str_replace('{LANG}', '', $template);
@@ -255,7 +255,7 @@ class Zero_View
         $template = preg_replace('~{([a-z]{1}[^}]{0,150})}~si', '<' . '?php echo $1; ?' . '>', $template);
         //  Adjustment of links translation
         /*
-        if ( Zero_App::$Route->lang != Zero_App::$Config->LanguageDefault )
+        if ( Zero_App::$Route->lang != Zero_App::$Config->Site_Language )
             $template = preg_replace('~(<a.+?href=[\'"]+)([^"\']+)([\'"])+~si', '$1/' . Zero_App::$Route->lang . '$2$3', $template);
         */
         return $template;

@@ -1344,7 +1344,7 @@ class Zero_DB
         }
         else
         {
-            if ( isset($row['ID']) && $is_lang && Zero_App::$Route->lang != Zero_App::$Config->LanguageDefault )
+            if ( isset($row['ID']) && $is_lang && Zero_App::$Route->lang != Zero_App::$Config->Site_Language )
             {
                 $source = $this->Model->Get_Source();
                 $sql = "SELECT * FROM {$source}Language WHERE {$source}_ID = {$row['ID']} AND Zero_Language_ID = " . Zero_App::$Route->lang_id;

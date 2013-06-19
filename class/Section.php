@@ -366,7 +366,7 @@ class Zero_Section extends Zero_Model
             s.Zero_Section_ID = {$id} AND s.IsVisible = 'yes'
             ";
         //  Translation
-        if ( Zero_App::$Route->lang != Zero_App::$Config->LanguageDefault )
+        if ( Zero_App::$Route->lang != Zero_App::$Config->Site_Language )
         {
             $sql = "
             SELECT

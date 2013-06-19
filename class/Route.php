@@ -91,7 +91,7 @@ class Zero_Route
     {
         //  Iazy`k
         $language = Zero_App::$Config->Language;
-        $this->lang = Zero_App::$Config->LanguageDefault;
+        $this->lang = Zero_App::$Config->Site_Language;
         $this->lang_id = $language[$this->lang]['ID'];
 
         if ( !$request )
