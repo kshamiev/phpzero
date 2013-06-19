@@ -2,7 +2,8 @@
 SQLyog Enterprise v9.50 
 MySQL - 5.5.25a-log : Database - phpzero_kshamiev
 *********************************************************************
-*/
+*/
+
 
 /*!40101 SET NAMES utf8 */;
 
@@ -92,8 +93,7 @@ insert  into `Zero_Content`(`ID`,`Zero_Section_ID`,`Zero_Layout_ID`,`Name`,`Cont
 insert  into `Zero_Content`(`ID`,`Zero_Section_ID`,`Zero_Layout_ID`,`Name`,`Content`,`Block`) values (3,1000,NULL,'Www','<p>Www</p>','content');
 insert  into `Zero_Content`(`ID`,`Zero_Section_ID`,`Zero_Layout_ID`,`Name`,`Content`,`Block`) values (5,NULL,3,'Head','<p>Head</p>','head');
 insert  into `Zero_Content`(`ID`,`Zero_Section_ID`,`Zero_Layout_ID`,`Name`,`Content`,`Block`) values (6,NULL,3,'Footer','<p>Footer</p>','footer');
-insert  into `Zero_Content`(`ID`,`Zero_Section_ID`,`Zero_Layout_ID`,`Name`,`Content`,`Block`) values (7,NULL,1,'Head','<p>PhpZero</p>','head');
-insert  into `Zero_Content`(`ID`,`Zero_Section_ID`,`Zero_Layout_ID`,`Name`,`Content`,`Block`) values (8,NULL,1,'Head Left','<div>PhpZero</div>','head_left');
+insert  into `Zero_Content`(`ID`,`Zero_Section_ID`,`Zero_Layout_ID`,`Name`,`Content`,`Block`) values (7,NULL,1,'Head Left','<div>PhpZero</div>','head_left');
 
 /*Table structure for table `Zero_Groups` */
 
@@ -166,7 +166,7 @@ CREATE TABLE `Zero_Section` (
 insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Zero_Layout_ID`,`Url`,`UrlThis`,`UrlRedirect`,`ModuleController`,`ModuleUrl`,`Controller`,`IsAuthorized`,`IsVisible`,`Sort`,`Name`,`Title`,`Keywords`,`Description`) values (1,NULL,2,'zero','zero',NULL,NULL,NULL,'Zero_Users_Login','no','no',10,'CMF PhpZero','CMF PhpZero','CMF PhpZero','CMF PhpZero');
 insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Zero_Layout_ID`,`Url`,`UrlThis`,`UrlRedirect`,`ModuleController`,`ModuleUrl`,`Controller`,`IsAuthorized`,`IsVisible`,`Sort`,`Name`,`Title`,`Keywords`,`Description`) values (2,19,1,'zero/system/modules','modules',NULL,NULL,NULL,'Zero_System_GridModules','yes','yes',30,'Modules','Modules','Modules','Modules');
 insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Zero_Layout_ID`,`Url`,`UrlThis`,`UrlRedirect`,`ModuleController`,`ModuleUrl`,`Controller`,`IsAuthorized`,`IsVisible`,`Sort`,`Name`,`Title`,`Keywords`,`Description`) values (3,8,1,'zero/site/users/profile','profile',NULL,NULL,NULL,'Zero_Users_Profile','yes','no',120,'Profile','Profile','Profile','Profile');
-insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Zero_Layout_ID`,`Url`,`UrlThis`,`UrlRedirect`,`ModuleController`,`ModuleUrl`,`Controller`,`IsAuthorized`,`IsVisible`,`Sort`,`Name`,`Title`,`Keywords`,`Description`) values (4,8,NULL,'zero/site/users/logout','logout',NULL,NULL,NULL,'Zero_Users_Logout','no','no',200,'Exit','Exit','Exit','Exit');
+insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Zero_Layout_ID`,`Url`,`UrlThis`,`UrlRedirect`,`ModuleController`,`ModuleUrl`,`Controller`,`IsAuthorized`,`IsVisible`,`Sort`,`Name`,`Title`,`Keywords`,`Description`) values (4,8,1,'zero/site/users/logout','logout',NULL,NULL,NULL,'Zero_Users_Logout','no','no',200,'Exit','Exit','Exit','Exit');
 insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Zero_Layout_ID`,`Url`,`UrlThis`,`UrlRedirect`,`ModuleController`,`ModuleUrl`,`Controller`,`IsAuthorized`,`IsVisible`,`Sort`,`Name`,`Title`,`Keywords`,`Description`) values (5,8,2,'zero/site/users/registration','registration',NULL,NULL,NULL,'Zero_Users_Registration','no','no',110,'Registratin','Registratin','Registratin','Registratin');
 insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Zero_Layout_ID`,`Url`,`UrlThis`,`UrlRedirect`,`ModuleController`,`ModuleUrl`,`Controller`,`IsAuthorized`,`IsVisible`,`Sort`,`Name`,`Title`,`Keywords`,`Description`) values (6,8,2,'zero/site/users/reminder','reminder',NULL,NULL,NULL,'Zero_Users_Reminder','no','no',130,'Recovery access','Recovery access','Recovery access','Recovery access');
 insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Zero_Layout_ID`,`Url`,`UrlThis`,`UrlRedirect`,`ModuleController`,`ModuleUrl`,`Controller`,`IsAuthorized`,`IsVisible`,`Sort`,`Name`,`Title`,`Keywords`,`Description`) values (7,30,NULL,'zero/helper/captcha','captcha',NULL,NULL,NULL,'Zero_Users_Kcaptcha','no','no',140,'Kcaptcha','Kcaptcha','Kcaptcha','Kcaptcha');
@@ -191,7 +191,7 @@ insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Zero_Layout_ID`,`Url`,`UrlTh
 insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Zero_Layout_ID`,`Url`,`UrlThis`,`UrlRedirect`,`ModuleController`,`ModuleUrl`,`Controller`,`IsAuthorized`,`IsVisible`,`Sort`,`Name`,`Title`,`Keywords`,`Description`) values (27,26,1,'zero/site/layout/edit/content','content',NULL,NULL,NULL,'Zero_Content_GridLayout','yes','yes',10,'Content','Content','Content','Content');
 insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Zero_Layout_ID`,`Url`,`UrlThis`,`UrlRedirect`,`ModuleController`,`ModuleUrl`,`Controller`,`IsAuthorized`,`IsVisible`,`Sort`,`Name`,`Title`,`Keywords`,`Description`) values (28,27,1,'zero/site/layout/edit/content/edit','edit',NULL,NULL,NULL,'Zero_Content_EditLayout','yes','no',10,'Content Edit','Content Edit','Content Edit','Content Edit');
 insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Zero_Layout_ID`,`Url`,`UrlThis`,`UrlRedirect`,`ModuleController`,`ModuleUrl`,`Controller`,`IsAuthorized`,`IsVisible`,`Sort`,`Name`,`Title`,`Keywords`,`Description`) values (29,14,1,'zero/site/section/edit/content','content',NULL,NULL,NULL,'Zero_Content_GridSection','yes','yes',10,'Content','Content','Content','Content');
-insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Zero_Layout_ID`,`Url`,`UrlThis`,`UrlRedirect`,`ModuleController`,`ModuleUrl`,`Controller`,`IsAuthorized`,`IsVisible`,`Sort`,`Name`,`Title`,`Keywords`,`Description`) values (30,1,NULL,'zero/helper','helper',NULL,NULL,NULL,'Zero_Content_Page','yes','no',10,'Helper','Helper','Helper','Helper');
+insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Zero_Layout_ID`,`Url`,`UrlThis`,`UrlRedirect`,`ModuleController`,`ModuleUrl`,`Controller`,`IsAuthorized`,`IsVisible`,`Sort`,`Name`,`Title`,`Keywords`,`Description`) values (30,1,1,'zero/helper','helper',NULL,NULL,NULL,'Zero_Content_Page','yes','no',10,'Helper','Helper','Helper','Helper');
 insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Zero_Layout_ID`,`Url`,`UrlThis`,`UrlRedirect`,`ModuleController`,`ModuleUrl`,`Controller`,`IsAuthorized`,`IsVisible`,`Sort`,`Name`,`Title`,`Keywords`,`Description`) values (31,14,1,'zero/site/section/edit/translation','translation',NULL,NULL,NULL,'Zero_SectionLanguage_GridSection','yes','yes',20,'Tramslation','Tramslation','Tramslation','Tramslation');
 insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Zero_Layout_ID`,`Url`,`UrlThis`,`UrlRedirect`,`ModuleController`,`ModuleUrl`,`Controller`,`IsAuthorized`,`IsVisible`,`Sort`,`Name`,`Title`,`Keywords`,`Description`) values (32,31,1,'zero/site/section/edit/translation/edit','edit',NULL,NULL,NULL,'Zero_SectionLanguage_EditSection','yes','no',10,'Tramslation Edit','Tramslation Edit','Tramslation Edit','Tramslation Edit');
 insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Zero_Layout_ID`,`Url`,`UrlThis`,`UrlRedirect`,`ModuleController`,`ModuleUrl`,`Controller`,`IsAuthorized`,`IsVisible`,`Sort`,`Name`,`Title`,`Keywords`,`Description`) values (1000,NULL,3,'www','www',NULL,'Www_Content_Page',NULL,'Www_Content_Page','no','yes',20,'Site','Site','Site','Site');
