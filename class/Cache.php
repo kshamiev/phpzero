@@ -104,7 +104,7 @@ class Zero_Cache
      */
     public static function Init()
     {
-        if ( class_exists('Memcache') && 0 < count(Zero_App::$Config->Memcache) )
+        if ( class_exists('Memcache') && 0 < count(Zero_App::$Config->Memcache['Cache']) )
         {
             self::$_Memcache = new Memcache;
             $counter = 0;

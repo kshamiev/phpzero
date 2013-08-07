@@ -334,7 +334,7 @@ abstract class Zero_Config
         //  Storage sessions
         if ( 0 < count($Config['Memcache']['Session']) )
         {
-            ini_set('session.save_handler', 'memcached');
+            ini_set('session.save_handler', 'memcache');
             ini_set('session.save_path', $Config['Memcache']['Session'][0]);
         }
         else

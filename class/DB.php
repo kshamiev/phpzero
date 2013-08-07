@@ -1347,12 +1347,8 @@ class Zero_DB
             if ( isset($row['ID']) && $is_lang && Zero_App::$Route->lang != Zero_App::$Config->Site_Language )
             {
                 $source = $this->Model->Get_Source();
-                $sql = "SELECT * FROM {$source}Language WHERE {$source}_ID = {$row['ID']} AND Zero_Language_ID = " . Zero_App::$Route->lang_id;
-                $row_lang = self::Query_Get_Row($sql);
-                unset($row_lang['ID']);
-                unset($row_lang["{$source}_ID"]);
-                unset($row_lang['Zero_Language_ID']);
-                $row = array_replace($row, $row_lang);
+                $sql = "SELECT {$this->Model->Get_Config_Prop_Lang()} FROM {$source}Language WHERE {$source}_ID = {$row['ID']} AND Zero_Language_ID = " . Zero_App::$Route->lang_id;
+                $row = array_replace($row, self::Query_Get_Row($sql));
             }
             $this->Model->Set_Props($row);
             return $row;

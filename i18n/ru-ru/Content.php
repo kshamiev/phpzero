@@ -25,6 +25,7 @@ return [
     'model prop Name' => 'Название',
     'model prop Zero_Section_ID' => 'Раздел',
     'model prop Zero_Layout_ID' => 'Макет',
+    'model prop Zero_Language_ID' => 'Язык',
     'controller Zero_Content_EditSection' => 'Изменение контента страницы',
     'controller Zero_Content_EditSection action Add' => 'добавить',
     'controller Zero_Content_EditSection action Save' => 'сохранить',

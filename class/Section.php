@@ -95,6 +95,17 @@ class Zero_Section extends Zero_Model
     }
 
     /**
+     * The configuration language properties
+     *
+     * @param Zero_Model $Model The exact working model
+     * @return string
+     */
+    protected static function Config_Prop_Lang($Model)
+    {
+        return 'Name, Title, Keywords, Description';
+    }
+
+    /**
      * The configuration properties
      *
      * - 'DB'=> 'T, I, F, E, S, D, B'

@@ -272,9 +272,9 @@ class Zero_Logs
             foreach (self::$_Message as $row)
             {
                 if ( 'error' == $row[1] )
-                    $errors[] = str_replace(["\r", "\t"], " ", $row[0]);
+                    $errors[] = str_replace(["\r", "\t"], " ", var_export($row[0], true));
                 else if ( 'warning' == $row[1] )
-                    $warnings[] = str_replace(["\r", "\t"], " ", $row[0]);
+                    $warnings[] = str_replace(["\r", "\t"], " ", var_export($row[0], true));
             }
             // logirovanie oshibki v fai`l
             if ( Zero_App::$Config->Log_Profile_Error && 0 < count($errors) )

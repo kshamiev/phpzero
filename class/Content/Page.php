@@ -31,20 +31,24 @@ class Zero_Content_Page extends Zero_Plugin
     {
         if ( empty($this->Params['Block']) )
             $this->Params['Block'] = 'content';
-        if ( false === $Content = Zero_App::$Section->Cache->Get('Content_' . $this->Params['Block']) )
+        $index = 'Content_' . $this->Params['Block'] . Zero_App::$Route->lang_id;
+        if ( false === $Content = Zero_App::$Section->Cache->Get($index) )
         {
             $Content = Zero_Model::Make('Zero_Content');
             $Content->DB->Sql_Where('Zero_Section_ID', '=', Zero_App::$Section->ID);
+            $Content->DB->Sql_Where('Zero_Language_ID', '=', Zero_App::$Route->lang_id);
             $Content->DB->Sql_Where('Block', '=', $this->Params['Block']);
             $Content->DB->Load('*');
             if ( 0 == $Content->ID )
             {
+                $Content = Zero_Model::Make('Zero_Content');
                 $Content->DB->Sql_Where('Zero_Layout_ID', '=', Zero_App::$Section->Zero_Layout_ID);
+                $Content->DB->Sql_Where('Zero_Language_ID', '=', Zero_App::$Route->lang_id);
                 $Content->DB->Sql_Where('Block', '=', $this->Params['Block']);
                 $Content->DB->Load('*');
             }
             Zero_Cache::Set_Link('Zero_Content', $Content->ID);
-            Zero_App::$Section->Cache->Set('Content_' . $this->Params['Block'], $Content);
+            Zero_App::$Section->Cache->Set($index, $Content);
         }
         $this->View = $Content->Content;
         return true;

@@ -274,7 +274,7 @@ abstract class Zero_Model
      * Esli $row ne peredan to proishodit ustavnoka statusa v 1 dlia vsekh svoi`stv
      * Inache tol`ko dlia tekh kotory`e peredany`
      *
-     * @param $row massiv svoi`stv i ikh znachenii`
+     * @param array $row massiv svoi`stv i ikh znachenii`
      * @return bool
      */
     public function Set_Props($row = [])
@@ -360,6 +360,27 @@ abstract class Zero_Model
     }
 
     /**
+     * The configuration language properties
+     *
+     * @param Zero_Model $Model The exact working model
+     * @return string
+     */
+    protected static function Config_Prop_Lang($Model)
+    {
+        return '*';
+    }
+
+    /**
+     * Poluchenie bazovoi` konfiguratciia svoi`stv
+     *
+     * @return string
+     */
+    public function Get_Config_Prop_Lang()
+    {
+        return static::Config_Prop_Lang($this);
+    }
+
+    /**
      * The configuration properties
      *
      * @param Zero_Model $Model The exact working model
@@ -389,7 +410,6 @@ abstract class Zero_Model
             {
                 $index = "model prop {$prop}";
                 $row['Comment'] = Zero_I18n::T($this->Source, $index, $prop);
-
 
                 if ( 'S' == $row['DB'] || 'E' == $row['DB'] )
                     $row['Value'] = Zero_DB::Query_Get_EnumSet($this, $prop);

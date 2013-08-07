@@ -3,9 +3,9 @@
     {foreach ($message as $row)}
     <div style="margin: 2px; background: {if ($row[1] == 'error')}#fadadd{else}#d0f0c0{/if}; padding: 4px;">
         {if ($row[1] == 'error')}
-            <pre>{$row[0]}</pre>
+            <pre>{var_export($row[0], true)}</pre>
         {else}
-            {$row[0]}
+            {var_export($row[0], true)}
         {/}
     </div>
     {/}

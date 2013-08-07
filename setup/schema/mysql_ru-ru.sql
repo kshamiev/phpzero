@@ -76,24 +76,26 @@ CREATE TABLE `Zero_Content` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `Zero_Section_ID` bigint(20) DEFAULT NULL,
   `Zero_Layout_ID` bigint(20) DEFAULT NULL,
+  `Zero_Language_ID` bigint(20) NOT NULL DEFAULT '1',
   `Name` varchar(50) DEFAULT NULL,
   `Content` text,
   `Block` varchar(50) NOT NULL,
   PRIMARY KEY (`ID`),
-  UNIQUE KEY `Zero_Section_ID` (`Zero_Section_ID`),
   KEY `Zero_Layout_ID` (`Zero_Layout_ID`),
-  CONSTRAINT `Zero_Content_ibfk_1` FOREIGN KEY (`Zero_Section_ID`) REFERENCES `Zero_Section` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  KEY `Zero_Language_ID` (`Zero_Language_ID`),
+  KEY `Zero_Section_ID` (`Zero_Section_ID`),
+  CONSTRAINT `Zero_Content_ibfk_3` FOREIGN KEY (`Zero_Section_ID`) REFERENCES `Zero_Section` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `Zero_Content_ibfk_2` FOREIGN KEY (`Zero_Layout_ID`) REFERENCES `Zero_Layout` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
 /*Data for the table `Zero_Content` */
 
-insert  into `Zero_Content`(`ID`,`Zero_Section_ID`,`Zero_Layout_ID`,`Name`,`Content`,`Block`) values (1,12,NULL,'Site','<p>Site</p>','content');
-insert  into `Zero_Content`(`ID`,`Zero_Section_ID`,`Zero_Layout_ID`,`Name`,`Content`,`Block`) values (2,19,NULL,'System','<p>System</p>','content');
-insert  into `Zero_Content`(`ID`,`Zero_Section_ID`,`Zero_Layout_ID`,`Name`,`Content`,`Block`) values (3,1000,NULL,'Www','<p>Www</p>','content');
-insert  into `Zero_Content`(`ID`,`Zero_Section_ID`,`Zero_Layout_ID`,`Name`,`Content`,`Block`) values (5,NULL,3,'Head','<p>Head</p>','head');
-insert  into `Zero_Content`(`ID`,`Zero_Section_ID`,`Zero_Layout_ID`,`Name`,`Content`,`Block`) values (6,NULL,3,'Footer','<p>Footer</p>','footer');
-insert  into `Zero_Content`(`ID`,`Zero_Section_ID`,`Zero_Layout_ID`,`Name`,`Content`,`Block`) values (7,NULL,1,'Head Left','<div>PhpZero</div>','head_left');
+insert  into `Zero_Content`(`ID`,`Zero_Section_ID`,`Zero_Layout_ID`,`Zero_Language_ID`,`Name`,`Content`,`Block`) values (3,1000,NULL,1,'Www','<p>Www</p>','content');
+insert  into `Zero_Content`(`ID`,`Zero_Section_ID`,`Zero_Layout_ID`,`Zero_Language_ID`,`Name`,`Content`,`Block`) values (5,NULL,3,1,'Head','<p>Head</p>','head');
+insert  into `Zero_Content`(`ID`,`Zero_Section_ID`,`Zero_Layout_ID`,`Zero_Language_ID`,`Name`,`Content`,`Block`) values (6,NULL,3,1,'Footer','<p>Footer</p>','footer');
+insert  into `Zero_Content`(`ID`,`Zero_Section_ID`,`Zero_Layout_ID`,`Zero_Language_ID`,`Name`,`Content`,`Block`) values (9,1000,NULL,2,'Сайт','<p>Сайт</p>','content');
+insert  into `Zero_Content`(`ID`,`Zero_Section_ID`,`Zero_Layout_ID`,`Zero_Language_ID`,`Name`,`Content`,`Block`) values (10,NULL,3,2,'Заголовок','<p>Заголовок</p>','head');
+insert  into `Zero_Content`(`ID`,`Zero_Section_ID`,`Zero_Layout_ID`,`Zero_Language_ID`,`Name`,`Content`,`Block`) values (11,NULL,3,2,'Подвал','<p>Подвал</p>','footer');
 
 /*Table structure for table `Zero_Groups` */
 

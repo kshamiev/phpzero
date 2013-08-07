@@ -83,13 +83,13 @@ class Zero_Route
     public $url_section = '';
 
     /**
-     * Analiz vhodiashchei` url ssy`lki
+     * Analiz request url
      *
-     * @param string $request vhodiashchii` url zapros iz adresnoi` stroki
+     * @param string $request request url
      */
     public function __construct($request = '')
     {
-        //  Iazy`k
+        //  Language
         $language = Zero_App::$Config->Language;
         $this->lang = Zero_App::$Config->Site_Language;
         $this->lang_id = $language[$this->lang]['ID'];
@@ -105,28 +105,28 @@ class Zero_Route
             $this->url = '/' . $this->lang;
         }
 
-        //  Parametry`
-        $param = array_pop($row);
-        if ( preg_match("~.+?-([^/]+-[^/]+)$~", $param, $arr) )
-        {
-            $row[] = str_replace('-' . $arr[1], '', $param);
-            $param = explode('.', $arr[1]);
-            $param = explode('-', $param[0]);
-            while ( 1 < count($param) )
-            {
-                $method = array_shift($param);
-                if ( method_exists($this, $method) )
-                    $this->$method(array_shift($param));
-                else
-                    array_shift($param);
-            }
-        }
-        else
-            $row[] = $param;
-
         //  Razdel
         if ( 0 < count($row) )
         {
+            //  Parametry`
+            $param = array_pop($row);
+            if ( preg_match("~.+?-([^/]+-[^/]+)$~", $param, $arr) )
+            {
+                $row[] = str_replace('-' . $arr[1], '', $param);
+                $param = explode('.', $arr[1]);
+                $param = explode('-', $param[0]);
+                while ( 1 < count($param) )
+                {
+                    $method = array_shift($param);
+                    if ( method_exists($this, $method) )
+                        $this->$method(array_shift($param));
+                    else
+                        array_shift($param);
+                }
+            }
+            else
+                $row[] = $param;
+
             $this->url_section = implode('/', $row);
             $this->url .= '/' . $this->url_section;
             $this->url_section = '/' . preg_replace("~(-[^/]+-[^/]+)/~i", "/", $this->url_section);

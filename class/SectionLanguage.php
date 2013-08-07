@@ -80,7 +80,7 @@ class Zero_SectionLanguage extends Zero_Model
             /*BEG_CONFIG_PROP*/
 			'ID' => array('DB' => 'I', 'IsNull' => 'NO', 'Default' => ''),
 			'Zero_Section_ID' => array('DB' => 'I', 'IsNull' => 'YES', 'Default' => ''),
-			'Zero_Language_ID' => array('DB' => 'I', 'IsNull' => 'YES', 'Default' => ''),
+			'Zero_Language_ID' => array('DB' => 'I', 'IsNull' => 'NO', 'Default' => 1),
 			'Name' => array('DB' => 'T', 'IsNull' => 'YES', 'Default' => ''),
 			'Title' => array('DB' => 'T', 'IsNull' => 'YES', 'Default' => ''),
 			'Keywords' => array('DB' => 'T', 'IsNull' => 'YES', 'Default' => ''),
