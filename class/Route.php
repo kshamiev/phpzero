@@ -105,10 +105,10 @@ class Zero_Route
             $this->url = '/' . $this->lang;
         }
 
-        //  Razdel
+        //  Section
         if ( 0 < count($row) )
         {
-            //  Parametry`
+            //  Options
             $param = array_pop($row);
             if ( preg_match("~.+?-([^/]+-[^/]+)$~", $param, $arr) )
             {
