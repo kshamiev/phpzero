@@ -91,7 +91,7 @@ class Zero_Logs
      *
      * @param string $value Soobshchenie ob oshibke
      * @param string $level Uroven` oshibki
-     * @return string Uroven` oshibki
+     * @return string Level (code - only display debug, error, warning - display debug and save file log)
      */
     public static function Set_Message($value, $level = 'error')
     {

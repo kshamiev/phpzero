@@ -1,6 +1,3 @@
-php_flag log_errors On
-php_value error_log '<PATH_PHP_ERROR_LOG>'
-
 # Protect hidden files from being viewed
 <Files *.log>
 	Order Deny,Allow

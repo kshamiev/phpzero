@@ -17,14 +17,14 @@ $this_module = $module;
 foreach ($config['Modules'] as $module)
 {
     $subj = '';
-    if ( file_exists($path = ZERO_PATH_APPLICATION . '/' . $module . '/setup/install.php') )
+    if ( file_exists($path = ZERO_PATH_APPLICATION . '/' . $module . '/setup/remove.php') )
         $subj = include $path;
     if ( $subj )
         return $subj;
 }
 
 //  Remove module from DB
-if ( file_exists($path = ZERO_PATH_APPLICATION . '/' . $module . '/setup/schema/mysql_0.0.0.sql') )
+if ( file_exists($path = ZERO_PATH_APPLICATION . '/' . $this_module . '/setup/schema/mysql_0.0.0.sql') )
 {
     $host = Zero_App::$Config->Db['Host'];
     $user = Zero_App::$Config->Db['Login'];
@@ -36,5 +36,5 @@ if ( file_exists($path = ZERO_PATH_APPLICATION . '/' . $module . '/setup/schema/
 }
 
 //  Status module remove
-unlink(ZERO_PATH_APPLICATION . '/' . $module . '/setup/INSTALL');
+unlink(ZERO_PATH_APPLICATION . '/' . $this_module . '/setup/INSTALL');
 return '';

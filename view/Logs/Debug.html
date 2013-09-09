@@ -1,11 +1,15 @@
 <div style="padding: 4px;">
     <h3>Системные сообщения</h3>
     {foreach ($message as $row)}
-    <div style="margin: 2px; background: {if ($row[1] == 'error')}#fadadd{else}#d0f0c0{/if}; padding: 4px;">
-        {if ($row[1] == 'error')}
-            <pre>{var_export($row[0], true)}</pre>
+        {if ( $row[1] == 'error' )}
+            <div style="margin: 2px; background: #fadadd; padding: 4px;">
+            <pre>{print_r($row[0], true)}</pre>
+        {else if ( $row[1] == 'warning' )}
+            <div style="margin: 2px; background: #d0f0c0; padding: 4px;">
+            <pre>{print_r($row[0], true)}</pre>
         {else}
-            {var_export($row[0], true)}
+            <div style="margin: 2px; background: #eeeeee; padding: 4px;">
+            <pre>{print_r($row[0], true)}</pre>
         {/}
     </div>
     {/}
@@ -13,16 +17,16 @@
 
     <h3>Время выполнения и расход памяти</h3>
     {foreach ($output as $row)}
-        <div style="margin: 2px;background: #cccccc; padding: 4px;"><pre>{$row}</pre></div>
+        <div style="margin: 2px;background: #eeeeee; padding: 4px;"><pre>{$row}</pre></div>
     {/}
     <br>
 
     <h3>Массив $_REQUEST</h3>
-    <div style="margin: 2px;background: #cccccc; padding: 4px;"><pre>{$r = print_r($_REQUEST, true)}</pre></div>
+    <div style="margin: 2px;background: #eeeeee; padding: 4px;"><pre>{$r = print_r($_REQUEST, true)}</pre></div>
     <br>
 
     <h3>Массив $_FILES</h3>
-    <div style="margin: 2px;background: #cccccc; padding: 4px;"><pre>{$r = print_r($_FILES, true)}</pre></div>
+    <div style="margin: 2px;background: #eeeeee; padding: 4px;"><pre>{$r = print_r($_FILES, true)}</pre></div>
     <br>
 
     <h3>РЕЕСТОР (Сессия)</h3>

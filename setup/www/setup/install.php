@@ -24,7 +24,7 @@ foreach ($config['Modules'] as $module)
 }
 
 //  Install module from DB
-if ( file_exists($path = ZERO_PATH_APPLICATION . '/' . $module . '/setup/schema/mysql.sql') )
+if ( file_exists($path = ZERO_PATH_APPLICATION . '/' . $this_module . '/setup/schema/mysql.sql') )
 {
     $host = Zero_App::$Config->Db['Host'];
     $user = Zero_App::$Config->Db['Login'];
@@ -36,5 +36,5 @@ if ( file_exists($path = ZERO_PATH_APPLICATION . '/' . $module . '/setup/schema/
 }
 
 //  Status module installer
-file_put_contents(ZERO_PATH_APPLICATION . '/' . $module . '/setup/INSTALL', $config['Version']);
+file_put_contents(ZERO_PATH_APPLICATION . '/' . $this_module . '/setup/INSTALL', $config['Version']);
 return '';

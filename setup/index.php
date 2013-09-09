@@ -125,8 +125,8 @@ while ( isset($_REQUEST['act']) && 'Install_System' == $_REQUEST['act'] && 0 == 
         mkdir(ZERO_PATH_SITE . '/assets', 0777, true);
     if ( !is_dir(ZERO_PATH_SITE . '/cache') )
         mkdir(ZERO_PATH_SITE . '/cache', 0777, true);
-    if ( !is_dir(ZERO_PATH_SITE . '/config') )
-        mkdir(ZERO_PATH_SITE . '/config', 0777, true);
+    //    if ( !is_dir(ZERO_PATH_SITE . '/config') )
+    //        mkdir(ZERO_PATH_SITE . '/config', 0777, true);
     if ( !is_dir(ZERO_PATH_SITE . '/exchange') )
         mkdir(ZERO_PATH_SITE . '/exchange', 0777, true);
     if ( !is_dir(ZERO_PATH_SITE . '/log') )
@@ -137,17 +137,23 @@ while ( isset($_REQUEST['act']) && 'Install_System' == $_REQUEST['act'] && 0 == 
         mkdir(ZERO_PATH_SITE . '/upload/data', 0777, true);
 
     //  .htaccess for apache
+    /*
     $config = file_get_contents('.htaccess');
     $config = str_replace('<PATH_PHP_ERROR_LOG>', ZERO_PATH_SITE . '/log/error_php.log', $config);
     file_put_contents(ZERO_PATH_SITE . '/.htaccess', $config);
+    */
+    copy('.htaccess', ZERO_PATH_SITE . '/.htaccess');
 
     //  robots.txt for index
     copy('robots.txt', ZERO_PATH_SITE . '/robots.txt');
 
     //  Enter point
+    /*
     $config = file_get_contents('config/index.php');
     $config = str_replace('<DOMAIN_SUB>', $_REQUEST['domain_sub'], $config);
     file_put_contents(ZERO_PATH_SITE . '/index.php', $config);
+    */
+    copy('config/index.php', ZERO_PATH_SITE . '/index.php');
 
     //  Baseline configuration
     $config = file_get_contents('config/config.php');
@@ -164,12 +170,14 @@ while ( isset($_REQUEST['act']) && 'Install_System' == $_REQUEST['act'] && 0 == 
     file_put_contents(ZERO_PATH_SITE . '/config.php', $config);
 
     //  Configuration application
+    /*
     $config = file_get_contents('config/zero.php');
     $config = str_replace('Config_zero', 'Config_' . $_REQUEST['domain_sub'], $config);
     file_put_contents(ZERO_PATH_SITE . '/config/' . $_REQUEST['domain_sub'] . '.php', $config);
 
     $config = file_get_contents('config/www.php');
     file_put_contents(ZERO_PATH_SITE . '/config/www.php', $config);
+    */
 
     //  Copy the base  module
     if ( !is_dir(ZERO_PATH_APPLICATION . '/www') )
@@ -196,18 +204,10 @@ while ( isset($_REQUEST['act']) && 'Install_Application' == $_REQUEST['act'] && 
         $message_install_list[] = "Installer not found";
         break;
     }
+    file_put_contents(ZERO_PATH_APPLICATION . '/www/setup/INSTALL', VERSION_PHPZERO);
 
-    Zero_App::Init('www');
-    $module = 'www';
-    $subj = include $path;
-
-    if ( $subj )
-        $message_install_list[] = $subj;
-    else
-    {
-        $message_install_list[130] = "Application install success full";
-        $error_init_list[140] = 'application is already installed';
-    }
+    $message_install_list[130] = "Application install success full";
+    $error_init_list[140] = 'application is already installed';
 
     $_REQUEST = [];
     break;
@@ -315,24 +315,29 @@ if ( !isset($_REQUEST['db_host']) )
                 </select>
             </td>
         </tr>
-        <?php if ( 0 == count($error_init_list) ) { ?>
-        <tr>
-            <td colspan="2" align="center">
-                <input type="submit" name="act" value="Install_System">
-            </td>
-        </tr>
-        <?php } else if ( isset($error_init_list[120]) && empty($error_init_list[140]) ) { ?>
-        <tr>
-            <td colspan="2" align="center">
-                <input type="submit" name="act" value="Install_Application">
-            </td>
-        </tr>
-        <?php } else { ?>
-        <tr>
-            <td colspan="2" align="center">
-                <input type="submit" name="act" value="Refresh">
-            </td>
-        </tr>
+        <?php if ( 0 == count($error_init_list) )
+        { ?>
+            <tr>
+                <td colspan="2" align="center">
+                    <input type="submit" name="act" value="Install_System">
+                </td>
+            </tr>
+        <?php }
+        else if ( isset($error_init_list[120]) && empty($error_init_list[140]) )
+        { ?>
+            <tr>
+                <td colspan="2" align="center">
+                    <input type="submit" name="act" value="Install_Application">
+                </td>
+            </tr>
+        <?php }
+        else
+        { ?>
+            <tr>
+                <td colspan="2" align="center">
+                    <input type="submit" name="act" value="Refresh">
+                </td>
+            </tr>
         <?php } ?>
     </form>
 </table>

@@ -10,7 +10,7 @@
  * @copyright <PHP_ZERO_COPYRIGHT>
  * @license http://www.phpzero.com/license/
  */
-abstract class Zero_Config
+class Zero_Config
 {
     /**
      * The path to the php Interpreter
@@ -188,13 +188,6 @@ abstract class Zero_Config
     public $Memcache = [];
 
     /**
-     * Redefinition components
-     *
-     * @var array
-     */
-    public $FactoryComponents = [];
-
-    /**
      * Redefinition models
      *
      * @var array
@@ -210,12 +203,10 @@ abstract class Zero_Config
 
     /**
      * Configuration
-     *
-     * @param string $config prefix configuration
      */
-    public function __construct($config)
+    public function __construct()
     {
-        $Config = static::Get_Config();
+        $Config = require ZERO_PATH_SITE . '/config.php';
 
         // General Authorization Application
         if ( $Config['Site']['AccessPassword'] && isset($_SERVER['HTTP_HOST']) )
@@ -249,10 +240,12 @@ abstract class Zero_Config
         $this->Site_Language = $Config['Site']['Language'];
 
         //  Absolute system host a website.
-        $this->Host = $config;
+        $this->Host = isset($_SERVER['HTTP_HOST']) ? explode('.', strtolower($_SERVER['HTTP_HOST']))[0] : 'www';
+        if ( empty($Config['Themes'][$this->Host]) )
+            $this->Host = 'www';
 
         //  Current Theme.
-        $this->Themes = isset($Config['Themes'][$config]) ? $Config['Themes'][$config] : 'default';
+        $this->Themes = $Config['Themes'][$this->Host];
 
         // Root site (http://www.domain.com)
         if ( isset($_SERVER["HTTP_HOST"]) )
@@ -263,16 +256,16 @@ abstract class Zero_Config
         // http static data (images, css, js) (http://www.domain.com/assets)
         if ( $Config['Site']['DomainAssets'] )
             $this->Http_Assets = 'http://' . $Config['Site']['DomainAssets'] . '/assets/' . $this->Themes;
-        else if ( isset($_SERVER["SERVER_NAME"]) )
-            $this->Http_Assets = 'http://' . $_SERVER["SERVER_NAME"] . '/assets/' . $this->Themes;
+        //        else if ( isset($_SERVER["SERVER_NAME"]) )
+        //            $this->Http_Assets = 'http://' . $_SERVER["SERVER_NAME"] . '/assets/' . $this->Themes;
         else
             $this->Http_Assets = 'http://' . $Config['Site']['Domain'] . '/assets/' . $this->Themes;
 
         // http binary data (http://www.domain.com/upload)
         if ( $Config['Site']['DomainUpload'] )
             $this->Http_Upload = 'http://' . $Config['Site']['DomainUpload'] . '/upload/data';
-        else if ( isset($_SERVER["SERVER_NAME"]) )
-            $this->Http_Upload = 'http://' . $_SERVER["SERVER_NAME"] . '/upload/data';
+        //        else if ( isset($_SERVER["SERVER_NAME"]) )
+        //            $this->Http_Upload = 'http://' . $_SERVER["SERVER_NAME"] . '/upload/data';
         else
             $this->Http_Upload = 'http://' . $Config['Site']['Domain'] . '/upload/data';
 
@@ -303,10 +296,11 @@ abstract class Zero_Config
         // Servers Memcache
         $this->Memcache = $Config['Memcache'];
 
-        //  Redefinition components
-        $this->FactoryComponents = $Config['FactoryComponents'];
         //  Redefinition models
-        $this->FactoryModel = $Config['FactoryModel'];
+        foreach ($Config['FactoryModel'] as $k => $v)
+        {
+            $this->FactoryModel[$k] = ucfirst($this->Host) . '_' . $v;
+        }
 
         // IP the source address of the request
         if ( isset($_SERVER["HTTP_X_FORWARDED_FOR"]) )
@@ -329,6 +323,8 @@ abstract class Zero_Config
             ini_set('display_errors', 0);
             ini_set('display_startup_errors', 0);
         }
+        //        ini_set('log_errors', 1);
+        //        ini_set('error_log', ZERO_PATH_SITE . '/log/error_php.log');
         ini_set('magic_quotes_gpc', 0);
 
         //  Storage sessions
@@ -356,9 +352,9 @@ abstract class Zero_Config
  *
  * @param mixed $var variable
  */
-function zero_pre($var)
+function pre($var)
 {
-    Zero_Logs::Set_Message('<pre>' . print_r($var, true) . '</pre>', 'code');
+    Zero_Logs::Set_Message($var, 'code');
 }
 
 /**

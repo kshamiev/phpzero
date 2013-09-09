@@ -513,7 +513,7 @@ class Zero_DB
      * @param array $params spisok parametrov khranimoi` protcedury`
      * @return array rezul`tat
      */
-    public static function Query_Procedure($store_procedure_name, $params)
+    public static function Query_Procedure($store_procedure_name, $params = [])
     {
         $quotedparams = [];
         foreach ($params as $param)
@@ -538,8 +538,7 @@ class Zero_DB
                 $results[] = $rows;
             }
         }
-        while ( self::$DB->next_result() );
-        //  while ( self::$DB->more_results() &&  self::$DB->next_result() );
+        while ( self::$DB->more_results() && self::$DB->next_result() );
         if ( 1 < count($results) )
             return $results;
         else if ( 1 < count($results[0]) )

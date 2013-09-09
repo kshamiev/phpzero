@@ -1,5 +1,9 @@
 <?php
 /**
+ * The version of PhpZero
+ */
+define('VERSION_PHPZERO', '1.0.0');
+/**
  * The absolute path to the project (site)
  */
 define('ZERO_PATH_SITE', dirname(dirname(__DIR__)));
@@ -125,9 +129,16 @@ class Zero_App
         $module = strtolower(array_shift($arr));
         $class = implode('/', $arr);
         if ( file_exists($path = ZERO_PATH_APPLICATION . '/' . $module . '/class/' . $class . '.php') )
-            return require_once $path;
+        {
+            require_once $path;
+            return true;
+        }
         if ( file_exists($path = ZERO_PATH_PHPZERO . '/class/' . $class . '.php') )
-            return require_once $path;
+        {
+            require_once $path;
+            return true;
+        }
+        echo $class_name . ' !<br>';
         return false;
     }
 
@@ -140,24 +151,22 @@ class Zero_App
      * - Processing incoming request (GET). Component Zero_Route
      * - Session Initialization. Component Zero_Session
      *
-     * @param string $config prefix configuration
      * @param string $file_log the base name of the log file
      */
-    public static function Init($config, $file_log = 'application')
+    public static function Init($file_log = 'application')
     {
         //  Include Components
         require_once ZERO_PATH_PHPZERO . '/class/Logs.php';
         require_once ZERO_PATH_PHPZERO . '/class/Cache.php';
         require_once ZERO_PATH_PHPZERO . '/class/Session.php';
         require_once ZERO_PATH_PHPZERO . '/class/Config.php';
-        require_once ZERO_PATH_SITE . '/config/' . $config . '.php';
 
         //  Initializing monitoring system (Zero_Logs)
         Zero_Logs::Init($file_log);
 
         //  Configuration (Zero_Config)
-        $class_config = 'Config_' . $config;
-        self::$Config = new $class_config($config);
+        self::$Config = new Zero_Config();
+        $class_route = ucfirst(self::$Config->Host) . '_Route';
 
         //  Initialize cache subsystem (Zero_Cache)
         Zero_Cache::Init();
@@ -166,10 +175,10 @@ class Zero_App
         if ( isset($_SERVER['REQUEST_URI']) )
         {
             $request_uri = rtrim(ltrim(explode('?', $_SERVER['REQUEST_URI'])[0], '/'), '/');
-            self::$Route = new self::$Config->FactoryComponents['Zero_Route']($request_uri);
+            self::$Route = new $class_route($request_uri);
         }
         else
-            self::$Route = new self::$Config->FactoryComponents['Zero_Route'];
+            self::$Route = new $class_route;
 
         //  Session Initialization (Zero_Session)
         session_name(md5(self::$Config->Db['Name']));

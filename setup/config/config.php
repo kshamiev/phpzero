@@ -96,4 +96,9 @@ return [
             //  'localhost:11211'
         ],
     ],
+    // Redefinition models
+    'FactoryModel' => [
+        //  Users
+        'Zero_Users' => 'Users',
+    ],
 ];

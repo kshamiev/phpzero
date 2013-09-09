@@ -128,7 +128,7 @@ abstract class Zero_Model
     public static function Make($source, $id = 0, $flag_load = false)
     {
         $model_name = $source;
-        if ( !empty(Zero_App::$Config->FactoryModel[$source]) )
+        if ( isset(Zero_App::$Config->FactoryModel[$source]) )
             $model_name = Zero_App::$Config->FactoryModel[$source];
         return new $model_name($id, $flag_load, $source);
     }

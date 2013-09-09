@@ -15,7 +15,7 @@
 // Подключение класса Zero_App
 require dirname(dirname(__DIR__)) . '/class/App.php';
 
-Zero_App::Init('zero');
+Zero_App::Init();
 
 $Users = Zero_Model::Factory('Zero_Users');
 

@@ -59,7 +59,7 @@ require __DIR__ . '/class/App.php';
 //  Work console task
 if ( count($_SERVER['argv']) > 1 )
 {
-    Zero_App::Init('Www', 'console_' . $_SERVER['argv'][1]);
+    Zero_App::Init('console_' . $_SERVER['argv'][1]);
     Zero_App::$Config->Log_Output_Display = false;
     set_time_limit(36000);
 
@@ -77,7 +77,7 @@ if ( count($_SERVER['argv']) > 1 )
 //  Launch Manager console task
 else
 {
-    Zero_App::Init('Www', 'console');
+    Zero_App::Init('console');
     Zero_App::$Config->Log_Output_Display = false;
     $week = date('w');
     $month = date('n');
