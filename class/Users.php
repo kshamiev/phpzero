@@ -272,7 +272,7 @@ class Zero_Users extends Zero_Model
     public static function DB_Offline($seconds = 600)
     {
         $sql = "UPDATE Zero_Users SET IsOnline = 'no' WHERE DateOnline < NOW() - INTERVAL {$seconds} SECOND";
-        Zero_DB::Query_Set($sql);
+        Zero_DB::Set($sql);
     }
 
     /**

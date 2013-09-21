@@ -210,7 +210,7 @@ class Zero_Engine
     public static function Get_Modules_DB()
     {
         $result = [];
-        foreach (Zero_DB::Query_Get_One("SHOW TABLES;") as $table)
+        foreach (Zero_DB::Sel_List("SHOW TABLES;") as $table)
         {
             $arr = explode('_', $table);
             $result[] = array_shift($arr);
@@ -233,7 +233,7 @@ class Zero_Engine
     public static function Get_Source_Info($source_name)
     {
         $result = [];
-        foreach (Zero_DB::Query_Get_Array("SHOW FULL COLUMNS FROM `{$source_name}`") as $row)
+        foreach (Zero_DB::Sel_Array("SHOW FULL COLUMNS FROM `{$source_name}`") as $row)
         {
             $arr = explode('(', $row['Type']);
             $type = array_shift($arr);
@@ -318,7 +318,7 @@ class Zero_Engine
          * Modeli i Kontrollery`
          */
         $sql = "SHOW TABLE STATUS WHERE `Name` LIKE '{$module}\_%' AND `Name` NOT LIKE '%\_2\_%'";
-        $table_list = Zero_DB::Query_Get_Array($sql);
+        $table_list = Zero_DB::Sel_Array($sql);
         if ( 0 == count($table_list) )
             return false;
         /**
@@ -487,7 +487,7 @@ class Zero_Engine
         $config = [];
         //  proverka realizatcii sinkhronnoi` mul`tiiazy`chnosti ob``ekta
         $sql = "SHOW TABLE STATUS WHERE `Name` = '{$Table}Language';";
-        $row = Zero_DB::Query_Get_Row($sql);
+        $row = Zero_DB::Sel_Row($sql);
         $config['Language'] = 0;
         if ( 0 < count($row) )
             $config['Language'] = 1;
@@ -676,7 +676,7 @@ class Zero_Engine
     {
         $config = [];
         $sql = "SHOW TABLE STATUS WHERE `Name` LIKE '{$Table}_2_%' OR `Name` LIKE '%_2_{$Table}'";
-        $rows = Zero_DB::Query_Get_One($sql);
+        $rows = Zero_DB::Sel_List($sql);
         foreach ($rows as $tbl)
         {
             //  zashchita ot skry`ty`kh i nekorretkny`kh tablitc
@@ -686,9 +686,9 @@ class Zero_Engine
             }
             //
             $sql = "SHOW FULL COLUMNS FROM `{$tbl}` WHERE `Field` LIKE '{$Table}_%ID';";
-            $PropThis = Zero_DB::Query_Get_Cnt($sql);
+            $PropThis = Zero_DB::Sel_Agg($sql);
             $sql = "SHOW FULL COLUMNS FROM `{$tbl}` WHERE `Field` NOT LIKE '{$Table}_%ID';";
-            $PropTarget = Zero_DB::Query_Get_Cnt($sql);
+            $PropTarget = Zero_DB::Sel_Agg($sql);
             $TableTarget = zero_relation($PropTarget);
             $config[$TableTarget]['table_link'] = $tbl;
             $config[$TableTarget]['prop_this'] = $PropThis;
@@ -731,9 +731,9 @@ class Zero_Engine
          * Model`
          */
         $sql = "SHOW TABLE STATUS WHERE `Name` = '{$Table}';";
-        $row = Zero_DB::Query_Get_Row($sql);
+        $row = Zero_DB::Sel_Row($sql);
         $config['model'] = $row['Comment'];
-        foreach (Zero_DB::Query_Get_Array("SHOW FULL COLUMNS FROM {$Table};") as $row)
+        foreach (Zero_DB::Sel_Array("SHOW FULL COLUMNS FROM {$Table};") as $row)
         {
             $Type = explode('(', $row['Type']);
             $Type = array_shift($Type);

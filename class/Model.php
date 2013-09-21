@@ -412,7 +412,7 @@ abstract class Zero_Model
                 $row['Comment'] = Zero_I18n::T($this->Source, $index, $prop);
 
                 if ( 'S' == $row['DB'] || 'E' == $row['DB'] )
-                    $row['Value'] = Zero_DB::Query_Get_EnumSet($this, $prop);
+                    $row['Value'] = Zero_DB::Sel_EnumSet($this, $prop);
                 self::$_Config[$this->Source]['props'][$prop] = $row;
             }
         }
@@ -568,7 +568,7 @@ abstract class Zero_Model
             return null;
         //  svoi`stvo pustoe, ne zagruzhennoe iz BD
         Zero_Logs::Set_Message('#{LOAD PROP} load prop "' . $prop . '" for model "' . get_class($this) . '"', 'warning');
-        $this->_Props[$prop] = Zero_DB::Query_Get_Filed($this->ID, $this->Source, $prop);
+        $this->_Props[$prop] = Zero_DB::Sel_Filed($this->ID, $this->Source, $prop);
         return $this->_Props[$prop];
     }
 

@@ -111,7 +111,7 @@ class Zero_Groups_Access extends Zero_Controller
     {
         foreach ($_REQUEST['RoleAccessSection'] as $section_id => $access)
         {
-            Zero_DB::Query_Set("DELETE FROM Zero_Action WHERE Zero_Groups_ID = {$this->Params['obj_parent_id']} AND Zero_Section_ID = {$section_id}");
+            Zero_DB::Set("DELETE FROM Zero_Action WHERE Zero_Groups_ID = {$this->Params['obj_parent_id']} AND Zero_Section_ID = {$section_id}");
             //  Access to the section for the group
             if ( 'access' == $access )
             {
@@ -152,7 +152,7 @@ class Zero_Groups_Access extends Zero_Controller
      */
     protected function Action_Copy()
     {
-        Zero_DB::Query_Set("DELETE FROM Zero_Action WHERE Zero_Groups_ID = {$_REQUEST['obj_id']}");
+        Zero_DB::Set("DELETE FROM Zero_Action WHERE Zero_Groups_ID = {$_REQUEST['obj_id']}");
         $sql = "
         INSERT INTO `Zero_Action`
           (
@@ -167,7 +167,7 @@ class Zero_Groups_Access extends Zero_Controller
         WHERE
           `Zero_Groups_ID` = {$this->Params['obj_parent_id']}
         ";
-        Zero_DB::Query_Set($sql);
+        Zero_DB::Set($sql);
         return $this->Set_Message('AccessCopy', 0);
     }
 }

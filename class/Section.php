@@ -404,7 +404,7 @@ class Zero_Section extends Zero_Model
               s.`Sort` ASC
             ";
         }
-        return Zero_DB::Query_Get_Array_Index($sql);
+        return Zero_DB::Sel_Array_Index($sql);
     }
 
     /**
@@ -416,7 +416,7 @@ class Zero_Section extends Zero_Model
     public static function DB_Update_Url($section_id)
     {
         $sql = "SELECT Url FROM Zero_Section WHERE ID = {$section_id}";
-        $url = Zero_DB::Query_Get_Cnt($sql);
+        $url = Zero_DB::Sel_Agg($sql);
         if ( !$url )
             return false;
         // Update absolute reference in child partitions
@@ -427,10 +427,10 @@ class Zero_Section extends Zero_Model
         WHERE
             Zero_Section_ID = {$section_id}
         ";
-        Zero_DB::Query_Set($sql);
+        Zero_DB::Set($sql);
         //  recurses
         $sql = "SELECT ID FROM Zero_Section WHERE Zero_Section_ID = " . $section_id;
-        foreach (Zero_DB::Query_Get_One($sql) as $section_id)
+        foreach (Zero_DB::Sel_List($sql) as $section_id)
         {
             self::DB_Update_Url($section_id);
         }

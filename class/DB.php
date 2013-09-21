@@ -25,6 +25,7 @@
  * @link http://www.phpzero.com/
  * @copyright <PHP_ZERO_COPYRIGHT>
  * @license http://www.phpzero.com/license/
+ * @todo Разделить на 2 класса
  */
 class Zero_DB
 {
@@ -163,10 +164,57 @@ class Zero_DB
     /**
      * Proverka tcely`kh chisel
      *
+     * @return string
+     */
+
+    /**
+     * Check and format query
+     *
+     * Format param: $sql[[[, $arg], $arg], $arg...]
+     *
+     * @return string
+     * @throws Exception
+     */
+    public static function Escape()
+    {
+        $arr = func_get_args();
+        $sql = array_shift($arr);
+        preg_match_all("~(%[d|s|v|f]{1})~si", $sql, $match);
+        if ( count($arr) != count($match[1]) )
+            throw new Exception("Wrong number of parameters", 500);
+        foreach ($match[1] as $k => $v)
+        {
+            $match[1][$k] = '~' . $v . '~i';
+            switch ( $v )
+            {
+                case '%d':
+                {
+                    $arr[$k] = Zero_DB::Escape_I($arr[$k]);
+                    break;
+                }
+                case '%f':
+                {
+                    $arr[$k] = Zero_DB::Escape_F($arr[$k]);
+                    break;
+                }
+                case '%s':
+                {
+                    $arr[$k] = Zero_DB::Escape_T($arr[$k]);
+                    break;
+                }
+            }
+//            echo $v . " = " . $arr[$k] . "<br>";
+        }
+        return preg_replace($match[1], $arr, $sql, 1);
+    }
+
+    /**
+     * Proverka tcely`kh chisel
+     *
      * @param int $int
      * @return int or NULL
      */
-    public static function I($int)
+    public static function Escape_I($int)
     {
         if ( 0 == strlen($int) )
             return 'NULL';
@@ -179,7 +227,7 @@ class Zero_DB
      * @param float $float
      * @return float or NULL
      */
-    public static function F($float)
+    public static function Escape_F($float)
     {
         if ( 0 == strlen($float) )
             return 'NULL';
@@ -192,7 +240,7 @@ class Zero_DB
      * @param string $str
      * @return string or NULL
      */
-    public static function T($str)
+    public static function Escape_T($str)
     {
         $str = trim(strval($str));
         if ( $str )
@@ -207,7 +255,7 @@ class Zero_DB
      * @param string $str
      * @return string or NULL
      */
-    public static function E($str)
+    public static function Escape_E($str)
     {
         $str = trim(strval($str));
         if ( $str )
@@ -223,7 +271,7 @@ class Zero_DB
      * @param string $separator razdelitel` e`lementov mnozhestva
      * @return string or NULL
      */
-    public static function S($array, $separator = ',')
+    public static function Escape_S($array, $separator = ',')
     {
         $str = trim(implode($separator, $array));
         if ( $str )
@@ -238,7 +286,7 @@ class Zero_DB
      * @param string $datetime
      * @return string or NULL
      */
-    public static function D($datetime)
+    public static function Escape_D($datetime)
     {
         $datetime = trim(strval($datetime));
         if ( $datetime )
@@ -253,7 +301,7 @@ class Zero_DB
      * @param string $data
      * @return string or NULL
      */
-    public static function B($data)
+    public static function Escape_B($data)
     {
         $rph = "0x";
         if ( 0 < strlen($data) )
@@ -328,9 +376,9 @@ class Zero_DB
      * @param string $filed pole zapisi
      * @return mixed
      */
-    public static function Query_Get_Filed($id, $source, $filed)
+    public static function Sel_Filed($id, $source, $filed)
     {
-        return self::Query_Get_Cnt("SELECT `{$filed}` FROM {$source} WHERE ID = {$id}");
+        return self::Sel_Agg("SELECT `{$filed}` FROM {$source} WHERE ID = {$id}");
     }
 
     /**
@@ -339,7 +387,7 @@ class Zero_DB
      * @param string $sql zapros
      * @return array
      */
-    public static function Query_Get_Row($sql)
+    public static function Sel_Row($sql)
     {
         if ( !$res = self::Query($sql) )
             return false;
@@ -357,7 +405,7 @@ class Zero_DB
      * @param string $sql zapros
      * @return array
      */
-    public static function Query_Get_One($sql)
+    public static function Sel_List($sql)
     {
         $result = [];
         if ( !$res = self::Query($sql) )
@@ -377,7 +425,7 @@ class Zero_DB
      * @param string $sql zapros
      * @return array
      */
-    public static function Query_Get_Two($sql)
+    public static function Sel_List_Index($sql)
     {
         $result = [];
         if ( !$res = self::Query($sql) )
@@ -397,7 +445,7 @@ class Zero_DB
      * @param string $sql zapros
      * @return array
      */
-    public static function Query_Get_Array($sql)
+    public static function Sel_Array($sql)
     {
         $result = [];
         if ( !$res = self::Query($sql) )
@@ -417,7 +465,7 @@ class Zero_DB
      * @param string $sql zapros
      * @return array
      */
-    public static function Query_Get_Array_Index($sql)
+    public static function Sel_Array_Index($sql)
     {
         $result = [];
         if ( !$res = self::Query($sql) )
@@ -437,7 +485,7 @@ class Zero_DB
      * @param string $sql zapros
      * @return string|integer
      */
-    public static function Query_Get_Cnt($sql)
+    public static function Sel_Agg($sql)
     {
         if ( !$res = self::Query($sql) )
             return false;
@@ -454,13 +502,13 @@ class Zero_DB
      * @param string $column svoi`stvo (stolbetc v bd)
      * @return array
      */
-    public static function Query_Get_EnumSet($Model, $column)
+    public static function Sel_EnumSet($Model, $column)
     {
         $index = $Model->Get_Source() . '/EnumSet/' . $column . '/' . Zero_App::$Route->lang;
         if ( false === $result = Zero_Cache::Get_Data($index) )
         {
             $result = [];
-            $row = self::Query_Get_Row("DESCRIBE " . $Model->Source . " " . $column);
+            $row = self::Sel_Row("DESCRIBE " . $Model->Source . " " . $column);
             $row = explode("','", substr($row['Type'], strpos($row['Type'], "'") + 1, -2));
             sort($row);
             foreach ($row as $v)
@@ -481,7 +529,7 @@ class Zero_DB
      * @param string $sql zapros k BD
      * @return boolean or integer
      */
-    public static function Query_Set($sql)
+    public static function Set($sql)
     {
         if ( self::Query($sql) )
             return self::$DB->affected_rows;
@@ -497,7 +545,7 @@ class Zero_DB
      * @param string $sql zapros k BD
      * @return int
      */
-    public static function Query_Ins($sql)
+    public static function Ins($sql)
     {
         if ( self::Query($sql) )
             return self::$DB->insert_id;
@@ -513,7 +561,7 @@ class Zero_DB
      * @param array $params spisok parametrov khranimoi` protcedury`
      * @return array rezul`tat
      */
-    public static function Query_Procedure($store_procedure_name, $params = [])
+    public static function Call_Procedure($store_procedure_name, $params = [])
     {
         $quotedparams = [];
         foreach ($params as $param)
@@ -555,7 +603,7 @@ class Zero_DB
      * @param mixed $source_target_id identifikator(y` stroka cherez zapiatuiu) ob``ekta tcelevoi` tablitca s kotoroi` postroena sviaz` mnogie ko mnogim
      * @return array
      */
-    public function Cross_GetID($source_target, $source_target_id)
+    public function Select_Cross_ID($source_target, $source_target_id)
     {
         $link = $this->Model->Get_Config_Link();
         if ( !$source_target || !$source_target_id || !isset($link[$source_target]) )
@@ -573,7 +621,7 @@ class Zero_DB
         ORDER BY
           1
         ";
-        return self::Query_Get_One($sql);
+        return self::Sel_List($sql);
     }
 
     /**
@@ -590,7 +638,7 @@ class Zero_DB
     public function Sql_Where($prop = '', $sign = '', $value = '', $separator = 'AND')
     {
         if ( $prop )
-            return $this->Sql_Where_Expression($prop . ' ' . $sign . ' ' . self::T($value), $separator);
+            return $this->Sql_Where_Expression($prop . ' ' . $sign . ' ' . self::Escape_T($value), $separator);
         else
             unset($this->Params['Where']);
     }
@@ -623,7 +671,7 @@ class Zero_DB
     {
         if ( is_array($value) && !is_scalar($value) )
             $value = implode("%", $value);
-        $value = self::T('%' . str_replace(' ', '%', $value) . '%'); //  ??? vozmozhno probely` ne stoit zameniat` (tonkaia nastroi`ka)
+        $value = self::Escape_T('%' . str_replace(' ', '%', $value) . '%'); //  ??? vozmozhno probely` ne stoit zameniat` (tonkaia nastroi`ka)
         $this->Params['Where'][] = [$separator => "{$prop} LIKE {$value}"];
     }
 
@@ -641,7 +689,7 @@ class Zero_DB
     {
         if ( is_array($value) && !is_scalar($value) )
             $value = implode("%", $value);
-        $value = self::T('%' . str_replace(' ', '%', $value) . '%'); //  ??? vozmozhno probely` ne stoit zameniat` (tonkaia nastroi`ka)
+        $value = self::Escape_T('%' . str_replace(' ', '%', $value) . '%'); //  ??? vozmozhno probely` ne stoit zameniat` (tonkaia nastroi`ka)
         $this->Params['Where'][] = [$separator => "{$prop} NOT LIKE {$value}"];
     }
 
@@ -661,12 +709,12 @@ class Zero_DB
         {
             foreach ($value as $k => $v)
             {
-                $value[$k] = self::T($v);
+                $value[$k] = self::Escape_T($v);
             }
             $value = implode(", ", $value);
         }
         else
-            $value = self::T($value);
+            $value = self::Escape_T($value);
         //        if ( 'NULL' == $value || !$value )
         //          return;
         $this->Params['Where'][] = [$separator => "{$prop} IN ({$value})"];
@@ -688,12 +736,12 @@ class Zero_DB
         {
             foreach ($value as $k => $v)
             {
-                $value[$k] = self::T($v);
+                $value[$k] = self::Escape_T($v);
             }
             $value = implode(", ", $value);
         }
         else
-            $value = self::T($value);
+            $value = self::Escape_T($value);
         //        if ( 'NULL' == $value || !$value )
         //            return false;
         $this->Params['Where'][] = [$separator => "{$prop} NOT IN ({$value})"];
@@ -740,7 +788,7 @@ class Zero_DB
      */
     public function Sql_Where_Between($prop, $value_begin, $value_end, $separator = 'AND')
     {
-        $this->Params['Where'][] = [$separator => "{$prop} BETWEEN " . self::T($value_begin) . " AND " . self::T($value_end)];
+        $this->Params['Where'][] = [$separator => "{$prop} BETWEEN " . self::Escape_T($value_begin) . " AND " . self::Escape_T($value_end)];
     }
 
     /**
@@ -923,7 +971,7 @@ class Zero_DB
      * @param mixed $source_target_id identifikator(y` stroka cherez zapiatuiu) ob``ekta tcelevogo istochnika s kotory`m postroena sviaz` (mnogie ko mnogim)
      * @return int est` li sviaz`
      */
-    public function Cross_IsExist($source_target, $source_target_id)
+    public function Select_Cross_IsExist($source_target, $source_target_id)
     {
         $link = $this->Model->Get_Config_Link();
         if ( !$source_target || !$source_target_id || !isset($link[$source_target]) )
@@ -941,7 +989,7 @@ class Zero_DB
           AND {$link['prop_this']} = {$this->Model->ID}
         ";
         unset($link);
-        return self::Query_Get_Cnt($sql);
+        return self::Sel_Agg($sql);
     }
 
     /**
@@ -1134,16 +1182,16 @@ class Zero_DB
         ";
         $result = [];
         if ( 'array' == $mode )
-            $result = self::Query_Get_Array($sql);
+            $result = self::Sel_Array($sql);
         else if ( 'index' == $mode )
-            $result = self::Query_Get_Array_Index($sql);
+            $result = self::Sel_Array_Index($sql);
         else if ( 'list' == $mode )
-            $result = self::Query_Get_Two($sql);
+            $result = self::Sel_List_Index($sql);
         else if ( 'row' == $mode )
-            $result = self::Query_Get_Row($sql);
+            $result = self::Sel_Row($sql);
         else if ( 'model' == $mode )
         {
-            $rows = self::Query_Get_Array_Index($sql);
+            $rows = self::Sel_Array_Index($sql);
             foreach ($rows as $id => $row)
             {
                 $result[$id] = Zero_Model::Make($source, $id);
@@ -1205,7 +1253,7 @@ class Zero_DB
         ";
         if ( $flag_param_reset )
             $this->Sql_Reset();
-        return self::Query_Get_Cnt($sql);
+        return self::Sel_Agg($sql);
     }
 
     /**
@@ -1249,7 +1297,7 @@ class Zero_DB
             if ( 0 == $this->Model->ID )
             {
                 $sql = "SELECT {$sql_prop} FROM {$source} WHERE {$source}_ID IS NULL {$sql_sort}";
-                foreach (self::Query_Get_Array_Index($sql) as $id => $row)
+                foreach (self::Sel_Array_Index($sql) as $id => $row)
                 {
                     $this->Params['__CATALOG__'][$id] = $row;
                     $this->Params['__CATALOG__'][$id]['Level'] = 1;
@@ -1273,7 +1321,7 @@ class Zero_DB
             if ( 0 < $this->Model->ID )
             {
                 $sql = "SELECT {$sql_prop} FROM {$source} WHERE {$source}_ID = {$this->Model->ID} {$sql_sort}";
-                $this->Params['__CATALOG__'] = self::Query_Get_Array_Index($sql);
+                $this->Params['__CATALOG__'] = self::Sel_Array_Index($sql);
             }
         }
         return $this->Params['__CATALOG__'];
@@ -1291,7 +1339,7 @@ class Zero_DB
     private function _Select_Tree($sql_tpl, $id, $level = 1)
     {
         $sql = str_replace('<ID>', $id, $sql_tpl);
-        foreach (self::Query_Get_Array_Index($sql) as $id => $row)
+        foreach (self::Sel_Array_Index($sql) as $id => $row)
         {
             $this->Params['__CATALOG__'][$id] = $row;
             $this->Params['__CATALOG__'][$id]['Level'] = $level;
@@ -1312,7 +1360,7 @@ class Zero_DB
         if ( 0 < $id )
         {
             $sql = str_replace('<ID>', $id, $sql_tpl);
-            foreach (self::Query_Get_Array_Index($sql) as $id => $row)
+            foreach (self::Sel_Array_Index($sql) as $id => $row)
             {
                 $this->Params['__CATALOG__'][$id] = $row;
                 $this->_Select_TreeLine($sql_tpl, $row[$this->Model->Get_Source() . '_ID']);
@@ -1347,7 +1395,7 @@ class Zero_DB
             {
                 $source = $this->Model->Get_Source();
                 $sql = "SELECT {$this->Model->Get_Config_Prop_Lang()} FROM {$source}Language WHERE {$source}_ID = {$row['ID']} AND Zero_Language_ID = " . Zero_App::$Route->lang_id;
-                $row = array_replace($row, self::Query_Get_Row($sql));
+                $row = array_replace($row, self::Sel_Row($sql));
             }
             $this->Model->Set_Props($row);
             return $row;
@@ -1399,14 +1447,14 @@ class Zero_DB
         {
             if ( !isset($prop_list[$prop]) )
                 continue;
-            $method = $prop_list[$prop]['DB'];
+            $method = "Escape_" . $prop_list[$prop]['DB'];
             $sql_update[] = '`' . $prop . '` = ' . self::$method($value);
         }
 
         //  Save
         if ( 0 == count($sql_update) )
             $sql_update[] = 'ID = NULL';
-        $this->Model->ID = self::Query_Ins("INSERT " . $this->Model->Source . " SET " . implode(', ', $sql_update));
+        $this->Model->ID = self::Ins("INSERT " . $this->Model->Source . " SET " . implode(', ', $sql_update));
         if ( !$this->Model->ID )
             return false;
 
@@ -1431,7 +1479,7 @@ class Zero_DB
                     $this->Model->$prop = $file;
                     //  V BD
                     if ( isset($prop_list[$prop . 'B']) )
-                        $sql_update[] = "`" . $prop . "B` = '" . self::B(file_get_contents($path)) . "'";
+                        $sql_update[] = "`" . $prop . "B` = '" . self::Escape_B(file_get_contents($path)) . "'";
                 }
                 else if ( !$value )
                 {
@@ -1442,7 +1490,7 @@ class Zero_DB
             }
         }
         if ( 0 < count($sql_update) )
-            self::Query_Set("UPDATE {$this->Model->Source} SET " . implode(', ', $sql_update) . " WHERE ID = " . $this->Model->ID);
+            self::Set("UPDATE {$this->Model->Source} SET " . implode(', ', $sql_update) . " WHERE ID = " . $this->Model->ID);
 
         //  Ustanovka statusov
         $this->Model->Set_Props();
@@ -1467,7 +1515,7 @@ class Zero_DB
         VALUES
           ({$this->Model->ID}, {$ObjectParent->ID})
         ";
-        self::Query_Set($sql);
+        self::Set($sql);
         return true;
     }
 
@@ -1486,7 +1534,7 @@ class Zero_DB
         {
             if ( !isset($prop_list[$prop]) )
                 continue;
-            $method = $prop_list[$prop]['DB'];
+            $method = "Escape_" . $prop_list[$prop]['DB'];
             if ( isset($_FILES[$prop]) )
             {
                 if ( 'File Upload Ok' == $value )
@@ -1504,7 +1552,7 @@ class Zero_DB
                     $this->Model->$prop = $file;
                     //  V BD
                     if ( isset($prop_list[$prop . 'B']) )
-                        $sql_update[] = "`" . $prop . "B` = '" . self::B(file_get_contents($path)) . "'";
+                        $sql_update[] = "`" . $prop . "B` = '" . self::Escape_B(file_get_contents($path)) . "'";
                 }
                 else if ( !$value )
                 {
@@ -1531,7 +1579,7 @@ class Zero_DB
                 $sql_where .= ' AND `ID` = ' . $this->Model->ID;
 
             $sql = "UPDATE {$this->Model->Source} SET " . implode(', ', $sql_update) . " " . $sql_where;
-            $flag = self::Query_Set($sql);
+            $flag = self::Set($sql);
         }
 
         //  Ustanovka statusov
@@ -1558,26 +1606,26 @@ class Zero_DB
         if ( 0 < $parent_id )
             $sql_where = "{$source}_ID = {$parent_id} AND";
         //  poluchaem tekushchiiu sortirovku ob``ekta
-        $sort = self::Query_Get_Cnt("SELECT Direction FROM {$source} WHERE {$sql_where} ID = {$this->Model->ID}");
+        $sort = self::Sel_Agg("SELECT Direction FROM {$source} WHERE {$sql_where} ID = {$this->Model->ID}");
         //  sdvigaem sortirovku (skhlopy`vanie)
         $sql = "UPDATE {$source} SET Direction = Direction - 1 WHERE {$sql_where} {$sort} < Direction";
-        self::Query_Set($sql);
+        self::Set($sql);
         //  vy`chislenie novoi` sortirovki
         if ( 0 < $object_id )
         {
-            $sort = self::Query_Get_Cnt("SELECT Direction FROM {$source} WHERE {$sql_where} ID = {$object_id}");
+            $sort = self::Sel_Agg("SELECT Direction FROM {$source} WHERE {$sql_where} ID = {$object_id}");
         }
         else
         {
-            $sort = self::Query_Get_Cnt("SELECT Direction FROM {$source} WHERE {$sql_where} MIN(Direction)");
+            $sort = self::Sel_Agg("SELECT Direction FROM {$source} WHERE {$sql_where} MIN(Direction)");
         }
         //  razdvigaem sortirovku (vstavka)
         $sql = "UPDATE {$source} SET Direction = Direction + 1 WHERE {$sql_where} {$sort} < Direction";
-        self::Query_Set($sql);
+        self::Set($sql);
         $sort++;
         //  obnovliaem sortirovku ob``ekta
         $sql = "UPDATE {$source} SET Direction = {$sort} WHERE {$sql_where} ID = {$this->Model->ID}";
-        self::Query_Set($sql);
+        self::Set($sql);
         //
         $this->Model->Direction = $sort;
         return true;
@@ -1600,7 +1648,7 @@ class Zero_DB
         if ( 0 < $parent_id )
             $sql_where = "{$source}_ID = {$parent_id} AND";
         //  poluchaem tekushchiiu sortirovku ob``ekta
-        $this->Model->Direction = self::Query_Get_Cnt("SELECT Direction FROM {$source} WHERE {$sql_where} ID = {$this->Model->ID}");
+        $this->Model->Direction = self::Sel_Agg("SELECT Direction FROM {$source} WHERE {$sql_where} ID = {$this->Model->ID}");
         // nachalo i konetc
         if ( $direction )
         {
@@ -1612,15 +1660,15 @@ class Zero_DB
             $sql = "SELECT ID FROM {$source} WHERE {$sql_where} Direction = " . ($this->Model->Direction - 1);
             $sort = $this->Model->Direction - 1;
         }
-        if ( !$id = self::Query_Get_Cnt($sql) )
+        if ( !$id = self::Sel_Agg($sql) )
         {
             return true;
         }
         //  obnovliaem sortirovki
         $sql = "UPDATE {$source} SET Direction = {$sort} WHERE {$sql_where} ID = {$this->Model->ID}";
-        self::Query_Set($sql);
+        self::Set($sql);
         $sql = "UPDATE {$source} SET Direction = {$this->Model->Direction} WHERE {$sql_where} ID = {$id}";
-        self::Query_Set($sql);
+        self::Set($sql);
         //
         $this->Model->Direction = $sort;
         return true;
@@ -1646,7 +1694,7 @@ class Zero_DB
         if ( 0 < $this->Model->ID )
             $sql_where .= ' AND `ID` = ' . $this->Model->ID;
 
-        self::Query_Set("DELETE FROM {$this->Model->Source} " . $sql_where);
+        self::Set("DELETE FROM {$this->Model->Source} " . $sql_where);
         return true;
     }
 
@@ -1667,7 +1715,7 @@ class Zero_DB
           {$link['prop_this']} = {$this->Model->ID}
           AND {$link['prop_target']} = {$ObjectParent->ID}
         ";
-        self::Query_Set($sql);
+        self::Set($sql);
         return true;
     }
 
