@@ -157,17 +157,17 @@ class Zero_Section extends Zero_Model
     {
         return [
             /*BEG_CONFIG_FILTER_PROP*/
-            'ID' => ['Filter' => '', 'Search' => 'Number', 'Sort' => true],
-            'Zero_Layout_ID' => ['Filter' => 'Link', 'Search' => '', 'Sort' => false],
-            'ModuleController' => ['Filter' => 'Select', 'Search' => '', 'Sort' => false],
-            'Controller' => ['Filter' => '', 'Search' => 'Text', 'Sort' => false],
-            'IsAuthorized' => ['Filter' => 'Radio', 'Search' => '', 'Sort' => false],
-            'IsVisible' => ['Filter' => 'Radio', 'Search' => '', 'Sort' => false],
-            'Name' => ['Filter' => '', 'Search' => 'Text', 'Sort' => true],
-            'Title' => ['Filter' => '', 'Search' => 'Text', 'Sort' => true],
-            'Keywords' => ['Filter' => '', 'Search' => 'Text', 'Sort' => true],
-            'Description' => ['Filter' => '', 'Search' => 'Text', 'Sort' => true],
-            'Sort' => ['Filter' => '', 'Search' => '', 'Sort' => true],
+            'z.ID' => ['Filter' => '', 'Search' => 'Number', 'Sort' => true],
+            'z.Zero_Layout_ID' => ['Filter' => 'Link', 'Search' => '', 'Sort' => false],
+            'z.ModuleController' => ['Filter' => 'Select', 'Search' => '', 'Sort' => false],
+            'z.Controller' => ['Filter' => '', 'Search' => 'Text', 'Sort' => false],
+            'z.IsAuthorized' => ['Filter' => 'Radio', 'Search' => '', 'Sort' => false],
+            'z.IsVisible' => ['Filter' => 'Radio', 'Search' => '', 'Sort' => false],
+            'z.Name' => ['Filter' => '', 'Search' => 'Text', 'Sort' => true],
+            'z.Title' => ['Filter' => '', 'Search' => 'Text', 'Sort' => true],
+            'z.Keywords' => ['Filter' => '', 'Search' => 'Text', 'Sort' => true],
+            'z.Description' => ['Filter' => '', 'Search' => 'Text', 'Sort' => true],
+            'z.Sort' => ['Filter' => '', 'Search' => '', 'Sort' => true],
             /*END_CONFIG_FILTER_PROP*/
         ];
     }

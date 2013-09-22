@@ -7,7 +7,7 @@
   <input type="hidden" name="act" value="Registration">
   <table class="tbledit" width="400px" cellspacing="1" cellpadding="0" border="0" align="center">
     <tr>
-      <th colspan="2">Registration</th>
+      <th colspan="2">{translation "Zero_Users" "Registration"}</th>
     </tr>
     <tr>
       <td width="200px">{translation "Zero_Users" "model prop Name"}</td>
@@ -36,7 +36,7 @@
     </tr>
     <tr>
       <td>
-        Enter a line from the picture:
+          {translation "Zero_Users" "KeystringComment"}
         {if ( isset($Error_Validator['Keystring']) )}<span class="subj_prop_error">{$Error_Validator['Keystring'][1]}</span>{/if}
       </td>
       <td>
@@ -44,21 +44,21 @@
       </td>
     </tr>
     <tr>
-      <td>If it is difficult to read, click on it:</td>
+      <td>{translation "Zero_Users" "KeystringHelp"}</td>
       <td align="center">
         <img onclick="this.src='/helper/captcha?'+Math.random();" src="/helper/captcha" border="0" style="cursor: pointer;">
       </td>
     </tr>
     <tr>
       <td colspan="2" align="center">
-        <input class="btn" type="submit" value="registration">
+        <input class="btn" type="submit" value="{translation "Zero_Users" "Registration"}">
       </td>
     </tr>
     <tr>
       <td colspan="2" align="center">
-          <a href="/">Login</a>
+          <a href="/">{translation "Zero_Users" "Login"}</a>
           |
-          <a href="/site/users/reminder">Reminder</a>
+          <a href="/user/reminder">{translation "Zero_Users" "Reminder"}</a>
       </td>
     </tr>
   </table>

@@ -95,5 +95,8 @@ return [
     'translation Login' => 'Логин',
     'translation Enter' => 'Вход',
     'translation Password' => 'Пароль',
+    'translation Reminder' => 'Забыл пароль',
+    'translation KeystringComment' => 'Введите строку с картинки:',
+    'translation KeystringHelp' => 'Клините по картинке, если ен читается:',
     'translation Key' => 'Translation Value',
 ];

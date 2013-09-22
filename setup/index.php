@@ -101,22 +101,23 @@ while ( isset($_REQUEST['act']) && 'Install_System' == $_REQUEST['act'] && 0 == 
     exec("mysql -h {$_REQUEST['db_host']} -u {$_REQUEST['db_login']} -p{$_REQUEST['db_password']} < db_create.sql", $arr1, $arr2);
     if ( 0 < $arr2 )
     {
-        $message_install_list[] = "Error create DB";
+        $message_install_list[] = "Error create DB (Access Denied)";
+        unlink('db_create.sql');
         break;
     }
     unlink('db_create.sql');
     exec("mysql -h {$_REQUEST['db_host']} -u {$_REQUEST['db_login']} -p{$_REQUEST['db_password']} {$_REQUEST['db_name']} < schema/mysql_{$_REQUEST['lang']}.sql", $arr1, $arr2);
     if ( 0 < $arr2 )
     {
-        $message_install_list[] = "Error import DB";
+        $message_install_list[] = "Error import DB (Access Denied)";
         break;
     }
 
     $arr = ini_get_all();
 
-    //  Creating a filesystem structure
+    //  Creating a filesystem structure. Copy the system and base  module
     if ( !is_dir(ZERO_PATH_SITE . '/application') )
-        mkdir(ZERO_PATH_SITE . '/application', 0777, true);
+        Zero_Helper_FileSystem::Folder_Copy(ZERO_PATH_PHPZERO . '/setup/application', ZERO_PATH_APPLICATION);
     if ( !is_dir(ZERO_PATH_SITE . '/assets') )
         mkdir(ZERO_PATH_SITE . '/assets', 0777, true);
     if ( !is_dir(ZERO_PATH_SITE . '/cache') )
@@ -152,10 +153,6 @@ while ( isset($_REQUEST['act']) && 'Install_System' == $_REQUEST['act'] && 0 == 
     $config = str_replace('<DB_NAME>', $_REQUEST['db_name'], $config);
     $config = str_replace('<SITE_LANGDEFAULT>', $_REQUEST['lang'], $config);
     file_put_contents(ZERO_PATH_SITE . '/config.php', $config);
-
-    //  Copy the system and base  module
-    if ( !is_dir(ZERO_PATH_APPLICATION) )
-        Zero_Helper_FileSystem::Folder_Copy(ZERO_PATH_PHPZERO . '/setup/application', ZERO_PATH_APPLICATION);
 
     $message_install_list[110] = "System install success full";
     $error_init_list[120] = 'system is already installed (remove /config.php)';

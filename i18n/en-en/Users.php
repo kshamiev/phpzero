@@ -95,5 +95,8 @@ return [
     'translation Login' => 'Login',
     'translation Enter' => 'Input',
     'translation Password' => 'Password',
+    'translation Reminder' => 'Reminder',
+    'translation KeystringComment' => 'Enter a line from the picture:',
+    'translation KeystringHelp' => 'If it is difficult to read, click on it:',
     'translation Key' => 'Translation Value',
 ];

@@ -44,7 +44,7 @@ class Zero_I18n
      * Perevod po cliuchevoi` stroke
      *
      * @param $file_name Imia iazy`kovogo fai`la (imia modeli, kontrollera)
-     * @param $key cliuchevaia stroka
+     * @param $key string
      * @param string $value_default znachenie po umolchaniiu (esli ne nai`detsia perevod)
      * @return string nai`denny`i` perevod
      */
