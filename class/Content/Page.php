@@ -50,7 +50,16 @@ class Zero_Content_Page extends Zero_Plugin
             Zero_Cache::Set_Link('Zero_Content', $Content->ID);
             Zero_App::$Section->Cache->Set($index, $Content);
         }
-        $this->View = $Content->Content;
+        if ( 'content' == $this->Params['Block'] )
+        {
+            $this->View = new Zero_View(get_class($this));
+            $this->View->Assign('Name', $Content->Name);
+            $this->View->Assign('Content', $Content->Content);
+        }
+        else
+        {
+            $this->View = $Content->Content;
+        }
         return true;
     }
 }

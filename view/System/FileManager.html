@@ -54,8 +54,8 @@
     <input type="hidden" name="dir_name" value="{$name}">
     <tr>
       <td width="80" align="center">
-        {if ( isset($Action['FolderGo']) )}<a href="{URL}?act=FolderGo&dir_name={$name}"><img src="/zero/assets/img/button/button_folder_open.gif" border="0" style="vertical-align: middle;"></a>{/if}
-        {if ( isset($Action['FolderRemove']) )}<input type="image" src="/zero/assets/img/button/button_trash.gif" onclick="button_form(this.form, '{URL}', 'FolderRemove', 1);">{/if}
+        {if ( isset($Action['FolderGo']) )}<a href="{URL}?act=FolderGo&dir_name={$name}"><img src="{HTTPA}/img/button/button_folder_open.gif" border="0" style="vertical-align: middle;"></a>{/if}
+        {if ( isset($Action['FolderRemove']) )}<input type="image" src="{HTTPA}/img/button/button_trash.gif" onclick="button_form(this.form, '{URL}', 'FolderRemove', 1);">{/if}
       </td>
       <td nowrap>{$name}</td>
       <td nowrap>-</td>
@@ -71,9 +71,9 @@
   <input type="hidden" name="file_name" value="{$name}">
   <tr>
     <td width="80" align="center">
-      {if ( isset($Action['FileDownLoad']) )}<input type="image" src="/zero/assets/img/button/button_save.gif" onclick="button_form(this.form, '{URL}', 'FileDownLoad', 0);">{/if}
-      {if ( isset($Action['EditFile']) && in_array($data['ext'], $file_edit_flag) )}<a href="{URL}/edit?path={$path_parent}&file_name={$name}"><img src="/zero/assets/img/button/button_edit.gif" border="0" style="vertical-align: middle;"></a>{/if}
-      {if ( isset($Action['FileRemove']) )}<input type="image" src="/zero/assets/img/button/button_trash.gif" onclick="button_form(this.form, '{URL}', 'FileRemove', 1);">{/if}
+      {if ( isset($Action['FileDownLoad']) )}<input type="image" src="{HTTPA}/img/button/button_save.gif" onclick="button_form(this.form, '{URL}', 'FileDownLoad', 0);">{/if}
+      {if ( isset($Action['EditFile']) && in_array($data['ext'], $file_edit_flag) )}<a href="{URL}/edit?path={$path_parent}&file_name={$name}"><img src="{HTTPA}/img/button/button_edit.gif" border="0" style="vertical-align: middle;"></a>{/if}
+      {if ( isset($Action['FileRemove']) )}<input type="image" src="{HTTPA}/img/button/button_trash.gif" onclick="button_form(this.form, '{URL}', 'FileRemove', 1);">{/if}
     </td>
     <td nowrap>{$name}</td>
     <td nowrap>-</td>

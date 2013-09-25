@@ -324,7 +324,7 @@ class Zero_Engine
         /**
          * Strutura papok
          */
-        $dir = ZERO_PATH_APPLICATION . '/' . $module;
+        $dir = ZERO_PATH_APPLICATION . '/' . strtolower($module);
         if ( !is_dir($dir) )
             mkdir($dir);
         $dir1 = $dir . '/assets';

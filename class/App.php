@@ -221,7 +221,7 @@ class Zero_App
         self::$Users = Zero_Model::Factory('Zero_Users');
 
         //  Checking for non-existent section
-        if ( 0 == self::$Section->ID )
+        if ( 0 == self::$Section->ID || 'no' == self::$Section->IsEnable )
             throw new Exception('Not Found', 404);
         //  Call forwarding
         else if ( self::$Section->UrlRedirect )
@@ -229,6 +229,7 @@ class Zero_App
         //  Checking the rights to the current section
         else if ( 'yes' == self::$Section->IsAuthorized && 1 < self::$Users->Zero_Groups_ID && 0 == count(self::$Section->Get_Action_List()) )
             throw new Exception('Access Denied', 403);
+//        pre(self::$Section->IsEnabled);
 
         //  Initialize the controller action
         $_REQUEST['act'] = (isset($_REQUEST['act'])) ? $_REQUEST['act'] : '';

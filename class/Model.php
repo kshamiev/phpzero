@@ -564,7 +564,7 @@ abstract class Zero_Model
         if ( array_key_exists($prop, $this->_Props) )
             return $this->_Props[$prop];
         //  novy`i` ob``ekt ne sushchestvuiushchii` v BD i potomu ne imeiushchii` nikakogo znacheniia
-        if ( 0 == $this->ID )
+        if ( 0 == $this->ID || !isset($this->Get_Config_Prop()[$prop]) )
             return null;
         //  svoi`stvo pustoe, ne zagruzhennoe iz BD
         Zero_Logs::Set_Message('#{LOAD PROP} load prop "' . $prop . '" for model "' . get_class($this) . '"', 'warning');

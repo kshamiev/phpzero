@@ -19,8 +19,8 @@
  */
 return [
 	'model' => 'Sections',
-	'model prop ModuleController' => 'Module Controller',
-	'model prop ModuleUrl' => 'Admin section',
+	'model prop ControllerConfig' => 'Controller in config',
+	'model prop UrlController' => 'Admin section',
 	'model prop Controller' => 'Advanced Controller',
 	'model prop Controller validate Error_Path_Class' => 'Source controller is missing',
 	'model prop Controller validate Error_Class_Exists' => 'The source does not contain the controller',
@@ -31,6 +31,9 @@ return [
 	'model prop IsVisible' => 'Visibility in the navigation',
 	'model prop IsVisible option no' => 'no',
 	'model prop IsVisible option yes' => 'yes',
+    'model prop IsEnable' => 'Section enabled',
+    'model prop IsEnable option no' => 'no',
+    'model prop IsEnable option yes' => 'yes',
 	'model prop Name' => 'Name',
 	'model prop Sort' => 'Sorting',
 	'model prop Url' => 'Absolute reference',

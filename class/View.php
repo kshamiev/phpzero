@@ -190,30 +190,28 @@ class Zero_View
      */
     public static function Search_Template($template)
     {
-        $arr = explode('_', $template);
-        $module = strtolower(array_shift($arr));
-        $template = implode('/', $arr);
-
-        $template_exists = '/' . Zero_App::$Config->Themes . '/' . $module . '/' . $template;
-//                echo $template . ' [THEMES] => ' . basename(ZERO_PATH_THEMES) . $template_exists . '.html <br><br>';
-        if ( !file_exists(ZERO_PATH_THEMES . $template_exists . '.html') )
+        $template_exists = basename(ZERO_PATH_THEMES) . '/' . Zero_App::$Config->Themes . '/' . $template;
+        $template_log = 'Not found template [THEMES] => ' . $template_exists . ".html <br>\n";
+        if ( !file_exists(ZERO_PATH_SITE . '/' . $template_exists . '.html') )
         {
-            $template_exists = '/' . $module . '/view/' . $template;
-//                        echo $template . ' [APPLICATION] => ' . basename(ZERO_PATH_APPLICATION) . $template_exists . '.html <br><br>';
-            if ( !file_exists(ZERO_PATH_APPLICATION . $template_exists . '.html') )
+            $arr = explode('_', $template);
+            $module = strtolower(array_shift($arr));
+            $template_ext = implode('/', $arr);
+
+            $template_exists = basename(ZERO_PATH_APPLICATION) . '/' . $module . '/view/' . $template_ext;
+            $template_log .= 'Not found template [APPLICATION] => ' . $template_exists . ".html <br>\n";
+            if ( !file_exists(ZERO_PATH_SITE . '/' . $template_exists . '.html') )
             {
-                $template_exists = '/view/' . $template;
-//                                echo $template . ' [PHPZERO] => ' . basename(ZERO_PATH_PHPZERO) . $template_exists . '.html <br><br>';
-                if ( !file_exists(ZERO_PATH_PHPZERO . $template_exists . '.html') )
+                $template_exists = basename(ZERO_PATH_PHPZERO) . '/view/' . $template_ext;
+                $template_log .= 'Not found template [PHPZERO] => ' . $template_exists . ".html <br>\n";
+                if ( !file_exists(ZERO_PATH_SITE . '/' . $template_exists . '.html') )
+                {
+                    if ( Zero_App::$Config->Log_Profile_Error )
+                        Zero_Logs::Set_Message($template_log, "warning");
                     return '';
-                else
-                    $template_exists = basename(ZERO_PATH_PHPZERO) . $template_exists;
+                }
             }
-            else
-                $template_exists = basename(ZERO_PATH_APPLICATION) . $template_exists;
         }
-        else
-            $template_exists = basename(ZERO_PATH_THEMES) . $template_exists;
         return $template_exists;
     }
 

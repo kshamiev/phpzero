@@ -297,10 +297,13 @@ class Zero_Config
         $this->Memcache = $Config['Memcache'];
 
         //  Redefinition models
+        $this->FactoryModel = $Config['FactoryModel'];
+        /*
         foreach ($Config['FactoryModel'] as $k => $v)
         {
             $this->FactoryModel[$k] = ucfirst($this->Host) . '_' . $v;
         }
+        */
 
         // IP the source address of the request
         if ( isset($_SERVER["HTTP_X_FORWARDED_FOR"]) )

@@ -19,8 +19,8 @@
  */
 return [
 	'model' => 'Разделы',
-	'model prop ModuleController' => 'Модуль',
-	'model prop ModuleUrl' => 'Админстративный раздел',
+	'model prop ControllerConfig' => 'Контроллер в конфигурации',
+	'model prop UrlController' => 'Админстративный раздел',
 	'model prop Controller' => 'Пользователький контроллер',
 	'model prop Controller validate Error_Path_Class' => 'Источник контроллера отсутсвует',
 	'model prop Controller validate Error_Class_Exists' => 'Источник не содержит контроллера',
@@ -31,6 +31,9 @@ return [
 	'model prop IsVisible' => 'Видимость в навигации',
 	'model prop IsVisible option no' => 'нет',
 	'model prop IsVisible option yes' => 'да',
+	'model prop IsEnable' => 'Раздел включен',
+	'model prop IsEnable option no' => 'нет',
+	'model prop IsEnable option yes' => 'да',
 	'model prop Name' => 'Название',
 	'model prop Sort' => 'Сортировка',
 	'model prop Url' => 'Абсолютная ссылка',

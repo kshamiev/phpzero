@@ -50,16 +50,16 @@
         <td width="80" align="center">
             {if ( isset($row['Rem']) )}
                 {if ( isset($Action['Rem']) )}
-                <input type="image" onclick="button_form_obj_id('formpanel', '{URL}/edit', '', '{$name}', 0);" src="/zero/assets/img/button/button_edit.gif">
-                <input type="image" onclick="button_form_obj_id('formpanel', '{URL}', 'Rem', '{$name}', 1);" src="/zero/assets/img/button/button_trash.gif">
+                <input type="image" onclick="button_form_obj_id('formpanel', '{URL}/edit', '', '{$name}', 0);" src="{HTTPA}/img/button/button_edit.gif">
+                <input type="image" onclick="button_form_obj_id('formpanel', '{URL}', 'Rem', '{$name}', 1);" src="{HTTPA}/img/button/button_trash.gif">
                 {/if}
             {else if ( isset($row['Set']) )}
                 {if ( isset($Action['Set']) )}
-                <input type="image" onclick="button_form_obj_id('formpanel', '{URL}', 'Set', '{$name}', 1);" src="/zero/assets/img/button/button_plus.gif">
+                <input type="image" onclick="button_form_obj_id('formpanel', '{URL}', 'Set', '{$name}', 1);" src="{HTTPA}/img/button/button_plus.gif">
                 {/if}
             {else}
                 {if ( isset($row['Installed']) )}
-                <input type="image" onclick="button_form_obj_id('formpanel', '{URL}/edit', '', '{$name}', 0);" src="/zero/assets/img/button/button_edit.gif">
+                <input type="image" onclick="button_form_obj_id('formpanel', '{URL}/edit', '', '{$name}', 0);" src="{HTTPA}/img/button/button_edit.gif">
                 {else}
                 ---
                 {/if}

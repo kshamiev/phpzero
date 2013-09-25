@@ -19,7 +19,7 @@
                 {/if}
             </td>
             <td width="100px" align="right">{$Object->ID}</td>
-            <td width="25px" align="center"><img src="/zero/assets/img/button/button_id.gif" border="0"></td>
+            <td width="25px" align="center"><img src="{HTTPA}/img/button/button_id.gif" border="0"></td>
         </tr>
     </table>
 </form>
@@ -81,7 +81,7 @@
 
                 {else if ( $Object->$Prop && ( 'Img' == $row['Form'] || 'File' == $row['Form'] ) )}
                 <a href="{HTTPD}/{$Object->$Prop}" title="просмотреть файл" target="_blank">
-                    <img src="/zero/assets/img/button/button_view_file.gif" border="0"></a>
+                    <img src="{HTTPA}/img/button/button_view_file.gif" border="0"></a>
 
                 {else}
                 {nl2br($Object->$Prop)}
@@ -163,7 +163,7 @@
                         <td class="notpad" width="335"><input type="file" name="{$Prop}" size="50"></td>
                         <td width="25" align="center">
                             <a href="{HTTPD}/{$Object->$Prop}" title="просмотреть файл" target="_blank">
-                                <img src="/zero/assets/img/button/button_view_file.gif" border="0">
+                                <img src="{HTTPA}/img/button/button_view_file.gif" border="0">
                             </a>
                         </td>
                         <td width="75" align="center">Повернуть:</td>
@@ -212,7 +212,7 @@
                         <td width="335"><input type="file" name="{$Prop}" size="50"></td>
                         <td width="25" align="center">
                             <a href="{HTTPD}/{$Object->$Prop}" title="просмотреть файл" target="_blank">
-                                <img src="/zero/assets/img/button/button_view_file.gif" border="0">
+                                <img src="{HTTPA}/img/button/button_view_file.gif" border="0">
                             </a>
                         </td>
                         <td width="55" align="center">Удалить:</td>

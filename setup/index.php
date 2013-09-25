@@ -73,7 +73,6 @@ while ( isset($_REQUEST['act']) && 'Install_System' == $_REQUEST['act'] && 0 == 
         $message_install_list[] = "Request empty";
         break;
     }
-
     $_REQUEST['domain_www'] = strtolower($_REQUEST['domain_www']);
     $_REQUEST['domain_sub'] = strtolower($_REQUEST['domain_sub']);
 
@@ -116,32 +115,10 @@ while ( isset($_REQUEST['act']) && 'Install_System' == $_REQUEST['act'] && 0 == 
     $arr = ini_get_all();
 
     //  Creating a filesystem structure. Copy the system and base  module
-    if ( !is_dir(ZERO_PATH_SITE . '/application') )
-        Zero_Helper_FileSystem::Folder_Copy(ZERO_PATH_PHPZERO . '/setup/application', ZERO_PATH_APPLICATION);
-    if ( !is_dir(ZERO_PATH_SITE . '/assets') )
-        mkdir(ZERO_PATH_SITE . '/assets', 0777, true);
-    if ( !is_dir(ZERO_PATH_SITE . '/cache') )
-        mkdir(ZERO_PATH_SITE . '/cache', 0777, true);
-    if ( !is_dir(ZERO_PATH_SITE . '/exchange') )
-        mkdir(ZERO_PATH_SITE . '/exchange', 0777, true);
-    if ( !is_dir(ZERO_PATH_SITE . '/log') )
-        mkdir(ZERO_PATH_SITE . '/log', 0777, true);
-    if ( !is_dir(ZERO_PATH_SITE . '/themes') )
-        mkdir(ZERO_PATH_SITE . '/themes', 0777, true);
-    if ( !is_dir(ZERO_PATH_SITE . '/upload/data') )
-        mkdir(ZERO_PATH_SITE . '/upload/data', 0777, true);
-
-    //  .htaccess for apache
-    copy('.htaccess', ZERO_PATH_SITE . '/.htaccess');
-
-    //  robots.txt for index
-    copy('robots.txt', ZERO_PATH_SITE . '/robots.txt');
-
-    //  Enter point
-    copy('config/index.php', ZERO_PATH_SITE . '/index.php');
+    Zero_Helper_FileSystem::Folder_Copy(ZERO_PATH_SITE, __DIR__ . "/www");
 
     //  Baseline configuration
-    $config = file_get_contents('config/config.php');
+    $config = file_get_contents(ZERO_PATH_SITE . '/config.php');
     $config = str_replace('<PATH_SESSION>', $arr['session.save_path']['local_value'], $config);
     $config = str_replace('<SITE_NAME>', $_REQUEST['site_name'], $config);
     $config = str_replace('<SITE_EMAIL>', $_REQUEST['site_email'], $config);

@@ -48,9 +48,9 @@ return [
     //  Theme
     'Themes' => [
         //  main
-        'www' => "phpzero",
+        'www' => "default",
         //  control panel
-        '<DOMAIN_SUB>' => "phpzero",
+        '<DOMAIN_SUB>' => "default",
     ],
     //  The settings of the presentation of data
     'View' => [

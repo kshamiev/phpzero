@@ -75,9 +75,9 @@
           {foreach ($Sort['List'] as $prop => $row)}<option value="{$prop}"{if ( $Sort['Value'][$prop] )} selected{set $value = $Sort['Value'][$prop]}{/if}>{$row['Comment']}</option>{/foreach}
         </select>
         &nbsp;<input type="radio" name="Sort[Value]" value="ASC"{if ( 'ASC' == $value || !$value )} checked{/if}>
-                     &nbsp;<img class="icon" src="/zero/assets/img/button/button_sort_asc.gif" border="0">
+                     &nbsp;<img class="icon" src="{HTTPA}/img/button/button_sort_asc.gif" border="0">
         &nbsp;<input type="radio" name="Sort[Value]" value="DESC"{if ( 'DESC' == $value )} checked{/if}>
-                     &nbsp;<img class="icon" src="/zero/assets/img/button/button_sort_desc.gif" border="0">
+                     &nbsp;<img class="icon" src="{HTTPA}/img/button/button_sort_desc.gif" border="0">
       </td>
     </tr>
     <tr>
@@ -133,11 +133,11 @@
   <tr>
     <td width="80" align="center">
       {if ( isset($Params['obj_parent_path']) )}
-      <a href="{URL}-pid-{$Data['ID']}"><img style="vertical-align: middle;" src="/zero/assets/img/button/button_folder_open.gif" border="0"></a>
+      <a href="{URL}-pid-{$Data['ID']}"><img style="vertical-align: middle;" src="{HTTPA}/img/button/button_folder_open.gif" border="0"></a>
       {/if}
-      {if ( isset($Action['Link_Rem']) )}<input type="image" src="/zero/assets/img/button/button_unlink.gif" onclick="button_form_obj_id('formpanel', '{URL}{$url_parent}', 'Link_Rem', {$Data['ID']}, 1);">{/if}
-      <a href="{URL}{$url_parent}/edit{$url_parent}-id-{$Data['ID']}"><img style="vertical-align: middle;" src="/zero/assets/img/button/button_edit.gif" border="0"></a>
-      {if ( isset($Action['Remove']) )}<input type="image" src="/zero/assets/img/button/button_trash.gif" onclick="button_form_obj_id('formpanel', '{URL}{$url_parent}', 'Remove', {$Data['ID']}, 1);">{/if}
+      {if ( isset($Action['Link_Rem']) )}<input type="image" src="{HTTPA}/img/button/button_unlink.gif" onclick="button_form_obj_id('formpanel', '{URL}{$url_parent}', 'Link_Rem', {$Data['ID']}, 1);">{/if}
+      <a href="{URL}{$url_parent}/edit{$url_parent}-id-{$Data['ID']}"><img style="vertical-align: middle;" src="{HTTPA}/img/button/button_edit.gif" border="0"></a>
+      {if ( isset($Action['Remove']) )}<input type="image" src="{HTTPA}/img/button/button_trash.gif" onclick="button_form_obj_id('formpanel', '{URL}{$url_parent}', 'Remove', {$Data['ID']}, 1);">{/if}
     </td>
     {foreach ($PropsGrid as $Prop => $row)}
     <td>

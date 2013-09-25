@@ -26,10 +26,11 @@
  * @property string $UrlThis
  * @property string $UrlRedirect
  * @property string $ModuleController
- * @property string $ModuleUrl
+ * @property string $UrlController
  * @property string $Controller
  * @property string $IsAuthorized
  * @property string $IsVisible
+ * @property string $IsEnable
  * @property integer $Sort
  * @property string $Name
  * @property string $Title
@@ -127,11 +128,11 @@ class Zero_Section extends Zero_Model
             'Url' => ['DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
             'UrlThis' => ['DB' => 'T', 'IsNull' => 'NO', 'Default' => ''],
             'UrlRedirect' => ['DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
-            'ModuleController' => ['DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
-            'ModuleUrl' => ['DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
+            'UrlController' => ['DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
             'Controller' => ['DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
             'IsAuthorized' => ['DB' => 'E', 'IsNull' => 'NO', 'Default' => 'no'],
             'IsVisible' => ['DB' => 'E', 'IsNull' => 'NO', 'Default' => 'no'],
+            'IsEnable' => ['DB' => 'E', 'IsNull' => 'NO', 'Default' => 'yes'],
             'Sort' => ['DB' => 'I', 'IsNull' => 'YES', 'Default' => ''],
             'Name' => ['DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
             'Title' => ['DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
@@ -159,10 +160,11 @@ class Zero_Section extends Zero_Model
             /*BEG_CONFIG_FILTER_PROP*/
             'z.ID' => ['Filter' => '', 'Search' => 'Number', 'Sort' => true],
             'z.Zero_Layout_ID' => ['Filter' => 'Link', 'Search' => '', 'Sort' => false],
-            'z.ModuleController' => ['Filter' => 'Select', 'Search' => '', 'Sort' => false],
+            'z.ControllerConfig' => ['Filter' => 'Select', 'Search' => '', 'Sort' => false],
             'z.Controller' => ['Filter' => '', 'Search' => 'Text', 'Sort' => false],
             'z.IsAuthorized' => ['Filter' => 'Radio', 'Search' => '', 'Sort' => false],
             'z.IsVisible' => ['Filter' => 'Radio', 'Search' => '', 'Sort' => false],
+            'z.IsEnable' => ['Filter' => 'Radio', 'Search' => '', 'Sort' => false],
             'z.Name' => ['Filter' => '', 'Search' => 'Text', 'Sort' => true],
             'z.Title' => ['Filter' => '', 'Search' => 'Text', 'Sort' => true],
             'z.Keywords' => ['Filter' => '', 'Search' => 'Text', 'Sort' => true],
@@ -188,7 +190,6 @@ class Zero_Section extends Zero_Model
             /*BEG_CONFIG_GRID_PROP*/
             'ID' => ['Grid' => 'z.ID'],
             'Name' => ['Grid' => 'z.Name'],
-            'ModuleController' => ['Grid' => 'z.ModuleController'],
             'Controller' => ['Grid' => 'z.Controller'],
             'Url' => ['Grid' => 'z.Url'],
             'Sort' => ['Grid' => 'z.Sort'],
@@ -220,10 +221,11 @@ class Zero_Section extends Zero_Model
                 'Url' => array('Form' => 'ReadOnly', 'IsNull' => 'YES'),
                 'UrlThis' => array('Form' => 'Text', 'IsNull' => 'NO'),
                 'UrlRedirect' => array('Form' => 'Text', 'IsNull' => 'YES'),
-                'ModuleController' => array('Form' => 'Select', 'IsNull' => 'YES'),
+                'ControllerConfig' => array('Form' => 'Select', 'IsNull' => 'YES'),
                 'Controller' => array('Form' => 'Text', 'IsNull' => 'YES'),
                 'IsAuthorized' => array('Form' => 'Radio', 'IsNull' => 'NO'),
                 'IsVisible' => array('Form' => 'Radio', 'IsNull' => 'NO'),
+                'IsEnable' => array('Form' => 'Radio', 'IsNull' => 'NO'),
                 'Sort' => array('Form' => 'Number', 'IsNull' => 'YES'),
                 'Name' => array('Form' => 'Text', 'IsNull' => 'YES'),
                 'Title' => array('Form' => 'Text', 'IsNull' => 'YES'),
@@ -240,9 +242,10 @@ class Zero_Section extends Zero_Model
                 'Url' => array('Form' => 'ReadOnly', 'IsNull' => 'YES'),
                 'UrlThis' => array('Form' => 'Text', 'IsNull' => 'NO'),
                 'UrlRedirect' => array('Form' => 'Text', 'IsNull' => 'YES'),
-                'ModuleController' => array('Form' => ($Model->ModuleController) ? 'ReadOnly' : 'Select', 'IsNull' => 'YES'),
+                'ControllerConfig' => array('Form' => ($Model->Controller) ? 'ReadOnly' : 'Select', 'IsNull' => 'YES'),
                 'IsAuthorized' => array('Form' => 'Radio', 'IsNull' => 'NO'),
                 'IsVisible' => array('Form' => 'Radio', 'IsNull' => 'NO'),
+                'IsEnable' => array('Form' => 'Radio', 'IsNull' => 'NO'),
                 'Sort' => array('Form' => 'Number', 'IsNull' => 'YES'),
                 'Name' => array('Form' => 'Text', 'IsNull' => 'YES'),
                 'Title' => array('Form' => 'Text', 'IsNull' => 'YES'),
@@ -442,7 +445,7 @@ class Zero_Section extends Zero_Model
      *
      * @return array
      */
-    public function FL_ModuleController()
+    public function FL_ControllerConfig()
     {
         $controller_list = [];
         foreach (Zero_Helper_Modules::Get_Config_Set('', 'controller') as $module => $row)
@@ -464,25 +467,21 @@ class Zero_Section extends Zero_Model
      */
     public function Validate_Before($data, $scenario)
     {
-        if ( !isset($data['ModuleController']) )
+        if ( !isset($data['ControllerConfig']) )
             return $data;
-        if ( $data['ModuleController'] )
+        if ( $data['ControllerConfig'] )
         {
-            $this->ModuleController = $data['ModuleController'];
-            $this->Controller = $data['ModuleController'];
+            $this->Controller = $data['ControllerConfig'];
 
-            $module = explode('_', $data['ModuleController'])[0];
+            $module = explode('_', $data['ControllerConfig'])[0];
             $controller = Zero_Helper_Modules::Get_Config_Set($module, 'controller');
-            $this->ModuleUrl = $controller[$data['ModuleController']];
+            $this->UrlController = $controller[$data['ControllerConfig']];
 
-            unset($data['ModuleController']);
+            unset($data['ControllerConfig']);
             unset($data['Controller']);
         }
         else
-        {
-            $this->ModuleController = null;
-            $this->ModuleUrl = null;
-        }
+            $this->UrlController = null;
         return $data;
     }
 
