@@ -384,7 +384,7 @@ class Zero_Section extends Zero_Model
         {
             $sql = "
             SELECT
-              s.ID, l.Name, SUBSTRING(s.Url, POSITION('/' IN s.Url)) AS Url, UrlThis
+              s.ID, l.Name, SUBSTRING(s.Url, POSITION('/' IN s.Url)) AS Url, UrlThis, Title
             FROM Zero_Section AS s
                 INNER JOIN Zero_SectionLanguage AS l ON l.Zero_Section_ID = s.ID AND l.Zero_Language_ID = " . Zero_App::$Route->lang_id . "
                 LEFT JOIN Zero_Action AS a ON a.`Zero_Section_ID` = s.`ID`
@@ -398,7 +398,7 @@ class Zero_Section extends Zero_Model
         {
             $sql = "
             SELECT
-              s.ID, s.Name, SUBSTRING(s.Url, POSITION('/' IN s.Url)) AS Url, UrlThis
+              s.ID, s.Name, SUBSTRING(s.Url, POSITION('/' IN s.Url)) AS Url, UrlThis, Title
             FROM Zero_Section AS s
                 LEFT JOIN Zero_Action AS a ON a.`Zero_Section_ID` = s.`ID`
             WHERE

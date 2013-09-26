@@ -3,6 +3,8 @@
 /**
  * Plugin. <Comment>
  *
+ * Sample: {plugin "Zero_Section_NavigationChild"  param="value" ...}
+ *
  * @package <Package>.<Subpackage>.Plugin
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
  * @version $Id$

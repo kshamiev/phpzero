@@ -3,7 +3,7 @@
 /**
  * Plugin. Informer state of the user.
  *
- * Sample: {plugin "Www_Users_Informer"}
+ * Sample: {plugin "Zero_Users_Informer"}
  *
  * @package Zero.Users.Plugin
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
