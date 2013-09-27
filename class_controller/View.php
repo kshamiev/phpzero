@@ -234,18 +234,9 @@ class Zero_View
             $template_log .= 'Not found template [APPLICATION] => ' . $template_exists . ".html <br>\n";
             if ( !file_exists(ZERO_PATH_SITE . '/' . $template_exists . '.html') )
             {
-                /*
-                $template_exists = basename(ZERO_PATH_PHPZERO) . '/view/' . $template_ext;
-                $template_log .= 'Not found template [PHPZERO] => ' . $template_exists . ".html <br>\n";
-                if ( !file_exists(ZERO_PATH_SITE . '/' . $template_exists . '.html') )
-                {
-                */
-                    if ( Zero_App::$Config->Log_Profile_Warning )
-                        Zero_Logs::Set_Message($template_log, "warning");
-                    return '';
-                /*
-                }
-                */
+                if ( Zero_App::$Config->Log_Profile_Warning )
+                    Zero_Logs::Set_Message($template_log, "warning");
+                return '';
             }
         }
         return $template_exists;

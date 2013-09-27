@@ -34,7 +34,7 @@ define('ZERO_PATH_THEMES', ZERO_PATH_SITE . '/themes');
 /**
  * Location System
  */
-define('ZERO_PATH_PHPZERO', ZERO_PATH_SITE . '/zero');
+define('ZERO_PATH_ZERO', ZERO_PATH_SITE . '/zero');
 /**
  * Component. Application.
  *
@@ -158,10 +158,10 @@ class Zero_App
     public static function Init($file_log = 'application')
     {
         //  Include Components
-        require_once ZERO_PATH_PHPZERO . '/class_controller/Logs.php';
-        require_once ZERO_PATH_PHPZERO . '/class_controller/Config.php';
-        require_once ZERO_PATH_PHPZERO . '/class_controller/Cache.php';
-        require_once ZERO_PATH_PHPZERO . '/class_controller/Session.php';
+        require_once ZERO_PATH_ZERO . '/class_controller/Logs.php';
+        require_once ZERO_PATH_ZERO . '/class_controller/Config.php';
+        require_once ZERO_PATH_ZERO . '/class_controller/Cache.php';
+        require_once ZERO_PATH_ZERO . '/class_controller/Session.php';
 
         //  Initializing monitoring system (Zero_Logs)
         Zero_Logs::Init($file_log);
@@ -192,7 +192,7 @@ class Zero_App
             Zero_Session::Set_Instance($Session);
 
         //  Include Components
-        require_once ZERO_PATH_PHPZERO . '/class_controller/View.php';
+        require_once ZERO_PATH_ZERO . '/class_controller/View.php';
     }
 
     /**

@@ -92,7 +92,7 @@ else
     {
         foreach ($module as $sys_demon => $sys_cron)
         {
-            if ( !$sys_cron['IsActive'] || false !== strpos($result, Zero_App::$Config->System_PathPhp . ' ' . ZERO_PATH_PHPZERO . '/console.php ' . $sys_demon) )
+            if ( !$sys_cron['IsActive'] || false !== strpos($result, Zero_App::$Config->System_PathPhp . ' ' . ZERO_PATH_ZERO . '/console.php ' . $sys_demon) )
                 continue;
             //  check date and time to run
             if ( false == zero_crontab_check_datetime($week, $sys_cron['Week']) )
@@ -107,7 +107,7 @@ else
                 continue;
 
             //  run
-            exec(Zero_App::$Config->System_PathPhp . ' ' . ZERO_PATH_PHPZERO . '/console.php ' . $sys_demon . ' > /dev/null 2>&1 &');
+            exec(Zero_App::$Config->System_PathPhp . ' ' . ZERO_PATH_ZERO . '/console.php ' . $sys_demon . ' > /dev/null 2>&1 &');
         }
     }
 }

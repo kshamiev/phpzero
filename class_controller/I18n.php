@@ -33,9 +33,6 @@ class Zero_I18n
         $path = ZERO_PATH_APPLICATION . '/' . strtolower($folder_list[0]) . '/i18n/' . $lang . '/' . $folder_list[1] . '.php';
         if ( file_exists($path) )
             return $path;
-        //        $path = ZERO_PATH_PHPZERO . '/i18n/' . $lang . '/' . $folder_list[1] . '.php';
-        //        if ( file_exists($path) )
-        //            return $path;
         if ( Zero_App::$Config->Log_Profile_Warning )
             Zero_Logs::Set_Message('I18N NOT FOUND FILE: ' . strtolower($folder_list[0]) . '/i18n/' . $lang . '/' . $folder_list[1], 'warning');
         return '';

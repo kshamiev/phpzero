@@ -131,7 +131,7 @@ while ( isset($_REQUEST['act']) && 'Install_System' == $_REQUEST['act'] && 0 == 
     $config = str_replace('<SITE_LANGDEFAULT>', $_REQUEST['lang'], $config);
     file_put_contents(ZERO_PATH_SITE . '/config.php', $config);
 
-    symlink(ZERO_PATH_PHPZERO, ZERO_PATH_APPLICATION . '/zero');
+    symlink(ZERO_PATH_ZERO, ZERO_PATH_APPLICATION . '/zero');
 
     $message_install_list[110] = "System install success full";
     $error_init_list[120] = 'system is already installed (remove /config.php)';

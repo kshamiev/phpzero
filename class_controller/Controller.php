@@ -51,7 +51,7 @@ abstract class Zero_Controller
      * Stek chankov
      *
      * Skisok vy`polniaiushchii`khsia chankov.
-     * Zapolniaetsia v Init_Chunks
+     * Zapolniaetsia v Chunk_Init
      *
      * @var array
      */

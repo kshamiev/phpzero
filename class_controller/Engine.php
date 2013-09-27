@@ -382,7 +382,7 @@ class Zero_Engine
             if ( 2 != count($package) )
                 continue;
             //  Sozdanie modeli
-            $path_pattern = ZERO_PATH_PHPZERO . '/data/Template_Model.php';
+            $path_pattern = ZERO_PATH_ZERO . '/data/Template_Model.php';
             $path_model = self::Get_Path_Class($row['Name']);
             if ( !file_exists($path_model) )
             {
@@ -408,7 +408,7 @@ class Zero_Engine
             if ( $flag_grid && !file_exists($path_target) )
             {
                 //          echo 'CREATE CONTROLLER ' . $path_target . '<br>';
-                $path_pattern = ZERO_PATH_PHPZERO . '/data/Template_Controller_Grid.php';
+                $path_pattern = ZERO_PATH_ZERO . '/data/Template_Controller_Grid.php';
                 $class = file_get_contents($path_pattern);
                 $class = str_replace('<Comment>', 'Контроллер просмотра списка объектов', $class);
                 $class = str_replace('<Package>', $package[0], $class);
@@ -445,7 +445,7 @@ class Zero_Engine
             if ( $flag_edit && !file_exists($path_target) )
             {
                 //          echo 'CREATE CONTROLLER ' . $path_target . '<br>';
-                $path_pattern = ZERO_PATH_PHPZERO . '/data/Template_Controller_Edit.php';
+                $path_pattern = ZERO_PATH_ZERO . '/data/Template_Controller_Edit.php';
                 $class = file_get_contents($path_pattern);
                 $class = str_replace('<Comment>', 'Контроллер изменения объекта', $class);
                 $class = str_replace('<Package>', $package[0], $class);
@@ -765,7 +765,7 @@ class Zero_Engine
             $str .= "\t'{$key}' => '{$val}',\n";
         }
         $str = substr($str, 0, -1);
-        $path1 = ZERO_PATH_PHPZERO . '/data/Template_I18n.php';
+        $path1 = ZERO_PATH_ZERO . '/data/Template_I18n.php';
         foreach (array_keys(Zero_App::$Config->Language) as $lang)
         {
             $path2 = Zero_I18n::Search_Path_I18n($folder_list, $lang);

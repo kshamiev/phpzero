@@ -29,7 +29,7 @@ class Zero_Users_Kcaptcha extends Zero_Controller
      */
     protected function Chunk_View($action)
     {
-        include_once ZERO_PATH_PHPZERO . '/library/kcaptcha/kcaptcha.php';
+        include_once ZERO_PATH_ZERO . '/library/kcaptcha/kcaptcha.php';
         $Captcha = new KCAPTCHA();
         Zero_App::$Users->Keystring = $Captcha->getKeyString();
         Zero_App::$Response = 'img';
