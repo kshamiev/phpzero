@@ -45,7 +45,7 @@ class Zero_Controller_Grid extends Zero_Crud_Grid
     {
         parent::Chunk_Init($action);
         $this->Params['obj_parent_table'] = 'relation_table';
-        $this->Params['obj_parent_id'] = Zero_App::$Route->obj_parent_id;
+        $this->Params['obj_parent_id'] = Zero_App::$Route->Param['pid'];
         $this->Params['obj_parent_name'] = '';
         return true;
     }

@@ -1,23 +1,23 @@
 <?php
 
 /**
- * Controller. <Comment>
+ * Controller. Changing the content blocks page.
  *
- * @package <Package>.<Subpackage>.Controller
+ * @package Zero.Content.Controller
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
  * @version $Id$
  * @link http://www.phpzero.com/
  * @copyright <PHP_ZERO_COPYRIGHT>
  * @license http://www.phpzero.com/license/
  */
-class Zero_Controller_Edit extends Zero_Crud_Edit
+class Zero_Content_EditSection extends Zero_Crud_Edit
 {
     /**
      * The table stores the objects handled by this controller.
      *
      * @var string
      */
-    protected $Source = 'Zero_Model_Pattern';
+    protected $Source = 'Zero_Content';
 
     /**
      * Template view
@@ -42,15 +42,10 @@ class Zero_Controller_Edit extends Zero_Crud_Edit
     protected function Chunk_Init($action)
     {
         parent::Chunk_Init($action);
-        //  relation transition one to many (CL)
-        $this->Params['obj_parent_prop'] = 'relation_prop';
+        //  relation transition  one to many  (CL)
+        $this->Params['obj_parent_prop'] = 'Zero_Section_ID';
         $this->Params['obj_parent_id'] = Zero_App::$Route->Param['pid'];
         $this->Params['obj_parent_name'] = '';
-        //  relation transition many to many (CCL)
-        $this->Params['obj_parent_table'] = 'relation_table';
-        $this->Params['obj_parent_id'] = Zero_App::$Route->Param['pid'];
-        $this->Params['obj_parent_name'] = '';
-        //
         return true;
     }
 }

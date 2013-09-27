@@ -1,16 +1,16 @@
 <?php
 
 /**
- * Controller. <Comment>
+ * Controller. User Profile.
  *
- * @package <Package>.<Subpackage>.Controller
+ * @package Zero.Users.Controller
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
  * @version $Id$
  * @link http://www.phpzero.com/
  * @copyright <PHP_ZERO_COPYRIGHT>
  * @license http://www.phpzero.com/license/
  */
-class Zero_Controller_Sample extends Zero_Controller
+class Zero_Users_Profile extends Zero_Controller
 {
     /**
      * Initialization of the stack chunks and input parameters
@@ -22,8 +22,8 @@ class Zero_Controller_Sample extends Zero_Controller
     {
         $this->Set_Chunk('Action');
         $this->Set_Chunk('View');
-        $this->View = new Zero_View(__CLASS__);
-        $this->Model = Zero_Model::Make('Zero_Users');
+        $this->Model = Zero_Model::Make('Zero_Users', Zero_App::$Users->ID, true);
+        $this->View = new Zero_View(get_class($this));
         return true;
     }
 
@@ -35,17 +35,26 @@ class Zero_Controller_Sample extends Zero_Controller
      */
     protected function Chunk_View($action)
     {
-        $this->View->Assign('variable', 'value');
+        $this->View->Assign('Users', $this->Model);
         return true;
     }
 
     /**
-     * Some action.
+     * Changing a user profile.
      *
      * @return boolean flag run of the next chunk
      */
-    protected function Action_Name()
+    protected function Action_Profile()
     {
-        return true;
+        $this->Model->VL->Validate($_REQUEST['Users']);
+        if ( 0 < count($this->Model->VL->Get_Errors()) )
+        {
+            $this->View->Assign('Error_Validator', $this->Model->VL->Get_Errors());
+            return $this->Set_Message('Error_Validate', 1);
+        }
+        $this->Model->DB->Update();
+        Zero_App::$Users = $this->Model;
+        Zero_App::$Users->Factory_Set();
+        return $this->Set_Message("Profile", 0);
     }
 }

@@ -25,7 +25,7 @@ ini_set('display_startup_errors', 1);
 ini_set('magic_quotes_gpc', 0);
 
 require dirname(__DIR__) . '/class/App.php';
-require dirname(__DIR__) . '/class/Helper/FileSystem.php';
+require dirname(__DIR__) . '/class/Utility/FileSystem.php';
 $error_init_list = [];
 $message_install_list = [];
 
@@ -115,7 +115,7 @@ while ( isset($_REQUEST['act']) && 'Install_System' == $_REQUEST['act'] && 0 == 
     $arr = ini_get_all();
 
     //  Creating a filesystem structure. Copy the system and base  module
-    Zero_Helper_FileSystem::Folder_Copy(ZERO_PATH_SITE, __DIR__ . "/www");
+    Zero_Utility_FileSystem::Folder_Copy(ZERO_PATH_SITE, __DIR__ . "/www");
 
     //  Baseline configuration
     $config = file_get_contents(ZERO_PATH_SITE . '/config.php');
@@ -130,6 +130,8 @@ while ( isset($_REQUEST['act']) && 'Install_System' == $_REQUEST['act'] && 0 == 
     $config = str_replace('<DB_NAME>', $_REQUEST['db_name'], $config);
     $config = str_replace('<SITE_LANGDEFAULT>', $_REQUEST['lang'], $config);
     file_put_contents(ZERO_PATH_SITE . '/config.php', $config);
+
+    symlink(ZERO_PATH_PHPZERO, ZERO_PATH_APPLICATION . '/zero');
 
     $message_install_list[110] = "System install success full";
     $error_init_list[120] = 'system is already installed (remove /config.php)';

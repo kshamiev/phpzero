@@ -1,16 +1,16 @@
 <?php
 
 /**
- * Controller. <Comment>
+ * Controller. Modules
  *
- * @package <Package>.<Subpackage>.Controller
+ * @package Zero.System.Controller
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
  * @version $Id$
  * @link http://www.phpzero.com/
  * @copyright <PHP_ZERO_COPYRIGHT>
  * @license http://www.phpzero.com/license/
  */
-class Zero_Controller_Sample extends Zero_Controller
+class Zero_System_EditModules extends Zero_Controller
 {
     /**
      * Initialization of the stack chunks and input parameters
@@ -23,7 +23,8 @@ class Zero_Controller_Sample extends Zero_Controller
         $this->Set_Chunk('Action');
         $this->Set_Chunk('View');
         $this->View = new Zero_View(__CLASS__);
-        $this->Model = Zero_Model::Make('Zero_Users');
+        if ( isset($_REQUEST['obj_id']) )
+            $this->Params['module'] = $_REQUEST['obj_id'];
         return true;
     }
 
@@ -35,17 +36,9 @@ class Zero_Controller_Sample extends Zero_Controller
      */
     protected function Chunk_View($action)
     {
-        $this->View->Assign('variable', 'value');
-        return true;
-    }
-
-    /**
-     * Some action.
-     *
-     * @return boolean flag run of the next chunk
-     */
-    protected function Action_Name()
-    {
+        $module_config = Zero_Utility_FileSystem::Get_Config($this->Params['module']);
+        $this->View->Assign('module_config', $module_config);
+        $this->View->Assign('Section', Zero_App::$Section);
         return true;
     }
 }

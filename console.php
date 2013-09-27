@@ -65,7 +65,7 @@ if ( count($_SERVER['argv']) > 1 )
 
     $module = explode('_', $_SERVER['argv'][1])[0];
 
-    $arr = Zero_Helper_Modules::Get_Config_Set($module, 'console');
+    $arr = Zero_Utility_FileSystem::Get_Config($module, 'console');
     if ( !isset($arr[$_SERVER['argv'][1]]) )
     {
         Zero_Logs::Set_Message('undefined console script: ' . $_SERVER['argv'][1]);
@@ -88,7 +88,7 @@ else
     // check whether the process is running on a server
     exec("ps ax | grep -v 'grep' | grep -v 'cd ' | grep -v 'sudo ' | grep 'console.php '", $result);
     $result = join("\n", $result);
-    foreach (Zero_Helper_Modules::Get_Config_Set('', 'console') as $module)
+    foreach (Zero_Utility_FileSystem::Get_Config('', 'console') as $module)
     {
         foreach ($module as $sys_demon => $sys_cron)
         {

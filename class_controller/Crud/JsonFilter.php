@@ -1,16 +1,16 @@
 <?php
 
 /**
- * Controller. <Comment>
+ * Controller. Abstract plug-in filters to form via ajax
  *
- * @package <Package>.<Subpackage>.Controller
+ * @package Zero.Crud.Controller
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
  * @version $Id$
  * @link http://www.phpzero.com/
  * @copyright <PHP_ZERO_COPYRIGHT>
  * @license http://www.phpzero.com/license/
  */
-class Zero_Controller_Sample extends Zero_Controller
+class Zero_Crud_JsonFilter extends Zero_Controller
 {
     /**
      * Initialization of the stack chunks and input parameters
@@ -20,32 +20,23 @@ class Zero_Controller_Sample extends Zero_Controller
      */
     protected function Chunk_Init($action)
     {
-        $this->Set_Chunk('Action');
         $this->Set_Chunk('View');
-        $this->View = new Zero_View(__CLASS__);
-        $this->Model = Zero_Model::Make('Zero_Users');
-        return true;
     }
 
     /**
-     * Create views.
+     * Create filter for ajax query to json format
      *
      * @param string $action action
      * @return boolean flag run of the next chunk
      */
     protected function Chunk_View($action)
     {
-        $this->View->Assign('variable', 'value');
-        return true;
-    }
+        $Model = Zero_Model::Make(zero_relation($_REQUEST['source_name']));
+        $Model->DB->Sql_Where_Like('Name', $_REQUEST['search']);
 
-    /**
-     * Some action.
-     *
-     * @return boolean flag run of the next chunk
-     */
-    protected function Action_Name()
-    {
-        return true;
+        $this->View = new Zero_View;
+        $this->View->Assign('filter', $Model->DB->Select_List('ID, Name'));
+        Zero_App::$Response = 'json';
+        return false;
     }
 }

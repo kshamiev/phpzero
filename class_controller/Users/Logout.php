@@ -1,16 +1,16 @@
 <?php
 
 /**
- * Controller. <Comment>
+ * Controller. User exit.
  *
- * @package <Package>.<Subpackage>.Controller
+ * @package Zero.Users.Controller
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
  * @version $Id$
  * @link http://www.phpzero.com/
  * @copyright <PHP_ZERO_COPYRIGHT>
  * @license http://www.phpzero.com/license/
  */
-class Zero_Controller_Sample extends Zero_Controller
+class Zero_Users_Logout extends Zero_Controller
 {
     /**
      * Initialization of the stack chunks and input parameters
@@ -20,32 +20,22 @@ class Zero_Controller_Sample extends Zero_Controller
      */
     protected function Chunk_Init($action)
     {
-        $this->Set_Chunk('Action');
         $this->Set_Chunk('View');
-        $this->View = new Zero_View(__CLASS__);
-        $this->Model = Zero_Model::Make('Zero_Users');
-        return true;
     }
 
     /**
-     * Create views.
+     * User exit.
      *
      * @param string $action action
      * @return boolean flag run of the next chunk
      */
     protected function Chunk_View($action)
     {
-        $this->View->Assign('variable', 'value');
-        return true;
-    }
-
-    /**
-     * Some action.
-     *
-     * @return boolean flag run of the next chunk
-     */
-    protected function Action_Name()
-    {
+        Zero_Session::Unset_Instance();
+        session_unset();
+        session_destroy();
+        Zero_App::$Users = Zero_Model::Make('Zero_Users');
+        //        Zero_App::Redirect(Zero_App::$Config->Http);
         return true;
     }
 }

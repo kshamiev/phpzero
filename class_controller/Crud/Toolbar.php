@@ -1,16 +1,16 @@
 <?php
 
 /**
- * Controller. <Comment>
+ * Controller. Formation of abstract panel controllers actions.
  *
- * @package <Package>.<Subpackage>.Controller
+ * @package Zero.Crud.Controller
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
  * @version $Id$
  * @link http://www.phpzero.com/
  * @copyright <PHP_ZERO_COPYRIGHT>
  * @license http://www.phpzero.com/license/
  */
-class Zero_Controller_Sample extends Zero_Controller
+class Zero_Crud_Toolbar extends Zero_Controller
 {
     /**
      * Initialization of the stack chunks and input parameters
@@ -20,11 +20,7 @@ class Zero_Controller_Sample extends Zero_Controller
      */
     protected function Chunk_Init($action)
     {
-        $this->Set_Chunk('Action');
         $this->Set_Chunk('View');
-        $this->View = new Zero_View(__CLASS__);
-        $this->Model = Zero_Model::Make('Zero_Users');
-        return true;
     }
 
     /**
@@ -35,17 +31,12 @@ class Zero_Controller_Sample extends Zero_Controller
      */
     protected function Chunk_View($action)
     {
-        $this->View->Assign('variable', 'value');
-        return true;
-    }
-
-    /**
-     * Some action.
-     *
-     * @return boolean flag run of the next chunk
-     */
-    protected function Action_Name()
-    {
+        $this->View = new Zero_View(Zero_App::$Section->Controller . 'Toolbar');
+        $this->View->Template_Add('Zero_Crud_Toolbar');
+        foreach ($this->Params as $prop => $value)
+        {
+            $this->View->Assign($prop, $value);
+        }
         return true;
     }
 }
