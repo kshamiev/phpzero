@@ -81,6 +81,11 @@ class Zero_Logs
         self::$_StartTime = microtime(1);
         self::$_CurrentTime = [];
         self::$_FileLog = $file_log;
+
+        // Initialization of the profiled application processors
+        set_error_handler(['Zero_Logs', 'Error_Handler']);
+        set_exception_handler(['Zero_Logs', 'Exception_Handler']);
+        register_shutdown_function(['Zero_Logs', 'Exit_Application']);
     }
 
     /**

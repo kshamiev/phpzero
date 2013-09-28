@@ -344,9 +344,6 @@ class Zero_Config
 
         // Initialization of the profiled application processors
         spl_autoload_register(['Zero_App', 'Autoload']);
-        set_error_handler(['Zero_Logs', 'Error_Handler']);
-        set_exception_handler(['Zero_Logs', 'Exception_Handler']);
-        register_shutdown_function(['Zero_Logs', 'Exit_Application']);
     }
 }
 

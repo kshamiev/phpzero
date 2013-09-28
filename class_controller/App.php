@@ -146,7 +146,7 @@ class Zero_App
     /**
      * Application initialization
      *
-     * - Include Components (Zero_Logs, Zero_Config, Zero_Cache, Zero_Route, Zero_Session, Zero_View)
+     * - Include Components (Zero_Config, (Zero_Route,) Zero_Session, Zero_Cache, Zero_Logs, Zero_View)
      * - Monitoring of the work application. Component Zero_Logs
      * - The configuration and initialization of the application. Component Zero_Config
      * - Initialize cache subsystem. Component Zero_Cache
@@ -158,22 +158,16 @@ class Zero_App
     public static function Init($file_log = 'application')
     {
         //  Include Components
-        require_once ZERO_PATH_ZERO . '/class_controller/Logs.php';
         require_once ZERO_PATH_ZERO . '/class_controller/Config.php';
-        require_once ZERO_PATH_ZERO . '/class_controller/Cache.php';
         require_once ZERO_PATH_ZERO . '/class_controller/Session.php';
-
-        //  Initializing monitoring system (Zero_Logs)
-        Zero_Logs::Init($file_log);
+        require_once ZERO_PATH_ZERO . '/class_controller/Cache.php';
+        require_once ZERO_PATH_ZERO . '/class_controller/Logs.php';
 
         //  Configuration (Zero_Config)
         self::$Config = new Zero_Config();
-        $class_route = ucfirst(self::$Config->Host) . '_Route';
-
-        //  Initialize cache subsystem (Zero_Cache)
-        Zero_Cache::Init();
 
         //  Processing incoming request (Zero_Route)
+        $class_route = ucfirst(self::$Config->Host) . '_Route';
         if ( isset($_SERVER['REQUEST_URI']) )
         {
             $request_uri = rtrim(ltrim(explode('?', $_SERVER['REQUEST_URI'])[0], '/'), '/');
@@ -190,6 +184,12 @@ class Zero_App
             $Session = Zero_Session::Get_Instance();
         else
             Zero_Session::Set_Instance($Session);
+
+        //  Initialize cache subsystem (Zero_Cache)
+        Zero_Cache::Init();
+
+        //  Initializing monitoring system (Zero_Logs)
+        Zero_Logs::Init($file_log);
 
         //  Include Components
         require_once ZERO_PATH_ZERO . '/class_controller/View.php';

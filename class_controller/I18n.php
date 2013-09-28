@@ -33,8 +33,7 @@ class Zero_I18n
         $path = ZERO_PATH_APPLICATION . '/' . strtolower($folder_list[0]) . '/i18n/' . $lang . '/' . $folder_list[1] . '.php';
         if ( file_exists($path) )
             return $path;
-        if ( Zero_App::$Config->Log_Profile_Warning )
-            Zero_Logs::Set_Message('I18N NOT FOUND FILE: ' . strtolower($folder_list[0]) . '/i18n/' . $lang . '/' . $folder_list[1], 'warning');
+        Zero_Logs::Set_Message('I18N NOT FOUND FILE: ' . strtolower($folder_list[0]) . '/i18n/' . $lang . '/' . $folder_list[1], 'warning');
         return '';
     }
 
@@ -77,8 +76,7 @@ class Zero_I18n
                 return self::$_I18n[$file_name1]['translation ' . $key];
         }
         //
-        if ( Zero_App::$Config->Log_Profile_Warning )
-            Zero_Logs::Set_Message('I18N NOT FOUND KEY: ' . Zero_App::$Route->Lang . ' -> ' . $file_name . '->' . $key, 'warning');
+        Zero_Logs::Set_Message('I18N NOT FOUND KEY: ' . Zero_App::$Route->Lang . ' -> ' . $file_name . '->' . $key, 'warning');
         return $value_default;
     }
 }

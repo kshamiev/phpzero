@@ -58,7 +58,7 @@ class Zero_View
     /**
      * Reguliarnoe vy`razhenie dlia obrabotki direktiv include (html shablonov)
      */
-    const PATTERN_INCLUDE = '~\{include[ ]+[\'"]+([\w\d\/_]+)[\'"]+\}~si';
+    const PATTERN_INCLUDE = '~\{inc(?:lude)?[ ]+[\'"]+([\w\d\/_]+)[\'"]+\}~si';
 
     /**
      * Reguliarnoe vy`razhenie dlia obrabotki direktiv plugin
@@ -68,7 +68,7 @@ class Zero_View
     /**
      * Reguliarnoe vy`razhenie dlia obrabotki direktiv translation
      */
-    const PATTERN_TRANSLATION = '~\{translation[ ]+[\'"]+([\w\d_]+)[\'"]+[ ]+[\'"]+([^"\']+)[\'"]+\}~si';
+    const PATTERN_TRANSLATION = '~\{(?:translation|lang)[ ]+[\'"]+([\w\d_]+)[\'"]+[ ]+[\'"]+([^"\']+)[\'"]+\}~si';
 
     /**
      * Danny`e vstavliaemy`e v shablon
@@ -234,8 +234,7 @@ class Zero_View
             $template_log .= 'Not found template [APPLICATION] => ' . $template_exists . ".html <br>\n";
             if ( !file_exists(ZERO_PATH_SITE . '/' . $template_exists . '.html') )
             {
-                if ( Zero_App::$Config->Log_Profile_Warning )
-                    Zero_Logs::Set_Message($template_log, "warning");
+                Zero_Logs::Set_Message($template_log, "warning");
                 return '';
             }
         }
@@ -256,7 +255,7 @@ class Zero_View
         // parsing iazy`kovy`kh konstruktcii`
         $template = preg_replace_callback(self::PATTERN_TRANSLATION, [$this, '_Parsing_Translation'], $template);
         // parsing plaginov
-        $template = preg_replace_callback(self::PATTERN_PLUGIN, [$this, '_Parsing_Plugin'], $template);
+        $template = preg_replace_callback(self::PATTERN_PLUGIN, [$this, '_Parsing_Controller'], $template);
         //
         // Vy`rezaem sluzhebny`e kommentarii
         $template = preg_replace('~{#(.*?)#}~s', '', $template);
@@ -318,7 +317,7 @@ class Zero_View
      * @param array $matches parametry` tega, vziaty`e iz shablona
      * @return string
      */
-    private function _Parsing_Plugin($matches)
+    private function _Parsing_Controller($matches)
     {
         $plugin_name = $matches[1];
         $properties = isset($matches[2]) ? trim($matches[2]) : '';
