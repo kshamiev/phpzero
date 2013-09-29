@@ -16,7 +16,7 @@ class Zero_Crud_UploadFile extends Zero_Controller
      * Initialization of the stack chunks and input parameters
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_Init($action)
     {
@@ -27,7 +27,7 @@ class Zero_Crud_UploadFile extends Zero_Controller
      * Giving away a binary file or image from the database.
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      * @throws Exception
      */
     protected function Chunk_View($action)

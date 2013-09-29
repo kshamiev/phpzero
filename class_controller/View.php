@@ -193,7 +193,7 @@ class Zero_View
         }
         if ( '' == $html )
         {
-            Zero_Logs::Set_Message("Not found template [{" . implode(', ', $this->_Template) . "}]");
+            Zero_Logs::Set_Message("Not found layout or template [{" . implode(', ', $this->_Template) . "}]");
             return '';
         }
         if ( Zero_App::$Config->Site_TemplateParsing )

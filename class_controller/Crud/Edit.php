@@ -37,7 +37,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
      * Initialization of the stack chunks and input parameters
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_Init($action)
     {
@@ -46,14 +46,13 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         $this->Set_Chunk('View');
         $this->View = new Zero_View($this->Template);
         $this->Model = Zero_Model::Make($this->Source, Zero_App::$Route->Param['id'], true);
-        return true;
     }
 
     /**
      * Initialization filters
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_Filter($action)
     {
@@ -90,15 +89,13 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         //  Page by page
         if ( 0 < Zero_App::$Route->Param['pg'] )
             $Filter->Page = Zero_App::$Route->Param['pg'];
-
-        return true;
     }
 
     /**
      * Create views.
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      * @throws Exception
      */
     protected function Chunk_View($action)
@@ -137,13 +134,12 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         $this->View->Assign('Filter', $Filter->Get_Filter());
         //  Navigation parent
         $this->View->Assign('url_parent', (0 < Zero_App::$Route->Param['pid']) ? '-pid-' . Zero_App::$Route->Param['pid'] : '');
-        return true;
     }
 
     /**
      *  Adding an object
      *
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Action_Add()
     {
@@ -159,13 +155,12 @@ abstract class Zero_Crud_Edit extends Zero_Controller
             else
                 $this->Model->$prop = null;
         }
-        return true;
     }
 
     /**
      * Save object
      *
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Action_Save()
     {
@@ -194,19 +189,19 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         if ( 0 < count($this->Model->VL->Get_Errors()) )
         {
             $this->View->Assign('Error_Validator', $this->Model->VL->Get_Errors());
-            return $this->Set_Message('Error_Validate', 1);
+            return $this->Set_Message('Error_Validate', 1, false);
         }
 
         // Save
         if ( 0 < $this->Model->ID )
         {
             if ( false == $this->Model->DB->Update() )
-                return $this->Set_Message('Error_Save', 1);
+                return $this->Set_Message('Error_Save', 1, false);
         }
         else
         {
             if ( false == $this->Model->DB->Insert() )
-                return $this->Set_Message('Error_Save', 1);
+                return $this->Set_Message('Error_Save', 1, false);
 
             //  When you add an object having a cross (many to many) relationship with the parent object
             if ( isset($this->Params['obj_parent_table']) )
@@ -215,7 +210,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
                 $Object = Zero_Model::Make($this->Params['obj_parent_table'], $this->Params['obj_parent_id']);
                 //  creating a connection
                 if ( !$this->Model->DB->Insert_Cross($Object) )
-                    return $this->Set_Message('Error_Save', 1);
+                    return $this->Set_Message('Error_Save', 1, false);
             }
         }
 

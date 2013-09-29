@@ -18,7 +18,7 @@ class Zero_Content_Page extends Zero_Controller
      * Initialization of the stack chunks and input parameters
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_Init($action)
     {
@@ -29,7 +29,7 @@ class Zero_Content_Page extends Zero_Controller
      * Create views.
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_View($action)
     {
@@ -64,6 +64,5 @@ class Zero_Content_Page extends Zero_Controller
         {
             $this->View = $Content->Content;
         }
-        return true;
     }
 }

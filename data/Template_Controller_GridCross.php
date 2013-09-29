@@ -39,7 +39,7 @@ class Zero_Controller_Grid extends Zero_Crud_Grid
      * Initialization of the input parameters
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_Init($action)
     {
@@ -53,38 +53,38 @@ class Zero_Controller_Grid extends Zero_Crud_Grid
     /**
      * Making the connection (many to many) with the object
      *
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Action_Link_Add()
     {
         if ( !$_REQUEST['obj_id'] )
-            return $this->Set_Message('Error_ParamNot', 1);
+            return $this->Set_Message('Error_ParamNot', 1, false);
         //  target parent object
         $Object1 = Zero_Model::Make($this->Params['obj_parent_table'], $this->Params['obj_parent_id']);
         //  this object
         $Object2 = Zero_Model::Make($this->Source, $_REQUEST['obj_id']);
         //
         if ( !$Object1->DB->Insert_Cross($Object2) )
-            return $this->Set_Message('Error_ParamNot', 1);
+            return $this->Set_Message('Error_ParamNot', 1, false);
         return $this->Set_Message('Object_LinkAdd', 0);
     }
 
     /**
      * Unlink (many to many) with the object
      *
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Action_Link_Rem()
     {
         if ( !$_REQUEST['obj_id'] )
-            return $this->Set_Message('Error_Link_Rem', 1);
+            return $this->Set_Message('Error_Link_Rem', 1, false);
         //  target parent object
         $Object1 = Zero_Model::Make($this->Params['obj_parent_table'], $this->Params['obj_parent_id']);
         //  this object
         $Object2 = Zero_Model::Make($this->Source, $_REQUEST['obj_id']);
         //
         if ( !$Object1->DB->Delete_Cross($Object2) )
-            return $this->Set_Message('Error_Link_Rem', 1);
+            return $this->Set_Message('Error_Link_Rem', 1, false);
         return $this->Set_Message('Link_Rem', 0);
     }
 }

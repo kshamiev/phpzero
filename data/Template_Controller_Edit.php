@@ -37,7 +37,7 @@ class Zero_Controller_Edit extends Zero_Crud_Edit
      * Initialization of the input parameters
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_Init($action)
     {

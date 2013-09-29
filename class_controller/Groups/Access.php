@@ -9,6 +9,7 @@
  * @link http://www.phpzero.com/
  * @copyright <PHP_ZERO_COPYRIGHT>
  * @license http://www.phpzero.com/license/
+ * @todo Доработать права через раздел для группы
  */
 class Zero_Groups_Access extends Zero_Controller
 {
@@ -23,7 +24,7 @@ class Zero_Groups_Access extends Zero_Controller
      * Initialization of the stack chunks and input parameters
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_Init($action)
     {
@@ -34,14 +35,13 @@ class Zero_Groups_Access extends Zero_Controller
         $this->Params['obj_parent_prop'] = 'Zero_Groups_ID';
         $this->Params['obj_parent_id'] = Zero_App::$Route->Param['pid'];
         $this->Params['obj_parent_name'] = '';
-        return true;
     }
 
     /**
      * Create views.
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_View($action)
     {
@@ -89,13 +89,12 @@ class Zero_Groups_Access extends Zero_Controller
         $this->View->Assign('groups_list', $groups_list);
         //  Navigation parent
         $this->View->Assign('url_parent', (0 < Zero_App::$Route->Param['pid']) ? '-pid-' . Zero_App::$Route->Param['pid'] : '');
-        return true;
     }
 
     /**
      * Preservation of the rights of access
      *
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Action_Save()
     {
@@ -138,7 +137,7 @@ class Zero_Groups_Access extends Zero_Controller
     /**
      * Copying permissions
      *
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Action_Copy()
     {

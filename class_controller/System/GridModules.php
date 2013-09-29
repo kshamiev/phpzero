@@ -16,7 +16,7 @@ class Zero_System_GridModules extends Zero_Controller
      * Initialization of the stack chunks and input parameters
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_Init($action)
     {
@@ -37,15 +37,13 @@ class Zero_System_GridModules extends Zero_Controller
         //  Filter set
         if ( 'Filter_Set' == $action )
             $this->Chunk_Filter_Set($action);
-
-        return true;
     }
 
     /**
      * Filter set
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_Filter_Set($action)
     {
@@ -57,7 +55,7 @@ class Zero_System_GridModules extends Zero_Controller
      * Create views.
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_View($action)
     {
@@ -97,19 +95,18 @@ class Zero_System_GridModules extends Zero_Controller
         $this->View->Assign('Section', Zero_App::$Section);
         $this->View->Assign('Params', $this->Params);
         $this->View->Assign('PagerCount', count($modules_list));
-        return true;
     }
 
     /**
      * Module installed.
      *
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Action_Set()
     {
         $module = $_REQUEST['obj_id'];
         if ( file_exists(ZERO_PATH_APPLICATION . '/' . $module . '/setup/INSTALL') )
-            return $this->Set_Message('Module already installed', 1);
+            return $this->Set_Message('Module already installed', 1, false);
 
         if ( file_exists($path = ZERO_PATH_APPLICATION . '/' . $module . '/setup/install.php') )
             $subj = include $path;
@@ -117,7 +114,7 @@ class Zero_System_GridModules extends Zero_Controller
             $subj = 'Installer Not Found';
 
         if ( $subj )
-            return $this->Set_Message($subj, 1);
+            return $this->Set_Message($subj, 1, false);
         else
             return $this->Set_Message('Module installed', 0);
     }
@@ -125,29 +122,28 @@ class Zero_System_GridModules extends Zero_Controller
     /**
      * Module update
      *
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Action_Up()
     {
-        return true;
     }
 
     /**
      * Module remove.
      *
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Action_Rem()
     {
         $module = $_REQUEST['obj_id'];
         if ( !file_exists(ZERO_PATH_APPLICATION . '/' . $module . '/setup/INSTALL') )
-            return $this->Set_Message('Module already removed', 1);
+            return $this->Set_Message('Module already removed', 1, false);
 
         $module = $_REQUEST['obj_id'];
         if ( file_exists($path = ZERO_PATH_APPLICATION . '/' . $module . '/setup/remove.php') )
             include $path;
         else
             $this->Set_Message('DeInstaller Not Found', 1);
-        return true;
+        return false;
     }
 }

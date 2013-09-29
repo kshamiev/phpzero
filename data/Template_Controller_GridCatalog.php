@@ -39,7 +39,7 @@ class Zero_Controller_Grid extends Zero_Crud_Grid
      * Initialization of the input parameters
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_Init($action)
     {
@@ -58,12 +58,12 @@ class Zero_Controller_Grid extends Zero_Crud_Grid
     /**
      * Moving a node or branch of a tree branch in the current parent
      *
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Action_CatalogMove()
     {
         if ( !$_REQUEST['obj_id'] )
-            return $this->Set_Message('Error_NotParam', 1);
+            return $this->Set_Message('Error_NotParam', 1, false);
         $prop = $this->Params['obj_parent_prop'];
         $Object = Zero_Model::Make($this->Source, $_REQUEST['obj_id']);
         if ( 'NULL' == $this->Params['obj_parent_id'] )

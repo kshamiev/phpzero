@@ -9,6 +9,7 @@
  * @link http://www.phpzero.com/
  * @copyright <PHP_ZERO_COPYRIGHT>
  * @license http://www.phpzero.com/license/
+ * @todo Доработать - дполнить методами примерами валидации, фильтров, прямых запросов к БД ...
  *
  * <BEG_CONFIG_PROPERTY>
  * <END_CONFIG_PROPERTY>

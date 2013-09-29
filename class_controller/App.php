@@ -215,11 +215,15 @@ class Zero_App
     {
         Zero_Logs::Start('#{APP.Full}');
         Zero_Logs::Start('#{APP.Main}');
-        //  Absolute system host is not defined (domain is not defined)
-        /*
-        if ( !self::$Config->Host )
-            throw new Exception('Not Found', 404);
-        */
+
+        //  Initialize the controller action
+        $_REQUEST['act'] = (isset($_REQUEST['act'])) ? $_REQUEST['act'] : '';
+
+        // Initialize the controller messages
+        self::Set_Variable('action_message', []);
+
+        //  Initialize the type response
+        self::$Response = (isset($_REQUEST['ajax'])) ? $_REQUEST['ajax'] : 'html';
 
         //  Инициализация запрошенного раздела (Zero_Section)
         self::$Section = Zero_Model::Instance('Zero_Section');
@@ -236,16 +240,8 @@ class Zero_App
         //  Checking the rights to the current section
         else if ( 'yes' == self::$Section->IsAuthorized && 1 < self::$Users->Zero_Groups_ID && 0 == count(self::$Section->Get_Action_List()) )
             throw new Exception('Access Denied', 403);
-        //        pre(self::$Section->IsEnabled);
 
-        //  Initialize the controller action
-        $_REQUEST['act'] = (isset($_REQUEST['act'])) ? $_REQUEST['act'] : '';
-        self::$Response = (isset($_REQUEST['ajax'])) ? $_REQUEST['ajax'] : 'html';
-
-        // Controller initialization messages
-        Zero_App::Set_Variable('action_message', []);
-
-        //  Execute controller or plugin
+        //  Execute controller
         $output = '';
         if ( self::$Section->Controller )
         {

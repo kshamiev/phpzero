@@ -16,7 +16,7 @@ class Zero_Users_Reminder extends Zero_Controller
      * Initialization of the stack chunks and input parameters
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_Init($action)
     {
@@ -24,25 +24,23 @@ class Zero_Users_Reminder extends Zero_Controller
         $this->Set_Chunk('View');
         $this->Model = Zero_Model::Make('Zero_Users');
         $this->View = new Zero_View(get_class($this));
-        return true;
     }
 
     /**
      * Create views.
      *
      * @param string $action действие контроллера
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_View($action)
     {
         $this->View->Assign('UsersReminder', $this->Model);
-        return true;
     }
 
     /**
      * Recovery of user details.
      *
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Action_Reminder()
     {
@@ -50,7 +48,7 @@ class Zero_Users_Reminder extends Zero_Controller
         if ( 0 < count($this->Model->VL->Get_Errors()) )
         {
             $this->View->Assign('Error_Validator', $this->Model->VL->Get_Errors());
-            return $this->Set_Message('Error_Validate', 1);
+            return $this->Set_Message('Error_Validate', 1, false);
         }
 
         $this->Model->DB->Sql_Where('Email', '=', $_REQUEST['Users']['Email']);

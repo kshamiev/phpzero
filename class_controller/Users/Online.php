@@ -19,7 +19,7 @@ class Zero_Users_Online extends Zero_Controller
      * Initialization of the stack chunks and input parameters
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_Init($action)
     {
@@ -32,7 +32,7 @@ class Zero_Users_Online extends Zero_Controller
      * Update the date and time of the presence of the current user
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_View($action)
     {
@@ -51,6 +51,5 @@ class Zero_Users_Online extends Zero_Controller
             $Model->DateOnline = Zero_App::$Users->DateOnline;
             $Model->DB->Update();
         }
-        return true;
     }
 }

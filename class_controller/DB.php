@@ -203,7 +203,7 @@ class Zero_DB
                     break;
                 }
             }
-//            echo $v . " = " . $arr[$k] . "<br>";
+            //            echo $v . " = " . $arr[$k] . "<br>";
         }
         return preg_replace($match[1], $arr, $sql, 1);
     }
@@ -1026,6 +1026,7 @@ class Zero_DB
      * @param string $props stroka zagruzhaemy`kh svoi`stv cherez zapiatuiu s probelom
      * @param bool $flag_param_reset flag sbrosa parametrov posle zaprosa
      * @return array Nai`denny`e danny`e v vide spiska
+     * @todo rename Select_List_Index
      */
     public function Select_List($props, $flag_param_reset = true)
     {
@@ -1382,7 +1383,10 @@ class Zero_DB
         if ( 0 < $this->Model->ID )
             $this->Sql_Where('ID', '=', $this->Model->ID);
         else if ( empty($this->Params['Where']) )
+        {
+            Zero_Logs::Set_Message("Error Load: {$this->Model->Source} SqlWhere is empty");
             return false;
+        }
         $row = $this->Select($props, 'row');
         if ( 0 == count($row) )
         {
@@ -1415,8 +1419,10 @@ class Zero_DB
     public function Load_Cache($props, $time = 0, $is_lang = false)
     {
         if ( !$this->Model->ID )
-            Zero_Logs::Set_Message('Error Cache: Object ID is 0');
-
+        {
+            Zero_Logs::Set_Message("Error Load_Cache: {$this->Model->Source} ID is 0");
+            return false;
+        }
         $index = str_replace(',', '', $props);
         $index = str_replace(' ', '', $index);
         $index = str_replace('*', '__ALL__', $index);

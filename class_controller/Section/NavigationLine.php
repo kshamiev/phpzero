@@ -18,7 +18,7 @@ class Zero_Section_NavigationLine extends Zero_Controller
      * Initialization of the stack chunks and input parameters
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_Init($action)
     {
@@ -29,7 +29,7 @@ class Zero_Section_NavigationLine extends Zero_Controller
      * Create views.
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_View($action)
     {
@@ -68,6 +68,5 @@ class Zero_Section_NavigationLine extends Zero_Controller
         $this->View->Assign('Section', Zero_App::$Section);
         $this->View->Assign('navigation', $navigation);
         $this->View->Assign('action_message', Zero_App::Get_Variable('action_message'));
-        return true;
     }
 }

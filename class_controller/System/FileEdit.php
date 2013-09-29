@@ -16,7 +16,7 @@ class Zero_System_FileEdit extends Zero_Controller
      * Initialization of the stack chunks and input parameters
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_Init($action)
     {
@@ -27,14 +27,13 @@ class Zero_System_FileEdit extends Zero_Controller
             $this->Params['obj_parent_path'] = $_REQUEST['path'];
         if ( isset($_REQUEST['file_name']) )
             $this->Params['file_name'] = $_REQUEST['file_name'];
-        return true;
     }
 
     /**
      * Create views.
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_View($action)
     {
@@ -43,13 +42,12 @@ class Zero_System_FileEdit extends Zero_Controller
         $this->View->Assign('path', $this->Params['obj_parent_path'] . '/' . $this->Params['file_name']);
         $this->View->Assign('name', $this->Params['file_name']);
         $this->View->Assign('data', file_get_contents($this->Params['obj_parent_path'] . '/' . $this->Params['file_name']));
-        return true;
     }
 
     /**
      * Save a text file.
      *
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Action_FileSave()
     {

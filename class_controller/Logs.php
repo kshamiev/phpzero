@@ -206,6 +206,7 @@ class Zero_Logs
         }
 
         ob_end_clean();
+
         $View = new Zero_View('Error');
         $View->Assign('http_status', $exception->getCode());
         echo $View->Fetch();

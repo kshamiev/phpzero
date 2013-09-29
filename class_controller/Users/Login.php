@@ -16,34 +16,41 @@ class Zero_Users_Login extends Zero_Controller
      * Initialization of the stack chunks and input parameters
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_Init($action)
     {
-        $this->Set_Chunk('Action');
         $this->Set_Chunk('View');
         $this->View = new Zero_View(get_class($this));
-        return true;
     }
 
     /**
      * Create views.
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_View($action)
     {
+        if ( 'Login' == $action )
+        {
+            if ( false == $this->Chunk_Login() )
+                Zero_App::Redirect(Zero_App::$Config->Http . '/user');
+        }
+        else if ( 'Logout' == $action )
+        {
+            $this->Chunk_Logout();
+            Zero_App::Redirect(Zero_App::$Config->Http);
+        }
         $this->View->Assign('Users', Zero_App::$Users);
-        return true;
     }
 
     /**
      * User authentication.
      *
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
-    protected function Action_Login()
+    protected function Chunk_Login()
     {
         if ( !$_REQUEST['Login'] || !$_REQUEST['Password'] )
             return true;
@@ -62,6 +69,19 @@ class Zero_Users_Login extends Zero_Controller
 
         Zero_App::$Users = $Users;
         Zero_App::$Users->Factory_Set();
-        return $this->Set_Message("Success Login", 0);
+        return false;
+    }
+
+    /**
+     * User exit.
+     *
+     * @return boolean flag stop execute of the next chunk
+     */
+    protected function Chunk_Logout()
+    {
+        Zero_Session::Unset_Instance();
+        session_unset();
+        session_destroy();
+        Zero_App::$Users = Zero_Model::Make('Zero_Users');
     }
 }

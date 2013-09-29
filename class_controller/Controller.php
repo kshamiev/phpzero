@@ -118,15 +118,19 @@ abstract class Zero_Controller
      *
      * @param string $message soobshchenie
      * @param int $code kod soobshcheniia
-     * @return bool
+     * @param bool $flag_return учитывать код сообщения ($code) как возвращаемое значение
+     * @return int
      */
-    public function Set_Message($message = '', $code = 1)
+    public function Set_Message($message = '', $code = 1, $flag_return = true)
     {
         if ( !$message && !$code )
             self::$_Message = [];
         else
             self::$_Message[$message] = [$code];
-        return true;
+        if ( true == $flag_return )
+            return $code;
+        else
+            return 0;
     }
 
     /**
@@ -206,8 +210,14 @@ abstract class Zero_Controller
             $flag = $this->$chunk($action);
             Zero_Logs::Stop('#{CONTROLLER.Chunk} ' . $chunk);
 
-            if ( false === $flag )
+            if ( true == $flag )
                 break;
+        }
+        //  Сообщения резултатов работы контроллера
+        if ( $this->View instanceof Zero_View )
+        {
+            $this->View->Assign('action_message', $this->Get_Message());
+            $this->View->Assign('Action', Zero_App::$Section->Get_Action_List());
         }
         return $this->View;
     }
@@ -227,7 +237,7 @@ abstract class Zero_Controller
      * Vy`polnenie dei`stvii`
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     final protected function Chunk_Action($action)
     {
@@ -235,7 +245,7 @@ abstract class Zero_Controller
         $Action_List = Zero_App::$Section->Get_Action_List();
 
         //  Vy`polnenie dei`stvii`
-        $flag = true;
+        $flag = false;
         if ( isset($Action_List[$action]) )
         {
             $action = 'Action_' . $action;
@@ -244,13 +254,6 @@ abstract class Zero_Controller
 
         //  Sokhraniaem v prilozhenie soobshcheniia dei`stvii` kontrollera dlia posleduiushchego tcelevogo vy`voda
         Zero_App::Set_Variable('action_message', $this->Get_Message());
-
-        //  Peredaem spisok dei`stvii` v predstavlenie esli ono est`
-        if ( $this->View instanceof Zero_View )
-        {
-            $this->View->Assign('Action', $Action_List);
-            $this->View->Assign('action_message', $this->Get_Message());
-        }
         return $flag;
     }
 }

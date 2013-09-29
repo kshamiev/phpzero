@@ -37,7 +37,7 @@ class Zero_Content_GridLayout extends Zero_Crud_Grid
      * Initialization of the input parameters
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_Init($action)
     {
@@ -47,6 +47,5 @@ class Zero_Content_GridLayout extends Zero_Crud_Grid
         $this->Params['obj_parent_prop'] = 'Zero_Layout_ID';
         $this->Params['obj_parent_id'] = Zero_App::$Route->Param['pid'];
         $this->Params['obj_parent_name'] = '';
-        return true;
     }
 }

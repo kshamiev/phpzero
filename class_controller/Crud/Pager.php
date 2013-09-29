@@ -18,7 +18,7 @@ class Zero_Crud_Pager extends Zero_Controller
      * Initialization of the stack chunks and input parameters
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_Init($action)
     {
@@ -29,7 +29,7 @@ class Zero_Crud_Pager extends Zero_Controller
      * Create views.
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_View($action)
     {
@@ -96,6 +96,5 @@ class Zero_Crud_Pager extends Zero_Controller
         $this->View->Assign('StepRight', $StepRight);
         $this->View->Assign('PageEnd', $page_count);
         $this->View->Assign('url_parent', (0 < Zero_App::$Route->Param['pid']) ? '-pid-' . Zero_App::$Route->Param['pid'] : '');
-        return true;
     }
 }

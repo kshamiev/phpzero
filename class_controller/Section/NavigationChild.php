@@ -18,7 +18,7 @@ class Zero_Section_NavigationChild extends Zero_Controller
      * Initialization of the stack chunks and input parameters
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_Init($action)
     {
@@ -29,7 +29,7 @@ class Zero_Section_NavigationChild extends Zero_Controller
      * Navigating the subsections of the current section.
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_View($action)
     {
@@ -50,6 +50,5 @@ class Zero_Section_NavigationChild extends Zero_Controller
             $this->View = new Zero_View(get_class($this));
         $this->View->Assign('Section', Zero_App::$Section);
         $this->View->Assign('navigation', $navigation);
-        return true;
     }
 }

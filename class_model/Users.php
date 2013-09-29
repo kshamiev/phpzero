@@ -267,7 +267,7 @@ class Zero_Users extends Zero_Model
      * Tai`maut ne aktivny`kh pol`zovatelei` 10 minut.
      * V dal`nei`shem e`tot parametr mozhno zavesti v konfiguratciiu sai`ta i regulirovat`.
      * @param integer $seconds Tai`maut v sekundakh po istechenii kotorogo pol`zovatel` schitaetsia pokinuvshim sai`t
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     public static function DB_Offline($seconds = 600)
     {

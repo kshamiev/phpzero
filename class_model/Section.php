@@ -291,6 +291,8 @@ class Zero_Section extends Zero_Model
     {
         if ( is_null($this->_Action_List) )
         {
+            if ( 0 == $this->ID )
+                return $this->_Action_List = [];
             $index_cache = 'Action_List_' . Zero_App::$Users->Zero_Groups_ID . '_' . $this->Controller;
             if ( false === $this->_Action_List = $this->Cache->Get($index_cache) )
             {
@@ -521,7 +523,7 @@ class Zero_Section extends Zero_Model
         $module = strtolower(array_shift($arr));
         $class = implode('/', $arr);
         if ( !file_exists($path = ZERO_PATH_APPLICATION . '/' . $module . '/class_controller/' . $class . '.php') )
-                return 'Error_Path_Class';
+            return 'Error_Path_Class';
         if ( !preg_match("~\nclass {$value}~si", file_get_contents($path)) )
             return 'Error_Class_Exists';
         $this->Controller = $value;

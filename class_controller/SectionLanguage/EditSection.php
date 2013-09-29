@@ -39,7 +39,7 @@ class Zero_SectionLanguage_EditSection extends Zero_Crud_Edit
      * При изменение объектов без переходов по свяи (один ко многим) этот чанк нужно удалить или изменить
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_Init($action)
     {
@@ -48,6 +48,5 @@ class Zero_SectionLanguage_EditSection extends Zero_Crud_Edit
         $this->Params['obj_parent_prop'] = 'Zero_Section_ID';
         $this->Params['obj_parent_id'] = Zero_App::$Route->Param['pid'];
         $this->Params['obj_parent_name'] = '';
-        return true;
     }
 }

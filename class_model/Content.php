@@ -110,7 +110,7 @@ class Zero_Content extends Zero_Model
             'Zero_Language_ID' => ['Filter' => 'Link', 'Search' => '', 'Sort' => false],
             'Name' => ['Filter' => '', 'Search' => 'Text', 'Sort' => false],
             'Content' => ['Filter' => '', 'Search' => 'Text', 'Sort' => false],
-            'Block' => ['Filter' => 'Select', 'Search' => '', 'Sort' => false],
+//            'Block' => ['Filter' => 'Select', 'Search' => '', 'Sort' => false],
             /*END_CONFIG_FILTER_PROP*/
         ];
     }
@@ -159,7 +159,7 @@ class Zero_Content extends Zero_Model
             'Zero_Language_ID' => array('Form' => 'Link', 'IsNull' => 'NO'),
             'Name' => array('Form' => 'Text', 'IsNull' => 'YES'),
             'Content' => array('Form' => 'Content', 'IsNull' => 'YES'),
-            'Block' => array('Form' => 'Select', 'IsNull' => 'NO'),
+            'Block' => array('Form' => 'Text', 'IsNull' => 'NO'),
             /*END_CONFIG_FORM_PROP*/
         ];
     }

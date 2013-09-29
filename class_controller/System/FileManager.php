@@ -22,7 +22,7 @@ class Zero_System_FileManager extends Zero_Controller
      * Initialization of the stack chunks and input parameters
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_Init($action)
     {
@@ -31,14 +31,13 @@ class Zero_System_FileManager extends Zero_Controller
         $this->View = new Zero_View(__CLASS__);
         if ( !isset($this->Params['obj_parent_path']) )
             $this->Params['obj_parent_path'] = array('..' => ZERO_PATH_SITE);
-        return true;
     }
 
     /**
      * Create views.
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_View($action)
     {
@@ -76,13 +75,12 @@ class Zero_System_FileManager extends Zero_Controller
         $this->View->Assign('DataCount', count($folder_mas) + count($files_mas));
         //  Allowed file extensions to edit
         $this->View->Assign('file_edit_flag', array('txt', 'ini', 'log', 'php', 'htm', 'html', 'css', 'js'));
-        return true;
     }
 
     /**
      * Move to one level up or down for catalogs
      *
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Action_FolderGo()
     {
@@ -104,18 +102,17 @@ class Zero_System_FileManager extends Zero_Controller
             $path = end($this->Params['obj_parent_path']);
             $this->Params['obj_parent_path'][$_REQUEST['dir_name']] = $path . '/' . $_REQUEST['dir_name'];
         }
-        return true;
     }
 
     /**
      * Delete the folder and its contents
      *
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Action_FolderRemove()
     {
         if ( !$_REQUEST['dir_name'] )
-            return $this->Set_Message('Error_FolderRemove', 1);
+            return $this->Set_Message('Error_FolderRemove', 1, false);
         $path = end($this->Params['obj_parent_path']) . '/' . $_REQUEST['dir_name'];
         Zero_Utility_FileSystem::Folder_Remove($path);
         return $this->Set_Message('FolderRemove', 0);
@@ -124,12 +121,12 @@ class Zero_System_FileManager extends Zero_Controller
     /**
      * Deleting a file
      *
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Action_FileRemove()
     {
         if ( !$_REQUEST['file_name'] )
-            return $this->Set_Message('Error_FileRemove', 1);
+            return $this->Set_Message('Error_FileRemove', 1, false);
         $path = end($this->Params['obj_parent_path']) . '/' . $_REQUEST['file_name'];
         unlink($path);
         return $this->Set_Message('FileRemove', 0);
@@ -148,7 +145,7 @@ class Zero_System_FileManager extends Zero_Controller
     /**
      * Download the file to the server
      *
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Action_FileUpload()
     {
@@ -158,7 +155,7 @@ class Zero_System_FileManager extends Zero_Controller
             if ( !is_uploaded_file($_FILES['FileUpload']['tmp_name']) || 0 != $_FILES['FileUpload']['error'] )
             {
                 Zero_Logs::Set_Message("файловый менеджер - {$_FILES['FileUpload']['error']}");
-                return $this->Set_Message('Error_FileUpload', 1);
+                return $this->Set_Message('Error_FileUpload', 1, false);
             }
             $filename = Zero_Utility_String::Transliteration_FileName($_FILES['FileUpload']['name']);
             $path = end($this->Params['obj_parent_path']) . '/' . $filename;
@@ -166,18 +163,17 @@ class Zero_System_FileManager extends Zero_Controller
             chmod($path, 0666);
             return $this->Set_Message('FileUpload', 0);
         }
-        return true;
     }
 
     /**
      * Creating a folder
      *
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Action_FolderAdd()
     {
         if ( !isset($_REQUEST['FolderName']) || !$_REQUEST['FolderName'] )
-            return $this->Set_Message('Error_FolderAdd', 1);
+            return $this->Set_Message('Error_FolderAdd', 1, false);
         $path = end($this->Params['obj_parent_path']) . '/' . Zero_Utility_String::Transliteration_FileName($_REQUEST['FolderName']);
         mkdir($path);
         chmod($path, 0777);
@@ -187,10 +183,9 @@ class Zero_System_FileManager extends Zero_Controller
     /**
      * Change the file
      *
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Action_EditFile()
     {
-        return true;
     }
 }

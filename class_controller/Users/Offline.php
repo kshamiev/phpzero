@@ -16,7 +16,7 @@ class Zero_Users_Offline extends Zero_Controller
      * Initialization of the stack chunks and input parameters
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_Init($action)
     {
@@ -27,11 +27,10 @@ class Zero_Users_Offline extends Zero_Controller
      * Initialize the online status is not active users.
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_View($action)
     {
         Zero_Users::DB_Offline(Zero_App::$Config->Site_UsersTimeoutOnline);
-        return true;
     }
 }

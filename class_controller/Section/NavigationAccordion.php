@@ -19,7 +19,7 @@ class Zero_Section_NavigationAccordion extends Zero_Controller
      * Initialization of the stack chunks and input parameters
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_Init($action)
     {
@@ -30,7 +30,7 @@ class Zero_Section_NavigationAccordion extends Zero_Controller
      * Formation of a two tier navigation through the main sections of the site.
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_View($action)
     {
@@ -53,6 +53,5 @@ class Zero_Section_NavigationAccordion extends Zero_Controller
             $this->View = new Zero_View(get_class($this));
         $this->View->Assign('Section', Zero_App::$Section);
         $this->View->Assign('navigation', $navigation);
-        return true;
     }
 }

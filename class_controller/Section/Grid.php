@@ -39,7 +39,7 @@ class Zero_Section_Grid extends Zero_Crud_Grid
      * Initialization of the input parameters
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_Init($action)
     {
@@ -52,7 +52,6 @@ class Zero_Section_Grid extends Zero_Crud_Grid
             $this->Params['obj_parent_name'] = '';
             $this->Params['obj_parent_path'] = ['root'];
         }
-        return true;
     }
 
     /**
@@ -60,12 +59,12 @@ class Zero_Section_Grid extends Zero_Crud_Grid
      *
      * Moving a node or branch of a tree branch in the current parent
      *
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Action_CatalogMove()
     {
         if ( !$_REQUEST['obj_id'] )
-            return $this->Set_Message('Error_NotParam', 1);
+            return $this->Set_Message('Error_NotParam', 1, false);
         $prop = $this->Params['obj_parent_prop'];
         $Object = Zero_Model::Make($this->Source, $_REQUEST['obj_id']);
         if ( 'NULL' == $this->Params['obj_parent_id'] )
@@ -83,19 +82,19 @@ class Zero_Section_Grid extends Zero_Crud_Grid
      * - After changing the links, move a catalog, the new installation
      *
      * @param integer $section_id ID of the parent directory
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Action_Update_Url($section_id = null)
     {
         if ( !$section_id )
         {
             if ( !$this->Params['obj_parent_id'] )
-                return $this->Set_Message('Error_Update_Url', 1);
+                return $this->Set_Message('Error_Update_Url', 1, false);
             $section_id = $this->Params['obj_parent_id'];
         }
         if ( true == Zero_Section::DB_Update_Url($section_id) )
             return $this->Set_Message('Update_Url', 0);
         else
-            return $this->Set_Message('Error_Update_Url', 1);
+            return $this->Set_Message('Error_Update_Url', 1, false);
     }
 }

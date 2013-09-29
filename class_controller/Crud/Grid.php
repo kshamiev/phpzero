@@ -37,7 +37,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
      * Initialization of the stack chunks and input parameters
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_Init($action)
     {
@@ -46,14 +46,13 @@ abstract class Zero_Crud_Grid extends Zero_Controller
         $this->Set_Chunk('View');
         $this->View = new Zero_View($this->Template);
         $this->Model = Zero_Model::Make($this->Source);
-        return true;
     }
 
     /**
      * Move to one level up or down for catalogs
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_View_CatalogGo($action)
     {
@@ -79,14 +78,13 @@ abstract class Zero_Crud_Grid extends Zero_Controller
             unset($ObjectGo);
         }
         Zero_Filter::Factory($this->Model)->Page = 1;
-        return true;
     }
 
     /**
      * Creating the conditions for obtaining the necessary data
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_View_SqlWhere($action)
     {
@@ -122,14 +120,13 @@ abstract class Zero_Crud_Grid extends Zero_Controller
             }
             unset($users_condition);
         }
-        return true;
     }
 
     /**
      * Initialization and set filters
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_Filter($action)
     {
@@ -178,15 +175,13 @@ abstract class Zero_Crud_Grid extends Zero_Controller
         //  Set
         if ( 'Filter_Set' == $action )
             $this->Chunk_Filter_Set($action);
-
-        return true;
     }
 
     /**
      * Set Filters
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_Filter_Set($action)
     {
@@ -230,14 +225,13 @@ abstract class Zero_Crud_Grid extends Zero_Controller
             $Filter->Set_Sort();
             $Filter->Set_Sort($_REQUEST['Sort']['Prop'], $_REQUEST['Sort']['Value']);
         }
-        return true;
     }
 
     /**
      * Create views.
      *
      * @param string $action action
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_View($action)
     {
@@ -297,7 +291,6 @@ abstract class Zero_Crud_Grid extends Zero_Controller
         $this->View->Assign('Sort', $Filter->Get_Sort());
         //  Navigation parent
         $this->View->Assign('url_parent', (0 < Zero_App::$Route->Param['pid']) ? '-pid-' . Zero_App::$Route->Param['pid'] : '');
-        return true;
     }
 
     /**
@@ -308,7 +301,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
      * - Remove binary data object
      * - Remove cross relation
      *
-     * @return boolean flag run of the next chunk
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Action_Remove()
     {
@@ -325,6 +318,6 @@ abstract class Zero_Crud_Grid extends Zero_Controller
         if ( $ObjectRem->DB->Delete() )
             return $this->Set_Message('Remove', 0);
         else
-            return $this->Set_Message('Error_Remove', 1);
+            return $this->Set_Message('Error_Remove', 1, false);
     }
 }

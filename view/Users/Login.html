@@ -1,9 +1,16 @@
-<script language="Javascript">
-    <!--
-    if ( 0 < {$Users->ID} )
-        document.location.href = "/user";
-    //-->
-</script>
+{if ( 0 < $Users->ID )}
+<table width="100%" cellspacing="0" cellpadding="2" border="0">
+    <form action="{URL}" method="post">
+        <input type="hidden" name="act" value="Logout">
+        <tr align="center">
+            <td>
+                <input class="btn" type="submit" value="{translation "Zero_Users" "exit"}" style="text-underline-position: auto;"><br>
+                <a href="/user">{lang "Zero_Users" "profile"}</a>
+            </td>
+        </tr>
+    </form>
+</table>
+{else}
 <p align="center" class="message-system">&nbsp;
     {foreach ($action_message as $message)}
     <span{if ( 1 == $message[0] )} class="subj_error"{/if}>{$message[1]}</span><br>
@@ -36,8 +43,9 @@
             <td colspan="2" align="center">
                 <a href="/user/registration">{translation "Zero_Users" "Registration"}</a>
                 |
-                <a href="user/reminder">{translation "Zero_Users" "Reminder"}</a>
+                <a href="/user/reminder">{translation "Zero_Users" "Reminder"}</a>
             </td>
         </tr>
     </table>
 </form>
+{/if}
