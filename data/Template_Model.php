@@ -9,7 +9,6 @@
  * @link http://www.phpzero.com/
  * @copyright <PHP_ZERO_COPYRIGHT>
  * @license http://www.phpzero.com/license/
- * @todo Доработать - дполнить методами примерами валидации, фильтров, прямых запросов к БД ...
  *
  * <BEG_CONFIG_PROPERTY>
  * <END_CONFIG_PROPERTY>
@@ -136,7 +135,7 @@ class Zero_Model_Pattern extends Zero_Model
     }
 
     /**
-     * The total initial validation properties
+     * Sample. The total initial validation properties
      *
      * @param array $data verifiable data array
      * @param string $scenario scenario validation
@@ -148,12 +147,33 @@ class Zero_Model_Pattern extends Zero_Model
     }
 
     /**
-     * Total final validation properties
+     * Sample. Total final validation properties
      *
      * @param array $data verifiable data array
      * @param string $scenario scenario validation
      */
     public function Validate_After($data, $scenario)
     {
+    }
+
+    /**
+     * Sample. Filter for property.
+     *
+     * @return array
+     */
+    public function FL_PropNameSample()
+    {
+        return [];
+    }
+
+    /**
+     * Sample. Direct query to the database
+     *
+     * @param mixed Any parameter
+     * @return array
+     */
+    public static function DB_QueryNameSample($param)
+    {
+        return [];
     }
 }

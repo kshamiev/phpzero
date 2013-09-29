@@ -210,7 +210,7 @@ class Zero_Filter
                 if ( 0 < $id = explode('_', $prop)[2] )
                     $Model->DB->Sql_Where('Zero_Groups_ID', '=', $id);
                 $Model->DB->Sql_Order('Name', 'ASC');
-                $this->Filter[$prop]['List'] = $Model->DB->Select_List('ID, Name');
+                $this->Filter[$prop]['List'] = $Model->DB->Select_List_Index('ID, Name');
             }
         }
         return true;

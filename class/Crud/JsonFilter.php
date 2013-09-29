@@ -35,7 +35,7 @@ class Zero_Crud_JsonFilter extends Zero_Controller
         $Model->DB->Sql_Where_Like('Name', $_REQUEST['search']);
 
         $this->View = new Zero_View;
-        $this->View->Assign('filter', $Model->DB->Select_List('ID, Name'));
+        $this->View->Assign('filter', $Model->DB->Select_List_Index('ID, Name'));
         Zero_App::$Response = 'json';
         return false;
     }

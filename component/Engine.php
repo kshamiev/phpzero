@@ -294,7 +294,7 @@ class Zero_Engine
     {
         $class_name = str_replace('_', '/', $class_name);
         $str_pos = strpos($class_name, '/');
-        return ZERO_PATH_APPLICATION . '/' . substr($class_name, 0, $str_pos) . '/class_model' . substr($class_name, $str_pos) . '.php';
+        return ZERO_PATH_APPLICATION . '/' . substr($class_name, 0, $str_pos) . '/class' . substr($class_name, $str_pos) . '.php';
     }
 
     /**
@@ -333,10 +333,7 @@ class Zero_Engine
         $dir1 = $dir . '/class';
         if ( !is_dir($dir1) )
             mkdir($dir1);
-        $dir1 = $dir . '/class_controller';
-        if ( !is_dir($dir1) )
-            mkdir($dir1);
-        $dir1 = $dir . '/class_model';
+        $dir1 = $dir . '/component';
         if ( !is_dir($dir1) )
             mkdir($dir1);
         $dir1 = $dir . '/config';
@@ -404,7 +401,6 @@ class Zero_Engine
             $this->Config_Model_Link($row['Name']);
             //  Kontroller spiska
             $path_target = substr($path_model, 0, -4) . '/Grid.php';
-            $path_target = str_replace("_model", "_controller", $path_target);
             if ( $flag_grid && !file_exists($path_target) )
             {
                 //          echo 'CREATE CONTROLLER ' . $path_target . '<br>';
@@ -441,7 +437,6 @@ class Zero_Engine
             }
             //  Kontroller redaktirovaniia
             $path_target = substr($path_model, 0, -4) . '/Edit.php';
-            $path_target = str_replace("_model", "_controller", $path_target);
             if ( $flag_edit && !file_exists($path_target) )
             {
                 //          echo 'CREATE CONTROLLER ' . $path_target . '<br>';

@@ -85,7 +85,7 @@ class Zero_Groups_Access extends Zero_Controller
         $Groups = Zero_Model::Make('Zero_Groups');
         $Groups->DB->Sql_Where('ID', '!=', $this->Params['obj_parent_id']);
         $Groups->DB->Sql_Order('Name', 'ASC');
-        $groups_list = $Groups->DB->Select_List('ID, Name');
+        $groups_list = $Groups->DB->Select_List_Index('ID, Name');
         $this->View->Assign('groups_list', $groups_list);
         //  Navigation parent
         $this->View->Assign('url_parent', (0 < Zero_App::$Route->Param['pid']) ? '-pid-' . Zero_App::$Route->Param['pid'] : '');

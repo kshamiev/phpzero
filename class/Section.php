@@ -522,7 +522,7 @@ class Zero_Section extends Zero_Model
         $arr = explode('_', $value);
         $module = strtolower(array_shift($arr));
         $class = implode('/', $arr);
-        if ( !file_exists($path = ZERO_PATH_APPLICATION . '/' . $module . '/class_controller/' . $class . '.php') )
+        if ( !file_exists($path = ZERO_PATH_APPLICATION . '/' . $module . '/class/' . $class . '.php') )
             return 'Error_Path_Class';
         if ( !preg_match("~\nclass {$value}~si", file_get_contents($path)) )
             return 'Error_Class_Exists';

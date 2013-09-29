@@ -240,7 +240,7 @@ class Zero_Users extends Zero_Model
             {
                 $prop = 'Zero_Users_' . $this->Zero_Groups_ID . '_ID';
                 $this->DB->Sql_Where('Zero_Users_ID', '=', $this->ID);
-                $this->_Condition[$prop] = $this->DB->Select_List('ID, Name');
+                $this->_Condition[$prop] = $this->DB->Select_List_Index('ID, Name');
                 $this->_Condition[$prop][$this->ID] = $this->Name;
             }
             //  uslovie gruppy`

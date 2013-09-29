@@ -1026,9 +1026,8 @@ class Zero_DB
      * @param string $props stroka zagruzhaemy`kh svoi`stv cherez zapiatuiu s probelom
      * @param bool $flag_param_reset flag sbrosa parametrov posle zaprosa
      * @return array Nai`denny`e danny`e v vide spiska
-     * @todo rename Select_List_Index
      */
-    public function Select_List($props, $flag_param_reset = true)
+    public function Select_List_Index($props, $flag_param_reset = true)
     {
         return $this->Select($props, 'list', $flag_param_reset);
     }

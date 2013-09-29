@@ -128,13 +128,13 @@ class Zero_App
         $arr = explode('_', $class_name);
         $module = strtolower(array_shift($arr));
         $class = implode('/', $arr);
-        $path = ZERO_PATH_APPLICATION . '/' . $module . '/class_controller/' . $class . '.php';
+        $path = ZERO_PATH_APPLICATION . '/' . $module . '/class/' . $class . '.php';
         if ( file_exists($path) )
         {
             require_once $path;
             return true;
         }
-        $path = ZERO_PATH_APPLICATION . '/' . $module . '/class_model/' . $class . '.php';
+        $path = ZERO_PATH_APPLICATION . '/' . $module . '/component/' . $class . '.php';
         if ( file_exists($path) )
         {
             require_once $path;
@@ -158,10 +158,10 @@ class Zero_App
     public static function Init($file_log = 'application')
     {
         //  Include Components
-        require_once ZERO_PATH_ZERO . '/class_controller/Config.php';
-        require_once ZERO_PATH_ZERO . '/class_controller/Session.php';
-        require_once ZERO_PATH_ZERO . '/class_controller/Cache.php';
-        require_once ZERO_PATH_ZERO . '/class_controller/Logs.php';
+        require_once ZERO_PATH_ZERO . '/component/Config.php';
+        require_once ZERO_PATH_ZERO . '/component/Session.php';
+        require_once ZERO_PATH_ZERO . '/component/Cache.php';
+        require_once ZERO_PATH_ZERO . '/component/Logs.php';
 
         //  Configuration (Zero_Config)
         self::$Config = new Zero_Config();
@@ -192,7 +192,7 @@ class Zero_App
         Zero_Logs::Init($file_log);
 
         //  Include Components
-        require_once ZERO_PATH_ZERO . '/class_controller/View.php';
+        require_once ZERO_PATH_ZERO . '/component/View.php';
     }
 
     /**
