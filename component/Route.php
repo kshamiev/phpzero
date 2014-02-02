@@ -51,33 +51,25 @@ class Zero_Route
 
     /**
      * Analiz request url
-     *
-     * @param string $request request url
      */
-    public function __construct($request = '')
+    public function __construct()
     {
         $this->Param['pid'] = 0;
         $this->Param['id'] = 0;
         $this->Param['pg'] = 0;
 
-        $this->Parsing($request);
-    }
-    /**
-     * Analiz request url
-     *
-     * @param string $request request url
-     */
-    protected function Parsing($request)
-    {
         //  Language
         $language = Zero_App::$Config->Language;
         $this->Lang = Zero_App::$Config->Site_Language;
         $this->LangId = $language[$this->Lang]['ID'];
+        $this->Url = '/';
 
-        if ( !$request )
+        if ( !isset($_SERVER['REQUEST_URI']) || '/' == $_SERVER['REQUEST_URI'] )
             return;
 
-        $row = explode('/', strtolower($request));
+        $this->Url = '';
+
+        $row = explode('/', strtolower(rtrim(ltrim(explode('?', $_SERVER['REQUEST_URI'])[0], '/'), '/')));
         if ( $this->Lang != $row[0] && isset($language[$row[0]]) )
         {
             $this->Lang = array_shift($row);

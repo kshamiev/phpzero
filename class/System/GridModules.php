@@ -61,7 +61,7 @@ class Zero_System_GridModules extends Zero_Controller
     {
         $modules_list = [];
         //  read modules
-        $arr = Zero_Utility_FileSystem::Get_Config('', 'main');
+        $arr = Zero_Lib_FileSystem::Get_Config('', 'main');
         foreach ($arr as $module => $row)
         {
             $modules_list[$module]['Description'] = $row['Description'];

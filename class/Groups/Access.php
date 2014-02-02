@@ -107,7 +107,7 @@ class Zero_Groups_Access extends Zero_Controller
                 $Action = Zero_Model::Make('Zero_Action');
                 $Action->Zero_Section_ID = $section_id;
                 $Action->Zero_Groups_ID = $this->Params['obj_parent_id'];
-                $Action->Action = 'AccessAllow';
+                $Action->Action = 'Default';
                 $Action->DB->Insert();
             }
             else

@@ -25,8 +25,8 @@
  * @property string $Url
  * @property string $UrlThis
  * @property string $UrlRedirect
- * @property string $ModuleController
- * @property string $UrlController
+ * @property string $Layout
+ * @property string $ContentType
  * @property string $Controller
  * @property string $IsAuthorized
  * @property string $IsVisible
@@ -128,7 +128,8 @@ class Zero_Section extends Zero_Model
             'Url' => ['DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
             'UrlThis' => ['DB' => 'T', 'IsNull' => 'NO', 'Default' => ''],
             'UrlRedirect' => ['DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
-            'UrlController' => ['DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
+            'Layout' => ['DB' => 'T', 'IsNull' => 'NO', 'Default' => 'index'],
+            'ContentType' => ['DB' => 'E', 'IsNull' => 'NO', 'Default' => 'html'],
             'Controller' => ['DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
             'IsAuthorized' => ['DB' => 'E', 'IsNull' => 'NO', 'Default' => 'no'],
             'IsVisible' => ['DB' => 'E', 'IsNull' => 'NO', 'Default' => 'no'],
@@ -160,7 +161,6 @@ class Zero_Section extends Zero_Model
             /*BEG_CONFIG_FILTER_PROP*/
             'z.ID' => ['Filter' => '', 'Search' => 'Number', 'Sort' => true],
             'z.Zero_Layout_ID' => ['Filter' => 'Link', 'Search' => '', 'Sort' => false],
-            'z.ControllerConfig' => ['Filter' => 'Select', 'Search' => '', 'Sort' => false],
             'z.Controller' => ['Filter' => '', 'Search' => 'Text', 'Sort' => false],
             'z.IsAuthorized' => ['Filter' => 'Radio', 'Search' => '', 'Sort' => false],
             'z.IsVisible' => ['Filter' => 'Radio', 'Search' => '', 'Sort' => false],
@@ -221,7 +221,8 @@ class Zero_Section extends Zero_Model
                 'Url' => array('Form' => 'ReadOnly', 'IsNull' => 'YES'),
                 'UrlThis' => array('Form' => 'Text', 'IsNull' => 'NO'),
                 'UrlRedirect' => array('Form' => 'Text', 'IsNull' => 'YES'),
-                'ControllerConfig' => array('Form' => 'Select', 'IsNull' => 'YES'),
+                'Layout' => array('Form' => 'Text', 'IsNull' => 'NO'),
+                'ContentType' => array('Form' => 'Radio', 'IsNull' => 'NO'),
                 'Controller' => array('Form' => 'Text', 'IsNull' => 'YES'),
                 'IsAuthorized' => array('Form' => 'Radio', 'IsNull' => 'NO'),
                 'IsVisible' => array('Form' => 'Radio', 'IsNull' => 'NO'),
@@ -242,7 +243,6 @@ class Zero_Section extends Zero_Model
                 'Url' => array('Form' => 'ReadOnly', 'IsNull' => 'YES'),
                 'UrlThis' => array('Form' => 'Text', 'IsNull' => 'NO'),
                 'UrlRedirect' => array('Form' => 'Text', 'IsNull' => 'YES'),
-                'ControllerConfig' => array('Form' => ($Model->Controller) ? 'ReadOnly' : 'Select', 'IsNull' => 'YES'),
                 'IsAuthorized' => array('Form' => 'Radio', 'IsNull' => 'NO'),
                 'IsVisible' => array('Form' => 'Radio', 'IsNull' => 'NO'),
                 'IsEnable' => array('Form' => 'Radio', 'IsNull' => 'NO'),
@@ -289,49 +289,46 @@ class Zero_Section extends Zero_Model
      */
     public function Get_Action_List()
     {
-        if ( is_null($this->_Action_List) )
+        if ( 0 == $this->ID )
+            return $this->_Action_List = [];
+        $index_cache = 'Action_List_' . Zero_App::$Users->Zero_Groups_ID . '_' . $this->Controller;
+        if ( false !== $this->_Action_List = $this->Cache->Get($index_cache) )
+            return $this->_Action_List;
+
+        if ( 'yes' == $this->IsAuthorized && 1 < Zero_App::$Users->Zero_Groups_ID )
         {
-            if ( 0 == $this->ID )
-                return $this->_Action_List = [];
-            $index_cache = 'Action_List_' . Zero_App::$Users->Zero_Groups_ID . '_' . $this->Controller;
-            if ( false === $this->_Action_List = $this->Cache->Get($index_cache) )
+            $Model = Zero_Model::Make('Zero_Action');
+            $Model->DB->Sql_Where('Zero_Section_ID', '=', $this->ID);
+            $Model->DB->Sql_Where('Zero_Groups_ID', '=', Zero_App::$Users->Zero_Groups_ID);
+            $this->_Action_List = $Model->DB->Select_Array_Index('Action');
+            foreach ($this->_Action_List as $action => $row)
             {
-                if ( 'yes' == $this->IsAuthorized && 1 < Zero_App::$Users->Zero_Groups_ID )
-                {
-                    $Model = Zero_Model::Make('Zero_Action');
-                    $Model->DB->Sql_Where('Zero_Section_ID', '=', $this->ID);
-                    $Model->DB->Sql_Where('Zero_Groups_ID', '=', Zero_App::$Users->Zero_Groups_ID);
-                    $this->_Action_List = $Model->DB->Select_Array_Index('Action');
-                    foreach ($this->_Action_List as $action => $row)
-                    {
-                        if ( 'AccessAllow' == $action )
-                            $index = "controller action {$action}";
-                        else
-                            $index = "controller {$this->Controller} action {$action}";
-                        $this->_Action_List[$action] = ['Name' => Zero_I18n::T($this->Controller, $index, $action)];
-                    }
-                }
+                if ( 'AccessAllow' == $action )
+                    $index = "controller action {$action}";
                 else
-                {
-                    $reflection = new ReflectionClass($this->Controller);
-                    foreach ($reflection->getMethods(ReflectionMethod::IS_PROTECTED) as $method)
-                    {
-                        $name = $method->getName();
-                        if ( 'Action' == substr($name, 0, 6) )
-                        {
-                            $name = str_replace('Action_', '', $name);
-                            if ( 'AccessAllow' == $name )
-                                $index = "controller action {$name}";
-                            else
-                                $index = "controller {$this->Controller} action {$name}";
-                            $this->_Action_List[$name] = ['Name' => Zero_I18n::T($this->Controller, $index, $name)];
-                        }
-                    }
-                }
-                Zero_Cache::Set_Link('Zero_Groups', Zero_App::$Users->Zero_Groups_ID);
-                $this->Cache->Set($index_cache, $this->_Action_List);
+                    $index = "controller {$this->Controller} action {$action}";
+                $this->_Action_List[$action] = ['Name' => Zero_I18n::T($this->Controller, $index, $action)];
             }
         }
+        else
+        {
+            $reflection = new ReflectionClass($this->Controller);
+            foreach ($reflection->getMethods(ReflectionMethod::IS_PROTECTED) as $method)
+            {
+                $name = $method->getName();
+                if ( 'Action' == substr($name, 0, 6) )
+                {
+                    $name = str_replace('Action_', '', $name);
+                    if ( 'AccessAllow' == $name )
+                        $index = "controller action {$name}";
+                    else
+                        $index = "controller {$this->Controller} action {$name}";
+                    $this->_Action_List[$name] = ['Name' => Zero_I18n::T($this->Controller, $index, $name)];
+                }
+            }
+        }
+        Zero_Cache::Set_Link('Zero_Groups', Zero_App::$Users->Zero_Groups_ID);
+        $this->Cache->Set($index_cache, $this->_Action_List);
         return $this->_Action_List;
     }
 
@@ -443,51 +440,6 @@ class Zero_Section extends Zero_Model
     }
 
     /**
-     * Getting a list of controllers from modules
-     *
-     * @return array
-     */
-    public function FL_ControllerConfig()
-    {
-        $controller_list = [];
-        foreach (Zero_Utility_FileSystem::Get_Config('', 'controller') as $module => $row)
-        {
-            foreach ($row as $controller => $url)
-            {
-                $controller_list[$controller] = '(' . $module . ') ' . Zero_I18n::T($controller, 'controller ' . $controller, $controller);
-            }
-        }
-        return $controller_list;
-    }
-
-    /**
-     * The total initial validation properties
-     *
-     * @param array $data verifiable data array
-     * @param string $scenario scenario validation
-     * @return array
-     */
-    public function Validate_Before($data, $scenario)
-    {
-        if ( !isset($data['ControllerConfig']) )
-            return $data;
-        if ( $data['ControllerConfig'] )
-        {
-            $this->Controller = $data['ControllerConfig'];
-
-            $module = explode('_', $data['ControllerConfig'])[0];
-            $controller = Zero_Utility_FileSystem::Get_Config($module, 'controller');
-            $this->UrlController = $controller[$data['ControllerConfig']];
-
-            unset($data['ControllerConfig']);
-            unset($data['Controller']);
-        }
-        else
-            $this->UrlController = null;
-        return $data;
-    }
-
-    /**
      * Url Section
      *
      * @param mixed $value value to check
@@ -498,7 +450,7 @@ class Zero_Section extends Zero_Model
     {
         if ( !$value )
             return 'Error_Prop';
-        $this->UrlThis = Zero_Utility_String::Transliteration_Url($value);
+        $this->UrlThis = Zero_Lib_String::Transliteration_Url($value);
         if ( 0 < $this->Zero_Section_ID )
         {
             $Object = Zero_Model::Make($this->Source, $this->Zero_Section_ID);
@@ -506,6 +458,7 @@ class Zero_Section extends Zero_Model
         }
         else
             $this->Url = $this->UrlThis;
+        return '';
     }
 
     /**

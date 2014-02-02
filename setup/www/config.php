@@ -45,13 +45,6 @@ return [
         //  Domain binary data (uploaded by users)
         'DomainUpload' => '',
     ],
-    //  Theme
-    'Themes' => [
-        //  main
-        'www' => "default",
-        //  control panel
-        '<DOMAIN_SUB>' => "default",
-    ],
     //  The settings of the presentation of data
     'View' => [
         //  Number of items per page
@@ -95,10 +88,5 @@ return [
         'Session' => [
             //  'localhost:11211'
         ],
-    ],
-    // Redefinition models
-    'FactoryModel' => [
-        //  Users
-        'Zero_Users' => 'Users',
     ],
 ];

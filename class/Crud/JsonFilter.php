@@ -36,7 +36,7 @@ class Zero_Crud_JsonFilter extends Zero_Controller
 
         $this->View = new Zero_View;
         $this->View->Assign('filter', $Model->DB->Select_List_Index('ID, Name'));
-        Zero_App::$Response = 'json';
+//        Zero_App::$Response = 'json';
         return false;
     }
 }

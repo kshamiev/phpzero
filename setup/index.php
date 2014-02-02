@@ -24,8 +24,8 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 ini_set('magic_quotes_gpc', 0);
 
-require dirname(__DIR__) . '/class/App.php';
-require dirname(__DIR__) . '/class/Utility/FileSystem.php';
+require dirname(__DIR__) . '/component/App.php';
+require dirname(__DIR__) . '/component/Lib/FileSystem.php';
 $error_init_list = [];
 $message_install_list = [];
 
@@ -68,54 +68,35 @@ if ( file_exists(ZERO_PATH_SITE . '/config.php') )
 while ( isset($_REQUEST['act']) && 'Install_System' == $_REQUEST['act'] && 0 == count($error_init_list) )
 {
     //  Checking the input parameters
-    if ( !isset($_REQUEST['site_name']) || !$_REQUEST['site_name'] || !isset($_REQUEST['site_email']) || !$_REQUEST['site_email'] || !isset($_REQUEST['domain_www']) || !$_REQUEST['domain_www'] || !isset($_REQUEST['domain_sub']) || !$_REQUEST['domain_sub'] || !isset($_REQUEST['db_host']) || !$_REQUEST['db_host'] || !isset($_REQUEST['db_login']) || !$_REQUEST['db_login'] || !isset($_REQUEST['db_password']) || !$_REQUEST['db_password'] || !isset($_REQUEST['db_name']) || !$_REQUEST['db_name'] || !isset($_REQUEST['lang']) || !$_REQUEST['lang'] )
+    if ( !isset($_REQUEST['site_name']) || !$_REQUEST['site_name'] || !isset($_REQUEST['site_email']) || !$_REQUEST['site_email'] || !isset($_REQUEST['domain_www']) || !$_REQUEST['domain_www'] || !isset($_REQUEST['db_host']) || !$_REQUEST['db_host'] || !isset($_REQUEST['db_login']) || !$_REQUEST['db_login'] || !isset($_REQUEST['db_password']) || !$_REQUEST['db_password'] || !isset($_REQUEST['db_name']) || !$_REQUEST['db_name'] || !isset($_REQUEST['lang']) || !$_REQUEST['lang'] )
     {
         $message_install_list[] = "Request empty";
         break;
     }
     $_REQUEST['domain_www'] = strtolower($_REQUEST['domain_www']);
-    $_REQUEST['domain_sub'] = strtolower($_REQUEST['domain_sub']);
-
-    //  Domain Checker
-    $file = ZERO_PATH_SITE . '/' . rand(1, 100) . rand(1, 100) . rand(1, 100) . rand(1, 100) . '.txt';
-    file_put_contents($file, 'check');
-    $file_check = 'http://' . $_REQUEST['domain_www'] . '/' . basename($file);
-    if ( 'check' != @file_get_contents($file_check) )
-    {
-        unlink($file);
-        $message_install_list[] = "Domain Not Work";
-        break;
-    }
-    $file_check = 'http://' . $_REQUEST['domain_sub'] . '.' . $_REQUEST['domain_www'] . '/' . basename($file_check);
-    if ( 'check' != @file_get_contents($file_check) )
-    {
-        unlink($file);
-        $message_install_list[] = "SubDomain Not Work";
-        break;
-    }
-    unlink($file);
 
     //  installation database
-    file_put_contents('db_create.sql', "CREATE DATABASE IF NOT EXISTS `{$_REQUEST['db_name']}`;");
-    exec("mysql -h {$_REQUEST['db_host']} -u {$_REQUEST['db_login']} -p{$_REQUEST['db_password']} < db_create.sql", $arr1, $arr2);
-    if ( 0 < $arr2 )
-    {
-        $message_install_list[] = "Error create DB (Access Denied)";
-        unlink('db_create.sql');
-        break;
-    }
-    unlink('db_create.sql');
-    exec("mysql -h {$_REQUEST['db_host']} -u {$_REQUEST['db_login']} -p{$_REQUEST['db_password']} {$_REQUEST['db_name']} < schema/mysql_{$_REQUEST['lang']}.sql", $arr1, $arr2);
-    if ( 0 < $arr2 )
-    {
-        $message_install_list[] = "Error import DB (Access Denied)";
-        break;
-    }
+//    file_put_contents('db_create.sql', "CREATE DATABASE IF NOT EXISTS `{$_REQUEST['db_name']}`;");
+//    exec("mysql -h {$_REQUEST['db_host']} -u {$_REQUEST['db_login']} -p{$_REQUEST['db_password']} < db_create.sql", $arr1, $arr2);
+//    if ( 0 < $arr2 )
+//    {
+//        $message_install_list[] = "Error create DB (Access Denied)";
+//        unlink('db_create.sql');
+//        break;
+//    }
+//    unlink('db_create.sql');
+//    exec("mysql -h {$_REQUEST['db_host']} -u {$_REQUEST['db_login']} -p{$_REQUEST['db_password']} {$_REQUEST['db_name']} < schema/mysql_{$_REQUEST['lang']}.sql", $arr1, $arr2);
+//    if ( 0 < $arr2 )
+//    {
+//        $message_install_list[] = "Error import DB (Access Denied)";
+//        break;
+//    }
 
     $arr = ini_get_all();
 
     //  Creating a filesystem structure. Copy the system and base  module
-    Zero_Utility_FileSystem::Folder_Copy(ZERO_PATH_SITE, __DIR__ . "/www");
+
+    Zero_Lib_FileSystem::Folder_Copy(__DIR__ . "/www", ZERO_PATH_SITE);
 
     //  Baseline configuration
     $config = file_get_contents(ZERO_PATH_SITE . '/config.php');
@@ -123,7 +104,6 @@ while ( isset($_REQUEST['act']) && 'Install_System' == $_REQUEST['act'] && 0 == 
     $config = str_replace('<SITE_NAME>', $_REQUEST['site_name'], $config);
     $config = str_replace('<SITE_EMAIL>', $_REQUEST['site_email'], $config);
     $config = str_replace('<DOMAIN>', $_REQUEST['domain_www'], $config);
-    $config = str_replace('<DOMAIN_SUB>', $_REQUEST['domain_sub'], $config);
     $config = str_replace('<DB_HOST>', $_REQUEST['db_host'], $config);
     $config = str_replace('<DB_LOGIN>', $_REQUEST['db_login'], $config);
     $config = str_replace('<DB_PASSWORD>', $_REQUEST['db_password'], $config);
@@ -152,8 +132,6 @@ if ( !isset($_REQUEST['db_name']) )
     $_REQUEST['db_name'] = '';
 if ( !isset($_REQUEST['domain_www']) )
     $_REQUEST['domain_www'] = str_replace('www.', '', $_SERVER['SERVER_NAME']);
-if ( !isset($_REQUEST['domain_sub']) )
-    $_REQUEST['domain_sub'] = 'zero';
 if ( !isset($_REQUEST['db_host']) )
     $_REQUEST['db_host'] = 'localhost';
 ?>
@@ -198,15 +176,9 @@ if ( !isset($_REQUEST['db_host']) )
             </td>
         </tr>
         <tr>
-            <td width="300px">Domain site (*)<br>(www.<strong><font color="blue">site-name.com</font></strong>)</td>
+            <td width="300px">Domain site (*)<br>(<strong><font color="blue">www.site-name.com</font></strong>)</td>
             <td>
                 <input type="text" name="domain_www" value="<?= $_REQUEST['domain_www'] ?>" style="width: 99%;">
-            </td>
-        </tr>
-        <tr>
-            <td width="300px">Subdomain management system (*)<br>(<strong><font color="blue">zero</font></strong>.site-name.com)</td>
-            <td>
-                <input type="text" name="domain_sub" value="<?= $_REQUEST['domain_sub'] ?>" style="width: 99%;">
             </td>
         </tr>
         <tr>

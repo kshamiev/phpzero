@@ -1,5 +1,5 @@
 <p align="center" class="message-system">&nbsp;
-    {foreach ($action_message as $message)}
+    {foreach (Zero_App::Get_Variable('action_message') as $message)}
     <span{if ( 1 == $message[0] )} class="subj_error"{/if}>{$message[1]}</span><br>
     {/}
 </p>

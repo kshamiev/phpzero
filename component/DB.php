@@ -977,7 +977,7 @@ class Zero_DB
         if ( !$source_target || !$source_target_id || !isset($link[$source_target]) )
         {
             Zero_Logs::Set_Message("nepravil`noe obrashchenie k kross tablitce: {$this->Model->Source} - {$source_target}, ID = {$source_target_id}");
-            return 0;
+            return -1;
         }
         $link = $link[$source_target];
         $sql = "
@@ -1376,6 +1376,7 @@ class Zero_DB
      * @param string $props stroka zagruzhaemy`kh svoi`stv cherez zaiapiatuiu ('Name, Price, Description')
      * @param bool $is_lang zagruzka s uchetom iazy`ka
      * @return bool|array
+     * @TODO Доработать. Вынести работу с языков в отдельный метод. Переименовать метод в Select
      */
     public function Load($props, $is_lang = false)
     {
@@ -1438,9 +1439,10 @@ class Zero_DB
     /**
      * Save danny`kh v BD.
      *
+     * @param string $source
      * @return bool
      */
-    public function Insert()
+    public function Insert($source = '')
     {
         $prop_list = $this->Model->Get_Config_Prop();
         unset($prop_list['ID']);
@@ -1472,7 +1474,7 @@ class Zero_DB
                 if ( 'File Upload Ok' == $value )
                 {
                     // V fai`lovoi` sisteme
-                    $file = strtolower($this->Model->Source) . '/' . Zero_Utility_FileSystem::Get_Path_Cache($this->Model->ID) . '/' . $this->Model->ID . '/' . $_FILES[$prop]['name'];
+                    $file = strtolower($this->Model->Source) . '/' . Zero_Lib_FileSystem::Get_Path_Cache($this->Model->ID) . '/' . $this->Model->ID . '/' . $_FILES[$prop]['name'];
                     if ( !is_dir(dirname($path = ZERO_PATH_DATA . '/' . $file)) )
                         mkdir(dirname($path), 0777, true);
                     if ( !rename($_FILES[$prop]['tmp_name'], $path) )
@@ -1494,8 +1496,10 @@ class Zero_DB
                 }
             }
         }
+        if ( '' == $source  )
+            $source = $this->Model->Source;
         if ( 0 < count($sql_update) )
-            self::Set("UPDATE {$this->Model->Source} SET " . implode(', ', $sql_update) . " WHERE ID = " . $this->Model->ID);
+            self::Set("UPDATE {$source} SET " . implode(', ', $sql_update) . " WHERE ID = " . $this->Model->ID);
 
         //  Ustanovka statusov
         $this->Model->Set_Props();
@@ -1527,9 +1531,10 @@ class Zero_DB
     /**
      * Izmenenie danny`kh v BD.
      *
+     * @param string $source
      * @return bool
      */
-    public function Update()
+    public function Update($source = '')
     {
         $prop_list = $this->Model->Get_Config_Prop();
         unset($prop_list['ID']);
@@ -1545,7 +1550,7 @@ class Zero_DB
                 if ( 'File Upload Ok' == $value )
                 {
                     // V fai`lovoi` sisteme
-                    $file = strtolower($this->Model->Source) . '/' . Zero_Utility_FileSystem::Get_Path_Cache($this->Model->ID) . '/' . $this->Model->ID . '/' . $_FILES[$prop]['name'];
+                    $file = strtolower($this->Model->Source) . '/' . Zero_Lib_FileSystem::Get_Path_Cache($this->Model->ID) . '/' . $this->Model->ID . '/' . $_FILES[$prop]['name'];
                     if ( !is_dir(dirname($path = ZERO_PATH_DATA . '/' . $file)) )
                         mkdir(dirname($path), 0777, true);
                     if ( !rename($_FILES[$prop]['tmp_name'], $path) )
@@ -1583,7 +1588,9 @@ class Zero_DB
             if ( 0 < $this->Model->ID )
                 $sql_where .= ' AND `ID` = ' . $this->Model->ID;
 
-            $sql = "UPDATE {$this->Model->Source} SET " . implode(', ', $sql_update) . " " . $sql_where;
+            if ( '' == $source  )
+                $source = $this->Model->Source;
+            $sql = "UPDATE {$source} SET " . implode(', ', $sql_update) . " " . $sql_where;
             $flag = self::Set($sql);
         }
 
@@ -1682,9 +1689,10 @@ class Zero_DB
     /**
      * Udalenie ob``ekta iz BD.
      *
+     * @param string $source
      * @return bool
      */
-    public function Delete()
+    public function Delete($source = '')
     {
         if ( 0 == $this->Model->ID )
             return true;
@@ -1699,7 +1707,9 @@ class Zero_DB
         if ( 0 < $this->Model->ID )
             $sql_where .= ' AND `ID` = ' . $this->Model->ID;
 
-        self::Set("DELETE FROM {$this->Model->Source} " . $sql_where);
+        if ( '' == $source  )
+            $source = $this->Model->Source;
+        self::Set("DELETE FROM {$source} " . $sql_where);
         return true;
     }
 

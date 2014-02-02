@@ -4,10 +4,6 @@
  */
 define('VERSION_PHPZERO', '1.0.0');
 /**
- * The absolute path to the project (site)
- */
-define('ZERO_PATH_SITE', dirname(dirname(__DIR__)));
-/**
  * Location of binary data
  */
 define('ZERO_PATH_DATA', ZERO_PATH_SITE . '/upload/data');
@@ -30,11 +26,12 @@ define('ZERO_PATH_APPLICATION', ZERO_PATH_SITE . '/application');
 /**
  * Location templates grouped by subject
  */
-define('ZERO_PATH_THEMES', ZERO_PATH_SITE . '/themes');
+define('ZERO_PATH_VIEW', ZERO_PATH_SITE . '/view');
 /**
  * Location System
  */
 define('ZERO_PATH_ZERO', ZERO_PATH_SITE . '/zero');
+
 /**
  * Component. Application.
  *
@@ -49,13 +46,6 @@ define('ZERO_PATH_ZERO', ZERO_PATH_SITE . '/zero');
  */
 class Zero_App
 {
-    /**
-     * Type given out of the client
-     *
-     * @var string
-     */
-    public static $Response = 'html';
-
     /**
      * An array of abstract and key additional application variables
      *
@@ -163,18 +153,14 @@ class Zero_App
         require_once ZERO_PATH_ZERO . '/component/Cache.php';
         require_once ZERO_PATH_ZERO . '/component/Logs.php';
 
+        //  Initializing monitoring system (Zero_Logs)
+        Zero_Logs::Init($file_log);
+
         //  Configuration (Zero_Config)
         self::$Config = new Zero_Config();
 
         //  Processing incoming request (Zero_Route)
-        $class_route = ucfirst(self::$Config->Host) . '_Route';
-        if ( isset($_SERVER['REQUEST_URI']) )
-        {
-            $request_uri = rtrim(ltrim(explode('?', $_SERVER['REQUEST_URI'])[0], '/'), '/');
-            self::$Route = new $class_route($request_uri);
-        }
-        else
-            self::$Route = new $class_route;
+        self::$Route = new Zero_Route();
 
         //  Session Initialization (Zero_Session)
         session_name(md5(self::$Config->Db['Name']));
@@ -187,9 +173,6 @@ class Zero_App
 
         //  Initialize cache subsystem (Zero_Cache)
         Zero_Cache::Init();
-
-        //  Initializing monitoring system (Zero_Logs)
-        Zero_Logs::Init($file_log);
 
         //  Include Components
         require_once ZERO_PATH_ZERO . '/component/View.php';
@@ -217,48 +200,61 @@ class Zero_App
         Zero_Logs::Start('#{APP.Main}');
 
         //  Initialize the controller action
-        $_REQUEST['act'] = (isset($_REQUEST['act'])) ? $_REQUEST['act'] : '';
-
-        // Initialize the controller messages
-        self::Set_Variable('action_message', []);
+        //        $_REQUEST['act'] = (isset($_REQUEST['act'])) ? $_REQUEST['act'] : '';
 
         //  Initialize the type response
-        self::$Response = (isset($_REQUEST['ajax'])) ? $_REQUEST['ajax'] : 'html';
 
         //  Инициализация запрошенного раздела (Zero_Section)
-        self::$Section = Zero_Model::Instance('Zero_Section');
+        //        self::$Section = Zero_Model::Instance(ucfirst(self::$Config->Host) . '_Section');
+        self::$Section = Zero_Model::Instance('Www_Section');
 
         //  User Initialization (Zero_Users)
-        self::$Users = Zero_Model::Factory('Zero_Users');
+        //        self::$Users = Zero_Model::Factory(ucfirst(self::$Config->Host) . '_Users');
+        self::$Users = Zero_Model::Factory('Www_Users');
 
         //  Checking for non-existent section
         if ( 0 == self::$Section->ID || 'no' == self::$Section->IsEnable )
             throw new Exception('Page Not Found', 404);
         //  Call forwarding
-        else if ( self::$Section->UrlRedirect )
+        if ( self::$Section->UrlRedirect )
             self::Redirect(self::$Section->UrlRedirect);
         //  Checking the rights to the current section
-        else if ( 'yes' == self::$Section->IsAuthorized && 1 < self::$Users->Zero_Groups_ID && 0 == count(self::$Section->Get_Action_List()) )
-            throw new Exception('Access Denied', 403);
+        $Action_List = Zero_App::$Section->Get_Action_List();
+        if ( 1 < self::$Users->Zero_Groups_ID )
+        {
+            if ( 'yes' == self::$Section->IsAuthorized && 0 == count($Action_List) )
+                throw new Exception('Access Denied', 403);
+        }
 
         //  Execute controller
         $output = '';
+        self::Set_Variable('action_message', []);
         if ( self::$Section->Controller )
         {
             $Controller = Zero_Controller::Factory(self::$Section->Controller);
-            $output = $Controller->Execute($_REQUEST['act']);
+            if ( isset($_REQUEST['act']) )
+            {
+                if ( isset($Action_List[$_REQUEST['act']]) )
+                    $output = $Controller->Execute('Action_' . $_REQUEST['act']);
+                else
+                    throw new Exception('Access Denied', 403);
+            }
+            else
+                $output = $Controller->Execute();
+            Zero_App::Set_Variable('action_message', $Controller->Get_Message());
         }
 
         Zero_Logs::Stop('#{APP.Main}');
 
         // Generate and output the result
-        self::Header(self::$Response, $output);
-        if ( 'html' == self::$Response )
+        if ( 'html' == self::$Section->ContentType )
         {
+            self::HeaderNoCache();
+            self::HeaderHtml();
             Zero_Logs::Start('#{LAYOUT.View}');
-            $Layout = Zero_Model::Make('Zero_Layout', self::$Section->Zero_Layout_ID);
-            $Layout->DB->Load_Cache('Layout');
-            $View = new Zero_View($Layout->Layout);
+            //            $Layout = Zero_Model::Make('Zero_Layout', self::$Section->Zero_Layout_ID);
+            //            $Layout->DB->Load_Cache('Layout');
+            $View = new Zero_View(self::$Section->Layout);
             if ( $output instanceof Zero_View )
             {
                 Zero_Logs::Start('#{CONTENT.View}');
@@ -266,16 +262,35 @@ class Zero_App
                 Zero_Logs::Stop('#{CONTENT.View}');
             }
             $View->Assign('Content', $output);
-            echo $View->Fetch();
+            echo $View->Fetch(true);
             Zero_Logs::Stop('#{LAYOUT.View}');
         }
-        else if ( 'xml' == self::$Response )
+        else if ( 'xml' == self::$Section->ContentType )
+        {
+            self::HeaderNoCache();
+            self::HeaderHtml();
             echo $output->Fetch();
-        else if ( 'json' == self::$Response )
+        }
+        else if ( 'json' == self::$Section->ContentType )
+        {
+            self::HeaderNoCache();
+            self::HeaderHtml();
             echo json_encode($output->Receive());
-        else if ( 'img' == self::$Response || 'file' == self::$Response )
+        }
+        else if ( 'img' == self::$Section->ContentType )
+        {
+            self::HeaderNoCache();
+            self::HeaderImg($output);
             if ( file_exists($output) )
                 echo file_get_contents($output);
+        }
+        else if ( 'file' == self::$Section->ContentType )
+        {
+            self::HeaderNoCache();
+            self::HeaderFile($output);
+            if ( file_exists($output) )
+                echo file_get_contents($output);
+        }
 
         Zero_Logs::Stop('#{APP.Full}');
         return true;
@@ -291,32 +306,41 @@ class Zero_App
      * - 'img' binary data, output images
      * - 'file' binary data for download
      *
-     * @param string $type type of document given out (default html)
-     * @param string $path the absolute path to the file given out or url link
      */
-    public static function Header($type = 'html', $path = '')
+    public static function HeaderNoCache()
     {
         header('Pragma: no-cache');
         header('Last-Modified: ' . date('D, d M Y H:i:s') . 'GMT');
         header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
         header('Cache-Control: no-store, no-cache, must-revalidate');
-        if ( 'html' == $type )
-            header("Content-Type: text/html; charset=utf-8");
-        else if ( 'json' == $type )
-            header("Content-Type: text/javascript; charset=utf-8");
-        else if ( 'xml' == $type )
-            header("Content-Type: text/xml; charset=utf-8");
-        else if ( 'img' == $type )
-        {
-            header("Content-Type: " . Zero_Utility_FileSystem::File_Type($path));
-            header("Content-Length: " . filesize($path));
-        }
-        else if ( 'file' == $type )
-        {
-            header("Content-Type: " . Zero_Utility_FileSystem::File_Type($path));
-            header("Content-Length: " . filesize($path));
-            header('Content-Disposition: attachment; filename = "' . basename($path) . '"');
-        }
+    }
+
+    public static function HeaderHtml()
+    {
+        header("Content-Type: text/html; charset=utf-8");
+    }
+
+    public static function HeaderXml()
+    {
+        header("Content-Type: text/xml; charset=utf-8");
+    }
+
+    public static function HeaderJson()
+    {
+        header("Content-Type: text/javascript; charset=utf-8");
+    }
+
+    public static function HeaderImg($path)
+    {
+        header("Content-Type: " . Zero_Lib_FileSystem::File_Type($path));
+        header("Content-Length: " . filesize($path));
+    }
+
+    public static function HeaderFile($path)
+    {
+        header("Content-Type: " . Zero_Lib_FileSystem::File_Type($path));
+        header("Content-Length: " . filesize($path));
+        header('Content-Disposition: attachment; filename = "' . basename($path) . '"');
     }
 
     /**
@@ -324,7 +348,7 @@ class Zero_App
      *
      * @param string $url link to which page to produce redirect
      */
-    public static function Redirect($url)
+    public static function ResponseRedirect($url)
     {
         self::$Config->Log_Output_Display = false;
         self::$Config->Log_Output_File = false;

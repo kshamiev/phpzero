@@ -2,16 +2,16 @@
 
 include_once(dirname(dirname(__DIR__)) . '/library/PHPMailer/class.phpmailer.php');
 /**
- * Utility. PHP email transport class
+ * Lib. PHP email transport class
  *
- * @package Zero.Utility
+ * @package Zero.Lib
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
  * @version $Id$
  * @link http://www.phpzero.com/
  * @copyright <PHP_ZERO_COPYRIGHT>
  * @license http://www.phpzero.com/license/
  */
-class Zero_Utility_Mail
+class Zero_Lib_Mail
 {
     /**
      * Отправка сообщения

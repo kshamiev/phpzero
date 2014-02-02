@@ -32,7 +32,7 @@ class Zero_Users_Kcaptcha extends Zero_Controller
         include_once ZERO_PATH_ZERO . '/library/kcaptcha/kcaptcha.php';
         $Captcha = new KCAPTCHA();
         Zero_App::$Users->Keystring = $Captcha->getKeyString();
-        Zero_App::$Response = 'img';
+        Zero_App::$Section->ContentType = 'img';
         return false;
     }
 }

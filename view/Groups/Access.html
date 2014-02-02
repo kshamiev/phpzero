@@ -36,8 +36,8 @@
                 </tr>
                 <tr>
                     <td>
-                        <div id="blocklevel2"><input type="radio" name="RoleAccessSection[{$id}]" value="denied"{if ( !isset($row['action_list']['AccessAllow']) )} checked{/if}>&nbsp;нет</div>
-                        <div id="blocklevel2"><input type="radio" name="RoleAccessSection[{$id}]" value="access"{if ( isset($row['action_list']['AccessAllow']) )} checked{/if}>&nbsp;да</div>
+                        <div id="blocklevel2"><input type="radio" name="RoleAccessSection[{$id}]" value="denied"{if ( !isset($row['action_list']['Default']) )} checked{/if}>&nbsp;нет</div>
+                        <div id="blocklevel2"><input type="radio" name="RoleAccessSection[{$id}]" value="access"{if ( isset($row['action_list']['Default']) )} checked{/if}>&nbsp;да</div>
                     </td>
                 </tr>
             </table>

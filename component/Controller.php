@@ -121,7 +121,7 @@ abstract class Zero_Controller
      * @param bool $flag_return учитывать код сообщения ($code) как возвращаемое значение
      * @return int
      */
-    public function Set_Message($message = '', $code = 1, $flag_return = true)
+    public function Set_Message($message = '', $code = 1, $flag_return = false)
     {
         if ( !$message && !$code )
             self::$_Message = [];
@@ -197,6 +197,8 @@ abstract class Zero_Controller
      *
      * @param string $action action
      * @return Zero_View|string rezul`tat (kak pravilo shablon s danny`mi)
+     * @TODO Переработать. Метод - действие контроллера по умолчанию. Action_Default
+     * @TODO Chunk_Init -> Action...
      */
     final public function Execute($action = '')
     {
@@ -212,12 +214,6 @@ abstract class Zero_Controller
 
             if ( true == $flag )
                 break;
-        }
-        //  Сообщения резултатов работы контроллера
-        if ( $this->View instanceof Zero_View )
-        {
-            $this->View->Assign('action_message', $this->Get_Message());
-            $this->View->Assign('Action', Zero_App::$Section->Get_Action_List());
         }
         return $this->View;
     }
@@ -241,19 +237,8 @@ abstract class Zero_Controller
      */
     final protected function Chunk_Action($action)
     {
-        //  Initcializatciia dei`stvii` otnositel`no prav
-        $Action_List = Zero_App::$Section->Get_Action_List();
-
-        //  Vy`polnenie dei`stvii`
-        $flag = false;
-        if ( isset($Action_List[$action]) )
-        {
-            $action = 'Action_' . $action;
-            $flag = $this->$action();
-        }
-
-        //  Sokhraniaem v prilozhenie soobshcheniia dei`stvii` kontrollera dlia posleduiushchego tcelevogo vy`voda
-        Zero_App::Set_Variable('action_message', $this->Get_Message());
-        return $flag;
+        if ( '' == $action )
+            return false;
+        return $this->$action();
     }
 }

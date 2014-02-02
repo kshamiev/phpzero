@@ -153,7 +153,7 @@ class Zero_Validator
                 if ( $value['X'] || $value['Y'] || $value['R'] )
                 {
                     //  exec('convert -resize [100]x[200] '.$imgs['tmp_name'].' -> ../path/goods/path/'.$goods_id.'.'.$ext);
-                    if ( false == Zero_Utility_FileSystem::Image_Resize($_FILES[$prop]['tmp_name'], $_FILES[$prop]['tmp_name'] . 'resize', $value['X'], $value['Y'], $value['R']) )
+                    if ( false == Zero_Lib_FileSystem::Image_Resize($_FILES[$prop]['tmp_name'], $_FILES[$prop]['tmp_name'] . 'resize', $value['X'], $value['Y'], $value['R']) )
                     {
                         Zero_Logs::Set_Message("{$this->Model->Source} - {$this->Model->ID} - {$_FILES[$prop]['error']} - Error Image Resize");
                         return 'Error Image Resize';
@@ -161,7 +161,7 @@ class Zero_Validator
                     $_FILES[$prop]['tmp_name'] .= 'resize';
                 }
             }
-            $_FILES[$prop]['name'] = Zero_Utility_String::Transliteration_FileName($_FILES[$prop]['name']);
+            $_FILES[$prop]['name'] = Zero_Lib_String::Transliteration_FileName($_FILES[$prop]['name']);
             $this->Model->$prop = 'File Upload Ok';
         }
     }

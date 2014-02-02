@@ -67,6 +67,5 @@ class Zero_Section_NavigationLine extends Zero_Controller
             $this->View = new Zero_View(get_class($this));
         $this->View->Assign('Section', Zero_App::$Section);
         $this->View->Assign('navigation', $navigation);
-        $this->View->Assign('action_message', Zero_App::Get_Variable('action_message'));
     }
 }

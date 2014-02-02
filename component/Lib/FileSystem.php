@@ -1,16 +1,16 @@
 <?php
 
 /**
- * Utility. A helper class for working with the file system.
+ * Lib. A helper class for working with the file system.
  *
- * @package Zero.Utility
+ * @package Zero.Lib
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
  * @version $Id$
  * @link http://www.phpzero.com/
  * @copyright <PHP_ZERO_COPYRIGHT>
  * @license http://www.phpzero.com/license/
  */
-final class Zero_Utility_FileSystem
+final class Zero_Lib_FileSystem
 {
     /**
      * Spisok papok raspolozheniia binarny`kh danny`kh ob``ekta (ot identifikatora, kratny`i` 100)
@@ -213,6 +213,10 @@ final class Zero_Utility_FileSystem
      */
     public static function File_Ini_Create($data, $flag, $filename = '')
     {
+        pre($data);
+        pre($flag);
+        pre($filename);
+        exit;
         if ( false == is_array($data) )
             return false;
         $cache = '';
@@ -278,7 +282,8 @@ final class Zero_Utility_FileSystem
             {
                 if ( '' == $filter || preg_match('~' . $filter . '~si', $name_file) )
                 {
-                    mkdir($path_output . '/' . $name_file);
+                    if ( !is_dir($path_output . '/' . $name_file) )
+                        mkdir($path_output . '/' . $name_file);
                     chmod($path_output . '/' . $name_file, 0755);
                     self::Folder_Copy($path_input . '/' . $name_file, $path_output . '/' . $name_file, $filter);
                 }
@@ -436,7 +441,7 @@ final class Zero_Utility_FileSystem
         if ( !is_dir($path) )
             mkdir($path, 0777, true);
         //  korrektciia imeni fai`la i polny`i` put` do fai`la
-        $path .= '/' . Zero_Utility_String::Transliteration_FileName(basename($path_file));
+        $path .= '/' . Zero_Lib_String::Transliteration_FileName(basename($path_file));
         //  resize
         $row = getimagesize($path_file);
         if ( 0 < count($resize) && 'image' == substr($row['mime'], 0, 5) )

@@ -154,13 +154,13 @@ class Zero_Logs
     {
         if ( 403 == $exception->getCode() )
         {
-            self::$_CurrentTime = [];
+            //            self::$_CurrentTime = [];
             self::Set_Message('Section Url: ' . Zero_App::$Config->Host . Zero_App::$Route->UrlSection);
             header('HTTP/1.1 403 Access Denied');
         }
         else if ( 404 == $exception->getCode() )
         {
-            self::$_CurrentTime = [];
+            //            self::$_CurrentTime = [];
             self::Set_Message('Section Url: ' . Zero_App::$Config->Host . Zero_App::$Route->UrlSection);
             header('HTTP/1.1 404 Not Found');
         }
@@ -209,7 +209,7 @@ class Zero_Logs
 
         $View = new Zero_View('Error');
         $View->Assign('http_status', $exception->getCode());
-        echo $View->Fetch();
+        echo $View->Fetch(true);
     }
 
     /**
@@ -222,7 +222,7 @@ class Zero_Logs
     public static function Exit_Application()
     {
         // Logirovanie v brauzer
-        if ( Zero_App::$Config->Log_Output_Display && 'html' == Zero_App::$Response )
+        if ( Zero_App::$Config->Log_Output_Display && 'html' == Zero_App::$Section->ContentType )
             self::Output_Display();
 
         // zakry`vaem soedinenie s brauzerom (rabotaet tol`ko pod nginx)
@@ -246,11 +246,11 @@ class Zero_Logs
             $iterator_list[$iterator->key()] = get_class($iterator->current());
             $iterator->next();
         }
-        $View = new Zero_View('Zero_Logs_Debug');
+        $View = new Zero_View('Debug');
         $View->Assign('output', self::Get_Usage_MemoryAndTime());
         $View->Assign('message', self::$_Message);
         $View->Assign('iterator_list', $iterator_list);
-        echo $View->Fetch();
+        echo $View->Fetch(true);
     }
 
     /**
@@ -327,12 +327,12 @@ class Zero_Logs
         if ( $offset < 0 )
             $offset = 0;
         $length = isset($file_line[$line + $range_file_error]) ? $line + $range_file_error : count($file_line) - 1;
-        $View = new Zero_View('Zero_Logs_SourceCode');
+        $View = new Zero_View('SourceCode');
         $View->Assign('file_line', $file_line);
         $View->Assign('offset', $offset < 0 ? 0 : $offset);
         $View->Assign('length', $length);
         $View->Assign('line', $line);
-        return $View->Fetch();
+        return $View->Fetch(true);
     }
 
     /**
@@ -352,25 +352,22 @@ class Zero_Logs
             // Sobiraem tai`mery` v kuchu
             foreach (self::$_CurrentTime as $description => $time)
             {
-                if ( 3 == count($time) )
+                if ( !isset($time['stop']) )
+                    $time['stop'] = microtime(true);
+                $limit = round($time['stop'] - $time['start'], 4);
+                if ( $limit < self::$_CurrentTimeLimit )
+                    continue;
+                $description = str_replace("\r", "", $description);
+                $description = preg_replace("~(\s+\n){1,}~si", "\n", $description);
+                $description = preg_replace('~[ ]{2,}~', ' ', $description);
+                if ( strpos($description, '#{SQL}') === 0 )
+                    $description = str_replace("\n", "\n\t\t", $description);
+                $indent = '';
+                for ($i = 0; $i < $time['level']; $i++)
                 {
-                    $limit = round($time['stop'] - $time['start'], 4);
-                    if ( $limit < self::$_CurrentTimeLimit )
-                        continue;
-                    $description = str_replace("\r", "", $description);
-                    $description = preg_replace("~(\s+\n){1,}~si", "\n", $description);
-                    $description = preg_replace('~[ ]{2,}~', ' ', $description);
-                    if ( strpos($description, '#{SQL}') === 0 )
-                        $description = str_replace("\n", "\n\t\t", $description);
-                    $indent = '';
-                    for ($i = 0; $i < $time['level']; $i++)
-                    {
-                        $indent .= "\t";
-                    }
-                    self::$_OutputApplication[] = $indent . '{' . $limit . '} ' . trim($description);
+                    $indent .= "\t";
                 }
-                else
-                    self::Set_Message($description . " timer error");
+                self::$_OutputApplication[] = $indent . '{' . $limit . '} ' . trim($description);
             }
             self::$_CurrentTime = [];
             self::$_OutputApplication[] = "#{System.Full} " . sprintf("%01.3f", microtime(1) - self::$_StartTime);

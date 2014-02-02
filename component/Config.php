@@ -83,13 +83,6 @@ class Zero_Config
     public $Host = '';
 
     /**
-     * Current Theme
-     *
-     * @var string
-     */
-    public $Themes = '';
-
-    /**
      * Root site (http://www.domain.com)
      *
      * @var string
@@ -188,13 +181,6 @@ class Zero_Config
     public $Memcache = [];
 
     /**
-     * Redefinition models
-     *
-     * @var array
-     */
-    public $FactoryModel = [];
-
-    /**
      * IP the source address of the request
      *
      * @var string
@@ -240,12 +226,14 @@ class Zero_Config
         $this->Site_Language = $Config['Site']['Language'];
 
         //  Absolute system host a website.
-        $this->Host = isset($_SERVER['HTTP_HOST']) ? explode('.', strtolower($_SERVER['HTTP_HOST']))[0] : 'www';
-        if ( empty($Config['Themes'][$this->Host]) )
-            $this->Host = 'www';
-
-        //  Current Theme.
-        $this->Themes = $Config['Themes'][$this->Host];
+        $this->Host = 'www';
+        if ( isset($_SERVER['HTTP_HOST']) ) {
+            $arr = explode('.', strtolower($_SERVER['HTTP_HOST']));
+            if ( 2 < count($arr) )
+            {
+                $this->Host = $arr[0];
+            }
+        }
 
         // Root site (http://www.domain.com)
         if ( isset($_SERVER["HTTP_HOST"]) )
@@ -255,11 +243,9 @@ class Zero_Config
 
         // http static data (images, css, js) (http://www.domain.com/assets)
         if ( $Config['Site']['DomainAssets'] )
-            $this->Http_Assets = 'http://' . $Config['Site']['DomainAssets'] . '/assets/' . $this->Themes;
-        //        else if ( isset($_SERVER["SERVER_NAME"]) )
-        //            $this->Http_Assets = 'http://' . $_SERVER["SERVER_NAME"] . '/assets/' . $this->Themes;
+            $this->Http_Assets = 'http://' . $Config['Site']['DomainAssets'] . '/assets';
         else
-            $this->Http_Assets = 'http://' . $Config['Site']['Domain'] . '/assets/' . $this->Themes;
+            $this->Http_Assets = 'http://' . $Config['Site']['Domain'] . '/assets';
 
         // http binary data (http://www.domain.com/upload)
         if ( $Config['Site']['DomainUpload'] )
@@ -295,15 +281,6 @@ class Zero_Config
 
         // Servers Memcache
         $this->Memcache = $Config['Memcache'];
-
-        //  Redefinition models
-        $this->FactoryModel = $Config['FactoryModel'];
-        /*
-        foreach ($Config['FactoryModel'] as $k => $v)
-        {
-            $this->FactoryModel[$k] = ucfirst($this->Host) . '_' . $v;
-        }
-        */
 
         // IP the source address of the request
         if ( isset($_SERVER["HTTP_X_FORWARDED_FOR"]) )

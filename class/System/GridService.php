@@ -77,7 +77,7 @@ class Zero_System_GridService extends Zero_Controller
      */
     protected function Action_Session_Reset()
     {
-        Zero_Utility_FileSystem::File_Remove(Zero_App::$Config->System_PathSession);
+        Zero_Lib_FileSystem::File_Remove(Zero_App::$Config->System_PathSession);
         return $this->Set_Message("Session_Reset", 0);
     }
 }

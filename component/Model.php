@@ -104,14 +104,11 @@ abstract class Zero_Model
      *
      * @param integer $id identifikator ob``ekta
      * @param boolean $flag_load flag zagruzki ob``ekta
-     * @param string $source istochnik
      */
-    public function __construct($id = 0, $flag_load = false, $source = '')
+    public function __construct($id = 0, $flag_load = false)
     {
         $this->ID = intval($id);
-        if ( $source )
-            $this->Source = $source;
-        else if ( '' == $this->Source )
+        if ( '' == $this->Source )
             $this->Source = get_class($this);
         if ( 0 < $this->ID && $flag_load )
             $this->DB->Load('*');
@@ -120,18 +117,19 @@ abstract class Zero_Model
     /**
      * Fabrika po sozdaniiu ob``ektov.
      *
-     * @param string $source imia istochnika model` kotoroi` sozdaetsia
+     * @param string $model imia istochnika model` kotoroi` sozdaetsia
      * @param int $id identifikator ob``ekta
      * @param bool $flag_load flag polnoi` zagruzki ob``ekta
      * @return Zero_Model
      * @throws Exception
      */
-    public static function Make($source, $id = 0, $flag_load = false)
+    public static function Make($model, $id = 0, $flag_load = false)
     {
-        $model_name = $source;
-        if ( isset(Zero_App::$Config->FactoryModel[$source]) )
-            $model_name = Zero_App::$Config->FactoryModel[$source];
-        return new $model_name($id, $flag_load, $source);
+        return new $model($id, $flag_load);
+//        $model_name = $source;
+//        if ( isset(Zero_App::$Config->FactoryModel[$source]) )
+//            $model_name = Zero_App::$Config->FactoryModel[$source];
+//        return new $model_name($id, $flag_load, $source);
     }
 
     /**
@@ -139,18 +137,21 @@ abstract class Zero_Model
      *
      * Sokhraniaetsia v {$this->_Instance}
      *
-     * @param string $source imia istochnika model` kotoroi` sozdaetsia
+     * @param string $model imia istochnika model` kotoroi` sozdaetsia
      * @param integer $id identifikator ob``ekta
      * @param bool $flag_load flag polnoi` zagruzki ob``ekta
      * @return Zero_Model
      */
-    public static function Instance($source, $id = 0, $flag_load = false)
+    public static function Instance($model, $id = 0, $flag_load = false)
     {
-        $index = $source . (0 < $id ? '_' . $id : '');
+        $index = $model . (0 < $id ? '_' . $id : '');
         if ( !isset(self::$_Instance[$index]) )
         {
-            self::$_Instance[$index] = self::Make($source, $id, $flag_load);
-            self::$_Instance[$index]->Init();
+            $result = self::Make($model, $id, $flag_load);
+            $result->Init();
+//            self::$_Instance[$index] = self::Make($source, $id, $flag_load);
+//            self::$_Instance[$index]->Init();
+            self::$_Instance[$index] = $result;
         }
         return self::$_Instance[$index];
     }
@@ -161,17 +162,17 @@ abstract class Zero_Model
      * Rabotaet cherez sessiiu (Zero_Session).
      * Indeks source + [_{$id} - esli 0 < $flag]
      *
-     * @param string $source imia istochnika model` kotoroi` sozdaetsia
+     * @param string $model imia istochnika model` kotoroi` sozdaetsia
      * @param integer $id identifikator ob``ekta
      * @param boolean|bool $flag_load flag polnoi` zagruzki ob``ekta
      * @return Zero_Model
      */
-    public static function Factory($source, $id = 0, $flag_load = false)
+    public static function Factory($model, $id = 0, $flag_load = false)
     {
-        $index = $source . (0 < $id ? '_' . $id : '');
+        $index = $model . (0 < $id ? '_' . $id : '');
         if ( !$result = Zero_Session::Get($index) )
         {
-            $result = self::Make($source, $id, $flag_load);
+            $result = self::Make($model, $id, $flag_load);
             $result->Init();
             Zero_Session::Set($index, $result);
         }
@@ -187,7 +188,7 @@ abstract class Zero_Model
      */
     public function Factory_Set($flag = 0)
     {
-        $index = $this->Source;
+        $index = get_class($this);
         if ( 0 < $flag )
             $index .= '_' . $this->ID;
         Zero_Session::Set($index, $this);
@@ -202,7 +203,7 @@ abstract class Zero_Model
      */
     public function Factory_Unset($flag = 0)
     {
-        $index = $this->Source;
+        $index = get_class($this);
         if ( 0 < $flag )
             $index .= '_' . $this->ID;
         Zero_Session::Rem($index);

@@ -20,7 +20,7 @@
 return [
 	'model' => 'Sections',
 	'model prop ControllerConfig' => 'Controller in config',
-	'model prop UrlController' => 'Admin section',
+	'model prop Layout' => 'Layout',
 	'model prop Controller' => 'Advanced Controller',
 	'model prop Controller validate Error_Path_Class' => 'Source controller is missing',
 	'model prop Controller validate Error_Class_Exists' => 'The source does not contain the controller',

@@ -173,15 +173,15 @@ class Zero_Content extends Zero_Model
     public function FL_Block()
     {
         $Model = Zero_Model::Make('Zero_Section', Zero_App::$Section->Zero_Section_ID);
-        if ( 'Zero_Section_Edit' == $Model->Controller )
-        {
-            $Model = Zero_Model::Make('Zero_Section', Zero_App::$Route->Param['pid']);
-            $Model = Zero_Model::Make('Zero_Layout', $Model->Zero_Layout_ID);
-        }
-        else if ( 'Zero_Layout_Edit' == $Model->Controller )
-            $Model = Zero_Model::Make('Zero_Layout', Zero_App::$Route->Param['pid']);
-        else
-            throw new Exception('Error Filter Content->Block', 500);
+//        if ( 'Zero_Section_Edit' == $Model->Controller )
+//        {
+//            $Model = Zero_Model::Make('Zero_Section', Zero_App::$Route->Param['pid']);
+//            $Model = Zero_Model::Make('Zero_Layout', $Model->Zero_Layout_ID);
+//        }
+//        else if ( 'Zero_Layout_Edit' == $Model->Controller )
+//            $Model = Zero_Model::Make('Zero_Layout', Zero_App::$Route->Param['pid']);
+//        else
+//            throw new Exception('Error Filter Content->Block', 500);
 
         if ( !$Model->Layout )
         {
@@ -189,7 +189,7 @@ class Zero_Content extends Zero_Model
             return [];
         }
 
-        $template = Zero_View::Search_Template($Model->Layout);
+        $template = Zero_View::Search_Template($Model->Layout, true);
         if ( !$template )
         {
             Zero_Logs::Set_Message("Layout '{$Model->Layout}' Not Found");

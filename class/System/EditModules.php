@@ -35,7 +35,7 @@ class Zero_System_EditModules extends Zero_Controller
      */
     protected function Chunk_View($action)
     {
-        $module_config = Zero_Utility_FileSystem::Get_Config($this->Params['module']);
+        $module_config = Zero_Lib_FileSystem::Get_Config($this->Params['module']);
         $this->View->Assign('module_config', $module_config);
         $this->View->Assign('Section', Zero_App::$Section);
     }

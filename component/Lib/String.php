@@ -1,16 +1,16 @@
 <?php
 
 /**
- * Utility. A helper class for working with the string.
+ * Lib. A helper class for working with the string.
  *
- * @package Zero.Utility
+ * @package Zero.Lib
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
  * @version $Id$
  * @link http://www.phpzero.com/
  * @copyright <PHP_ZERO_COPYRIGHT>
  * @license http://www.phpzero.com/license/
  */
-final class Zero_Utility_String
+final class Zero_Lib_String
 {
     public static $Transliteration = [
         0 => 0,

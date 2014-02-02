@@ -67,6 +67,7 @@ return [
 	'controller Zero_Users_Grid message Error_Remove' => 'Ошибка удаления',
 	'controller Zero_Users_Login' => 'Авторизация пользователя',
 	'controller Zero_Users_Login action Login' => 'авторизация',
+	'controller Zero_Users_Login action Logout' => 'выход',
 	'controller Zero_Users_Login message Error_Registration' => 'Незарегистрирован',
 	'controller Zero_Users_Login message Error_Password' => 'Пароль не верен',
 	'controller Zero_Users_Login message Error_Groups' => 'Акаунт ни входит ни в одну группу',

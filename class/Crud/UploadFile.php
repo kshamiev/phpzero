@@ -44,7 +44,7 @@ class Zero_Crud_UploadFile extends Zero_Controller
             file_put_contents($path, $Model->$Prop);
         }
 
-        Zero_App::$Response = strtolower($Model->Get_Config_Form()[$_REQUEST['prop']]['Form']);
+//        Zero_App::$Response = strtolower($Model->Get_Config_Form()[$_REQUEST['prop']]['Form']);
         $this->View = $path;
         return false;
     }

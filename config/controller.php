@@ -1,6 +1,7 @@
 <?php
 /**
  * File Configure Controllers
+ * @deprecated
  *
  */
 return [

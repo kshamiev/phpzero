@@ -32,6 +32,7 @@ if ( Zero_App::$Route->Lang != Zero_App::$Config->Site_Language )
     $lang = '/' . Zero_App::$Route->Lang;
 define('ZERO_LANG', $lang);
 define('LANG', $lang);
+
 /**
  * Component. Representation.
  *
@@ -174,26 +175,27 @@ class Zero_View
      * - E`ksport daneny`kh
      * - Vy`polnenie shablona i vozvrat rezul`tata
      *
+     * @param bool $layout поиск шаблона среди макетов
      * @return string sobranny`i` shablon so vstavlenny`mi danny`mi
      */
-    public function Fetch()
+    public function Fetch($layout = false)
     {
         $html = '';
         $tpl = '';
         foreach ($this->_Template as $template)
         {
-            $html = $this->Search_Template($template);
+            $html = $this->Search_Template($template, $layout);
             if ( '' != $html )
             {
-                $tpl = ZERO_PATH_CACHE . '/_tpl/' . $html . '_' . Zero_App::$Route->Lang . '.tpl';
+                $tpl = ZERO_PATH_CACHE . '/_t_/' . $html . '_' . Zero_App::$Route->Lang . '.tpl';
                 if ( 1 == Zero_App::$Config->Site_TemplateParsing || !file_exists($tpl) )
-                    Zero_Utility_FileSystem::File_Save($tpl, $this->_Parsing(file_get_contents(ZERO_PATH_SITE . '/' . $html . '.html')));
+                    Zero_Lib_FileSystem::File_Save($tpl, $this->_Parsing(file_get_contents($html)));
                 break;
             }
         }
         if ( '' == $html )
         {
-            Zero_Logs::Set_Message("Not found layout or template [{" . implode(', ', $this->_Template) . "}]");
+            //            Zero_Logs::Set_Message("Not found layout or template [{" . implode(', ', $this->_Template) . "}]");
             return '';
         }
         if ( Zero_App::$Config->Site_TemplateParsing )
@@ -217,28 +219,47 @@ class Zero_View
      * - /application/Zero/view/Users/Login.html
      * - /zero/view/Users/Login.html
      *
+     * @param bool $layout поиск шаблона среди макетов
      * @param string $template imia shablona
      * @return string nai`denny`i` shablon ( put` ot kornia sai`ta )
      */
-    public static function Search_Template($template)
+    public static function Search_Template($template, $layout = false)
     {
-        $template_exists = basename(ZERO_PATH_THEMES) . '/' . Zero_App::$Config->Themes . '/' . $template;
-        $template_log = 'Not found template [THEMES] => ' . $template_exists . ".html <br>\n";
-        if ( !file_exists(ZERO_PATH_SITE . '/' . $template_exists . '.html') )
+        $template = strtolower($template);
+        //        echo $template . "<br>";
+        if ( true == $layout )
+        {
+            if ( '' != Zero_App::$Section->Url )
+                $path = ZERO_PATH_VIEW . '/' . Zero_App::$Section->Url . '/' . $template . '.html';
+            else
+                $path = ZERO_PATH_VIEW . '/' . $template . '.html';
+            $log = $path;
+            while ( !file_exists($path) )
+            {
+                $arr = explode("/", $path);
+                unset($arr[count($arr) - 2]);
+                $path = implode("/", $arr);
+                //                echo count($arr) . '  -  ' .  $path . "<br>";
+                if ( count($arr) < 5 )
+                {
+                    Zero_Logs::Set_Message('Not found template [LAYOUT] => ' . $log . "<br>\n", "warning");
+                    return '';
+                }
+            }
+            return $path;
+        }
+        else
         {
             $arr = explode('_', $template);
             $module = strtolower(array_shift($arr));
-            $template_ext = implode('/', $arr);
-
-            $template_exists = basename(ZERO_PATH_APPLICATION) . '/' . $module . '/view/' . $template_ext;
-            $template_log .= 'Not found template [APPLICATION] => ' . $template_exists . ".html <br>\n";
-            if ( !file_exists(ZERO_PATH_SITE . '/' . $template_exists . '.html') )
+            $path = ZERO_PATH_APPLICATION . '/' . $module . '/view/' . implode('/', $arr) . '.html';
+            if ( file_exists($path) )
             {
-                Zero_Logs::Set_Message($template_log, "warning");
-                return '';
+                return $path;
             }
+            Zero_Logs::Set_Message('Not found template [CONTROLLERS] => ' . $path . "<br>\n", "warning");
         }
-        return $template_exists;
+        return '';
     }
 
     /**
@@ -287,8 +308,8 @@ class Zero_View
      */
     private function _Parsing_Include($matches)
     {
-        if ( '' != $template = $this->Search_Template($matches[1]) )
-            $matches = file_get_contents(ZERO_PATH_SITE . '/' . $template . '.html');
+        if ( '' != $template = $this->Search_Template($matches[1], true) )
+            $matches = file_get_contents($template);
         else
             $matches = '';
         return preg_replace_callback(self::PATTERN_INCLUDE, [$this, '_Parsing_Include'], $matches);
@@ -340,7 +361,7 @@ class Zero_View
     {
         Zero_Logs::Start('#{APP.Controller} ' . $plugin_name);
         $Plugin = Zero_Controller::Make($plugin_name, $properties);
-        $View = $Plugin->Execute($_REQUEST['act']);
+        $View = $Plugin->Execute();
         if ( $View instanceof Zero_View )
         {
             Zero_Logs::Start('#{PLUGIN.View} ' . $plugin_name);
