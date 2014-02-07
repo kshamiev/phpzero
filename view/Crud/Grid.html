@@ -1,0 +1,165 @@
+<br><br>
+<form method="post">
+  <input type="hidden" name="act">
+  <table class="tbledit" width="600px" cellspacing="1" cellpadding="0" border="0">
+    <tr>
+      <th colspan="2">{translation "Zero_App" "Filters"}</th>
+    </tr>
+      <tr>
+          <td>{translation "Zero_App" "Search"}</td>
+          <td>
+              <select name="Search[Prop]" style="width: 50%;"><option value="">{translation "Zero_App" "Not selected"}</option>
+                  {set $value = ''}
+                  {foreach ($Search['List'] as $prop => $row)}
+                  <option value="{$prop}"{if ( $Search['Value'][$prop] )} selected{set $value = $Search['Value'][$prop]}{/if}>{$row['Comment']}</option>
+                  {/foreach}
+              </select>
+              <input type="text" name="Search[Value]" value="{htmlspecialchars($value)}" style="width: 45%;">
+          </td>
+      </tr>
+    {foreach ($Filter as $prop => $row)}
+    {if ( 1 == $row['Visible'] )}
+    {if ( 'Link' == $row['Filter'] && ( !isset($Params['obj_parent_prop']) || $prop != $Params['obj_parent_prop'] ) )}
+    <tr>
+      <td width="200px">{$row['Comment']}</td>
+      <td>
+        <select class="field" name="Filter[{$prop}]" data-link-prop="{$prop}"><option value="">{translation "Zero_App" "All"}</option>
+          <option value="NULL"{if ( 'NULL' == $row['Value'] )} selected{/if}>{translation "Zero_App" "Undefined"}</option>
+          <option value="NOTNULL"{if ( 'NOTNULL' == $row['Value'] )} selected{/if}>{translation "Zero_App" "Defined"}</option>
+          {foreach ($row['List'] as $id => $name)}<option value="{$id}"{if ( $id == $row['Value'] )} selected{/if}>{$name}</option>{/foreach}
+        </select>
+      </td>
+    </tr>
+    {else if ( 'Radio' == $row['Filter'] )}
+    <tr>
+      <td width="200px">{$row['Comment']}</td>
+      <td>
+        <div id="blockroot">
+            {foreach ($row['List'] as $key => $name)}
+            <div id="blocklevel33"><div id="blocklevel2"><input type="radio" name="Filter[{$prop}]" value="{$key}"{if ( $key == $row['Value'] )} checked{/if}>&nbsp;{$name}</div></div>
+            {/foreach}
+        </div>
+      </td>
+    </tr>
+    {else if ( 'Select' == $row['Filter'] )}
+    <tr>
+      <td width="200px">{$row['Comment']}</td>
+      <td>
+        <select class="field" name="Filter[{$prop}]" data-select-prop="{$prop}"><option value="">{translation "Zero_App" "All"}</option>
+          <option value="NULL"{if ( 'NULL' == $row['Value'] )} selected{/if}>{translation "Zero_App" "Undefined"}</option>
+          <option value="NOTNULL"{if ( 'NOTNULL' == $row['Value'] )} selected{/if}>{translation "Zero_App" "Defined"}</option>
+          {foreach ($row['List'] as $key => $name)}<option value="{$key}"{if ( $key == $row['Value'] )} selected{/if}>{$name}</option>{/foreach}
+        </select>
+      </td>
+    </tr>
+    {else if ( 'DateTime' == $row['Filter'] )}
+    <tr>
+      <td width="200px">{$row['Comment']}</td>
+      <td>
+        <table class="notpad" width="100%" height="100%" cellspacing="0" cellpadding="0" border="0">
+          <tr>
+            <td><input class="field datetimepicker" type="text" id="{$prop}Beg" name="Filter[{$prop}][0]" value="{$row['Value'][0]}" onclick="this.value='';"></td>
+            <td><input class="field datetimepicker" type="text" id="{$prop}End" name="Filter[{$prop}][1]" value="{$row['Value'][1]}" onclick="this.value='';"></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    {/if}
+    {/if}
+    {/foreach}
+    <tr>
+        <td>{translation "Zero_App" "Sorting"}</td>
+      <td>
+        <select name="Sort[Prop]" style="width: 50%;"><option value="">{translation "Zero_App" "Not selected"}</option>
+          {set $value = ''}
+          {foreach ($Sort['List'] as $prop => $row)}<option value="{$prop}"{if ( $Sort['Value'][$prop] )} selected{set $value = $Sort['Value'][$prop]}{/if}>{$row['Comment']}</option>{/foreach}
+        </select>
+        &nbsp;<input type="radio" name="Sort[Value]" value="ASC"{if ( 'ASC' == $value || !$value )} checked{/if}>
+                     &nbsp;<img class="icon" src="{HTTPA}/img/button/button_sort_asc.gif" border="0">
+        &nbsp;<input type="radio" name="Sort[Value]" value="DESC"{if ( 'DESC' == $value )} checked{/if}>
+                     &nbsp;<img class="icon" src="{HTTPA}/img/button/button_sort_desc.gif" border="0">
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" align="center">
+        <input class="btn" type="button" value="{translation "Zero_App" "Apply"}" onclick="button_form(this.form, '{URL}{$url_parent}', 'Filter_Set', 0);">
+        <input class="btn" type="button" value="{translation "Zero_App" "Reset"}" onclick="button_form(this.form, '{URL}{$url_parent}', 'Filter_Reset', 0);">
+      </td>
+    </tr>
+  </table>
+</form>
+
+<h1>{$Section->Name}</h1>
+
+<form method="post" enctype="multipart/form-data">
+<input type="hidden" name="act">
+<input type="hidden" name="obj_id">
+<table width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tr>
+        <td height="26px">
+            {if ( isset($Params['obj_parent_path']) )}
+            {foreach ($Params['obj_parent_path'] as $ID => $Name)}
+            &nbsp;/ <a href="{URL}-pid-{$ID}">{$Name}</a>
+            {/foreach}
+            <br><br>
+            {/if}
+            <input class="btn" type="button" value="{translation "Zero_App" "controller action Add"}" onclick="location.href='{URL}{$url_parent}/edit{$url_parent}?act=Add';">
+            {if ( isset($Action['CatalogMove']) )}
+            ID: <input type="text" id="catalog_move1" style="width: 50px;">
+            <input class="btn" type="button" value="{$Action['CatalogMove']['Name']}" onclick="button_form_obj_id(this.form, '{URL}{$url_parent}', 'CatalogMove', $('#catalog_move1').val(), 0);">
+            {/if}
+            {if ( isset($Action['Link_Add']) )}
+            <select name="param_post" style="width: 200px;" onchange="button_form_obj_id(this.form, '{URL}{$url_parent}', 'Link_Add', this.value, 0);"><option value="">not selected</option>{foreach ($DataLink as $id => $name)}<option value="{$id}">{$name}</option>{/foreach}</select>
+            {/if}
+            {plugin "Zero_Crud_Toolbar" Model=$Object Action=$Action url_parent=$url_parent}
+            {foreach ($Interface as $row)}
+            <a href="{URL}{$url_parent}/{$row['UrlThis']}{$url_parent}" style="vertical-align: middle;">{$row['Name']}</a>&nbsp;&nbsp;
+            {/foreach}
+        </td>
+        <td width="140px" align="right">{translation "Zero_App" "Count"}: {$PagerCount}</td>
+    </tr>
+</table>
+</form>
+
+{if ( 0 < count($DataGrid) )}
+<table class="tbllist" width="100%" cellspacing="1" cellpadding="0" border="0">
+  <tr>
+    <th>{translation "Zero_App" "Action"}</th>
+    {foreach ($PropsGrid as $prop => $row)}
+    <th>{$row['Comment']}</th>
+    {/foreach}
+  </tr>
+  {foreach ($DataGrid as $Data)}
+  <tr>
+    <td width="80" align="center">
+      {if ( isset($Params['obj_parent_path']) )}
+      <a href="{URL}-pid-{$Data['ID']}"><img style="vertical-align: middle;" src="{HTTPA}/img/button/button_folder_open.gif" border="0"></a>
+      {/if}
+      {if ( isset($Action['Link_Rem']) )}<input type="image" src="{HTTPA}/img/button/button_unlink.gif" onclick="button_form_obj_id('formpanel', '{URL}{$url_parent}', 'Link_Rem', {$Data['ID']}, 1);">{/if}
+      <a href="{URL}{$url_parent}/edit{$url_parent}-id-{$Data['ID']}"><img style="vertical-align: middle;" src="{HTTPA}/img/button/button_edit.gif" border="0"></a>
+      {if ( isset($Action['Remove']) )}<input type="image" src="{HTTPA}/img/button/button_trash.gif" onclick="button_form_obj_id('formpanel', '{URL}{$url_parent}', 'Remove', {$Data['ID']}, 1);">{/if}
+    </td>
+    {foreach ($PropsGrid as $Prop => $row)}
+    <td>
+      {if ( $Data[$Prop] && '_ID' == substr($Prop, -3) )}
+      {$Filter[$Prop]['List'][$Data[$Prop]]}
+      {else}
+      {nl2br($Data[$Prop])}
+      {/if}
+    </td>
+    {/foreach}
+  </tr>
+  {/foreach}
+</table>
+{else}
+<h2>Sorry, no results found.</h2>
+{/if}
+
+{plugin "Zero_Crud_Pager" Count=$PagerCount Page=$PagerPage PageItem=$PagerPageItem PageStep=$PagerPageStep}
+
+<form id="formpanel" method="post">
+  <input type="hidden" name="act">
+  <input type="hidden" name="obj_id">
+</form>
+
+

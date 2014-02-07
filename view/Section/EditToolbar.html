@@ -1,0 +1,3 @@
+{if ( isset($Action['Modules']) && $Model->UrlController )}
+<a href="{LANG}{$Model->UrlController}-pid-{$Model->ID}" style="vertical-align: middle;">{explode('_', $Model->Controller)[1]}</a>&nbsp;&nbsp;
+{/if}

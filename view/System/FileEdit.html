@@ -1,0 +1,32 @@
+<h3 align="right">{$Section->Name} - "{$path}"</h3>
+<form method="post">
+  {if ( isset($Action['FileSave']) )}
+  <input type="hidden" name="act" value="SaveFile">
+  <input type="hidden" name="file_name" value="{$name}">
+  {/if}
+  <table width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tr>
+      <td height="26px">
+        {if ( isset($Action['FileSave']) )}
+        <input class="btn" type="button" value="сохранить" onclick="button_form(this.form, '{URL}', 'FileSave', 0);">
+        {/if}
+      </td>
+    </tr>
+  </table>
+  <table width="100%" cellspacing="1" cellpadding="0" border="0">
+    <tr>
+      <td>
+        <textarea name="Prop[Content]" style="width: 99%;" rows="40">{htmlspecialchars($data)}</textarea>
+      </td>
+    </tr>
+  </table>
+  <table width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tr>
+      <td>
+        {if ( isset($Action['FileSave']) )}
+        <input class="btn" type="button" value="сохранить" onclick="button_form(this.form, '{URL}', 'FileSave', 0);">
+        {/if}
+      </td>
+    </tr>
+  </table>
+</form>

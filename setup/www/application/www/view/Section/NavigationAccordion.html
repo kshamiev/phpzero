@@ -1,0 +1,8 @@
+{foreach ($navigation as $list )}
+<h2 onclick="location.href='{LANG}{$list['Url']}';" style="cursor: pointer;">{$list['Name']}</h2>
+<ol>
+    {foreach ($list['child'] as $row )}
+    <li><a href="{LANG}{$row['Url']}">{$row['Name']}</a>
+    {/foreach}
+</ol>
+{/foreach}

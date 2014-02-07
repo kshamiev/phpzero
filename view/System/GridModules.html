@@ -1,0 +1,82 @@
+<br><br>
+<form method="post">
+    <input type="hidden" name="act">
+    <table class="tbledit" width="600px" cellspacing="1" cellpadding="0" border="0">
+        <tr>
+            <th colspan="2">{translation "Zero_App" "Filters"}</th>
+        </tr>
+        <tr>
+            <td>{translation "Zero_App" "Search"}</td>
+            <td>
+                <select name="Params[SearchProp]" style="width: 50%;">
+                    <option value="">{translation "Zero_App" "Not selected"}</option>
+                    <option value="Description"
+                    {if ( 'description' == $Params['SearchProp'] )} selected{/if}>Description</option>
+                </select>
+                <input type="text" name="Params[SearchValue]" value="{htmlspecialchars($Params['SearchValue'])}" style="width: 45%;">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center">
+                <input class="btn" type="button" value="{translation "Zero_App" "Apply"}" onclick="button_form(this.form, '{URL}', 'Filter_Set', 0);">
+                <input class="btn" type="button" value="{translation "Zero_App" "Reset"}" onclick="button_form(this.form, '{URL}', 'Filter_Reset', 0);">
+            </td>
+        </tr>
+    </table>
+</form>
+
+<h1>{$Section->Name}</h1>
+
+<table width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tr>
+        <td height="26px">
+            &nbsp;
+        </td>
+        <td width="140px" align="right">{translation "Zero_App" "Count"}: {$PagerCount}</td>
+    </tr>
+</table>
+
+{if ( 0 < count($modules_list) )}
+<table class="tbllist" width="100%" cellspacing="1" cellpadding="0" border="0">
+    <tr>
+        <th>{translation "Zero_App" "Action"}</th>
+        <th>{translation "Zero_App" "Version"}</th>
+        <th>{translation "Zero_App" "Installed"}</th>
+        <th>{translation "Zero_App" "Name"}</th>
+        <th>{translation "Zero_App" "Description"}</th>
+    </tr>
+    {foreach ($modules_list as $name => $row)}
+    <tr>
+        <td width="80" align="center">
+            {if ( isset($row['Rem']) )}
+                {if ( isset($Action['Rem']) )}
+                <input type="image" onclick="button_form_obj_id('formpanel', '{URL}/edit', '', '{$name}', 0);" src="{HTTPA}/img/button/button_edit.gif">
+                <input type="image" onclick="button_form_obj_id('formpanel', '{URL}', 'Rem', '{$name}', 1);" src="{HTTPA}/img/button/button_trash.gif">
+                {/if}
+            {else if ( isset($row['Set']) )}
+                {if ( isset($Action['Set']) )}
+                <input type="image" onclick="button_form_obj_id('formpanel', '{URL}', 'Set', '{$name}', 1);" src="{HTTPA}/img/button/button_plus.gif">
+                {/if}
+            {else}
+                {if ( isset($row['Installed']) )}
+                <input type="image" onclick="button_form_obj_id('formpanel', '{URL}/edit', '', '{$name}', 0);" src="{HTTPA}/img/button/button_edit.gif">
+                {else}
+                ---
+                {/if}
+            {/if}
+        </td>
+        <td>{$row['Version']}</td>
+        <td>{if ( $row['Installed'] )} YES {else} NOT {/if}</td>
+        <td>{$name}</td>
+        <td>{$row['Description']}</td>
+    </tr>
+    {/foreach}
+</table>
+{else}
+<h2>Sorry, no results found.</h2>
+{/if}
+
+<form id="formpanel" method="post">
+    <input type="hidden" name="act">
+    <input type="hidden" name="obj_id" value="0">
+</form>

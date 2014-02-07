@@ -1,0 +1,85 @@
+<h1>{$Section->Name}</h1>
+
+{if ( isset($Action['FolderAdd']) )}
+<table width="100%" cellspacing="0" cellpadding="0" border="0">
+  <form method="post">
+    <input type="hidden" name="act">
+    <tr>
+      <td>
+        <input type="text" name="FolderName" style="width: 330px;" maxlength="20">
+        <input type="button" value="create / add folder" onclick="button_form(this.form, '{URL}', 'FolderAdd', 0);">
+      </td>
+    </tr>
+  </form>
+</table>
+{/if}
+
+{if ( isset($Action['FileUpload']) )}
+<table width="100%" cellspacing="0" cellpadding="0" border="0">
+  <form method="post" enctype="multipart/form-data">
+    <input type="hidden" name="act">
+    <tr>
+      <td>
+        <input type="file" name="FileUpload" size="50">
+        <input type="button" value="rewrite / add file" onclick="button_form(this.form, '{URL}', 'FileUpload', 0);">
+      </td>
+    </tr>
+  </form>
+</table>
+{/if}
+
+<table width="100%" cellspacing="0" cellpadding="0" border="0">
+  <tr>
+    <td height="26px">
+      {if ( isset($Action['FolderGo']) )}
+      {foreach ($Params['obj_parent_path'] as $name => $path)}
+            &nbsp;/ <a href="{URL}?act=FolderGo&dir_name={$name}">{$name}</a>
+      {/foreach}
+      {/if}
+    </td>
+    <td width="140px" align="right">count: {$DataCount}</td>
+  </tr>
+</table>
+<table class="tbllist" width="100%" cellspacing="1" cellpadding="0" border="0">
+  <tr>
+    <th>Action</th>
+    <th>Name</th>
+    <th>Type</th>
+    <th>Size</th>
+    <th>Edit</th>
+  </tr>
+  {foreach ($folder_mas as $name => $data)}
+  <form method="post">
+    <input type="hidden" name="act">
+    <input type="hidden" name="dir_name" value="{$name}">
+    <tr>
+      <td width="80" align="center">
+        {if ( isset($Action['FolderGo']) )}<a href="{URL}?act=FolderGo&dir_name={$name}"><img src="{HTTPA}/img/button/button_folder_open.gif" border="0" style="vertical-align: middle;"></a>{/if}
+        {if ( isset($Action['FolderRemove']) )}<input type="image" src="{HTTPA}/img/button/button_trash.gif" onclick="button_form(this.form, '{URL}', 'FolderRemove', 1);">{/if}
+      </td>
+      <td nowrap>{$name}</td>
+      <td nowrap>-</td>
+      <td nowrap>-</td>
+      <td nowrap>{$data['edit']}</td>
+  </form>
+</tr>
+{/foreach}
+{foreach ($files_mas as $name => $data)}
+<form method="post">
+  <input type="hidden" name="act">
+  <input type="hidden" name="path" value="{$path_parent}">
+  <input type="hidden" name="file_name" value="{$name}">
+  <tr>
+    <td width="80" align="center">
+      {if ( isset($Action['FileDownLoad']) )}<input type="image" src="{HTTPA}/img/button/button_save.gif" onclick="button_form(this.form, '{URL}', 'FileDownLoad', 0);">{/if}
+      {if ( isset($Action['EditFile']) && in_array($data['ext'], $file_edit_flag) )}<a href="{URL}/edit?path={$path_parent}&file_name={$name}"><img src="{HTTPA}/img/button/button_edit.gif" border="0" style="vertical-align: middle;"></a>{/if}
+      {if ( isset($Action['FileRemove']) )}<input type="image" src="{HTTPA}/img/button/button_trash.gif" onclick="button_form(this.form, '{URL}', 'FileRemove', 1);">{/if}
+    </td>
+    <td nowrap>{$name}</td>
+    <td nowrap>-</td>
+    <td nowrap>{$data['size']}</td>
+    <td nowrap>{$data['edit']}</td>
+  </tr>
+</form>
+{/foreach}
+</table>
