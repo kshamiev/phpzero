@@ -18,6 +18,23 @@
 abstract class Zero_Controller
 {
     /**
+     * Massiv soobshchenii` sistemy`
+     *
+     * @var array
+     */
+    private static $_Message = [];
+
+    /**
+     * Stek chankov
+     *
+     * Skisok vy`polniaiushchii`khsia chankov.
+     * Zapolniaetsia v Chunk_Init
+     *
+     * @var array
+     */
+    private static $_Chunks = [];
+
+    /**
      * Obrabaty`vaemaia model` (ob``ekt)
      *
      * @var Zero_Model
@@ -39,23 +56,6 @@ abstract class Zero_Controller
      * @var array
      */
     protected $Params = [];
-
-    /**
-     * Massiv soobshchenii` sistemy`
-     *
-     * @var array
-     */
-    private static $_Message = [];
-
-    /**
-     * Stek chankov
-     *
-     * Skisok vy`polniaiushchii`khsia chankov.
-     * Zapolniaetsia v Chunk_Init
-     *
-     * @var array
-     */
-    private static $_Chunks = [];
 
     /**
      * Fabrika po sozdaniiu kontrollerov.
@@ -118,19 +118,15 @@ abstract class Zero_Controller
      *
      * @param string $message soobshchenie
      * @param int $code kod soobshcheniia
-     * @param bool $flag_return учитывать код сообщения ($code) как возвращаемое значение
      * @return int
      */
-    public function Set_Message($message = '', $code = 1, $flag_return = false)
+    public function Set_Message($message = '', $code = 1)
     {
         if ( !$message && !$code )
             self::$_Message = [];
         else
             self::$_Message[$message] = [$code];
-        if ( true == $flag_return )
-            return $code;
-        else
-            return 0;
+        return $code;
     }
 
     /**
@@ -143,36 +139,6 @@ abstract class Zero_Controller
         if ( in_array($chunk, self::$_Chunks) )
             return;
         self::$_Chunks[] = $chunk;
-    }
-
-    /**
-     * Dobavlenie chanka v stek vy`polneniia pered $before
-     *
-     * @param string $chunk imia dobavliaemogo chanka
-     * @param string $before imia chanka pered kotory`m dobavliaetsia $chunk
-     */
-    final protected function Set_Chunk_Before($chunk, $before)
-    {
-        if ( in_array($chunk, self::$_Chunks) )
-            return;
-        $key = array_search($before, self::$_Chunks);
-        if ( false !== $key )
-            array_splice(self::$_Chunks, $key, 0, $chunk);
-    }
-
-    /**
-     * Dobavlenie chanka v stek vy`polneniia posle $after
-     *
-     * @param string $chunk imia dobavliaemogo chanka
-     * @param string $after imia chanka posle kotorogo dobavliaetsia $chunk
-     */
-    final protected function Set_Chunk_After($chunk, $after)
-    {
-        if ( in_array($chunk, self::$_Chunks) )
-            return;
-        $key = array_search($after, self::$_Chunks);
-        if ( false !== $key )
-            array_splice(self::$_Chunks, $key + 1, 0, $chunk);
     }
 
     /**
@@ -200,45 +166,34 @@ abstract class Zero_Controller
      * @TODO Переработать. Метод - действие контроллера по умолчанию. Action_Default
      * @TODO Chunk_Init -> Action...
      */
-    final public function Execute($action = '')
+    final public function Execute($action)
     {
         self::$_Chunks = [];
-        $this->Chunk_Init($action);
-        foreach (self::$_Chunks as $chunk)
+        Zero_Logs::Start('#{CONTROLLER.Action} ' . $action);
+        $flag = $this->$action();
+        Zero_Logs::Stop('#{CONTROLLER.Action} ' . $action);
+        if ( true == $flag )
         {
-            $chunk = 'Chunk_' . $chunk;
-
-            Zero_Logs::Start('#{CONTROLLER.Chunk} ' . $chunk);
-            $flag = $this->$chunk($action);
-            Zero_Logs::Stop('#{CONTROLLER.Chunk} ' . $chunk);
-
-            if ( true == $flag )
-                break;
+            foreach (self::$_Chunks as $chunk)
+            {
+                $chunk = 'Chunk_' . $chunk;
+                Zero_Logs::Start('#{CONTROLLER.Chunk} ' . $chunk);
+                $flag = $this->$chunk($action);
+                Zero_Logs::Stop('#{CONTROLLER.Chunk} ' . $chunk);
+                if ( false == $flag )
+                    break;
+            }
         }
         return $this->View;
     }
 
     /**
-     * Initialize the stack chunks.
-     *
-     * sample:
-     * $this->Set_Chunk('Action');
-     * $this->Set_Chunk('View');
-     *
-     * @param string $action action
-     */
-    abstract protected function Chunk_Init($action);
-
-    /**
      * Vy`polnenie dei`stvii`
      *
-     * @param string $action action
      * @return boolean flag stop execute of the next chunk
      */
-    final protected function Chunk_Action($action)
+    protected function Action_Default()
     {
-        if ( '' == $action )
-            return false;
-        return $this->$action();
+        $this->View = new Zero_View(get_class($this));
     }
 }

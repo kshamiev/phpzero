@@ -225,22 +225,23 @@ class Zero_View
      */
     public static function Search_Template($template, $layout = false)
     {
-        $template = strtolower($template);
+//        $template = strtolower($template);
         //        echo $template . "<br>";
         if ( true == $layout )
         {
-            if ( '' != Zero_App::$Section->Url )
+            if ( Zero_App::$Section instanceof Zero_Section && '' != Zero_App::$Section->Url )
                 $path = ZERO_PATH_VIEW . '/' . Zero_App::$Section->Url . '/' . $template . '.html';
             else
                 $path = ZERO_PATH_VIEW . '/' . $template . '.html';
             $log = $path;
             while ( !file_exists($path) )
             {
-                $arr = explode("/", $path);
-                unset($arr[count($arr) - 2]);
-                $path = implode("/", $arr);
+                $path = dirname(dirname($path)) . '/' . basename($path);
+//                $arr = explode("/", $path);
+//                unset($arr[count($arr) - 2]);
+//                $path = implode("/", $arr);
                 //                echo count($arr) . '  -  ' .  $path . "<br>";
-                if ( count($arr) < 5 )
+                if ( count(explode("/", $path)) < 5 )
                 {
                     Zero_Logs::Set_Message('Not found template [LAYOUT] => ' . $log . "<br>\n", "warning");
                     return '';
@@ -361,7 +362,7 @@ class Zero_View
     {
         Zero_Logs::Start('#{APP.Controller} ' . $plugin_name);
         $Plugin = Zero_Controller::Make($plugin_name, $properties);
-        $View = $Plugin->Execute();
+        $View = $Plugin->Execute('Action_Default');
         if ( $View instanceof Zero_View )
         {
             Zero_Logs::Start('#{PLUGIN.View} ' . $plugin_name);

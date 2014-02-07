@@ -13,19 +13,6 @@
 class Zero_Users_Login extends Zero_Controller
 {
     /**
-     * Initialization of the stack chunks and input parameters
-     *
-     * @param string $action action
-     * @return boolean flag stop execute of the next chunk
-     */
-    protected function Chunk_Init($action)
-    {
-        $this->Set_Chunk('Action');
-        $this->Set_Chunk('View');
-        $this->View = new Zero_View(get_class($this));
-    }
-
-    /**
      * Create views.
      *
      * @param string $action action
@@ -33,6 +20,7 @@ class Zero_Users_Login extends Zero_Controller
      */
     protected function Chunk_View($action)
     {
+        $this->View = new Zero_View(get_class($this));
         if ( !isset($this->Params['url_history']) )
             $this->Params['url_history'] = ZERO_HTTPH;
         $this->View->Assign('Users', Zero_App::$Users);
@@ -45,6 +33,9 @@ class Zero_Users_Login extends Zero_Controller
      */
     protected function Action_Login()
     {
+        // Инициализация чанков
+        $this->Set_Chunk('View');
+
         if ( !$_REQUEST['Login'] || !$_REQUEST['Password'] )
             return true;
 
@@ -78,9 +69,19 @@ class Zero_Users_Login extends Zero_Controller
         Zero_Session::Unset_Instance();
         session_unset();
         session_destroy();
-        //        Zero_App::$Users = Zero_Model::Make('Www_Users');
-        //        Zero_App::$Users->Factory_Set();
         Zero_App::ResponseRedirect(ZERO_HTTP);
         return false;
     }
+
+
+    /**
+     * Initialize the online status is not active users.
+     *
+     * @return boolean flag stop execute of the next chunk
+     */
+    protected function Action_Offline()
+    {
+        Zero_Users::DB_Offline(Zero_App::$Config->Site_UsersTimeoutOnline);
+    }
+
 }

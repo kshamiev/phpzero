@@ -68,7 +68,13 @@ class Zero_DB
     {
         //  Initcializatciia ob``ekta mysqli
         /* create a connection object which is not connected */
-        self::$DB = mysqli_connect(Zero_App::$Config->Db['Host'], Zero_App::$Config->Db['Login'], Zero_App::$Config->Db['Password'], Zero_App::$Config->Db['Name']);
+        try
+        {
+            self::$DB = mysqli_connect(Zero_App::$Config->Db['Host'], Zero_App::$Config->Db['Login'], Zero_App::$Config->Db['Password'], Zero_App::$Config->Db['Name']);
+        } catch ( Exception $e )
+        {
+            throw new Exception(mysqli_connect_error(), 500);
+        }
         /* check connection */
         if ( mysqli_connect_errno() )
             die("mysqli - Unable to connect to the server or choose a database.<br>\n Cause: " . mysqli_connect_error());
@@ -1496,7 +1502,7 @@ class Zero_DB
                 }
             }
         }
-        if ( '' == $source  )
+        if ( '' == $source )
             $source = $this->Model->Source;
         if ( 0 < count($sql_update) )
             self::Set("UPDATE {$source} SET " . implode(', ', $sql_update) . " WHERE ID = " . $this->Model->ID);
@@ -1588,7 +1594,7 @@ class Zero_DB
             if ( 0 < $this->Model->ID )
                 $sql_where .= ' AND `ID` = ' . $this->Model->ID;
 
-            if ( '' == $source  )
+            if ( '' == $source )
                 $source = $this->Model->Source;
             $sql = "UPDATE {$source} SET " . implode(', ', $sql_update) . " " . $sql_where;
             $flag = self::Set($sql);
@@ -1707,7 +1713,7 @@ class Zero_DB
         if ( 0 < $this->Model->ID )
             $sql_where .= ' AND `ID` = ' . $this->Model->ID;
 
-        if ( '' == $source  )
+        if ( '' == $source )
             $source = $this->Model->Source;
         self::Set("DELETE FROM {$source} " . $sql_where);
         return true;

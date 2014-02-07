@@ -240,7 +240,7 @@ class Zero_App
                     throw new Exception('Access Denied', 403);
             }
             else
-                $output = $Controller->Execute();
+                $output = $Controller->Execute('Action_Default');
             Zero_App::Set_Variable('action_message', $Controller->Get_Message());
         }
 
@@ -249,7 +249,6 @@ class Zero_App
         // Generate and output the result
         if ( 'html' == self::$Section->ContentType )
         {
-            self::HeaderNoCache();
             self::HeaderHtml();
             Zero_Logs::Start('#{LAYOUT.View}');
             //            $Layout = Zero_Model::Make('Zero_Layout', self::$Section->Zero_Layout_ID);
@@ -267,26 +266,22 @@ class Zero_App
         }
         else if ( 'xml' == self::$Section->ContentType )
         {
-            self::HeaderNoCache();
-            self::HeaderHtml();
+            self::HeaderXml();
             echo $output->Fetch();
         }
         else if ( 'json' == self::$Section->ContentType )
         {
-            self::HeaderNoCache();
-            self::HeaderHtml();
+            self::HeaderJson();
             echo json_encode($output->Receive());
         }
         else if ( 'img' == self::$Section->ContentType )
         {
-            self::HeaderNoCache();
             self::HeaderImg($output);
             if ( file_exists($output) )
                 echo file_get_contents($output);
         }
         else if ( 'file' == self::$Section->ContentType )
         {
-            self::HeaderNoCache();
             self::HeaderFile($output);
             if ( file_exists($output) )
                 echo file_get_contents($output);
@@ -307,7 +302,7 @@ class Zero_App
      * - 'file' binary data for download
      *
      */
-    public static function HeaderNoCache()
+    private static function _HeaderNoCache()
     {
         header('Pragma: no-cache');
         header('Last-Modified: ' . date('D, d M Y H:i:s') . 'GMT');
@@ -315,29 +310,39 @@ class Zero_App
         header('Cache-Control: no-store, no-cache, must-revalidate');
     }
 
-    public static function HeaderHtml()
+    public static function HeaderHtml($flagCache = false)
     {
+        if ( true == $flagCache )
+            self::_HeaderNoCache();
         header("Content-Type: text/html; charset=utf-8");
     }
 
-    public static function HeaderXml()
+    public static function HeaderXml($flagCache = false)
     {
+        if ( true == $flagCache )
+            self::_HeaderNoCache();
         header("Content-Type: text/xml; charset=utf-8");
     }
 
-    public static function HeaderJson()
+    public static function HeaderJson($flagCache = false)
     {
+        if ( true == $flagCache )
+            self::_HeaderNoCache();
         header("Content-Type: text/javascript; charset=utf-8");
     }
 
-    public static function HeaderImg($path)
+    public static function HeaderImg($path, $flagCache = false)
     {
+        if ( true == $flagCache )
+            self::_HeaderNoCache();
         header("Content-Type: " . Zero_Lib_FileSystem::File_Type($path));
         header("Content-Length: " . filesize($path));
     }
 
-    public static function HeaderFile($path)
+    public static function HeaderFile($path, $flagCache = false)
     {
+        if ( true == $flagCache )
+            self::_HeaderNoCache();
         header("Content-Type: " . Zero_Lib_FileSystem::File_Type($path));
         header("Content-Length: " . filesize($path));
         header('Content-Disposition: attachment; filename = "' . basename($path) . '"');

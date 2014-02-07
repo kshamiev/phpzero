@@ -15,23 +15,11 @@
 class Zero_Section_SeoTag extends Zero_Controller
 {
     /**
-     * Initialization of the stack chunks and input parameters
-     *
-     * @param string $action action
-     * @return boolean flag stop execute of the next chunk
-     */
-    protected function Chunk_Init($action)
-    {
-        $this->Set_Chunk('View');
-    }
-
-    /**
      * Create views meta tags.
      *
-     * @param string $action action
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Chunk_View($action)
+    protected function Action_Default()
     {
         $seo_data = [
             'Title' => Zero_App::Get_Variable('Title'),

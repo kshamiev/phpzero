@@ -222,7 +222,7 @@ class Zero_Logs
     public static function Exit_Application()
     {
         // Logirovanie v brauzer
-        if ( Zero_App::$Config->Log_Output_Display && 'html' == Zero_App::$Section->ContentType )
+        if ( Zero_App::$Config->Log_Output_Display && (!Zero_App::$Section instanceof Zero_Section || 'html' == Zero_App::$Section->ContentType) )
             self::Output_Display();
 
         // zakry`vaem soedinenie s brauzerom (rabotaet tol`ko pod nginx)

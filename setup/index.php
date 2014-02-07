@@ -24,6 +24,8 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 ini_set('magic_quotes_gpc', 0);
 
+define('ZERO_PATH_SITE', dirname(dirname(__DIR__)));
+
 require dirname(__DIR__) . '/component/App.php';
 require dirname(__DIR__) . '/component/Lib/FileSystem.php';
 $error_init_list = [];

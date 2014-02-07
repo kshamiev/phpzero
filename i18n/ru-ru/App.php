@@ -30,4 +30,5 @@ return [
     'translation Sidebar' => 'Код вставки в шаблон',
     'translation Project' => 'Проект',
     'translation Key' => 'Translation Value',
+    'translation Key' => 'Translation Value',
 ];
