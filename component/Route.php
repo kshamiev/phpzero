@@ -65,8 +65,12 @@ class Zero_Route
             if ( preg_match("~.+?-([^/]+)$~", $param, $arr) )
             {
                 $row[] = str_replace('-' . $arr[1], '', $param);
-                $arr = explode('.', $arr[1]);
-                $this->Param = explode('-', $arr[0]);
+                foreach (explode('-', explode('.', $arr[1])[0]) as $segment)
+                {
+                    $arr = explode(':', $segment);
+                    if ( 1 < count($arr) )
+                        $this->Param[$arr[0]] = $arr[1];
+                }
             }
             else
                 $row[] = $param;

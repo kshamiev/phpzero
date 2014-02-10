@@ -9,7 +9,10 @@
       <tr>
         <td width="220px" height="40px" align="center">{plugin "Zero_Content_Page" Block="head_left"}</td>
         <td>
-            {translation "Zero_App" "Project"}: {Zero_App::$Config->Site_Name}
+            {translation "Zero_App" "Project"}: {Zero_App::$Config->Site_Name}&nbsp;&nbsp;
+            {foreach (Zero_App::Get_Variable('action_message') as $row)}
+            {$row[1]}&nbsp;&nbsp;
+            {/}
         </td>
         <td width="150px">
             {Zero_App::$Users->Login}

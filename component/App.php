@@ -245,12 +245,6 @@ class Zero_App
             Zero_App::Set_Variable('action_message', $Controller->Get_Message());
         }
 
-        // Параметры урла
-        $url = '';
-        if ( 0 < count(Zero_App::$Route->Param) )
-            $url = '-' . implode('-', Zero_App::$Route->Param);
-        define('URLP', URL . $url);
-
         Zero_Logs::Stop('#{APP.Main}');
 
         // Generate and output the result

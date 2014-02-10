@@ -42,6 +42,8 @@ abstract class Zero_Crud_Edit extends Zero_Controller
     {
         $this->Chunk_Init();
         $this->Chunk_Filter();
+        if ( $this->Params['id'] == 0 )
+            $this->Chunk_Add();
         $this->Chunk_View();
         return $this->View;
     }
@@ -58,7 +60,6 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         $this->Chunk_Add();
         $this->Chunk_View();
         return $this->View;
-
     }
 
     /**
@@ -82,13 +83,21 @@ abstract class Zero_Crud_Edit extends Zero_Controller
      */
     protected function Chunk_Init()
     {
+        if ( isset(Zero_App::$Route->Param['pid']) )
+            $this->Params['obj_parent_id'] = Zero_App::$Route->Param['pid'];
+        else if ( empty($this->Params['obj_parent_id']) )
+            $this->Params['obj_parent_id'] = 0;
+        //
+        if ( isset(Zero_App::$Route->Param['id']) )
+            $this->Params['id'] = Zero_App::$Route->Param['id'];
+        else if ( empty($this->Params['id']) )
+            $this->Params['id'] = 0;
+        //
         $this->View = new Zero_View($this->Template);
-        $this->Model = Zero_Model::Make($this->Source, Zero_App::$Route->Param['id'], true);
-
+        $this->Model = Zero_Model::Make($this->Source, $this->Params['id'], true);
     }
 
-
-        /**
+    /**
      * Initialization filters
      *
      * @return boolean flag stop execute of the next chunk
@@ -126,7 +135,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         }
 
         //  Page by page
-        if ( 0 < Zero_App::$Route->Param['pg'] )
+        if ( isset(Zero_App::$Route->Param['pg']) && 0 < Zero_App::$Route->Param['pg'] )
             $Filter->Page = Zero_App::$Route->Param['pg'];
     }
 
@@ -170,8 +179,6 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         $this->View->Assign('Props', $props_form);
         //  Filter
         $this->View->Assign('Filter', $Filter->Get_Filter());
-        //  Navigation parent
-        $this->View->Assign('url_parent', (0 < Zero_App::$Route->Param['pid']) ? '-pid-' . Zero_App::$Route->Param['pid'] : '');
     }
 
     /**
@@ -252,7 +259,8 @@ abstract class Zero_Crud_Edit extends Zero_Controller
             }
         }
 
-        Zero_App::$Route->Param['id'] = $this->Model->ID;
+        $this->Params['id'] = $this->Model->ID;
+//        Zero_App::$Route->Param['id'] = $this->Model->ID;
 
         //  Reset Cache
         $this->Model->Cache->Reset();

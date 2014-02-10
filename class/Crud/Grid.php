@@ -100,6 +100,16 @@ abstract class Zero_Crud_Grid extends Zero_Controller
      */
     protected function Chunk_Init()
     {
+        if ( isset(Zero_App::$Route->Param['pid']) )
+            $this->Params['obj_parent_id'] = Zero_App::$Route->Param['pid'];
+        else if ( empty($this->Params['obj_parent_id']) )
+            $this->Params['obj_parent_id'] = 0;
+        //
+        if ( isset(Zero_App::$Route->Param['id']) )
+            $this->Params['id'] = Zero_App::$Route->Param['id'];
+        else if ( empty($this->Params['id']) )
+            $this->Params['id'] = 0;
+        //
         $this->View = new Zero_View($this->Template);
         $this->Model = Zero_Model::Make($this->Source);
     }
@@ -291,6 +301,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
         $this->View->Assign('Params', $this->Params);
         $this->View->Assign('Object', $this->Model);
         $this->View->Assign('DataLink', $data_link);
+        $this->View->Assign('pid', $this->Params['obj_parent_id']);
         // Page by page
         $this->View->Assign('PagerPage', $Filter->Page);
         $this->View->Assign('PagerPageItem', Zero_App::$Config->View_PageItem);

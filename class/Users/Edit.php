@@ -42,14 +42,8 @@ class Zero_Users_Edit extends Zero_Crud_Edit
      */
     public function Action_Default()
     {
-        //  relation transition  one to many  (CL)
         $this->Params['obj_parent_prop'] = 'Zero_Users_ID';
-        $this->Params['obj_parent_id'] = Zero_App::$Route->Param['pid'];
         $this->Params['obj_parent_name'] = '';
-
-        $this->Chunk_Init();
-        $this->Chunk_Filter();
-        $this->Chunk_View();
-        return $this->View;
+        return parent::Action_Default();
     }
 }

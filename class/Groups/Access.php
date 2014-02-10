@@ -20,6 +20,13 @@ class Zero_Groups_Access extends Zero_Controller
     protected $Source = 'Zero_Groups';
 
     /**
+     * Template view
+     *
+     * @var string
+     */
+    protected $Template = __CLASS__;
+
+    /**
      * Vy`polnenie dei`stvii`
      *
      * @return Zero_View or string
@@ -65,9 +72,12 @@ class Zero_Groups_Access extends Zero_Controller
     protected function Chunk_Init()
     {
         $this->Params['obj_parent_prop'] = 'Zero_Groups_ID';
-        $this->Params['obj_parent_id'] = Zero_App::$Route->Param['pid'];
         $this->Params['obj_parent_name'] = '';
-        $this->View = new Zero_View(__CLASS__);
+        if ( isset(Zero_App::$Route->Param['pid']) )
+            $this->Params['obj_parent_id'] = Zero_App::$Route->Param['pid'];
+        else if ( empty($this->Params['obj_parent_id']) )
+            $this->Params['obj_parent_id'] = 0;
+        $this->View = new Zero_View($this->Template);
         $this->Model = Zero_Model::Make($this->Source);
     }
 
@@ -129,8 +139,7 @@ class Zero_Groups_Access extends Zero_Controller
         $Groups->DB->Sql_Order('Name', 'ASC');
         $groups_list = $Groups->DB->Select_List_Index('ID, Name');
         $this->View->Assign('groups_list', $groups_list);
-        //  Navigation parent
-        $this->View->Assign('url_parent', (0 < Zero_App::$Route->Param['pid']) ? '-pid-' . Zero_App::$Route->Param['pid'] : '');
+        $this->View->Assign('pid', $this->Params['obj_parent_id']);
     }
 
     /**

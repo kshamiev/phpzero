@@ -18,16 +18,20 @@
  */
 class Zero_System_FileManager extends Zero_Controller
 {
+
+    public function Action_Default()
+    {
+        $this->Chunk_Init();
+        $this->Chunk_View();
+        return $this->View;
+    }
     /**
      * Initialization of the stack chunks and input parameters
      *
-     * @param string $action action
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Chunk_Init($action)
+    protected function Chunk_Init()
     {
-        $this->Set_Chunk('Action');
-        $this->Set_Chunk('View');
         $this->View = new Zero_View(__CLASS__);
         if ( !isset($this->Params['obj_parent_path']) )
             $this->Params['obj_parent_path'] = array('..' => ZERO_PATH_SITE);
@@ -36,10 +40,9 @@ class Zero_System_FileManager extends Zero_Controller
     /**
      * Create views.
      *
-     * @param string $action action
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Chunk_View($action)
+    protected function Chunk_View()
     {
         $path = end($this->Params['obj_parent_path']);
         $folder_mas = array();
@@ -77,12 +80,21 @@ class Zero_System_FileManager extends Zero_Controller
         $this->View->Assign('file_edit_flag', array('txt', 'ini', 'log', 'php', 'htm', 'html', 'css', 'js'));
     }
 
+    public function Action_FolderGo()
+    {
+        $this->Chunk_Init();
+        $this->Chunk_FolderGo();
+        $this->Chunk_View();
+        return $this->View;
+    }
+
+
     /**
      * Move to one level up or down for catalogs
      *
      * @return boolean flag stop execute of the next chunk
      */
-    public function Action_FolderGo()
+    public function Chunk_FolderGo()
     {
         //  move up
         if ( isset($this->Params['obj_parent_path'][$_REQUEST['dir_name']]) )
@@ -104,12 +116,21 @@ class Zero_System_FileManager extends Zero_Controller
         }
     }
 
+
+    public function Action_FolderRemove()
+    {
+        $this->Chunk_Init();
+        $this->Chunk_FolderRemove();
+        $this->Chunk_View();
+        return $this->View;
+    }
+
     /**
      * Delete the folder and its contents
      *
      * @return boolean flag stop execute of the next chunk
      */
-    public function Action_FolderRemove()
+    public function Chunk_FolderRemove()
     {
         if ( !$_REQUEST['dir_name'] )
             return $this->Set_Message('Error_FolderRemove', 1, false);
@@ -118,12 +139,21 @@ class Zero_System_FileManager extends Zero_Controller
         return $this->Set_Message('FolderRemove', 0);
     }
 
+
+    public function Action_FileRemove()
+    {
+        $this->Chunk_Init();
+        $this->Chunk_FileRemove();
+        $this->Chunk_View();
+        return $this->View;
+    }
+
     /**
      * Deleting a file
      *
      * @return boolean flag stop execute of the next chunk
      */
-    public function Action_FileRemove()
+    public function Chunk_FileRemove()
     {
         if ( !$_REQUEST['file_name'] )
             return $this->Set_Message('Error_FileRemove', 1, false);
@@ -132,14 +162,30 @@ class Zero_System_FileManager extends Zero_Controller
         return $this->Set_Message('FileRemove', 0);
     }
 
+    public function Action_FileDownLoad()
+    {
+        $this->Chunk_Init();
+        $this->Chunk_FileDownLoad();
+        $this->Chunk_View();
+        return $this->View;
+    }
+
     /**
      * The download the user to the file
      */
-    public function Action_FileDownLoad()
+    public function Chunk_FileDownLoad()
     {
         Zero_App::$Section->ContentType = 'file';
         $this->View = end($this->Params['obj_parent_path']) . '/' . $_REQUEST['file_name'];
         return false;
+    }
+
+    public function Action_FileUpload()
+    {
+        $this->Chunk_Init();
+        $this->Chunk_FileUpload();
+        $this->Chunk_View();
+        return $this->View;
     }
 
     /**
@@ -147,7 +193,7 @@ class Zero_System_FileManager extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    public function Action_FileUpload()
+    public function Chunk_FileUpload()
     {
         if ( 4 != $_FILES['FileUpload']['error'] )
         {
@@ -165,12 +211,20 @@ class Zero_System_FileManager extends Zero_Controller
         }
     }
 
+    public function Action_FolderAdd()
+    {
+        $this->Chunk_Init();
+        $this->Chunk_FolderAdd();
+        $this->Chunk_View();
+        return $this->View;
+    }
+
     /**
      * Creating a folder
      *
      * @return boolean flag stop execute of the next chunk
      */
-    public function Action_FolderAdd()
+    public function Chunk_FolderAdd()
     {
         if ( !isset($_REQUEST['FolderName']) || !$_REQUEST['FolderName'] )
             return $this->Set_Message('Error_FolderAdd', 1, false);
@@ -187,5 +241,6 @@ class Zero_System_FileManager extends Zero_Controller
      */
     public function Action_EditFile()
     {
+        return $this->View;
     }
 }

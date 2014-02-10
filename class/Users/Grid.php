@@ -50,16 +50,16 @@ class Zero_Users_Grid extends Zero_Crud_Grid
             $this->Params['obj_parent_path'] = ['root'];
         }
 
-        if ( isset(Zero_App::$Route->Param[1]) && $this->Params['obj_parent_id'] != Zero_App::$Route->Param[1] )
+        if ( isset(Zero_App::$Route->Param['pid']) && $this->Params['obj_parent_id'] != Zero_App::$Route->Param['pid'] )
         {
-            $this->Params['obj_parent_id'] = Zero_App::$Route->Param[1];
+            $this->Params['obj_parent_id'] = Zero_App::$Route->Param['pid'];
             //  move up
-            if ( isset($this->Params['obj_parent_path'][Zero_App::$Route->Param[1]]) )
+            if ( isset($this->Params['obj_parent_path'][Zero_App::$Route->Param['pid']]) )
             {
                 $flag = true;
                 foreach ($this->Params['obj_parent_path'] as $id => $name)
                 {
-                    if ( $id == Zero_App::$Route->Param[1] )
+                    if ( $id == Zero_App::$Route->Param['pid'] )
                         $flag = false;
                     else if ( false == $flag )
                         unset($this->Params['obj_parent_path'][$id]);
@@ -68,12 +68,12 @@ class Zero_Users_Grid extends Zero_Crud_Grid
             //  move down
             else
             {
-                $ObjectGo = Zero_Model::Make($this->Source, Zero_App::$Route->Param[1]);
+                $ObjectGo = Zero_Model::Make($this->Source, Zero_App::$Route->Param['pid']);
                 $ObjectGo->DB->Load('Name');
-                $this->Params['obj_parent_path'][Zero_App::$Route->Param[1]] = $ObjectGo->Name;
+                $this->Params['obj_parent_path'][Zero_App::$Route->Param['pid']] = $ObjectGo->Name;
                 unset($ObjectGo);
             }
-            Zero_Filter::Factory($this->Model)->Page = 1;
+            Zero_Filter::Factory($this->Model)->Reset();
         }
         parent::Chunk_Init();
     }

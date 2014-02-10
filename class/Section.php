@@ -421,7 +421,7 @@ class Zero_Section extends Zero_Model
         $sql = "
         UPDATE Zero_Section
         SET
-          Url = CONCAT('" . $url . "', '/', UrlThis)
+          Url = CONCAT('" . rtrim($url, '/') . "', '/', UrlThis)
         WHERE
             Zero_Section_ID = {$section_id}
         ";
@@ -450,10 +450,10 @@ class Zero_Section extends Zero_Model
         if ( 0 < $this->Zero_Section_ID )
         {
             $Object = Zero_Model::Make($this->Source, $this->Zero_Section_ID);
-            $this->Url = $Object->Url . '/' . $this->UrlThis;
+            $this->Url = rtrim($Object->Url, '/') . '/' . $this->UrlThis;
         }
         else
-            $this->Url = $this->UrlThis;
+            $this->Url = $this->UrlThis . '/';
         return '';
     }
 

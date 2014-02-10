@@ -40,15 +40,8 @@ class Zero_Content_GridSection extends Zero_Crud_Grid
      */
     public function Action_Default()
     {
-//        if ( empty($this->Params['obj_parent_id']) || $this->Params['obj_parent_id'] != Zero_App::$Route->Param['pid'] )
-//            Zero_Filter::Factory($this->Model)->Reset();
         $this->Params['obj_parent_prop'] = 'Zero_Section_ID';
-        $this->Params['obj_parent_id'] = Zero_App::$Route->Param['pid'];
         $this->Params['obj_parent_name'] = '';
-
-        $this->Chunk_Init();
-        $this->Chunk_Filter();
-        $this->Chunk_View();
-        return $this->View;
+        return parent::Action_Default();
     }
 }

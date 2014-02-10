@@ -19,7 +19,10 @@
  */
 return [
     'controller Zero_System_GridService' => 'Разработка и обслуживание системы',
-    'controller Zero_System_GridService action Engine_Modules_DB' => 'Инженеринг моделей',
+    'controller Zero_System_GridService action Default' => 'контроллер по умолчанию',
+    'controller Zero_System_GridService action EngineModulesDB' => 'Инженеринг моделей',
+    'controller Zero_System_GridService action CacheReset' => 'полный сброс кеша',
+    'controller Zero_System_GridService action SessionReset' => 'сброс всех сессий',
     'controller Zero_System_GridService action Cache_Reset' => 'полный сброс кеша',
     'controller Zero_System_GridService action Session_Reset' => 'сброс всех сессий',
     'controller Zero_System_GridService message Session_Reset' => 'Сессии сброшены',
@@ -38,6 +41,7 @@ return [
     'controller Zero_System_FileManager action FileUpload' => 'загрузка файла на сервер',
     'controller Zero_System_FileManager action FolderAdd' => 'создание папки',
     'controller Zero_System_FileManager action EditFile' => 'изменение файла',
+    'controller Zero_System_FileManager action Default' => 'контроллер по умолчанию',
     'controller Zero_System_FileManager message FolderAdd' => 'Папка создана',
     'controller Zero_System_FileManager message Error_FolderAdd' => 'Ошибка создания папки',
     'controller Zero_System_FileManager message FileUpload' => 'Файл загружен',
