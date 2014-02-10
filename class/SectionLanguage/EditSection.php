@@ -34,19 +34,19 @@ class Zero_SectionLanguage_EditSection extends Zero_Crud_Edit
     protected $User_Condition = true;
 
     /**
-     * Initialization of the input parameters
+     * Vy`polnenie dei`stvii`
      *
-     * При изменение объектов без переходов по свяи (один ко многим) этот чанк нужно удалить или изменить
-     *
-     * @param string $action action
-     * @return boolean flag stop execute of the next chunk
+     * @return Zero_View or string
      */
-    protected function Chunk_Init($action)
+    public function Action_Default()
     {
-        parent::Chunk_Init($action);
-        //  relation transition  one to many  (CL)
         $this->Params['obj_parent_prop'] = 'Zero_Section_ID';
         $this->Params['obj_parent_id'] = Zero_App::$Route->Param['pid'];
         $this->Params['obj_parent_name'] = '';
+
+        $this->Chunk_Init();
+        $this->Chunk_Filter();
+        $this->Chunk_View();
+        return $this->View;
     }
 }

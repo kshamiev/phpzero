@@ -19,7 +19,7 @@ class Zero_Section_SeoTag extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Action_Default()
+    public function Action_Default()
     {
         $seo_data = [
             'Title' => Zero_App::Get_Variable('Title'),
@@ -37,5 +37,6 @@ class Zero_Section_SeoTag extends Zero_Controller
         }
         $this->View = new Zero_View(get_class($this));
         $this->View->Assign('seo_data', $seo_data);
+        return $this->View;
     }
 }

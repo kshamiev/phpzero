@@ -12,7 +12,6 @@
  *
  * <BEG_CONFIG_PROPERTY>
  * @property integer $Zero_Section_ID
- * @property integer $Zero_Layout_ID
  * @property string $Name
  * @property string $Content
  * @property string $Block
@@ -79,7 +78,6 @@ class Zero_Content extends Zero_Model
             /*BEG_CONFIG_PROP*/
             'ID' => ['DB' => 'I', 'IsNull' => 'NO', 'Default' => ''],
             'Zero_Section_ID' => ['DB' => 'I', 'IsNull' => 'NO', 'Default' => ''],
-            'Zero_Layout_ID' => ['DB' => 'I', 'IsNull' => 'NO', 'Default' => ''],
             'Zero_Language_ID' => ['DB' => 'I', 'IsNull' => 'NO', 'Default' => 1],
             'Name' => ['DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
             'Content' => ['DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
@@ -106,7 +104,6 @@ class Zero_Content extends Zero_Model
             /*BEG_CONFIG_FILTER_PROP*/
             'ID' => ['Filter' => '', 'Search' => 'Number', 'Sort' => true],
             'Zero_Section_ID' => ['Filter' => '', 'Search' => '', 'Sort' => false],
-            'Zero_Layout_ID' => ['Filter' => '', 'Search' => '', 'Sort' => false],
             'Zero_Language_ID' => ['Filter' => 'Link', 'Search' => '', 'Sort' => false],
             'Name' => ['Filter' => '', 'Search' => 'Text', 'Sort' => false],
             'Content' => ['Filter' => '', 'Search' => 'Text', 'Sort' => false],
@@ -155,7 +152,6 @@ class Zero_Content extends Zero_Model
             /*BEG_CONFIG_FORM_PROP*/
             'ID' => array('Form' => 'Hidden', 'IsNull' => 'NO'),
             'Zero_Section_ID' => array('Form' => 'Hidden', 'IsNull' => 'YES'),
-            'Zero_Layout_ID' => array('Form' => 'Hidden', 'IsNull' => 'YES'),
             'Zero_Language_ID' => array('Form' => 'Link', 'IsNull' => 'NO'),
             'Name' => array('Form' => 'Text', 'IsNull' => 'YES'),
             'Content' => array('Form' => 'Content', 'IsNull' => 'YES'),
@@ -173,22 +169,11 @@ class Zero_Content extends Zero_Model
     public function FL_Block()
     {
         $Model = Zero_Model::Make('Zero_Section', Zero_App::$Section->Zero_Section_ID);
-//        if ( 'Zero_Section_Edit' == $Model->Controller )
-//        {
-//            $Model = Zero_Model::Make('Zero_Section', Zero_App::$Route->Param['pid']);
-//            $Model = Zero_Model::Make('Zero_Layout', $Model->Zero_Layout_ID);
-//        }
-//        else if ( 'Zero_Layout_Edit' == $Model->Controller )
-//            $Model = Zero_Model::Make('Zero_Layout', Zero_App::$Route->Param['pid']);
-//        else
-//            throw new Exception('Error Filter Content->Block', 500);
-
         if ( !$Model->Layout )
         {
             Zero_Logs::Set_Message('Layout not Set');
             return [];
         }
-
         $template = Zero_View::Search_Template($Model->Layout, true);
         if ( !$template )
         {
@@ -198,7 +183,7 @@ class Zero_Content extends Zero_Model
 
         $result = [];
         $result['content'] = 'content';
-        $template = file_get_contents(ZERO_PATH_SITE . '/' . $template . Zero_View::EXT_VIEW);
+        $template = file_get_contents($template);
         if ( preg_match_all(Zero_View::PATTERN_PLUGIN, $template, $match, PREG_SET_ORDER) )
         {
             foreach ($match as $row)

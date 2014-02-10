@@ -55,7 +55,7 @@ class Zero_Controller_Grid extends Zero_Crud_Grid
      *
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Action_Link_Add()
+    public function Action_Link_Add()
     {
         if ( !$_REQUEST['obj_id'] )
             return $this->Set_Message('Error_ParamNot', 1, false);
@@ -74,7 +74,7 @@ class Zero_Controller_Grid extends Zero_Crud_Grid
      *
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Action_Link_Rem()
+    public function Action_Link_Rem()
     {
         if ( !$_REQUEST['obj_id'] )
             return $this->Set_Message('Error_Link_Rem', 1, false);

@@ -46,7 +46,6 @@ return [
 	'model prop UrlRedirect' => 'Редирект',
 	'model prop UrlThis' => 'Относительная ссылка',
 	'model prop Zero_Section_ID' => 'Родительский раздел',
-	'model prop Zero_Layout_ID' => 'Макет',
     'model prop Description' => 'Описание',
     'model prop Keywords' => 'Ключи',
     'model prop Title' => 'Титул',

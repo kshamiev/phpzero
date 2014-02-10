@@ -60,7 +60,7 @@ class Zero_Controller_Grid extends Zero_Crud_Grid
      *
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Action_CatalogMove()
+    public function Action_CatalogMove()
     {
         if ( !$_REQUEST['obj_id'] )
             return $this->Set_Message('Error_NotParam', 1, false);

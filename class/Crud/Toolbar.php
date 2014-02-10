@@ -13,23 +13,11 @@
 class Zero_Crud_Toolbar extends Zero_Controller
 {
     /**
-     * Initialization of the stack chunks and input parameters
-     *
-     * @param string $action action
-     * @return boolean flag stop execute of the next chunk
-     */
-    protected function Chunk_Init($action)
-    {
-        $this->Set_Chunk('View');
-    }
-
-    /**
      * Create views.
      *
-     * @param string $action action
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Chunk_View($action)
+    public function Action_Default()
     {
         $this->View = new Zero_View(Zero_App::$Section->Controller . 'Toolbar');
         $this->View->Template_Add('Zero_Crud_Toolbar');
@@ -37,5 +25,6 @@ class Zero_Crud_Toolbar extends Zero_Controller
         {
             $this->View->Assign($prop, $value);
         }
+        return $this->View;
     }
 }

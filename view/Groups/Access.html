@@ -6,10 +6,10 @@
     <tr>
         <td height="26px">
             {if ( isset($Action['Save']) )}
-            <input class="btn" type="button" value="сохранить" onclick="button_form('formedit', '{URL}{$url_parent}', 'Save', 0);">
+            <input class="btn" type="button" value="сохранить" onclick="button_form('formedit', '{URLP}', 'Save', 0);">
             {/if}
             {if ( isset($Action['Copy']) )}
-            Скопировать права в группу: <select name="obj_id" style="width: 200px;" onchange="button_form_obj_id(this.form, '{URL}{$url_parent}', 'Copy', this.value, 0);"><option value="">not selected</option>{foreach ($groups_list as $id => $name)}<option value="{$id}">{$name}</option>{/foreach}</select>
+            Скопировать права в группу: <select name="obj_id" style="width: 200px;" onchange="button_form_obj_id(this.form, '{URLP}', 'Copy', this.value, 0);"><option value="">not selected</option>{foreach ($groups_list as $id => $name)}<option value="{$id}">{$name}</option>{/foreach}</select>
             {/if}
         </td>
     </tr>

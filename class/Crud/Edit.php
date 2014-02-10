@@ -36,25 +36,64 @@ abstract class Zero_Crud_Edit extends Zero_Controller
     /**
      * Initialization of the stack chunks and input parameters
      *
-     * @param string $action action
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Chunk_Init($action)
+    public function Action_Default()
     {
-        $this->Set_Chunk('Filter');
-        $this->Set_Chunk('Action');
-        $this->Set_Chunk('View');
-        $this->View = new Zero_View($this->Template);
-        $this->Model = Zero_Model::Make($this->Source, Zero_App::$Route->Param['id'], true);
+        $this->Chunk_Init();
+        $this->Chunk_Filter();
+        $this->Chunk_View();
+        return $this->View;
+    }
+
+    /**
+     * Initialization of the stack chunks and input parameters
+     *
+     * @return boolean flag stop execute of the next chunk
+     */
+    public function Action_Add()
+    {
+        $this->Chunk_Init();
+        $this->Chunk_Filter();
+        $this->Chunk_Add();
+        $this->Chunk_View();
+        return $this->View;
+
+    }
+
+    /**
+     * Initialization of the stack chunks and input parameters
+     *
+     * @return boolean flag stop execute of the next chunk
+     */
+    public function Action_Save()
+    {
+        $this->Chunk_Init();
+        $this->Chunk_Filter();
+        $this->Chunk_Save();
+        $this->Chunk_View();
+        return $this->View;
     }
 
     /**
      * Initialization filters
      *
-     * @param string $action action
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Chunk_Filter($action)
+    protected function Chunk_Init()
+    {
+        $this->View = new Zero_View($this->Template);
+        $this->Model = Zero_Model::Make($this->Source, Zero_App::$Route->Param['id'], true);
+
+    }
+
+
+        /**
+     * Initialization filters
+     *
+     * @return boolean flag stop execute of the next chunk
+     */
+    protected function Chunk_Filter()
     {
         $Filter = Zero_Filter::Factory($this->Model);
         if ( false == $Filter->IsInit )
@@ -94,14 +133,13 @@ abstract class Zero_Crud_Edit extends Zero_Controller
     /**
      * Create views.
      *
-     * @param string $action action
      * @return boolean flag stop execute of the next chunk
      * @throws Exception
      */
-    protected function Chunk_View($action)
+    protected function Chunk_View()
     {
         $Filter = Zero_Filter::Factory($this->Model);
-
+        pre($Filter);
         //  Initialize the fields in the form
         $props_form = $this->Model->Get_Config_Form();
         //  Remove the coupling condition
@@ -141,7 +179,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Action_Add()
+    public function Chunk_Add()
     {
         $this->Model->Set_ID(0);
         foreach ($this->Model->Get_Config_Prop() as $prop => $row)
@@ -162,7 +200,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Action_Save()
+    public function Chunk_Save()
     {
         if ( !isset($_REQUEST['Prop']) )
             $_REQUEST['Prop'] = [];

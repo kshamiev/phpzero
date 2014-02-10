@@ -11,28 +11,16 @@
 class Zero_Users_Kcaptcha extends Zero_Controller
 {
     /**
-     * Initialization of the stack chunks and input parameters
-     *
-     * @param string $action action
-     * @return boolean flag stop execute of the next chunk
-     */
-    protected function Chunk_Init($action)
-    {
-        $this->Set_Chunk('View');
-    }
-
-    /**
      * Create views.
      *
-     * @param string $action action
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Chunk_View($action)
+    public function Action_Default()
     {
         include_once ZERO_PATH_ZERO . '/library/kcaptcha/kcaptcha.php';
         $Captcha = new KCAPTCHA();
         Zero_App::$Users->Keystring = $Captcha->getKeyString();
-        Zero_App::$Section->ContentType = 'img';
-        return false;
+        Zero_App::$Section->ContentType = '';
+        return $this->View;
     }
 }

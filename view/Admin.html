@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-      {include "Header"}
+      {include "Zero_Header"}
   </head>
   <body>
   {plugin "Zero_Users_Online"}
@@ -12,12 +12,18 @@
             {translation "Zero_App" "Project"}: {Zero_App::$Config->Site_Name}
         </td>
         <td width="150px">
-            {plugin "Zero_Users_Informer"}
+            {Zero_App::$Users->Login}
+            {if ( 2 == Zero_App::$Users->Zero_Groups_ID  )}
+            <a href="/user">{translation "Zero_Users" "enter"}</a>
+            {else}
+            <a href="/user/profile">{lang "Zero_Users" "profile"}</a>
+            <a href="/user?act=Logout">{translation "Zero_Users" "exit"}</a>
+            {/if}
         </td>
       </tr>
       <tr valign="top">
         <td>
-            {plugin "Zero_Section_NavigationAccordion"}
+            {plugin "Zero_Section_NavigationAccordion" url="/admin"}
         </td>
         <td id="wrapper-content" colspan="2">
             {plugin "Zero_Section_NavigationLine"}

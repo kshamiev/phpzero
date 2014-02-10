@@ -36,25 +36,20 @@ class Zero_Section_Edit extends Zero_Crud_Edit
     protected $User_Condition = true;
 
     /**
-     * Initialization of the input parameters
+     * Vy`polnenie dei`stvii`
      *
-     * @param string $action action
-     * @return boolean flag stop execute of the next chunk
+     * @return Zero_View or string
      */
-    protected function Chunk_Init($action)
+    public function Action_Default()
     {
-        parent::Chunk_Init($action);
+        //  relation transition  one to many  (CL)
         $this->Params['obj_parent_prop'] = 'Zero_Section_ID';
         $this->Params['obj_parent_id'] = Zero_App::$Route->Param['pid'];
         $this->Params['obj_parent_name'] = '';
-    }
 
-    /**
-     * Working with the administrative section of the module
-     *
-     * @return boolean flag stop execute of the next chunk
-     */
-    protected function Action_Modules()
-    {
+        $this->Chunk_Init();
+        $this->Chunk_Filter();
+        $this->Chunk_View();
+        return $this->View;
     }
 }

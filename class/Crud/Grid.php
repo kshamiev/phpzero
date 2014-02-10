@@ -36,57 +36,80 @@ abstract class Zero_Crud_Grid extends Zero_Controller
     /**
      * Initialization of the stack chunks and input parameters
      *
-     * @param string $action action
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Chunk_Init($action)
+    public function Action_Default()
     {
-        $this->Set_Chunk('Filter');
-        $this->Set_Chunk('Action');
-        $this->Set_Chunk('View');
+        $this->Chunk_Init();
+        $this->Chunk_Filter();
+        $this->Chunk_View();
+        return $this->View;
+    }
+
+    /**
+     * Initialization of the stack chunks and input parameters
+     *
+     * @return boolean flag stop execute of the next chunk
+     */
+    public function Action_Remove()
+    {
+        $this->Chunk_Init();
+        $this->Chunk_Filter();
+        $this->Chunk_Remove();
+        $this->Chunk_View();
+        return $this->View;
+    }
+
+    /**
+     * Initialization of the stack chunks and input parameters
+     *
+     * @return boolean flag stop execute of the next chunk
+     */
+    public function Action_FilterSet()
+    {
+        $this->Chunk_Init();
+        $this->Chunk_Filter();
+
+        $this->Chunk_Filter_Set();
+
+        $this->Chunk_View();
+        return $this->View;
+    }
+
+    /**
+     * Initialization of the stack chunks and input parameters
+     *
+     * @return boolean flag stop execute of the next chunk
+     */
+    public function Action_FilterReset()
+    {
+        $this->Chunk_Init();
+
+        $Filter = Zero_Filter::Factory($this->Model);
+        $Filter->Reset();
+
+        $this->Chunk_Filter();
+        $this->Chunk_View();
+        return $this->View;
+    }
+
+    /**
+     * Initialization filters
+     *
+     * @return boolean flag stop execute of the next chunk
+     */
+    protected function Chunk_Init()
+    {
         $this->View = new Zero_View($this->Template);
         $this->Model = Zero_Model::Make($this->Source);
     }
 
     /**
-     * Move to one level up or down for catalogs
-     *
-     * @param string $action action
-     * @return boolean flag stop execute of the next chunk
-     */
-    protected function Chunk_View_CatalogGo($action)
-    {
-        $this->Params['obj_parent_id'] = Zero_App::$Route->Param['pid'];
-        //  move up
-        if ( isset($this->Params['obj_parent_path'][Zero_App::$Route->Param['pid']]) )
-        {
-            $flag = true;
-            foreach ($this->Params['obj_parent_path'] as $id => $name)
-            {
-                if ( $id == Zero_App::$Route->Param['pid'] )
-                    $flag = false;
-                else if ( false == $flag )
-                    unset($this->Params['obj_parent_path'][$id]);
-            }
-        }
-        //  move down
-        else
-        {
-            $ObjectGo = Zero_Model::Make($this->Source, Zero_App::$Route->Param['pid']);
-            $ObjectGo->DB->Load('Name');
-            $this->Params['obj_parent_path'][Zero_App::$Route->Param['pid']] = $ObjectGo->Name;
-            unset($ObjectGo);
-        }
-        Zero_Filter::Factory($this->Model)->Page = 1;
-    }
-
-    /**
      * Creating the conditions for obtaining the necessary data
      *
-     * @param string $action action
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Chunk_View_SqlWhere($action)
+    protected function Chunk_View_SqlWhere()
     {
         //  Filters
         $Filter = Zero_Filter::Factory($this->Model);
@@ -125,15 +148,11 @@ abstract class Zero_Crud_Grid extends Zero_Controller
     /**
      * Initialization and set filters
      *
-     * @param string $action action
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Chunk_Filter($action)
+    protected function Chunk_Filter()
     {
         $Filter = Zero_Filter::Factory($this->Model);
-        //  Reset
-        if ( 'Filter_Reset' == $action )
-            $Filter->Reset();
         //  Initialization
         if ( false == $Filter->IsInit )
         {
@@ -169,21 +188,16 @@ abstract class Zero_Crud_Grid extends Zero_Controller
         }
 
         //  Page by page
-        if ( 0 < Zero_App::$Route->Param['pg'] )
+        if ( isset(Zero_App::$Route->Param[0]) && 0 < Zero_App::$Route->Param[0] )
             $Filter->Page = Zero_App::$Route->Param['pg'];
-
-        //  Set
-        if ( 'Filter_Set' == $action )
-            $this->Chunk_Filter_Set($action);
     }
 
     /**
      * Set Filters
      *
-     * @param string $action action
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Chunk_Filter_Set($action)
+    protected function Chunk_Filter_Set()
     {
         $Filter = Zero_Filter::Factory($this->Model);
         //  Filters
@@ -230,15 +244,12 @@ abstract class Zero_Crud_Grid extends Zero_Controller
     /**
      * Create views.
      *
-     * @param string $action action
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Chunk_View($action)
+    protected function Chunk_View()
     {
         $Filter = Zero_Filter::Factory($this->Model);
         //  Move to one level up or down for catalogs
-        if ( isset($this->Params['obj_parent_id']) && $this->Params['obj_parent_id'] != Zero_App::$Route->Param['pid'] )
-            $this->Chunk_View_CatalogGo($action);
 
         //  Initialize the fields grid
         $props_grid = $this->Model->Get_Config_Grid();
@@ -261,7 +272,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
             $props[] = $row['Grid'] . ' AS ' . $prop;
         }
 
-        $this->Chunk_View_SqlWhere($action);
+        $this->Chunk_View_SqlWhere();
 
         //  Data
         $data_grid = $this->Model->DB->Select_Array($props, false);
@@ -289,8 +300,6 @@ abstract class Zero_Crud_Grid extends Zero_Controller
         $this->View->Assign('Filter', $Filter->Get_Filter());
         $this->View->Assign('Search', $Filter->Get_Search());
         $this->View->Assign('Sort', $Filter->Get_Sort());
-        //  Navigation parent
-        $this->View->Assign('url_parent', (0 < Zero_App::$Route->Param['pid']) ? '-pid-' . Zero_App::$Route->Param['pid'] : '');
     }
 
     /**
@@ -303,7 +312,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Action_Remove()
+    public function Chunk_Remove()
     {
         $ObjectRem = Zero_Model::Make($this->Source, $_REQUEST['obj_id']);
         //  Remove binary data object

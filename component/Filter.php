@@ -73,7 +73,7 @@ class Zero_Filter
      *
      * @var integer
      */
-    public $Page;
+    public $Page = 1;
 
     /**
      * Kolichetsvo elementov na stranitce

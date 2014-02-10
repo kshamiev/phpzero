@@ -24,7 +24,6 @@ return [
     'model prop ID' => 'Идентификатор',
     'model prop Name' => 'Название',
     'model prop Zero_Section_ID' => 'Раздел',
-    'model prop Zero_Layout_ID' => 'Макет',
     'model prop Zero_Language_ID' => 'Язык',
     'controller Zero_Content_EditSection' => 'Изменение контента страницы',
     'controller Zero_Content_EditSection action Add' => 'добавить',
@@ -51,5 +50,6 @@ return [
     'controller Zero_Content_GridLayout message Remove' => 'Удалено',
     'controller Zero_Content_GridLayout message Error_Remove' => 'Ошибка удаления',
     'controller Zero_Content_Page' => 'Контент раздела',
+    'controller Zero_Content_Page action Default' => 'Контроллер по умолчанию',
     'translation Key' => 'Translation Value',
 ];

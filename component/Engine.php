@@ -351,7 +351,7 @@ class Zero_Engine
         //  Razdel v BD
         $Section = Zero_Model::Make('Zero_Section');
         /* @var $Section Zero_Section */
-        $Section->Init_Url(Zero_App::$Config->Host);
+        $Section->Init_Url(Zero_App::$Config->Host . '/');
         $url = strtolower($module);
         $Section_Two = Zero_Model::Make('Zero_Section');
         /* @var $Section_Two Zero_Section */
@@ -360,8 +360,6 @@ class Zero_Engine
         if ( 0 == $Section_Two->ID )
         {
             $Section_Two->Zero_Section_ID = $Section->ID;
-            $Section_Two->Zero_Layout_ID = 1;
-            $Section_Two->Layout = 'Zero_SecondAccordion';
             $Section_Two->Url = Zero_App::$Config->Host . '/' . $url;
             $Section_Two->UrlThis = $url;
             $Section_Two->Controller = 'Zero_Content_Page';
@@ -423,8 +421,6 @@ class Zero_Engine
             if ( $flag_grid && 0 == $Section_Three->ID )
             {
                 $Section_Three->Zero_Section_ID = $Section_Two->ID;
-                $Section_Three->Zero_Layout_ID = 1;
-                $Section_Three->Layout = 'Zero_SecondAccordion';
                 $Section_Three->Url = Zero_App::$Config->Host . '/' . $url;
                 $Section_Three->UrlThis = strtolower($package[1]);
                 $Section_Three->Controller = $row['Name'] . '_Grid';
@@ -459,8 +455,6 @@ class Zero_Engine
             if ( $flag_edit && 0 == $Section_Four->ID && 0 < $Section_Three->ID )
             {
                 $Section_Four->Zero_Section_ID = $Section_Three->ID;
-                $Section_Four->Zero_Layout_ID = 1;
-                $Section_Four->Layout = 'Zero_SecondAccordion';
                 $Section_Four->Url = Zero_App::$Config->Host . '/' . $url;
                 $Section_Four->UrlThis = 'edit';
                 $Section_Four->Controller = $row['Name'] . '_Edit';

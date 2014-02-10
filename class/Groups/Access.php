@@ -9,7 +9,6 @@
  * @link http://www.phpzero.com/
  * @copyright <PHP_ZERO_COPYRIGHT>
  * @license http://www.phpzero.com/license/
- * @todo Доработать права через раздел для группы
  */
 class Zero_Groups_Access extends Zero_Controller
 {
@@ -21,31 +20,66 @@ class Zero_Groups_Access extends Zero_Controller
     protected $Source = 'Zero_Groups';
 
     /**
-     * Initialization of the stack chunks and input parameters
+     * Vy`polnenie dei`stvii`
      *
-     * @param string $action action
+     * @return Zero_View or string
+     */
+    public function Action_Default()
+    {
+        $this->Chunk_Init();
+        $this->Chunk_View();
+        return $this->View;
+    }
+
+    /**
+     * Preservation of the rights of access
+     *
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Chunk_Init($action)
+    public function Action_Save()
     {
-        $this->Set_Chunk('Action');
-        $this->Set_Chunk('View');
-        $this->View = new Zero_View(__CLASS__);
-        $this->Model = Zero_Model::Make($this->Source);
+        $this->Chunk_Init();
+        $this->Chunk_Save();
+        $this->Chunk_View();
+        return $this->View;
+    }
+
+    /**
+     * Copying permissions
+     *
+     * @return boolean flag stop execute of the next chunk
+     */
+    public function Action_Copy()
+    {
+        $this->Chunk_Init();
+        $this->Chunk_Copy();
+        $this->Chunk_View();
+        return $this->View;
+    }
+
+    /**
+     * Initialization of the stack chunks and input parameters
+     *
+     * @return boolean flag stop execute of the next chunk
+     */
+    protected function Chunk_Init()
+    {
         $this->Params['obj_parent_prop'] = 'Zero_Groups_ID';
         $this->Params['obj_parent_id'] = Zero_App::$Route->Param['pid'];
         $this->Params['obj_parent_name'] = '';
+        $this->View = new Zero_View(__CLASS__);
+        $this->Model = Zero_Model::Make($this->Source);
     }
 
     /**
      * Create views.
      *
-     * @param string $action action
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Chunk_View($action)
+    protected function Chunk_View()
     {
         $Section = Zero_Model::Make('Zero_Section');
+        $Section->DB->Sql_Where_IsNotNull('Controller');
         $section_list = $Section->DB->Select_Tree('ID, Name, Controller, Url, IsAuthorized');
         foreach ($section_list as $id => $row)
         {
@@ -56,10 +90,18 @@ class Zero_Groups_Access extends Zero_Controller
             }
             //  read from the controllers
             $method_list = [];
-            $reflection = new ReflectionClass($row['Controller']);
-            foreach ($reflection->getMethods(ReflectionMethod::IS_PROTECTED) as $method)
+            try
+            {
+                $reflection = new ReflectionClass($row['Controller']);
+            } catch ( Exception $e )
+            {
+                throw new Exception($e->getMessage(), 500);
+            }
+            foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method)
             {
                 $name = $method->getName();
+                if ( 'Action_Default' == $name )
+                    continue;
                 if ( 'Action' == substr($name, 0, 6) )
                 {
                     $name = str_replace('Action_', '', $name);
@@ -96,7 +138,7 @@ class Zero_Groups_Access extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Action_Save()
+    public function Chunk_Save()
     {
         foreach ($_REQUEST['RoleAccessSection'] as $section_id => $access)
         {
@@ -139,7 +181,7 @@ class Zero_Groups_Access extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Action_Copy()
+    public function Chunk_Copy()
     {
         Zero_DB::Set("DELETE FROM Zero_Action WHERE Zero_Groups_ID = {$_REQUEST['obj_id']}");
         $sql = "

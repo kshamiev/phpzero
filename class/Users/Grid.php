@@ -36,22 +36,60 @@ class Zero_Users_Grid extends Zero_Crud_Grid
     protected $User_Condition = true;
 
     /**
-     * Initialization of the input parameters
+     * Vy`polnenie dei`stvii`
      *
-     * @param string $action action
-     * @return boolean flag stop execute of the next chunk
+     * @return Zero_View or string
      */
-    protected function Chunk_Init($action)
+    protected function Chunk_Init()
     {
-        parent::Chunk_Init($action);
-        //  Initializing the top level catalog
         if ( !isset($this->Params['obj_parent_prop']) )
         {
-            $this->Params['obj_parent_prop'] = $this->Source . '_ID';
+            $this->Params['obj_parent_prop'] = 'Zero_Users_ID';
             $this->Params['obj_parent_id'] = 0;
             $this->Params['obj_parent_name'] = '';
             $this->Params['obj_parent_path'] = ['root'];
         }
+
+        if ( isset(Zero_App::$Route->Param[1]) && $this->Params['obj_parent_id'] != Zero_App::$Route->Param[1] )
+        {
+            $this->Params['obj_parent_id'] = Zero_App::$Route->Param[1];
+            //  move up
+            if ( isset($this->Params['obj_parent_path'][Zero_App::$Route->Param[1]]) )
+            {
+                $flag = true;
+                foreach ($this->Params['obj_parent_path'] as $id => $name)
+                {
+                    if ( $id == Zero_App::$Route->Param[1] )
+                        $flag = false;
+                    else if ( false == $flag )
+                        unset($this->Params['obj_parent_path'][$id]);
+                }
+            }
+            //  move down
+            else
+            {
+                $ObjectGo = Zero_Model::Make($this->Source, Zero_App::$Route->Param[1]);
+                $ObjectGo->DB->Load('Name');
+                $this->Params['obj_parent_path'][Zero_App::$Route->Param[1]] = $ObjectGo->Name;
+                unset($ObjectGo);
+            }
+            Zero_Filter::Factory($this->Model)->Page = 1;
+        }
+        parent::Chunk_Init();
+    }
+    /**
+     * Moving.
+     *
+     * Moving a node or branch of a tree branch in the current parent
+     *
+     * @return boolean flag stop execute of the next chunk
+     */
+    public function Action_CatalogMove()
+    {
+        $this->Chunk_Init();
+        $this->Chunk_CatalogMove();
+        $this->Chunk_View();
+        return $this->View;
     }
 
     /**
@@ -61,7 +99,7 @@ class Zero_Users_Grid extends Zero_Crud_Grid
      *
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Action_CatalogMove()
+    public function Chunk_CatalogMove()
     {
         if ( !$_REQUEST['obj_id'] )
             return $this->Set_Message('Error_NotParam', 1, false);

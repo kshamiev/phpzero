@@ -21,7 +21,6 @@
  *
  * <BEG_CONFIG_PROPERTY>
  * @property integer $Zero_Section_ID
- * @property integer $Zero_Layout_ID
  * @property string $Url
  * @property string $UrlThis
  * @property string $UrlRedirect
@@ -124,11 +123,10 @@ class Zero_Section extends Zero_Model
             /*BEG_CONFIG_PROP*/
             'ID' => ['DB' => 'I', 'IsNull' => 'NO', 'Default' => ''],
             'Zero_Section_ID' => ['DB' => 'I', 'IsNull' => 'YES', 'Default' => ''],
-            'Zero_Layout_ID' => ['DB' => 'I', 'IsNull' => 'YES', 'Default' => ''],
             'Url' => ['DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
             'UrlThis' => ['DB' => 'T', 'IsNull' => 'NO', 'Default' => ''],
             'UrlRedirect' => ['DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
-            'Layout' => ['DB' => 'T', 'IsNull' => 'NO', 'Default' => 'index'],
+            'Layout' => ['DB' => 'T', 'IsNull' => 'NO', 'Default' => 'Zero_Content'],
             'ContentType' => ['DB' => 'E', 'IsNull' => 'NO', 'Default' => 'html'],
             'Controller' => ['DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
             'IsAuthorized' => ['DB' => 'E', 'IsNull' => 'NO', 'Default' => 'no'],
@@ -160,11 +158,11 @@ class Zero_Section extends Zero_Model
         return [
             /*BEG_CONFIG_FILTER_PROP*/
             'z.ID' => ['Filter' => '', 'Search' => 'Number', 'Sort' => true],
-            'z.Zero_Layout_ID' => ['Filter' => 'Link', 'Search' => '', 'Sort' => false],
             'z.Controller' => ['Filter' => '', 'Search' => 'Text', 'Sort' => false],
             'z.IsAuthorized' => ['Filter' => 'Radio', 'Search' => '', 'Sort' => false],
             'z.IsVisible' => ['Filter' => 'Radio', 'Search' => '', 'Sort' => false],
             'z.IsEnable' => ['Filter' => 'Radio', 'Search' => '', 'Sort' => false],
+            'z.ContentType' => ['Filter' => 'Radio', 'Search' => '', 'Sort' => false],
             'z.Name' => ['Filter' => '', 'Search' => 'Text', 'Sort' => true],
             'z.Title' => ['Filter' => '', 'Search' => 'Text', 'Sort' => true],
             'z.Keywords' => ['Filter' => '', 'Search' => 'Text', 'Sort' => true],
@@ -217,7 +215,6 @@ class Zero_Section extends Zero_Model
                 /*BEG_CONFIG_FORM_PROP*/
                 'ID' => array('Form' => 'Hidden', 'IsNull' => 'NO'),
                 'Zero_Section_ID' => array('Form' => 'Link', 'IsNull' => 'YES'),
-                'Zero_Layout_ID' => array('Form' => 'Link', 'IsNull' => 'YES'),
                 'Url' => array('Form' => 'ReadOnly', 'IsNull' => 'YES'),
                 'UrlThis' => array('Form' => 'Text', 'IsNull' => 'NO'),
                 'UrlRedirect' => array('Form' => 'Text', 'IsNull' => 'YES'),
@@ -239,7 +236,6 @@ class Zero_Section extends Zero_Model
                 /*BEG_CONFIG_FORM_PROP*/
                 'ID' => array('Form' => 'Hidden', 'IsNull' => 'NO'),
                 'Zero_Section_ID' => array('Form' => 'Link', 'IsNull' => 'YES'),
-                'Zero_Layout_ID' => array('Form' => 'Link', 'IsNull' => 'YES'),
                 'Url' => array('Form' => 'ReadOnly', 'IsNull' => 'YES'),
                 'UrlThis' => array('Form' => 'Text', 'IsNull' => 'NO'),
                 'UrlRedirect' => array('Form' => 'Text', 'IsNull' => 'YES'),
@@ -260,7 +256,7 @@ class Zero_Section extends Zero_Model
      */
     protected function Init()
     {
-        $this->Init_Url(Zero_App::$Config->Host . Zero_App::$Route->UrlSection);
+        $this->Init_Url(Zero_App::$Config->Host . Zero_App::$Route->Url);
     }
 
     /**
@@ -313,7 +309,7 @@ class Zero_Section extends Zero_Model
         else
         {
             $reflection = new ReflectionClass($this->Controller);
-            foreach ($reflection->getMethods(ReflectionMethod::IS_PROTECTED) as $method)
+            foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method)
             {
                 $name = $method->getName();
                 if ( 'Action' == substr($name, 0, 6) )

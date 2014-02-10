@@ -71,8 +71,9 @@ if ( count($_SERVER['argv']) > 1 )
         Zero_Logs::Set_Message('undefined console script: ' . $_SERVER['argv'][1]);
         exit;
     }
-    $Object = Zero_Controller::Make($_SERVER['argv'][1]);
-    $Object->Execute('');
+    $arr = explode('-', $_SERVER['argv'][1]);
+    $Object = Zero_Controller::Make($arr[0]);
+    $Object->$arr[1]();
 }
 //  Launch Manager console task
 else

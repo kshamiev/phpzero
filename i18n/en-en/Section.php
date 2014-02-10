@@ -40,7 +40,6 @@ return [
 	'model prop UrlRedirect' => 'Redirect',
 	'model prop UrlThis' => 'Relative reference',
 	'model prop Zero_Section_ID' => 'Parent section',
-	'model prop Zero_Layout_ID' => 'Layout',
     'model prop Description' => 'Description',
     'model prop Keywords' => 'Keywords',
     'model prop Title' => 'Title',

@@ -44,7 +44,7 @@ class Zero_Controller_Sample extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Action_Name()
+    public function Action_Name()
     {
         return true;
     }

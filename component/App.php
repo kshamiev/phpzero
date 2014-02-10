@@ -2,7 +2,7 @@
 /**
  * The version of PhpZero
  */
-define('VERSION_PHPZERO', '1.0.0');
+define('VERSION_PHPZERO', '2.0.0');
 /**
  * Location of binary data
  */
@@ -10,7 +10,7 @@ define('ZERO_PATH_DATA', ZERO_PATH_SITE . '/upload/data');
 /**
  * The location of the site log
  */
-define('ZERO_PATH_LOG', ZERO_PATH_SITE . '/log');
+define('ZERO_PATH_LOG', dirname(ZERO_PATH_SITE) . '/log');
 /**
  * Location cache
  */
@@ -130,6 +130,7 @@ class Zero_App
             require_once $path;
             return true;
         }
+        echo $path. '<br>';
         return false;
     }
 
@@ -217,7 +218,7 @@ class Zero_App
             throw new Exception('Page Not Found', 404);
         //  Call forwarding
         if ( self::$Section->UrlRedirect )
-            self::Redirect(self::$Section->UrlRedirect);
+            self::ResponseRedirect(self::$Section->UrlRedirect);
         //  Checking the rights to the current section
         $Action_List = Zero_App::$Section->Get_Action_List();
         if ( 1 < self::$Users->Zero_Groups_ID )
@@ -231,58 +232,65 @@ class Zero_App
         self::Set_Variable('action_message', []);
         if ( self::$Section->Controller )
         {
+            if ( !isset($_REQUEST['act']) )
+                $_REQUEST['act'] = 'Default';
+            if ( !isset($Action_List[$_REQUEST['act']]) )
+                throw new Exception('Access Denied', 403);
+            $_REQUEST['act'] = 'Action_' . $_REQUEST['act'];
+
             $Controller = Zero_Controller::Factory(self::$Section->Controller);
-            if ( isset($_REQUEST['act']) )
-            {
-                if ( isset($Action_List[$_REQUEST['act']]) )
-                    $output = $Controller->Execute('Action_' . $_REQUEST['act']);
-                else
-                    throw new Exception('Access Denied', 403);
-            }
-            else
-                $output = $Controller->Execute('Action_Default');
+            Zero_Logs::Start('#{CONTROLLER.Action} ' . $_REQUEST['act']);
+            $output = $Controller->$_REQUEST['act']();
+            Zero_Logs::Stop('#{CONTROLLER.Action} ' . $_REQUEST['act']);
             Zero_App::Set_Variable('action_message', $Controller->Get_Message());
         }
+
+        // Параметры урла
+        $url = '';
+        if ( 0 < count(Zero_App::$Route->Param) )
+            $url = '-' . implode('-', Zero_App::$Route->Param);
+        define('URLP', URL . $url);
 
         Zero_Logs::Stop('#{APP.Main}');
 
         // Generate and output the result
         if ( 'html' == self::$Section->ContentType )
         {
-            self::HeaderHtml();
+            self::ResponseHtml();
             Zero_Logs::Start('#{LAYOUT.View}');
-            //            $Layout = Zero_Model::Make('Zero_Layout', self::$Section->Zero_Layout_ID);
-            //            $Layout->DB->Load_Cache('Layout');
             $View = new Zero_View(self::$Section->Layout);
             if ( $output instanceof Zero_View )
             {
-                Zero_Logs::Start('#{CONTENT.View}');
+                Zero_Logs::Start('#{CONTROLLER.View}');
+                $output->Assign('Action', $Action_List);
                 $output = $output->Fetch();
-                Zero_Logs::Stop('#{CONTENT.View}');
+                Zero_Logs::Stop('#{CONTROLLER.View}');
             }
             $View->Assign('Content', $output);
+            $View->Assign('Users', self::$Users);
+            $View->Assign('Section', self::$Section);
             echo $View->Fetch(true);
             Zero_Logs::Stop('#{LAYOUT.View}');
         }
         else if ( 'xml' == self::$Section->ContentType )
         {
-            self::HeaderXml();
+            self::ResponseXml();
             echo $output->Fetch();
         }
         else if ( 'json' == self::$Section->ContentType )
         {
-            self::HeaderJson();
+            self::ResponseJson();
             echo json_encode($output->Receive());
         }
         else if ( 'img' == self::$Section->ContentType )
         {
-            self::HeaderImg($output);
+            self::ResponseImg($output);
             if ( file_exists($output) )
                 echo file_get_contents($output);
         }
         else if ( 'file' == self::$Section->ContentType )
         {
-            self::HeaderFile($output);
+            self::ResponseFile($output);
             if ( file_exists($output) )
                 echo file_get_contents($output);
         }
@@ -310,28 +318,28 @@ class Zero_App
         header('Cache-Control: no-store, no-cache, must-revalidate');
     }
 
-    public static function HeaderHtml($flagCache = false)
+    public static function ResponseHtml($flagCache = false)
     {
         if ( true == $flagCache )
             self::_HeaderNoCache();
         header("Content-Type: text/html; charset=utf-8");
     }
 
-    public static function HeaderXml($flagCache = false)
+    public static function ResponseXml($flagCache = false)
     {
         if ( true == $flagCache )
             self::_HeaderNoCache();
         header("Content-Type: text/xml; charset=utf-8");
     }
 
-    public static function HeaderJson($flagCache = false)
+    public static function ResponseJson($flagCache = false)
     {
         if ( true == $flagCache )
             self::_HeaderNoCache();
         header("Content-Type: text/javascript; charset=utf-8");
     }
 
-    public static function HeaderImg($path, $flagCache = false)
+    public static function ResponseImg($path, $flagCache = false)
     {
         if ( true == $flagCache )
             self::_HeaderNoCache();
@@ -339,7 +347,7 @@ class Zero_App
         header("Content-Length: " . filesize($path));
     }
 
-    public static function HeaderFile($path, $flagCache = false)
+    public static function ResponseFile($path, $flagCache = false)
     {
         if ( true == $flagCache )
             self::_HeaderNoCache();

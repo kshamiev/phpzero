@@ -82,7 +82,7 @@ class Zero_System_FileManager extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Action_FolderGo()
+    public function Action_FolderGo()
     {
         //  move up
         if ( isset($this->Params['obj_parent_path'][$_REQUEST['dir_name']]) )
@@ -109,7 +109,7 @@ class Zero_System_FileManager extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Action_FolderRemove()
+    public function Action_FolderRemove()
     {
         if ( !$_REQUEST['dir_name'] )
             return $this->Set_Message('Error_FolderRemove', 1, false);
@@ -123,7 +123,7 @@ class Zero_System_FileManager extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Action_FileRemove()
+    public function Action_FileRemove()
     {
         if ( !$_REQUEST['file_name'] )
             return $this->Set_Message('Error_FileRemove', 1, false);
@@ -135,7 +135,7 @@ class Zero_System_FileManager extends Zero_Controller
     /**
      * The download the user to the file
      */
-    protected function Action_FileDownLoad()
+    public function Action_FileDownLoad()
     {
         Zero_App::$Section->ContentType = 'file';
         $this->View = end($this->Params['obj_parent_path']) . '/' . $_REQUEST['file_name'];
@@ -147,7 +147,7 @@ class Zero_System_FileManager extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Action_FileUpload()
+    public function Action_FileUpload()
     {
         if ( 4 != $_FILES['FileUpload']['error'] )
         {
@@ -170,7 +170,7 @@ class Zero_System_FileManager extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Action_FolderAdd()
+    public function Action_FolderAdd()
     {
         if ( !isset($_REQUEST['FolderName']) || !$_REQUEST['FolderName'] )
             return $this->Set_Message('Error_FolderAdd', 1, false);
@@ -185,7 +185,7 @@ class Zero_System_FileManager extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Action_EditFile()
+    public function Action_EditFile()
     {
     }
 }

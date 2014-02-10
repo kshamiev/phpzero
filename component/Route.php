@@ -36,13 +36,6 @@ class Zero_Route
     public $Url = '';
 
     /**
-     * Routing razdela bez parametrov dlia identifikatcii razdelov
-     *
-     * @var string
-     */
-    public $UrlSection = '';
-
-    /**
      * Routing iazy`ka
      *
      * @var array
@@ -54,50 +47,30 @@ class Zero_Route
      */
     public function __construct()
     {
-        $this->Param['pid'] = 0;
-        $this->Param['id'] = 0;
-        $this->Param['pg'] = 0;
-
-        //  Language
-        $language = Zero_App::$Config->Language;
         $this->Lang = Zero_App::$Config->Site_Language;
-        $this->LangId = $language[$this->Lang]['ID'];
+        $this->LangId = Zero_App::$Config->Language[$this->Lang]['ID'];
         $this->Url = '/';
 
-        if ( !isset($_SERVER['REQUEST_URI']) || '/' == $_SERVER['REQUEST_URI'] )
-            return;
-
-        $this->Url = '';
-
         $row = explode('/', strtolower(rtrim(ltrim(explode('?', $_SERVER['REQUEST_URI'])[0], '/'), '/')));
-        if ( $this->Lang != $row[0] && isset($language[$row[0]]) )
+        if ( $this->Lang != $row[0] && isset(Zero_App::$Config->Language[$row[0]]) )
         {
             $this->Lang = array_shift($row);
-            $this->LangId = $language[$this->Lang]['ID'];
+            $this->LangId = Zero_App::$Config->Language[$this->Lang]['ID'];
             $this->Url = '/' . $this->Lang;
         }
 
-        //  Section
-        if ( 0 < count($row) )
+        if ( 0 < count($row) && $row[0] )
         {
-            //  Options
             $param = array_pop($row);
-            if ( preg_match("~.+?-([^/]+-[^/]+)$~", $param, $arr) )
+            if ( preg_match("~.+?-([^/]+)$~", $param, $arr) )
             {
                 $row[] = str_replace('-' . $arr[1], '', $param);
-                $param = explode('.', $arr[1]);
-                $param = explode('-', $param[0]);
-                while ( 1 < count($param) )
-                {
-                    $this->Param[array_shift($param)] = array_shift($param);
-                }
+                $arr = explode('.', $arr[1]);
+                $this->Param = explode('-', $arr[0]);
             }
             else
                 $row[] = $param;
-
-            $this->UrlSection = implode('/', $row);
-            $this->Url .= '/' . $this->UrlSection;
-            $this->UrlSection = '/' . preg_replace("~(-[^/]+-[^/]+)/~i", "/", $this->UrlSection);
+            $this->Url .= implode('/', $row);
         }
     }
 }

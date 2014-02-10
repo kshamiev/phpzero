@@ -187,7 +187,7 @@ class Zero_View
             $html = $this->Search_Template($template, $layout);
             if ( '' != $html )
             {
-                $tpl = ZERO_PATH_CACHE . '/_t_/' . $html . '_' . Zero_App::$Route->Lang . '.tpl';
+                $tpl = $html . '.tpl';
                 if ( 1 == Zero_App::$Config->Site_TemplateParsing || !file_exists($tpl) )
                     Zero_Lib_FileSystem::File_Save($tpl, $this->_Parsing(file_get_contents($html)));
                 break;
@@ -225,41 +225,36 @@ class Zero_View
      */
     public static function Search_Template($template, $layout = false)
     {
-//        $template = strtolower($template);
-        //        echo $template . "<br>";
-        if ( true == $layout )
-        {
-            if ( Zero_App::$Section instanceof Zero_Section && '' != Zero_App::$Section->Url )
-                $path = ZERO_PATH_VIEW . '/' . Zero_App::$Section->Url . '/' . $template . '.html';
-            else
-                $path = ZERO_PATH_VIEW . '/' . $template . '.html';
-            $log = $path;
-            while ( !file_exists($path) )
-            {
-                $path = dirname(dirname($path)) . '/' . basename($path);
-//                $arr = explode("/", $path);
-//                unset($arr[count($arr) - 2]);
-//                $path = implode("/", $arr);
-                //                echo count($arr) . '  -  ' .  $path . "<br>";
-                if ( count(explode("/", $path)) < 5 )
-                {
-                    Zero_Logs::Set_Message('Not found template [LAYOUT] => ' . $log . "<br>\n", "warning");
-                    return '';
-                }
-            }
-            return $path;
-        }
-        else
-        {
+//        if ( true == $layout )
+//        {
+//            if ( Zero_App::$Section instanceof Zero_Section && '' != Zero_App::$Section->Url )
+//                $path = ZERO_PATH_VIEW . '/' . Zero_App::$Section->Url . '/' . $template . self::EXT_VIEW;
+//            else
+//                $path = ZERO_PATH_VIEW . '/' . $template . self::EXT_VIEW;
+//
+//            $i = 0;
+//            $path1 = $path;
+//            while ( !file_exists($path1) )
+//            {
+//                $i++;
+//                $path1 = dirname(dirname($path1)) . '/' . basename($path1);
+//                if ( 10 < $i )
+//                {
+//                    Zero_Logs::Set_Message('NOT FOUND view [LAYOUT] ' . $path, "error");
+//                    return '';
+//                }
+//            }
+//            return $path1;
+//        }
+//        else
+//        {
             $arr = explode('_', $template);
             $module = strtolower(array_shift($arr));
-            $path = ZERO_PATH_APPLICATION . '/' . $module . '/view/' . implode('/', $arr) . '.html';
+            $path = ZERO_PATH_APPLICATION . '/' . $module . '/view/' . implode('/', $arr) . self::EXT_VIEW;
             if ( file_exists($path) )
-            {
                 return $path;
-            }
-            Zero_Logs::Set_Message('Not found template [CONTROLLERS] => ' . $path . "<br>\n", "warning");
-        }
+            Zero_Logs::Set_Message('NOT FOUND view [CONTROLLER] ' . $path, "error");
+//        }
         return '';
     }
 
@@ -360,16 +355,18 @@ class Zero_View
      */
     private function _Execute_Controller($plugin_name, $properties = [])
     {
-        Zero_Logs::Start('#{APP.Controller} ' . $plugin_name);
+//        Zero_Logs::Start('#{APP.Controller} ' . $plugin_name);
         $Plugin = Zero_Controller::Make($plugin_name, $properties);
-        $View = $Plugin->Execute('Action_Default');
+        Zero_Logs::Start('#{PLUGIN.Action} ' . $plugin_name);
+        $View = $Plugin->Action_Default();
+        Zero_Logs::Stop('#{PLUGIN.Action} ' . $plugin_name);
         if ( $View instanceof Zero_View )
         {
             Zero_Logs::Start('#{PLUGIN.View} ' . $plugin_name);
             $View = $View->Fetch();
             Zero_Logs::Stop('#{PLUGIN.View} ' . $plugin_name);
         }
-        Zero_Logs::Stop('#{APP.Controller} ' . $plugin_name);
+//        Zero_Logs::Stop('#{APP.Controller} ' . $plugin_name);
         return $View;
     }
 }

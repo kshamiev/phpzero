@@ -25,16 +25,6 @@ abstract class Zero_Controller
     private static $_Message = [];
 
     /**
-     * Stek chankov
-     *
-     * Skisok vy`polniaiushchii`khsia chankov.
-     * Zapolniaetsia v Chunk_Init
-     *
-     * @var array
-     */
-    private static $_Chunks = [];
-
-    /**
      * Obrabaty`vaemaia model` (ob``ekt)
      *
      * @var Zero_Model
@@ -81,13 +71,14 @@ abstract class Zero_Controller
      * Rabotaet cherez sessiiu. Indeks: $class_name
      *
      * @param string $class_name imia kontrollera e`ekzempliar kotorogo sozdaetsia
+     * @param array $properties vhodny`e parametry` plagina
      * @return Zero_Controller
      */
-    public static function Factory($class_name)
+    public static function Factory($class_name, $properties = [])
     {
         if ( !$result = Zero_Session::Get($class_name) )
         {
-            $result = self::Make($class_name);
+            $result = self::Make($class_name, $properties);
             Zero_Session::Set($class_name, $result);
         }
         return $result;
@@ -126,74 +117,17 @@ abstract class Zero_Controller
             self::$_Message = [];
         else
             self::$_Message[$message] = [$code];
-        return $code;
+        return $code ? false : true ;
     }
 
-    /**
-     * Dobavlenie chanka v konetc steka vy`polneniia
-     *
-     * @param string $chunk imia dobavliaemogo chanka
-     */
-    final protected function Set_Chunk($chunk)
-    {
-        if ( in_array($chunk, self::$_Chunks) )
-            return;
-        self::$_Chunks[] = $chunk;
-    }
-
-    /**
-     * Udalenie chanka iz steka vy`polneniia
-     *
-     * Esli imia chanka ne zadano, to udaliaiutsia vse chanki
-     *
-     * @param string $chunk imia udaliaemogo chanka iz steka
-     */
-    final protected function Rem_Chunk($chunk)
-    {
-        $key = array_search($chunk, self::$_Chunks);
-        if ( false !== $key )
-            unset(self::$_Chunks[$key]);
-    }
-
-    /**
-     * Upravliaiushchii` metod. Tochka vhoda.
-     *
-     * Initcializiruet i vy`polniaet chanki v zavismosti ot dei`stviia ($action)
-     * I vozvrashchaet rezul`tat raboty`
-     *
-     * @param string $action action
-     * @return Zero_View|string rezul`tat (kak pravilo shablon s danny`mi)
-     * @TODO Переработать. Метод - действие контроллера по умолчанию. Action_Default
-     * @TODO Chunk_Init -> Action...
-     */
-    final public function Execute($action)
-    {
-        self::$_Chunks = [];
-        Zero_Logs::Start('#{CONTROLLER.Action} ' . $action);
-        $flag = $this->$action();
-        Zero_Logs::Stop('#{CONTROLLER.Action} ' . $action);
-        if ( true == $flag )
-        {
-            foreach (self::$_Chunks as $chunk)
-            {
-                $chunk = 'Chunk_' . $chunk;
-                Zero_Logs::Start('#{CONTROLLER.Chunk} ' . $chunk);
-                $flag = $this->$chunk($action);
-                Zero_Logs::Stop('#{CONTROLLER.Chunk} ' . $chunk);
-                if ( false == $flag )
-                    break;
-            }
-        }
-        return $this->View;
-    }
-
-    /**
+     /**
      * Vy`polnenie dei`stvii`
      *
-     * @return boolean flag stop execute of the next chunk
+     * @return Zero_View or string
      */
-    protected function Action_Default()
+    public function Action_Default()
     {
-        $this->View = new Zero_View(get_class($this));
+        $this->View = 'Controller -> ' . get_class($this);
+        return $this->View;
     }
 }

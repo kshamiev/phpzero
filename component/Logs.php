@@ -155,13 +155,13 @@ class Zero_Logs
         if ( 403 == $exception->getCode() )
         {
             //            self::$_CurrentTime = [];
-            self::Set_Message('Section Url: ' . Zero_App::$Config->Host . Zero_App::$Route->UrlSection);
+            self::Set_Message('Section Url: ' . Zero_App::$Config->Host . Zero_App::$Route->Url);
             header('HTTP/1.1 403 Access Denied');
         }
         else if ( 404 == $exception->getCode() )
         {
             //            self::$_CurrentTime = [];
-            self::Set_Message('Section Url: ' . Zero_App::$Config->Host . Zero_App::$Route->UrlSection);
+            self::Set_Message('Section Url: ' . Zero_App::$Config->Host . Zero_App::$Route->Url);
             header('HTTP/1.1 404 Not Found');
         }
         else
@@ -207,7 +207,7 @@ class Zero_Logs
 
         ob_end_clean();
 
-        $View = new Zero_View('Error');
+        $View = new Zero_View('Zero_Error');
         $View->Assign('http_status', $exception->getCode());
         echo $View->Fetch(true);
     }
@@ -246,7 +246,7 @@ class Zero_Logs
             $iterator_list[$iterator->key()] = get_class($iterator->current());
             $iterator->next();
         }
-        $View = new Zero_View('Debug');
+        $View = new Zero_View('Zero_Debug');
         $View->Assign('output', self::Get_Usage_MemoryAndTime());
         $View->Assign('message', self::$_Message);
         $View->Assign('iterator_list', $iterator_list);
@@ -327,7 +327,7 @@ class Zero_Logs
         if ( $offset < 0 )
             $offset = 0;
         $length = isset($file_line[$line + $range_file_error]) ? $line + $range_file_error : count($file_line) - 1;
-        $View = new Zero_View('SourceCode');
+        $View = new Zero_View('Zero_SourceCode');
         $View->Assign('file_line', $file_line);
         $View->Assign('offset', $offset < 0 ? 0 : $offset);
         $View->Assign('length', $length);

@@ -82,8 +82,8 @@
     </tr>
     <tr>
       <td colspan="2" align="center">
-        <input class="btn" type="button" value="{translation "Zero_App" "Apply"}" onclick="button_form(this.form, '{URL}{$url_parent}', 'Filter_Set', 0);">
-        <input class="btn" type="button" value="{translation "Zero_App" "Reset"}" onclick="button_form(this.form, '{URL}{$url_parent}', 'Filter_Reset', 0);">
+        <input class="btn" type="button" value="{translation "Zero_App" "Apply"}" onclick="button_form(this.form, '{URL}{$url_parent}', 'FilterSet', 0);">
+        <input class="btn" type="button" value="{translation "Zero_App" "Reset"}" onclick="button_form(this.form, '{URL}{$url_parent}', 'FilterReset', 0);">
       </td>
     </tr>
   </table>
@@ -137,7 +137,7 @@
       {/if}
       {if ( isset($Action['Link_Rem']) )}<input type="image" src="{HTTPA}/img/button/button_unlink.gif" onclick="button_form_obj_id('formpanel', '{URL}{$url_parent}', 'Link_Rem', {$Data['ID']}, 1);">{/if}
       <a href="{URL}{$url_parent}/edit{$url_parent}-id-{$Data['ID']}"><img style="vertical-align: middle;" src="{HTTPA}/img/button/button_edit.gif" border="0"></a>
-      {if ( isset($Action['Remove']) )}<input type="image" src="{HTTPA}/img/button/button_trash.gif" onclick="button_form_obj_id('formpanel', '{URL}{$url_parent}', 'Remove', {$Data['ID']}, 1);">{/if}
+      {if ( isset($Action['Remove']) )}<input type="image" src="{HTTPA}/img/button/button_trash.gif" onclick="button_form_obj_id('formpanel', '{URLP}', 'Remove', {$Data['ID']}, 1);">{/if}
     </td>
     {foreach ($PropsGrid as $Prop => $row)}
     <td>

@@ -24,7 +24,6 @@ return [
     'model prop ID' => 'Identity','Error saving',
     'model prop Name' => 'Name',
     'model prop Zero_Section_ID' => 'Section',
-    'model prop Zero_Layout_ID' => 'Layout',
     'model prop Zero_Language_ID' => 'Language',
     'controller Zero_Content_EditSection' => 'Changing the content of the page',
     'controller Zero_Content_EditSection action Add' => 'add',

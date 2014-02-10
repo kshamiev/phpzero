@@ -102,7 +102,7 @@ class Zero_System_GridModules extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Action_Set()
+    public function Action_Set()
     {
         $module = $_REQUEST['obj_id'];
         if ( file_exists(ZERO_PATH_APPLICATION . '/' . $module . '/setup/INSTALL') )
@@ -124,7 +124,7 @@ class Zero_System_GridModules extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Action_Up()
+    public function Action_Up()
     {
     }
 
@@ -133,7 +133,7 @@ class Zero_System_GridModules extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Action_Rem()
+    public function Action_Rem()
     {
         $module = $_REQUEST['obj_id'];
         if ( !file_exists(ZERO_PATH_APPLICATION . '/' . $module . '/setup/INSTALL') )

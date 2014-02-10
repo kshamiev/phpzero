@@ -49,7 +49,7 @@ class Zero_System_FileEdit extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Action_FileSave()
+    public function Action_FileSave()
     {
         $_REQUEST['Prop']['Content'] = str_replace("\r\n", "\n", $_REQUEST['Prop']['Content']);
         file_put_contents($this->Params['obj_parent_path'] . '/' . $this->Params['file_name'], $_REQUEST['Prop']['Content']);
