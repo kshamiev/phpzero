@@ -270,7 +270,8 @@ class Zero_Section extends Zero_Model
         if ( false === $row = Zero_Cache::Get_Data($index) )
         {
             $this->DB->Sql_Where('Url', '=', $url);
-            $row = $this->DB->Load('*', true);
+            $row = $this->DB->Select('*');
+            $row = array_replace($row, $this->DB->Select_Language('*'));
             Zero_Cache::Set_Link('Zero_Section', $this->ID);
             Zero_Cache::Set_Data($index, $row);
         }
@@ -305,11 +306,26 @@ class Zero_Section extends Zero_Model
                     $index = "controller {$this->Controller} action {$action}";
                 $this->_Action_List[$action] = ['Name' => Zero_I18n::T($this->Controller, $index, $action)];
             }
+            //
+            $reflection = new ReflectionClass($this->Controller);
+            foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method)
+            {
+                $name = $method->getName();
+                if ( 'Action' == substr($name, 0, 6) )
+                {
+                    $name = str_replace('Action_', '', $name);
+                    if ( 'AccessAllow' == $name )
+                        $index = "controller action {$name}";
+                    else
+                        $index = "controller {$this->Controller} action {$name}";
+                    $this->_Action_List[$name] = ['Name' => Zero_I18n::T($this->Controller, $index, $name)];
+                }
+            }
         }
         else
         {
             $reflection = new ReflectionClass($this->Controller);
-            foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method)
+            foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC | ReflectionMethod::IS_PROTECTED) as $method)
             {
                 $name = $method->getName();
                 if ( 'Action' == substr($name, 0, 6) )
@@ -476,5 +492,6 @@ class Zero_Section extends Zero_Model
         if ( !preg_match("~\nclass {$value}~si", file_get_contents($path)) )
             return 'Error_Class_Exists';
         $this->Controller = $value;
+        return '';
     }
 }

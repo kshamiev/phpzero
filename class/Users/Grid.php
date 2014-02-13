@@ -69,7 +69,7 @@ class Zero_Users_Grid extends Zero_Crud_Grid
             else
             {
                 $ObjectGo = Zero_Model::Make($this->Source, Zero_App::$Route->Param['pid']);
-                $ObjectGo->DB->Load('Name');
+                $ObjectGo->DB->Select('Name');
                 $this->Params['obj_parent_path'][Zero_App::$Route->Param['pid']] = $ObjectGo->Name;
                 unset($ObjectGo);
             }
@@ -84,7 +84,7 @@ class Zero_Users_Grid extends Zero_Crud_Grid
      *
      * @return boolean flag stop execute of the next chunk
      */
-    public function Action_CatalogMove()
+    protected  function Action_CatalogMove()
     {
         $this->Chunk_Init();
         $this->Chunk_CatalogMove();
@@ -99,7 +99,7 @@ class Zero_Users_Grid extends Zero_Crud_Grid
      *
      * @return boolean flag stop execute of the next chunk
      */
-    public function Chunk_CatalogMove()
+    protected  function Chunk_CatalogMove()
     {
         if ( !$_REQUEST['obj_id'] )
             return $this->Set_Message('Error_NotParam', 1, false);

@@ -23,7 +23,8 @@ class Zero_Section_NavigationLine extends Zero_Controller
     {
         $url = '';
         if ( 0 < count(Zero_App::$Route->Param) )
-            $url = '-' . implode('-', Zero_App::$Route->Param);
+            foreach (Zero_App::$Route->Param as $k => $v)
+                $url .= '-' . $k . ':' . $v;
         $navigation[] = [
             'Url' => URL . $url,
             'Name' => Zero_App::$Section->Name
@@ -32,7 +33,7 @@ class Zero_Section_NavigationLine extends Zero_Controller
         while ( 0 < $id )
         {
             $Zero_Section = Zero_Model::Make('Zero_Section', $id);
-            $Zero_Section->DB->Load("Name, SUBSTRING(Url, POSITION('/' IN Url)) as Url, Zero_Section_ID");
+            $Zero_Section->DB->Select("Name, SUBSTRING(Url, POSITION('/' IN Url)) as Url, Zero_Section_ID");
             $id = $Zero_Section->Zero_Section_ID;
             $navigation[] = ['Url' => $Zero_Section->Url, 'Name' => $Zero_Section->Name];
         }

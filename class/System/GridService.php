@@ -44,7 +44,7 @@ class Zero_System_GridService extends Zero_Controller
         $this->View->Assign('modules_db', Zero_Engine::Get_Modules_DB());
     }
 
-    public function Action_EngineModulesDB()
+    protected  function Action_EngineModulesDB()
     {
         $this->Chunk_Init();
         $this->Chunk_EngineModulesDB();
@@ -58,7 +58,7 @@ class Zero_System_GridService extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    public function Chunk_EngineModulesDB()
+    protected  function Chunk_EngineModulesDB()
     {
         $_REQUEST['paket'] = trim($_REQUEST['paket']);
         if ( !$_REQUEST['paket'] )
@@ -71,7 +71,7 @@ class Zero_System_GridService extends Zero_Controller
         else
             return $this->Set_Message("Error_Engine_Modules_DB", 1, false);
     }
-    public function Action_CacheReset()
+    protected  function Action_CacheReset()
     {
         $this->Chunk_Init();
         $this->Chunk_View();
@@ -84,14 +84,14 @@ class Zero_System_GridService extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    public function Chunk_CacheReset()
+    protected  function Chunk_CacheReset()
     {
         Zero_Cache::Reset_All();
         return $this->Set_Message("Cache_Reset", 0);
     }
 
 
-    public function Action_SessionReset()
+    protected  function Action_SessionReset()
     {
         $this->Chunk_Init();
         $this->Chunk_SessionReset();
@@ -104,7 +104,7 @@ class Zero_System_GridService extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    public function Chunk_SessionReset()
+    protected  function Chunk_SessionReset()
     {
         Zero_Lib_FileSystem::File_Remove(Zero_App::$Config->System_PathSession);
         return $this->Set_Message("Session_Reset", 0);

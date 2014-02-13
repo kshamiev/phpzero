@@ -15,7 +15,6 @@
  * @link http://www.phpzero.com/
  * @copyright <PHP_ZERO_COPYRIGHT>
  * @license http://www.phpzero.com/license/
- * @todo определить уровни кеширования (на уровне страниц в целом (nginx), На уровне гетеров моделей, на уровне включений в шаблон - _Execute_Controller?)
  */
 class Zero_Cache
 {

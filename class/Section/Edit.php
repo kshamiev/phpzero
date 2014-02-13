@@ -35,16 +35,11 @@ class Zero_Section_Edit extends Zero_Crud_Edit
      */
     protected $User_Condition = true;
 
-    /**
-     * Vy`polnenie dei`stvii`
-     *
-     * @return Zero_View or string
-     */
-    public function Action_Default()
+    protected function Chunk_Init()
     {
-        //  relation transition  one to many  (CL)
         $this->Params['obj_parent_prop'] = 'Zero_Section_ID';
         $this->Params['obj_parent_name'] = '';
-        return parent::Action_Default();
+        parent::Chunk_Init();
     }
+
 }

@@ -31,7 +31,7 @@ class Zero_Groups_Access extends Zero_Controller
      *
      * @return Zero_View or string
      */
-    public function Action_Default()
+    public  function Action_Default()
     {
         $this->Chunk_Init();
         $this->Chunk_View();
@@ -43,7 +43,7 @@ class Zero_Groups_Access extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    public function Action_Save()
+    protected function Action_Save()
     {
         $this->Chunk_Init();
         $this->Chunk_Save();
@@ -56,7 +56,7 @@ class Zero_Groups_Access extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    public function Action_Copy()
+    protected function Action_Copy()
     {
         $this->Chunk_Init();
         $this->Chunk_Copy();
@@ -107,7 +107,7 @@ class Zero_Groups_Access extends Zero_Controller
             {
                 throw new Exception($e->getMessage(), 500);
             }
-            foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method)
+            foreach ($reflection->getMethods(ReflectionMethod::IS_PROTECTED) as $method)
             {
                 $name = $method->getName();
                 if ( 'Action_Default' == $name )
@@ -147,7 +147,7 @@ class Zero_Groups_Access extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    public function Chunk_Save()
+    protected function Chunk_Save()
     {
         foreach ($_REQUEST['RoleAccessSection'] as $section_id => $access)
         {
@@ -190,7 +190,7 @@ class Zero_Groups_Access extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    public function Chunk_Copy()
+    protected function Chunk_Copy()
     {
         Zero_DB::Set("DELETE FROM Zero_Action WHERE Zero_Groups_ID = {$_REQUEST['obj_id']}");
         $sql = "

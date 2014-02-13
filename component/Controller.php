@@ -130,4 +130,35 @@ abstract class Zero_Controller
         $this->View = 'Controller -> ' . get_class($this);
         return $this->View;
     }
+
+    /**
+     * @param $method
+     * @param $params
+     * @return mixed
+     * @throws Exception
+     */
+    public function __call($method, $params)
+    {
+        if ( !method_exists($this, $method) ) {
+            throw new Exception('Метод контроллера остуствует в классе: ' .get_class($this) . '->' . $method, 500);
+        }
+        switch ( count($params) ) {
+            case 0: {
+                return $this->$method();
+            }
+            case 1: {
+                return $this->$method($params[0]);
+            }
+            case 2: {
+                return $this->$method($params[0], $params[1]);
+            }
+            case 3: {
+                return $this->$method($params[0], $params[1], $params[2]);
+            }
+        }
+        return $this->View;
+    }
+
+
+
 }

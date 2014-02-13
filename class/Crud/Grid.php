@@ -51,7 +51,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    public function Action_Remove()
+    protected function Action_Remove()
     {
         $this->Chunk_Init();
         $this->Chunk_Filter();
@@ -65,7 +65,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    public function Action_FilterSet()
+    public  function Action_FilterSet()
     {
         $this->Chunk_Init();
         $this->Chunk_Filter();
@@ -81,7 +81,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    public function Action_FilterReset()
+    public  function Action_FilterReset()
     {
         $this->Chunk_Init();
 
@@ -323,7 +323,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    public function Chunk_Remove()
+    protected function Chunk_Remove()
     {
         $ObjectRem = Zero_Model::Make($this->Source, $_REQUEST['obj_id']);
         //  Remove binary data object

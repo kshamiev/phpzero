@@ -240,7 +240,7 @@ class Zero_App
 
             $Controller = Zero_Controller::Factory(self::$Section->Controller);
             Zero_Logs::Start('#{CONTROLLER.Action} ' . $_REQUEST['act']);
-            $output = $Controller->$_REQUEST['act']();
+            $output = $Controller->__call($_REQUEST['act'], []);
             Zero_Logs::Stop('#{CONTROLLER.Action} ' . $_REQUEST['act']);
             Zero_App::Set_Variable('action_message', $Controller->Get_Message());
         }

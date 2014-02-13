@@ -48,7 +48,7 @@ class Zero_System_FileEdit extends Zero_Controller
     }
 
 
-    public function Action_FileSave()
+    protected  function Action_FileSave()
     {
         $this->Chunk_Init();
         $this->Chunk_FileSave();

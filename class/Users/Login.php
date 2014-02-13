@@ -70,6 +70,7 @@ class Zero_Users_Login extends Zero_Controller
      * Initialize the online status is not active users.
      *
      * @return boolean flag stop execute of the next chunk
+     * @TODO Переместит отдельно консолные контроллеры
      */
     public function Action_Offline()
     {
@@ -103,7 +104,7 @@ class Zero_Users_Login extends Zero_Controller
 
         $Users = Zero_Model::Make('Www_Users');
         $Users->DB->Sql_Where('Login', '=', $_REQUEST['Login']);
-        $Users->DB->Load('*');
+        $Users->DB->Select('*');
 
         //  Check
         if ( 0 == $Users->ID )
@@ -126,7 +127,7 @@ class Zero_Users_Login extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    public function Chunk_Reminder()
+    protected  function Chunk_Reminder()
     {
         $this->Model->VL->Validate($_REQUEST['Users'], 'reminder');
         if ( 0 < count($this->Model->VL->Get_Errors()) )
@@ -136,7 +137,7 @@ class Zero_Users_Login extends Zero_Controller
         }
 
         $this->Model->DB->Sql_Where('Email', '=', $_REQUEST['Users']['Email']);
-        $this->Model->DB->Load('ID, Name, Login');
+        $this->Model->DB->Select('ID, Name, Login');
 
         $password = substr(md5(uniqid(mt_rand())), 0, 10);
         $this->Model->Password = md5($password);

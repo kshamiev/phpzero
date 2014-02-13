@@ -68,7 +68,7 @@ class Zero_Users_Registration extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    public function Chunk_Registration()
+    protected  function Chunk_Registration()
     {
         $this->Model->VL->Validate($_REQUEST['Users'], 'registration');
         if ( 0 < count($this->Model->VL->Get_Errors()) )

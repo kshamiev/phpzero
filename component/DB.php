@@ -1015,7 +1015,7 @@ class Zero_DB
      */
     public function Select_Row($props, $flag_param_reset = true)
     {
-        return $this->Select($props, 'row', $flag_param_reset);
+        return $this->_Select($props, 'row', $flag_param_reset);
     }
 
     /**
@@ -1035,7 +1035,7 @@ class Zero_DB
      */
     public function Select_List_Index($props, $flag_param_reset = true)
     {
-        return $this->Select($props, 'list', $flag_param_reset);
+        return $this->_Select($props, 'list', $flag_param_reset);
     }
 
     /**
@@ -1055,7 +1055,7 @@ class Zero_DB
      */
     public function Select_Array($props, $flag_param_reset = true)
     {
-        return $this->Select($props, 'array', $flag_param_reset);
+        return $this->_Select($props, 'array', $flag_param_reset);
     }
 
     /**
@@ -1075,7 +1075,7 @@ class Zero_DB
      */
     public function Select_Array_Index($props, $flag_param_reset = true)
     {
-        return $this->Select($props, 'index', $flag_param_reset);
+        return $this->_Select($props, 'index', $flag_param_reset);
     }
 
     /**
@@ -1095,7 +1095,7 @@ class Zero_DB
      */
     public function Select_Model($props, $flag_param_reset = true)
     {
-        return $this->Select($props, 'model', $flag_param_reset);
+        return $this->_Select($props, 'model', $flag_param_reset);
     }
 
     /**
@@ -1114,7 +1114,7 @@ class Zero_DB
      * @param bool $flag_param_reset flag sbrosa parametrov posle zaprosa
      * @return array nai`denny`e danny`e
      */
-    protected function Select($props, $mode = 'array', $flag_param_reset = true)
+    private function _Select($props, $mode = 'array', $flag_param_reset = true)
     {
         //  initcializatciia
         if ( is_array($props) )
@@ -1380,11 +1380,9 @@ class Zero_DB
      * Esli ob``ekt v BD ne by`l nai`den $this->ID stanovitsia ravny`m 0
      *
      * @param string $props stroka zagruzhaemy`kh svoi`stv cherez zaiapiatuiu ('Name, Price, Description')
-     * @param bool $is_lang zagruzka s uchetom iazy`ka
      * @return bool|array
-     * @TODO Доработать. Вынести работу с языков в отдельный метод. Переименовать метод в Select
      */
-    public function Load($props, $is_lang = false)
+    public function Select($props)
     {
         if ( 0 < $this->Model->ID )
             $this->Sql_Where('ID', '=', $this->Model->ID);
@@ -1393,51 +1391,33 @@ class Zero_DB
             Zero_Logs::Set_Message("Error Load: {$this->Model->Source} SqlWhere is empty");
             return false;
         }
-        $row = $this->Select($props, 'row');
-        if ( 0 == count($row) )
-        {
-            $this->Model->ID = 0;
-            return $row;
-        }
-        else
-        {
-            if ( isset($row['ID']) && $is_lang && Zero_App::$Route->Lang != Zero_App::$Config->Site_Language )
-            {
-                $source = $this->Model->Get_Source();
-                $sql = "SELECT {$this->Model->Get_Config_Prop_Lang()} FROM {$source}Language WHERE {$source}_ID = {$row['ID']} AND Zero_Language_ID = " . Zero_App::$Route->LangId;
-                $row = array_replace($row, self::Sel_Row($sql));
-            }
+        $row = $this->_Select($props, 'row');
+        if ( 0 < count($row) )
             $this->Model->Set_Props($row);
-            return $row;
-        }
+        return $row;
     }
 
     /**
-     * Zagruzka vy`borochny`kh svoi`stv ob``ekta, s ispol`zovaniem keshirovaniia iz BD.
+     * Zagruzka vy`borochny`kh svoi`stv ob``ekta, libo tcelikom iz BD.
      *
-     * Sleduet zagruzhat` tol`ko chasto ispol`zuemy`e svoi`stva.
+     * Esli ob``ekt v BD ne by`l nai`den $this->ID stanovitsia ravny`m 0
      *
-     * @param string $props stroka zagruzhaemy`kh svoi`stv cherez zapiatuiu ('Name, Price, Description')
-     * @param integer $time 0 - postoianny`i` kesh, 0 < vremia zhizni kesha v sekundakh
-     * @param bool $is_lang zagruzka s uchetom iazy`ka
-     * @return array
+     * @param string $props stroka zagruzhaemy`kh svoi`stv cherez zaiapiatuiu ('Name, Price, Description')
+     * @return bool|array
      */
-    public function Load_Cache($props, $time = 0, $is_lang = false)
+    public function Select_Language($props)
     {
-        if ( !$this->Model->ID )
+        if ( 0 == $this->Model->ID )
         {
-            Zero_Logs::Set_Message("Error Load_Cache: {$this->Model->Source} ID is 0");
+            Zero_Logs::Set_Message("object not defined: {$this->Model->Get_Source()}", 'warning');
             return false;
         }
-        $index = str_replace(',', '', $props);
-        $index = str_replace(' ', '', $index);
-        $index = str_replace('*', '__ALL__', $index);
-        if ( false === $row = $this->Model->Cache->Get($index, $time) )
-        {
-            $row = $this->Load($props, $is_lang);
-            $this->Model->Get_Cache()->Set($index, $row, $time);
-            return $row;
-        }
+        $source = $this->Model->Get_Source();
+        $sql = "SELECT {$props} FROM {$source}Language WHERE {$source}_ID = {$this->Model->ID} AND Zero_Language_ID = " . Zero_App::$Route->LangId;
+        $row = self::Sel_Row($sql);
+        unset($row['Zero_Language_ID']);
+        unset($row[$source . '_ID']);
+        unset($row['ID']);
         $this->Model->Set_Props($row);
         return $row;
     }

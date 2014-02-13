@@ -34,16 +34,11 @@ class Zero_Users_Edit extends Zero_Crud_Edit
      * @var boolean
      */
     protected $User_Condition = true;
-
-    /**
-     * Vy`polnenie dei`stvii`
-     *
-     * @return Zero_View or string
-     */
-    public function Action_Default()
+    protected function Chunk_Init()
     {
         $this->Params['obj_parent_prop'] = 'Zero_Users_ID';
         $this->Params['obj_parent_name'] = '';
-        return parent::Action_Default();
+        parent::Chunk_Init();
     }
+
 }

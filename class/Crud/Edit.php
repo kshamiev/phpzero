@@ -53,7 +53,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    public function Action_Add()
+    protected function Action_Add()
     {
         $this->Chunk_Init();
         $this->Chunk_Filter();
@@ -67,7 +67,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    public function Action_Save()
+    protected function Action_Save()
     {
         $this->Chunk_Init();
         $this->Chunk_Filter();
@@ -152,6 +152,8 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         //  Initialize the fields in the form
         $props_form = $this->Model->Get_Config_Form();
         //  Remove the coupling condition
+        pre($this->Params);
+        pre($props_form);
         if ( isset($this->Params['obj_parent_prop']) )
             unset($props_form[$this->Params['obj_parent_prop']]);
         //  Remove the user conditions
@@ -186,7 +188,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    public function Chunk_Add()
+    protected function Chunk_Add()
     {
         $this->Model->Set_ID(0);
         foreach ($this->Model->Get_Config_Prop() as $prop => $row)
@@ -207,7 +209,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    public function Chunk_Save()
+    protected function Chunk_Save()
     {
         if ( !isset($_REQUEST['Prop']) )
             $_REQUEST['Prop'] = [];

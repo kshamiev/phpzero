@@ -30,13 +30,13 @@ class Zero_Content_Page extends Zero_Controller
             $Content->DB->Sql_Where('Zero_Language_ID', '=', Zero_App::$Route->LangId);
             $Content->DB->Sql_Where('Zero_Section_ID', '=', Zero_App::$Section->ID);
             $Content->DB->Sql_Where('Block', '=', $this->Params['block']);
-            $Content->DB->Load('*');
+            $Content->DB->Select('*');
             if ( 0 == $Content->ID )
             {
                 $Content = Zero_Model::Make('Zero_Content');
                 $Content->DB->Sql_Where('Zero_Language_ID', '=', Zero_App::$Route->LangId);
                 $Content->DB->Sql_Where('Block', '=', $this->Params['block']);
-                $Content->DB->Load('*');
+                $Content->DB->Select('*');
             }
             Zero_Cache::Set_Link('Zero_Content', $Content->ID);
             Zero_App::$Section->Cache->Set($index, $Content);

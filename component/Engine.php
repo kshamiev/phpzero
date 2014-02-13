@@ -356,7 +356,7 @@ class Zero_Engine
         $Section_Two = Zero_Model::Make('Zero_Section');
         /* @var $Section_Two Zero_Section */
         $Section_Two->DB->Sql_Where('Url', '=', Zero_App::$Config->Host . '/' . $url);
-        $Section_Two->DB->Load('ID');
+        $Section_Two->DB->Select('ID');
         if ( 0 == $Section_Two->ID )
         {
             $Section_Two->Zero_Section_ID = $Section->ID;
@@ -417,7 +417,7 @@ class Zero_Engine
             $Section_Three = Zero_Model::Make('Zero_Section');
             /* @var $Section_Three Zero_Section */
             $Section_Three->DB->Sql_Where('Url', '=', Zero_App::$Config->Host . '/' . $url);
-            $Section_Three->DB->Load('ID');
+            $Section_Three->DB->Select('ID');
             if ( $flag_grid && 0 == $Section_Three->ID )
             {
                 $Section_Three->Zero_Section_ID = $Section_Two->ID;
@@ -451,7 +451,7 @@ class Zero_Engine
             $Section_Four = Zero_Model::Make('Zero_Section');
             /* @var $Section_Four Zero_Section */
             $Section_Four->DB->Sql_Where('Url', '=', Zero_App::$Config->Host . '/' . $url);
-            $Section_Four->DB->Load('ID');
+            $Section_Four->DB->Select('ID');
             if ( $flag_edit && 0 == $Section_Four->ID && 0 < $Section_Three->ID )
             {
                 $Section_Four->Zero_Section_ID = $Section_Three->ID;
