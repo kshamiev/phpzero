@@ -27,30 +27,21 @@ class Zero_Controller_Edit extends Zero_Crud_Edit
     protected $Template = 'Zero_Crud_Edit';
 
     /**
-     * Take into account the conditions user
-     *
-     * @var boolean
-     */
-    protected $User_Condition = true;
-
-    /**
      * Initialization of the input parameters
      *
      * @param string $action action
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Chunk_Init($action)
+    protected function Chunk_Init()
     {
-        parent::Chunk_Init($action);
         //  relation transition one to many (CL)
         $this->Params['obj_parent_prop'] = 'relation_prop';
-        $this->Params['obj_parent_id'] = Zero_App::$Route->Param['pid'];
         $this->Params['obj_parent_name'] = '';
         //  relation transition many to many (CCL)
         $this->Params['obj_parent_table'] = 'relation_table';
-        $this->Params['obj_parent_id'] = Zero_App::$Route->Param['pid'];
         $this->Params['obj_parent_name'] = '';
         //
+        parent::Chunk_Init();
         return true;
     }
 }

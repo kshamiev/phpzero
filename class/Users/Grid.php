@@ -29,13 +29,6 @@ class Zero_Users_Grid extends Zero_Crud_Grid
     protected $Template = 'Zero_Crud_Grid';
 
     /**
-     * Take into account the conditions user
-     *
-     * @var boolean
-     */
-    protected $User_Condition = true;
-
-    /**
      * Vy`polnenie dei`stvii`
      *
      * @return Zero_View or string

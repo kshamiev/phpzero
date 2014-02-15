@@ -294,7 +294,7 @@ class Zero_Engine
     {
         $class_name = str_replace('_', '/', $class_name);
         $str_pos = strpos($class_name, '/');
-        return ZERO_PATH_APPLICATION . '/' . substr($class_name, 0, $str_pos) . '/class' . substr($class_name, $str_pos) . '.php';
+        return ZERO_PATH_APPLICATION . '/' . strtolower(substr($class_name, 0, $str_pos)) . '/class' . substr($class_name, $str_pos) . '.php';
     }
 
     /**
@@ -351,17 +351,18 @@ class Zero_Engine
         //  Razdel v BD
         $Section = Zero_Model::Make('Zero_Section');
         /* @var $Section Zero_Section */
-        $Section->Init_Url(Zero_App::$Config->Host . '/');
+        $Section->Init_Url(Zero_App::$Config->Host . '/admin');
         $url = strtolower($module);
         $Section_Two = Zero_Model::Make('Zero_Section');
         /* @var $Section_Two Zero_Section */
-        $Section_Two->DB->Sql_Where('Url', '=', Zero_App::$Config->Host . '/' . $url);
+        $Section_Two->DB->Sql_Where('Url', '=', Zero_App::$Config->Host . '/admin/' . $url);
         $Section_Two->DB->Select('ID');
         if ( 0 == $Section_Two->ID )
         {
             $Section_Two->Zero_Section_ID = $Section->ID;
-            $Section_Two->Url = Zero_App::$Config->Host . '/' . $url;
+            $Section_Two->Url = Zero_App::$Config->Host . '/admin/' . $url;
             $Section_Two->UrlThis = $url;
+            $Section_Two->Layout = 'Zero_Admin';
             $Section_Two->Controller = 'Zero_Content_Page';
             $Section_Two->IsAuthorized = 'yes';
             $Section_Two->IsVisible = 'yes';
@@ -416,13 +417,14 @@ class Zero_Engine
             $url = strtolower($package[0] . '/' . $package[1]);
             $Section_Three = Zero_Model::Make('Zero_Section');
             /* @var $Section_Three Zero_Section */
-            $Section_Three->DB->Sql_Where('Url', '=', Zero_App::$Config->Host . '/' . $url);
+            $Section_Three->DB->Sql_Where('Url', '=', Zero_App::$Config->Host . '/admin/' . $url);
             $Section_Three->DB->Select('ID');
             if ( $flag_grid && 0 == $Section_Three->ID )
             {
                 $Section_Three->Zero_Section_ID = $Section_Two->ID;
-                $Section_Three->Url = Zero_App::$Config->Host . '/' . $url;
+                $Section_Three->Url = Zero_App::$Config->Host . '/admin/' . $url;
                 $Section_Three->UrlThis = strtolower($package[1]);
+                $Section_Three->Layout = 'Zero_Admin';
                 $Section_Three->Controller = $row['Name'] . '_Grid';
                 $Section_Three->IsAuthorized = 'yes';
                 $Section_Three->IsVisible = 'yes';
@@ -450,13 +452,14 @@ class Zero_Engine
             $url = strtolower($package[0] . '/' . $package[1] . '/edit');
             $Section_Four = Zero_Model::Make('Zero_Section');
             /* @var $Section_Four Zero_Section */
-            $Section_Four->DB->Sql_Where('Url', '=', Zero_App::$Config->Host . '/' . $url);
+            $Section_Four->DB->Sql_Where('Url', '=', Zero_App::$Config->Host . '/admin/' . $url);
             $Section_Four->DB->Select('ID');
             if ( $flag_edit && 0 == $Section_Four->ID && 0 < $Section_Three->ID )
             {
                 $Section_Four->Zero_Section_ID = $Section_Three->ID;
-                $Section_Four->Url = Zero_App::$Config->Host . '/' . $url;
+                $Section_Four->Url = Zero_App::$Config->Host . '/admin/' . $url;
                 $Section_Four->UrlThis = 'edit';
+                $Section_Four->Layout = 'Zero_Admin';
                 $Section_Four->Controller = $row['Name'] . '_Edit';
                 $Section_Four->IsAuthorized = 'yes';
                 $Section_Four->IsVisible = 'no';
@@ -559,12 +562,14 @@ class Zero_Engine
         $str_property = "\n";
         foreach ($config as $prop => $row)
         {
-            $str_props .= "\t\t\t'" . $prop . "' => array(";
-            $str_props .= "'DB' => '" . $row['DB'] . "', ";
-            $str_props .= "'IsNull' => '" . $row['IsNull'] . "', ";
-            $str_props .= "'Default' => '" . $row['Default'] . "', ";
-            $str_props = substr($str_props, 0, -2);
-            $str_props .= "),\n";
+            $str_props .= "\t\t\t'" . $prop . "' => [\n";
+            $str_props .= "\t\t\t\t'AliasDB' => 'z." . $prop . "',\n";
+            $str_props .= "\t\t\t\t'DB' => '" . $row['DB'] . "',\n";
+            $str_props .= "\t\t\t\t'IsNull' => '" . $row['IsNull'] . "',\n";
+            $str_props .= "\t\t\t\t'Default' => '" . $row['Default'] . "',\n";
+            $str_props .= "\t\t\t\t'Form' => '" . $row['Form'] . "',\n";
+//            $str_props = substr($str_props, 0, -2);
+            $str_props .= "\t\t\t],\n";
             //
             if ( 'ID' == $prop )
             {
@@ -616,13 +621,13 @@ class Zero_Engine
             $str_props = "\n";
             foreach ($config_filter as $prop => $row)
             {
-                $str_props .= "\t\t\t'z." . $prop . "' => array(";
+                $str_props .= "\t\t\t'" . $prop . "' => [";
                 foreach ($row as $key => $value)
                 {
                     $str_props .= "'" . $key . "' => " . $value . ", ";
                 }
                 $str_props = substr($str_props, 0, -2);
-                $str_props .= "),\n";
+                $str_props .= "],\n";
             }
             $str_props = substr($str_props, 0, -1);
             $class = preg_replace('~/\*BEG_CONFIG_FILTER_PROP\*/(.*?)/\*END_CONFIG_FILTER_PROP\*/~si', "/*BEG_CONFIG_FILTER_PROP*/{$str_props}\n\t\t\t/*END_CONFIG_FILTER_PROP*/", $class);
@@ -635,7 +640,7 @@ class Zero_Engine
             $str_props = "\n";
             foreach ($config_grid as $prop)
             {
-                $str_props .= "\t\t\t'" . $prop . "' => ['Grid' => 'z.{$prop}'],\n";
+                $str_props .= "\t\t\t'" . $prop . "' => [],\n";
             }
             $str_props = substr($str_props, 0, -1);
             $class = preg_replace('~/\*BEG_CONFIG_GRID_PROP\*/(.*?)/\*END_CONFIG_GRID_PROP\*/~si', "/*BEG_CONFIG_GRID_PROP*/{$str_props}\n\t\t\t/*END_CONFIG_GRID_PROP*/", $class);
@@ -648,11 +653,12 @@ class Zero_Engine
             $str_props = "\n";
             foreach ($config as $prop => $row)
             {
-                $str_props .= "\t\t\t'" . $prop . "' => array(";
-                $str_props .= "'Form' => '" . $row['Form'] . "', ";
-                $str_props .= "'IsNull' => '" . $row['IsNull'] . "', ";
-                $str_props = substr($str_props, 0, -2);
-                $str_props .= "),\n";
+                $str_props .= "\t\t\t'" . $prop . "' => [],\n";
+                //                $str_props .= "\t\t\t'" . $prop . "' => array(";
+                //                $str_props .= "'Form' => '" . $row['Form'] . "', ";
+                //                $str_props .= "'IsNull' => '" . $row['IsNull'] . "', ";
+                //                $str_props = substr($str_props, 0, -2);
+                //                $str_props .= "),\n";
             }
             $str_props = substr($str_props, 0, -1);
             $class = preg_replace('~/\*BEG_CONFIG_FORM_PROP\*/(.*?)/\*END_CONFIG_FORM_PROP\*/~si', "/*BEG_CONFIG_FORM_PROP*/{$str_props}\n\t\t\t/*END_CONFIG_FORM_PROP*/", $class);
@@ -735,7 +741,7 @@ class Zero_Engine
             $Type = explode('(', $row['Type']);
             $Type = array_shift($Type);
             $config["model prop {$row['Field']}"] = $row['Comment'];
-//            $config["model prop {$row['Field']} validate Error_NotNull"] = 'Value is not set';
+            //            $config["model prop {$row['Field']} validate Error_NotNull"] = 'Value is not set';
             //  Перечисления и множества
             if ( 'enum' == $Type || 'set' == $Type )
             {
@@ -760,7 +766,7 @@ class Zero_Engine
             $path2 = Zero_I18n::Search_Path_I18n($folder_list, $lang);
             if ( file_exists($path2) )
                 continue;
-            $path2 = ZERO_PATH_APPLICATION . '/' . $folder_list[0] . '/i18n/' . $lang . '/' . $folder_list[1] . '.php';
+            $path2 = ZERO_PATH_APPLICATION . '/' . strtolower($folder_list[0]) . '/i18n/' . $lang . '/' . $folder_list[1] . '.php';
             //        echo 'CONFIG I18N MODEL ' . $path2 . '<br>';
             $file_data = file_get_contents($path1);
             $file_data = str_replace('# CONFIG', $str, $file_data);

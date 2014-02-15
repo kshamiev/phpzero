@@ -213,10 +213,6 @@ final class Zero_Lib_FileSystem
      */
     public static function File_Ini_Create($data, $flag, $filename = '')
     {
-        pre($data);
-        pre($flag);
-        pre($filename);
-        exit;
         if ( false == is_array($data) )
             return false;
         $cache = '';

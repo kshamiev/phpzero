@@ -27,13 +27,6 @@ abstract class Zero_Crud_Grid extends Zero_Controller
     protected $Template = __CLASS__;
 
     /**
-     * Take into account the conditions user
-     *
-     * @var boolean
-     */
-    protected $User_Condition = true;
-
-    /**
      * Initialization of the stack chunks and input parameters
      *
      * @return boolean flag stop execute of the next chunk
@@ -65,7 +58,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    public  function Action_FilterSet()
+    public function Action_FilterSet()
     {
         $this->Chunk_Init();
         $this->Chunk_Filter();
@@ -81,7 +74,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    public  function Action_FilterReset()
+    public function Action_FilterReset()
     {
         $this->Chunk_Init();
 
@@ -144,15 +137,12 @@ abstract class Zero_Crud_Grid extends Zero_Controller
                 $this->Model->DB->Sql_Where_IsNull('z.' . $this->Params['obj_parent_prop']);
         }
         //  The user conditions
-        if ( true == $this->User_Condition )
+        foreach (array_keys($this->Model->Get_Config_Prop()) as $prop)
         {
-            foreach (array_keys($this->Model->Get_Config_Prop()) as $prop)
-            {
-                if ( isset($users_condition[$prop]) )
-                    $this->Model->DB->Sql_Where_In('z.' . $prop, array_keys($users_condition[$prop]));
-            }
-            unset($users_condition);
+            if ( isset($users_condition[$prop]) )
+                $this->Model->DB->Sql_Where_In('z.' . $prop, array_keys($users_condition[$prop]));
         }
+        unset($users_condition);
     }
 
     /**
@@ -163,7 +153,6 @@ abstract class Zero_Crud_Grid extends Zero_Controller
     protected function Chunk_Filter()
     {
         $Filter = Zero_Filter::Factory($this->Model);
-        //  Initialization
         if ( false == $Filter->IsInit )
         {
             $condition = Zero_App::$Users->Get_Condition();
@@ -172,24 +161,24 @@ abstract class Zero_Crud_Grid extends Zero_Controller
                 if ( $row['Filter'] )
                 {
                     $method = 'Add_Filter_' . $row['Filter'];
-                    if ( isset($condition[$prop]) && $this->User_Condition )
+                    if ( isset($condition[$prop]) )
                     {
                         if ( 1 < count($condition[$prop]) )
-                            $Filter->$method($prop, 1, $condition[$prop]);
+                            $Filter->$method($prop, $row, 1, $condition[$prop]);
                         else
-                            $Filter->$method($prop, 0, $condition[$prop]);
+                            $Filter->$method($prop, $row, 0, $condition[$prop]);
                     }
                     else
-                        $Filter->$method($prop, 1, 1);
+                        $Filter->$method($prop, $row, 1, 1);
                 }
                 if ( $row['Search'] )
                 {
                     $method = 'Add_Search_' . $row['Search'];
-                    $Filter->$method($prop);
+                    $Filter->$method($prop, $row);
                 }
                 if ( $row['Sort'] )
                 {
-                    $Filter->Add_Sort($prop);
+                    $Filter->Add_Sort($prop, $row);
                     if ( 'Sort' == $prop || 'ID' == $prop )
                         $Filter->Set_Sort($prop);
                 }
@@ -198,7 +187,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
         }
 
         //  Page by page
-        if ( isset(Zero_App::$Route->Param[0]) && 0 < Zero_App::$Route->Param[0] )
+        if ( isset(Zero_App::$Route->Param['pg']) && 0 < Zero_App::$Route->Param['pg'] )
             $Filter->Page = Zero_App::$Route->Param['pg'];
     }
 
@@ -267,19 +256,16 @@ abstract class Zero_Crud_Grid extends Zero_Controller
         if ( isset($this->Params['obj_parent_prop']) )
             unset($props_grid[$this->Params['obj_parent_prop']]);
         //  Remove the user conditions
-        if ( true == $this->User_Condition )
+        $users_condition = Zero_App::$Users->Get_Condition();
+        foreach ($users_condition as $prop => $value)
         {
-            $users_condition = Zero_App::$Users->Get_Condition();
-            foreach ($users_condition as $prop => $value)
-            {
-                if ( 1 == count($value) )
-                    unset($props_grid[$prop]);
-            }
+            if ( 1 == count($value) )
+                unset($props_grid[$prop]);
         }
         $props = [];
         foreach ($props_grid as $prop => $row)
         {
-            $props[] = $row['Grid'] . ' AS ' . $prop;
+            $props[] = $row['AliasDB'] . ' AS ' . $prop;
         }
 
         $this->Chunk_View_SqlWhere();

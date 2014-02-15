@@ -837,7 +837,6 @@ class Zero_DB
      */
     public function Sql_Where_Filter(Zero_Filter $Filter)
     {
-        $alias_list = $Filter->Get_Alias();
         $filter_list = $Filter->Get_Filter();
         foreach ($filter_list as $prop => $row)
         {
@@ -847,21 +846,21 @@ class Zero_DB
             if ( 'DateTime' == $row['Filter'] )
             {
                 if ( $row['Value'][0] )
-                    $this->Sql_Where($alias_list[$prop] . $prop, '>=', $row['Value'][0]);
+                    $this->Sql_Where($row['AliasDB'], '>=', $row['Value'][0]);
                 if ( $row['Value'][1] )
-                    $this->Sql_Where($alias_list[$prop] . $prop, '<', $row['Value'][1]);
+                    $this->Sql_Where($row['AliasDB'], '<', $row['Value'][1]);
             } //  mnozhestva
             else if ( 'Checkbox' == $row['Filter'] )
-                $this->Sql_Where_Like($alias_list[$prop] . $prop, $row['Value']);
+                $this->Sql_Where_Like($row['AliasDB'], $row['Value']);
             //  fil`try` perechisleniia i sviazei` - ssy`lki
             else if ( 'Radio' == $row['Filter'] || 'Select' == $row['Filter'] || 'Link' == $row['Filter'] || 'LinkMore' == $row['Filter'] )
             {
                 if ( 'NULL' == $row['Value'] )
-                    $this->Sql_Where_IsNull($alias_list[$prop] . $prop);
+                    $this->Sql_Where_IsNull($row['AliasDB']);
                 else if ( 'NOTNULL' == $row['Value'] )
-                    $this->Sql_Where_IsNotNull($alias_list[$prop] . $prop);
+                    $this->Sql_Where_IsNotNull($row['AliasDB']);
                 else
-                    $this->Sql_Where($alias_list[$prop] . $prop, '=', $row['Value']);
+                    $this->Sql_Where($row['AliasDB'], '=', $row['Value']);
             }
         }
         //  atomarny`i` poisk i poisk po vsem poliam
@@ -877,9 +876,9 @@ class Zero_DB
                 foreach ($search['List'] as $prop => $row)
                 {
                     if ( 'Number' == $row['Form'] )
-                        $this->Sql_Where($alias_list[$prop] . $prop, '=', $value, 'OR');
+                        $this->Sql_Where($row['AliasDB'], '=', $value, 'OR');
                     else
-                        $this->Sql_Where_Like($alias_list[$prop] . $prop, $value, 'OR');
+                        $this->Sql_Where_Like($row['AliasDB'], $value, 'OR');
                 }
                 $this->Sql_Where_And();
                 break;
@@ -892,15 +891,15 @@ class Zero_DB
                     if ( 1 < count($arr) )
                     {
                         if ( 0 < $arr[0] )
-                            $this->Sql_Where($alias_list[$prop] . $prop, '>=', $arr[0] * 1);
+                            $this->Sql_Where($row['AliasDB'], '>=', $arr[0] * 1);
                         if ( 0 < $arr[1] )
-                            $this->Sql_Where($alias_list[$prop] . $prop, '<=', $arr[1] * 1);
+                            $this->Sql_Where($row['AliasDB'], '<=', $arr[1] * 1);
                     }
                     else
-                        $this->Sql_Where($alias_list[$prop] . $prop, '=', $value * 1);
+                        $this->Sql_Where($row['AliasDB'], '=', $value * 1);
                 }
                 else
-                    $this->Sql_Where_Like($alias_list[$prop] . $prop, $value);
+                    $this->Sql_Where_Like($row['AliasDB'], $value);
             }
         }
 
@@ -909,7 +908,7 @@ class Zero_DB
         foreach ($sort['Value'] as $prop => $value)
         {
             if ( $value )
-                $this->Sql_Order($alias_list[$prop] . $prop, $value);
+                $this->Sql_Order($row['AliasDB'], $value);
         }
 
         //    postranichnost`
@@ -1410,7 +1409,7 @@ class Zero_DB
         if ( 0 == $this->Model->ID )
         {
             Zero_Logs::Set_Message("object not defined: {$this->Model->Get_Source()}", 'warning');
-            return false;
+            return [];
         }
         $source = $this->Model->Get_Source();
         $sql = "SELECT {$props} FROM {$source}Language WHERE {$source}_ID = {$this->Model->ID} AND Zero_Language_ID = " . Zero_App::$Route->LangId;

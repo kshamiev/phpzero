@@ -25,11 +25,4 @@ class Zero_Content_Edit extends Zero_Crud_Edit
      * @var string
      */
     protected $Template = 'Zero_Crud_Edit';
-
-    /**
-     * Take into account the conditions user
-     *
-     * @var boolean
-     */
-    protected $User_Condition = true;
 }

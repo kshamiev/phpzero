@@ -76,12 +76,12 @@ class Zero_Content extends Zero_Model
     {
         return [
             /*BEG_CONFIG_PROP*/
-            'ID' => ['DB' => 'I', 'IsNull' => 'NO', 'Default' => ''],
-            'Zero_Section_ID' => ['DB' => 'I', 'IsNull' => 'NO', 'Default' => ''],
-            'Zero_Language_ID' => ['DB' => 'I', 'IsNull' => 'NO', 'Default' => 1],
-            'Name' => ['DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
-            'Content' => ['DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
-            'Block' => ['DB' => 'T', 'IsNull' => 'NO', 'Default' => ''],
+            'ID' => ['AliasDB' => 'z.ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => ''],
+            'Zero_Section_ID' => ['AliasDB' => 'z.Zero_Section_ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => ''],
+            'Zero_Language_ID' => ['AliasDB' => 'z.Zero_Language_ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => 1],
+            'Name' => ['AliasDB' => 'z.Name', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
+            'Content' => ['AliasDB' => 'z.Content', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
+            'Block' => ['AliasDB' => 'z.Block', 'DB' => 'T', 'IsNull' => 'NO', 'Default' => ''],
             /*END_CONFIG_PROP*/
         ];
     }
@@ -102,11 +102,11 @@ class Zero_Content extends Zero_Model
     {
         return [
             /*BEG_CONFIG_FILTER_PROP*/
-            'ID' => ['Filter' => '', 'Search' => 'Number', 'Sort' => true],
-            'Zero_Section_ID' => ['Filter' => '', 'Search' => '', 'Sort' => false],
-            'Zero_Language_ID' => ['Filter' => 'Link', 'Search' => '', 'Sort' => false],
-            'Name' => ['Filter' => '', 'Search' => 'Text', 'Sort' => false],
-            'Content' => ['Filter' => '', 'Search' => 'Text', 'Sort' => false],
+            'ID' => ['AliasDB' => '', 'Filter' => '', 'Search' => 'Number', 'Sort' => true],
+            'Zero_Section_ID' => ['AliasDB' => '', 'Filter' => '', 'Search' => '', 'Sort' => false],
+            'Zero_Language_ID' => ['AliasDB' => '', 'Filter' => 'Link', 'Search' => '', 'Sort' => false],
+            'Name' => ['AliasDB' => '', 'Filter' => '', 'Search' => 'Text', 'Sort' => false],
+            'Content' => ['AliasDB' => '', 'Filter' => '', 'Search' => 'Text', 'Sort' => false],
 //            'Block' => ['Filter' => 'Select', 'Search' => '', 'Sort' => false],
             /*END_CONFIG_FILTER_PROP*/
         ];
@@ -126,9 +126,9 @@ class Zero_Content extends Zero_Model
     {
         return [
             /*BEG_CONFIG_GRID_PROP*/
-            'ID' => ['Grid' => 'z.ID'],
-            'Name' => ['Grid' => 'z.Name'],
-            'Block' => ['Grid' => 'z.Block'],
+            'ID' => [],
+            'Name' => [],
+            'Block' => [],
             /*END_CONFIG_GRID_PROP*/
         ];
     }
@@ -150,12 +150,12 @@ class Zero_Content extends Zero_Model
     {
         return [
             /*BEG_CONFIG_FORM_PROP*/
-            'ID' => array('Form' => 'Hidden', 'IsNull' => 'NO'),
-            'Zero_Section_ID' => array('Form' => 'Hidden', 'IsNull' => 'YES'),
-            'Zero_Language_ID' => array('Form' => 'Link', 'IsNull' => 'NO'),
-            'Name' => array('Form' => 'Text', 'IsNull' => 'YES'),
-            'Content' => array('Form' => 'Content', 'IsNull' => 'YES'),
-            'Block' => array('Form' => 'Text', 'IsNull' => 'NO'),
+            'ID' => array('Form' => 'Hidden'),
+            'Zero_Section_ID' => array('Form' => 'Hidden'),
+            'Zero_Language_ID' => array('Form' => 'Link'),
+            'Name' => array('Form' => 'Text'),
+            'Content' => array('Form' => 'Content'),
+            'Block' => array('Form' => 'Text'),
             /*END_CONFIG_FORM_PROP*/
         ];
     }

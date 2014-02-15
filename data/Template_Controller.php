@@ -18,10 +18,8 @@ class Zero_Controller_Sample extends Zero_Controller
      * @param string $action action
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Chunk_Init($action)
+    protected function Chunk_Init()
     {
-        $this->Set_Chunk('Action');
-        $this->Set_Chunk('View');
         $this->View = new Zero_View(__CLASS__);
         $this->Model = Zero_Model::Make('Zero_Users');
         return true;
@@ -33,7 +31,7 @@ class Zero_Controller_Sample extends Zero_Controller
      * @param string $action action
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Chunk_View($action)
+    protected function Chunk_View()
     {
         $this->View->Assign('variable', 'value');
         return true;
@@ -46,6 +44,6 @@ class Zero_Controller_Sample extends Zero_Controller
      */
     public function Action_Name()
     {
-        return true;
+        return $this->View;
     }
 }

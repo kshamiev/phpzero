@@ -108,21 +108,26 @@ class Zero_Users extends Zero_Model
     {
         return [
             /*BEG_CONFIG_PROP*/
-            'ID' => ['DB' => 'I', 'IsNull' => 'NO', 'Default' => ''],
-            'Zero_Groups_ID' => ['DB' => 'I', 'IsNull' => 'YES', 'Default' => '2'],
-            'Zero_Users_ID' => ['DB' => 'I', 'IsNull' => 'YES', 'Default' => ''],
-            'Name' => ['DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
-            'Login' => ['DB' => 'T', 'IsNull' => 'NO', 'Default' => ''],
-            'Password' => ['DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
-            'IsAccess' => ['DB' => 'E', 'IsNull' => 'NO', 'Default' => 'open'],
-            'Email' => ['DB' => 'T', 'IsNull' => 'NO', 'Default' => ''],
-            'Phone' => ['DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
-            'Skype' => ['DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
-            'IsCondition' => ['DB' => 'E', 'IsNull' => 'NO', 'Default' => 'yes'],
-            'ImgAvatar' => ['DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
-            'IsOnline' => ['DB' => 'E', 'IsNull' => 'NO', 'Default' => 'no'],
-            'DateOnline' => ['DB' => 'D', 'IsNull' => 'YES', 'Default' => ''],
-            'Date' => ['DB' => 'D', 'IsNull' => 'YES', 'Default' => ''],
+            'ID' => [
+                'AliasDB' => 'z.ID',
+                'DB' => 'I',
+                'IsNull' => 'NO',
+                'Default' => '',
+            ],
+            'Zero_Groups_ID' => ['AliasDB' => 'z.Zero_Groups_ID', 'DB' => 'I', 'IsNull' => 'YES', 'Default' => '2'],
+            'Zero_Users_ID' => ['AliasDB' => 'z.Zero_Users_ID', 'DB' => 'I', 'IsNull' => 'YES', 'Default' => ''],
+            'Name' => ['AliasDB' => 'z.Name', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
+            'Login' => ['AliasDB' => 'z.Login', 'DB' => 'T', 'IsNull' => 'NO', 'Default' => ''],
+            'Password' => ['AliasDB' => 'z.Password', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
+            'IsAccess' => ['AliasDB' => 'z.IsAccess', 'DB' => 'E', 'IsNull' => 'NO', 'Default' => 'open'],
+            'Email' => ['AliasDB' => 'z.Email', 'DB' => 'T', 'IsNull' => 'NO', 'Default' => ''],
+            'Phone' => ['AliasDB' => 'z.Phone', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
+            'Skype' => ['AliasDB' => 'z.Skype', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
+            'IsCondition' => ['AliasDB' => 'z.IsCondition', 'DB' => 'E', 'IsNull' => 'NO', 'Default' => 'yes'],
+            'ImgAvatar' => ['AliasDB' => 'z.ImgAvatar', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
+            'IsOnline' => ['AliasDB' => 'z.IsOnline', 'DB' => 'E', 'IsNull' => 'NO', 'Default' => 'no'],
+            'DateOnline' => ['AliasDB' => 'z.DateOnline', 'DB' => 'D', 'IsNull' => 'YES', 'Default' => ''],
+            'Date' => ['AliasDB' => 'z.Date', 'DB' => 'D', 'IsNull' => 'YES', 'Default' => ''],
             /*END_CONFIG_PROP*/
         ];
     }
@@ -144,7 +149,7 @@ class Zero_Users extends Zero_Model
         return [
             /*BEG_CONFIG_FILTER_PROP*/
             'ID' => ['Filter' => '', 'Search' => 'Number', 'Sort' => true],
-            'Zero_Groups_ID' => ['Filter' => 'LinkMore', 'Search' => '', 'Sort' => false],
+            'Zero_Groups_ID' => ['Filter' => 'Link', 'Search' => '', 'Sort' => false],
             'Zero_Users_ID' => ['Filter' => 'Link', 'Search' => '', 'Sort' => false],
             'Name' => ['Filter' => '', 'Search' => 'Text', 'Sort' => true],
             'Login' => ['Filter' => '', 'Search' => 'Text', 'Sort' => true],
@@ -173,9 +178,9 @@ class Zero_Users extends Zero_Model
     {
         return [
             /*BEG_CONFIG_GRID_PROP*/
-            'ID' => ['Grid' => 'z.ID'],
-            'Name' => ['Grid' => 'z.Name'],
-            'Email' => ['Grid' => 'z.Email'],
+            'ID' => [],
+            'Name' => [],
+            'Email' => [],
             /*END_CONFIG_GRID_PROP*/
         ];
     }
@@ -197,21 +202,21 @@ class Zero_Users extends Zero_Model
     {
         return [
             /*BEG_CONFIG_FORM_PROP*/
-            'ID' => array('Form' => 'Hidden', 'IsNull' => 'NO'),
-            'Zero_Groups_ID' => array('Form' => 'LinkMore', 'IsNull' => 'YES'),
-            'Zero_Users_ID' => array('Form' => 'Link', 'IsNull' => 'YES'),
-            'Name' => array('Form' => 'Text', 'IsNull' => 'YES'),
-            'Login' => array('Form' => 'Text', 'IsNull' => 'NO'),
-            'Password' => array('Form' => 'Password', 'IsNull' => 'YES'),
-            'IsAccess' => array('Form' => 'Radio', 'IsNull' => 'NO'),
-            'Email' => array('Form' => 'Text', 'IsNull' => 'NO'),
-            'Phone' => array('Form' => 'Text', 'IsNull' => 'YES'),
-            'Skype' => array('Form' => 'Text', 'IsNull' => 'YES'),
-            'IsCondition' => array('Form' => 'Radio', 'IsNull' => 'NO'),
-            'ImgAvatar' => array('Form' => 'Img', 'IsNull' => 'YES'),
-            'IsOnline' => array('Form' => 'ReadOnly', 'IsNull' => 'NO'),
-            'DateOnline' => array('Form' => 'ReadOnly', 'IsNull' => 'YES'),
-            'Date' => array('Form' => 'Date', 'IsNull' => 'YES'),
+            'ID' => array('Form' => 'Hidden'),
+            'Zero_Groups_ID' => array('Form' => 'LinkMore'),
+            'Zero_Users_ID' => array('Form' => 'Link'),
+            'Name' => array('Form' => 'Text'),
+            'Login' => array('Form' => 'Text'),
+            'Password' => array('Form' => 'Password'),
+            'IsAccess' => array('Form' => 'Radio'),
+            'Email' => array('Form' => 'Text'),
+            'Phone' => array('Form' => 'Text'),
+            'Skype' => array('Form' => 'Text'),
+            'IsCondition' => array('Form' => 'Radio'),
+            'ImgAvatar' => array('Form' => 'Img'),
+            'IsOnline' => array('Form' => 'ReadOnly'),
+            'DateOnline' => array('Form' => 'ReadOnly'),
+            'Date' => array('Form' => 'Date'),
             /*END_CONFIG_FORM_PROP*/
         ];
     }
@@ -238,7 +243,8 @@ class Zero_Users extends Zero_Model
             //  uslovie pol`zovatelia
             if ( 'yes' == $this->IsCondition )
             {
-                $prop = 'Zero_Users_' . $this->Zero_Groups_ID . '_ID';
+                //                $prop = 'Zero_Users_' . $this->Zero_Groups_ID . '_ID';
+                $prop = 'Zero_Users_ID';
                 $this->DB->Sql_Where('Zero_Users_ID', '=', $this->ID);
                 $this->_Condition[$prop] = $this->DB->Select_List_Index('ID, Name');
                 $this->_Condition[$prop][$this->ID] = $this->Name;
@@ -266,6 +272,7 @@ class Zero_Users extends Zero_Model
      *
      * Tai`maut ne aktivny`kh pol`zovatelei` 10 minut.
      * V dal`nei`shem e`tot parametr mozhno zavesti v konfiguratciiu sai`ta i regulirovat`.
+     *
      * @param integer $seconds Tai`maut v sekundakh po istechenii kotorogo pol`zovatel` schitaetsia pokinuvshim sai`t
      * @return boolean flag stop execute of the next chunk
      */

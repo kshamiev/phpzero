@@ -362,27 +362,6 @@ abstract class Zero_Model
     }
 
     /**
-     * The configuration language properties
-     *
-     * @param Zero_Model $Model The exact working model
-     * @return string
-     */
-    protected static function Config_Prop_Lang($Model)
-    {
-        return '*';
-    }
-
-    /**
-     * Poluchenie bazovoi` konfiguratciia svoi`stv
-     *
-     * @return string
-     */
-    public function Get_Config_Prop_Lang()
-    {
-        return static::Config_Prop_Lang($this);
-    }
-
-    /**
      * The configuration properties
      *
      * @param Zero_Model $Model The exact working model
@@ -410,11 +389,9 @@ abstract class Zero_Model
         {
             foreach (static::Config_Prop($this) as $prop => $row)
             {
-                $index = "model prop {$prop}";
-                $row['Comment'] = Zero_I18n::T($this->Source, $index, $prop);
-
-                if ( 'S' == $row['DB'] || 'E' == $row['DB'] )
-                    $row['Value'] = Zero_DB::Sel_EnumSet($this, $prop);
+                $row['Comment'] = Zero_I18n::T($this->Source, "model prop {$prop}", $prop);
+//                if ( 'S' == $row['DB'] || 'E' == $row['DB'] )
+//                    $row['Value'] = Zero_DB::Sel_EnumSet($this, $prop);
                 self::$_Config[$this->Source]['props'][$prop] = $row;
             }
         }
@@ -445,7 +422,13 @@ abstract class Zero_Model
      */
     public function Get_Config_Filter($scenario = '')
     {
-        return static::Config_Filter($this, $scenario);
+        $props = static::Config_Filter($this, $scenario);
+        $propsBase = $this->Get_Config_Prop();
+        foreach ($props as $prop => $row)
+        {
+            $props[$prop] = array_replace($propsBase[$prop], $row);
+        }
+        return $props;
     }
 
     /**
@@ -472,9 +455,10 @@ abstract class Zero_Model
     public function Get_Config_Grid($scenario = '')
     {
         $props = static::Config_Grid($this, $scenario);
+        $propsBase = $this->Get_Config_Prop();
         foreach ($props as $prop => $row)
         {
-            $props[$prop]['Comment'] = Zero_I18n::T($this->Source, 'model prop ' . $prop, $prop);
+            $props[$prop] = array_replace($propsBase[$prop], $row);
         }
         return $props;
     }
@@ -505,9 +489,10 @@ abstract class Zero_Model
     public function Get_Config_Form($scenario = '')
     {
         $props = static::Config_Form($this, $scenario);
-        foreach ($props as $prop => $com)
+        $propsBase = $this->Get_Config_Prop();
+        foreach ($props as $prop => $row)
         {
-            $props[$prop]['Comment'] = Zero_I18n::T($this->Source, 'model prop ' . $prop, $prop);
+            $props[$prop] = array_replace($propsBase[$prop], $row);
         }
         return $props;
     }

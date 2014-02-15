@@ -26,10 +26,4 @@ class Zero_Groups_Grid extends Zero_Crud_Grid
      */
     protected $Template = 'Zero_Crud_Grid';
 
-    /**
-     * Take into account the conditions user
-     *
-     * @var boolean
-     */
-    protected $User_Condition = true;
 }

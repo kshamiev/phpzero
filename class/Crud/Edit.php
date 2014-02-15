@@ -27,13 +27,6 @@ abstract class Zero_Crud_Edit extends Zero_Controller
     protected $Template = __CLASS__;
 
     /**
-     * Take into account the conditions user
-     *
-     * @var boolean
-     */
-    protected $User_Condition = true;
-
-    /**
      * Initialization of the stack chunks and input parameters
      *
      * @return boolean flag stop execute of the next chunk
@@ -113,23 +106,27 @@ abstract class Zero_Crud_Edit extends Zero_Controller
                 if ( $row['Filter'] )
                 {
                     $method = 'Add_Filter_' . $row['Filter'];
-                    if ( isset($condition[$prop]) && $this->User_Condition )
+                    if ( isset($condition[$prop]) )
                     {
                         if ( 1 < count($condition[$prop]) )
-                            $Filter->$method($prop, 1, $condition[$prop]);
+                            $Filter->$method($prop, $row, 1, $condition[$prop]);
                         else
-                            $Filter->$method($prop, 0, $condition[$prop]);
+                            $Filter->$method($prop, $row, 0, $condition[$prop]);
                     }
                     else
-                        $Filter->$method($prop, 1, 1);
+                        $Filter->$method($prop, $row, 1, 1);
                 }
                 if ( $row['Search'] )
                 {
                     $method = 'Add_Search_' . $row['Search'];
-                    $Filter->$method($prop);
+                    $Filter->$method($prop, $row);
                 }
                 if ( $row['Sort'] )
-                    $Filter->Add_Sort($prop);
+                {
+                    $Filter->Add_Sort($prop, $row);
+                    if ( 'Sort' == $prop || 'ID' == $prop )
+                        $Filter->Set_Sort($prop);
+                }
             }
             $Filter->IsInit = true;
         }
@@ -148,17 +145,12 @@ abstract class Zero_Crud_Edit extends Zero_Controller
     protected function Chunk_View()
     {
         $Filter = Zero_Filter::Factory($this->Model);
-        pre($Filter);
         //  Initialize the fields in the form
         $props_form = $this->Model->Get_Config_Form();
         //  Remove the coupling condition
-        pre($this->Params);
-        pre($props_form);
         if ( isset($this->Params['obj_parent_prop']) )
             unset($props_form[$this->Params['obj_parent_prop']]);
         //  Remove the user conditions
-        if ( true == $this->User_Condition )
-        {
             $users_condition = Zero_App::$Users->Get_Condition();
             foreach (array_keys($this->Model->Get_Config_Prop()) as $prop)
             {
@@ -170,7 +162,6 @@ abstract class Zero_Crud_Edit extends Zero_Controller
                         unset($props_form[$prop]);
                 }
             }
-        }
 
         //  Data
         $this->View->Assign('Section', Zero_App::$Section);

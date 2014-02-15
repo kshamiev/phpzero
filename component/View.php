@@ -93,7 +93,7 @@ class Zero_View
     public function __construct($template = '')
     {
         if ( '' != $template )
-            $this->_Template[] = $template;
+            $this->_Template[$template] = $template;
     }
 
     /**
@@ -103,7 +103,7 @@ class Zero_View
      */
     public function Template_Add($template)
     {
-        $this->_Template[] = $template;
+        $this->_Template[$template] = $template;
     }
 
     /**

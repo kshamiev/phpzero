@@ -26,7 +26,7 @@ class Zero_Filter
     protected $Model;
 
     /**
-     * Konfiguratciia svoi`stv dlia fil`trov.
+     * Конфигурация свойств длиа фильтров.
      *
      * - [$prop]['Comment'] Nazvanie fil`tra
      * - [$prop]['Filter'] Tip fil`tra
@@ -39,20 +39,20 @@ class Zero_Filter
     protected $Filter = [];
 
     /**
-     * Svoi`stva po kotory`m ishchem
+     * Свойства по которым ищем
      *
-     * - Spisok svoi`stv
-     * - Ikh tipy`
-     * - Ikh Znacheniia
+     * - Список свойств
+     * - Их типы
+     * - Их Значения
      *
      * @var array
      */
     protected $Search = [];
 
     /**
-     * Ssy`lki dlia zaprosa v BD
+     * Ссылки для запроса в БД
      *
-     * Formiruiutsia na osnove peredanny`kh svoi`tsv
+     * Формируютсиа на основе переданных свойтсв
      *
      * @var array
      */
@@ -120,61 +120,6 @@ class Zero_Filter
     }
 
     /**
-     * Get alias from property
-     *
-     * @return array alias
-     */
-    public function Get_Alias()
-    {
-        return $this->Alias;
-    }
-
-    /**
-     * Pervichnaia obrabotka svoi`stv fil`trov, poiska i sortirovki
-     *
-     * @param string $prop property [TableName.PropName]
-     * @return string property [PropName]
-     */
-    protected function Set_Alias($prop)
-    {
-        $arr = explode('.', $prop);
-        if ( 1 < count($arr) )
-        {
-            $this->Alias[$arr[1]] = $arr[0] . '.';
-            return $arr[1];
-        }
-        else
-        {
-            $this->Alias[$arr[0]] = 'z.';
-            return $arr[0];
-        }
-    }
-
-    /**
-     * Dobavlenie fil`tra sviazi (s bol`shim chislom ob``ektov)
-     *
-     * Fil`tr po poliu iavliaiushchimsia sviaz`iu s drugim ob``ektov
-     *
-     * @param string $prop Svoi`stvo sviazi dlia kotorogo budet sozdan fil`tr.
-     * @param integer $is_visible Vidimost` fil`tra (1 - otobrazhaetsia, 0 - ne otobrazhaetsia po umolchaniiu)
-     * @return bool
-     */
-    public function Add_Filter_LinkMore($prop, $is_visible = 0)
-    {
-        $prop = $this->Set_Alias($prop);
-        if ( isset($this->Filter[$prop]) )
-            return true;
-        $this->Filter[$prop] = [];
-        //        $this->Filter[$prop]['Comment'] = $this->Model->Get_Config_Filter()[$prop]['Comment'];
-        $this->Filter[$prop]['Comment'] = Zero_I18n::T($this->Model->Get_Source(), 'model prop ' . $prop, $prop);
-        $this->Filter[$prop]['Filter'] = 'LinkMore';
-        $this->Filter[$prop]['Visible'] = $is_visible;
-        $this->Filter[$prop]['Value'] = '';
-        $this->Filter[$prop]['List'] = [];
-        return true;
-    }
-
-    /**
      * Dobavlenie fil`tra sviazi (s nebol`shim chislom ob``ektov)
      *
      * @param string $prop Svoi`stvo sviazi dlia kotorogo budet sozdan fil`tr.
@@ -182,14 +127,11 @@ class Zero_Filter
      * @param mixed $load 1 - avtonomnaia zagruzka fil`tra, 0 - bez zagruzki po umolchaniiu, array - peredanny`e varianty` (spisok ID => Name)
      * @return bool
      */
-    public function Add_Filter_Link($prop, $is_visible = 0, $load = 0)
+    public function Add_Filter_Link($prop, $row, $is_visible = 0, $load = 0)
     {
-        $prop = $this->Set_Alias($prop);
         if ( isset($this->Filter[$prop]) )
             return true;
-        $this->Filter[$prop] = [];
-        //        $this->Filter[$prop]['Comment'] = $this->Model->Get_Config_Filter()[$prop]['Comment'];
-        $this->Filter[$prop]['Comment'] = Zero_I18n::T($this->Model->Get_Source(), 'model prop ' . $prop, $prop);
+        $this->Filter[$prop] = $row;
         $this->Filter[$prop]['Filter'] = 'Link';
         $this->Filter[$prop]['Visible'] = $is_visible;
         $this->Filter[$prop]['Value'] = '';
@@ -207,8 +149,6 @@ class Zero_Filter
             else
             {
                 $Model = Zero_Model::Make(zero_relation($prop));
-                if ( 0 < $id = explode('_', $prop)[2] )
-                    $Model->DB->Sql_Where('Zero_Groups_ID', '=', $id);
                 $Model->DB->Sql_Order('Name', 'ASC');
                 $this->Filter[$prop]['List'] = $Model->DB->Select_List_Index('ID, Name');
             }
@@ -239,13 +179,11 @@ class Zero_Filter
      * @param mixed $load 1 - Avtonomnaia zagruzka fil`tra, 0 - bez zagruzki po umolchaniiu, array - peredanny`e varianty` (spisok ID => Name)
      * @return bool
      */
-    public function Add_Filter_Select($prop, $is_visible = 0, $load = 0)
+    public function Add_Filter_Select($prop, $row, $is_visible = 0, $load = 0)
     {
-        $prop = $this->Set_Alias($prop);
         if ( isset($this->Filter[$prop]) )
             return true;
-        $this->Filter[$prop] = [];
-        //        $this->Filter[$prop]['Comment'] = $this->Model->Get_Config_Filter()[$prop]['Comment'];
+        $this->Filter[$prop] = $row;
         $this->Filter[$prop]['Comment'] = Zero_I18n::T($this->Model->Get_Source(), 'model prop ' . $prop, $prop);
         $this->Filter[$prop]['Filter'] = 'Select';
         $this->Filter[$prop]['Visible'] = $is_visible;
@@ -260,7 +198,7 @@ class Zero_Filter
             if ( method_exists($this->Model, $method = 'FL_' . $prop) )
                 $this->Filter[$prop]['List'] = $this->Model->$method();
             else
-                $this->Filter[$prop]['List'] = $this->Model->Get_Config_Prop()[$prop]['Value'];
+                $this->Filter[$prop]['List'] = Zero_DB::Sel_EnumSet($this->Model, $prop);
         }
         return true;
     }
@@ -273,14 +211,11 @@ class Zero_Filter
      * @param mixed $load 1 - avtonomnaia zagruzka fil`tra, 0 - bez zagruzki po umolchaniiu, array - peredanny`e varianty` (spisok ID => Name)
      * @return bool
      */
-    public function Add_Filter_Radio($prop, $is_visible = 0, $load = 0)
+    public function Add_Filter_Radio($prop, $row, $is_visible = 0, $load = 0)
     {
-        $prop = $this->Set_Alias($prop);
         if ( isset($this->Filter[$prop]) )
             return true;
-        $this->Filter[$prop] = [];
-        //        $this->Filter[$prop]['Comment'] = $this->Model->Get_Config_Filter()[$prop]['Comment'];
-        $this->Filter[$prop]['Comment'] = Zero_I18n::T($this->Model->Get_Source(), 'model prop ' . $prop, $prop);
+        $this->Filter[$prop] = $row;
         $this->Filter[$prop]['Filter'] = 'Radio';
         $this->Filter[$prop]['Visible'] = $is_visible;
         $this->Filter[$prop]['Value'] = '';
@@ -294,7 +229,7 @@ class Zero_Filter
             if ( method_exists($this->Model, $method = 'FL_' . $prop) )
                 $this->Filter[$prop]['List'] = $this->Model->$method();
             else
-                $this->Filter[$prop]['List'] = $this->Model->Get_Config_Prop()[$prop]['Value'];
+                $this->Filter[$prop]['List'] = Zero_DB::Sel_EnumSet($this->Model, $prop);
         }
         return true;
     }
@@ -307,14 +242,11 @@ class Zero_Filter
      * @param mixed $load 1 - avtonomnaia zagruzka fil`tra, 0 - bez zagruzki po umolchaniiu, array - peredanny`e varianty` (spisok ID => Name)
      * @return bool
      */
-    public function Add_Filter_Checkbox($prop, $is_visible = 0, $load = 0)
+    public function Add_Filter_Checkbox($prop, $row, $is_visible = 0, $load = 0)
     {
-        $prop = $this->Set_Alias($prop);
         if ( isset($this->Filter[$prop]) )
             return true;
-        $this->Filter[$prop] = [];
-        //        $this->Filter[$prop]['Comment'] = $this->Model->Get_Config_Filter()[$prop]['Comment'];
-        $this->Filter[$prop]['Comment'] = Zero_I18n::T($this->Model->Get_Source(), 'model prop ' . $prop, $prop);
+        $this->Filter[$prop] = $row;
         $this->Filter[$prop]['Filter'] = 'Checkbox';
         $this->Filter[$prop]['Visible'] = $is_visible;
         $this->Filter[$prop]['Value'] = '';
@@ -328,7 +260,7 @@ class Zero_Filter
             if ( method_exists($this->Model, $method = 'FL_' . $prop) )
                 $this->Filter[$prop]['List'] = $this->Model->$method();
             else
-                $this->Filter[$prop]['List'] = $this->Model->Get_Config_Prop()[$prop]['Value'];
+                $this->Filter[$prop]['List'] = Zero_DB::Sel_EnumSet($this->Model, $prop);
         }
         return true;
     }
@@ -340,14 +272,11 @@ class Zero_Filter
      * @param integer $is_visible Vidimost` fil`tra (1 - otobrazhaetsia, 0 - ne otobrazhaetsia po umolchaniiu)
      * @return bool
      */
-    public function Add_Filter_DateTime($prop, $is_visible = 0)
+    public function Add_Filter_DateTime($prop, $row, $is_visible = 0)
     {
-        $prop = $this->Set_Alias($prop);
         if ( isset($this->Filter[$prop]) )
             return true;
-        $this->Filter[$prop] = [];
-        //        $this->Filter[$prop]['Comment'] = $this->Model->Get_Config_Filter()[$prop]['Comment'];
-        $this->Filter[$prop]['Comment'] = Zero_I18n::T($this->Model->Get_Source(), 'model prop ' . $prop, $prop);
+        $this->Filter[$prop] = $row;
         $this->Filter[$prop]['Filter'] = 'DateTime';
         $this->Filter[$prop]['Visible'] = $is_visible;
         $this->Filter[$prop]['Value'] = ['', ''];
@@ -383,11 +312,10 @@ class Zero_Filter
      * @param string $prop Svoi`stvo po kotoromu vozmozhen poisk
      * @return bool
      */
-    public function Add_Search_Number($prop)
+    public function Add_Search_Number($prop, $row)
     {
-        $prop = $this->Set_Alias($prop);
+        $this->Search['List'][$prop] = $row;
         $this->Search['List'][$prop]['Form'] = 'Number';
-        $this->Search['List'][$prop]['Comment'] = Zero_I18n::T($this->Model->Get_Source(), 'model prop ' . $prop, $prop);
         $this->Search['Value'][$prop] = '';
         return true;
     }
@@ -398,11 +326,10 @@ class Zero_Filter
      * @param string $prop Svoi`stvo po kotoromu vozmozhen poisk
      * @return bool
      */
-    public function Add_Search_Text($prop)
+    public function Add_Search_Text($prop, $row)
     {
-        $prop = $this->Set_Alias($prop);
+        $this->Search['List'][$prop] = $row;
         $this->Search['List'][$prop]['Form'] = 'Text';
-        $this->Search['List'][$prop]['Comment'] = Zero_I18n::T($this->Model->Get_Source(), 'model prop ' . $prop, $prop);
         $this->Search['Value'][$prop] = '';
         return true;
     }
@@ -442,10 +369,9 @@ class Zero_Filter
      * @param string $prop Svoi`stvo po kotoromu vozmzhna sortirovka
      * @return bool
      */
-    public function Add_Sort($prop)
+    public function Add_Sort($prop, $row)
     {
-        $prop = $this->Set_Alias($prop);
-        $this->Sort['List'][$prop]['Comment'] = Zero_I18n::T($this->Model->Get_Source(), 'model prop ' . $prop, $prop);
+        $this->Sort['List'][$prop] = $row;
         $this->Sort['Value'][$prop] = '';
         return true;
     }
@@ -494,7 +420,7 @@ class Zero_Filter
             $this->Filter = [];
             //  poisk
             $this->Search = ['List' => [], 'Value' => []];
-            $this->Add_Search_Text('ALL_PROPS');
+            $this->Add_Search_Text('ALL_PROPS', ['Comment' => 'model prop ALL_PROPS']);
             //  sortirovka
             $this->Sort = ['List' => [], 'Value' => []];
             //

@@ -26,10 +26,4 @@ class Zero_Groups_Edit extends Zero_Crud_Edit
      */
     protected $Template = 'Zero_Crud_Edit';
 
-    /**
-     * Take into account the conditions user
-     *
-     * @var boolean
-     */
-    protected $User_Condition = true;
 }

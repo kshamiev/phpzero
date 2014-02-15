@@ -95,17 +95,6 @@ class Zero_Section extends Zero_Model
     }
 
     /**
-     * The configuration language properties
-     *
-     * @param Zero_Model $Model The exact working model
-     * @return string
-     */
-    protected static function Config_Prop_Lang($Model)
-    {
-        return 'Name, Title, Keywords, Description';
-    }
-
-    /**
      * The configuration properties
      *
      * - 'DB'=> 'T, I, F, E, S, D, B'
@@ -121,22 +110,22 @@ class Zero_Section extends Zero_Model
     {
         return [
             /*BEG_CONFIG_PROP*/
-            'ID' => ['DB' => 'I', 'IsNull' => 'NO', 'Default' => ''],
-            'Zero_Section_ID' => ['DB' => 'I', 'IsNull' => 'YES', 'Default' => ''],
-            'Url' => ['DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
-            'UrlThis' => ['DB' => 'T', 'IsNull' => 'NO', 'Default' => ''],
-            'UrlRedirect' => ['DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
-            'Layout' => ['DB' => 'T', 'IsNull' => 'NO', 'Default' => 'Zero_Content'],
-            'ContentType' => ['DB' => 'E', 'IsNull' => 'NO', 'Default' => 'html'],
-            'Controller' => ['DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
-            'IsAuthorized' => ['DB' => 'E', 'IsNull' => 'NO', 'Default' => 'no'],
-            'IsVisible' => ['DB' => 'E', 'IsNull' => 'NO', 'Default' => 'no'],
-            'IsEnable' => ['DB' => 'E', 'IsNull' => 'NO', 'Default' => 'yes'],
-            'Sort' => ['DB' => 'I', 'IsNull' => 'YES', 'Default' => ''],
-            'Name' => ['DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
-            'Title' => ['DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
-            'Keywords' => ['DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
-            'Description' => ['DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
+            'ID' => ['AliasDB' => 'z.ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => ''],
+            'Zero_Section_ID' => ['AliasDB' => 'z.Zero_Section_ID', 'DB' => 'I', 'IsNull' => 'YES', 'Default' => ''],
+            'Url' => ['AliasDB' => 'z.Url', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
+            'UrlThis' => ['AliasDB' => 'z.UrlThis', 'DB' => 'T', 'IsNull' => 'NO', 'Default' => ''],
+            'UrlRedirect' => ['AliasDB' => 'z.UrlRedirect', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
+            'Layout' => ['AliasDB' => 'z.Layout', 'DB' => 'T', 'IsNull' => 'NO', 'Default' => 'Zero_Content'],
+            'ContentType' => ['AliasDB' => 'z.ContentType', 'DB' => 'E', 'IsNull' => 'NO', 'Default' => 'html'],
+            'Controller' => ['AliasDB' => 'z.Controller', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
+            'IsAuthorized' => ['AliasDB' => 'z.IsAuthorized', 'DB' => 'E', 'IsNull' => 'NO', 'Default' => 'no'],
+            'IsVisible' => ['AliasDB' => 'z.IsVisible', 'DB' => 'E', 'IsNull' => 'NO', 'Default' => 'no'],
+            'IsEnable' => ['AliasDB' => 'z.IsEnable', 'DB' => 'E', 'IsNull' => 'NO', 'Default' => 'yes'],
+            'Sort' => ['AliasDB' => 'z.Sort', 'DB' => 'I', 'IsNull' => 'YES', 'Default' => ''],
+            'Name' => ['AliasDB' => 'z.Name', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
+            'Title' => ['AliasDB' => 'z.Title', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
+            'Keywords' => ['AliasDB' => 'z.Keywords', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
+            'Description' => ['AliasDB' => 'z.Description', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
             /*END_CONFIG_PROP*/
         ];
     }
@@ -157,17 +146,17 @@ class Zero_Section extends Zero_Model
     {
         return [
             /*BEG_CONFIG_FILTER_PROP*/
-            'z.ID' => ['Filter' => '', 'Search' => 'Number', 'Sort' => true],
-            'z.Controller' => ['Filter' => '', 'Search' => 'Text', 'Sort' => false],
-            'z.IsAuthorized' => ['Filter' => 'Radio', 'Search' => '', 'Sort' => false],
-            'z.IsVisible' => ['Filter' => 'Radio', 'Search' => '', 'Sort' => false],
-            'z.IsEnable' => ['Filter' => 'Radio', 'Search' => '', 'Sort' => false],
-            'z.ContentType' => ['Filter' => 'Radio', 'Search' => '', 'Sort' => false],
-            'z.Name' => ['Filter' => '', 'Search' => 'Text', 'Sort' => true],
-            'z.Title' => ['Filter' => '', 'Search' => 'Text', 'Sort' => true],
-            'z.Keywords' => ['Filter' => '', 'Search' => 'Text', 'Sort' => true],
-            'z.Description' => ['Filter' => '', 'Search' => 'Text', 'Sort' => true],
-            'z.Sort' => ['Filter' => '', 'Search' => '', 'Sort' => true],
+            'ID' => ['Filter' => '', 'Search' => 'Number', 'Sort' => true],
+            'Controller' => ['Filter' => '', 'Search' => 'Text', 'Sort' => false],
+            'IsAuthorized' => ['Filter' => 'Radio', 'Search' => '', 'Sort' => false],
+            'IsVisible' => ['Filter' => 'Radio', 'Search' => '', 'Sort' => false],
+            'IsEnable' => ['Filter' => 'Radio', 'Search' => '', 'Sort' => false],
+            'ContentType' => ['Filter' => 'Radio', 'Search' => '', 'Sort' => false],
+            'Name' => ['Filter' => '', 'Search' => 'Text', 'Sort' => true],
+            'Title' => ['Filter' => '', 'Search' => 'Text', 'Sort' => true],
+            'Keywords' => ['Filter' => '', 'Search' => 'Text', 'Sort' => true],
+            'Description' => ['Filter' => '', 'Search' => 'Text', 'Sort' => true],
+            'Sort' => ['Filter' => '', 'Search' => '', 'Sort' => true],
             /*END_CONFIG_FILTER_PROP*/
         ];
     }
@@ -186,11 +175,11 @@ class Zero_Section extends Zero_Model
     {
         return [
             /*BEG_CONFIG_GRID_PROP*/
-            'ID' => ['Grid' => 'z.ID'],
-            'Name' => ['Grid' => 'z.Name'],
-            'Controller' => ['Grid' => 'z.Controller'],
-            'Url' => ['Grid' => 'z.Url'],
-            'Sort' => ['Grid' => 'z.Sort'],
+            'ID' => [],
+            'Name' => [],
+            'Controller' => [],
+            'Url' => [],
+            'Sort' => [],
             /*END_CONFIG_GRID_PROP*/
         ];
     }
@@ -212,42 +201,38 @@ class Zero_Section extends Zero_Model
     {
         if ( 1 == Zero_App::$Users->Zero_Groups_ID )
             return [
-                /*BEG_CONFIG_FORM_PROP*/
-                'ID' => array('Form' => 'Hidden', 'IsNull' => 'NO'),
-                'Zero_Section_ID' => array('Form' => 'Link', 'IsNull' => 'YES'),
-                'Url' => array('Form' => 'ReadOnly', 'IsNull' => 'YES'),
-                'UrlThis' => array('Form' => 'Text', 'IsNull' => 'NO'),
-                'UrlRedirect' => array('Form' => 'Text', 'IsNull' => 'YES'),
-                'Layout' => array('Form' => 'Text', 'IsNull' => 'NO'),
-                'ContentType' => array('Form' => 'Radio', 'IsNull' => 'NO'),
-                'Controller' => array('Form' => 'Text', 'IsNull' => 'YES'),
-                'IsAuthorized' => array('Form' => 'Radio', 'IsNull' => 'NO'),
-                'IsVisible' => array('Form' => 'Radio', 'IsNull' => 'NO'),
-                'IsEnable' => array('Form' => 'Radio', 'IsNull' => 'NO'),
-                'Sort' => array('Form' => 'Number', 'IsNull' => 'YES'),
-                'Name' => array('Form' => 'Text', 'IsNull' => 'YES'),
-                'Title' => array('Form' => 'Text', 'IsNull' => 'YES'),
-                'Keywords' => array('Form' => 'Text', 'IsNull' => 'YES'),
-                'Description' => array('Form' => 'Textarea', 'IsNull' => 'YES'),
-                /*END_CONFIG_FORM_PROP*/
+                'ID' => array('Form' => 'Hidden'),
+                'Zero_Section_ID' => array('Form' => 'Link'),
+                'Url' => array('Form' => 'ReadOnly'),
+                'UrlThis' => array('Form' => 'Text'),
+                'UrlRedirect' => array('Form' => 'Text'),
+                'Layout' => array('Form' => 'Text'),
+                'ContentType' => array('Form' => 'Radio'),
+                'Controller' => array('Form' => 'Text'),
+                'IsAuthorized' => array('Form' => 'Radio'),
+                'IsVisible' => array('Form' => 'Radio'),
+                'IsEnable' => array('Form' => 'Radio'),
+                'Sort' => array('Form' => 'Number'),
+                'Name' => array('Form' => 'Text'),
+                'Title' => array('Form' => 'Text'),
+                'Keywords' => array('Form' => 'Text'),
+                'Description' => array('Form' => 'Textarea'),
             ];
         else
             return [
-                /*BEG_CONFIG_FORM_PROP*/
-                'ID' => array('Form' => 'Hidden', 'IsNull' => 'NO'),
-                'Zero_Section_ID' => array('Form' => 'Link', 'IsNull' => 'YES'),
-                'Url' => array('Form' => 'ReadOnly', 'IsNull' => 'YES'),
-                'UrlThis' => array('Form' => 'Text', 'IsNull' => 'NO'),
-                'UrlRedirect' => array('Form' => 'Text', 'IsNull' => 'YES'),
-                'IsAuthorized' => array('Form' => 'Radio', 'IsNull' => 'NO'),
-                'IsVisible' => array('Form' => 'Radio', 'IsNull' => 'NO'),
-                'IsEnable' => array('Form' => 'Radio', 'IsNull' => 'NO'),
-                'Sort' => array('Form' => 'Number', 'IsNull' => 'YES'),
-                'Name' => array('Form' => 'Text', 'IsNull' => 'YES'),
-                'Title' => array('Form' => 'Text', 'IsNull' => 'YES'),
-                'Keywords' => array('Form' => 'Text', 'IsNull' => 'YES'),
-                'Description' => array('Form' => 'Text', 'IsNull' => 'YES'),
-                /*END_CONFIG_FORM_PROP*/
+                'ID' => array('Form' => 'Hidden'),
+                'Zero_Section_ID' => array('Form' => 'Link'),
+                'Url' => array('Form' => 'ReadOnly'),
+                'UrlThis' => array('Form' => 'Text'),
+                'UrlRedirect' => array('Form' => 'Text'),
+                'IsAuthorized' => array('Form' => 'Radio'),
+                'IsVisible' => array('Form' => 'Radio'),
+                'IsEnable' => array('Form' => 'Radio'),
+                'Sort' => array('Form' => 'Number'),
+                'Name' => array('Form' => 'Text'),
+                'Title' => array('Form' => 'Text'),
+                'Keywords' => array('Form' => 'Text'),
+                'Description' => array('Form' => 'Text'),
             ];
     }
 
@@ -271,7 +256,9 @@ class Zero_Section extends Zero_Model
         {
             $this->DB->Sql_Where('Url', '=', $url);
             $row = $this->DB->Select('*');
+            $this->Set_Props($row);
             $row = array_replace($row, $this->DB->Select_Language('*'));
+            $this->Set_Props($row);
             Zero_Cache::Set_Link('Zero_Section', $this->ID);
             Zero_Cache::Set_Data($index, $row);
         }

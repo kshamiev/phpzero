@@ -26,12 +26,6 @@ class Zero_SectionLanguage_GridSection extends Zero_Crud_Grid
      */
     protected $Template = 'Zero_Crud_Grid';
 
-    /**
-     * Take into account the conditions user
-     *
-     * @var boolean
-     */
-    protected $User_Condition = true;
     protected function Chunk_Init()
     {
         $this->Params['obj_parent_prop'] = 'Zero_Section_ID';
