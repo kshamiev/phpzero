@@ -2,7 +2,8 @@
 SQLyog Enterprise v9.50 
 MySQL - 5.5.25a-log : Database - jewerlystyle
 *********************************************************************
-*/
+*/
+
 
 /*!40101 SET NAMES utf8 */;
 
@@ -92,7 +93,7 @@ CREATE TABLE `Zero_Section` (
   PRIMARY KEY (`ID`),
   KEY `Zero_Section_ID` (`Zero_Section_ID`),
   CONSTRAINT `Zero_Section_ibfk_3` FOREIGN KEY (`Zero_Section_ID`) REFERENCES `Zero_Section` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=100002 DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=FIXED;
+) ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=FIXED;
 
 /*Data for the table `Zero_Section` */
 

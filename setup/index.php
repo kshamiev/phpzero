@@ -78,21 +78,21 @@ while ( isset($_REQUEST['act']) && 'Install_System' == $_REQUEST['act'] && 0 == 
     $_REQUEST['domain_www'] = strtolower($_REQUEST['domain_www']);
 
     //  installation database
-//    file_put_contents('db_create.sql', "CREATE DATABASE IF NOT EXISTS `{$_REQUEST['db_name']}`;");
-//    exec("mysql -h {$_REQUEST['db_host']} -u {$_REQUEST['db_login']} -p{$_REQUEST['db_password']} < db_create.sql", $arr1, $arr2);
-//    if ( 0 < $arr2 )
-//    {
-//        $message_install_list[] = "Error create DB (Access Denied)";
-//        unlink('db_create.sql');
-//        break;
-//    }
-//    unlink('db_create.sql');
-//    exec("mysql -h {$_REQUEST['db_host']} -u {$_REQUEST['db_login']} -p{$_REQUEST['db_password']} {$_REQUEST['db_name']} < schema/mysql_{$_REQUEST['lang']}.sql", $arr1, $arr2);
-//    if ( 0 < $arr2 )
-//    {
-//        $message_install_list[] = "Error import DB (Access Denied)";
-//        break;
-//    }
+    file_put_contents('db_create.sql', "CREATE DATABASE IF NOT EXISTS `{$_REQUEST['db_name']}`;");
+    exec("mysql -h {$_REQUEST['db_host']} -u {$_REQUEST['db_login']} -p{$_REQUEST['db_password']} < db_create.sql", $arr1, $arr2);
+    if ( 0 < $arr2 )
+    {
+        $message_install_list[] = "Error create DB (Access Denied)";
+        unlink('db_create.sql');
+        break;
+    }
+    unlink('db_create.sql');
+    exec("mysql -h {$_REQUEST['db_host']} -u {$_REQUEST['db_login']} -p{$_REQUEST['db_password']} {$_REQUEST['db_name']} < schema/mysql_{$_REQUEST['lang']}.sql", $arr1, $arr2);
+    if ( 0 < $arr2 )
+    {
+        $message_install_list[] = "Error import DB (Access Denied)";
+        break;
+    }
 
     $arr = ini_get_all();
 

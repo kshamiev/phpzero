@@ -130,7 +130,7 @@ class Zero_App
             require_once $path;
             return true;
         }
-        echo $path. '<br>';
+        echo $path . '<br>';
         return false;
     }
 
@@ -200,18 +200,9 @@ class Zero_App
         Zero_Logs::Start('#{APP.Full}');
         Zero_Logs::Start('#{APP.Main}');
 
-        //  Initialize the controller action
-        //        $_REQUEST['act'] = (isset($_REQUEST['act'])) ? $_REQUEST['act'] : '';
-
-        //  Initialize the type response
-
         //  Инициализация запрошенного раздела (Zero_Section)
-        //        self::$Section = Zero_Model::Instance(ucfirst(self::$Config->Host) . '_Section');
-        self::$Section = Zero_Model::Instance('Www_Section');
-
-        //  User Initialization (Zero_Users)
-        //        self::$Users = Zero_Model::Factory(ucfirst(self::$Config->Host) . '_Users');
-        self::$Users = Zero_Model::Factory('Www_Users');
+        self::$Section = Zero_Model::Instance(ucfirst(self::$Config->Host) . '_Section');
+        self::$Users = Zero_Model::Factory(ucfirst(self::$Config->Host) . '_Users');
 
         //  Checking for non-existent section
         if ( 0 == self::$Section->ID || 'no' == self::$Section->IsEnable )
@@ -226,7 +217,6 @@ class Zero_App
             if ( 'yes' == self::$Section->IsAuthorized && 0 == count($Action_List) )
                 throw new Exception('Access Denied', 403);
         }
-
         //  Execute controller
         $output = '';
         self::Set_Variable('action_message', []);
