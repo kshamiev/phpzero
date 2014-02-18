@@ -368,8 +368,12 @@ class Zero_Engine
             $Section_Two->IsVisible = 'yes';
             $Section_Two->Sort = 500;
             $Section_Two->Name = $module;
+            $Section_Two->Title = $module;
+            $Section_Two->Keywords = $module;
+            $Section_Two->Description = $module;
             $Section_Two->DB->Insert();
             $Section_Two->Cache->Reset();
+            $this->_ZeroSectionLanguageSet($Section_Two->ID);
         }
         foreach ($table_list as $row)
         {
@@ -429,9 +433,13 @@ class Zero_Engine
                 $Section_Three->IsAuthorized = 'yes';
                 $Section_Three->IsVisible = 'yes';
                 $Section_Three->Sort = 500;
-                $Section_Three->Name = $package[1];
+                $Section_Three->Name = $row['Comment'];
+                $Section_Three->Title = $row['Comment'];
+                $Section_Three->Keywords = $row['Comment'];
+                $Section_Three->Description = $row['Comment'];
                 $Section_Three->DB->Insert();
                 $Section_Three->Cache->Reset();
+                $this->_ZeroSectionLanguageSet($Section_Three->ID);
             }
             //  Kontroller redaktirovaniia
             $path_target = substr($path_model, 0, -4) . '/Edit.php';
@@ -464,9 +472,13 @@ class Zero_Engine
                 $Section_Four->IsAuthorized = 'yes';
                 $Section_Four->IsVisible = 'no';
                 $Section_Four->Sort = 500;
-                $Section_Four->Name = $package[1] . ' Edit';
+                $Section_Four->Name = $row['Comment'] . ' изменение';
+                $Section_Four->Title = $row['Comment'] . ' изменение';
+                $Section_Four->Keywords = $row['Comment'] . ' изменение';
+                $Section_Four->Description = $row['Comment'] . ' изменение';
                 $Section_Four->DB->Insert();
                 $Section_Four->Cache->Reset();
+                $this->_ZeroSectionLanguageSet($Section_Four->ID);
             }
             //  Internatcionalizatciia
             $this->Config_I18n($row['Name']);
@@ -568,7 +580,7 @@ class Zero_Engine
             $str_props .= "\t\t\t\t'IsNull' => '" . $row['IsNull'] . "',\n";
             $str_props .= "\t\t\t\t'Default' => '" . $row['Default'] . "',\n";
             $str_props .= "\t\t\t\t'Form' => '" . $row['Form'] . "',\n";
-//            $str_props = substr($str_props, 0, -2);
+            //            $str_props = substr($str_props, 0, -2);
             $str_props .= "\t\t\t],\n";
             //
             if ( 'ID' == $prop )
@@ -772,5 +784,20 @@ class Zero_Engine
             $file_data = str_replace('# CONFIG', $str, $file_data);
             Zero_Lib_FileSystem::File_Save($path2, $file_data);
         }
+    }
+
+    private function _ZeroSectionLanguageSet($section_id)
+    {
+        $sql = "INSERT INTO `Zero_SectionLanguage` (
+          `Zero_Section_ID`, `Zero_Language_ID`, `Name`, `Title`, `Keywords`, `Description`
+          )
+          SELECT
+            `ID`, " . Zero_App::$Route->LangId . ", `Name`, `Title`, `Keywords`, `Description`
+          FROM
+            `Zero_Section`
+          WHERE `ID` = {$section_id}
+        ";
+        pre($sql);
+        Zero_DB::Set($sql);
     }
 }

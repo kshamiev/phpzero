@@ -203,7 +203,7 @@ class Zero_Users extends Zero_Model
         return [
             /*BEG_CONFIG_FORM_PROP*/
             'ID' => array('Form' => 'Hidden'),
-            'Zero_Groups_ID' => array('Form' => 'LinkMore'),
+            'Zero_Groups_ID' => array('Form' => 'Link'),
             'Zero_Users_ID' => array('Form' => 'Link'),
             'Name' => array('Form' => 'Text'),
             'Login' => array('Form' => 'Text'),
@@ -298,6 +298,7 @@ class Zero_Users extends Zero_Model
         if ( 0 < $cnt )
             return 'Error_Exists';
         $this->Login = $value;
+        return '';
     }
 
     /**
@@ -328,6 +329,7 @@ class Zero_Users extends Zero_Model
                 return 'Error_Registration';
         }
         $this->Email = $value;
+        return '';
     }
 
     /**
@@ -344,6 +346,7 @@ class Zero_Users extends Zero_Model
         if ( isset($_REQUEST['Users']['PasswordR']) && $value != $_REQUEST['Users']['PasswordR'] )
             return 'Error_PasswordValid';
         $this->Password = md5($value);
+        return '';
     }
 
     /**
@@ -359,6 +362,7 @@ class Zero_Users extends Zero_Model
             return '';
         if ( $value != $_REQUEST['Users']['Password'] )
             return 'Error_PasswordValid';
+        return '';
     }
 
     /**
@@ -374,5 +378,14 @@ class Zero_Users extends Zero_Model
     {
         if ( Zero_App::$Users->Keystring != $value )
             return 'Error_Keystring';
+        return '';
+    }
+
+    /**
+     * Формирование from запроса
+     */
+    public function DB_From()
+    {
+        $this->DB->Sql_From("FROM {$this->Source} as z");
     }
 }

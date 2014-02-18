@@ -151,4 +151,12 @@ class Zero_Action extends Zero_Model
             /*END_CONFIG_FORM_PROP*/
         ];
     }
+
+    /**
+     * Формирование from запроса
+     */
+    public function DB_From()
+    {
+        $this->DB->Sql_From("FROM {$this->Source} as z");
+    }
 }

@@ -32,5 +32,4 @@ class Zero_SectionLanguage_GridSection extends Zero_Crud_Grid
         $this->Params['obj_parent_name'] = '';
         parent::Chunk_Init();
     }
-
 }

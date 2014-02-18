@@ -37,7 +37,6 @@ class Zero_Users_Registration extends Zero_Controller
         return $this->View;
     }
 
-
     /**
      * Initialization of the stack chunks and input parameters
      *
@@ -45,8 +44,8 @@ class Zero_Users_Registration extends Zero_Controller
      */
     protected function Chunk_Init()
     {
-//        $this->Set_Chunk('Action');
-//        $this->Set_Chunk('View');
+        //        $this->Set_Chunk('Action');
+        //        $this->Set_Chunk('View');
         $this->Model = Zero_Model::Make('Zero_Users');
         $this->View = new Zero_View(get_class($this));
         return true;
@@ -68,7 +67,7 @@ class Zero_Users_Registration extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    protected  function Chunk_Registration()
+    protected function Chunk_Registration()
     {
         $this->Model->VL->Validate($_REQUEST['Users'], 'registration');
         if ( 0 < count($this->Model->VL->Get_Errors()) )

@@ -275,10 +275,12 @@ class Zero_Section extends Zero_Model
     {
         if ( 0 == $this->ID )
             return $this->_Action_List = [];
+
         $index_cache = 'Action_List_' . Zero_App::$Users->Zero_Groups_ID . '_' . $this->Controller;
         if ( false !== $this->_Action_List = $this->Cache->Get($index_cache) )
             return $this->_Action_List;
 
+        $this->_Action_List = [];
         if ( 'yes' == $this->IsAuthorized && 1 < Zero_App::$Users->Zero_Groups_ID )
         {
             $Model = Zero_Model::Make('Zero_Action');
@@ -309,8 +311,9 @@ class Zero_Section extends Zero_Model
                 }
             }
         }
-        else
+        else if ( '' != $this->Controller )
         {
+
             $reflection = new ReflectionClass($this->Controller);
             foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC | ReflectionMethod::IS_PROTECTED) as $method)
             {
@@ -436,6 +439,14 @@ class Zero_Section extends Zero_Model
             self::DB_Update_Url($section_id);
         }
         return true;
+    }
+
+    /**
+     * Формирование from запроса
+     */
+    public function DB_From()
+    {
+        $this->DB->Sql_From("FROM {$this->Source} as z");
     }
 
     /**

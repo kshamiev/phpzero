@@ -78,7 +78,7 @@ class Zero_Section_Grid extends Zero_Crud_Grid
      *
      * @return boolean flag stop execute of the next chunk
      */
-    protected  function Action_CatalogMove()
+    protected function Action_CatalogMove()
     {
         $this->Chunk_Init();
         $this->Chunk_CatalogMove();
@@ -93,7 +93,7 @@ class Zero_Section_Grid extends Zero_Crud_Grid
      *
      * @return boolean flag stop execute of the next chunk
      */
-    protected  function Chunk_CatalogMove()
+    protected function Chunk_CatalogMove()
     {
         if ( !$_REQUEST['obj_id'] )
             return $this->Set_Message('Error_NotParam', 1, false);
@@ -114,14 +114,13 @@ class Zero_Section_Grid extends Zero_Crud_Grid
      *
      * @return boolean flag stop execute of the next chunk
      */
-    protected  function Action_UpdateUrl()
+    protected function Action_UpdateUrl()
     {
         $this->Chunk_Init();
         $this->Chunk_UpdateUrl();
         $this->Chunk_View();
         return $this->View;
     }
-
 
     /**
      * Correcting an absolute reference.
@@ -132,7 +131,7 @@ class Zero_Section_Grid extends Zero_Crud_Grid
      * @param integer $section_id ID of the parent directory
      * @return boolean flag stop execute of the next chunk
      */
-    protected  function Chunk_UpdateUrl($section_id = null)
+    protected function Chunk_UpdateUrl($section_id = null)
     {
         if ( !$section_id )
         {
@@ -145,7 +144,4 @@ class Zero_Section_Grid extends Zero_Crud_Grid
         else
             return $this->Set_Message('Error_Update_Url', 1, false);
     }
-
-
-
 }

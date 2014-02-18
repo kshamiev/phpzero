@@ -19,7 +19,7 @@ class Zero_Crud_Pager extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    public  function Action_Default()
+    public function Action_Default()
     {
         if ( null === $this->Params['PageItem'] )
         {

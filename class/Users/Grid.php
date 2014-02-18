@@ -70,6 +70,7 @@ class Zero_Users_Grid extends Zero_Crud_Grid
         }
         parent::Chunk_Init();
     }
+
     /**
      * Moving.
      *
@@ -77,7 +78,7 @@ class Zero_Users_Grid extends Zero_Crud_Grid
      *
      * @return boolean flag stop execute of the next chunk
      */
-    protected  function Action_CatalogMove()
+    protected function Action_CatalogMove()
     {
         $this->Chunk_Init();
         $this->Chunk_CatalogMove();
@@ -92,7 +93,7 @@ class Zero_Users_Grid extends Zero_Crud_Grid
      *
      * @return boolean flag stop execute of the next chunk
      */
-    protected  function Chunk_CatalogMove()
+    protected function Chunk_CatalogMove()
     {
         if ( !$_REQUEST['obj_id'] )
             return $this->Set_Message('Error_NotParam', 1, false);

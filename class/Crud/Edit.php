@@ -151,17 +151,17 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         if ( isset($this->Params['obj_parent_prop']) )
             unset($props_form[$this->Params['obj_parent_prop']]);
         //  Remove the user conditions
-            $users_condition = Zero_App::$Users->Get_Condition();
-            foreach (array_keys($this->Model->Get_Config_Prop()) as $prop)
+        $users_condition = Zero_App::$Users->Get_Condition();
+        foreach (array_keys($this->Model->Get_Config_Prop()) as $prop)
+        {
+            if ( isset($users_condition[$prop]) )
             {
-                if ( isset($users_condition[$prop]) )
-                {
-                    if ( 0 < $this->Model->ID && !isset($users_condition[$prop][$this->Model->$prop]) )
-                        throw new Exception('Access Denied', 403);
-                    if ( 1 == count($users_condition[$prop]) )
-                        unset($props_form[$prop]);
-                }
+                if ( 0 < $this->Model->ID && !isset($users_condition[$prop][$this->Model->$prop]) )
+                    throw new Exception('Access Denied', 403);
+                if ( 1 == count($users_condition[$prop]) )
+                    unset($props_form[$prop]);
             }
+        }
 
         //  Data
         $this->View->Assign('Section', Zero_App::$Section);
@@ -172,6 +172,14 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         $this->View->Assign('Props', $props_form);
         //  Filter
         $this->View->Assign('Filter', $Filter->Get_Filter());
+        // CKEDITOR - this -> Object
+        $pathObject = '/' . strtolower($this->Model->Get_Source()) . '/' . Zero_Lib_FileSystem::Get_Path_Cache($this->Model->ID) . '/' . $this->Model->ID;
+        //$pathObject = '/ssss';
+        if ( !is_dir(ZERO_PATH_DATA . $pathObject) )
+            mkdir(ZERO_PATH_DATA . $pathObject, 0777, true);
+        $_SESSION['pathObject'] = $pathObject;
+        //
+        return true;
     }
 
     /**
@@ -253,7 +261,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         }
 
         $this->Params['id'] = $this->Model->ID;
-//        Zero_App::$Route->Param['id'] = $this->Model->ID;
+        //        Zero_App::$Route->Param['id'] = $this->Model->ID;
 
         //  Reset Cache
         $this->Model->Cache->Reset();

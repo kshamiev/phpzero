@@ -12,7 +12,6 @@
  */
 class Zero_Users_Profile extends Zero_Controller
 {
-
     /**
      * Vy`polnenie dei`stvii`
      *
@@ -30,14 +29,13 @@ class Zero_Users_Profile extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    protected  function Action_Profile()
+    protected function Action_Profile()
     {
         $this->Chunk_Init();
         $this->Chunk_Profile();
         $this->Chunk_View();
         return $this->View;
     }
-
 
     /**
      * Changing a user profile.
@@ -70,7 +68,6 @@ class Zero_Users_Profile extends Zero_Controller
         return true;
     }
 
-
     /**
      * Create views.
      *
@@ -81,6 +78,4 @@ class Zero_Users_Profile extends Zero_Controller
         $this->View->Assign('Users', $this->Model);
         return true;
     }
-
-
 }

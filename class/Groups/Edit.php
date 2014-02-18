@@ -25,5 +25,4 @@ class Zero_Groups_Edit extends Zero_Crud_Edit
      * @var string
      */
     protected $Template = 'Zero_Crud_Edit';
-
 }

@@ -147,6 +147,19 @@ class Zero_Model_Pattern extends Zero_Model
     }
 
     /**
+     * Sample. The validation property
+     *
+     * @param mixed $value value to check
+     * @param string $scenario scenario validation
+     * @return string
+     */
+    public function Validate_PropertyName($value, $scenario)
+    {
+        $this->PropertyName = $value;
+        return '';
+    }
+
+    /**
      * Sample. Total final validation properties
      *
      * @param array $data verifiable data array
@@ -175,5 +188,29 @@ class Zero_Model_Pattern extends Zero_Model
     public static function DB_QueryNameSample($param)
     {
         return [];
+    }
+
+    /**
+     * Формирование from запроса
+     */
+    public function DB_From()
+    {
+        $this->DB->Sql_From("FROM {$this->Source} as z");
+    }
+
+    /**
+     * Формирование from запроса к крос таблице
+     *
+     * @param string $parent_table таблица связей
+     * @param int $parent_id идентификатор родительской связи
+     */
+    public function DB_From_Cross($parent_table, $parent_id)
+    {
+        $link = $this->Model->Get_Config_Link();
+        $link = $link[$parent_table];
+        $sql = "FROM {$this->Source} as z
+            INNER JOIN {$link['table_link']} as p ON p.{$link['prop_this']} = z.ID AND p.{$link['prop_target']} = $parent_id
+        ";
+        $this->DB->Sql_From($sql);
     }
 }

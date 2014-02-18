@@ -49,7 +49,6 @@ class Zero_Users_Login extends Zero_Controller
         $this->Chunk_Reminder();
         $this->View->Assign('Users', Zero_App::$Users);
         return $this->View;
-
     }
 
     /**
@@ -78,7 +77,7 @@ class Zero_Users_Login extends Zero_Controller
         return $this->View;
     }
 
-        /**
+    /**
      * Initialization of the stack chunks and input parameters
      *
      * @return boolean flag stop execute of the next chunk
@@ -127,7 +126,7 @@ class Zero_Users_Login extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    protected  function Chunk_Reminder()
+    protected function Chunk_Reminder()
     {
         $this->Model->VL->Validate($_REQUEST['Users'], 'reminder');
         if ( 0 < count($this->Model->VL->Get_Errors()) )

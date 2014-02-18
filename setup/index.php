@@ -24,8 +24,6 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 ini_set('magic_quotes_gpc', 0);
 
-define('ZERO_PATH_SITE', dirname(dirname(__DIR__)));
-
 require dirname(__DIR__) . '/component/App.php';
 require dirname(__DIR__) . '/component/Lib/FileSystem.php';
 $error_init_list = [];
@@ -141,6 +139,7 @@ if ( !isset($_REQUEST['db_host']) )
     <form action="index.php" method="post">
         <tr>
             <td colspan="2" height="50px">
+                После инсталяции^ <a href="/" target="_blank">сюда</a> логин и пароль: "dev" "dev"<br>
                 <?php foreach ($error_init_list as $kod => $error)
                 {
                     if ( 100 < $kod )

@@ -112,7 +112,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Chunk_View_SqlWhere()
+    protected function Chunk_View_SqlWhere_Щдв()
     {
         //  Filters
         $Filter = Zero_Filter::Factory($this->Model);
@@ -250,7 +250,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
         $Filter = Zero_Filter::Factory($this->Model);
         //  Move to one level up or down for catalogs
 
-        //  Initialize the fields grid
+        //  МНМЦИАЛИЗАЦИЯ ПОЛЕЙ ГРИДА
         $props_grid = $this->Model->Get_Config_Grid();
         //  Remove the coupling condition
         if ( isset($this->Params['obj_parent_prop']) )
@@ -268,9 +268,33 @@ abstract class Zero_Crud_Grid extends Zero_Controller
             $props[] = $row['AliasDB'] . ' AS ' . $prop;
         }
 
-        $this->Chunk_View_SqlWhere();
+        // УСЛОВИЯ ЗАПРОСА ДАННЫХ ДЛЯ ГРИДА
+        $this->Model->DB->Sql_Where_Filter($Filter);
+        //  Condition of cross connection
+        if ( isset($this->Params['obj_parent_table']) )
+        {
+            $this->Model->DB_From_Cross($this->Params['obj_parent_table'], $this->Params['obj_parent_id']);
+        }
+        //  The coupling condition
+        else if ( isset($this->Params['obj_parent_prop']) )
+        {
+            $this->Model->DB_From();
+            if ( 0 < $this->Params['obj_parent_id'] )
+                $this->Model->DB->Sql_Where('z.' . $this->Params['obj_parent_prop'], '=', $this->Params['obj_parent_id']);
+            else
+                $this->Model->DB->Sql_Where_IsNull('z.' . $this->Params['obj_parent_prop']);
+        } else {
+            $this->Model->DB_From();
+        }
+        //  The user conditions
+        foreach (array_keys($this->Model->Get_Config_Prop()) as $prop)
+        {
+            if ( isset($users_condition[$prop]) )
+                $this->Model->DB->Sql_Where_In('z.' . $prop, array_keys($users_condition[$prop]));
+        }
+        unset($users_condition);
 
-        //  Data
+        //  ПОЛУЧЕНИЕ ДАННЫХ
         $data_grid = $this->Model->DB->Select_Array($props, false);
         //  Count
         $pager_count = $this->Model->DB->Select_Count();

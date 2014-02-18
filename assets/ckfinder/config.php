@@ -13,11 +13,10 @@
  */
 
 // Подключение класса Zero_App
-require dirname(dirname(__DIR__)) . '/class/App.php';
-
+require dirname(dirname(__DIR__)) . '/component/App.php';
 Zero_App::Init();
-
-$Users = Zero_Model::Factory('Zero_Users');
+Zero_App::$Config->Log_Output_Display = false;
+$Users = Zero_Model::Factory('Www_Users');
 
 /**
  * This function must check the user session to be sure that he/she is
@@ -27,14 +26,14 @@ $Users = Zero_Model::Factory('Zero_Users');
  */
 function CheckAuthentication()
 {
-  // WARNING : DO NOT simply return "true". By doing so, you are allowing
-  // "anyone" to upload and list the files in your server. You must implement
-  // some kind of session validation here. Even something very simple as...
-  // return isset($_SESSION['IsAuthorized']) && $_SESSION['IsAuthorized'];
-  // ... where $_SESSION['IsAuthorized'] is set to "true" as soon as the
-  // user logs in your system. To be able to use session variables don't
-  // forget to add session_start() at the top of this file.
-  return true;
+    // WARNING : DO NOT simply return "true". By doing so, you are allowing
+    // "anyone" to upload and list the files in your server. You must implement
+    // some kind of session validation here. Even something very simple as...
+    // return isset($_SESSION['IsAuthorized']) && $_SESSION['IsAuthorized'];
+    // ... where $_SESSION['IsAuthorized'] is set to "true" as soon as the
+    // user logs in your system. To be able to use session variables don't
+    // forget to add session_start() at the top of this file.
+    return true;
 }
 
 // LicenseKey : Paste your license key here. If left blank, CKFinder will be
@@ -43,19 +42,21 @@ $config['LicenseName'] = $_SERVER['HTTP_HOST'];
 $config['LicenseKey'] = '';
 
 $chars = array(
-  0 => 7,
-  11 => 6,
-  8 => 1,
-  12 => 'E',
-  3 => null, // Calculate later
-  1 => '1' // Check factor for 3
+    0 => 7,
+    11 => 6,
+    8 => 1,
+    12 => 'E',
+    3 => null, // Calculate later
+    1 => '1' // Check factor for 3
 );
 $a_bs = '123456789ABCDEFGHJKLMNPQRSTUVWXYZ';
 $chars[3] = $a_bs[(strlen($config['LicenseName']) + strpos($a_bs, $chars[1])) * 9 % 32];
 $min_chars = 26;
 $config['LicenseKey'] = '';
-for ( $i = 0; $i < $min_chars; $i++ )
-  $config['LicenseKey'] .= array_key_exists($i, $chars) ? $chars[$i] : 'X';
+for ($i = 0; $i < $min_chars; $i++)
+{
+    $config['LicenseKey'] .= array_key_exists($i, $chars) ? $chars[$i] : 'X';
+}
 
 /*
   Uncomment lines below to enable PHP error reporting and displaying PHP errors.
@@ -111,23 +112,25 @@ $baseDir = ZERO_PATH_DATA;
   directory, no matter the resource type.
  */
 $config['Thumbnails'] = Array(
-  'url' => $baseUrl . '_thumbs',
-  'directory' => $baseDir . '_thumbs',
-  'enabled' => true,
-  'directAccess' => false,
-  'maxWidth' => 100,
-  'maxHeight' => 100,
-  'bmpSupported' => false,
-  'quality' => 60);
+    'url' => $baseUrl . '_thumbs',
+    'directory' => $baseDir . '_thumbs',
+    'enabled' => true,
+    'directAccess' => false,
+    'maxWidth' => 100,
+    'maxHeight' => 100,
+    'bmpSupported' => false,
+    'quality' => 80
+);
 
 /*
   Set the maximum size of uploaded images. If an uploaded image is larger, it
   gets scaled down proportionally. Set to 0 to disable this feature.
  */
 $config['Images'] = Array(
-  'maxWidth' => 1600,
-  'maxHeight' => 1200,
-  'quality' => 80);
+    'maxWidth' => 1600,
+    'maxHeight' => 1200,
+    'quality' => 80
+);
 
 /*
   RoleSessionVar : the session variable name that CKFinder must use to retrieve
@@ -156,31 +159,45 @@ $_SESSION['CKFinder_UserRole'] = $Users->Zero_Groups_ID;
 
 if ( 2 != $Users->Zero_Groups_ID )
 {
-  $config['AccessControl'][] = Array(
-    'role' => $Users->Zero_Groups_ID,
-    'resourceType' => 'Content',
-    'folder' => '/',
-    'folderView' => true,
-    'folderCreate' => true,
-    'folderRename' => false,
-    'folderDelete' => false,
-    'fileView' => true,
-    'fileUpload' => true,
-    'fileRename' => false,
-    'fileDelete' => false);
-
-  $config['AccessControl'][] = Array(
-    'role' => $Users->Zero_Groups_ID,
-    'resourceType' => 'User-' . $Users->Login,
-    'folder' => '/',
-    'folderView' => true,
-    'folderCreate' => true,
-    'folderRename' => true,
-    'folderDelete' => true,
-    'fileView' => true,
-    'fileUpload' => true,
-    'fileRename' => true,
-    'fileDelete' => true);
+    $config['AccessControl'][] = Array(
+        'role' => $Users->Zero_Groups_ID,
+        'resourceType' => 'Content',
+        'folder' => '/',
+        'folderView' => true,
+        'folderCreate' => true,
+        'folderRename' => false,
+        'folderDelete' => false,
+        'fileView' => true,
+        'fileUpload' => true,
+        'fileRename' => false,
+        'fileDelete' => false
+    );
+    $config['AccessControl'][] = Array(
+        'role' => $Users->Zero_Groups_ID,
+        'resourceType' => 'User-' . $Users->Login,
+        'folder' => '/',
+        'folderView' => true,
+        'folderCreate' => true,
+        'folderRename' => true,
+        'folderDelete' => true,
+        'fileView' => true,
+        'fileUpload' => true,
+        'fileRename' => true,
+        'fileDelete' => true
+    );
+    $config['AccessControl'][] = Array(
+        'role' => $Users->Zero_Groups_ID,
+        'resourceType' => 'Object',
+        'folder' => '/',
+        'folderView' => true,
+        'folderCreate' => true,
+        'folderRename' => true,
+        'folderDelete' => true,
+        'fileView' => true,
+        'fileUpload' => true,
+        'fileRename' => true,
+        'fileDelete' => true
+    );
 }
 
 /*
@@ -278,32 +295,35 @@ $config['DefaultResourceTypes'] = '';
  */
 
 $config['ResourceType'][] = Array(
-  'name' => 'Content', // Single quotes not allowed
-  'url' => $baseUrl . '_content',
-  'directory' => $baseDir . '_content',
-  'maxSize' => 0,
-  'allowedExtensions' => '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pptx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip,bmp,gif,jpeg,jpg,png,swf,flv,f4v',
-  'deniedExtensions' => '');
+    'name' => 'Content', // Single quotes not allowed
+    'url' => $baseUrl . '_content',
+    'directory' => $baseDir . '_content',
+    'maxSize' => 0,
+    'allowedExtensions' => '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pptx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip,bmp,gif,jpeg,jpg,png,swf,flv,f4v',
+    'deniedExtensions' => ''
+);
 if ( !is_dir(dirname($path = $baseDir . '_content')) )
     mkdir($path, 0777, true);
 
 $config['ResourceType'][] = Array(
-  'name' => 'User-' . $Users->Login, // Single quotes not allowed
-  'url' => $baseUrl . '_users/' . $Users->Login,
-  'directory' => $baseDir . '_users/' . $Users->Login,
-  'maxSize' => 0,
-  'allowedExtensions' => '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pptx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip,bmp,gif,jpeg,jpg,png,swf,flv,f4v',
-  'deniedExtensions' => '');
+    'name' => 'User-' . $Users->Login, // Single quotes not allowed
+    'url' => $baseUrl . '_users/' . $Users->Login,
+    'directory' => $baseDir . '_users/' . $Users->Login,
+    'maxSize' => 0,
+    'allowedExtensions' => '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pptx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip,bmp,gif,jpeg,jpg,png,swf,flv,f4v',
+    'deniedExtensions' => ''
+);
 if ( !is_dir(dirname($path = $baseDir . '_users/' . $Users->Login)) )
     mkdir($path, 0777, true);
 
 $config['ResourceType'][] = Array(
-  'name' => 'Users-All', // Single quotes not allowed
-  'url' => $baseUrl . '_users',
-  'directory' => $baseDir . '_users',
-  'maxSize' => 0,
-  'allowedExtensions' => '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pptx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip,bmp,gif,jpeg,jpg,png,swf,flv,f4v',
-  'deniedExtensions' => '');
+    'name' => 'Object', // Single quotes not allowed
+    'url' => $baseUrl . $_SESSION['pathObject'],
+    'directory' => $baseDir . $_SESSION['pathObject'],
+    'maxSize' => 0,
+    'allowedExtensions' => '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pptx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip,bmp,gif,jpeg,jpg,png,swf,flv,f4v',
+    'deniedExtensions' => ''
+);
 if ( !is_dir(dirname($path = $baseDir . '_users')) )
     mkdir($path, 0777, true);
 

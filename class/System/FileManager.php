@@ -18,13 +18,13 @@
  */
 class Zero_System_FileManager extends Zero_Controller
 {
-
     public function Action_Default()
     {
         $this->Chunk_Init();
         $this->Chunk_View();
         return $this->View;
     }
+
     /**
      * Initialization of the stack chunks and input parameters
      *
@@ -80,14 +80,13 @@ class Zero_System_FileManager extends Zero_Controller
         $this->View->Assign('file_edit_flag', array('txt', 'ini', 'log', 'php', 'htm', 'html', 'css', 'js'));
     }
 
-    public   function Action_FolderGo()
+    public function Action_FolderGo()
     {
         $this->Chunk_Init();
         $this->Chunk_FolderGo();
         $this->Chunk_View();
         return $this->View;
     }
-
 
     /**
      * Move to one level up or down for catalogs
@@ -116,8 +115,7 @@ class Zero_System_FileManager extends Zero_Controller
         }
     }
 
-
-    protected  function Action_FolderRemove()
+    protected function Action_FolderRemove()
     {
         $this->Chunk_Init();
         $this->Chunk_FolderRemove();
@@ -130,7 +128,7 @@ class Zero_System_FileManager extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    protected  function Chunk_FolderRemove()
+    protected function Chunk_FolderRemove()
     {
         if ( !$_REQUEST['dir_name'] )
             return $this->Set_Message('Error_FolderRemove', 1, false);
@@ -139,8 +137,7 @@ class Zero_System_FileManager extends Zero_Controller
         return $this->Set_Message('FolderRemove', 0);
     }
 
-
-    protected  function Action_FileRemove()
+    protected function Action_FileRemove()
     {
         $this->Chunk_Init();
         $this->Chunk_FileRemove();
@@ -153,7 +150,7 @@ class Zero_System_FileManager extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    protected  function Chunk_FileRemove()
+    protected function Chunk_FileRemove()
     {
         if ( !$_REQUEST['file_name'] )
             return $this->Set_Message('Error_FileRemove', 1, false);
@@ -162,7 +159,7 @@ class Zero_System_FileManager extends Zero_Controller
         return $this->Set_Message('FileRemove', 0);
     }
 
-    protected  function Action_FileDownLoad()
+    protected function Action_FileDownLoad()
     {
         $this->Chunk_Init();
         $this->Chunk_FileDownLoad();
@@ -173,14 +170,14 @@ class Zero_System_FileManager extends Zero_Controller
     /**
      * The download the user to the file
      */
-    protected  function Chunk_FileDownLoad()
+    protected function Chunk_FileDownLoad()
     {
         Zero_App::$Section->ContentType = 'file';
         $this->View = end($this->Params['obj_parent_path']) . '/' . $_REQUEST['file_name'];
         return false;
     }
 
-    protected  function Action_FileUpload()
+    protected function Action_FileUpload()
     {
         $this->Chunk_Init();
         $this->Chunk_FileUpload();
@@ -193,7 +190,7 @@ class Zero_System_FileManager extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    protected  function Chunk_FileUpload()
+    protected function Chunk_FileUpload()
     {
         if ( 4 != $_FILES['FileUpload']['error'] )
         {
@@ -212,7 +209,7 @@ class Zero_System_FileManager extends Zero_Controller
         return true;
     }
 
-    protected  function Action_FolderAdd()
+    protected function Action_FolderAdd()
     {
         $this->Chunk_Init();
         $this->Chunk_FolderAdd();
@@ -225,7 +222,7 @@ class Zero_System_FileManager extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    protected  function Chunk_FolderAdd()
+    protected function Chunk_FolderAdd()
     {
         if ( !isset($_REQUEST['FolderName']) || !$_REQUEST['FolderName'] )
             return $this->Set_Message('Error_FolderAdd', 1, false);
@@ -240,7 +237,7 @@ class Zero_System_FileManager extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    protected  function Action_EditFile()
+    protected function Action_EditFile()
     {
         return $this->View;
     }

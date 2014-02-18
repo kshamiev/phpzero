@@ -34,5 +34,4 @@ class Zero_Section_Edit extends Zero_Crud_Edit
         $this->Params['obj_parent_name'] = '';
         parent::Chunk_Init();
     }
-
 }

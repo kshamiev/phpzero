@@ -4,6 +4,10 @@
  */
 define('VERSION_PHPZERO', '2.0.0');
 /**
+ * The absolute path to the project (site)
+ */
+define('ZERO_PATH_SITE', dirname(dirname(__DIR__)));
+/**
  * Location of binary data
  */
 define('ZERO_PATH_DATA', ZERO_PATH_SITE . '/upload/data');

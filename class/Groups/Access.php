@@ -31,7 +31,7 @@ class Zero_Groups_Access extends Zero_Controller
      *
      * @return Zero_View or string
      */
-    public  function Action_Default()
+    public function Action_Default()
     {
         $this->Chunk_Init();
         $this->Chunk_View();

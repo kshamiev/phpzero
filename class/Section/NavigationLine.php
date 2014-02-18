@@ -24,7 +24,9 @@ class Zero_Section_NavigationLine extends Zero_Controller
         $url = '';
         if ( 0 < count(Zero_App::$Route->Param) )
             foreach (Zero_App::$Route->Param as $k => $v)
+            {
                 $url .= '-' . $k . ':' . $v;
+            }
         $navigation[] = [
             'Url' => URL . $url,
             'Name' => Zero_App::$Section->Name

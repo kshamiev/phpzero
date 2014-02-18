@@ -41,8 +41,8 @@ class Zero_SectionLanguage extends Zero_Model
     {
         return [
             /*BEG_CONFIG_MODEL*/
-			'Language' => '0'
-			/*END_CONFIG_MODEL*/
+            'Language' => '0'
+            /*END_CONFIG_MODEL*/
         ];
     }
 
@@ -58,7 +58,7 @@ class Zero_SectionLanguage extends Zero_Model
     {
         return [
             /*BEG_CONFIG_LINK*/
-			/*END_CONFIG_LINK*/
+            /*END_CONFIG_LINK*/
         ];
     }
 
@@ -78,14 +78,14 @@ class Zero_SectionLanguage extends Zero_Model
     {
         return [
             /*BEG_CONFIG_PROP*/
-			'ID' => array('AliasDB' => 'z.ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => ''),
-			'Zero_Section_ID' => array('AliasDB' => 'z.Zero_Section_ID', 'DB' => 'I', 'IsNull' => 'YES', 'Default' => ''),
-			'Zero_Language_ID' => array('AliasDB' => 'z.Zero_Language_ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => 1),
-			'Name' => array('AliasDB' => 'z.Name', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => ''),
-			'Title' => array('AliasDB' => 'z.Title', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => ''),
-			'Keywords' => array('AliasDB' => 'z.Keywords', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => ''),
-			'Description' => array('AliasDB' => 'z.Description', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => ''),
-			/*END_CONFIG_PROP*/
+            'ID' => array('AliasDB' => 'z.ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => ''),
+            'Zero_Section_ID' => array('AliasDB' => 'z.Zero_Section_ID', 'DB' => 'I', 'IsNull' => 'YES', 'Default' => ''),
+            'Zero_Language_ID' => array('AliasDB' => 'z.Zero_Language_ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => 1),
+            'Name' => array('AliasDB' => 'z.Name', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => ''),
+            'Title' => array('AliasDB' => 'z.Title', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => ''),
+            'Keywords' => array('AliasDB' => 'z.Keywords', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => ''),
+            'Description' => array('AliasDB' => 'z.Description', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => ''),
+            /*END_CONFIG_PROP*/
         ];
     }
 
@@ -105,14 +105,14 @@ class Zero_SectionLanguage extends Zero_Model
     {
         return [
             /*BEG_CONFIG_FILTER_PROP*/
-			'ID' => array('Filter' => '', 'Search' => '', 'Sort' => false),
-			'Zero_Section_ID' => array('Filter' => 'Link', 'Search' => '', 'Sort' => false),
-			'Zero_Language_ID' => array('Filter' => 'Link', 'Search' => '', 'Sort' => false),
-			'Name' => array('Filter' => '', 'Search' => 'Text', 'Sort' => true),
-			'Title' => array('Filter' => '', 'Search' => 'Text', 'Sort' => true),
-			'Keywords' => array('Filter' => '', 'Search' => 'Text', 'Sort' => true),
-			'Description' => array('Filter' => '', 'Search' => 'Text', 'Sort' => false),
-			/*END_CONFIG_FILTER_PROP*/
+            'ID' => array('Filter' => '', 'Search' => '', 'Sort' => false),
+            'Zero_Section_ID' => array('Filter' => 'Link', 'Search' => '', 'Sort' => false),
+            'Zero_Language_ID' => array('Filter' => 'Link', 'Search' => '', 'Sort' => false),
+            'Name' => array('Filter' => '', 'Search' => 'Text', 'Sort' => true),
+            'Title' => array('Filter' => '', 'Search' => 'Text', 'Sort' => true),
+            'Keywords' => array('Filter' => '', 'Search' => 'Text', 'Sort' => true),
+            'Description' => array('Filter' => '', 'Search' => 'Text', 'Sort' => false),
+            /*END_CONFIG_FILTER_PROP*/
         ];
     }
 
@@ -130,11 +130,11 @@ class Zero_SectionLanguage extends Zero_Model
     {
         return [
             /*BEG_CONFIG_GRID_PROP*/
-			'ID' => [],
-			'Name' => [],
-			'Title' => [],
-			'Keywords' => [],
-			/*END_CONFIG_GRID_PROP*/
+            'ID' => [],
+            'Name' => [],
+            'Title' => [],
+            'Keywords' => [],
+            /*END_CONFIG_GRID_PROP*/
         ];
     }
 
@@ -155,14 +155,14 @@ class Zero_SectionLanguage extends Zero_Model
     {
         return [
             /*BEG_CONFIG_FORM_PROP*/
-			'ID' => array('Form' => 'Hidden'),
-			'Zero_Section_ID' => array('Form' => 'Link'),
-			'Zero_Language_ID' => array('Form' => 'Link'),
-			'Name' => array('Form' => 'Text'),
-			'Title' => array('Form' => 'Text'),
-			'Keywords' => array('Form' => 'Text'),
-			'Description' => array('Form' => 'Textarea'),
-			/*END_CONFIG_FORM_PROP*/
+            'ID' => array('Form' => 'Hidden'),
+            'Zero_Section_ID' => array('Form' => 'Link'),
+            'Zero_Language_ID' => array('Form' => 'Link'),
+            'Name' => array('Form' => 'Text'),
+            'Title' => array('Form' => 'Text'),
+            'Keywords' => array('Form' => 'Text'),
+            'Description' => array('Form' => 'Textarea'),
+            /*END_CONFIG_FORM_PROP*/
         ];
     }
 
@@ -186,5 +186,13 @@ class Zero_SectionLanguage extends Zero_Model
      */
     public function Validate_After($data, $scenario)
     {
+    }
+
+    /**
+     * Формирование from запроса
+     */
+    public function DB_From()
+    {
+        $this->DB->Sql_From("FROM {$this->Source} as z");
     }
 }

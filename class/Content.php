@@ -107,7 +107,7 @@ class Zero_Content extends Zero_Model
             'Zero_Language_ID' => ['AliasDB' => '', 'Filter' => 'Link', 'Search' => '', 'Sort' => false],
             'Name' => ['AliasDB' => '', 'Filter' => '', 'Search' => 'Text', 'Sort' => false],
             'Content' => ['AliasDB' => '', 'Filter' => '', 'Search' => 'Text', 'Sort' => false],
-//            'Block' => ['Filter' => 'Select', 'Search' => '', 'Sort' => false],
+            //            'Block' => ['Filter' => 'Select', 'Search' => '', 'Sort' => false],
             /*END_CONFIG_FILTER_PROP*/
         ];
     }
@@ -199,5 +199,13 @@ class Zero_Content extends Zero_Model
             }
         }
         return $result;
+    }
+
+    /**
+     * Формирование from запроса
+     */
+    public function DB_From()
+    {
+        $this->DB->Sql_From("FROM {$this->Source} as z");
     }
 }
