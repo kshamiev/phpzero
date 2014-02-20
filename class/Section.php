@@ -206,7 +206,7 @@ class Zero_Section extends Zero_Model
                 'Url' => array('Form' => 'ReadOnly'),
                 'UrlThis' => array('Form' => 'Text'),
                 'UrlRedirect' => array('Form' => 'Text'),
-                'Layout' => array('Form' => 'Text'),
+                'Layout' => array('Form' => 'Select'),
                 'ContentType' => array('Form' => 'Radio'),
                 'Controller' => array('Form' => 'Text'),
                 'IsAuthorized' => array('Form' => 'Radio'),
@@ -492,4 +492,20 @@ class Zero_Section extends Zero_Model
         $this->Controller = $value;
         return '';
     }
+
+    /**
+     * Sample. Filter for property.
+     *
+     * @return array
+     */
+    public function FL_Layout()
+    {
+        $arr = glob(ZERO_PATH_APPLICATION . "/*", GLOB_ONLYDIR);
+        foreach($arr as $row)
+        {
+            pre($row);
+        }
+        return [];
+    }
+
 }
