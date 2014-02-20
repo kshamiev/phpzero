@@ -19,7 +19,7 @@ class Zero_Controller_Grid extends Zero_Crud_Grid
      *
      * @var string
      */
-    protected $Source = 'Zero_Model_Pattern';
+    protected $ModelName = 'Zero_Model_Pattern';
 
     /**
      * Template view

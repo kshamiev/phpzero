@@ -17,7 +17,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
      *
      * @var string
      */
-    protected $Source = '';
+    protected $ModelName = '';
 
     /**
      * Template view
@@ -87,7 +87,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
             $this->Params['id'] = 0;
         //
         $this->View = new Zero_View($this->Template);
-        $this->Model = Zero_Model::Make($this->Source, $this->Params['id'], true);
+        $this->Model = Zero_Model::Make($this->ModelName, $this->Params['id'], true);
     }
 
     /**
@@ -103,25 +103,30 @@ abstract class Zero_Crud_Edit extends Zero_Controller
             $condition = Zero_App::$Users->Get_Condition();
             foreach ($this->Model->Get_Config_Filter() as $prop => $row)
             {
-                if ( $row['Filter'] )
+                $method = 'Add_Filter_' . $row['Form'];
+                if ( method_exists($Filter, $method) )
                 {
-                    $method = 'Add_Filter_' . $row['Filter'];
+                    if ( isset($row['Visible']) && true == $row['Visible'] )
+                        $row['Visible'] = 1;
+                    else
+                        $row['Visible'] = 0;
+                    //
                     if ( isset($condition[$prop]) )
                     {
                         if ( 1 < count($condition[$prop]) )
-                            $Filter->$method($prop, $row, 1, $condition[$prop]);
+                            $Filter->$method($prop, $row, $row['Visible'], $condition[$prop]);
                         else
                             $Filter->$method($prop, $row, 0, $condition[$prop]);
                     }
                     else
-                        $Filter->$method($prop, $row, 1, 1);
+                        $Filter->$method($prop, $row, $row['Visible'], 1);
                 }
-                if ( $row['Search'] )
+                if ( isset($row['Search']) && $row['Search'] )
                 {
                     $method = 'Add_Search_' . $row['Search'];
                     $Filter->$method($prop, $row);
                 }
-                if ( $row['Sort'] )
+                if ( isset($row['Sort']) && $row['Sort'] )
                 {
                     $Filter->Add_Sort($prop, $row);
                     if ( 'Sort' == $prop || 'ID' == $prop )
@@ -212,6 +217,9 @@ abstract class Zero_Crud_Edit extends Zero_Controller
     {
         if ( !isset($_REQUEST['Prop']) )
             $_REQUEST['Prop'] = [];
+
+        if ( 0 == $this->Model->ID )
+            $this->Chunk_Add();
 
         //  Set to relation one to many
         if ( isset($this->Params['obj_parent_prop']) && 0 == $this->Model->ID )

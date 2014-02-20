@@ -17,7 +17,7 @@ class Zero_Groups_Access extends Zero_Controller
      *
      * @var string
      */
-    protected $Source = 'Zero_Groups';
+    protected $ModelName = 'Zero_Groups';
 
     /**
      * Template view
@@ -78,7 +78,7 @@ class Zero_Groups_Access extends Zero_Controller
         else if ( empty($this->Params['obj_parent_id']) )
             $this->Params['obj_parent_id'] = 0;
         $this->View = new Zero_View($this->Template);
-        $this->Model = Zero_Model::Make($this->Source);
+        $this->Model = Zero_Model::Make($this->ModelName);
     }
 
     /**

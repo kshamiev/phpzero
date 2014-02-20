@@ -75,10 +75,10 @@ class Zero_Groups extends Zero_Model
     {
         return [
             /*BEG_CONFIG_PROP*/
-            'ID' => ['AliasDB' => 'z.ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => ''],
-            'Name' => ['AliasDB' => 'z.Name', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
-            'Status' => ['AliasDB' => 'z.Status', 'DB' => 'E', 'IsNull' => 'NO', 'Default' => 'open'],
-            'Description' => ['AliasDB' => 'z.Description', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
+            'ID' => ['AliasDB' => 'z.ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => '', 'Form' => 'Hidden'],
+            'Name' => ['AliasDB' => 'z.Name', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'],
+            'Status' => ['AliasDB' => 'z.Status', 'DB' => 'E', 'IsNull' => 'NO', 'Default' => 'open', 'Form' => 'Radio'],
+            'Description' => ['AliasDB' => 'z.Description', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Textarea'],
             /*END_CONFIG_PROP*/
         ];
     }
@@ -99,10 +99,10 @@ class Zero_Groups extends Zero_Model
     {
         return [
             /*BEG_CONFIG_FILTER_PROP*/
-            'ID' => ['Filter' => '', 'Search' => 'Number', 'Sort' => true],
-            'Name' => ['Filter' => '', 'Search' => 'Text', 'Sort' => false],
-            'Status' => ['Filter' => 'Radio', 'Search' => '', 'Sort' => false],
-            'Description' => ['Filter' => '', 'Search' => 'Text', 'Sort' => false],
+            'ID' => ['Visible' => true, 'Search' => 'Number', 'Sort' => true],
+            'Name' => ['Visible' => true, 'Search' => 'Text', 'Sort' => false],
+            'Status' => ['Visible' => true, 'Search' => '', 'Sort' => false],
+            'Description' => ['Visible' => true, 'Search' => 'Text', 'Sort' => false],
             /*END_CONFIG_FILTER_PROP*/
         ];
     }

@@ -17,7 +17,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
      *
      * @var string
      */
-    protected $Source = '';
+    protected $ModelName = '';
 
     /**
      * Template view
@@ -104,7 +104,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
             $this->Params['id'] = 0;
         //
         $this->View = new Zero_View($this->Template);
-        $this->Model = Zero_Model::Make($this->Source);
+        $this->Model = Zero_Model::Make($this->ModelName);
     }
 
     /**
@@ -158,25 +158,30 @@ abstract class Zero_Crud_Grid extends Zero_Controller
             $condition = Zero_App::$Users->Get_Condition();
             foreach ($this->Model->Get_Config_Filter() as $prop => $row)
             {
-                if ( $row['Filter'] )
+                $method = 'Add_Filter_' . $row['Form'];
+                if ( method_exists($Filter, $method) )
                 {
-                    $method = 'Add_Filter_' . $row['Filter'];
+                    if ( isset($row['Visible']) && true == $row['Visible'] )
+                        $row['Visible'] = 1;
+                    else
+                        $row['Visible'] = 0;
+                    //
                     if ( isset($condition[$prop]) )
                     {
                         if ( 1 < count($condition[$prop]) )
-                            $Filter->$method($prop, $row, 1, $condition[$prop]);
+                            $Filter->$method($prop, $row, $row['Visible'], $condition[$prop]);
                         else
                             $Filter->$method($prop, $row, 0, $condition[$prop]);
                     }
                     else
-                        $Filter->$method($prop, $row, 1, 1);
+                        $Filter->$method($prop, $row, $row['Visible'], 1);
                 }
-                if ( $row['Search'] )
+                if ( isset($row['Search']) && $row['Search'] )
                 {
                     $method = 'Add_Search_' . $row['Search'];
                     $Filter->$method($prop, $row);
                 }
-                if ( $row['Sort'] )
+                if ( isset($row['Sort']) && $row['Sort'] )
                 {
                     $Filter->Add_Sort($prop, $row);
                     if ( 'Sort' == $prop || 'ID' == $prop )
@@ -271,20 +276,14 @@ abstract class Zero_Crud_Grid extends Zero_Controller
         // УСЛОВИЯ ЗАПРОСА ДАННЫХ ДЛЯ ГРИДА
         $this->Model->DB->Sql_Where_Filter($Filter);
         //  Condition of cross connection
-        if ( isset($this->Params['obj_parent_table']) )
-        {
-            $this->Model->DB_From_Cross($this->Params['obj_parent_table'], $this->Params['obj_parent_id']);
-        }
+        $this->Model->DB_From($this->Params);
         //  The coupling condition
-        else if ( isset($this->Params['obj_parent_prop']) )
+        if ( isset($this->Params['obj_parent_prop']) )
         {
-            $this->Model->DB_From();
             if ( 0 < $this->Params['obj_parent_id'] )
                 $this->Model->DB->Sql_Where('z.' . $this->Params['obj_parent_prop'], '=', $this->Params['obj_parent_id']);
             else
                 $this->Model->DB->Sql_Where_IsNull('z.' . $this->Params['obj_parent_prop']);
-        } else {
-            $this->Model->DB_From();
         }
         //  The user conditions
         foreach (array_keys($this->Model->Get_Config_Prop()) as $prop)
@@ -335,7 +334,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
      */
     protected function Chunk_Remove()
     {
-        $ObjectRem = Zero_Model::Make($this->Source, $_REQUEST['obj_id']);
+        $ObjectRem = Zero_Model::Make($this->ModelName, $_REQUEST['obj_id']);
         //  Remove binary data object
         $path = ZERO_PATH_DATA . '/' . strtolower($ObjectRem->Source) . '/' . Zero_Lib_FileSystem::Get_Path_Cache($ObjectRem->ID) . '/' . $ObjectRem->ID;
         if ( is_dir($path) )

@@ -17,7 +17,7 @@ class Zero_Groups_Grid extends Zero_Crud_Grid
      *
      * @var string
      */
-    protected $Source = 'Zero_Groups';
+    protected $ModelName = 'Zero_Groups';
 
     /**
      * Template view

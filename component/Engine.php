@@ -542,12 +542,12 @@ class Zero_Engine
         foreach ($config as $Prop => $row)
         {
             //  Opredeleine fil`trov
-            $config_filter[$Prop]['Filter'] = "''";
+            $config_filter[$Prop]['Visible'] = "true";
             $config_filter[$Prop]['Search'] = "''";
             $config_filter[$Prop]['Sort'] = 'false';
             if ( in_array($config[$Prop]['Form'], self::$PropValidatorFilter) )
             {
-                $config_filter[$Prop]['Filter'] = "'{$config[$Prop]['Form']}'";
+//                $config_filter[$Prop]['Filter'] = "'{$config[$Prop]['Form']}'";
             }
             else
             {

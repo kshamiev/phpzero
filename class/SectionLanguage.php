@@ -78,13 +78,13 @@ class Zero_SectionLanguage extends Zero_Model
     {
         return [
             /*BEG_CONFIG_PROP*/
-            'ID' => array('AliasDB' => 'z.ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => ''),
-            'Zero_Section_ID' => array('AliasDB' => 'z.Zero_Section_ID', 'DB' => 'I', 'IsNull' => 'YES', 'Default' => ''),
-            'Zero_Language_ID' => array('AliasDB' => 'z.Zero_Language_ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => 1),
-            'Name' => array('AliasDB' => 'z.Name', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => ''),
-            'Title' => array('AliasDB' => 'z.Title', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => ''),
-            'Keywords' => array('AliasDB' => 'z.Keywords', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => ''),
-            'Description' => array('AliasDB' => 'z.Description', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => ''),
+            'ID' => array('AliasDB' => 'z.ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => '', 'Form' => 'Hidden'),
+            'Zero_Section_ID' => array('AliasDB' => 'z.Zero_Section_ID', 'DB' => 'I', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Link'),
+            'Zero_Language_ID' => array('AliasDB' => 'z.Zero_Language_ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => 1, 'Form' => 'Link'),
+            'Name' => array('AliasDB' => 'z.Name', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'),
+            'Title' => array('AliasDB' => 'z.Title', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'),
+            'Keywords' => array('AliasDB' => 'z.Keywords', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'),
+            'Description' => array('AliasDB' => 'z.Description', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Textarea'),
             /*END_CONFIG_PROP*/
         ];
     }
@@ -105,13 +105,13 @@ class Zero_SectionLanguage extends Zero_Model
     {
         return [
             /*BEG_CONFIG_FILTER_PROP*/
-            'ID' => array('Filter' => '', 'Search' => '', 'Sort' => false),
-            'Zero_Section_ID' => array('Filter' => 'Link', 'Search' => '', 'Sort' => false),
-            'Zero_Language_ID' => array('Filter' => 'Link', 'Search' => '', 'Sort' => false),
-            'Name' => array('Filter' => '', 'Search' => 'Text', 'Sort' => true),
-            'Title' => array('Filter' => '', 'Search' => 'Text', 'Sort' => true),
-            'Keywords' => array('Filter' => '', 'Search' => 'Text', 'Sort' => true),
-            'Description' => array('Filter' => '', 'Search' => 'Text', 'Sort' => false),
+            'ID' => array('Visible' => true, 'Search' => '', 'Sort' => false),
+            'Zero_Section_ID' => array('Visible' => true, 'Search' => '', 'Sort' => false),
+            'Zero_Language_ID' => array('Visible' => true, 'Search' => '', 'Sort' => false),
+            'Name' => array('Visible' => true, 'Search' => 'Text', 'Sort' => true),
+            'Title' => array('Visible' => true, 'Search' => 'Text', 'Sort' => true),
+            'Keywords' => array('Visible' => true, 'Search' => 'Text', 'Sort' => true),
+            'Description' => array('Visible' => true, 'Search' => 'Text', 'Sort' => false),
             /*END_CONFIG_FILTER_PROP*/
         ];
     }

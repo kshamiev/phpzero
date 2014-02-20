@@ -17,7 +17,7 @@ class Zero_Content_Grid extends Zero_Crud_Grid
      *
      * @var string
      */
-    protected $Source = 'Zero_Content';
+    protected $ModelName = 'Zero_Content';
 
     /**
      * Template view

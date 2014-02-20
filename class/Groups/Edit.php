@@ -17,7 +17,7 @@ class Zero_Groups_Edit extends Zero_Crud_Edit
      *
      * @var string
      */
-    protected $Source = 'Zero_Groups';
+    protected $ModelName = 'Zero_Groups';
 
     /**
      * Template view

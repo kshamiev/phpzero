@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-      {include "Zero_Header"}
+      {include "Zero_Include_Header"}
   </head>
   <body>
   {plugin "Zero_Users_Online"}
@@ -14,8 +14,7 @@
             {$row[1]}&nbsp;&nbsp;
             {/}
         </td>
-        <td width="150px">
-            {Zero_App::$Users->Login}
+        <td width="150px" align="center">
             {if ( 2 == Zero_App::$Users->Zero_Groups_ID  )}
             <a href="/user">{translation "Zero_Users" "enter"}</a>
             {else}

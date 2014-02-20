@@ -75,10 +75,10 @@ class Zero_Action extends Zero_Model
     {
         return [
             /*BEG_CONFIG_PROP*/
-            'ID' => ['AliasDB' => 'z.ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => ''],
-            'Zero_Section_ID' => ['AliasDB' => 'z.Zero_Section_ID', 'DB' => 'I', 'IsNull' => 'YES', 'Default' => ''],
-            'Zero_Groups_ID' => ['AliasDB' => 'z.Zero_Groups_ID', 'DB' => 'I', 'IsNull' => 'YES', 'Default' => ''],
-            'Action' => ['AliasDB' => 'z.Action', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
+            'ID' => ['AliasDB' => 'z.ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => '', 'Form' => 'Hidden'],
+            'Zero_Section_ID' => ['AliasDB' => 'z.Zero_Section_ID', 'DB' => 'I', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Link'],
+            'Zero_Groups_ID' => ['AliasDB' => 'z.Zero_Groups_ID', 'DB' => 'I', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Link'],
+            'Action' => ['AliasDB' => 'z.Action', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'],
             /*END_CONFIG_PROP*/
         ];
     }
@@ -99,10 +99,10 @@ class Zero_Action extends Zero_Model
     {
         return [
             /*BEG_CONFIG_FILTER_PROP*/
-            'ID' => ['Filter' => '', 'Search' => 'Number', 'Sort' => true],
-            'Zero_Section_ID' => ['Filter' => 'Link', 'Search' => '', 'Sort' => false],
-            'Zero_Groups_ID' => ['Filter' => 'Link', 'Search' => '', 'Sort' => false],
-            'Action' => ['Filter' => 'Select', 'Search' => '', 'Sort' => false],
+            'ID' => ['Visible' => true, 'Search' => 'Number', 'Sort' => true],
+            'Zero_Section_ID' => ['Visible' => true, 'Search' => '', 'Sort' => false],
+            'Zero_Groups_ID' => ['Visible' => true, 'Search' => '', 'Sort' => false],
+            'Action' => ['Visible' => true, 'Search' => '', 'Sort' => false],
             /*END_CONFIG_FILTER_PROP*/
         ];
     }

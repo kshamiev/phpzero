@@ -17,7 +17,7 @@ class Zero_SectionLanguage_EditSection extends Zero_Crud_Edit
      *
      * @var string
      */
-    protected $Source = 'Zero_SectionLanguage';
+    protected $ModelName = 'Zero_SectionLanguage';
 
     /**
      * Template view

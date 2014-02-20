@@ -126,10 +126,10 @@ abstract class Zero_Model
     public static function Make($model, $id = 0, $flag_load = false)
     {
         return new $model($id, $flag_load);
-//        $model_name = $source;
-//        if ( isset(Zero_App::$Config->FactoryModel[$source]) )
-//            $model_name = Zero_App::$Config->FactoryModel[$source];
-//        return new $model_name($id, $flag_load, $source);
+        //        $model_name = $source;
+        //        if ( isset(Zero_App::$Config->FactoryModel[$source]) )
+        //            $model_name = Zero_App::$Config->FactoryModel[$source];
+        //        return new $model_name($id, $flag_load, $source);
     }
 
     /**
@@ -149,8 +149,8 @@ abstract class Zero_Model
         {
             $result = self::Make($model, $id, $flag_load);
             $result->Init();
-//            self::$_Instance[$index] = self::Make($source, $id, $flag_load);
-//            self::$_Instance[$index]->Init();
+            //            self::$_Instance[$index] = self::Make($source, $id, $flag_load);
+            //            self::$_Instance[$index]->Init();
             self::$_Instance[$index] = $result;
         }
         return self::$_Instance[$index];
@@ -250,9 +250,9 @@ abstract class Zero_Model
      * Poluchenie svoi`stv modeli i ikh znachenii`
      *
      * Znachenie $flag
-     * - -1 poluchit` tol`ko izmenenny`e svoi`stva (ne sokhranenny`e)
-     * - 0 poluchit` vse svoi`stva (po umolchaniiu)
-     * - 1 poluchit` tol`ko ne izmenenny`e svoi`stva (sokhranenny`e)
+     * - -1 получить только измененные свойства (не сохраненные)
+     * - 0 получить все свойства (по умолчанию)
+     * - 1 получить только не измененные свойства (сохраненные)
      *
      * @param int $flag kakie svoi`stva poluchat`
      * @return array svoi`stva modeli i ikh znachenii`
@@ -332,12 +332,13 @@ abstract class Zero_Model
      */
     public function Get_Config_Model()
     {
-        if ( !isset(self::$_Config[$this->Source]['model']) )
+        $index = get_class($this);
+        if ( !isset(self::$_Config[$index]['model']) )
         {
-            self::$_Config[$this->Source]['model'] = static::Config_Model($this);
-            self::$_Config[$this->Source]['model']['Comment'] = Zero_I18n::T($this->Source, 'model', $this->Source);
+            self::$_Config[$index]['model'] = static::Config_Model($this);
+            self::$_Config[$index]['model']['Comment'] = Zero_I18n::T($index, 'model', $index);
         }
-        return self::$_Config[$this->Source]['model'];
+        return self::$_Config[$index]['model'];
     }
 
     /**
@@ -385,17 +386,18 @@ abstract class Zero_Model
      */
     public function Get_Config_Prop()
     {
-        if ( !isset(self::$_Config[$this->Source]['props']) )
+        $index = get_class($this);
+        if ( !isset(self::$_Config[$index]['props']) )
         {
             foreach (static::Config_Prop($this) as $prop => $row)
             {
-                $row['Comment'] = Zero_I18n::T($this->Source, "model prop {$prop}", $prop);
-//                if ( 'S' == $row['DB'] || 'E' == $row['DB'] )
-//                    $row['Value'] = Zero_DB::Sel_EnumSet($this, $prop);
-                self::$_Config[$this->Source]['props'][$prop] = $row;
+                $row['Comment'] = Zero_I18n::T($index, "model prop {$prop}", $prop);
+                //                if ( 'S' == $row['DB'] || 'E' == $row['DB'] )
+                //                    $row['Value'] = Zero_DB::Sel_EnumSet($this, $prop);
+                self::$_Config[$index]['props'][$prop] = $row;
             }
         }
-        return self::$_Config[$this->Source]['props'];
+        return self::$_Config[$index]['props'];
     }
 
     /**
@@ -424,11 +426,12 @@ abstract class Zero_Model
     {
         $props = static::Config_Filter($this, $scenario);
         $propsBase = $this->Get_Config_Prop();
-        foreach ($props as $prop => $row)
+        foreach ($propsBase as $prop => $row)
         {
-            $props[$prop] = array_replace($propsBase[$prop], $row);
+            if ( isset($props[$prop]) )
+                $propsBase[$prop] = array_replace($row, $props[$prop]);
         }
-        return $props;
+        return $propsBase;
     }
 
     /**

@@ -17,7 +17,7 @@ class Zero_SectionLanguage_GridSection extends Zero_Crud_Grid
      *
      * @var string
      */
-    protected $Source = 'Zero_SectionLanguage';
+    protected $ModelName = 'Zero_SectionLanguage';
 
     /**
      * Template view

@@ -17,7 +17,7 @@ class Zero_Controller_Edit extends Zero_Crud_Edit
      *
      * @var string
      */
-    protected $Source = 'Zero_Model_Pattern';
+    protected $ModelName = 'Zero_Model_Pattern';
 
     /**
      * Template view
@@ -29,7 +29,6 @@ class Zero_Controller_Edit extends Zero_Crud_Edit
     /**
      * Initialization of the input parameters
      *
-     * @param string $action action
      * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_Init()

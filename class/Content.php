@@ -76,12 +76,12 @@ class Zero_Content extends Zero_Model
     {
         return [
             /*BEG_CONFIG_PROP*/
-            'ID' => ['AliasDB' => 'z.ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => ''],
-            'Zero_Section_ID' => ['AliasDB' => 'z.Zero_Section_ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => ''],
-            'Zero_Language_ID' => ['AliasDB' => 'z.Zero_Language_ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => 1],
-            'Name' => ['AliasDB' => 'z.Name', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
-            'Content' => ['AliasDB' => 'z.Content', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => ''],
-            'Block' => ['AliasDB' => 'z.Block', 'DB' => 'T', 'IsNull' => 'NO', 'Default' => ''],
+            'ID' => ['AliasDB' => 'z.ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => '', 'Form' => 'Hidden'],
+            'Zero_Section_ID' => ['AliasDB' => 'z.Zero_Section_ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => '', 'Form' => 'Hidden'],
+            'Zero_Language_ID' => ['AliasDB' => 'z.Zero_Language_ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => 1, 'Form' => 'Link'],
+            'Name' => ['AliasDB' => 'z.Name', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'],
+            'Content' => ['AliasDB' => 'z.Content', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Content'],
+            'Block' => ['AliasDB' => 'z.Block', 'DB' => 'T', 'IsNull' => 'NO', 'Default' => '', 'Form' => 'Text'],
             /*END_CONFIG_PROP*/
         ];
     }
@@ -102,11 +102,11 @@ class Zero_Content extends Zero_Model
     {
         return [
             /*BEG_CONFIG_FILTER_PROP*/
-            'ID' => ['AliasDB' => '', 'Filter' => '', 'Search' => 'Number', 'Sort' => true],
-            'Zero_Section_ID' => ['AliasDB' => '', 'Filter' => '', 'Search' => '', 'Sort' => false],
-            'Zero_Language_ID' => ['AliasDB' => '', 'Filter' => 'Link', 'Search' => '', 'Sort' => false],
-            'Name' => ['AliasDB' => '', 'Filter' => '', 'Search' => 'Text', 'Sort' => false],
-            'Content' => ['AliasDB' => '', 'Filter' => '', 'Search' => 'Text', 'Sort' => false],
+            'ID' => ['Visible' => true, 'Search' => 'Number', 'Sort' => true],
+            'Zero_Section_ID' => ['Visible' => true, 'Search' => '', 'Sort' => false],
+            'Zero_Language_ID' => ['Visible' => true, 'Search' => '', 'Sort' => false],
+            'Name' => ['Visible' => true, 'Search' => 'Text', 'Sort' => false],
+            'Content' => ['Visible' => true, 'Search' => 'Text', 'Sort' => false],
             //            'Block' => ['Filter' => 'Select', 'Search' => '', 'Sort' => false],
             /*END_CONFIG_FILTER_PROP*/
         ];

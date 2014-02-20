@@ -110,7 +110,8 @@ class Zero_Filter
      */
     public static function Factory($Model)
     {
-        $index = '_Filter' . '_' . $Model->Get_Source();
+//        $index = '_Filter' . '_' . $Model->Get_Source();
+        $index = '_Filter' . '_' . get_class($Model);
         if ( !$result = Zero_Session::Get($index) )
         {
             $result = new self($Model);
