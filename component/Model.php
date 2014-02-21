@@ -537,6 +537,14 @@ abstract class Zero_Model
     }
 
     /**
+     * Формирование from запроса
+     */
+    public function DB_From($params)
+    {
+        $this->DB->Sql_From("FROM {$this->Source} as z");
+    }
+
+    /**
      * Poluchenie znacheniia abstraktnogo svoi`stva
      *
      * Universal`ny`i` getter pozvoliaiushchii` obernut` vse priamy`e obrashcheniia

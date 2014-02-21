@@ -108,44 +108,6 @@ abstract class Zero_Crud_Grid extends Zero_Controller
     }
 
     /**
-     * Creating the conditions for obtaining the necessary data
-     *
-     * @return boolean flag stop execute of the next chunk
-     */
-    protected function Chunk_View_SqlWhere_Щдв()
-    {
-        //  Filters
-        $Filter = Zero_Filter::Factory($this->Model);
-        $this->Model->DB->Sql_Where_Filter($Filter);
-        //  Condition of cross connection
-        if ( isset($this->Params['obj_parent_table']) )
-        {
-            $link = $this->Model->Get_Config_Link();
-            $link = $link[$this->Params['obj_parent_table']];
-            $sql = "
-            FROM {$this->Model->Get_Source()} as z
-                INNER JOIN {$link['table_link']} as p ON p.{$link['prop_this']} = z.ID AND p.{$link['prop_target']} = $this->Params['obj_parent_id']
-            ";
-            $this->Model->DB->Sql_From($sql);
-        }
-        //  The coupling condition
-        else if ( isset($this->Params['obj_parent_prop']) )
-        {
-            if ( 0 < $this->Params['obj_parent_id'] )
-                $this->Model->DB->Sql_Where('z.' . $this->Params['obj_parent_prop'], '=', $this->Params['obj_parent_id']);
-            else
-                $this->Model->DB->Sql_Where_IsNull('z.' . $this->Params['obj_parent_prop']);
-        }
-        //  The user conditions
-        foreach (array_keys($this->Model->Get_Config_Prop()) as $prop)
-        {
-            if ( isset($users_condition[$prop]) )
-                $this->Model->DB->Sql_Where_In('z.' . $prop, array_keys($users_condition[$prop]));
-        }
-        unset($users_condition);
-    }
-
-    /**
      * Initialization and set filters
      *
      * @return boolean flag stop execute of the next chunk
@@ -179,12 +141,13 @@ abstract class Zero_Crud_Grid extends Zero_Controller
                 if ( isset($row['Search']) && $row['Search'] )
                 {
                     $method = 'Add_Search_' . $row['Search'];
-                    $Filter->$method($prop, $row);
+                    if ( method_exists($Filter, $method) )
+                        $Filter->$method($prop, $row);
                 }
                 if ( isset($row['Sort']) && $row['Sort'] )
                 {
                     $Filter->Add_Sort($prop, $row);
-                    if ( 'Sort' == $prop || 'ID' == $prop )
+                    if ( 'Sort' == $prop )
                         $Filter->Set_Sort($prop);
                 }
             }

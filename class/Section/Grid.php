@@ -42,8 +42,6 @@ class Zero_Section_Grid extends Zero_Crud_Grid
             $this->Params['obj_parent_name'] = '';
             $this->Params['obj_parent_path'] = ['root'];
         }
-        parent::Chunk_Init();
-
         if ( isset(Zero_App::$Route->Param['pid']) && $this->Params['obj_parent_id'] != Zero_App::$Route->Param['pid'] )
         {
             $this->Params['obj_parent_id'] = Zero_App::$Route->Param['pid'];
@@ -69,6 +67,7 @@ class Zero_Section_Grid extends Zero_Crud_Grid
             }
             Zero_Filter::Factory($this->Model)->Reset();
         }
+        parent::Chunk_Init();
     }
 
     /**

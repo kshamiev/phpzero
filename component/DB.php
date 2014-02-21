@@ -908,7 +908,7 @@ class Zero_DB
         foreach ($sort['Value'] as $prop => $value)
         {
             if ( $value )
-                $this->Sql_Order($row['AliasDB'], $value);
+                $this->Sql_Order($sort['List'][$prop]['AliasDB'], $value);
         }
 
         //    postranichnost`

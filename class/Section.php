@@ -320,14 +320,14 @@ class Zero_Section extends Zero_Model
     /**
      * Getting subsections, taking into account the rights and visibility.
      *
-     * @return array subsection
+     * @return array|mixed
+     * @throws Exception
      */
     public function Get_Navigation_Child()
     {
         if ( 0 == $this->ID )
         {
-            Zero_Logs::Set_Message('#{MODEL.Zero_Section} parent section not defined');
-            return [];
+            throw new Exception('#{MODEL.Zero_Section} parent section not defined', 500);
         }
         if ( is_null($this->_Navigation_Child) )
         {
@@ -422,14 +422,6 @@ class Zero_Section extends Zero_Model
             self::DB_Update_Url($section_id);
         }
         return true;
-    }
-
-    /**
-     * Формирование from запроса
-     */
-    public function DB_From()
-    {
-        $this->DB->Sql_From("FROM {$this->Source} as z");
     }
 
     /**

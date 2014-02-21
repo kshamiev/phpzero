@@ -165,34 +165,4 @@ class Zero_SectionLanguage extends Zero_Model
             /*END_CONFIG_FORM_PROP*/
         ];
     }
-
-    /**
-     * The total initial validation properties
-     *
-     * @param array $data verifiable data array
-     * @param string $scenario scenario validation
-     * @return array
-     */
-    public function Validate_Before($data, $scenario)
-    {
-        return $data;
-    }
-
-    /**
-     * Total final validation properties
-     *
-     * @param array $data verifiable data array
-     * @param string $scenario scenario validation
-     */
-    public function Validate_After($data, $scenario)
-    {
-    }
-
-    /**
-     * Формирование from запроса
-     */
-    public function DB_From()
-    {
-        $this->DB->Sql_From("FROM {$this->Source} as z");
-    }
 }

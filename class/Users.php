@@ -382,11 +382,4 @@ class Zero_Users extends Zero_Model
         return '';
     }
 
-    /**
-     * Формирование from запроса
-     */
-    public function DB_From()
-    {
-        $this->DB->Sql_From("FROM {$this->Source} as z");
-    }
 }

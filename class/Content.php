@@ -201,11 +201,4 @@ class Zero_Content extends Zero_Model
         return $result;
     }
 
-    /**
-     * Формирование from запроса
-     */
-    public function DB_From()
-    {
-        $this->DB->Sql_From("FROM {$this->Source} as z");
-    }
 }
