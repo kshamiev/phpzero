@@ -110,7 +110,7 @@ class Zero_Section extends Zero_Model
     {
         return [
             /*BEG_CONFIG_PROP*/
-            'ID' => ['AliasDB' => 'z.ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => '', 'Form' => 'Hidden'],
+            'ID' => ['AliasDB' => 'z.ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => '', 'Form' => ''],
             'Zero_Section_ID' => ['AliasDB' => 'z.Zero_Section_ID', 'DB' => 'I', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Link'],
             'Url' => ['AliasDB' => 'z.Url', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'ReadOnly'],
             'UrlThis' => ['AliasDB' => 'z.UrlThis', 'DB' => 'T', 'IsNull' => 'NO', 'Default' => '', 'Form' => 'Text'],
@@ -200,22 +200,22 @@ class Zero_Section extends Zero_Model
     protected static function Config_Form($Model, $scenario = '')
     {
         return [
-            'ID' => array('Form' => 'Hidden'),
-            'Zero_Section_ID' => array('Form' => 'Link'),
-            'Url' => array('Form' => 'ReadOnly'),
-            'UrlThis' => array('Form' => 'Text'),
-            'UrlRedirect' => array('Form' => 'Text'),
-            'Layout' => array('Form' => 'Select'),
-            'ContentType' => array('Form' => 'Radio'),
-            'Controller' => array('Form' => 'Text'),
-            'IsAuthorized' => array('Form' => 'Radio'),
-            'IsVisible' => array('Form' => 'Radio'),
-            'IsEnable' => array('Form' => 'Radio'),
-            'Sort' => array('Form' => 'Number'),
-            'Name' => array('Form' => 'Text'),
-            'Title' => array('Form' => 'Text'),
-            'Keywords' => array('Form' => 'Text'),
-            'Description' => array('Form' => 'Textarea'),
+            'ID' => [],
+            'Zero_Section_ID' => [],
+            'Url' => [],
+            'UrlThis' => [],
+            'UrlRedirect' => [],
+            'Layout' => [],
+            'ContentType' => [],
+            'Controller' => [],
+            'IsAuthorized' => [],
+            'IsVisible' => [],
+            'IsEnable' => [],
+            'Sort' => [],
+            'Name' => [],
+            'Title' => [],
+            'Keywords' => [],
+            'Description' => [],
         ];
     }
 
@@ -272,10 +272,11 @@ class Zero_Section extends Zero_Model
             $this->_Action_List = $Model->DB->Select_Array_Index('Action');
             foreach ($this->_Action_List as $action => $row)
             {
-                if ( 'AccessAllow' == $action )
-                    $index = "controller action {$action}";
-                else
-                    $index = "controller {$this->Controller} action {$action}";
+                $index = "controller action {$action}";
+//                if ( 'Default' == $action )
+//                    $index = "controller action {$action}";
+//                else
+//                    $index = "controller {$this->Controller} action {$action}";
                 $this->_Action_List[$action] = ['Name' => Zero_I18n::T($this->Controller, $index, $action)];
             }
             //
@@ -286,10 +287,11 @@ class Zero_Section extends Zero_Model
                 if ( 'Action' == substr($name, 0, 6) )
                 {
                     $name = str_replace('Action_', '', $name);
-                    if ( 'AccessAllow' == $name )
-                        $index = "controller action {$name}";
-                    else
-                        $index = "controller {$this->Controller} action {$name}";
+                    $index = "controller action {$name}";
+//                    if ( 'Default' == $name )
+//                        $index = "controller action {$name}";
+//                    else
+//                        $index = "controller {$this->Controller} action {$name}";
                     $this->_Action_List[$name] = ['Name' => Zero_I18n::T($this->Controller, $index, $name)];
                 }
             }
@@ -304,10 +306,11 @@ class Zero_Section extends Zero_Model
                 if ( 'Action' == substr($name, 0, 6) )
                 {
                     $name = str_replace('Action_', '', $name);
-                    if ( 'AccessAllow' == $name )
-                        $index = "controller action {$name}";
-                    else
-                        $index = "controller {$this->Controller} action {$name}";
+                    $index = "controller action {$name}";
+//                    if ( 'Default' == $name )
+//                        $index = "controller action {$name}";
+//                    else
+//                        $index = "controller {$this->Controller} action {$name}";
                     $this->_Action_List[$name] = ['Name' => Zero_I18n::T($this->Controller, $index, $name)];
                 }
             }
@@ -422,6 +425,39 @@ class Zero_Section extends Zero_Model
             self::DB_Update_Url($section_id);
         }
         return true;
+    }
+
+    public static function DB_LanguageSet($section_id)
+    {
+        $lang_id = Zero_App::$Route->LangId;
+        $row = Zero_DB::Sel_Row("SELECT ID FROM Zero_SectionLanguage WHERE Zero_Section_ID = {$section_id} AND Zero_Language_ID = {$lang_id}");
+        if ( 0 < count($row) )
+        {
+            $sql = "
+            UPDATE `Zero_SectionLanguage`
+                INNER JOIN `Zero_Section` ON `Zero_Section`.ID = `Zero_SectionLanguage`.`Zero_Section_ID`
+            SET
+                `Zero_SectionLanguage`.`Name` = `Zero_Section`.`Name`,
+                `Zero_SectionLanguage`.`Title` = `Zero_Section`.`Title`,
+                `Zero_SectionLanguage`.`Keywords` = `Zero_Section`.`Keywords`,
+                `Zero_SectionLanguage`.`Description` = `Zero_Section`.`Description`
+            WHERE
+                `Zero_SectionLanguage`.`Zero_Language_ID` = {$lang_id}
+            ";
+        }
+        else
+        {
+            $sql = "INSERT INTO `Zero_SectionLanguage` (
+              `Zero_Section_ID`, `Zero_Language_ID`, `Name`, `Title`, `Keywords`, `Description`
+              )
+              SELECT
+                `ID`, " . Zero_App::$Route->LangId . ", `Name`, `Title`, `Keywords`, `Description`
+              FROM
+                `Zero_Section`
+              WHERE `ID` = {$section_id}
+            ";
+        }
+        Zero_DB::Set($sql);
     }
 
     /**

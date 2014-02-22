@@ -34,4 +34,16 @@ class Zero_Section_Edit extends Zero_Crud_Edit
         $this->Params['obj_parent_name'] = '';
         parent::Chunk_Init();
     }
+    /**
+     * Save object
+     *
+     * @return boolean flag stop execute of the next chunk
+     */
+    protected function Chunk_Save()
+    {
+        if ( true == parent::Chunk_Save() )
+        {
+            Zero_Section::DB_LanguageSet($this->Model->ID);
+        }
+    }
 }

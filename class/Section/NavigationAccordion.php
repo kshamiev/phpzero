@@ -25,7 +25,7 @@ class Zero_Section_NavigationAccordion extends Zero_Controller
         $index = __CLASS__ . Zero_App::$Users->Zero_Groups_ID . Zero_App::$Config->Host;
         $Section = Zero_Model::Make('Zero_Section');
         /* @var $Section Zero_Section */
-        if ( isset($this->Params['url']) )
+        if ( isset($this->Params['url']) && "" != $this->Params['url'] )
             $Section->Init_Url(Zero_App::$Config->Host . $this->Params['url']);
         else
             $Section->Init_Url(Zero_App::$Config->Host . '/');

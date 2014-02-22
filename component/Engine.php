@@ -258,7 +258,7 @@ class Zero_Engine
             if ( 'enum' == $type && 'NO' == $row['Null'] )
                 $result[$row['Field']]['Form'] = 'Radio';
             else if ( 'ID' == $row['Field'] )
-                $result[$row['Field']]['Form'] = 'Hidden';
+                $result[$row['Field']]['Form'] = '';
             //  Py`taemsia opredelit` formu svoi`stva po ego imeni
             if ( substr($row['Field'], 0, strlen('_ID')) == '_ID' || substr($row['Field'], -strlen('_ID')) == '_ID' )
                 $result[$row['Field']]['Form'] = 'Link';
@@ -351,11 +351,11 @@ class Zero_Engine
         //  Razdel v BD
         $Section = Zero_Model::Make('Zero_Section');
         /* @var $Section Zero_Section */
-        $Section->Init_Url(Zero_App::$Config->Host . '/admin');
+        $Section->Init_Url(Zero_App::$Config->Host);
         $url = strtolower($module);
         $Section_Two = Zero_Model::Make('Zero_Section');
         /* @var $Section_Two Zero_Section */
-        $Section_Two->DB->Sql_Where('Url', '=', Zero_App::$Config->Host . '/admin/' . $url);
+        $Section_Two->DB->Sql_Where('Url', '=', Zero_App::$Config->Host . '/' . $url);
         $Section_Two->DB->Select('ID');
         if ( 0 == $Section_Two->ID )
         {
@@ -373,7 +373,7 @@ class Zero_Engine
             $Section_Two->Description = $module;
             $Section_Two->DB->Insert();
             $Section_Two->Cache->Reset();
-            $this->_ZeroSectionLanguageSet($Section_Two->ID);
+            Zero_Section::DB_LanguageSet($Section_Two->ID);
         }
         foreach ($table_list as $row)
         {
@@ -421,7 +421,7 @@ class Zero_Engine
             $url = strtolower($package[0] . '/' . $package[1]);
             $Section_Three = Zero_Model::Make('Zero_Section');
             /* @var $Section_Three Zero_Section */
-            $Section_Three->DB->Sql_Where('Url', '=', Zero_App::$Config->Host . '/admin/' . $url);
+            $Section_Three->DB->Sql_Where('Url', '=', Zero_App::$Config->Host . '/' . $url);
             $Section_Three->DB->Select('ID');
             if ( $flag_grid && 0 == $Section_Three->ID )
             {
@@ -439,7 +439,7 @@ class Zero_Engine
                 $Section_Three->Description = $row['Comment'];
                 $Section_Three->DB->Insert();
                 $Section_Three->Cache->Reset();
-                $this->_ZeroSectionLanguageSet($Section_Three->ID);
+                Zero_Section::DB_LanguageSet($Section_Three->ID);
             }
             //  Kontroller redaktirovaniia
             $path_target = substr($path_model, 0, -4) . '/Edit.php';
@@ -460,7 +460,7 @@ class Zero_Engine
             $url = strtolower($package[0] . '/' . $package[1] . '/edit');
             $Section_Four = Zero_Model::Make('Zero_Section');
             /* @var $Section_Four Zero_Section */
-            $Section_Four->DB->Sql_Where('Url', '=', Zero_App::$Config->Host . '/admin/' . $url);
+            $Section_Four->DB->Sql_Where('Url', '=', Zero_App::$Config->Host . '/' . $url);
             $Section_Four->DB->Select('ID');
             if ( $flag_edit && 0 == $Section_Four->ID && 0 < $Section_Three->ID )
             {
@@ -478,7 +478,7 @@ class Zero_Engine
                 $Section_Four->Description = $row['Comment'] . ' изменение';
                 $Section_Four->DB->Insert();
                 $Section_Four->Cache->Reset();
-                $this->_ZeroSectionLanguageSet($Section_Four->ID);
+                Zero_Section::DB_LanguageSet($Section_Four->ID);
             }
             //  Internatcionalizatciia
             $this->Config_I18n($row['Name']);
@@ -784,20 +784,5 @@ class Zero_Engine
             $file_data = str_replace('# CONFIG', $str, $file_data);
             Zero_Lib_FileSystem::File_Save($path2, $file_data);
         }
-    }
-
-    private function _ZeroSectionLanguageSet($section_id)
-    {
-        $sql = "INSERT INTO `Zero_SectionLanguage` (
-          `Zero_Section_ID`, `Zero_Language_ID`, `Name`, `Title`, `Keywords`, `Description`
-          )
-          SELECT
-            `ID`, " . Zero_App::$Route->LangId . ", `Name`, `Title`, `Keywords`, `Description`
-          FROM
-            `Zero_Section`
-          WHERE `ID` = {$section_id}
-        ";
-        pre($sql);
-        Zero_DB::Set($sql);
     }
 }

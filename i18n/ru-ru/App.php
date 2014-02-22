@@ -5,8 +5,14 @@
  * 'translation Key' => 'Translation Value'
  */
 return [
-    'controller action AccessAllow' => 'Право на раздел',
+    'controller action Default' => 'Право на раздел',
     'controller action Add' => 'добавить',
+    'controller action Remove' => 'удалить',
+    'controller action FilterSet' => 'установка фильтра',
+    'controller action FilterReset' => 'сброс фильтра',
+    'controller action Save' => 'сохранить',
+    'controller action CatalogMove' => 'переместить',
+    'controller action UpdateUrl' => 'обновить url',
     'translation Filters' => 'Фильтры',
     'translation Search' => 'Поиск',
     'translation Sorting' => 'Сортировка',
@@ -29,6 +35,8 @@ return [
     'translation Plugin' => 'Плагин',
     'translation Sidebar' => 'Код вставки в шаблон',
     'translation Project' => 'Проект',
-    'translation Key' => 'Translation Value',
+    'controller ControllerName' => 'TranslationValue',
+    'controller ControllerName action ActionName' => 'TranslationValue',
+    'controller ControllerName message MessageKey' => 'TranslationValue',
     'translation Key' => 'Translation Value',
 ];

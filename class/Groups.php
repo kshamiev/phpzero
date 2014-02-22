@@ -75,7 +75,7 @@ class Zero_Groups extends Zero_Model
     {
         return [
             /*BEG_CONFIG_PROP*/
-            'ID' => ['AliasDB' => 'z.ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => '', 'Form' => 'Hidden'],
+            'ID' => ['AliasDB' => 'z.ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => '', 'Form' => ''],
             'Name' => ['AliasDB' => 'z.Name', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'],
             'Status' => ['AliasDB' => 'z.Status', 'DB' => 'E', 'IsNull' => 'NO', 'Default' => 'open', 'Form' => 'Radio'],
             'Description' => ['AliasDB' => 'z.Description', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Textarea'],
@@ -144,10 +144,10 @@ class Zero_Groups extends Zero_Model
     {
         return [
             /*BEG_CONFIG_FORM_PROP*/
-            'ID' => array('Form' => 'Hidden'),
-            'Name' => array('Form' => 'Text'),
-            'Status' => array('Form' => 'Radio'),
-            'Description' => array('Form' => 'Textarea'),
+            'ID' => [],
+            'Name' => [],
+            'Status' => [],
+            'Description' => [],
             /*END_CONFIG_FORM_PROP*/
         ];
     }

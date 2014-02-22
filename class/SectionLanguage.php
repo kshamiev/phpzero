@@ -78,7 +78,7 @@ class Zero_SectionLanguage extends Zero_Model
     {
         return [
             /*BEG_CONFIG_PROP*/
-            'ID' => array('AliasDB' => 'z.ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => '', 'Form' => 'Hidden'),
+            'ID' => array('AliasDB' => 'z.ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => '', 'Form' => ''),
             'Zero_Section_ID' => array('AliasDB' => 'z.Zero_Section_ID', 'DB' => 'I', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Link'),
             'Zero_Language_ID' => array('AliasDB' => 'z.Zero_Language_ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => 1, 'Form' => 'Link'),
             'Name' => array('AliasDB' => 'z.Name', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'),
@@ -155,13 +155,13 @@ class Zero_SectionLanguage extends Zero_Model
     {
         return [
             /*BEG_CONFIG_FORM_PROP*/
-            'ID' => array('Form' => 'Hidden'),
-            'Zero_Section_ID' => array('Form' => 'Link'),
-            'Zero_Language_ID' => array('Form' => 'Link'),
-            'Name' => array('Form' => 'Text'),
-            'Title' => array('Form' => 'Text'),
-            'Keywords' => array('Form' => 'Text'),
-            'Description' => array('Form' => 'Textarea'),
+            'ID' => [],
+            'Zero_Section_ID' => [],
+            'Zero_Language_ID' => [],
+            'Name' => [],
+            'Title' => [],
+            'Keywords' => [],
+            'Description' => [],
             /*END_CONFIG_FORM_PROP*/
         ];
     }

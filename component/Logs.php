@@ -207,7 +207,8 @@ class Zero_Logs
 
         ob_end_clean();
 
-        $View = new Zero_View('Zero_Error');
+        $View = new Zero_View(ucfirst(Zero_App::$Config->Host) . '_Error');
+        $View->Template_Add('Zero_Error');
         $View->Assign('http_status', $exception->getCode());
         echo $View->Fetch(true);
     }
@@ -246,7 +247,8 @@ class Zero_Logs
             $iterator_list[$iterator->key()] = get_class($iterator->current());
             $iterator->next();
         }
-        $View = new Zero_View('Zero_Include_Debug');
+        $View = new Zero_View(ucfirst(Zero_App::$Config->Host) . '_Include_Debug');
+        $View->Template_Add('Zero_Include_Debug');
         $View->Assign('output', self::Get_Usage_MemoryAndTime());
         $View->Assign('message', self::$_Message);
         $View->Assign('iterator_list', $iterator_list);
@@ -327,7 +329,8 @@ class Zero_Logs
         if ( $offset < 0 )
             $offset = 0;
         $length = isset($file_line[$line + $range_file_error]) ? $line + $range_file_error : count($file_line) - 1;
-        $View = new Zero_View('Zero_Include_SourceCode');
+        $View = new Zero_View(ucfirst(Zero_App::$Config->Host) . '_Include_SourceCode');
+        $View->Template_Add('Zero_Include_SourceCode');
         $View->Assign('file_line', $file_line);
         $View->Assign('offset', $offset < 0 ? 0 : $offset);
         $View->Assign('length', $length);

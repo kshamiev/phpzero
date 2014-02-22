@@ -421,7 +421,7 @@ class Zero_Filter
             $this->Filter = [];
             //  poisk
             $this->Search = ['List' => [], 'Value' => []];
-            $this->Add_Search_Text('ALL_PROPS', ['Comment' => 'model prop ALL_PROPS']);
+            $this->Add_Search_Text('ALL_PROPS', ['Comment' => Zero_I18n::T('Zero_App', 'model prop ALL_PROPS', 'all property')]);
             //  sortirovka
             $this->Sort = ['List' => [], 'Value' => []];
             //

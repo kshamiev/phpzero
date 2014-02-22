@@ -59,7 +59,9 @@
             <th>{translation "Zero_App" "Data"}</th>
         </tr>
         {foreach ($Props as $Prop => $row)}
-        {if ( 'Hidden' != $row['Form'] && 'Content' != $row['Form'] )}
+        {if ( 'Hidden' == $row['Form'] )}
+        <input type="hidden" name="Prop[{$Prop}]" value="{htmlspecialchars($Object->$Prop)}">
+        {else if ( '' != $row['Form'] && 'Content' != $row['Form'] )}
         <tr>
             <td width="220px">
                 {$row['Comment']} {if ( 'NO' == $row['IsNull'] )}<span class="subj_error">*</span>{/if}<br>

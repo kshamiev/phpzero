@@ -165,7 +165,17 @@ class Zero_App
         self::$Config = new Zero_Config();
 
         //  Processing incoming request (Zero_Route)
-        self::$Route = new Zero_Route();
+        if ( !file_exists($path = ZERO_PATH_APPLICATION . '/' . self::$Config->Host . '/component/Route.php') )
+        {
+            self::$Route = new Zero_Route();
+            throw new Exception('Route component not found', 500);
+        }
+        else
+        {
+            require_once $path;
+            $class = ucfirst(self::$Config->Host) . '_Route';
+            self::$Route = new $class();
+        }
 
         //  Session Initialization (Zero_Session)
         session_name(md5(self::$Config->Db['Name']));

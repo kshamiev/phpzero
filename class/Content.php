@@ -76,7 +76,7 @@ class Zero_Content extends Zero_Model
     {
         return [
             /*BEG_CONFIG_PROP*/
-            'ID' => ['AliasDB' => 'z.ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => '', 'Form' => 'Hidden'],
+            'ID' => ['AliasDB' => 'z.ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => '', 'Form' => ''],
             'Zero_Section_ID' => ['AliasDB' => 'z.Zero_Section_ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => '', 'Form' => 'Hidden'],
             'Zero_Language_ID' => ['AliasDB' => 'z.Zero_Language_ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => 1, 'Form' => 'Link'],
             'Name' => ['AliasDB' => 'z.Name', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'],
@@ -150,12 +150,12 @@ class Zero_Content extends Zero_Model
     {
         return [
             /*BEG_CONFIG_FORM_PROP*/
-            'ID' => array('Form' => 'Hidden'),
-            'Zero_Section_ID' => array('Form' => 'Hidden'),
-            'Zero_Language_ID' => array('Form' => 'Link'),
-            'Name' => array('Form' => 'Text'),
-            'Content' => array('Form' => 'Content'),
-            'Block' => array('Form' => 'Text'),
+            'ID' => [],
+            'Zero_Section_ID' => [],
+            'Zero_Language_ID' => [],
+            'Name' => [],
+            'Content' => [],
+            'Block' => [],
             /*END_CONFIG_FORM_PROP*/
         ];
     }

@@ -113,7 +113,7 @@ class Zero_Users extends Zero_Model
                 'DB' => 'I',
                 'IsNull' => 'NO',
                 'Default' => '',
-                'Form' => 'Hidden'
+                'Form' => ''
             ],
             'Zero_Groups_ID' => ['AliasDB' => 'z.Zero_Groups_ID', 'DB' => 'I', 'IsNull' => 'YES', 'Default' => '2', 'Form' => 'Link'],
             'Zero_Users_ID' => ['AliasDB' => 'z.Zero_Users_ID', 'DB' => 'I', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Link'],
@@ -203,21 +203,21 @@ class Zero_Users extends Zero_Model
     {
         return [
             /*BEG_CONFIG_FORM_PROP*/
-            'ID' => array('Form' => 'Hidden'),
-            'Zero_Groups_ID' => array('Form' => 'Link'),
-            'Zero_Users_ID' => array('Form' => 'Link'),
-            'Name' => array('Form' => 'Text'),
-            'Login' => array('Form' => 'Text'),
-            'Password' => array('Form' => 'Password'),
-            'IsAccess' => array('Form' => 'Radio'),
-            'Email' => array('Form' => 'Text'),
-            'Phone' => array('Form' => 'Text'),
-            'Skype' => array('Form' => 'Text'),
-            'IsCondition' => array('Form' => 'Radio'),
-            'ImgAvatar' => array('Form' => 'Img'),
-            'IsOnline' => array('Form' => 'ReadOnly'),
-            'DateOnline' => array('Form' => 'ReadOnly'),
-            'Date' => array('Form' => 'Date'),
+            'ID' => [],
+            'Zero_Groups_ID' => [],
+            'Zero_Users_ID' => [],
+            'Name' => [],
+            'Login' => [],
+            'Password' => [],
+            'IsAccess' => [],
+            'Email' => [],
+            'Phone' => [],
+            'Skype' => [],
+            'IsCondition' => [],
+            'ImgAvatar' => [],
+            'IsOnline' => [],
+            'DateOnline' => [],
+            'Date' => [],
             /*END_CONFIG_FORM_PROP*/
         ];
     }

@@ -62,6 +62,7 @@ class Zero_I18n
         //
         if ( 'App' != $folder_list[1] )
         {
+            $folder_list[0] = Zero_App::$Config->Host;
             $folder_list = [$folder_list[0], 'App'];
             $file_name1 = $folder_list[0] . '_' . $folder_list[1];
             if ( !isset(self::$_I18n[$file_name1]) )

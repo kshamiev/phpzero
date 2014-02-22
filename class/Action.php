@@ -75,7 +75,7 @@ class Zero_Action extends Zero_Model
     {
         return [
             /*BEG_CONFIG_PROP*/
-            'ID' => ['AliasDB' => 'z.ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => '', 'Form' => 'Hidden'],
+            'ID' => ['AliasDB' => 'z.ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => '', 'Form' => ''],
             'Zero_Section_ID' => ['AliasDB' => 'z.Zero_Section_ID', 'DB' => 'I', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Link'],
             'Zero_Groups_ID' => ['AliasDB' => 'z.Zero_Groups_ID', 'DB' => 'I', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Link'],
             'Action' => ['AliasDB' => 'z.Action', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'],
@@ -144,10 +144,10 @@ class Zero_Action extends Zero_Model
     {
         return [
             /*BEG_CONFIG_FORM_PROP*/
-            'ID' => array('Form' => 'Hidden'),
-            'Zero_Section_ID' => array('Form' => 'Link'),
-            'Zero_Groups_ID' => array('Form' => 'Link'),
-            'Action' => array('Form' => 'Text'),
+            'ID' => [],
+            'Zero_Section_ID' => [],
+            'Zero_Groups_ID' => [],
+            'Action' => [],
             /*END_CONFIG_FORM_PROP*/
         ];
     }

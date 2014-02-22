@@ -5,7 +5,7 @@
  * 'translation Key' => 'Translation Value'
  */
 return [
-    'controller action AccessAllow' => 'Right to section',
+    'controller action Default' => 'Right to section',
     'controller action Add' => 'add',
     'translation Filters' => 'Filters',
     'translation Search' => 'Search',

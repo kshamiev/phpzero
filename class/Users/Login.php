@@ -19,6 +19,8 @@ class Zero_Users_Login extends Zero_Controller
      */
     public function Action_Default()
     {
+        if ( Zero_App::$Users->Zero_Groups_ID != 2 )
+            Zero_App::ResponseRedirect(ZERO_HTTPH);
         // Инициализация чанков
         $this->Chunk_Init();
         $this->View->Assign('Users', Zero_App::$Users);
@@ -39,19 +41,6 @@ class Zero_Users_Login extends Zero_Controller
     }
 
     /**
-     * Recovery of user details.
-     *
-     * @return boolean flag stop execute of the next chunk
-     */
-    public function Action_Reminder()
-    {
-        $this->Chunk_Init();
-        $this->Chunk_Reminder();
-        $this->View->Assign('Users', Zero_App::$Users);
-        return $this->View;
-    }
-
-    /**
      * User exit.
      *
      * @return boolean flag stop execute of the next chunk
@@ -66,28 +55,14 @@ class Zero_Users_Login extends Zero_Controller
     }
 
     /**
-     * Initialize the online status is not active users.
-     *
-     * @return boolean flag stop execute of the next chunk
-     * @TODO Переместит отдельно консолные контроллеры
-     */
-    public function Action_Offline()
-    {
-        Zero_Users::DB_Offline(Zero_App::$Config->Site_UsersTimeoutOnline);
-        return $this->View;
-    }
-
-    /**
      * Initialization of the stack chunks and input parameters
      *
      * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_Init()
     {
-        $this->Model = Zero_Model::Make('Zero_Users');
+        $this->Model = Zero_Model::Make('Admin_Users');
         $this->View = new Zero_View(get_class($this));
-        if ( !isset($this->Params['url_history']) )
-            $this->Params['url_history'] = ZERO_HTTPH;
     }
 
     /**
@@ -101,7 +76,7 @@ class Zero_Users_Login extends Zero_Controller
         if ( !$_REQUEST['Login'] || !$_REQUEST['Password'] )
             return true;
 
-        $Users = Zero_Model::Make('Www_Users');
+        $Users = Zero_Model::Make('Admin_Users');
         $Users->DB->Sql_Where('Login', '=', $_REQUEST['Login']);
         $Users->DB->Select('*');
 
@@ -115,42 +90,7 @@ class Zero_Users_Login extends Zero_Controller
 
         Zero_App::$Users = $Users;
         Zero_App::$Users->Factory_Set();
-        $url_history = $this->Params['url_history'];
-        unset($this->Params['url_history']);
-        Zero_App::ResponseRedirect($url_history);
+        Zero_App::ResponseRedirect('/profile');
         return false;
-    }
-
-    /**
-     * Recovery of user details.
-     *
-     * @return boolean flag stop execute of the next chunk
-     */
-    protected function Chunk_Reminder()
-    {
-        $this->Model->VL->Validate($_REQUEST['Users'], 'reminder');
-        if ( 0 < count($this->Model->VL->Get_Errors()) )
-        {
-            $this->View->Assign('Error_Validator', $this->Model->VL->Get_Errors());
-            return $this->Set_Message('Error_Validate', 1, false);
-        }
-
-        $this->Model->DB->Sql_Where('Email', '=', $_REQUEST['Users']['Email']);
-        $this->Model->DB->Select('ID, Name, Login');
-
-        $password = substr(md5(uniqid(mt_rand())), 0, 10);
-        $this->Model->Password = md5($password);
-        $this->Model->DB->Update();
-
-        $subject = "Reminder access details " . HTTP;
-        $View = new Zero_View(get_class($this) . 'LoginReminderMailMail');
-        $View->Assign('Users', $this->Model);
-        $View->Assign('password', $password);
-        $message = $View->Fetch();
-        Zero_Lib_Mail::Send(Zero_App::$Config->Site_Email, $this->Model->Email, $subject, $message);
-
-        $this->Model = Zero_Model::Make('Zero_Users');
-
-        return $this->Set_Message("Reminder", 0);
     }
 }
