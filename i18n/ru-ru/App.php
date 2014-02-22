@@ -13,6 +13,9 @@ return [
     'controller action Save' => 'сохранить',
     'controller action CatalogMove' => 'переместить',
     'controller action UpdateUrl' => 'обновить url',
+    'controller message Remove' => 'удалено',
+    'controller message Add' => 'добавлено',
+    'controller message Save' => 'изменено',
     'translation Filters' => 'Фильтры',
     'translation Search' => 'Поиск',
     'translation Sorting' => 'Сортировка',
@@ -38,5 +41,6 @@ return [
     'controller ControllerName' => 'TranslationValue',
     'controller ControllerName action ActionName' => 'TranslationValue',
     'controller ControllerName message MessageKey' => 'TranslationValue',
+    'controller message Error_Validate' => 'ошибка ввода данных',
     'translation Key' => 'Translation Value',
 ];
