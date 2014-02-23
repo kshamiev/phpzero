@@ -1,0 +1,8 @@
+<table width="100%" cellpaddign="4" cellspacing="0" bgcolor="#ffffff">
+    {for ($i = $offset; $i <= $length; $i++)}
+    <tr bgcolor="{if ($line == $i + 1)}#ace1af{else}#d0f0c0{/}">
+        <td width="30px" align="right"><font color="#00008b">{$i + 1}</font></td>
+        <td>{$file_line[$i]}</td>
+    </tr>
+    {/}
+</table>

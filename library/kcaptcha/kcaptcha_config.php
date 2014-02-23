@@ -30,7 +30,7 @@ $white_noise_density=1/6;
 $black_noise_density=1/30;
 
 # increase safety by prevention of spaces between symbols
-$no_spaces = true;
+$no_spaces = false;
 
 # show credits
 $show_credits = false; # set to false to remove credits line. Credits adds 12 pixels to image height

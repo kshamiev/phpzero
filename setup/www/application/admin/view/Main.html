@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      {include "Zero_Include_Header"}
+  </head>
+  <body>
+  {plugin "Zero_Users_Online"}
+    <table width="1250px" height="100%" cellspacing="1" cellpadding="5" border="1" align="center">
+      <tr>
+        <td width="220px" height="40px" align="center">{plugin "Zero_Content_Page" Block="head_left"}</td>
+        <td>
+            {translation "Zero_App" "Project"}: {Zero_App::$Config->Site_Name}&nbsp;&nbsp;
+            {foreach (Zero_App::Get_Variable('action_message') as $row)}
+            {$row[1]}&nbsp;&nbsp;
+            {/}
+        </td>
+        <td width="150px" align="center">
+            <a href="/profile">{lang "Zero_Users" "profile"}</a>
+            <a href="/?act=Logout">{translation "Zero_Users" "exit"}</a>
+        </td>
+      </tr>
+      <tr valign="top">
+        <td>
+            {plugin "Zero_Section_NavigationAccordion" url=""}
+        </td>
+        <td id="wrapper-content" colspan="2">
+            {plugin "Zero_Section_NavigationLine"}
+            {$Content}
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
