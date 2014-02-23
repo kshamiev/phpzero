@@ -20,7 +20,7 @@ class Zero_Users_Login extends Zero_Controller
     public function Action_Default()
     {
         if ( Zero_App::$Users->Zero_Groups_ID != 2 )
-            Zero_App::ResponseRedirect(ZERO_HTTPH);
+            Zero_App::ResponseRedirect('/user/profile');
         // Инициализация чанков
         $this->Chunk_Init();
         $this->View->Assign('Users', Zero_App::$Users);

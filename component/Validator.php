@@ -164,6 +164,7 @@ class Zero_Validator
             $_FILES[$prop]['name'] = Zero_Lib_String::Transliteration_FileName($_FILES[$prop]['name']);
             $this->Model->$prop = 'File Upload Ok';
         }
+        return '';
     }
 
     /**

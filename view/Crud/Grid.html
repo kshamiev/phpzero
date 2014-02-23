@@ -64,6 +64,30 @@
         </table>
       </td>
     </tr>
+    {else if ( 'Date' == $row['Filter'] )}
+    <tr>
+      <td width="200px">{$row['Comment']}</td>
+      <td>
+        <table class="notpad" width="100%" height="100%" cellspacing="0" cellpadding="0" border="0">
+          <tr>
+            <td><input class="field datepicker" type="text" id="{$prop}Beg" name="Filter[{$prop}][0]" value="{$row['Value'][0]}" onclick="this.value='';"></td>
+            <td><input class="field datepicker" type="text" id="{$prop}End" name="Filter[{$prop}][1]" value="{$row['Value'][1]}" onclick="this.value='';"></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    {else if ( 'Time' == $row['Filter'] )}
+    <tr>
+      <td width="200px">{$row['Comment']}</td>
+      <td>
+        <table class="notpad" width="100%" height="100%" cellspacing="0" cellpadding="0" border="0">
+          <tr>
+            <td><input class="field timepicker" type="text" id="{$prop}Beg" name="Filter[{$prop}][0]" value="{$row['Value'][0]}" onclick="this.value='';"></td>
+            <td><input class="field timepicker" type="text" id="{$prop}End" name="Filter[{$prop}][1]" value="{$row['Value'][1]}" onclick="this.value='';"></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
     {/if}
     {/if}
     {/foreach}

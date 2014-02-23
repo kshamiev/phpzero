@@ -267,10 +267,9 @@ class Zero_Filter
     }
 
     /**
-     * Dobavlenie fil`tra daty` i vremeni
-     *
-     * @param string $prop Svoi`stvo daty` i vremeni dlia kotorogo budet sozdan fil`tr.
-     * @param integer $is_visible Vidimost` fil`tra (1 - otobrazhaetsia, 0 - ne otobrazhaetsia po umolchaniiu)
+     * @param string $prop Свойство даты и времени для которого будет создан фильтр.
+     * @param array $row Массив конфигурации свойства
+     * @param int $is_visible Видимость фильтра (1 - отображаетсиа, 0 - не отображаетсиа по умолчанию)
      * @return bool
      */
     public function Add_Filter_DateTime($prop, $row, $is_visible = 0)
@@ -279,6 +278,40 @@ class Zero_Filter
             return true;
         $this->Filter[$prop] = $row;
         $this->Filter[$prop]['Filter'] = 'DateTime';
+        $this->Filter[$prop]['Visible'] = $is_visible;
+        $this->Filter[$prop]['Value'] = ['', ''];
+        return true;
+    }
+
+    /**
+     * @param string $prop Свойство даты и времени для которого будет создан фильтр.
+     * @param array $row Массив конфигурации свойства
+     * @param int $is_visible Видимость фильтра (1 - отображаетсиа, 0 - не отображаетсиа по умолчанию)
+     * @return bool
+     */
+    public function Add_Filter_Date($prop, $row, $is_visible = 0)
+    {
+        if ( isset($this->Filter[$prop]) )
+            return true;
+        $this->Filter[$prop] = $row;
+        $this->Filter[$prop]['Filter'] = 'Date';
+        $this->Filter[$prop]['Visible'] = $is_visible;
+        $this->Filter[$prop]['Value'] = ['', ''];
+        return true;
+    }
+
+    /**
+     * @param string $prop Свойство даты и времени для которого будет создан фильтр.
+     * @param array $row Массив конфигурации свойства
+     * @param int $is_visible Видимость фильтра (1 - отображаетсиа, 0 - не отображаетсиа по умолчанию)
+     * @return bool
+     */
+    public function Add_Filter_Time($prop, $row, $is_visible = 0)
+    {
+        if ( isset($this->Filter[$prop]) )
+            return true;
+        $this->Filter[$prop] = $row;
+        $this->Filter[$prop]['Filter'] = 'Time';
         $this->Filter[$prop]['Visible'] = $is_visible;
         $this->Filter[$prop]['Value'] = ['', ''];
         return true;
