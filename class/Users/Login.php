@@ -12,6 +12,8 @@
  */
 class Zero_Users_Login extends Zero_Controller
 {
+
+
     /**
      * Vy`polnenie dei`stvii`
      *
@@ -20,7 +22,7 @@ class Zero_Users_Login extends Zero_Controller
     public function Action_Default()
     {
         if ( Zero_App::$Users->Zero_Groups_ID != 2 )
-            Zero_App::ResponseRedirect('/user/profile');
+            Zero_App::ResponseRedirect($this->Params['LoginRedirect']);
         // Инициализация чанков
         $this->Chunk_Init();
         $this->View->Assign('Users', Zero_App::$Users);
@@ -61,6 +63,7 @@ class Zero_Users_Login extends Zero_Controller
      */
     protected function Chunk_Init()
     {
+        $this->Params['LoginRedirect'] = '/user/profile';
         $this->Model = Zero_Model::Make('Admin_Users');
         $this->View = new Zero_View(get_class($this));
     }
@@ -90,7 +93,7 @@ class Zero_Users_Login extends Zero_Controller
 
         Zero_App::$Users = $Users;
         Zero_App::$Users->Factory_Set();
-        Zero_App::ResponseRedirect('/profile');
+        Zero_App::ResponseRedirect($this->Params['LoginRedirect']);
         return false;
     }
 }
