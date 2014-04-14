@@ -26,14 +26,11 @@ class Zero_Section_SeoTag extends Zero_Controller
             'Description' => Zero_App::Get_Variable('Description'),
             'Keywords' => Zero_App::Get_Variable('Keywords')
         ];
-
         if ( is_object(Zero_App::$Section) && 0 < Zero_App::$Section->ID )
         {
-            $seo_data = array_merge($seo_data, [
-                'Title' => Zero_App::$Section->Title,
-                'Description' => Zero_App::$Section->Description,
-                'Keywords' => Zero_App::$Section->Keywords
-            ]);
+            $seo_data['Title'] .= Zero_App::$Section->Title;
+            $seo_data['Keywords'] .= Zero_App::$Section->Keywords;
+            $seo_data['Description'] .= Zero_App::$Section->Description;
         }
         $this->View = new Zero_View(get_class($this));
         $this->View->Assign('seo_data', $seo_data);
