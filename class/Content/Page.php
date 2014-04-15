@@ -3,7 +3,7 @@
 /**
  * Controller. Content Page.
  *
- * {plugin "Www_Content_Page" block="content"}
+ * {plugin "Www_Content_Page" view="" block="content"}
  *
  * @package Zero.Content.Controller
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
@@ -43,7 +43,10 @@ class Zero_Content_Page extends Zero_Controller
         }
         if ( 'content' == $this->Params['block'] )
         {
-            $this->View = new Zero_View(get_class($this));
+            if ( isset($this->Params['view']) )
+                $this->View = new Zero_View($this->Params['view']);
+            else
+                $this->View = new Zero_View(get_class($this));
             $this->View->Assign('Name', $Content->Name);
             $this->View->Assign('Content', $Content->Content);
         }

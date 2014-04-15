@@ -15,13 +15,13 @@
             {/}
         </td>
         <td width="150px" align="center">
-            <a href="/profile">{lang "Zero_Users" "profile"}</a>
+            <a href="/user/profile">{lang "Zero_Users" "profile"}</a>
             <a href="/?act=Logout">{translation "Zero_Users" "exit"}</a>
         </td>
       </tr>
       <tr valign="top">
         <td>
-            {plugin "Zero_Section_NavigationAccordion" url=""}
+            {plugin "Zero_Section_NavigationAccordion" access="true"}
         </td>
         <td id="wrapper-content" colspan="2">
             {plugin "Zero_Section_NavigationLine"}
