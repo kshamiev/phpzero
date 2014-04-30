@@ -19,7 +19,7 @@ class Zero_Section_Edit extends Zero_Crud_Edit
      *
      * @var string
      */
-    protected $ModelName = 'Zero_Section';
+    protected $ModelName = 'Www_Section';
 
     /**
      * Template view

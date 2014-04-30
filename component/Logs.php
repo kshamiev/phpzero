@@ -152,55 +152,48 @@ class Zero_Logs
      */
     public static function Exception_Handler(Exception $exception)
     {
-        if ( 403 == $exception->getCode() )
-        {
+        if (403 == $exception->getCode()) {
             //            self::$_CurrentTime = [];
             self::Set_Message('Section Url: ' . Zero_App::$Config->Host . Zero_App::$Route->Url);
             header('HTTP/1.1 403 Access Denied');
-        }
-        else if ( 404 == $exception->getCode() )
-        {
+        } else if (404 == $exception->getCode()) {
             //            self::$_CurrentTime = [];
             self::Set_Message('Section Url: ' . Zero_App::$Config->Host . Zero_App::$Route->Url);
             header('HTTP/1.1 404 Not Found');
-        }
-        else
-        {
+        } else {
             header('HTTP/1.1 500 Server Error');
             $range_file_error = 10;
             self::Set_Message("#{ERROR_EXCEPTION} " . $exception->getMessage() . ' ' . $exception->getFile() . '(' . $exception->getLine() . ')');
             self::Set_Message(self::Get_SourceCode($exception->getFile(), $exception->getLine(), $range_file_error), '');
             $traceList = $exception->getTrace();
             array_shift($traceList);
-            foreach ($traceList as $id => $trace)
-            {
-                if ( !isset($trace['args']) )
+            foreach ($traceList as $id => $trace) {
+                if (!isset($trace['args']))
                     continue;
                 $args = [];
                 $range_file_error = $range_file_error - 2;
-                foreach ($trace['args'] as $arg)
-                {
-                    if ( is_scalar($arg) )
+                foreach ($trace['args'] as $arg) {
+                    if (is_scalar($arg))
                         $args[] = "'" . $arg . "'";
-                    else if ( is_array($arg) )
+                    else if (is_array($arg))
                         $args[] = print_r($arg, true);
-                    else if ( is_object($arg) )
+                    else if (is_object($arg))
                         $args[] = get_class($arg) . ' Object...';
                 }
                 $trace['args'] = join(', ', $args);
-                if ( isset($trace['class']) )
+                if (isset($trace['class']))
                     $callback = $trace['class'] . $trace['type'] . $trace['function'];
-                else if ( isset($trace['function']) )
+                else if (isset($trace['function']))
                     $callback = $trace['function'];
                 else
                     $callback = '';
-                if ( !isset($trace['file']) )
+                if (!isset($trace['file']))
                     $trace['file'] = '';
-                if ( !isset($trace['line']) )
+                if (!isset($trace['line']))
                     $trace['line'] = 0;
                 $error = "   #{" . $id . "}" . $trace['file'] . '(' . $trace['line'] . '): ' . $callback . "(" . str_replace("\n", "", $trace['args']) . ");";
                 self::Set_Message($error);
-                if ( $trace['file'] && $trace['line'] )
+                if ($trace['file'] && $trace['line'])
                     self::Set_Message(self::Get_SourceCode($trace['file'], $trace['line'], $range_file_error), 'code');
             }
         }
@@ -223,15 +216,17 @@ class Zero_Logs
     public static function Exit_Application()
     {
         // Logirovanie v brauzer
-        if ( Zero_App::$Config->Log_Output_Display && (!Zero_App::$Section instanceof Zero_Section || 'html' == Zero_App::$Section->ContentType) )
-            self::Output_Display();
+        if (Zero_App::$Config->Log_Output_Display) {
+            if (false == Zero_App::$Section instanceof Zero_Section || 'html' == Zero_App::$Section->ContentType)
+                self::Output_Display();
+        }
 
         // zakry`vaem soedinenie s brauzerom (rabotaet tol`ko pod nginx)
-        if ( function_exists('fastcgi_finish_request') )
+        if (function_exists('fastcgi_finish_request'))
             fastcgi_finish_request();
 
         // Logirovanie v fai`ly`
-        if ( Zero_App::$Config->Log_Output_File )
+        if (Zero_App::$Config->Log_Output_File)
             self::Output_File();
     }
 
@@ -242,8 +237,7 @@ class Zero_Logs
     {
         $iterator_list = [];
         $iterator = Zero_Session::Get_Instance()->getIterator();
-        while ( $iterator->valid() )
-        {
+        while ($iterator->valid()) {
             $iterator_list[$iterator->key()] = get_class($iterator->current());
             $iterator->next();
         }
@@ -263,36 +257,31 @@ class Zero_Logs
     {
         self::$_FileLog = Zero_App::$Config->Host . '_' . self::$_FileLog;
         // Logiruem rabotu prilozheniia v tcelom
-        if ( Zero_App::$Config->Log_Profile_Application )
-        {
+        if (Zero_App::$Config->Log_Profile_Application) {
             $output = self::Get_Usage_MemoryAndTime();
             $output = date('[d.m.Y H:i:s]') . "\n" . join("\n", $output) . "\n\n";
             self::Save_File($output, self::$_FileLog);
         }
         //
-        if ( 0 < count(self::$_Message) )
-        {
+        if (0 < count(self::$_Message)) {
             $output = self::Get_Usage_MemoryAndTime()[0];
             $errors = [];
             $warnings = [];
-            foreach (self::$_Message as $row)
-            {
-                if ( 'error' == $row[1] )
+            foreach (self::$_Message as $row) {
+                if ('error' == $row[1])
                     $errors[] = str_replace(["\r", "\t"], " ", var_export($row[0], true));
-                else if ( 'warning' == $row[1] )
+                else if ('warning' == $row[1])
                     $warnings[] = str_replace(["\r", "\t"], " ", var_export($row[0], true));
             }
             // logirovanie oshibki v fai`l
-            if ( Zero_App::$Config->Log_Profile_Error && 0 < count($errors) )
-            {
+            if (Zero_App::$Config->Log_Profile_Error && 0 < count($errors)) {
                 array_unshift($errors, str_replace(["\r", "\t"], " ", $output));
                 $errors = preg_replace('![ ]{2,}!', ' ', join("\n", $errors));
                 $errors = date('[d.m.Y H:i:s]') . "\n" . $errors . "\n\n";
                 self::Save_File($errors, self::$_FileLog . '_errors');
             }
             // logirovanie preduprezhdenii` v fai`l
-            if ( Zero_App::$Config->Log_Profile_Warning && 0 < count($warnings) )
-            {
+            if (Zero_App::$Config->Log_Profile_Warning && 0 < count($warnings)) {
                 array_unshift($warnings, str_replace(["\r", "\t"], " ", $output));
                 $warnings = preg_replace('![ ]{2,}!', ' ', join("\n", $warnings));
                 $warnings = date('[d.m.Y H:i:s]') . "\n" . $warnings . "\n\n";
@@ -300,13 +289,11 @@ class Zero_Logs
             }
         }
         // logirovanie operatcii` pol`zovatelia v fai`l
-        if ( Zero_App::$Config->Log_Profile_Action && isset($_REQUEST['act']) && $_REQUEST['act'] )
-        {
+        if (Zero_App::$Config->Log_Profile_Action && isset($_REQUEST['act']) && $_REQUEST['act']) {
             $operation = date('[d.m.Y H:i:s]') . "\t";
             $operation .= Zero_App::$Users->Login . "\t";
             $operation .= Zero_App::$Section->Controller . '.' . $_REQUEST['act'] . "\t";
-            foreach (Zero_App::Get_Variable('action_message') as $message)
-            {
+            foreach (Zero_App::Get_Variable('action_message') as $message) {
                 $operation .= $message[0] . "\t";
             }
             $operation .= Zero_App::$Config->Http . $_SERVER['REQUEST_URI'] . "\n";
@@ -326,7 +313,7 @@ class Zero_Logs
     {
         $file_line = explode('<br />', highlight_file($file, true));
         $offset = $line - $range_file_error;
-        if ( $offset < 0 )
+        if ($offset < 0)
             $offset = 0;
         $length = isset($file_line[$line + $range_file_error]) ? $line + $range_file_error : count($file_line) - 1;
         $View = new Zero_View(ucfirst(Zero_App::$Config->Host) . '_Include_SourceCode');
@@ -345,29 +332,26 @@ class Zero_Logs
      */
     protected static function Get_Usage_MemoryAndTime()
     {
-        if ( null === self::$_OutputApplication )
-        {
+        if (null === self::$_OutputApplication) {
             // initcializatciia logov
-            if ( isset($_SERVER['REQUEST_URI']) )
+            if (isset($_SERVER['REQUEST_URI']))
                 self::$_OutputApplication = ["#{REQUEST_URI} " . Zero_App::$Config->Http . $_SERVER['REQUEST_URI']];
-            else if ( isset($_SERVER['argv'][1]) )
+            else if (isset($_SERVER['argv'][1]))
                 self::$_OutputApplication = ["#{DEMON} " . $_SERVER['argv'][1] . ' ' . Zero_App::$Config->Http];
             // Sobiraem tai`mery` v kuchu
-            foreach (self::$_CurrentTime as $description => $time)
-            {
-                if ( !isset($time['stop']) )
+            foreach (self::$_CurrentTime as $description => $time) {
+                if (!isset($time['stop']))
                     $time['stop'] = microtime(true);
                 $limit = round($time['stop'] - $time['start'], 4);
-                if ( $limit < self::$_CurrentTimeLimit )
+                if ($limit < self::$_CurrentTimeLimit)
                     continue;
                 $description = str_replace("\r", "", $description);
                 $description = preg_replace("~(\s+\n){1,}~si", "\n", $description);
                 $description = preg_replace('~[ ]{2,}~', ' ', $description);
-                if ( strpos($description, '#{SQL}') === 0 )
+                if (strpos($description, '#{SQL}') === 0)
                     $description = str_replace("\n", "\n\t\t", $description);
                 $indent = '';
-                for ($i = 0; $i < $time['level']; $i++)
-                {
+                for ($i = 0; $i < $time['level']; $i++) {
                     $indent .= "\t";
                 }
                 self::$_OutputApplication[] = $indent . '{' . $limit . '} ' . trim($description);

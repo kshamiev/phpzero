@@ -52,27 +52,31 @@ class Zero_Route
         $this->Url = '/';
 
         $row = explode('/', strtolower(rtrim(ltrim(explode('?', $_SERVER['REQUEST_URI'])[0], '/'), '/')));
-        if ( $this->Lang != $row[0] && isset(Zero_App::$Config->Language[$row[0]]) )
-        {
+
+        // язык
+        if ($this->Lang != $row[0] && isset(Zero_App::$Config->Language[$row[0]])) {
             $this->Lang = array_shift($row);
             $this->LangId = Zero_App::$Config->Language[$this->Lang]['ID'];
             $this->Url = '/' . $this->Lang;
         }
 
-        if ( 0 < count($row) && $row[0] )
-        {
+        // api
+        $this->Param['actApi'] = '';
+        if ( 'api' == $row[0] ) {
+            $this->Param['actApi'] = array_pop($row);
+        }
+
+        // парамтеры
+        if (0 < count($row) && $row[0]) {
             $param = array_pop($row);
-            if ( preg_match("~.+?-([^/]+)$~", $param, $arr) )
-            {
+            if (preg_match("~.+?-([^/]+)$~", $param, $arr)) {
                 $row[] = str_replace('-' . $arr[1], '', $param);
-                foreach (explode('-', explode('.', $arr[1])[0]) as $segment)
-                {
+                foreach (explode('-', explode('.', $arr[1])[0]) as $segment) {
                     $arr = explode(':', $segment);
-                    if ( 1 < count($arr) )
+                    if (1 < count($arr))
                         $this->Param[$arr[0]] = $arr[1];
                 }
-            }
-            else
+            } else
                 $row[] = $param;
             $this->Url .= implode('/', $row);
         }

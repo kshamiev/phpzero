@@ -362,7 +362,7 @@ class Zero_Engine
             $Section_Two->Zero_Section_ID = $Section->ID;
             $Section_Two->Url = Zero_App::$Config->Host . '/admin/' . $url;
             $Section_Two->UrlThis = $url;
-            $Section_Two->Layout = 'Zero_Admin';
+            $Section_Two->Layout = 'Zero_Main';
             $Section_Two->Controller = 'Zero_Content_Page';
             $Section_Two->IsAuthorized = 'yes';
             $Section_Two->IsVisible = 'yes';
@@ -428,7 +428,7 @@ class Zero_Engine
                 $Section_Three->Zero_Section_ID = $Section_Two->ID;
                 $Section_Three->Url = Zero_App::$Config->Host . '/admin/' . $url;
                 $Section_Three->UrlThis = strtolower($package[1]);
-                $Section_Three->Layout = 'Zero_Admin';
+                $Section_Three->Layout = 'Zero_Main';
                 $Section_Three->Controller = $row['Name'] . '_Grid';
                 $Section_Three->IsAuthorized = 'yes';
                 $Section_Three->IsVisible = 'yes';
@@ -467,7 +467,7 @@ class Zero_Engine
                 $Section_Four->Zero_Section_ID = $Section_Three->ID;
                 $Section_Four->Url = Zero_App::$Config->Host . '/admin/' . $url;
                 $Section_Four->UrlThis = 'edit';
-                $Section_Four->Layout = 'Zero_Admin';
+                $Section_Four->Layout = 'Zero_Main';
                 $Section_Four->Controller = $row['Name'] . '_Edit';
                 $Section_Four->IsAuthorized = 'yes';
                 $Section_Four->IsVisible = 'no';

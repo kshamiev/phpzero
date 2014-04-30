@@ -64,7 +64,7 @@ class Zero_Users_Login extends Zero_Controller
     protected function Chunk_Init()
     {
         $this->Params['LoginRedirect'] = '/user/profile';
-        $this->Model = Zero_Model::Make('Admin_Users');
+        $this->Model = Zero_Model::Make('Www_Users');
         $this->View = new Zero_View(get_class($this));
     }
 
@@ -79,7 +79,7 @@ class Zero_Users_Login extends Zero_Controller
         if ( !$_REQUEST['Login'] || !$_REQUEST['Password'] )
             return true;
 
-        $Users = Zero_Model::Make('Admin_Users');
+        $Users = Zero_Model::Make('Www_Users');
         $Users->DB->Sql_Where('Login', '=', $_REQUEST['Login']);
         $Users->DB->Select('*');
 

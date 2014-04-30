@@ -28,7 +28,7 @@ define('URL', Zero_App::$Route->Url);
  * The language suffix
  */
 $lang = '';
-if ( Zero_App::$Route->Lang != Zero_App::$Config->Site_Language )
+if (Zero_App::$Route->Lang != Zero_App::$Config->Site_Language)
     $lang = '/' . Zero_App::$Route->Lang;
 define('ZERO_LANG', $lang);
 define('LANG', $lang);
@@ -92,7 +92,7 @@ class Zero_View
      */
     public function __construct($template = '')
     {
-        if ( '' != $template )
+        if ('' != $template)
             $this->_Template[$template] = $template;
     }
 
@@ -115,7 +115,7 @@ class Zero_View
      */
     public function Template_Rem($template = '')
     {
-        if ( '' != $template )
+        if ('' != $template)
             unset($this->_Template[$template]);
         else
             $this->_Template = [];
@@ -135,6 +135,24 @@ class Zero_View
     }
 
     /**
+     * Сборка ответа клиенту
+     *
+     * @param mixed $value Отдаваемые данные
+     * @param int $code Код ошибки
+     * @param string $message Сообщение
+     * @param string $messageDebug Служебное сообщение
+     * @return bool
+     */
+    public function AssignApi($value, $code, $message, $messageDebug = "")
+    {
+        $this->_Data['Code'] = $code;
+        $this->_Data['Message'] = $message;
+        $this->_Data['MessageDebug'] = $messageDebug;
+        $this->_Data['Data'] = $value;
+        return true;
+    }
+
+    /**
      * Udalenie danny`kh iz shablona. I sootvetsvenno iz posleduiushchego vy`voda v shablon.
      *
      * Esli $variable ne ukazan proishodit polny`i` sbros peredanny`kh danny`kh
@@ -143,7 +161,7 @@ class Zero_View
      */
     public function Remove($variable = '')
     {
-        if ( $variable )
+        if ($variable)
             unset($this->_Data[$variable]);
         else
             $this->_Data = [];
@@ -159,9 +177,9 @@ class Zero_View
      */
     public function Receive($variable = '')
     {
-        if ( isset($this->_Data[$variable]) )
+        if (isset($this->_Data[$variable]))
             return $this->_Data[$variable];
-        else if ( '' == $variable )
+        else if ('' == $variable)
             return $this->_Data;
         else
             return null;
@@ -182,24 +200,20 @@ class Zero_View
     {
         $html = '';
         $tpl = '';
-        foreach ($this->_Template as $template)
-        {
+        foreach ($this->_Template as $template) {
             $html = $this->Search_Template($template, $layout);
-            if ( '' != $html )
-            {
+            if ('' != $html) {
                 $tpl = $html . '_' . ZERO_LANG . '.tpl';
-                if ( 1 == Zero_App::$Config->Site_TemplateParsing || !file_exists($tpl) )
+                if (1 == Zero_App::$Config->Site_TemplateParsing || !file_exists($tpl))
                     Zero_Lib_FileSystem::File_Save($tpl, $this->_Parsing(file_get_contents($html)));
                 break;
             }
         }
-        if ( '' == $html )
-        {
+        if ('' == $html) {
             //            Zero_Logs::Set_Message("Not found layout or template [{" . implode(', ', $this->_Template) . "}]");
             return '';
         }
-        if ( Zero_App::$Config->Site_TemplateParsing )
-        {
+        if (Zero_App::$Config->Site_TemplateParsing) {
             $this->_Data['__'] = $this->_Data;
             $this->_Data['_'] = array_keys($this->_Data);
         }
@@ -248,12 +262,12 @@ class Zero_View
 //        }
 //        else
 //        {
-            $arr = explode('_', $template);
-            $module = strtolower(array_shift($arr));
-            $path = ZERO_PATH_APPLICATION . '/' . $module . '/view/' . implode('/', $arr) . self::EXT_VIEW;
-            if ( file_exists($path) )
-                return $path;
-            Zero_Logs::Set_Message('NOT FOUND view [CONTROLLER] ' . $path, "code");
+        $arr = explode('_', $template);
+        $module = strtolower(array_shift($arr));
+        $path = ZERO_PATH_APPLICATION . '/' . $module . '/view/' . implode('/', $arr) . self::EXT_VIEW;
+        if (file_exists($path))
+            return $path;
+        Zero_Logs::Set_Message('NOT FOUND view [CONTROLLER] ' . $path, "code");
 //        }
         return '';
     }
@@ -304,7 +318,7 @@ class Zero_View
      */
     private function _Parsing_Include($matches)
     {
-        if ( '' != $template = $this->Search_Template($matches[1], true) )
+        if ('' != $template = $this->Search_Template($matches[1], true))
             $matches = file_get_contents($template);
         else
             $matches = '';
@@ -338,8 +352,7 @@ class Zero_View
     {
         $plugin_name = $matches[1];
         $properties = isset($matches[2]) ? trim($matches[2]) : '';
-        if ( $properties )
-        {
+        if ($properties) {
             $properties = preg_replace('!([\w\d_]+)\s*=\s*!si', ',' . "\n" . '"\\1" => ', $properties);
             $properties = trim($properties, ',');
         }
@@ -357,11 +370,10 @@ class Zero_View
     {
 //        Zero_Logs::Start('#{APP.Controller} ' . $plugin_name);
         $Plugin = Zero_Controller::Make($plugin_name, $properties);
-        Zero_Logs::Start('#{PLUGIN.Action} ' . $plugin_name);
+        Zero_Logs::Start('#{PLUGIN.Action} ' . $plugin_name . ' -> Action_Default');
         $View = $Plugin->Action_Default();
-        Zero_Logs::Stop('#{PLUGIN.Action} ' . $plugin_name);
-        if ( $View instanceof Zero_View )
-        {
+        Zero_Logs::Stop('#{PLUGIN.Action} ' . $plugin_name . ' -> Action_Default');
+        if ($View instanceof Zero_View) {
             Zero_Logs::Start('#{PLUGIN.View} ' . $plugin_name);
             $View = $View->Fetch();
             Zero_Logs::Stop('#{PLUGIN.View} ' . $plugin_name);
