@@ -701,9 +701,11 @@ class Zero_Engine
             }
             //
             $sql = "SHOW FULL COLUMNS FROM `{$tbl}` WHERE `Field` LIKE '{$Table}_%ID';";
-            $PropThis = Zero_DB::Sel_Agg($sql);
+            $row = Zero_DB::Sel_Row($sql);
+            $PropThis = isset($row['Field']) ? $row['Field'] : '' ;
             $sql = "SHOW FULL COLUMNS FROM `{$tbl}` WHERE `Field` NOT LIKE '{$Table}_%ID';";
-            $PropTarget = Zero_DB::Sel_Agg($sql);
+            $row = Zero_DB::Sel_Row($sql);
+            $PropTarget = isset($row['Field']) ? $row['Field'] : '' ;
             $TableTarget = zero_relation($PropTarget);
             $config[$TableTarget]['table_link'] = $tbl;
             $config[$TableTarget]['prop_this'] = $PropThis;

@@ -248,38 +248,97 @@ class Zero_App
 
         // Generate and output the result
         if ('html' == self::$Section->ContentType) {
-            self::ResponseHtml();
-            Zero_Logs::Start('#{LAYOUT.View}');
-            $View = new Zero_View(self::$Section->Layout);
-            if ($output instanceof Zero_View) {
-                Zero_Logs::Start('#{CONTROLLER.View}');
-                $output->Assign('Action', $Action_List);
-                $output = $output->Fetch();
-                Zero_Logs::Stop('#{CONTROLLER.View}');
-            }
-            $View->Assign('Content', $output);
-            $View->Assign('Users', self::$Users);
-            $View->Assign('Section', self::$Section);
-            echo $View->Fetch(true);
-            Zero_Logs::Stop('#{LAYOUT.View}');
+            self::ResponseHtml($output);
         } else if ('xml' == self::$Section->ContentType) {
-            self::ResponseXml();
-            echo $output->Fetch();
+            self::ResponseXml($output);
         } else if ('json' == self::$Section->ContentType) {
-            self::ResponseJson();
-            echo json_encode($output->Receive(), JSON_UNESCAPED_UNICODE);
+            self::ResponseJson($output);
         } else if ('img' == self::$Section->ContentType) {
             self::ResponseImg($output);
-            if (file_exists($output))
-                echo file_get_contents($output);
         } else if ('file' == self::$Section->ContentType) {
             self::ResponseFile($output);
-            if (file_exists($output))
-                echo file_get_contents($output);
         }
 
         Zero_Logs::Stop('#{APP.Full}');
         return true;
+    }
+
+    public static function ResponseHtml(Zero_View $view)
+    {
+        self::_HeaderNoCache();
+        header("Content-Type: text/html; charset=utf-8");
+        Zero_Logs::Start('#{LAYOUT.View}');
+        $View = new Zero_View(self::$Section->Layout);
+        if ($view instanceof Zero_View) {
+            Zero_Logs::Start('#{CONTROLLER.View}');
+//            $output->Assign('Action', $Action_List);
+            $view = $view->Fetch();
+            Zero_Logs::Stop('#{CONTROLLER.View}');
+        }
+        $View->Assign('Content', $view);
+//        $View->Assign('Users', self::$Users);
+//        $View->Assign('Section', self::$Section);
+        echo $View->Fetch();
+        Zero_Logs::Stop('#{LAYOUT.View}');
+    }
+
+    public static function ResponseXml(Zero_View $view)
+    {
+        self::_HeaderNoCache();
+        header("Content-Type: text/xml; charset=utf-8");
+        echo $view->Fetch();
+    }
+
+    public static function ResponseJson(Zero_View $view)
+    {
+        self::_HeaderNoCache();
+        header("Content-Type: application/json; charset=utf-8");
+        switch ( $view->Receive('Code') )
+        {
+            case 200:
+                header('HTTP/1.1 200 Ok'); break;
+            case 403:
+                header('HTTP/1.1 403 Access Denied'); break;
+            case 404:
+                header('HTTP/1.1 404 Not Found'); break;
+            case 409:
+                header('HTTP/1.1 409 Conflict Application'); break;
+            case 500:
+                header('HTTP/1.1 500 Server Error'); break;
+        }
+        echo json_encode($view->Receive(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+    }
+
+    public static function ResponseImg($path)
+    {
+        self::_HeaderNoCache();
+        header("Content-Type: " . Zero_Lib_FileSystem::File_Type($path));
+        header("Content-Length: " . filesize($path));
+        if (file_exists($path))
+            echo file_get_contents($path);
+    }
+
+    public static function ResponseFile($path)
+    {
+        self::_HeaderNoCache();
+        header("Content-Type: " . Zero_Lib_FileSystem::File_Type($path));
+        header("Content-Length: " . filesize($path));
+        header('Content-Disposition: attachment; filename = "' . basename($path) . '"');
+        if (file_exists($path))
+            echo file_get_contents($path);
+    }
+
+    /**
+     * Redirect to the specified page
+     *
+     * @param string $url link to which page to produce redirect
+     */
+    public static function ResponseRedirect($url)
+    {
+        self::$Config->Log_Output_Display = false;
+        self::$Config->Log_Output_File = false;
+        header('Location: ' . $url);
+        exit;
     }
 
     /**
@@ -301,49 +360,4 @@ class Zero_App
         header('Cache-Control: no-store, no-cache, must-revalidate');
     }
 
-    public static function ResponseHtml()
-    {
-        self::_HeaderNoCache();
-        header("Content-Type: text/html; charset=utf-8");
-    }
-
-    public static function ResponseXml()
-    {
-        self::_HeaderNoCache();
-        header("Content-Type: text/xml; charset=utf-8");
-    }
-
-    public static function ResponseJson()
-    {
-        self::_HeaderNoCache();
-        header("Content-Type: application/json; charset=utf-8");
-    }
-
-    public static function ResponseImg($path)
-    {
-        self::_HeaderNoCache();
-        header("Content-Type: " . Zero_Lib_FileSystem::File_Type($path));
-        header("Content-Length: " . filesize($path));
-    }
-
-    public static function ResponseFile($path)
-    {
-        self::_HeaderNoCache();
-        header("Content-Type: " . Zero_Lib_FileSystem::File_Type($path));
-        header("Content-Length: " . filesize($path));
-        header('Content-Disposition: attachment; filename = "' . basename($path) . '"');
-    }
-
-    /**
-     * Redirect to the specified page
-     *
-     * @param string $url link to which page to produce redirect
-     */
-    public static function ResponseRedirect($url)
-    {
-        self::$Config->Log_Output_Display = false;
-        self::$Config->Log_Output_File = false;
-        header('Location: ' . $url);
-        exit;
-    }
 }

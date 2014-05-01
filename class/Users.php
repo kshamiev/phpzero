@@ -128,7 +128,7 @@ class Zero_Users extends Zero_Model
             'ImgAvatar' => ['AliasDB' => 'z.ImgAvatar', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Img'],
             'IsOnline' => ['AliasDB' => 'z.IsOnline', 'DB' => 'E', 'IsNull' => 'NO', 'Default' => 'no', 'Form' => 'ReadOnly'],
             'DateOnline' => ['AliasDB' => 'z.DateOnline', 'DB' => 'D', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'ReadOnly'],
-            'Date' => ['AliasDB' => 'z.Date', 'DB' => 'D', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'DateTime'],
+            'Date' => ['AliasDB' => 'z.Date', 'DB' => 'D', 'IsNull' => 'NO', 'Default' => 'NOW', 'Form' => 'DateTime'],
             /*END_CONFIG_PROP*/
         ];
     }

@@ -219,6 +219,17 @@ class Zero_Logs
         if (Zero_App::$Config->Log_Output_Display) {
             if (false == Zero_App::$Section instanceof Zero_Section || 'html' == Zero_App::$Section->ContentType)
                 self::Output_Display();
+//            else if ( 'json' == Zero_App::$Section->ContentType)
+//            {
+//                $view = new Zero_View();
+//                $view->Assign("Error")
+//                Zero_App::ResponseJson($view);
+//
+//            }
+//            else if ( 'json' == Zero_App::$Section->ContentType)
+//            {
+//
+//            }
         }
 
         // zakry`vaem soedinenie s brauzerom (rabotaet tol`ko pod nginx)
