@@ -117,23 +117,43 @@ class Zero_App
      */
     public static function Autoload($class_name)
     {
-        if (class_exists($class_name))
+        if ( class_exists($class_name) )
             return true;
         $arr = explode('_', $class_name);
         $module = strtolower(array_shift($arr));
         $class = implode('/', $arr);
         $path = ZERO_PATH_APPLICATION . '/' . $module . '/class/' . $class . '.php';
-        if (file_exists($path)) {
+        if ( file_exists($path) )
+        {
             require_once $path;
             return true;
         }
         $path = ZERO_PATH_APPLICATION . '/' . $module . '/component/' . $class . '.php';
-        if (file_exists($path)) {
+        if ( file_exists($path) )
+        {
             require_once $path;
             return true;
         }
         echo $path . '<br>';
         return false;
+    }
+
+    public static function ResponseImg($path)
+    {
+        header("Content-Type: " . Zero_Lib_FileSystem::File_Type($path));
+        header("Content-Length: " . filesize($path));
+        if ( file_exists($path) )
+            echo file_get_contents($path);
+        exit;
+    }
+
+    public static function ResponseFile($path)
+    {
+        header("Content-Type: " . Zero_Lib_FileSystem::File_Type($path));
+        header("Content-Length: " . filesize($path));
+        header('Content-Disposition: attachment; filename = "' . basename($path) . '"');
+        if ( file_exists($path) )
+            echo file_get_contents($path);
     }
 
     /**
@@ -155,6 +175,7 @@ class Zero_App
         require_once ZERO_PATH_ZERO . '/component/Session.php';
         require_once ZERO_PATH_ZERO . '/component/Cache.php';
         require_once ZERO_PATH_ZERO . '/component/Logs.php';
+        require_once ZERO_PATH_ZERO . '/component/Route.php';
 
         //  Initializing monitoring system (Zero_Logs)
         Zero_Logs::Init($file_log);
@@ -162,30 +183,32 @@ class Zero_App
         //  Configuration (Zero_Config)
         self::$Config = new Zero_Config();
 
+        //  Initialize cache subsystem (Zero_Cache)
+        Zero_Cache::Init(Zero_App::$Config->Memcache['Cache']);
+
         //  Processing incoming request (Zero_Route)
-        if (!file_exists($path = ZERO_PATH_APPLICATION . '/' . self::$Config->Host . '/component/Route.php')) {
-            self::$Route = new Zero_Route();
-            //throw new Exception('Route component not found', 500);
-        } else {
+        if ( true == file_exists($path = ZERO_PATH_APPLICATION . '/' . self::$Config->Host . '/component/Route.php') )
+        {
             require_once $path;
             $class = ucfirst(self::$Config->Host) . '_Route';
             self::$Route = new $class();
         }
+        else
+            self::$Route = new Zero_Route();
+
+        require_once ZERO_PATH_ZERO . '/component/View.php';
+
+        spl_autoload_register(['Zero_App', 'Autoload']);
 
         //  Session Initialization (Zero_Session)
-        session_name(md5(self::$Config->Db['Name']));
-        session_start();
-        $Session = & $_SESSION['Session'];
-        if (!$Session instanceof Zero_Session)
-            $Session = Zero_Session::Get_Instance();
-        else
-            Zero_Session::Set_Instance($Session);
+        Zero_Session::Init(self::$Config->Db['Name']);
 
-        //  Initialize cache subsystem (Zero_Cache)
-        Zero_Cache::Init();
+        self::Set_Variable("responseCode", 200);
 
-        //  Include Components
-        require_once ZERO_PATH_ZERO . '/component/View.php';
+        // Initialization of the profiled application processors
+        set_error_handler(['Zero_App', 'Error_Handler']);
+        set_exception_handler(['Zero_App', 'Exception_Handler']);
+        //        register_shutdown_function(['Zero_App', 'Exit_Application']);
     }
 
     /**
@@ -210,30 +233,30 @@ class Zero_App
         Zero_Logs::Start('#{APP.Main}');
 
         //  Инициализация запрошенного раздела (Zero_Section)
-//        self::$Section = Zero_Model::Instance(ucfirst(self::$Config->Host) . '_Section');
-//        self::$Users = Zero_Model::Factory(ucfirst(self::$Config->Host) . '_Users');
         self::$Section = Zero_Model::Instance('Www_Section');
         self::$Users = Zero_Model::Factory('Www_Users');
 
         //  Checking for non-existent section
-        if (0 == self::$Section->ID || 'no' == self::$Section->IsEnable)
+        if ( 0 == self::$Section->ID || 'no' == self::$Section->IsEnable )
             throw new Exception('Page Not Found', 404);
         //  Call forwarding
-        if (self::$Section->UrlRedirect)
+        if ( self::$Section->UrlRedirect )
             self::ResponseRedirect(self::$Section->UrlRedirect);
         //  Checking the rights to the current section
-        $Action_List = Zero_App::$Section->Get_Action_List();
-        if (1 < self::$Users->Zero_Groups_ID) {
-            if ('yes' == self::$Section->IsAuthorized && 0 == count($Action_List))
+        $Action_List = self::$Section->Get_Action_List();
+        if ( 1 < self::$Users->Zero_Groups_ID )
+        {
+            if ( 'yes' == self::$Section->IsAuthorized && 0 == count($Action_List) )
                 throw new Exception('Access Denied', 403);
         }
         //  Execute controller
-        $output = '';
+        $output = "";
         self::Set_Variable('action_message', []);
-        if (self::$Section->Controller) {
-            if (!isset($_REQUEST['act']))
+        if ( self::$Section->Controller )
+        {
+            if ( !isset($_REQUEST['act']) )
                 $_REQUEST['act'] = 'Default';
-            if (!isset($Action_List[$_REQUEST['act']]))
+            if ( !isset($Action_List[$_REQUEST['act']]) )
                 throw new Exception('Access Denied', 403);
             $_REQUEST['act'] = 'Action_' . $_REQUEST['act'];
 
@@ -246,86 +269,10 @@ class Zero_App
 
         Zero_Logs::Stop('#{APP.Main}');
 
-        // Generate and output the result
-        if ('html' == self::$Section->ContentType) {
-            self::ResponseHtml($output);
-        } else if ('xml' == self::$Section->ContentType) {
-            self::ResponseXml($output);
-        } else if ('json' == self::$Section->ContentType) {
-            self::ResponseJson($output);
-        } else if ('img' == self::$Section->ContentType) {
-            self::ResponseImg($output);
-        } else if ('file' == self::$Section->ContentType) {
-            self::ResponseFile($output);
-        }
+        self::Exit_Application($output);
 
         Zero_Logs::Stop('#{APP.Full}');
         return true;
-    }
-
-    public static function ResponseHtml(Zero_View $view)
-    {
-        self::_HeaderNoCache();
-        header("Content-Type: text/html; charset=utf-8");
-        Zero_Logs::Start('#{LAYOUT.View}');
-        $View = new Zero_View(self::$Section->Layout);
-        if ($view instanceof Zero_View) {
-            Zero_Logs::Start('#{CONTROLLER.View}');
-//            $output->Assign('Action', $Action_List);
-            $view = $view->Fetch();
-            Zero_Logs::Stop('#{CONTROLLER.View}');
-        }
-        $View->Assign('Content', $view);
-//        $View->Assign('Users', self::$Users);
-//        $View->Assign('Section', self::$Section);
-        echo $View->Fetch();
-        Zero_Logs::Stop('#{LAYOUT.View}');
-    }
-
-    public static function ResponseXml(Zero_View $view)
-    {
-        self::_HeaderNoCache();
-        header("Content-Type: text/xml; charset=utf-8");
-        echo $view->Fetch();
-    }
-
-    public static function ResponseJson(Zero_View $view)
-    {
-        self::_HeaderNoCache();
-        header("Content-Type: application/json; charset=utf-8");
-        switch ( $view->Receive('Code') )
-        {
-            case 200:
-                header('HTTP/1.1 200 Ok'); break;
-            case 403:
-                header('HTTP/1.1 403 Access Denied'); break;
-            case 404:
-                header('HTTP/1.1 404 Not Found'); break;
-            case 409:
-                header('HTTP/1.1 409 Conflict Application'); break;
-            case 500:
-                header('HTTP/1.1 500 Server Error'); break;
-        }
-        echo json_encode($view->Receive(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-    }
-
-    public static function ResponseImg($path)
-    {
-        self::_HeaderNoCache();
-        header("Content-Type: " . Zero_Lib_FileSystem::File_Type($path));
-        header("Content-Length: " . filesize($path));
-        if (file_exists($path))
-            echo file_get_contents($path);
-    }
-
-    public static function ResponseFile($path)
-    {
-        self::_HeaderNoCache();
-        header("Content-Type: " . Zero_Lib_FileSystem::File_Type($path));
-        header("Content-Length: " . filesize($path));
-        header('Content-Disposition: attachment; filename = "' . basename($path) . '"');
-        if (file_exists($path))
-            echo file_get_contents($path);
     }
 
     /**
@@ -352,12 +299,186 @@ class Zero_App
      * - 'file' binary data for download
      *
      */
-    private static function _HeaderNoCache()
+
+    /**
+     * Obrabotchik oshibok dlia funktcii set_error_handler()
+     *
+     * @param int $code kod oshibki
+     * @param string $message soobshchenie ob oshibke
+     * @param string $filename fai`l v kotorom proizoshla oshibka
+     * @param string $line stroka, v kotoroi` proizoshla oshibka
+     * @throws ErrorException
+     */
+    public static function Error_Handler($code, $message, $filename, $line)
+    {
+        throw new ErrorException($message, $code, 0, $filename, $line);
+    }
+
+    /**
+     * Obrabotchik iscliuchenii` dlia funktcii set_exception_handler()
+     *
+     * - '403' standartny`i` otvet na zakry`ty`i` razdel (stranitcu sai`ta)
+     * - '404' standartny`i` otvet ne nai`dennogo dokumenta
+     * - '500' vse ostal`ny`e kriticheskie oshibki prilozheniia libo servera
+     *
+     * @param Exception $exception
+     */
+    public static function Exception_Handler(Exception $exception)
+    {
+        if ( 403 == $exception->getCode() )
+        {
+            self::Set_Variable("responseCode", 403);
+            Zero_Logs::Set_Message('Section Url: ' . Zero_App::$Config->Host . Zero_App::$Route->Url);
+        }
+        else if ( 404 == $exception->getCode() )
+        {
+            self::Set_Variable("responseCode", 404);
+            Zero_Logs::Set_Message('Section Url: ' . Zero_App::$Config->Host . Zero_App::$Route->Url);
+        }
+        else
+        {
+            self::Set_Variable("responseCode", 500);
+            //            header('HTTP/1.1 500 Server Error');
+            $range_file_error = 10;
+            Zero_Logs::Set_Message("#{ERROR_EXCEPTION} " . $exception->getMessage() . ' ' . $exception->getFile() . '(' . $exception->getLine() . ')');
+            Zero_Logs::Set_Message(Zero_Logs::Get_SourceCode($exception->getFile(), $exception->getLine(), $range_file_error), '');
+            $traceList = $exception->getTrace();
+            array_shift($traceList);
+            foreach ($traceList as $id => $trace)
+            {
+                if ( !isset($trace['args']) )
+                    continue;
+                $args = [];
+                $range_file_error = $range_file_error - 2;
+                foreach ($trace['args'] as $arg)
+                {
+                    if ( is_scalar($arg) )
+                        $args[] = "'" . $arg . "'";
+                    else if ( is_array($arg) )
+                        $args[] = print_r($arg, true);
+                    else if ( is_object($arg) )
+                        $args[] = get_class($arg) . ' Object...';
+                }
+                $trace['args'] = join(', ', $args);
+                if ( isset($trace['class']) )
+                    $callback = $trace['class'] . $trace['type'] . $trace['function'];
+                else if ( isset($trace['function']) )
+                    $callback = $trace['function'];
+                else
+                    $callback = '';
+                if ( !isset($trace['file']) )
+                    $trace['file'] = '';
+                if ( !isset($trace['line']) )
+                    $trace['line'] = 0;
+                $error = "   #{" . $id . "}" . $trace['file'] . '(' . $trace['line'] . '): ' . $callback . "(" . str_replace("\n", "", $trace['args']) . ");";
+                Zero_Logs::Set_Message($error);
+                if ( $trace['file'] && $trace['line'] )
+                    Zero_Logs::Set_Message(Zero_Logs::Get_SourceCode($trace['file'], $trace['line'], $range_file_error), 'code');
+            }
+        }
+
+        //                ob_end_clean();
+        $View = new Zero_View(ucfirst(Zero_App::$Config->Host) . '_Error');
+        $View->Template_Add('Zero_Error');
+        $View->Assign('http_status', self::Get_Variable("responseCode"));
+        self::Exit_Application($View);
+    }
+
+    /**
+     * Profilirovanie raboty` prilozheniia pri ego zavershenii
+     *
+     * - Sbor vsekh tai`merov i zatrachennoi` pamiati
+     * - Zamer polnogo vremeni vy`polneniia prilozheniia
+     * - Vy`vod vsei` profilirovannoi` informatcii v ukazanny`e istochniki
+     */
+    public static function Exit_Application($view)
     {
         header('Pragma: no-cache');
         header('Last-Modified: ' . date('D, d M Y H:i:s') . 'GMT');
         header('Expires: Mon, 26 Jul 2007 05:00:00 GMT');
         header('Cache-Control: no-store, no-cache, must-revalidate');
-    }
 
+        switch ( self::Get_Variable("responseCode") )
+        {
+            case 200:
+                header('HTTP/1.1 200 Ok');
+                break;
+            case 403:
+                header('HTTP/1.1 403 Access Denied');
+                break;
+            case 404:
+                header('HTTP/1.1 404 Not Found');
+                break;
+            case 409:
+                header('HTTP/1.1 409 Conflict Application');
+                break;
+            case 500:
+                header('HTTP/1.1 500 Server Error');
+                break;
+        }
+
+        // Generate and output the result
+        switch ( self::$Section->ContentType )
+        {
+            case 'html':
+                header("Content-Type: text/html; charset=utf-8");
+                //
+                Zero_Logs::Start('#{LAYOUT.View}');
+                // Основные данные
+                if ( 200 == self::Get_Variable("responseCode") )
+                {
+                    $viewLayout = new Zero_View(self::$Section->Layout);
+                    if ( true == $view instanceof Zero_View )
+                    {
+                        $view->Assign('Action', self::$Section->Get_Action_List());
+                        $viewLayout->Assign('Content', $view->Fetch());
+                    }
+                    else
+                        $viewLayout->Assign('Content', $view);
+                    echo $viewLayout->Fetch();
+                }
+                else
+                    echo $view->Fetch(true);
+                // Логирование (в браузер)
+                if ( self::$Config->Log_Output_Display )
+                    echo Zero_Logs::Output_Display();
+                Zero_Logs::Stop('#{LAYOUT.View}');
+                break;
+            case 'json':
+                header("Content-Type: application/json; charset=utf-8");
+                //
+                if ( 500 == self::Get_Variable("responseCode") )
+                {
+                    $view = new Zero_View;
+                    $view->AssignApi(Zero_Logs::Get_Message(), self::Get_Variable("responseCode"), "Ошибка работы приложения");
+                }
+                echo json_encode($view->Receive(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+                break;
+            case 'xml':
+                header("Content-Type: text/xml; charset=utf-8");
+                echo $view->Fetch();
+                break;
+            //            case 'file':
+            //                header("Content-Type: " . Zero_Lib_FileSystem::File_Type($view));
+            //                header("Content-Length: " . filesize($view));
+            //                header('Content-Disposition: attachment; filename = "' . basename($view) . '"');
+            //                if ( file_exists($view) )
+            //                    echo file_get_contents($view);
+            //                break;
+            //            case 'img':
+            //                header("Content-Type: " . Zero_Lib_FileSystem::File_Type($view));
+            //                header("Content-Length: " . filesize($view));
+            //                if ( file_exists($view) )
+            //                    echo file_get_contents($view);
+            //                break;
+        }
+
+        // закрываем соединение с браузером (работает только под нгинx)
+        if ( function_exists('fastcgi_finish_request') )
+            fastcgi_finish_request();
+
+        // Логирование в файлы
+        if ( Zero_App::$Config->Log_Output_File )
+            Zero_Logs::Output_File();
+    }
 }

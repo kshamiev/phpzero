@@ -23,6 +23,27 @@ class Zero_Session extends ArrayObject
     private static $_Session = null;
 
     /**
+     * Инициализация сессии в виде реестра (одиночка).
+     *
+     * @param string $sessionName Имя сессиии.
+     */
+    public static function Init($sessionName)
+    {
+        session_name(md5($sessionName));
+        session_start();
+        if ( !isset($_SESSION['Session']) || !$_SESSION['Session'] instanceof Zero_Session )
+        {
+            if ( self::$_Session === null )
+                self::$_Session = new self;
+            $_SESSION['Session'] = self::$_Session;
+        }
+        else
+        {
+            self::$_Session = & $_SESSION['Session'];
+        }
+    }
+
+    /**
      * Retrieves the default Zero_Session instance.
      *
      * @return Zero_Session
@@ -33,6 +54,7 @@ class Zero_Session extends ArrayObject
             self::$_Session = new self;
         return self::$_Session;
     }
+
 
     /**
      * Set the default Zero_Session instance to a specified instance.

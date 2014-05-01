@@ -81,11 +81,6 @@ class Zero_Logs
         self::$_StartTime = microtime(1);
         self::$_CurrentTime = [];
         self::$_FileLog = $file_log;
-
-        // Initialization of the profiled application processors
-        set_error_handler(['Zero_Logs', 'Error_Handler']);
-        set_exception_handler(['Zero_Logs', 'Exception_Handler']);
-        register_shutdown_function(['Zero_Logs', 'Exit_Application']);
     }
 
     /**
@@ -102,6 +97,11 @@ class Zero_Logs
     {
         self::$_Message[] = [$value, $level];
         return $level;
+    }
+
+    public static function Get_Message()
+    {
+        return self::$_Message;
     }
 
     /**
@@ -127,124 +127,13 @@ class Zero_Logs
         self::$_CurrentTimeLevel--;
     }
 
-    /**
-     * Obrabotchik oshibok dlia funktcii set_error_handler()
-     *
-     * @param int $code kod oshibki
-     * @param string $message soobshchenie ob oshibke
-     * @param string $filename fai`l v kotorom proizoshla oshibka
-     * @param string $line stroka, v kotoroi` proizoshla oshibka
-     * @throws ErrorException
-     */
-    public static function Error_Handler($code, $message, $filename, $line)
-    {
-        throw new ErrorException($message, $code, 0, $filename, $line);
-    }
 
     /**
-     * Obrabotchik iscliuchenii` dlia funktcii set_exception_handler()
+     * Вывод отладочной информации в браузер длиа разработчиков
      *
-     * - '403' standartny`i` otvet na zakry`ty`i` razdel (stranitcu sai`ta)
-     * - '404' standartny`i` otvet ne nai`dennogo dokumenta
-     * - '500' vse ostal`ny`e kriticheskie oshibki prilozheniia libo servera
-     *
-     * @param Exception $exception
+     * @return string
      */
-    public static function Exception_Handler(Exception $exception)
-    {
-        if (403 == $exception->getCode()) {
-            //            self::$_CurrentTime = [];
-            self::Set_Message('Section Url: ' . Zero_App::$Config->Host . Zero_App::$Route->Url);
-            header('HTTP/1.1 403 Access Denied');
-        } else if (404 == $exception->getCode()) {
-            //            self::$_CurrentTime = [];
-            self::Set_Message('Section Url: ' . Zero_App::$Config->Host . Zero_App::$Route->Url);
-            header('HTTP/1.1 404 Not Found');
-        } else {
-            header('HTTP/1.1 500 Server Error');
-            $range_file_error = 10;
-            self::Set_Message("#{ERROR_EXCEPTION} " . $exception->getMessage() . ' ' . $exception->getFile() . '(' . $exception->getLine() . ')');
-            self::Set_Message(self::Get_SourceCode($exception->getFile(), $exception->getLine(), $range_file_error), '');
-            $traceList = $exception->getTrace();
-            array_shift($traceList);
-            foreach ($traceList as $id => $trace) {
-                if (!isset($trace['args']))
-                    continue;
-                $args = [];
-                $range_file_error = $range_file_error - 2;
-                foreach ($trace['args'] as $arg) {
-                    if (is_scalar($arg))
-                        $args[] = "'" . $arg . "'";
-                    else if (is_array($arg))
-                        $args[] = print_r($arg, true);
-                    else if (is_object($arg))
-                        $args[] = get_class($arg) . ' Object...';
-                }
-                $trace['args'] = join(', ', $args);
-                if (isset($trace['class']))
-                    $callback = $trace['class'] . $trace['type'] . $trace['function'];
-                else if (isset($trace['function']))
-                    $callback = $trace['function'];
-                else
-                    $callback = '';
-                if (!isset($trace['file']))
-                    $trace['file'] = '';
-                if (!isset($trace['line']))
-                    $trace['line'] = 0;
-                $error = "   #{" . $id . "}" . $trace['file'] . '(' . $trace['line'] . '): ' . $callback . "(" . str_replace("\n", "", $trace['args']) . ");";
-                self::Set_Message($error);
-                if ($trace['file'] && $trace['line'])
-                    self::Set_Message(self::Get_SourceCode($trace['file'], $trace['line'], $range_file_error), 'code');
-            }
-        }
-
-        ob_end_clean();
-
-        $View = new Zero_View(ucfirst(Zero_App::$Config->Host) . '_Error');
-        $View->Template_Add('Zero_Error');
-        $View->Assign('http_status', $exception->getCode());
-        echo $View->Fetch(true);
-    }
-
-    /**
-     * Profilirovanie raboty` prilozheniia pri ego zavershenii
-     *
-     * - Sbor vsekh tai`merov i zatrachennoi` pamiati
-     * - Zamer polnogo vremeni vy`polneniia prilozheniia
-     * - Vy`vod vsei` profilirovannoi` informatcii v ukazanny`e istochniki
-     */
-    public static function Exit_Application()
-    {
-        // Logirovanie v brauzer
-        if (Zero_App::$Config->Log_Output_Display) {
-            if (false == Zero_App::$Section instanceof Zero_Section || 'html' == Zero_App::$Section->ContentType)
-                self::Output_Display();
-//            else if ( 'json' == Zero_App::$Section->ContentType)
-//            {
-//                $view = new Zero_View();
-//                $view->Assign("Error")
-//                Zero_App::ResponseJson($view);
-//
-//            }
-//            else if ( 'json' == Zero_App::$Section->ContentType)
-//            {
-//
-//            }
-        }
-
-        // zakry`vaem soedinenie s brauzerom (rabotaet tol`ko pod nginx)
-        if (function_exists('fastcgi_finish_request'))
-            fastcgi_finish_request();
-
-        // Logirovanie v fai`ly`
-        if (Zero_App::$Config->Log_Output_File)
-            self::Output_File();
-    }
-
-    /**
-     * Vy`vod otladochnoi` informatcii v brauzer dlia razrabotchikov
-     */
-    protected static function Output_Display()
+    public static function Output_Display()
     {
         $iterator_list = [];
         $iterator = Zero_Session::Get_Instance()->getIterator();
@@ -257,14 +146,14 @@ class Zero_Logs
         $View->Assign('output', self::Get_Usage_MemoryAndTime());
         $View->Assign('message', self::$_Message);
         $View->Assign('iterator_list', $iterator_list);
-        echo $View->Fetch(true);
+        return $View->Fetch();
     }
 
     /**
      * Vy`vod vsei` profilirovannoi` informatcii v log fai`ly`
      *
      */
-    protected static function Output_File()
+    public static function Output_File()
     {
         self::$_FileLog = Zero_App::$Config->Host . '_' . self::$_FileLog;
         // Logiruem rabotu prilozheniia v tcelom
@@ -320,7 +209,7 @@ class Zero_Logs
      * @param $range_file_error diapazon vy`vodimy`kh strok fai`la vokrug oshibochneoi` stroki
      * @return string
      */
-    protected static function Get_SourceCode($file, $line, $range_file_error)
+    public static function Get_SourceCode($file, $line, $range_file_error)
     {
         $file_line = explode('<br />', highlight_file($file, true));
         $offset = $line - $range_file_error;
@@ -377,14 +266,14 @@ class Zero_Logs
     /**
      * Save v fai`l
      *
-     * @param string $variable statisticheskie danny`e
+     * @param string $data statisticheskie danny`e
      * @param string $file_log imia fai`l-loga ('zero_application_error')
      */
-    protected static function Save_File($variable, $file_log)
+    public static function Save_File($data, $file_log)
     {
         $path = ZERO_PATH_LOG . '/' . $file_log . '.log';
         $fp = fopen($path, 'a');
-        fputs($fp, $variable);
+        fputs($fp, $data);
         fclose($fp);
         chmod($path, 0666);
         return;

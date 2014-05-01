@@ -97,7 +97,7 @@ abstract class Zero_Controller
         {
             if ( 1 == count($row) )
             {
-//                $index = 'controller ' . get_class($this) . ' message ' . $key;
+                //                $index = 'controller ' . get_class($this) . ' message ' . $key;
                 $index = 'controller message ' . $key;
                 self::$_Message[$key][] = Zero_I18n::T(get_class($this), $index, $key);
             }
@@ -118,10 +118,10 @@ abstract class Zero_Controller
             self::$_Message = [];
         else
             self::$_Message[$message] = [$code];
-        return $code ? false : true ;
+        return $code ? false : true;
     }
 
-     /**
+    /**
      * Vy`polnenie dei`stvii`
      *
      * @return Zero_View or string
@@ -140,26 +140,32 @@ abstract class Zero_Controller
      */
     public function __call($method, $params)
     {
-        if ( !method_exists($this, $method) ) {
-            throw new Exception('Метод контроллера остуствует в классе: ' .get_class($this) . '->' . $method, 500);
+        if ( !method_exists($this, $method) )
+        {
+            throw new Exception('Метод контроллера остуствует в классе: ' . get_class($this) . '->' . $method, 500);
         }
-        switch ( count($params) ) {
-            case 0: {
+        switch ( count($params) )
+        {
+            case 0:
+            {
                 return $this->$method();
             }
-            case 1: {
+            case 1:
+            {
                 return $this->$method($params[0]);
             }
-            case 2: {
+            case 2:
+            {
                 return $this->$method($params[0], $params[1]);
             }
-            case 3: {
+            case 3:
+            {
                 return $this->$method($params[0], $params[1], $params[2]);
             }
+            default:
+                {
+                throw new Exception('Количество параметров не допустипо в классе: ' . get_class($this) . '->' . $method, 500);
+                }
         }
-        return $this->View;
     }
-
-
-
 }

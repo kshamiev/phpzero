@@ -92,7 +92,7 @@ abstract class Zero_Model
     /**
      * Spisok modelei` sozdanny`kh v peredelakh odnogo zaprosa
      *
-     * @var array
+     * @var array Zero_Model
      */
     private static $_Instance = [];
 
@@ -147,11 +147,8 @@ abstract class Zero_Model
         $index = $model . (0 < $id ? '_' . $id : '');
         if ( !isset(self::$_Instance[$index]) )
         {
-            $result = self::Make($model, $id, $flag_load);
-            $result->Init();
-            //            self::$_Instance[$index] = self::Make($source, $id, $flag_load);
-            //            self::$_Instance[$index]->Init();
-            self::$_Instance[$index] = $result;
+            self::$_Instance[$index] = self::Make($model, $id, $flag_load);
+            self::$_Instance[$index]->Init();
         }
         return self::$_Instance[$index];
     }

@@ -151,6 +151,7 @@ class Zero_View
             $messageDebug = $message;
         $this->_Data['MessageDebug'] = $messageDebug;
         $this->_Data['Data'] = $value;
+        Zero_App::Set_Variable("responseCode", $code);
         return true;
     }
 
@@ -199,8 +200,10 @@ class Zero_View
      */
     public function Fetch()
     {
-        $html = '';
-        $tpl = '';
+        if ( 0 == count($this->_Template) )
+            return '';
+
+        $html = $tpl = '';
         foreach ($this->_Template as $template)
         {
             $html = $this->Search_Template($template);

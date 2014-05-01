@@ -102,9 +102,9 @@ class Zero_Cache
     /**
      * Initialize cache system (Memcache or Files).
      */
-    public static function Init()
+    public static function Init($arrConfig)
     {
-        if ( class_exists('Memcache') && 0 < count(Zero_App::$Config->Memcache['Cache']) )
+        if ( class_exists('Memcache') && 0 < count($arrConfig) )
         {
             self::$_Memcache = new Memcache;
             $counter = 0;

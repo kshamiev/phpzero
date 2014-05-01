@@ -318,9 +318,6 @@ class Zero_Config
             ini_set('session.save_handler', 'files');
             ini_set('session.save_path', $Config['System']['PathSession']);
         }
-
-        // Initialization of the profiled application processors
-        spl_autoload_register(['Zero_App', 'Autoload']);
     }
 }
 
