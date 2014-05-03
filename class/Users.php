@@ -361,7 +361,8 @@ class Zero_Users extends Zero_Model
     {
         if ( !$value )
             return '';
-        if ( $value != $_REQUEST['Users']['Password'] )
+//        if ( $value != $_REQUEST['Users']['Password'] )
+        if ( md5($value) != $this->Password )
             return 'Error_PasswordValid';
         return '';
     }

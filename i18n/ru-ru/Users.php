@@ -46,6 +46,7 @@ return [
     'model prop Password' => 'Пароль',
     'model prop PasswordR' => 'Пароль еще раз',
     'model prop Password validate Error_PasswordValid' => 'Пароли не совпадают',
+    'model prop PasswordR validate Error_PasswordValid' => 'Пароли не совпадают',
     'model prop Phone' => 'Телефон',
     'model prop Skype' => 'Скайп',
     'model prop Zero_Groups_ID' => 'Группа',

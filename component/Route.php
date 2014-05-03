@@ -43,6 +43,20 @@ class Zero_Route
     public $Param = [];
 
     /**
+     * Routing iazy`ka
+     *
+     * @var array
+     */
+    public $ApiUrlSegment = [];
+
+    /**
+     * Routing iazy`ka
+     *
+     * @var array
+     */
+    public $ApiData = [];
+
+    /**
      * Analiz request url
      */
     public function __construct()
@@ -61,9 +75,19 @@ class Zero_Route
         }
 
         // api
-        $this->Param['actApi'] = '';
         if ( 'api' == $row[0] ) {
-            $this->Param['actApi'] = array_pop($row);
+            $this->ApiUrlSegment = $row;
+            $this->Url = '/' . $row[0] . (isset($row[1]) ? '/' . $row[1] : '');
+            if ( $_SERVER['REQUEST_METHOD'] === "PUT" )
+            {
+                $data = file_get_contents('php://input', false, null, -1, $_SERVER['CONTENT_LENGTH']);
+                $this->ApiData = json_decode($data, true);
+            }
+            else if ( $_SERVER['REQUEST_METHOD'] === "POST" )
+            {
+                $this->ApiData = json_decode($GLOBALS["HTTP_RAW_POST_DATA"], true);
+            }
+            return;
         }
 
         // парамтеры
