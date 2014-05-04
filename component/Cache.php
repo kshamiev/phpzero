@@ -292,6 +292,6 @@ class Zero_Cache
         $path = $source;
         if ( null == self::$_Memcache )
             $path .= '/' . Zero_Lib_FileSystem::Get_Path_Cache($id);
-        return $path . '/' . $id . '/' . Zero_App::$Route->Lang . '/' . $index;
+        return $path . '/' . $id . '/' . LANG_ID . '/' . $index;
     }
 }

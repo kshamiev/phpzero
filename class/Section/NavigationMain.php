@@ -26,7 +26,6 @@ class Zero_Section_NavigationMain extends Zero_Controller
         /* @var $Section Zero_Section */
         $Section->Init_Url(Zero_App::$Config->Host . '/');
         //  шаблон
-        pre($Section);
         if ( isset($this->Params['view']) )
             $this->View = new Zero_View($this->Params['view']);
         else

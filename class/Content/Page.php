@@ -23,18 +23,18 @@ class Zero_Content_Page extends Zero_Controller
     {
         if ( empty($this->Params['block']) )
             $this->Params['block'] = 'content';
-        $index = 'Content_' . $this->Params['block'] . Zero_App::$Route->LangId;
+        $index = 'Content_' . $this->Params['block'] . LANG_ID;
         if ( false === $Content = Zero_App::$Section->Cache->Get($index) )
         {
             $Content = Zero_Model::Make('Zero_Content');
-            $Content->DB->Sql_Where('Zero_Language_ID', '=', Zero_App::$Route->LangId);
+            $Content->DB->Sql_Where('Zero_Language_ID', '=', LANG_ID);
             $Content->DB->Sql_Where('Zero_Section_ID', '=', Zero_App::$Section->ID);
             $Content->DB->Sql_Where('Block', '=', $this->Params['block']);
             $Content->DB->Select('*');
             if ( 0 == $Content->ID )
             {
                 $Content = Zero_Model::Make('Zero_Content');
-                $Content->DB->Sql_Where('Zero_Language_ID', '=', Zero_App::$Route->LangId);
+                $Content->DB->Sql_Where('Zero_Language_ID', '=', LANG_ID);
                 $Content->DB->Sql_Where('Block', '=', $this->Params['block']);
                 $Content->DB->Select('*');
             }

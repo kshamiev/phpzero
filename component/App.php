@@ -138,6 +138,41 @@ class Zero_App
         return false;
     }
 
+    /**
+     * Сборка ответа клиенту
+     *
+     * @param mixed $value Отдаваемые данные
+     * @param int $code Код ошибки
+     * @param string $message Сообщение
+     * @param string $messageDebug Служебное сообщение
+     * @return bool
+     */
+    public static function ResponseJson($value, $code, $message, $messageDebug = "")
+    {
+        header('Pragma: no-cache');
+        header('Last-Modified: ' . date('D, d M Y H:i:s') . 'GMT');
+        header('Expires: Mon, 26 Jul 2007 05:00:00 GMT');
+        header('Cache-Control: no-store, no-cache, must-revalidate');
+        header("Content-Type: application/json; charset=utf-8");
+        header('HTTP/1.1 ' . $code . ' ' . $code);
+        $data = [
+            'Code' => $code,
+            'Message' => $message,
+            'MessageDebug' => "" != $messageDebug ? $messageDebug : $message,
+            'Data' => $value,
+        ];
+        echo json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
+        // закрываем соединение с браузером (работает только под нгинx)
+        if ( function_exists('fastcgi_finish_request') )
+            fastcgi_finish_request();
+
+        // Логирование в файлы
+        if ( Zero_App::$Config->Log_Output_File )
+            Zero_Logs::Output_File();
+        exit;
+    }
+
     public static function ResponseImg($path)
     {
         header("Content-Type: " . Zero_Lib_FileSystem::File_Type($path));
@@ -154,6 +189,7 @@ class Zero_App
         header('Content-Disposition: attachment; filename = "' . basename($path) . '"');
         if ( file_exists($path) )
             echo file_get_contents($path);
+        exit;
     }
 
     /**
@@ -203,11 +239,9 @@ class Zero_App
         //  Session Initialization (Zero_Session)
         Zero_Session::Init(self::$Config->Db['Name']);
 
-        self::Set_Variable("responseCode", 200);
-
         // Initialization of the profiled application processors
-        set_error_handler(['Zero_App', 'Error_Handler']);
-        set_exception_handler(['Zero_App', 'Exception_Handler']);
+        set_error_handler(['Zero_App', 'Handler_Error']);
+        set_exception_handler(['Zero_App', 'Handler_Exception']);
         //        register_shutdown_function(['Zero_App', 'Exit_Application']);
     }
 
@@ -224,7 +258,6 @@ class Zero_App
      * - Initialization and execution of the controller and its actions
      * - The formation results and conclusion of the profiled format
      *
-     * @return mixed The result work of the application
      * @throws Exception
      */
     public static function Execute()
@@ -250,7 +283,7 @@ class Zero_App
                 throw new Exception('Access Denied', 403);
         }
         //  Execute controller
-        $output = "";
+        $view = "";
         self::Set_Variable('action_message', []);
         if ( self::$Section->Controller )
         {
@@ -262,17 +295,29 @@ class Zero_App
 
             $Controller = Zero_Controller::Factory(self::$Section->Controller);
             Zero_Logs::Start('#{CONTROLLER.Action} ' . self::$Section->Controller . ' -> ' . $_REQUEST['act']);
-            $output = $Controller->__call($_REQUEST['act'], []);
+            $view = $Controller->__call($_REQUEST['act'], []);
+            if ( $_REQUEST['act'] != 'Action_Default' )
+                Zero_Logs::Set_Message_Action($_REQUEST['act']);
             Zero_Logs::Stop('#{CONTROLLER.Action} ' . self::$Section->Controller . ' -> ' . $_REQUEST['act']);
             Zero_App::Set_Variable('action_message', $Controller->Get_Message());
         }
 
         Zero_Logs::Stop('#{APP.Main}');
 
-        self::Exit_Application($output);
-
+        Zero_Logs::Start('#{LAYOUT.View}');
+        // Основные данные
+        $viewLayout = new Zero_View(self::$Section->Layout);
+        if ( true == $view instanceof Zero_View )
+        {
+            $view->Assign('Action', $Action_List);
+            $viewLayout->Assign('Content', $view->Fetch());
+        }
+        else
+            $viewLayout->Assign('Content', $view);
+        $view = $viewLayout->Fetch();
+        Zero_Logs::Stop('#{LAYOUT.View}');
         Zero_Logs::Stop('#{APP.Full}');
-        return true;
+        self::ResponseHtml($view, 200);
     }
 
     /**
@@ -282,9 +327,16 @@ class Zero_App
      */
     public static function ResponseRedirect($url)
     {
-        self::$Config->Log_Output_Display = false;
-        self::$Config->Log_Output_File = false;
-        header('Location: ' . $url);
+        //        self::$Config->Log_Output_Display = false;
+        //        self::$Config->Log_Output_File = false;
+        header('HTTP/1.1 301 Redirect');
+        if ( true == self::$Route->IsApi )
+        {
+            header("Content-Type: application/json; charset=utf-8");
+            echo json_encode($url, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        }
+        else
+            header('Location: ' . $url);
         exit;
     }
 
@@ -309,7 +361,7 @@ class Zero_App
      * @param string $line stroka, v kotoroi` proizoshla oshibka
      * @throws ErrorException
      */
-    public static function Error_Handler($code, $message, $filename, $line)
+    public static function Handler_Error($code, $message, $filename, $line)
     {
         throw new ErrorException($message, $code, 0, $filename, $line);
     }
@@ -323,22 +375,16 @@ class Zero_App
      *
      * @param Exception $exception
      */
-    public static function Exception_Handler(Exception $exception)
+    public static function Handler_Exception(Exception $exception)
     {
-        if ( 403 == $exception->getCode() )
+        if ( 0 < $exception->getCode() && $exception->getCode() < 499 )
         {
-            self::Set_Variable("responseCode", 403);
-            Zero_Logs::Set_Message('Section Url: ' . Zero_App::$Config->Host . Zero_App::$Route->Url);
-        }
-        else if ( 404 == $exception->getCode() )
-        {
-            self::Set_Variable("responseCode", 404);
+            $code = $exception->getCode();
             Zero_Logs::Set_Message('Section Url: ' . Zero_App::$Config->Host . Zero_App::$Route->Url);
         }
         else
         {
-            self::Set_Variable("responseCode", 500);
-            //            header('HTTP/1.1 500 Server Error');
+            $code = 500;
             $range_file_error = 10;
             Zero_Logs::Set_Message("#{ERROR_EXCEPTION} " . $exception->getMessage() . ' ' . $exception->getFile() . '(' . $exception->getLine() . ')');
             Zero_Logs::Set_Message(Zero_Logs::Get_SourceCode($exception->getFile(), $exception->getLine(), $range_file_error), '');
@@ -377,11 +423,17 @@ class Zero_App
             }
         }
 
-        //                ob_end_clean();
-        $View = new Zero_View(ucfirst(Zero_App::$Config->Host) . '_Error');
-        $View->Template_Add('Zero_Error');
-        $View->Assign('http_status', self::Get_Variable("responseCode"));
-        self::Exit_Application($View);
+        if ( Zero_App::$Route->IsApi == true )
+        {
+            self::ResponseJson(Zero_Logs::Get_Message(), $code, $exception->getMessage(), $exception->getFile() . '(' . $exception->getLine() . ')');
+        }
+        else
+        {
+            $View = new Zero_View(ucfirst(self::$Config->Host) . '_Error');
+            $View->Template_Add('Zero_Error');
+            $View->Assign('http_status', $code);
+            self::ResponseHtml($View->Fetch(), $code);
+        }
     }
 
     /**
@@ -391,87 +443,19 @@ class Zero_App
      * - Zamer polnogo vremeni vy`polneniia prilozheniia
      * - Vy`vod vsei` profilirovannoi` informatcii v ukazanny`e istochniki
      */
-    public static function Exit_Application($view)
+    public static function ResponseHtml($view, $code)
     {
         header('Pragma: no-cache');
         header('Last-Modified: ' . date('D, d M Y H:i:s') . 'GMT');
         header('Expires: Mon, 26 Jul 2007 05:00:00 GMT');
         header('Cache-Control: no-store, no-cache, must-revalidate');
+        header("Content-Type: text/html; charset=utf-8");
+        header('HTTP/1.1 ' . $code . ' ' . $code);
+        echo $view;
 
-        switch ( self::Get_Variable("responseCode") )
-        {
-            case 200:
-                header('HTTP/1.1 200 Ok');
-                break;
-            case 403:
-                header('HTTP/1.1 403 Access Denied');
-                break;
-            case 404:
-                header('HTTP/1.1 404 Not Found');
-                break;
-            case 409:
-                header('HTTP/1.1 409 Conflict Application');
-                break;
-            case 500:
-                header('HTTP/1.1 500 Server Error');
-                break;
-        }
-
-        // Generate and output the result
-        switch ( self::$Section->ContentType )
-        {
-            case 'html':
-                header("Content-Type: text/html; charset=utf-8");
-                //
-                Zero_Logs::Start('#{LAYOUT.View}');
-                // Основные данные
-                if ( 200 == self::Get_Variable("responseCode") )
-                {
-                    $viewLayout = new Zero_View(self::$Section->Layout);
-                    if ( true == $view instanceof Zero_View )
-                    {
-                        $view->Assign('Action', self::$Section->Get_Action_List());
-                        $viewLayout->Assign('Content', $view->Fetch());
-                    }
-                    else
-                        $viewLayout->Assign('Content', $view);
-                    echo $viewLayout->Fetch();
-                }
-                else
-                    echo $view->Fetch(true);
-                // Логирование (в браузер)
-                if ( self::$Config->Log_Output_Display )
-                    echo Zero_Logs::Output_Display();
-                Zero_Logs::Stop('#{LAYOUT.View}');
-                break;
-            case 'json':
-                header("Content-Type: application/json; charset=utf-8");
-                //
-                if ( 500 == self::Get_Variable("responseCode") )
-                {
-                    $view = new Zero_View;
-                    $view->AssignApi(Zero_Logs::Get_Message(), self::Get_Variable("responseCode"), "Ошибка работы приложения");
-                }
-                echo json_encode($view->Receive(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-                break;
-            case 'xml':
-                header("Content-Type: text/xml; charset=utf-8");
-                echo $view->Fetch();
-                break;
-            //            case 'file':
-            //                header("Content-Type: " . Zero_Lib_FileSystem::File_Type($view));
-            //                header("Content-Length: " . filesize($view));
-            //                header('Content-Disposition: attachment; filename = "' . basename($view) . '"');
-            //                if ( file_exists($view) )
-            //                    echo file_get_contents($view);
-            //                break;
-            //            case 'img':
-            //                header("Content-Type: " . Zero_Lib_FileSystem::File_Type($view));
-            //                header("Content-Length: " . filesize($view));
-            //                if ( file_exists($view) )
-            //                    echo file_get_contents($view);
-            //                break;
-        }
+        // Логирование (в браузер)
+        if ( self::$Config->Log_Output_Display )
+            echo Zero_Logs::Output_Display();
 
         // закрываем соединение с браузером (работает только под нгинx)
         if ( function_exists('fastcgi_finish_request') )
@@ -480,5 +464,6 @@ class Zero_App
         // Логирование в файлы
         if ( Zero_App::$Config->Log_Output_File )
             Zero_Logs::Output_File();
+        exit;
     }
 }

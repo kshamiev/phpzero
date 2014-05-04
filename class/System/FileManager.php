@@ -172,9 +172,7 @@ class Zero_System_FileManager extends Zero_Controller
      */
     protected function Chunk_FileDownLoad()
     {
-        Zero_App::$Section->ContentType = 'file';
-        $this->View = end($this->Params['obj_parent_path']) . '/' . $_REQUEST['file_name'];
-        return false;
+        Zero_App::ResponseFile(end($this->Params['obj_parent_path']) . '/' . $_REQUEST['file_name']);
     }
 
     protected function Action_FileUpload()

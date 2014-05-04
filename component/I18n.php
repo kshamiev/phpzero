@@ -29,7 +29,7 @@ class Zero_I18n
     public static function Search_Path_I18n($folder_list, $lang = '')
     {
         if ( '' == $lang )
-            $lang = Zero_App::$Route->Lang;
+            $lang = LANG;
         $path = ZERO_PATH_APPLICATION . '/' . strtolower($folder_list[0]) . '/i18n/' . $lang . '/' . $folder_list[1] . '.php';
         if ( file_exists($path) )
             return $path;
@@ -77,7 +77,7 @@ class Zero_I18n
                 return self::$_I18n[$file_name1]['translation ' . $key];
         }
         //
-        Zero_Logs::Set_Message('I18N NOT FOUND KEY: ' . Zero_App::$Route->Lang . ' -> ' . $file_name . '->' . $key, 'warning');
+        Zero_Logs::Set_Message('I18N NOT FOUND KEY: ' . LANG . ' -> ' . $file_name . '->' . $key, 'warning');
         return $value_default;
     }
 }

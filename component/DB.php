@@ -510,7 +510,7 @@ class Zero_DB
      */
     public static function Sel_EnumSet($Model, $column)
     {
-        $index = $Model->Get_Source() . '/EnumSet/' . $column . '/' . Zero_App::$Route->Lang;
+        $index = $Model->Get_Source() . '/EnumSet/' . $column . '/' . LANG;
         if ( false === $result = Zero_Cache::Get_Data($index) )
         {
             $result = [];
@@ -1412,7 +1412,7 @@ class Zero_DB
             return [];
         }
         $source = $this->Model->Get_Source();
-        $sql = "SELECT {$props} FROM {$source}Language WHERE {$source}_ID = {$this->Model->ID} AND Zero_Language_ID = " . Zero_App::$Route->LangId;
+        $sql = "SELECT {$props} FROM {$source}Language WHERE {$source}_ID = {$this->Model->ID} AND Zero_Language_ID = " . LANG_ID;
         $row = self::Sel_Row($sql);
         unset($row['Zero_Language_ID']);
         unset($row[$source . '_ID']);

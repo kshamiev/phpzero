@@ -99,6 +99,20 @@ class Zero_Logs
         return $level;
     }
 
+    /**
+     * Initcializatciia vhodiashchego sistemnogo soobshcheniia.
+     *
+     * $level mozhet prinimat` znacheniia:
+     * error, warning, code
+     * @todo Добавить дифференцированные методы ошибок и разнести по разным переменным (оптимизация)
+     *
+     * @param string $value Soobshchenie ob oshibke
+     */
+    public static function Set_Message_Action($value)
+    {
+        self::$_Message[] = [$value, 'action'];
+    }
+
     public static function Get_Message()
     {
         return self::$_Message;
@@ -167,37 +181,36 @@ class Zero_Logs
             $output = self::Get_Usage_MemoryAndTime()[0];
             $errors = [];
             $warnings = [];
+            $action = [];
             foreach (self::$_Message as $row) {
                 if ('error' == $row[1])
                     $errors[] = str_replace(["\r", "\t"], " ", var_export($row[0], true));
                 else if ('warning' == $row[1])
                     $warnings[] = str_replace(["\r", "\t"], " ", var_export($row[0], true));
+                else if ('action' == $row[1])
+                    $action[] = $row[0];
             }
-            // logirovanie oshibki v fai`l
+            // логирование ошибки в файл
             if (Zero_App::$Config->Log_Profile_Error && 0 < count($errors)) {
                 array_unshift($errors, str_replace(["\r", "\t"], " ", $output));
                 $errors = preg_replace('![ ]{2,}!', ' ', join("\n", $errors));
                 $errors = date('[d.m.Y H:i:s]') . "\n" . $errors . "\n\n";
                 self::Save_File($errors, self::$_FileLog . '_errors');
             }
-            // logirovanie preduprezhdenii` v fai`l
+            // логирование предупреждений в файл
             if (Zero_App::$Config->Log_Profile_Warning && 0 < count($warnings)) {
                 array_unshift($warnings, str_replace(["\r", "\t"], " ", $output));
                 $warnings = preg_replace('![ ]{2,}!', ' ', join("\n", $warnings));
                 $warnings = date('[d.m.Y H:i:s]') . "\n" . $warnings . "\n\n";
                 self::Save_File($warnings, self::$_FileLog . '_warnings');
             }
-        }
-        // logirovanie operatcii` pol`zovatelia v fai`l
-        if (Zero_App::$Config->Log_Profile_Action && isset($_REQUEST['act']) && $_REQUEST['act']) {
-            $operation = date('[d.m.Y H:i:s]') . "\t";
-            $operation .= Zero_App::$Users->Login . "\t";
-            $operation .= Zero_App::$Section->Controller . '.' . $_REQUEST['act'] . "\t";
-            foreach (Zero_App::Get_Variable('action_message') as $message) {
-                $operation .= $message[0] . "\t";
+            // логирование операций пользователиа в файл
+            if (Zero_App::$Config->Log_Profile_Action && 0 < count($action)) {
+                $act = date('[d.m.Y H:i:s]') . "\t";
+                $act .= Zero_App::$Users->Login . "\t" . Zero_App::$Section->Controller . " -> " . join($action, ", ") . "\t";
+                $act .= Zero_App::$Config->Http . $_SERVER['REQUEST_URI'] . "\n";
+                self::Save_File($act, self::$_FileLog . '_action');
             }
-            $operation .= Zero_App::$Config->Http . $_SERVER['REQUEST_URI'] . "\n";
-            self::Save_File($operation, self::$_FileLog . '_action');
         }
     }
 

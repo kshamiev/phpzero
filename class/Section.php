@@ -116,7 +116,7 @@ class Zero_Section extends Zero_Model
             'UrlThis' => ['AliasDB' => 'z.UrlThis', 'DB' => 'T', 'IsNull' => 'NO', 'Default' => '', 'Form' => 'Text'],
             'UrlRedirect' => ['AliasDB' => 'z.UrlRedirect', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'],
             'Layout' => ['AliasDB' => 'z.Layout', 'DB' => 'T', 'IsNull' => 'NO', 'Default' => 'Zero_Content', 'Form' => 'Select'],
-            'ContentType' => ['AliasDB' => 'z.ContentType', 'DB' => 'E', 'IsNull' => 'NO', 'Default' => 'html', 'Form' => 'Radio'],
+//            'ContentType' => ['AliasDB' => 'z.ContentType', 'DB' => 'E', 'IsNull' => 'NO', 'Default' => 'html', 'Form' => 'Radio'],
             'Controller' => ['AliasDB' => 'z.Controller', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'],
             'IsAuthorized' => ['AliasDB' => 'z.IsAuthorized', 'DB' => 'E', 'IsNull' => 'NO', 'Default' => 'no', 'Form' => 'Radio'],
             'IsVisible' => ['AliasDB' => 'z.IsVisible', 'DB' => 'E', 'IsNull' => 'NO', 'Default' => 'no', 'Form' => 'Radio'],
@@ -151,7 +151,7 @@ class Zero_Section extends Zero_Model
             'IsAuthorized' => ['Visible' => true, 'Search' => '', 'Sort' => false],
             'IsVisible' => ['Visible' => true, 'Search' => '', 'Sort' => false],
             'IsEnable' => ['Visible' => true, 'Search' => '', 'Sort' => false],
-            'ContentType' => ['Visible' => true, 'Search' => '', 'Sort' => false],
+//            'ContentType' => ['Visible' => true, 'Search' => '', 'Sort' => false],
             'Name' => ['Visible' => true, 'Search' => 'Text', 'Sort' => true],
             'Title' => ['Visible' => true, 'Search' => 'Text', 'Sort' => true],
             'Keywords' => ['Visible' => true, 'Search' => 'Text', 'Sort' => true],
@@ -206,7 +206,7 @@ class Zero_Section extends Zero_Model
             'UrlThis' => [],
             'UrlRedirect' => [],
             'Layout' => [],
-            'ContentType' => [],
+//            'ContentType' => [],
             'Controller' => [],
             'IsAuthorized' => [],
             'IsVisible' => [],
@@ -234,7 +234,7 @@ class Zero_Section extends Zero_Model
      */
     public function Init_Url($url)
     {
-        $index = $this->Source . '/' . $url . '/' . Zero_App::$Route->Lang . '/url';
+        $index = $this->Source . '/' . $url . '/' . LANG . '/url';
         if ( false === $row = Zero_Cache::Get_Data($index) )
         {
             $this->DB->Sql_Where('Url', '=', $url);
@@ -367,13 +367,13 @@ class Zero_Section extends Zero_Model
             s.Zero_Section_ID = {$id} AND s.IsVisible = 'yes'
             ";
         //  Translation
-        if ( Zero_App::$Route->Lang != Zero_App::$Config->Site_Language )
+        if ( LANG != Zero_App::$Config->Site_Language )
         {
             $sql = "
             SELECT
               s.ID, l.Name, SUBSTRING(s.Url, POSITION('/' IN s.Url)) AS Url, UrlThis, Title
             FROM Zero_Section AS s
-                INNER JOIN Zero_SectionLanguage AS l ON l.Zero_Section_ID = s.ID AND l.Zero_Language_ID = " . Zero_App::$Route->LangId . "
+                INNER JOIN Zero_SectionLanguage AS l ON l.Zero_Section_ID = s.ID AND l.Zero_Language_ID = " . LANG_ID . "
                 LEFT JOIN Zero_Action AS a ON a.`Zero_Section_ID` = s.`ID`
             WHERE
                 {$sql_where}
@@ -429,8 +429,7 @@ class Zero_Section extends Zero_Model
 
     public static function DB_LanguageSet($section_id)
     {
-        $lang_id = Zero_App::$Route->LangId;
-        $row = Zero_DB::Sel_Row("SELECT ID FROM Zero_SectionLanguage WHERE Zero_Section_ID = {$section_id} AND Zero_Language_ID = {$lang_id}");
+        $row = Zero_DB::Sel_Row("SELECT ID FROM Zero_SectionLanguage WHERE Zero_Section_ID = {$section_id} AND Zero_Language_ID = " . LANG_ID);
         if ( 0 < count($row) )
         {
             $sql = "
@@ -442,7 +441,7 @@ class Zero_Section extends Zero_Model
                 `Zero_SectionLanguage`.`Keywords` = `Zero_Section`.`Keywords`,
                 `Zero_SectionLanguage`.`Description` = `Zero_Section`.`Description`
             WHERE
-                `Zero_SectionLanguage`.`Zero_Language_ID` = {$lang_id}
+                `Zero_SectionLanguage`.`Zero_Language_ID` = " . LANG_ID . "
             ";
         }
         else
@@ -451,7 +450,7 @@ class Zero_Section extends Zero_Model
               `Zero_Section_ID`, `Zero_Language_ID`, `Name`, `Title`, `Keywords`, `Description`
               )
               SELECT
-                `ID`, " . Zero_App::$Route->LangId . ", `Name`, `Title`, `Keywords`, `Description`
+                `ID`, " . LANG_ID . ", `Name`, `Title`, `Keywords`, `Description`
               FROM
                 `Zero_Section`
               WHERE `ID` = {$section_id}

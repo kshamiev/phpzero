@@ -27,11 +27,19 @@ define('URL', Zero_App::$Route->Url);
 /**
  * The language suffix
  */
-$lang = '';
-if ( Zero_App::$Route->Lang != Zero_App::$Config->Site_Language )
-    $lang = '/' . Zero_App::$Route->Lang;
-define('ZERO_LANG', $lang);
-define('LANG', $lang);
+define('ZERO_LANG', Zero_App::$Route->Lang);
+define('LANG', Zero_App::$Route->Lang);
+/**
+ *
+ */
+define('ZERO_LANG_ID', Zero_App::$Route->LangId);
+define('LANG_ID', Zero_App::$Route->LangId);
+/**
+ * The language suffix
+ */
+//$lang = '';
+//if ( Zero_App::$Route->Lang != Zero_App::$Config->Site_Language )
+//    $lang = '/' . Zero_App::$Route->Lang;
 
 /**
  * Component. Representation.
@@ -132,27 +140,6 @@ class Zero_View
     public function Assign($variable, $value)
     {
         $this->_Data[$variable] = $value;
-    }
-
-    /**
-     * Сборка ответа клиенту
-     *
-     * @param mixed $value Отдаваемые данные
-     * @param int $code Код ошибки
-     * @param string $message Сообщение
-     * @param string $messageDebug Служебное сообщение
-     * @return bool
-     */
-    public function AssignApi($value, $code, $message, $messageDebug = "")
-    {
-        $this->_Data['Code'] = $code;
-        $this->_Data['Message'] = $message;
-        if ( "" == $messageDebug )
-            $messageDebug = $message;
-        $this->_Data['MessageDebug'] = $messageDebug;
-        $this->_Data['Data'] = $value;
-        Zero_App::Set_Variable("responseCode", $code);
-        return true;
     }
 
     /**

@@ -43,18 +43,18 @@ class Zero_Route
     public $Param = [];
 
     /**
-     * Routing iazy`ka
+     * Работа через API (json)
      *
-     * @var array
+     * @var bool
      */
-    public $ApiUrlSegment = [];
+    public $IsApi = false;
 
     /**
      * Routing iazy`ka
      *
      * @var array
      */
-    public $ApiData = [];
+    public $ApiUrlSegment = [];
 
     /**
      * Analiz request url
@@ -71,21 +71,22 @@ class Zero_Route
         if ($this->Lang != $row[0] && isset(Zero_App::$Config->Language[$row[0]])) {
             $this->Lang = array_shift($row);
             $this->LangId = Zero_App::$Config->Language[$this->Lang]['ID'];
-            $this->Url = '/' . $this->Lang;
+            $this->Url .= $this->Lang;
         }
 
         // api
         if ( 'api' == $row[0] ) {
+            $this->IsApi = true;
             $this->ApiUrlSegment = $row;
-            $this->Url = '/' . $row[0] . (isset($row[1]) ? '/' . $row[1] : '');
+            $this->Url .= 'api' . (isset($row[1]) ? '/' . $row[1] : '');
             if ( $_SERVER['REQUEST_METHOD'] === "PUT" )
             {
                 $data = file_get_contents('php://input', false, null, -1, $_SERVER['CONTENT_LENGTH']);
-                $this->ApiData = json_decode($data, true);
+                $_POST = json_decode($data, true);
             }
             else if ( $_SERVER['REQUEST_METHOD'] === "POST" )
             {
-                $this->ApiData = json_decode($GLOBALS["HTTP_RAW_POST_DATA"], true);
+                $_POST = json_decode($GLOBALS["HTTP_RAW_POST_DATA"], true);
             }
             return;
         }
