@@ -14,4 +14,13 @@ return [
         'Week' => '*',
         'IsActive' => '1'
     ],
+    'Zero_Console_FileUpload-RemoveTempFileUpload' => [
+        'Description' => 'Remove TempFileUpload',
+        'Minute' => '0',
+        'Hour' => '*',
+        'Day' => '*',
+        'Month' => '*',
+        'Week' => '*',
+        'IsActive' => '1'
+    ],
 ];

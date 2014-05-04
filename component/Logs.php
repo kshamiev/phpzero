@@ -104,6 +104,7 @@ class Zero_Logs
      *
      * $level mozhet prinimat` znacheniia:
      * error, warning, code
+     *
      * @todo Добавить дифференцированные методы ошибок и разнести по разным переменным (оптимизация)
      *
      * @param string $value Soobshchenie ob oshibke
@@ -141,7 +142,6 @@ class Zero_Logs
         self::$_CurrentTimeLevel--;
     }
 
-
     /**
      * Вывод отладочной информации в браузер длиа разработчиков
      *
@@ -151,7 +151,8 @@ class Zero_Logs
     {
         $iterator_list = [];
         $iterator = Zero_Session::Get_Instance()->getIterator();
-        while ($iterator->valid()) {
+        while ( $iterator->valid() )
+        {
             $iterator_list[$iterator->key()] = get_class($iterator->current());
             $iterator->next();
         }
@@ -171,46 +172,60 @@ class Zero_Logs
     {
         self::$_FileLog = Zero_App::$Config->Host . '_' . self::$_FileLog;
         // Logiruem rabotu prilozheniia v tcelom
-        if (Zero_App::$Config->Log_Profile_Application) {
+        if ( Zero_App::$Config->Log_Profile_Application )
+        {
             $output = self::Get_Usage_MemoryAndTime();
             $output = date('[d.m.Y H:i:s]') . "\n" . join("\n", $output) . "\n\n";
             self::Save_File($output, self::$_FileLog);
         }
         //
-        if (0 < count(self::$_Message)) {
+        if ( 0 < count(self::$_Message) )
+        {
             $output = self::Get_Usage_MemoryAndTime()[0];
             $errors = [];
             $warnings = [];
             $action = [];
-            foreach (self::$_Message as $row) {
-                if ('error' == $row[1])
+            foreach (self::$_Message as $row)
+            {
+                if ( 'error' == $row[1] )
                     $errors[] = str_replace(["\r", "\t"], " ", var_export($row[0], true));
-                else if ('warning' == $row[1])
+                else if ( 'warning' == $row[1] )
                     $warnings[] = str_replace(["\r", "\t"], " ", var_export($row[0], true));
-                else if ('action' == $row[1])
+                else if ( 'action' == $row[1] )
                     $action[] = $row[0];
             }
             // логирование ошибки в файл
-            if (Zero_App::$Config->Log_Profile_Error && 0 < count($errors)) {
+            if ( Zero_App::$Config->Log_Profile_Error && 0 < count($errors) )
+            {
                 array_unshift($errors, str_replace(["\r", "\t"], " ", $output));
                 $errors = preg_replace('![ ]{2,}!', ' ', join("\n", $errors));
                 $errors = date('[d.m.Y H:i:s]') . "\n" . $errors . "\n\n";
                 self::Save_File($errors, self::$_FileLog . '_errors');
             }
             // логирование предупреждений в файл
-            if (Zero_App::$Config->Log_Profile_Warning && 0 < count($warnings)) {
+            if ( Zero_App::$Config->Log_Profile_Warning && 0 < count($warnings) )
+            {
                 array_unshift($warnings, str_replace(["\r", "\t"], " ", $output));
                 $warnings = preg_replace('![ ]{2,}!', ' ', join("\n", $warnings));
                 $warnings = date('[d.m.Y H:i:s]') . "\n" . $warnings . "\n\n";
                 self::Save_File($warnings, self::$_FileLog . '_warnings');
             }
             // логирование операций пользователиа в файл
-            if (Zero_App::$Config->Log_Profile_Action && 0 < count($action)) {
+            if ( Zero_App::$Config->Log_Profile_Action && 0 < count($action) )
+            {
                 $act = date('[d.m.Y H:i:s]') . "\t";
                 $act .= Zero_App::$Users->Login . "\t" . Zero_App::$Section->Controller . " -> " . join($action, ", ") . "\t";
                 $act .= Zero_App::$Config->Http . $_SERVER['REQUEST_URI'] . "\n";
                 self::Save_File($act, self::$_FileLog . '_action');
             }
+        }
+        // Логирование действий пользовтаеля через API
+        if ( Zero_App::$Route->Mode == 'api' && ($_SERVER['REQUEST_METHOD'] === "PUT" || $_SERVER['REQUEST_METHOD'] === "POST" || $_SERVER['REQUEST_METHOD'] === "DELETE") )
+        {
+            $act = date('[d.m.Y H:i:s]') . "\t";
+            $act .= Zero_App::$Users->Login . "\t" . Zero_App::$Section->Controller . " -> смотри урл\t";
+            $act .= Zero_App::$Config->Http . $_SERVER['REQUEST_URI'] . "\n";
+            self::Save_File($act, self::$_FileLog . '_action');
         }
     }
 
@@ -226,7 +241,7 @@ class Zero_Logs
     {
         $file_line = explode('<br />', highlight_file($file, true));
         $offset = $line - $range_file_error;
-        if ($offset < 0)
+        if ( $offset < 0 )
             $offset = 0;
         $length = isset($file_line[$line + $range_file_error]) ? $line + $range_file_error : count($file_line) - 1;
         $View = new Zero_View(ucfirst(Zero_App::$Config->Host) . '_Include_SourceCode');
@@ -245,26 +260,29 @@ class Zero_Logs
      */
     protected static function Get_Usage_MemoryAndTime()
     {
-        if (null === self::$_OutputApplication) {
+        if ( null === self::$_OutputApplication )
+        {
             // initcializatciia logov
-            if (isset($_SERVER['REQUEST_URI']))
+            if ( isset($_SERVER['REQUEST_URI']) )
                 self::$_OutputApplication = ["#{REQUEST_URI} " . Zero_App::$Config->Http . $_SERVER['REQUEST_URI']];
-            else if (isset($_SERVER['argv'][1]))
+            else if ( isset($_SERVER['argv'][1]) )
                 self::$_OutputApplication = ["#{DEMON} " . $_SERVER['argv'][1] . ' ' . Zero_App::$Config->Http];
             // Sobiraem tai`mery` v kuchu
-            foreach (self::$_CurrentTime as $description => $time) {
-                if (!isset($time['stop']))
+            foreach (self::$_CurrentTime as $description => $time)
+            {
+                if ( !isset($time['stop']) )
                     $time['stop'] = microtime(true);
                 $limit = round($time['stop'] - $time['start'], 4);
-                if ($limit < self::$_CurrentTimeLimit)
+                if ( $limit < self::$_CurrentTimeLimit )
                     continue;
                 $description = str_replace("\r", "", $description);
                 $description = preg_replace("~(\s+\n){1,}~si", "\n", $description);
                 $description = preg_replace('~[ ]{2,}~', ' ', $description);
-                if (strpos($description, '#{SQL}') === 0)
+                if ( strpos($description, '#{SQL}') === 0 )
                     $description = str_replace("\n", "\n\t\t", $description);
                 $indent = '';
-                for ($i = 0; $i < $time['level']; $i++) {
+                for ($i = 0; $i < $time['level']; $i++)
+                {
                     $indent .= "\t";
                 }
                 self::$_OutputApplication[] = $indent . '{' . $limit . '} ' . trim($description);
@@ -286,7 +304,7 @@ class Zero_Logs
     {
         $path = ZERO_PATH_LOG . '/' . $file_log . '.log';
         $fp = fopen($path, 'a');
-        fputs($fp, $data);
+        fputs($fp, $data . "\n");
         fclose($fp);
         chmod($path, 0666);
         return;

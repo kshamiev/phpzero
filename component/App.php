@@ -173,6 +173,23 @@ class Zero_App
         exit;
     }
 
+    /**
+     * Сборка ответа клиенту
+     *
+     * @return bool
+     */
+    public static function ResponseConsole()
+    {
+        // закрываем соединение с браузером (работает только под нгинx)
+        if ( function_exists('fastcgi_finish_request') )
+            fastcgi_finish_request();
+
+        // Логирование в файлы
+        if ( Zero_App::$Config->Log_Output_File )
+            Zero_Logs::Output_File();
+        exit;
+    }
+
     public static function ResponseImg($path)
     {
         header("Content-Type: " . Zero_Lib_FileSystem::File_Type($path));
@@ -330,10 +347,16 @@ class Zero_App
         //        self::$Config->Log_Output_Display = false;
         //        self::$Config->Log_Output_File = false;
         header('HTTP/1.1 301 Redirect');
-        if ( true == self::$Route->IsApi )
+        if ( self::$Route->Mode == 'api' )
         {
             header("Content-Type: application/json; charset=utf-8");
-            echo json_encode($url, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+            $data = [
+                'Code' => 301,
+                'Message' => 'Redirect',
+                'MessageDebug' => 'Redirect',
+                'Data' => $url,
+            ];
+            echo json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
         }
         else
             header('Location: ' . $url);
@@ -423,16 +446,20 @@ class Zero_App
             }
         }
 
-        if ( Zero_App::$Route->IsApi == true )
+        if ( Zero_App::$Route->Mode == 'api' )
         {
             self::ResponseJson(Zero_Logs::Get_Message(), $code, $exception->getMessage(), $exception->getFile() . '(' . $exception->getLine() . ')');
         }
-        else
+        else if ( Zero_App::$Route->Mode == 'web' )
         {
             $View = new Zero_View(ucfirst(self::$Config->Host) . '_Error');
             $View->Template_Add('Zero_Error');
             $View->Assign('http_status', $code);
             self::ResponseHtml($View->Fetch(), $code);
+        }
+        else if ( Zero_App::$Route->Mode == 'console' )
+        {
+            self::ResponseConsole();
         }
     }
 

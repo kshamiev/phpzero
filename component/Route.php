@@ -47,7 +47,7 @@ class Zero_Route
      *
      * @var bool
      */
-    public $IsApi = false;
+    public $Mode = 'web';
 
     /**
      * Routing iazy`ka
@@ -65,18 +65,27 @@ class Zero_Route
         $this->LangId = Zero_App::$Config->Language[$this->Lang]['ID'];
         $this->Url = '/';
 
+        // если запрос консольный
+        if ( !isset($_SERVER['REQUEST_URI']) )
+        {
+            $this->Mode = 'console';
+            return;
+        }
+
         $row = explode('/', strtolower(rtrim(ltrim(explode('?', $_SERVER['REQUEST_URI'])[0], '/'), '/')));
 
         // язык
-        if ($this->Lang != $row[0] && isset(Zero_App::$Config->Language[$row[0]])) {
+        if ( $this->Lang != $row[0] && isset(Zero_App::$Config->Language[$row[0]]) )
+        {
             $this->Lang = array_shift($row);
             $this->LangId = Zero_App::$Config->Language[$this->Lang]['ID'];
             $this->Url .= $this->Lang;
         }
 
         // api
-        if ( 'api' == $row[0] ) {
-            $this->IsApi = true;
+        if ( 'api' == $row[0] )
+        {
+            $this->Mode = 'api';
             $this->ApiUrlSegment = $row;
             $this->Url .= 'api' . (isset($row[1]) ? '/' . $row[1] : '');
             if ( $_SERVER['REQUEST_METHOD'] === "PUT" )
@@ -84,7 +93,7 @@ class Zero_Route
                 $data = file_get_contents('php://input', false, null, -1, $_SERVER['CONTENT_LENGTH']);
                 $_POST = json_decode($data, true);
             }
-            else if ( $_SERVER['REQUEST_METHOD'] === "POST" )
+            else if ( $_SERVER['REQUEST_METHOD'] === "POST" && isset($GLOBALS["HTTP_RAW_POST_DATA"]) )
             {
                 $_POST = json_decode($GLOBALS["HTTP_RAW_POST_DATA"], true);
             }
@@ -92,16 +101,20 @@ class Zero_Route
         }
 
         // парамтеры
-        if (0 < count($row) && $row[0]) {
+        if ( 0 < count($row) && $row[0] )
+        {
             $param = array_pop($row);
-            if (preg_match("~.+?-([^/]+)$~", $param, $arr)) {
+            if ( preg_match("~.+?-([^/]+)$~", $param, $arr) )
+            {
                 $row[] = str_replace('-' . $arr[1], '', $param);
-                foreach (explode('-', explode('.', $arr[1])[0]) as $segment) {
+                foreach (explode('-', explode('.', $arr[1])[0]) as $segment)
+                {
                     $arr = explode(':', $segment);
-                    if (1 < count($arr))
+                    if ( 1 < count($arr) )
                         $this->Param[$arr[0]] = $arr[1];
                 }
-            } else
+            }
+            else
                 $row[] = $param;
             $this->Url .= implode('/', $row);
         }
