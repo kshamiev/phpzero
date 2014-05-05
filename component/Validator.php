@@ -128,7 +128,7 @@ class Zero_Validator
     protected function VL_File($value, $prop)
     {
         //  udalenie starogo fai`la
-        if ( isset($value['Rem']) && $this->Model->$prop )
+        if ( isset($value['Rem']) && $value['Rem'] && $this->Model->$prop )
         {
             if ( file_exists($filename = ZERO_PATH_DATA . '/' . $this->Model->$prop) )
                 unlink($filename);
