@@ -27,7 +27,7 @@ class Zero_System_FileUpload extends Zero_Controller
         // сохранение информации о загруженном файле
         $data = json_encode($_FILES['myFile'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
         Zero_Lib_FileSystem::File_Save($path . '.txt', $data);
-        Zero_App::ResponseJson($sha1, 200, "загружено");
+        Zero_App::ResponseJson([$sha1, '/' . explode('/www/', $path)[1]], 200, "загружено");
     }
 }
 
