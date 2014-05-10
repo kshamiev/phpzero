@@ -43,7 +43,7 @@ class Zero_System_GridService extends Zero_Controller
         $this->View->Assign('modules_db', Zero_Engine::Get_Modules_DB());
     }
 
-    protected function Action_EngineModulesDB()
+    public function Action_EngineModulesDB()
     {
         $this->Chunk_Init();
         $this->Chunk_EngineModulesDB();
@@ -70,7 +70,7 @@ class Zero_System_GridService extends Zero_Controller
             return $this->Set_Message("Error_Engine_Modules_DB", 1, false);
     }
 
-    protected function Action_CacheReset()
+    public function Action_CacheReset()
     {
         $this->Chunk_Init();
         $this->Chunk_View();
@@ -89,7 +89,7 @@ class Zero_System_GridService extends Zero_Controller
         return $this->Set_Message("Cache_Reset", 0);
     }
 
-    protected function Action_SessionReset()
+    public function Action_SessionReset()
     {
         $this->Chunk_Init();
         $this->Chunk_SessionReset();

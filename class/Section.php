@@ -240,8 +240,9 @@ class Zero_Section extends Zero_Model
             $this->DB->Sql_Where('Url', '=', $url);
             $row = $this->DB->Select('*');
             $this->Set_Props($row);
-            $row = array_replace($row, $this->DB->Select_Language('*'));
-            $this->Set_Props($row);
+//            Мультиязычный вариант
+//            $row = array_replace($row, $this->DB->Select_Language('*'));
+//            $this->Set_Props($row);
             Zero_Cache::Set_Link('Zero_Section', $this->ID);
             Zero_Cache::Set_Data($index, $row);
         }
@@ -280,27 +281,28 @@ class Zero_Section extends Zero_Model
                 $this->_Action_List[$action] = ['Name' => Zero_I18n::T($this->Controller, $index, $action)];
             }
             //
-            $reflection = new ReflectionClass($this->Controller);
-            foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method)
-            {
-                $name = $method->getName();
-                if ( 'Action' == substr($name, 0, 6) )
-                {
-                    $name = str_replace('Action_', '', $name);
-                    $index = "controller action {$name}";
-//                    if ( 'Default' == $name )
-//                        $index = "controller action {$name}";
-//                    else
-//                        $index = "controller {$this->Controller} action {$name}";
-                    $this->_Action_List[$name] = ['Name' => Zero_I18n::T($this->Controller, $index, $name)];
-                }
-            }
+//            $reflection = new ReflectionClass($this->Controller);
+//            foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method)
+//            {
+//                $name = $method->getName();
+//                if ( 'Action' == substr($name, 0, 6) )
+//                {
+//                    $name = str_replace('Action_', '', $name);
+//                    $index = "controller action {$name}";
+////                    if ( 'Default' == $name )
+////                        $index = "controller action {$name}";
+////                    else
+////                        $index = "controller {$this->Controller} action {$name}";
+//                    $this->_Action_List[$name] = ['Name' => Zero_I18n::T($this->Controller, $index, $name)];
+//                }
+//            }
         }
         else if ( '' != $this->Controller )
         {
 
             $reflection = new ReflectionClass($this->Controller);
-            foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC | ReflectionMethod::IS_PROTECTED) as $method)
+//            foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC | ReflectionMethod::IS_PROTECTED) as $method)
+            foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method)
             {
                 $name = $method->getName();
                 if ( 'Action' == substr($name, 0, 6) )

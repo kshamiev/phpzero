@@ -115,7 +115,7 @@ class Zero_System_FileManager extends Zero_Controller
         }
     }
 
-    protected function Action_FolderRemove()
+    public function Action_FolderRemove()
     {
         $this->Chunk_Init();
         $this->Chunk_FolderRemove();
@@ -137,7 +137,7 @@ class Zero_System_FileManager extends Zero_Controller
         return $this->Set_Message('FolderRemove', 0);
     }
 
-    protected function Action_FileRemove()
+    public function Action_FileRemove()
     {
         $this->Chunk_Init();
         $this->Chunk_FileRemove();
@@ -159,7 +159,7 @@ class Zero_System_FileManager extends Zero_Controller
         return $this->Set_Message('FileRemove', 0);
     }
 
-    protected function Action_FileDownLoad()
+    public function Action_FileDownLoad()
     {
         $this->Chunk_Init();
         $this->Chunk_FileDownLoad();
@@ -175,7 +175,7 @@ class Zero_System_FileManager extends Zero_Controller
         Zero_App::ResponseFile(end($this->Params['obj_parent_path']) . '/' . $_REQUEST['file_name']);
     }
 
-    protected function Action_FileUpload()
+    public function Action_FileUpload()
     {
         $this->Chunk_Init();
         $this->Chunk_FileUpload();
@@ -207,7 +207,7 @@ class Zero_System_FileManager extends Zero_Controller
         return true;
     }
 
-    protected function Action_FolderAdd()
+    public function Action_FolderAdd()
     {
         $this->Chunk_Init();
         $this->Chunk_FolderAdd();
@@ -235,7 +235,7 @@ class Zero_System_FileManager extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Action_EditFile()
+    public function Action_EditFile()
     {
         return $this->View;
     }

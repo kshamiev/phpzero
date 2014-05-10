@@ -220,7 +220,7 @@ class Zero_Logs
             }
         }
         // Логирование действий пользовтаеля через API
-        if ( Zero_App::$Route->Mode == 'api' && ($_SERVER['REQUEST_METHOD'] === "PUT" || $_SERVER['REQUEST_METHOD'] === "POST" || $_SERVER['REQUEST_METHOD'] === "DELETE") )
+        if ( Zero_App::$Mode == 'api' && ($_SERVER['REQUEST_METHOD'] === "PUT" || $_SERVER['REQUEST_METHOD'] === "POST" || $_SERVER['REQUEST_METHOD'] === "DELETE") )
         {
             $act = date('[d.m.Y H:i:s]') . "\t";
             $act .= Zero_App::$Users->Login . "\t" . Zero_App::$Section->Controller . " -> смотри урл\t";

@@ -58,6 +58,13 @@ class Zero_App
     private static $_Variable = [];
 
     /**
+     * Режим работы приложения (api, web, console).
+     *
+     * @var string
+     */
+    public static $Mode = 'web';
+
+    /**
      * Configuration
      *
      * @var Zero_Config
@@ -304,15 +311,17 @@ class Zero_App
         self::Set_Variable('action_message', []);
         if ( self::$Section->Controller )
         {
+            //
             if ( !isset($_REQUEST['act']) )
                 $_REQUEST['act'] = 'Default';
             if ( !isset($Action_List[$_REQUEST['act']]) )
                 throw new Exception('Access Denied', 403);
             $_REQUEST['act'] = 'Action_' . $_REQUEST['act'];
-
+            //
             $Controller = Zero_Controller::Factory(self::$Section->Controller);
             Zero_Logs::Start('#{CONTROLLER.Action} ' . self::$Section->Controller . ' -> ' . $_REQUEST['act']);
-            $view = $Controller->__call($_REQUEST['act'], []);
+            //            $view = $Controller->__call($_REQUEST['act'], []);
+            $view = $Controller->$_REQUEST['act']();
             if ( $_REQUEST['act'] != 'Action_Default' )
                 Zero_Logs::Set_Message_Action($_REQUEST['act']);
             Zero_Logs::Stop('#{CONTROLLER.Action} ' . self::$Section->Controller . ' -> ' . $_REQUEST['act']);
@@ -326,6 +335,7 @@ class Zero_App
         $viewLayout = new Zero_View(self::$Section->Layout);
         if ( true == $view instanceof Zero_View )
         {
+            /* @var $view Zero_View */
             $view->Assign('Action', $Action_List);
             $viewLayout->Assign('Content', $view->Fetch());
         }
@@ -344,22 +354,8 @@ class Zero_App
      */
     public static function ResponseRedirect($url)
     {
-        //        self::$Config->Log_Output_Display = false;
-        //        self::$Config->Log_Output_File = false;
+        header('Location: ' . $url);
         header('HTTP/1.1 301 Redirect');
-        if ( self::$Route->Mode == 'api' )
-        {
-            header("Content-Type: application/json; charset=utf-8");
-            $data = [
-                'Code' => 301,
-                'Message' => 'Redirect',
-                'MessageDebug' => 'Redirect',
-                'Data' => $url,
-            ];
-            echo json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-        }
-        else
-            header('Location: ' . $url);
         exit;
     }
 
@@ -446,18 +442,19 @@ class Zero_App
             }
         }
 
-        if ( Zero_App::$Route->Mode == 'api' )
+        if ( Zero_App::$Mode == 'api' )
         {
             self::ResponseJson(Zero_Logs::Get_Message(), $code, $exception->getMessage(), $exception->getFile() . '(' . $exception->getLine() . ')');
         }
-        else if ( Zero_App::$Route->Mode == 'web' )
+        else if ( Zero_App::$Mode == 'web' )
         {
+            Zero_App::$Users->UrlRedirect = $_SERVER['REQUEST_URI'];
             $View = new Zero_View(ucfirst(self::$Config->Host) . '_Error');
             $View->Template_Add('Zero_Error');
             $View->Assign('http_status', $code);
             self::ResponseHtml($View->Fetch(), $code);
         }
-        else if ( Zero_App::$Route->Mode == 'console' )
+        else if ( Zero_App::$Mode == 'console' )
         {
             self::ResponseConsole();
         }

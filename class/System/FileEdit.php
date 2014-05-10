@@ -47,7 +47,7 @@ class Zero_System_FileEdit extends Zero_Controller
         $this->View->Assign('data', file_get_contents($this->Params['obj_parent_path'] . '/' . $this->Params['file_name']));
     }
 
-    protected function Action_FileSave()
+    public function Action_FileSave()
     {
         $this->Chunk_Init();
         $this->Chunk_FileSave();

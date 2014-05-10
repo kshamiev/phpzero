@@ -1407,10 +1407,7 @@ class Zero_DB
     public function Select_Language($props)
     {
         if ( 0 == $this->Model->ID )
-        {
-            Zero_Logs::Set_Message("object not defined: {$this->Model->Get_Source()}", 'warning');
             return [];
-        }
         $source = $this->Model->Get_Source();
         $sql = "SELECT {$props} FROM {$source}Language WHERE {$source}_ID = {$this->Model->ID} AND Zero_Language_ID = " . LANG_ID;
         $row = self::Sel_Row($sql);

@@ -46,7 +46,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Action_Add()
+    public function Action_Add()
     {
         $this->Chunk_Init();
         $this->Chunk_Filter();
@@ -60,7 +60,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Action_Save()
+    public function Action_Save()
     {
         $this->Chunk_Init();
         $this->Chunk_Filter();

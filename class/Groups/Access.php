@@ -43,7 +43,7 @@ class Zero_Groups_Access extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Action_Save()
+    public function Action_Save()
     {
         $this->Chunk_Init();
         $this->Chunk_Save();
@@ -56,7 +56,7 @@ class Zero_Groups_Access extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Action_Copy()
+    public function Action_Copy()
     {
         $this->Chunk_Init();
         $this->Chunk_Copy();
@@ -107,7 +107,7 @@ class Zero_Groups_Access extends Zero_Controller
             {
                 throw new Exception($e->getMessage(), 500);
             }
-            foreach ($reflection->getMethods(ReflectionMethod::IS_PROTECTED) as $method)
+            foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method)
             {
                 $name = $method->getName();
                 if ( 'Action_Default' == $name )

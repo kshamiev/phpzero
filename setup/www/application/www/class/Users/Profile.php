@@ -29,7 +29,7 @@ class Www_Users_Profile extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Action_Profile()
+    public function Action_Profile()
     {
         $this->Chunk_Init();
         $this->Chunk_Profile();

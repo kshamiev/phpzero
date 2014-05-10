@@ -43,13 +43,6 @@ class Zero_Route
     public $Param = [];
 
     /**
-     * Работа через API (json)
-     *
-     * @var bool
-     */
-    public $Mode = 'web';
-
-    /**
      * Routing iazy`ka
      *
      * @var array
@@ -68,7 +61,7 @@ class Zero_Route
         // если запрос консольный
         if ( !isset($_SERVER['REQUEST_URI']) )
         {
-            $this->Mode = 'console';
+            Zero_App::$Mode = 'console';
             return;
         }
 
@@ -85,7 +78,7 @@ class Zero_Route
         // api
         if ( 'api' == $row[0] )
         {
-            $this->Mode = 'api';
+            Zero_App::$Mode = 'api';
             $this->ApiUrlSegment = $row;
             $this->Url .= 'api' . (isset($row[1]) ? '/' . $row[1] : '');
             if ( $_SERVER['REQUEST_METHOD'] === "PUT" )

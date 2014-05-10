@@ -77,7 +77,7 @@ class Zero_Section_Grid extends Zero_Crud_Grid
      *
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Action_CatalogMove()
+    public function Action_CatalogMove()
     {
         $this->Chunk_Init();
         $this->Chunk_CatalogMove();
@@ -113,7 +113,7 @@ class Zero_Section_Grid extends Zero_Crud_Grid
      *
      * @return boolean flag stop execute of the next chunk
      */
-    protected function Action_UpdateUrl()
+    public function Action_UpdateUrl()
     {
         $this->Chunk_Init();
         $this->Chunk_UpdateUrl();
