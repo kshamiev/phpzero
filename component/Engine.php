@@ -351,16 +351,16 @@ class Zero_Engine
         //  Razdel v BD
         $Section = Zero_Model::Make('Zero_Section');
         /* @var $Section Zero_Section */
-        $Section->Init_Url(Zero_App::$Config->Host);
+        $Section->Init_Url(Zero_App::$Config->Site_DomainSub . '/admin');
         $url = strtolower($module);
         $Section_Two = Zero_Model::Make('Zero_Section');
         /* @var $Section_Two Zero_Section */
-        $Section_Two->DB->Sql_Where('Url', '=', Zero_App::$Config->Host . '/' . $url);
+        $Section_Two->DB->Sql_Where('Url', '=', Zero_App::$Config->Site_DomainSub . '/admin/' . $url);
         $Section_Two->DB->Select('ID');
         if ( 0 == $Section_Two->ID )
         {
             $Section_Two->Zero_Section_ID = $Section->ID;
-            $Section_Two->Url = Zero_App::$Config->Host . '/admin/' . $url;
+            $Section_Two->Url = Zero_App::$Config->Site_DomainSub . '/admin/' . $url;
             $Section_Two->UrlThis = $url;
             $Section_Two->Layout = 'Zero_Main';
             $Section_Two->Controller = 'Zero_Content_Page';
@@ -421,12 +421,12 @@ class Zero_Engine
             $url = strtolower($package[0] . '/' . $package[1]);
             $Section_Three = Zero_Model::Make('Zero_Section');
             /* @var $Section_Three Zero_Section */
-            $Section_Three->DB->Sql_Where('Url', '=', Zero_App::$Config->Host . '/' . $url);
+            $Section_Three->DB->Sql_Where('Url', '=', Zero_App::$Config->Site_DomainSub . '/admin/' . $url);
             $Section_Three->DB->Select('ID');
             if ( $flag_grid && 0 == $Section_Three->ID )
             {
                 $Section_Three->Zero_Section_ID = $Section_Two->ID;
-                $Section_Three->Url = Zero_App::$Config->Host . '/admin/' . $url;
+                $Section_Three->Url = Zero_App::$Config->Site_DomainSub . '/admin/' . $url;
                 $Section_Three->UrlThis = strtolower($package[1]);
                 $Section_Three->Layout = 'Zero_Main';
                 $Section_Three->Controller = $row['Name'] . '_Grid';
@@ -460,12 +460,12 @@ class Zero_Engine
             $url = strtolower($package[0] . '/' . $package[1] . '/edit');
             $Section_Four = Zero_Model::Make('Zero_Section');
             /* @var $Section_Four Zero_Section */
-            $Section_Four->DB->Sql_Where('Url', '=', Zero_App::$Config->Host . '/' . $url);
+            $Section_Four->DB->Sql_Where('Url', '=', Zero_App::$Config->Site_DomainSub . '/admin/' . $url);
             $Section_Four->DB->Select('ID');
             if ( $flag_edit && 0 == $Section_Four->ID && 0 < $Section_Three->ID )
             {
                 $Section_Four->Zero_Section_ID = $Section_Three->ID;
-                $Section_Four->Url = Zero_App::$Config->Host . '/admin/' . $url;
+                $Section_Four->Url = Zero_App::$Config->Site_DomainSub . '/admin/' . $url;
                 $Section_Four->UrlThis = 'edit';
                 $Section_Four->Layout = 'Zero_Main';
                 $Section_Four->Controller = $row['Name'] . '_Edit';
@@ -777,7 +777,7 @@ class Zero_Engine
         $path1 = ZERO_PATH_ZERO . '/data/Template_I18n.php';
         foreach (array_keys(Zero_App::$Config->Language) as $lang)
         {
-            $path2 = Zero_I18n::Search_Path_I18n($folder_list, $lang);
+            $path2 = ZERO_PATH_APPLICATION . '/' . strtolower($folder_list[0]) . '/i18n/' . $lang . '/' . $folder_list[1] . '.php';
             if ( file_exists($path2) )
                 continue;
             $path2 = ZERO_PATH_APPLICATION . '/' . strtolower($folder_list[0]) . '/i18n/' . $lang . '/' . $folder_list[1] . '.php';

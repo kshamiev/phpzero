@@ -26,10 +26,10 @@ class Zero_I18n
      * @param string $lang prefiks iazy`ka (esli ne ukazan beretsia tekushchii`)
      * @return string put` do iazy`kovogo fai`la
      */
-    public static function Search_Path_I18n($folder_list, $lang = '')
+    protected static function Search_Path_I18n($folder_list, $lang = '')
     {
         if ( '' == $lang )
-            $lang = LANG;
+            $lang = ZERO_LANG;
         $path = ZERO_PATH_APPLICATION . '/' . strtolower($folder_list[0]) . '/i18n/' . $lang . '/' . $folder_list[1] . '.php';
         if ( file_exists($path) )
             return $path;
@@ -41,43 +41,51 @@ class Zero_I18n
      * Perevod po cliuchevoi` stroke
      *
      * @param $file_name Imia iazy`kovogo fai`la (imia modeli, kontrollera)
+     * @param $section string
      * @param $key string
      * @param string $value_default znachenie po umolchaniiu (esli ne nai`detsia perevod)
      * @return string nai`denny`i` perevod
      */
-    public static function T($file_name, $key, $value_default = '')
+    protected static function T($file_name, $section, $key, $value_default = '')
     {
         $folder_list = explode('_', $file_name);
         $file_name = $folder_list[0] . '_' . $folder_list[1];
+        // поиск в целевом фалйе перевода
         if ( !isset(self::$_I18n[$file_name]) )
         {
             self::$_I18n[$file_name] = [];
             if ( $path = self::Search_Path_I18n($folder_list) )
                 self::$_I18n[$file_name] = include $path;
         }
-        if ( isset(self::$_I18n[$file_name][$key]) )
-            return self::$_I18n[$file_name][$key];
-        if ( isset(self::$_I18n[$file_name]['translation ' . $key]) )
-            return self::$_I18n[$file_name]['translation ' . $key];
-        //
-        if ( 'App' != $folder_list[1] )
+        if ( isset(self::$_I18n[$file_name][$section][$key]) )
+            return self::$_I18n[$file_name][$section][$key];
+        // поиск в общем фалйе перевода
+        if ( 'Www_App' != $file_name )
         {
-            $folder_list[0] = Zero_App::$Config->Host;
-            $folder_list = [$folder_list[0], 'App'];
-            $file_name1 = $folder_list[0] . '_' . $folder_list[1];
-            if ( !isset(self::$_I18n[$file_name1]) )
+            if ( !isset(self::$_I18n['Www_App']) )
             {
-                self::$_I18n[$file_name1] = [];
-                if ( $path = self::Search_Path_I18n($folder_list) )
-                    self::$_I18n[$file_name1] = include $path;
+                self::$_I18n['Www_App'] = [];
+                if ( $path = self::Search_Path_I18n(['Www', 'App']) )
+                    self::$_I18n['Www_App'] = include $path;
             }
-            if ( isset(self::$_I18n[$file_name1][$key]) )
-                return self::$_I18n[$file_name1][$key];
-            if ( isset(self::$_I18n[$file_name1]['translation ' . $key]) )
-                return self::$_I18n[$file_name1]['translation ' . $key];
+            if ( isset(self::$_I18n['Www_App'][$section][$key]) )
+                return self::$_I18n['Www_App'][$section][$key];
         }
         //
-        Zero_Logs::Set_Message('I18N NOT FOUND KEY: ' . LANG . ' -> ' . $file_name . '->' . $key, 'warning');
+        Zero_Logs::Set_Message('I18N NOT FOUND KEY: ' . LANG . ' -> ' . $file_name . ' -> ' . $section . ' -> ' . $key, 'warning');
         return $value_default;
+    }
+
+    public static function Model($file_name, $key, $value_default = '')
+    {
+        return self::T($file_name, 'model', $key, $value_default);
+    }
+    public static function View($file_name, $key, $value_default = '')
+    {
+        return self::T($file_name, 'view', $key, $value_default);
+    }
+    public static function Controller($file_name, $key, $value_default = '')
+    {
+        return self::T($file_name, 'controller', $key, $value_default);
     }
 }

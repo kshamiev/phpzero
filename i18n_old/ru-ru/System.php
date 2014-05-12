@@ -18,18 +18,6 @@
  * 'translation Key' => 'Translation Value'
  */
 return [
-    'model' => [
-        'Property all' => 'Все свойства',
-
-    ],
-    'view' => [
-
-    ],
-    'controller' => [
-
-    ],
-];
-return [
     'controller Zero_System_GridService' => 'Разработка и обслуживание системы',
     'controller Zero_System_GridService action Default' => 'контроллер по умолчанию',
     'controller Zero_System_GridService action EngineModulesDB' => 'Инженеринг моделей',

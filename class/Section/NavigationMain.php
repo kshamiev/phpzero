@@ -24,7 +24,7 @@ class Zero_Section_NavigationMain extends Zero_Controller
     {
         $Section = Zero_Model::Make('Www_Section');
         /* @var $Section Zero_Section */
-        $Section->Init_Url(Zero_App::$Config->Host . '/');
+        $Section->Init_Url(Zero_App::$Config->Site_DomainSub . '/');
         //  шаблон
         if ( isset($this->Params['view']) )
             $this->View = new Zero_View($this->Params['view']);

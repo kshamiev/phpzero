@@ -142,7 +142,7 @@ class Zero_Cache
         //  Memcache
         else
         {
-            $index = Zero_App::$Config->Host . $index;
+            $index = Zero_App::$Config->Site_DomainSub . $index;
             $index = str_replace('/', '.', $index);
             return self::$_Memcache->get($index);
         }
@@ -169,7 +169,7 @@ class Zero_Cache
         //  Memcache
         else
         {
-            $index = Zero_App::$Config->Host . $index;
+            $index = Zero_App::$Config->Site_DomainSub . $index;
             $index = str_replace('/', '.', $index);
             self::$_Memcache->set($index, $value, 0, $time);
         }

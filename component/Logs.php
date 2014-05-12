@@ -156,7 +156,7 @@ class Zero_Logs
             $iterator_list[$iterator->key()] = get_class($iterator->current());
             $iterator->next();
         }
-        $View = new Zero_View(ucfirst(Zero_App::$Config->Host) . '_Include_Debug');
+        $View = new Zero_View(ucfirst(Zero_App::$Config->Site_DomainSub) . '_Include_Debug');
         $View->Template_Add('Zero_Include_Debug');
         $View->Assign('output', self::Get_Usage_MemoryAndTime());
         $View->Assign('message', self::$_Message);
@@ -170,7 +170,7 @@ class Zero_Logs
      */
     public static function Output_File()
     {
-        self::$_FileLog = Zero_App::$Config->Host . '_' . self::$_FileLog;
+        self::$_FileLog = Zero_App::$Config->Site_DomainSub . '_' . self::$_FileLog;
         // Logiruem rabotu prilozheniia v tcelom
         if ( Zero_App::$Config->Log_Profile_Application )
         {
@@ -215,7 +215,7 @@ class Zero_Logs
             {
                 $act = date('[d.m.Y H:i:s]') . "\t";
                 $act .= Zero_App::$Users->Login . "\t" . Zero_App::$Section->Controller . " -> " . join($action, ", ") . "\t";
-                $act .= Zero_App::$Config->Http . $_SERVER['REQUEST_URI'] . "\n";
+                $act .= ZERO_HTTP . $_SERVER['REQUEST_URI'] . "\n";
                 self::Save_File($act, self::$_FileLog . '_action');
             }
         }
@@ -224,7 +224,7 @@ class Zero_Logs
         {
             $act = date('[d.m.Y H:i:s]') . "\t";
             $act .= Zero_App::$Users->Login . "\t" . Zero_App::$Section->Controller . " -> смотри урл\t";
-            $act .= Zero_App::$Config->Http . $_SERVER['REQUEST_URI'] . "\n";
+            $act .= ZERO_HTTP . $_SERVER['REQUEST_URI'] . "\n";
             self::Save_File($act, self::$_FileLog . '_action');
         }
     }
@@ -244,7 +244,7 @@ class Zero_Logs
         if ( $offset < 0 )
             $offset = 0;
         $length = isset($file_line[$line + $range_file_error]) ? $line + $range_file_error : count($file_line) - 1;
-        $View = new Zero_View(ucfirst(Zero_App::$Config->Host) . '_Include_SourceCode');
+        $View = new Zero_View(ucfirst(Zero_App::$Config->Site_DomainSub) . '_Include_SourceCode');
         $View->Template_Add('Zero_Include_SourceCode');
         $View->Assign('file_line', $file_line);
         $View->Assign('offset', $offset < 0 ? 0 : $offset);
@@ -264,9 +264,9 @@ class Zero_Logs
         {
             // initcializatciia logov
             if ( isset($_SERVER['REQUEST_URI']) )
-                self::$_OutputApplication = ["#{REQUEST_URI} " . Zero_App::$Config->Http . $_SERVER['REQUEST_URI']];
+                self::$_OutputApplication = ["#{REQUEST_URI} " . ZERO_HTTP . $_SERVER['REQUEST_URI']];
             else if ( isset($_SERVER['argv'][1]) )
-                self::$_OutputApplication = ["#{DEMON} " . $_SERVER['argv'][1] . ' ' . Zero_App::$Config->Http];
+                self::$_OutputApplication = ["#{DEMON} " . $_SERVER['argv'][1] . ' ' . ZERO_HTTP];
             // Sobiraem tai`mery` v kuchu
             foreach (self::$_CurrentTime as $description => $time)
             {

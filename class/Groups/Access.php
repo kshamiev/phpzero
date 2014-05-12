@@ -114,9 +114,9 @@ class Zero_Groups_Access extends Zero_Controller
                     continue;
                 if ( 'Action' == substr($name, 0, 6) )
                 {
-                    $name = str_replace('Action_', '', $name);
-                    $index = "controller {$row['Controller']} action {$name}";
-                    $method_list[$name] = Zero_I18n::T($row['Controller'], $index, $name);
+                    $index = str_replace('Action_', '', $name);
+//                    $index = "controller {$row['Controller']} action {$name}";
+                    $method_list[$index] = Zero_I18n::Controller($row['Controller'], $name);
                 }
             }
             $section_list[$id]['action_list_all'] = $method_list;

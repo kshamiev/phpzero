@@ -519,7 +519,7 @@ class Zero_DB
             sort($row);
             foreach ($row as $v)
             {
-                $result[$v] = Zero_I18n::T($Model->Source, 'model prop ' . $column . ' option ' . $v, $v);
+                $result[$v] = Zero_I18n::Model($Model->Source, $column . ' ' . $v);
             }
             Zero_Cache::Set_Data($index, $result);
         }

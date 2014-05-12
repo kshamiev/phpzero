@@ -18,18 +18,6 @@
  * 'translation Key' => 'Translation Value'
  */
 return [
-    'model' => [
-        'Property all' => 'Все свойства',
-
-    ],
-    'view' => [
-
-    ],
-    'controller' => [
-
-    ],
-];
-return [
 	'model' => 'Действия контроллеров разделов',
 	'model prop Action' => 'Действие',
 	'model prop ID' => 'Идентификатор',

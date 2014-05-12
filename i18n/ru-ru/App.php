@@ -1,46 +1,29 @@
 <?php
 /**
- * Main and default language file
- *
- * 'translation Key' => 'Translation Value'
+ * Created by PhpStorm.
+ * User: Константин
+ * Date: 12.05.14
+ * Time: 0:34
  */
 return [
-    'controller action Default' => 'Право на раздел',
-    'controller action Add' => 'добавить',
-    'controller action Remove' => 'удалить',
-    'controller action FilterSet' => 'установка фильтра',
-    'controller action FilterReset' => 'сброс фильтра',
-    'controller action Save' => 'сохранить',
-    'controller action CatalogMove' => 'переместить',
-    'controller action UpdateUrl' => 'обновить url',
-    'controller message Remove' => 'удалено',
-    'controller message Add' => 'добавлено',
-    'controller message Save' => 'изменено',
-    'translation Filters' => 'Фильтры',
-    'translation Search' => 'Поиск',
-    'translation Sorting' => 'Сортировка',
-    'translation Not selected' => 'Не выбрано',
-    'translation Undefined' => 'Не определено',
-    'translation Defined' => 'Определенные',
-    'translation All' => 'Все',
-    'translation Count' => 'Количество',
-    'translation Apply' => 'Применить',
-    'translation Reset' => 'Сбросить',
-    'translation Properties' => 'Свойства',
-    'translation Data' => 'Данные',
-    'translation Action' => 'Действия',
-    'model prop ALL_PROPS' => 'По всем полям',
-    'model prop_all validate Error_NotNull' => 'Значение не установлено',
-    'translation Name' => 'Название',
-    'translation Description' => 'Описание',
-    'translation Version' => 'Версия',
-    'translation Installed' => 'Инсталяция',
-    'translation Plugin' => 'Плагин',
-    'translation Sidebar' => 'Код вставки в шаблон',
-    'translation Project' => 'Проект',
-    'controller ControllerName' => 'TranslationValue',
-    'controller ControllerName action ActionName' => 'TranslationValue',
-    'controller ControllerName message MessageKey' => 'TranslationValue',
-    'controller message Error_Validate' => 'ошибка ввода данных',
-    'translation Key' => 'Translation Value',
+    'model' => [
+        'Property all' => 'Все свойства',
+    ],
+    'view' => [
+        'Properties' => 'Свойства',
+        'Data' => 'Данные',
+        'Add' => 'добавить',
+        'Filters' => 'Фильтр',
+        'Search' => 'Поиск',
+        'Not selected' => 'Невыбрано',
+        'All' => 'Все',
+        'Undefined' => 'Не определено',
+        'Defined' => 'Определено',
+        'Sorting' => 'Сортировка',
+        'Apply' => 'применить',
+        'Reset' => 'сбросить',
+        'Count' => 'количество',
+        'Action' => 'действия',
+        'Project' => 'Проект',
+    ],
 ];

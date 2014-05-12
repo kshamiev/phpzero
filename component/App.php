@@ -237,36 +237,30 @@ class Zero_App
         require_once ZERO_PATH_ZERO . '/component/Logs.php';
         require_once ZERO_PATH_ZERO . '/component/Route.php';
 
-        //  Initializing monitoring system (Zero_Logs)
-        Zero_Logs::Init($file_log);
+        spl_autoload_register(['Zero_App', 'Autoload']);
 
         //  Configuration (Zero_Config)
         self::$Config = new Zero_Config();
+
+        //  Initializing monitoring system (Zero_Logs)
+        Zero_Logs::Init($file_log);
 
         //  Initialize cache subsystem (Zero_Cache)
         Zero_Cache::Init(Zero_App::$Config->Memcache['Cache']);
 
         //  Processing incoming request (Zero_Route)
-        if ( true == file_exists($path = ZERO_PATH_APPLICATION . '/' . self::$Config->Host . '/component/Route.php') )
-        {
-            require_once $path;
-            $class = ucfirst(self::$Config->Host) . '_Route';
-            self::$Route = new $class();
-        }
-        else
-            self::$Route = new Zero_Route();
-
-        require_once ZERO_PATH_ZERO . '/component/View.php';
-
-        spl_autoload_register(['Zero_App', 'Autoload']);
+        self::$Route = new Www_Route();
 
         //  Session Initialization (Zero_Session)
         Zero_Session::Init(self::$Config->Db['Name']);
+
+        require_once ZERO_PATH_ZERO . '/component/View.php';
 
         // Initialization of the profiled application processors
         set_error_handler(['Zero_App', 'Handler_Error']);
         set_exception_handler(['Zero_App', 'Handler_Exception']);
         //        register_shutdown_function(['Zero_App', 'Exit_Application']);
+
     }
 
     /**
@@ -399,7 +393,7 @@ class Zero_App
         if ( 0 < $exception->getCode() && $exception->getCode() < 499 )
         {
             $code = $exception->getCode();
-            Zero_Logs::Set_Message('Section Url: ' . Zero_App::$Config->Host . Zero_App::$Route->Url);
+            Zero_Logs::Set_Message('Section Url: ' . Zero_App::$Config->Site_DomainSub . Zero_App::$Route->Url);
         }
         else
         {
@@ -449,7 +443,7 @@ class Zero_App
         else if ( Zero_App::$Mode == 'web' )
         {
             Zero_App::$Users->UrlRedirect = $_SERVER['REQUEST_URI'];
-            $View = new Zero_View(ucfirst(self::$Config->Host) . '_Error');
+            $View = new Zero_View(ucfirst(self::$Config->Site_DomainSub) . '_Error');
             $View->Template_Add('Zero_Error');
             $View->Assign('http_status', $code);
             self::ResponseHtml($View->Fetch(), $code);

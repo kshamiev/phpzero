@@ -81,7 +81,7 @@ for ($i = 0; $i < $min_chars; $i++)
   ATTENTION: The trailing slash is required.
  */
 $baseUrl = '/ckfinder/userfiles/';
-$baseUrl = Zero_App::$Config->Http_Upload;
+$baseUrl = ZERO_HTTPD;
 
 /*
   $baseDir : the path to the local directory (in the server) which points to the

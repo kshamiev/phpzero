@@ -93,13 +93,13 @@ abstract class Zero_Controller
      */
     public function Get_Message()
     {
-        foreach (self::$_Message as $key => $row)
+        foreach (self::$_Message as $message => $row)
         {
             if ( 1 == count($row) )
             {
                 //                $index = 'controller ' . get_class($this) . ' message ' . $key;
-                $index = 'controller message ' . $key;
-                self::$_Message[$key][] = Zero_I18n::T(get_class($this), $index, $key);
+//                $index = 'controller message ' . $key;
+                self::$_Message[$message][] = Zero_I18n::Controller(get_class($this), $message);
             }
         }
         return self::$_Message;

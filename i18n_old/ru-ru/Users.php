@@ -18,18 +18,6 @@
  * 'translation Key' => 'Translation Value'
  */
 return [
-    'model' => [
-        'Property all' => 'Все свойства',
-
-    ],
-    'view' => [
-
-    ],
-    'controller' => [
-
-    ],
-];
-return [
     'model' => 'Пользователи',
     'model prop Date' => 'Дата регистрации',
     'model prop DateOnline' => 'Дата посещения',

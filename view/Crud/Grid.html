@@ -127,7 +127,7 @@
             {/foreach}
             <br><br>
             {/if}
-            <input class="btn" type="button" value="{translation "Zero_App" "controller action Add"}" onclick="location.href='{URL}/edit-pid:{$pid}?act=Add';">
+            <input class="btn" type="button" value="{translation "Zero_App" "Add"}" onclick="location.href='{URL}/edit-pid:{$pid}?act=Add';">
             {if ( isset($Action['CatalogMove']) )}
             ID: <input type="text" id="catalog_move1" style="width: 50px;">
             <input class="btn" type="button" value="{$Action['CatalogMove']['Name']}" onclick="button_form_obj_id(this.form, '{URL}', 'CatalogMove', $('#catalog_move1').val(), 0);">

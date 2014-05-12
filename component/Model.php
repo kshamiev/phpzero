@@ -333,7 +333,7 @@ abstract class Zero_Model
         if ( !isset(self::$_Config[$index]['model']) )
         {
             self::$_Config[$index]['model'] = static::Config_Model($this);
-            self::$_Config[$index]['model']['Comment'] = Zero_I18n::T($index, 'model', $index);
+            self::$_Config[$index]['model']['Comment'] = Zero_I18n::Model($index, $index);
         }
         return self::$_Config[$index]['model'];
     }
@@ -388,7 +388,7 @@ abstract class Zero_Model
         {
             foreach (static::Config_Prop($this) as $prop => $row)
             {
-                $row['Comment'] = Zero_I18n::T($index, "model prop {$prop}", $prop);
+                $row['Comment'] = Zero_I18n::Model($index, $prop);
                 //                if ( 'S' == $row['DB'] || 'E' == $row['DB'] )
                 //                    $row['Value'] = Zero_DB::Sel_EnumSet($this, $prop);
                 self::$_Config[$index]['props'][$prop] = $row;

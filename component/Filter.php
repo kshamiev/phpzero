@@ -185,7 +185,7 @@ class Zero_Filter
         if ( isset($this->Filter[$prop]) )
             return true;
         $this->Filter[$prop] = $row;
-        $this->Filter[$prop]['Comment'] = Zero_I18n::T($this->Model->Get_Source(), 'model prop ' . $prop, $prop);
+        $this->Filter[$prop]['Comment'] = Zero_I18n::Model($this->Model->Get_Source(), $prop);
         $this->Filter[$prop]['Filter'] = 'Select';
         $this->Filter[$prop]['Visible'] = $is_visible;
         $this->Filter[$prop]['Value'] = '';
@@ -454,7 +454,7 @@ class Zero_Filter
             $this->Filter = [];
             //  poisk
             $this->Search = ['List' => [], 'Value' => []];
-            $this->Add_Search_Text('ALL_PROPS', ['Comment' => Zero_I18n::T('Zero_App', 'model prop ALL_PROPS', 'all property')]);
+            $this->Add_Search_Text('ALL_PROPS', ['Comment' => Zero_I18n::Model('Www_App', 'Property all')]);
             //  sortirovka
             $this->Sort = ['List' => [], 'Value' => []];
             //

@@ -224,7 +224,7 @@ class Zero_Section extends Zero_Model
      */
     protected function Init()
     {
-        $this->Init_Url(Zero_App::$Config->Host . Zero_App::$Route->Url);
+        $this->Init_Url(Zero_App::$Config->Site_DomainSub . Zero_App::$Route->Url);
     }
 
     /**
@@ -273,12 +273,12 @@ class Zero_Section extends Zero_Model
             $this->_Action_List = $Model->DB->Select_Array_Index('Action');
             foreach ($this->_Action_List as $action => $row)
             {
-                $index = "controller action {$action}";
+//                $index = "controller action {$action}";
 //                if ( 'Default' == $action )
 //                    $index = "controller action {$action}";
 //                else
 //                    $index = "controller {$this->Controller} action {$action}";
-                $this->_Action_List[$action] = ['Name' => Zero_I18n::T($this->Controller, $index, $action)];
+                $this->_Action_List[$action] = ['Name' => Zero_I18n::Controller($this->Controller, 'Action_' . $action)];
             }
             //
 //            $reflection = new ReflectionClass($this->Controller);
@@ -307,13 +307,13 @@ class Zero_Section extends Zero_Model
                 $name = $method->getName();
                 if ( 'Action' == substr($name, 0, 6) )
                 {
-                    $name = str_replace('Action_', '', $name);
-                    $index = "controller action {$name}";
+                    $index = str_replace('Action_', '', $name);
+//                    $index = "controller action {$name}";
 //                    if ( 'Default' == $name )
 //                        $index = "controller action {$name}";
 //                    else
 //                        $index = "controller {$this->Controller} action {$name}";
-                    $this->_Action_List[$name] = ['Name' => Zero_I18n::T($this->Controller, $index, $name)];
+                    $this->_Action_List[$index] = ['Name' => Zero_I18n::Controller($this->Controller, $name)];
                 }
             }
         }

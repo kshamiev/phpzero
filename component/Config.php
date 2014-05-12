@@ -76,39 +76,39 @@ class Zero_Config
     public $Site_Language = '';
 
     /**
-     * Absolute system host a website.
+     * Default language
      *
      * @var string
      */
-    public $Host = '';
+    public $Site_Domain = '';
 
     /**
-     * Root site (http://www.domain.com)
+     * Default language
      *
      * @var string
      */
-    public $Http = '';
+    public $Site_DomainAssets = '';
 
     /**
-     * http static data (images, css, js) (http://www.domain.com/assets/themename)
+     * Default language
      *
      * @var string
      */
-    public $Http_Assets = '';
+    public $Site_DomainUpload = '';
 
     /**
-     * http binary data (http://www.domain.com/upload/data)
+     * Default language
      *
      * @var string
      */
-    public $Http_Upload = '';
+    public $Site_DomainAlias = '';
 
     /**
-     * http referer
+     * Default language
      *
      * @var string
      */
-    public $Http_Ref = '';
+    public $Site_DomainSub = '';
 
     /**
      * Number of items per page
@@ -225,38 +225,32 @@ class Zero_Config
         //  Default language
         $this->Site_Language = $Config['Site']['Language'];
 
+        $this->Site_Domain = $Config['Site']['Domain'];
+        if ( $Config['Site']['DomainAssets'] )
+            $this->Site_DomainAssets = $Config['Site']['DomainAssets'];
+        else
+            $this->Site_DomainAssets = $this->Site_Domain;
+
+        if ( $Config['Site']['DomainUpload'] )
+            $this->Site_DomainUpload = $Config['Site']['DomainUpload'];
+        else
+            $this->Site_DomainUpload = $this->Site_Domain;
+
+        if ( isset($_SERVER["HTTP_HOST"]) )
+            $this->Site_DomainAlias = $_SERVER["HTTP_HOST"];
+        else
+            $this->Site_DomainAlias = $Config['Site']['Domain'];
+
         //  Absolute system host a website.
-        $this->Host = 'www';
-        if ( isset($_SERVER['HTTP_HOST']) ) {
+        $this->Site_DomainSub = 'www';
+        if ( isset($_SERVER['HTTP_HOST']) )
+        {
             $arr = explode('.', strtolower($_SERVER['HTTP_HOST']));
             if ( 2 < count($arr) )
             {
-                $this->Host = $arr[0];
+                $this->Site_DomainSub = $arr[0];
             }
         }
-
-        // Root site (http://www.domain.com)
-        if ( isset($_SERVER["HTTP_HOST"]) )
-            $this->Http = 'http://' . $_SERVER["HTTP_HOST"];
-        else
-            $this->Http = 'http://' . $Config['Site']['Domain'];
-
-        // http static data (images, css, js) (http://www.domain.com/assets)
-        if ( $Config['Site']['DomainAssets'] )
-            $this->Http_Assets = 'http://' . $Config['Site']['DomainAssets'] . '/assets';
-        else
-            $this->Http_Assets = 'http://' . $Config['Site']['Domain'] . '/assets';
-
-        // http binary data (http://www.domain.com/upload)
-        if ( $Config['Site']['DomainUpload'] )
-            $this->Http_Upload = 'http://' . $Config['Site']['DomainUpload'] . '/upload/data';
-        //        else if ( isset($_SERVER["SERVER_NAME"]) )
-        //            $this->Http_Upload = 'http://' . $_SERVER["SERVER_NAME"] . '/upload/data';
-        else
-            $this->Http_Upload = 'http://' . $Config['Site']['Domain'] . '/upload/data';
-
-        // http referer
-        $this->Http_Ref = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : $this->Http;
 
         //  Number of items per page
         $this->View_PageItem = $Config['View']['PageItem'];

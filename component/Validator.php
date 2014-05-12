@@ -62,11 +62,7 @@ class Zero_Validator
         {
             if ( 1 == count($row) )
             {
-                if ( 'Error_NotNull' == $row[0] )
-                    $index = 'model prop_all validate Error_NotNull';
-                else
-                    $index = 'model prop ' . $prop . ' validate ' . $row[0];
-                $this->Errors[$prop][] = Zero_I18n::T($this->Model->Source, $index, $row[0]);
+                $this->Errors[$prop][] = Zero_I18n::Model($this->Model->Source, $row[0]);
             }
         }
         return $this->Errors;
