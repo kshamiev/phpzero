@@ -100,7 +100,8 @@ class Zero_System_Api extends Zero_Controller
         if ( !is_dir($path) )
             mkdir($path, 0777, true);
         $arr = explode('.', $_FILES['myFile']['name']);
-        $pathData = $path . '/' . $sha1 . "." . array_pop($arr);
+        $ext = array_pop($arr);
+        $pathData = $path . '/' . $sha1 . "." . $ext;
         $pathInfo = $path . '/' . $sha1 . ".txt";
         // перемещение во временную папку
         if ( false == move_uploaded_file($_FILES['myFile']['tmp_name'], $pathData) )
@@ -109,7 +110,7 @@ class Zero_System_Api extends Zero_Controller
         // сохранение информации о загруженном файле
         $data = json_encode($_FILES['myFile'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
         Zero_Lib_FileSystem::File_Save($pathInfo, $data);
-        Zero_App::ResponseJson([$sha1, '/' . explode('/www/', $path)[1]], 200, "Файл загружен");
+        Zero_App::ResponseJson([$sha1, '/' . explode('/www/', $path)[1], $ext], 200, "Файл загружен");
     }
 }
 

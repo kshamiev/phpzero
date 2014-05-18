@@ -17,7 +17,6 @@ require dirname(dirname(__DIR__)) . '/component/App.php';
 Zero_App::Init();
 Zero_App::$Config->Log_Output_Display = false;
 $Users = Zero_Model::Factory('Www_Users');
-
 /**
  * This function must check the user session to be sure that he/she is
  * authorized to upload and access files in the File Browser.
