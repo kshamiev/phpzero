@@ -133,11 +133,13 @@ class Zero_Validator
 
         if ( Zero_App::$Mode == 'api' && isset($value['Hash']) && $value['Hash'] )
         {
-            $pathData = dirname(ZERO_PATH_DATA) . '/temp/' . $value['Hash'];
             $pathInfo = dirname(ZERO_PATH_DATA) . '/temp/' . $value['Hash'] . '.txt';
-            if ( !file_exists($pathData) || !file_exists($pathInfo) )
-                return 'Error Upload File';
+            if ( !file_exists($pathInfo) )
+                return 'Ошибка загрузки файла (информация)';
             $_FILES[$prop] = json_decode(file_get_contents($pathInfo), true);
+//            $pathData = dirname(ZERO_PATH_DATA) . '/temp/' . $_FILES[$prop]['tmp_name'];
+            if ( !file_exists($_FILES[$prop]['tmp_name']) )
+                return 'Ошибка загрузки файла (данные)';
         }
 
         //  Validatciia
