@@ -7,7 +7,7 @@
 // Including the class Zero_App
 require __DIR__ . '/zero/component/App.php';
 
-Zero_App::Init();
+Zero_App::Init('web', 'application');
 
 Zero_App::Execute();
 

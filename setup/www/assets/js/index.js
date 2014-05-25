@@ -1,12 +1,3 @@
-//  просмотр всех свойств объекта
-function ObjectShowProps(obj, objName) {
-    var result = "";
-    for (var i in obj) // обращение к свойствам объекта по индексу
-        result += objName + "." + i + " = " + obj[i] + "<br />\n";
-    document.write(result);
-    //alert(result);
-}
-
 //  обработка кнопок
 function button_form(f, Url, Action, flag) {
     if (0 < flag)
@@ -34,20 +25,18 @@ function button_form_obj_id(f, Url, Action, obj_id, flag) {
     return true;
 }
 
-//	календарь
-function calendar(obj) {
-    //	x=event.x+10; y=event.y+90; //	e.clientX or e.pageX
-    x = 0;
-    y = 0;
-    newWindow = window.open("/library/calendar.php?obj=" + obj, "calendar", "left=" + x + ", top=" + y + ", width=256px, height=216px, toolbar=0, location=0, directories=0, status=1, menubar=0, scrollbars=1, resizable=1");
-    newWindow.focus();
-    return false;
-}
-//	скрытие, раскрытие блока
-function show(obj) {
-    obj = document.getElementById(obj);
-    if ("none" == obj.style.display)
-        obj.style.display = "block";
-    else
-        obj.style.display = "none";
-}
+jQuery(function() {
+    jQuery(".datepicker").datepicker({
+        dateFormat: "yy-mm-dd",
+        language: 'ru'
+    });
+jQuery(".datetimepicker").datetimepicker({
+    dateFormat: "yy-mm-dd",
+    timeFormat: "HH:mm:ss",
+    language: 'ru'
+    });
+jQuery(".timepicker").timepicker({
+    timeFormat: "HH:mm:ss",
+    language: 'ru'
+    });
+});
