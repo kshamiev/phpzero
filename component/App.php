@@ -283,10 +283,9 @@ class Zero_App
      */
     public static function Execute()
     {
-
         // General Authorization Application
         if ( self::$Config->Site_AccessLogin )
-            if ( $_SERVER['PHP_AUTH_USER'] != self::$Config->Site_AccessLogin || $_SERVER['PHP_AUTH_PW'] != self::$Config->Site_AccessPassword )
+            if ( !isset($_SERVER['PHP_AUTH_USER']) || $_SERVER['PHP_AUTH_USER'] != self::$Config->Site_AccessLogin || $_SERVER['PHP_AUTH_PW'] != self::$Config->Site_AccessPassword )
             {
                 header('WWW-Authenticate: Basic realm="Auth"');
                 header('HTTP/1.0 401 Unauthorized');
@@ -294,8 +293,8 @@ class Zero_App
                 exit;
             }
 
-//        Zero_Logs::Start('#{APP.Full}');
-//        Zero_Logs::Start('#{APP.Main}');
+        //        Zero_Logs::Start('#{APP.Full}');
+        //        Zero_Logs::Start('#{APP.Main}');
 
         //  Инициализация запрошенного раздела (Zero_Section)
         self::$Section = Zero_Model::Instance('Www_Section');
@@ -336,9 +335,9 @@ class Zero_App
             Zero_App::Set_Variable('action_message', $Controller->Get_Message());
         }
 
-//        Zero_Logs::Stop('#{APP.Main}');
+        //        Zero_Logs::Stop('#{APP.Main}');
 
-//        Zero_Logs::Start('#{LAYOUT.View}');
+        //        Zero_Logs::Start('#{LAYOUT.View}');
         // Основные данные
         $viewLayout = new Zero_View(self::$Section->Layout);
         if ( true == $view instanceof Zero_View )
@@ -350,8 +349,8 @@ class Zero_App
         else
             $viewLayout->Assign('Content', $view);
         $view = $viewLayout->Fetch();
-//        Zero_Logs::Stop('#{LAYOUT.View}');
-//        Zero_Logs::Stop('#{APP.Full}');
+        //        Zero_Logs::Stop('#{LAYOUT.View}');
+        //        Zero_Logs::Stop('#{APP.Full}');
         self::ResponseHtml($view, 200);
     }
 
@@ -456,7 +455,7 @@ class Zero_App
         }
         else if ( Zero_App::$Mode == 'web' )
         {
-//            Zero_App::$Users->UrlRedirect = $_SERVER['REQUEST_URI'];
+            //            Zero_App::$Users->UrlRedirect = $_SERVER['REQUEST_URI'];
             $View = new Zero_View(ucfirst(self::$Config->Site_DomainSub) . '_Error');
             $View->Template_Add('Zero_Error');
             $View->Assign('http_status', $code);
