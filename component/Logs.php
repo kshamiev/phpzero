@@ -220,6 +220,7 @@ class Zero_Logs
             }
         }
         // Логирование действий пользовтаеля через API
+        // todo  переработаь убрать логику перенсти в дефолтовые контроллеры
         if ( Zero_App::$Mode == 'api' && ($_SERVER['REQUEST_METHOD'] === "PUT" || $_SERVER['REQUEST_METHOD'] === "POST" || $_SERVER['REQUEST_METHOD'] === "DELETE") )
         {
             $act = date('[d.m.Y H:i:s]') . "\t";

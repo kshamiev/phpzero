@@ -14,7 +14,7 @@
 
 // Подключение класса Zero_App
 require dirname(dirname(__DIR__)) . '/component/App.php';
-Zero_App::Init();
+Zero_App::Init('console', 'ckfinder');
 Zero_App::$Config->Log_Output_Display = false;
 $Users = Zero_Model::Factory('Www_Users');
 /**

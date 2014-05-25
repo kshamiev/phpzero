@@ -38,6 +38,20 @@ class Zero_Config
      *
      * @var string
      */
+    public $Site_AccessLogin = '';
+
+    /**
+     * Site name (of the project)
+     *
+     * @var string
+     */
+    public $Site_AccessPassword = '';
+
+    /**
+     * Site name (of the project)
+     *
+     * @var string
+     */
     public $Site_Name = '';
 
     /**
@@ -194,20 +208,15 @@ class Zero_Config
     {
         $Config = require ZERO_PATH_SITE . '/config.php';
 
-        // General Authorization Application
-        if ( $Config['Site']['AccessPassword'] && isset($_SERVER['HTTP_HOST']) )
-            if ( !isset($_SERVER['PHP_AUTH_USER']) || $_SERVER['PHP_AUTH_USER'] != $Config['Site']['AccessLogin'] || $_SERVER['PHP_AUTH_PW'] != $Config['Site']['AccessPassword'] )
-            {
-                header('WWW-Authenticate: Basic realm="Auth"');
-                header('HTTP/1.0 401 Unauthorized');
-                echo 'Auth Failed';
-                exit;
-            }
-
         // The path to the php Interpreter
         $this->System_PathPhp = $Config['System']['PathPhp'];
         // File storage sessions
         $this->System_PathSession = $Config['System']['PathSession'];
+
+        // The path to the php Interpreter
+        $this->Site_AccessLogin = $Config['Site']['AccessLogin'];
+        // File storage sessions
+        $this->Site_AccessPassword = $Config['Site']['AccessPassword'];
 
         // Access for DB (Mysql)
         $this->Db = $Config['Db'];

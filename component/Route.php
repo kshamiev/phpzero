@@ -60,10 +60,7 @@ class Zero_Route
 
         // если запрос консольный
         if ( !isset($_SERVER['REQUEST_URI']) )
-        {
-            Zero_App::$Mode = 'console';
             return;
-        }
 
         $row = explode('/', strtolower(rtrim(ltrim(explode('?', $_SERVER['REQUEST_URI'])[0], '/'), '/')));
 

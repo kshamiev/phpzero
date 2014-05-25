@@ -94,7 +94,7 @@ if (!empty($_GET['command']) && $_GET['command'] == 'FileUpload' && !empty($_POS
 require_once CKFINDER_CONNECTOR_CONFIG_FILE_PATH;
 
 CKFinder_Connector_Core_Factory::initFactory();
-$connector =& CKFinder_Connector_Core_Factory::getInstance("Core_Connector");
+$connector = CKFinder_Connector_Core_Factory::getInstance("Core_Connector");
 
 if(isset($_GET['command'])) {
     $connector->executeCommand($_GET['command']);
