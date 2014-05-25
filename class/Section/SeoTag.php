@@ -22,9 +22,9 @@ class Zero_Section_SeoTag extends Zero_Controller
     public function Action_Default()
     {
         $seo_data = [
-            'Title' => Zero_App::Get_Variable('Title'),
-            'Description' => Zero_App::Get_Variable('Description'),
-            'Keywords' => Zero_App::Get_Variable('Keywords')
+            'Title' => '',
+            'Description' => '',
+            'Keywords' => ''
         ];
         if ( is_object(Zero_App::$Section) && 0 < Zero_App::$Section->ID )
         {
