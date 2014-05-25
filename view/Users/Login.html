@@ -1,47 +1,29 @@
-{if ( 0 < $Users->ID )}
-<script>
-    document.location.href = '/user/profile';
-</script>
-<table width="100%" cellspacing="0" cellpadding="2" border="0">
-    <tr align="center">
-        <td>
-            <a href="/user/profile">{lang "Zero_Users" "profile"}</a>
-            <a href="/user?act=Logout">{translation "Zero_Users" "exit"}</a>
-        </td>
-    </tr>
-</table>
-{else}
 <p align="center" class="message-system">&nbsp;
-    {foreach (Zero_App::Get_Variable('action_message') as $message)}
-    <span{if ( 1 == $message[0] )} class="subj_error"{/if}>{$message[1]}</span><br>
+    {foreach (Zero_App::Get_Variable('action_message') as $row)}
+    {$row[1]}&nbsp;&nbsp;
     {/}
 </p>
-<form action="/user" method="post">
+<form action="{URL}" method="post">
     <input type="hidden" name="act" value="Login">
     <table class="tbledit" width="300px" cellspacing="1" cellpadding="0" border="0" align="center">
         <tr>
-            <th colspan="2">{translation "Zero_Users" "Enter"}</th>
+            <th colspan="2">Вход</th>
         </tr>
         <tr>
-            <td width="50px">{translation "Zero_Users" "Login"}</td>
+            <td width="50px">{translation "Zero_Users" "Login"}:</td>
             <td>
                 <input class="field" type="text" name="Login">
             </td>
         </tr>
         <tr>
-            <td>{translation "Zero_Users" "Password"}</td>
+            <td>{translation "Zero_Users" "Password"}:</td>
             <td>
                 <input class="field" type="password" name="Password">
             </td>
         </tr>
         <tr>
             <td colspan="2" align="center">
-                <input class="btn" type="submit" value="{translation "Zero_Users" "Enter"}">
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2" align="center">
-                <a href="/user/registration">{translation "Zero_Users" "Registration"}</a>
+                <input class="btn" type="submit" value="вход">
             </td>
         </tr>
     </table>
@@ -51,11 +33,11 @@
     <input type="hidden" name="act" value="Reminder">
     <table class="tbledit" width="400px" cellspacing="1" cellpadding="0" border="0" align="center">
         <tr>
-            <th colspan="2">{translation "Zero_Users" "Reminder"}</th>
+            <th colspan="2">Восстановление пароля</th>
         </tr>
         <tr>
             <td width="200px">
-                {translation "Zero_Users" "model prop Email"} <span class="subj_error">*</span>
+                Электронный адресс <span class="subj_error">*</span>
                 {if ( isset($Error_Validator['Email']) )}<span class="subj_prop_error">{$Error_Validator['Email'][1]}</span>{/if}
             </td>
             <td>
@@ -64,7 +46,7 @@
         </tr>
         <tr>
             <td>
-                {translation "Zero_Users" "KeystringComment"}
+                Введите строку с картинки
                 {if ( isset($Error_Validator['Keystring']) )}<span class="subj_prop_error">{$Error_Validator['Keystring'][1]}</span>{/if}
             </td>
             <td>
@@ -72,14 +54,14 @@
             </td>
         </tr>
         <tr>
-            <td>{translation "Zero_Users" "KeystringHelp"}</td>
+            <td>Клините по картинке, если ен читается</td>
             <td align="center">
-                <img onclick="this.src='/captcha?'+Math.random();" src="/captcha" border="0" style="cursor: pointer;">
+                <img onclick="this.src='/user/captcha?'+Math.random();" src="/user/captcha" border="0" style="cursor: pointer;">
             </td>
         </tr>
         <tr>
             <td colspan="2" align="center">
-                <input class="btn" type="submit" value="{translation "Zero_Users" "Reminder"}">
+                <input class="btn" type="submit" value="отправить">
             </td>
         </tr>
     </table>

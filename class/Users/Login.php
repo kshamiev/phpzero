@@ -71,6 +71,9 @@ class Zero_Users_Login extends Zero_Controller
      */
     protected function Chunk_Init()
     {
+        if ( 2 != Zero_App::$Users->Zero_Groups_ID ) {
+            Zero_App::ResponseRedirect('/admin');
+        }
         $this->Model = Zero_Model::Make('Www_Users');
         $this->View = new Zero_View(get_class($this));
         if ( !Zero_App::$Users->UrlRedirect )

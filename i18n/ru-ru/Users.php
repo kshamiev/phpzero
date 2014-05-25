@@ -23,10 +23,17 @@ return [
 
     ],
     'view' => [
+        'Login' => 'Логин',
+        'Password' => 'Пароль',
 
     ],
     'controller' => [
-
+        'Action_Login' => 'Авторизация',
+        'Action_Reminder' => 'Восстановление пароля',
+        'Action_Logout' => 'Выход',
+        'Error_Registration' => 'Не зарегистрирован',
+        'Error_Password' => 'Пароль не верен',
+        'Action_CatalogMove' => 'Перемещение пользователя',
     ],
 ];
 return [

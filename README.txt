@@ -1,1 +1,2 @@
-The core of the system and at the same time its control module.
+Ядро системы и базовый модуль приложения.
+Версия 3.0.0

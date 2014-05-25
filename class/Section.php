@@ -25,7 +25,6 @@
  * @property string $UrlThis
  * @property string $UrlRedirect
  * @property string $Layout
- * @property string $ContentType
  * @property string $Controller
  * @property string $IsAuthorized
  * @property string $IsVisible
@@ -116,7 +115,6 @@ class Zero_Section extends Zero_Model
             'UrlThis' => ['AliasDB' => 'z.UrlThis', 'DB' => 'T', 'IsNull' => 'NO', 'Default' => '', 'Form' => 'Text'],
             'UrlRedirect' => ['AliasDB' => 'z.UrlRedirect', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'],
             'Layout' => ['AliasDB' => 'z.Layout', 'DB' => 'T', 'IsNull' => 'NO', 'Default' => 'Zero_Content', 'Form' => 'Select'],
-//            'ContentType' => ['AliasDB' => 'z.ContentType', 'DB' => 'E', 'IsNull' => 'NO', 'Default' => 'html', 'Form' => 'Radio'],
             'Controller' => ['AliasDB' => 'z.Controller', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'],
             'IsAuthorized' => ['AliasDB' => 'z.IsAuthorized', 'DB' => 'E', 'IsNull' => 'NO', 'Default' => 'no', 'Form' => 'Radio'],
             'IsVisible' => ['AliasDB' => 'z.IsVisible', 'DB' => 'E', 'IsNull' => 'NO', 'Default' => 'no', 'Form' => 'Radio'],
@@ -151,7 +149,6 @@ class Zero_Section extends Zero_Model
             'IsAuthorized' => ['Visible' => true, 'Search' => '', 'Sort' => false],
             'IsVisible' => ['Visible' => true, 'Search' => '', 'Sort' => false],
             'IsEnable' => ['Visible' => true, 'Search' => '', 'Sort' => false],
-//            'ContentType' => ['Visible' => true, 'Search' => '', 'Sort' => false],
             'Name' => ['Visible' => true, 'Search' => 'Text', 'Sort' => true],
             'Title' => ['Visible' => true, 'Search' => 'Text', 'Sort' => true],
             'Keywords' => ['Visible' => true, 'Search' => 'Text', 'Sort' => true],
@@ -206,7 +203,6 @@ class Zero_Section extends Zero_Model
             'UrlThis' => [],
             'UrlRedirect' => [],
             'Layout' => [],
-//            'ContentType' => [],
             'Controller' => [],
             'IsAuthorized' => [],
             'IsVisible' => [],

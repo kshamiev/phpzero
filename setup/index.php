@@ -139,7 +139,7 @@ if ( !isset($_REQUEST['db_host']) )
     <form action="index.php" method="post">
         <tr>
             <td colspan="2" height="50px">
-                После инсталяции^ <a href="/" target="_blank">сюда</a> логин и пароль: "dev" "dev"<br>
+                После инсталяции <a href="/" target="_blank">сюда</a> логин и пароль: "dev" "dev"<br>
                 <?php foreach ($error_init_list as $kod => $error)
                 {
                     if ( 100 < $kod )

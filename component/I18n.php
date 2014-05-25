@@ -43,10 +43,9 @@ class Zero_I18n
      * @param $file_name Imia iazy`kovogo fai`la (imia modeli, kontrollera)
      * @param $section string
      * @param $key string
-     * @param string $value_default znachenie po umolchaniiu (esli ne nai`detsia perevod)
      * @return string nai`denny`i` perevod
      */
-    protected static function T($file_name, $section, $key, $value_default = '')
+    protected static function T($file_name, $section, $key)
     {
         $folder_list = explode('_', $file_name);
         $file_name = $folder_list[0] . '_' . $folder_list[1];
@@ -73,19 +72,19 @@ class Zero_I18n
         }
         //
         Zero_Logs::Set_Message('I18N NOT FOUND KEY: ' . LANG . ' -> ' . $file_name . ' -> ' . $section . ' -> ' . $key, 'warning');
-        return $value_default;
+        return $key;
     }
 
-    public static function Model($file_name, $key, $value_default = '')
+    public static function Model($file_name, $key)
     {
-        return self::T($file_name, 'model', $key, $value_default);
+        return self::T($file_name, 'model', $key);
     }
-    public static function View($file_name, $key, $value_default = '')
+    public static function View($file_name, $key)
     {
-        return self::T($file_name, 'view', $key, $value_default);
+        return self::T($file_name, 'view', $key);
     }
-    public static function Controller($file_name, $key, $value_default = '')
+    public static function Controller($file_name, $key)
     {
-        return self::T($file_name, 'controller', $key, $value_default);
+        return self::T($file_name, 'controller', $key);
     }
 }
