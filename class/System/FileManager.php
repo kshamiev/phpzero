@@ -195,7 +195,7 @@ class Zero_System_FileManager extends Zero_Controller
             //  файл не загружен или загружен с ошибками
             if ( !is_uploaded_file($_FILES['FileUpload']['tmp_name']) || 0 != $_FILES['FileUpload']['error'] )
             {
-                Zero_Logs::Set_Message("файловый менеджер - {$_FILES['FileUpload']['error']}");
+                Zero_Logs::Set_Message_Error("файловый менеджер - {$_FILES['FileUpload']['error']}");
                 return $this->Set_Message('Error_FileUpload', 1, false);
             }
             $filename = Zero_Lib_String::Transliteration_FileName($_FILES['FileUpload']['name']);

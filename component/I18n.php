@@ -33,7 +33,7 @@ class Zero_I18n
         $path = ZERO_PATH_APPLICATION . '/' . strtolower($folder_list[0]) . '/i18n/' . $lang . '/' . $folder_list[1] . '.php';
         if ( file_exists($path) )
             return $path;
-        Zero_Logs::Set_Message('I18N NOT FOUND FILE: ' . strtolower($folder_list[0]) . '/i18n/' . $lang . '/' . $folder_list[1], 'warning');
+        Zero_Logs::Set_Message_Warninng('I18N NOT FOUND FILE: ' . strtolower($folder_list[0]) . '/i18n/' . $lang . '/' . $folder_list[1]);
         return '';
     }
 
@@ -71,7 +71,7 @@ class Zero_I18n
                 return self::$_I18n['Www_App'][$section][$key];
         }
         //
-        Zero_Logs::Set_Message('I18N NOT FOUND KEY: ' . LANG . ' -> ' . $file_name . ' -> ' . $section . ' -> ' . $key, 'warning');
+        Zero_Logs::Set_Message_Warninng('I18N NOT FOUND KEY: ' . LANG . ' -> ' . $file_name . ' -> ' . $section . ' -> ' . $key);
         return $key;
     }
 

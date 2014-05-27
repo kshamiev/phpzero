@@ -331,7 +331,7 @@ class Zero_Config
  */
 function pre($var)
 {
-    Zero_Logs::Set_Message($var, 'code');
+    Zero_Logs::Set_Message_Notice($var);
 }
 
 /**

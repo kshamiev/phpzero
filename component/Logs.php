@@ -84,34 +84,40 @@ class Zero_Logs
     }
 
     /**
-     * Initcializatciia vhodiashchego sistemnogo soobshcheniia.
-     *
-     * $level mozhet prinimat` znacheniia:
-     * error, warning, code
-     *
-     * @param string $value Soobshchenie ob oshibke
-     * @param string $level Uroven` oshibki
-     * @return string Level (code - only display debug, error, warning - display debug and save file log)
-     */
-    public static function Set_Message($value, $level = 'error')
-    {
-        self::$_Message[] = [$value, $level];
-        return $level;
-    }
-
-    /**
-     * Initcializatciia vhodiashchego sistemnogo soobshcheniia.
-     *
-     * $level mozhet prinimat` znacheniia:
-     * error, warning, code
-     *
-     * @todo Добавить дифференцированные методы ошибок и разнести по разным переменным (оптимизация)
+     * Инициализация входиащего системного сообщения.
      *
      * @param string $value Soobshchenie ob oshibke
      */
     public static function Set_Message_Action($value)
     {
         self::$_Message[] = [$value, 'action'];
+    }
+    /**
+     * Инициализация входиащего системного сообщения.
+     *
+     * @param string $value Soobshchenie ob oshibke
+     */
+    public static function Set_Message_Error($value)
+    {
+        self::$_Message[] = [$value, 'error'];
+    }
+    /**
+     * Инициализация входиащего системного сообщения.
+     *
+     * @param string $value Soobshchenie ob oshibke
+     */
+    public static function Set_Message_Warninng($value)
+    {
+        self::$_Message[] = [$value, 'warning'];
+    }
+    /**
+     * Инициализация входиащего системного сообщения.
+     *
+     * @param string $value Soobshchenie ob oshibke
+     */
+    public static function Set_Message_Notice($value)
+    {
+        self::$_Message[] = [$value, 'code'];
     }
 
     public static function Get_Message()
@@ -218,15 +224,6 @@ class Zero_Logs
                 $act .= ZERO_HTTP . $_SERVER['REQUEST_URI'] . "\n";
                 self::Save_File($act, self::$_FileLog . '_action');
             }
-        }
-        // Логирование действий пользовтаеля через API
-        // todo  переработаь убрать логику перенсти в дефолтовые контроллеры
-        if ( Zero_App::$Mode == 'api' && ($_SERVER['REQUEST_METHOD'] === "PUT" || $_SERVER['REQUEST_METHOD'] === "POST" || $_SERVER['REQUEST_METHOD'] === "DELETE") )
-        {
-            $act = date('[d.m.Y H:i:s]') . "\t";
-            $act .= Zero_App::$Users->Login . "\t" . Zero_App::$Section->Controller . " -> смотри урл\t";
-            $act .= ZERO_HTTP . $_SERVER['REQUEST_URI'] . "\n";
-            self::Save_File($act, self::$_FileLog . '_action');
         }
     }
 

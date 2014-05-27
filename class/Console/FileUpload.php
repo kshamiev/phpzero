@@ -20,14 +20,11 @@ class Zero_Console_FileUpload extends Zero_Controller
     public function Action_RemoveTempFileUpload()
     {
         $path = dirname(ZERO_PATH_DATA) . '/temp';
-        foreach (glob($path . '/*.txt') as $file)
+        foreach (glob($path . '/.*') as $file)
         {
-            $timeOutMinute = ( time() - filemtime($file) ) * 60;
+            $timeOutMinute = (time() - filemtime($file)) * 60;
             if ( 60 < $timeOutMinute )
-            {
                 unlink($file);
-                unlink(substr($file, 0, -4));
-            }
         }
         return $this->View;
     }

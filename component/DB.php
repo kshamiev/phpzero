@@ -25,7 +25,6 @@
  * @link http://www.phpzero.com/
  * @copyright <PHP_ZERO_COPYRIGHT>
  * @license http://www.phpzero.com/license/
- * @todo Разделить на 2 класса
  */
 class Zero_DB
 {
@@ -341,8 +340,8 @@ class Zero_DB
         Zero_Logs::Stop('#{SQL} ' . $sql);
         if ( !$res )
         {
-            Zero_Logs::Set_Message("#{SQL_ERROR} " . self::$DB->error);
-            Zero_Logs::Set_Message("#{SQL_QUERY} " . $sql);
+            Zero_Logs::Set_Message_Error("#{SQL_ERROR} " . self::$DB->error);
+            Zero_Logs::Set_Message_Error("#{SQL_QUERY} " . $sql);
             throw new Exception(self::$DB->error, 500);
         }
         return $res;
@@ -367,8 +366,8 @@ class Zero_DB
         Zero_Logs::Stop('#{SQL} ' . $sql);
         if ( !$res )
         {
-            Zero_Logs::Set_Message("#{SQL_ERROR} " . self::$DB->error);
-            Zero_Logs::Set_Message("#{SQL_QUERY} " . $sql);
+            Zero_Logs::Set_Message_Error("#{SQL_ERROR} " . self::$DB->error);
+            Zero_Logs::Set_Message_Error("#{SQL_QUERY} " . $sql);
             throw new Exception(self::$DB->error, 500);
         }
         return $res;
@@ -614,7 +613,7 @@ class Zero_DB
         $link = $this->Model->Get_Config_Link();
         if ( !$source_target || !$source_target_id || !isset($link[$source_target]) )
         {
-            Zero_Logs::Set_Message("nepravil`noe obrashchenie k kross tablitce: {$this->Model->Source} - {$source_target}, ID = {$source_target_id}");
+            Zero_Logs::Set_Message_Error("nepravil`noe obrashchenie k kross tablitce: {$this->Model->Source} - {$source_target}, ID = {$source_target_id}");
             return [];
         }
         $link = $link[$source_target];
@@ -981,7 +980,7 @@ class Zero_DB
         $link = $this->Model->Get_Config_Link();
         if ( !$source_target || !$source_target_id || !isset($link[$source_target]) )
         {
-            Zero_Logs::Set_Message("nepravil`noe obrashchenie k kross tablitce: {$this->Model->Source} - {$source_target}, ID = {$source_target_id}");
+            Zero_Logs::Set_Message_Error("nepravil`noe obrashchenie k kross tablitce: {$this->Model->Source} - {$source_target}, ID = {$source_target_id}");
             return -1;
         }
         $link = $link[$source_target];
@@ -1387,7 +1386,7 @@ class Zero_DB
             $this->Sql_Where('ID', '=', $this->Model->ID);
         else if ( empty($this->Params['Where']) )
         {
-            Zero_Logs::Set_Message("Error Load: {$this->Model->Source} SqlWhere is empty");
+            Zero_Logs::Set_Message_Error("Error Load: {$this->Model->Source} SqlWhere is empty");
             return false;
         }
         $row = $this->_Select($props, 'row');
@@ -1469,7 +1468,7 @@ class Zero_DB
                         mkdir(dirname($path), 0777, true);
                     if ( !rename($_FILES[$prop]['tmp_name'], $path) )
                     {
-                        Zero_Logs::Set_Message('Error Copy File');
+                        Zero_Logs::Set_Message_Error('Error Copy File');
                         continue;
                     }
                     $sql_update[] = "`" . $prop . "` = '{$file}'";
@@ -1553,7 +1552,7 @@ class Zero_DB
                         mkdir(dirname($path), 0777, true);
                     if ( !rename($_FILES[$prop]['tmp_name'], $path) )
                     {
-                        Zero_Logs::Set_Message('Error Copy File');
+                        Zero_Logs::Set_Message_Error('Error Copy File');
                         continue;
                     }
                     $sql_update[] = "`" . $prop . "` = '{$file}'";

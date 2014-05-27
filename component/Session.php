@@ -64,7 +64,7 @@ class Zero_Session extends ArrayObject
     public static function Set_Instance(Zero_Session $Session)
     {
         if ( self::$_Session !== null )
-            Zero_Logs::Set_Message('Session is already initialized');
+            Zero_Logs::Set_Message_Error('Session is already initialized');
         self::$_Session = $Session;
     }
 

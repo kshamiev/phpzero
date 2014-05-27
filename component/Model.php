@@ -562,7 +562,7 @@ abstract class Zero_Model
         if ( 0 == $this->ID || !isset($this->Get_Config_Prop()[$prop]) )
             return null;
         //  svoi`stvo pustoe, ne zagruzhennoe iz BD
-        Zero_Logs::Set_Message('#{LOAD PROP} load prop "' . $prop . '" for model "' . get_class($this) . '"', 'warning');
+        Zero_Logs::Set_Message_Warninng('#{LOAD PROP} load prop "' . $prop . '" for model "' . get_class($this) . '"');
         $this->_Props[$prop] = Zero_DB::Sel_Filed($this->ID, $this->Source, $prop);
         return $this->_Props[$prop];
     }

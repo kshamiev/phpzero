@@ -259,8 +259,10 @@ class Zero_App
 
         require_once ZERO_PATH_ZERO . '/component/View.php';
 
+
         // Initialization of the profiled application processors
-        set_error_handler(['Zero_App', 'Handler_Error']);
+//        error_reporting(2147483647);
+        set_error_handler(['Zero_App', 'Handler_Error'], 2147483647);
         set_exception_handler(['Zero_App', 'Handler_Exception']);
         //        register_shutdown_function(['Zero_App', 'Exit_Application']);
 
@@ -292,9 +294,6 @@ class Zero_App
                 echo 'Auth Failed';
                 exit;
             }
-
-        //        Zero_Logs::Start('#{APP.Full}');
-        //        Zero_Logs::Start('#{APP.Main}');
 
         //  Инициализация запрошенного раздела (Zero_Section)
         self::$Section = Zero_Model::Instance('Www_Section');
@@ -335,9 +334,6 @@ class Zero_App
             Zero_App::Set_Variable('action_message', $Controller->Get_Message());
         }
 
-        //        Zero_Logs::Stop('#{APP.Main}');
-
-        //        Zero_Logs::Start('#{LAYOUT.View}');
         // Основные данные
         $viewLayout = new Zero_View(self::$Section->Layout);
         if ( true == $view instanceof Zero_View )
@@ -349,8 +345,6 @@ class Zero_App
         else
             $viewLayout->Assign('Content', $view);
         $view = $viewLayout->Fetch();
-        //        Zero_Logs::Stop('#{LAYOUT.View}');
-        //        Zero_Logs::Stop('#{APP.Full}');
         self::ResponseHtml($view, 200);
     }
 
@@ -406,14 +400,14 @@ class Zero_App
         if ( 0 < $exception->getCode() && $exception->getCode() < 499 )
         {
             $code = $exception->getCode();
-            Zero_Logs::Set_Message('Section Url: ' . Zero_App::$Config->Site_DomainSub . Zero_App::$Route->Url);
+            Zero_Logs::Set_Message_Error('Section Url: ' . Zero_App::$Config->Site_DomainSub . Zero_App::$Route->Url);
         }
         else
         {
             $code = 500;
             $range_file_error = 10;
-            Zero_Logs::Set_Message("#{ERROR_EXCEPTION} " . $exception->getMessage() . ' ' . $exception->getFile() . '(' . $exception->getLine() . ')');
-            Zero_Logs::Set_Message(Zero_Logs::Get_SourceCode($exception->getFile(), $exception->getLine(), $range_file_error), '');
+            Zero_Logs::Set_Message_Error("#{ERROR_EXCEPTION} " . $exception->getMessage() . ' ' . $exception->getFile() . '(' . $exception->getLine() . ')');
+            Zero_Logs::Set_Message_Error(Zero_Logs::Get_SourceCode($exception->getFile(), $exception->getLine(), $range_file_error), '');
             $traceList = $exception->getTrace();
             array_shift($traceList);
             foreach ($traceList as $id => $trace)
@@ -443,9 +437,9 @@ class Zero_App
                 if ( !isset($trace['line']) )
                     $trace['line'] = 0;
                 $error = "   #{" . $id . "}" . $trace['file'] . '(' . $trace['line'] . '): ' . $callback . "(" . str_replace("\n", "", $trace['args']) . ");";
-                Zero_Logs::Set_Message($error);
+                Zero_Logs::Set_Message_Error($error);
                 if ( $trace['file'] && $trace['line'] )
-                    Zero_Logs::Set_Message(Zero_Logs::Get_SourceCode($trace['file'], $trace['line'], $range_file_error), 'code');
+                    Zero_Logs::Set_Message_Notice(Zero_Logs::Get_SourceCode($trace['file'], $trace['line'], $range_file_error));
             }
         }
 

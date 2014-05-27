@@ -149,7 +149,7 @@ class Zero_Validator
 //            if ( !is_uploaded_file($_FILES[$prop]['tmp_name']) || 0 != $_FILES[$prop]['error'] )
             if ( 0 != $_FILES[$prop]['error'] )
             {
-                Zero_Logs::Set_Message("{$this->Model->Source} - {$this->Model->ID} - {$_FILES[$prop]['error']} - Error Upload File");
+                Zero_Logs::Set_Message_Error("{$this->Model->Source} - {$this->Model->ID} - {$_FILES[$prop]['error']} - Error Upload File");
                 return 'Error Upload File';
             }
             //  resize kartinki
@@ -163,7 +163,7 @@ class Zero_Validator
                     //  exec('convert -resize [100]x[200] '.$imgs['tmp_name'].' -> ../path/goods/path/'.$goods_id.'.'.$ext);
                     if ( false == Zero_Lib_FileSystem::Image_Resize($_FILES[$prop]['tmp_name'], $_FILES[$prop]['tmp_name'] . 'resize', $value['X'], $value['Y'], $value['R']) )
                     {
-                        Zero_Logs::Set_Message("{$this->Model->Source} - {$this->Model->ID} - {$_FILES[$prop]['error']} - Error Image Resize");
+                        Zero_Logs::Set_Message_Error("{$this->Model->Source} - {$this->Model->ID} - {$_FILES[$prop]['error']} - Error Image Resize");
                         return 'Error Image Resize';
                     }
                     $_FILES[$prop]['tmp_name'] .= 'resize';

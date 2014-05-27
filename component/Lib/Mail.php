@@ -55,7 +55,7 @@ class Zero_Lib_Mail
             }
             //  Send
             if ( !$Mailer->Send() )
-                Zero_Logs::Set_Message("From: {$from}; To: {$email}; Subject: {$subject}");
+                Zero_Logs::Set_Message_Error("From: {$from}; To: {$email}; Subject: {$subject}");
 
             $Mailer->ClearAddresses();
             $Mailer->ClearAttachments();
@@ -112,7 +112,7 @@ class Zero_Lib_Mail
             }
             //  Send
             if ( !$Mailer->Send() )
-                Zero_Logs::Set_Message("From: {$from}; To: {$email}; Subject: {$subject}");
+                Zero_Logs::Set_Message_Error("From: {$from}; To: {$email}; Subject: {$subject}");
 
             $Mailer->ClearAddresses();
             $Mailer->ClearAttachments();

@@ -171,13 +171,13 @@ class Zero_Content extends Zero_Model
         $Model = Zero_Model::Make('Zero_Section', Zero_App::$Section->Zero_Section_ID);
         if ( !$Model->Layout )
         {
-            Zero_Logs::Set_Message('Layout not Set');
+            Zero_Logs::Set_Message_Error('Layout not Set');
             return [];
         }
         $template = Zero_View::Search_Template($Model->Layout, true);
         if ( !$template )
         {
-            Zero_Logs::Set_Message("Layout '{$Model->Layout}' Not Found");
+            Zero_Logs::Set_Message_Error("Layout '{$Model->Layout}' Not Found");
             return [];
         }
 

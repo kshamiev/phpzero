@@ -239,7 +239,7 @@ class Zero_Engine
             $type = array_shift($arr);
             if ( !isset(self::$PropValidatorDB[$type]) || !isset(self::$PropValidatorForm[$type]) )
             {
-                Zero_Logs::Set_Message('не определенный тип ' . $row['Type'] . ' поля ' . $row['Field'] . ' в таблице ' . $source_name);
+                Zero_Logs::Set_Message_Error('не определенный тип ' . $row['Type'] . ' поля ' . $row['Field'] . ' в таблице ' . $source_name);
                 continue;
             }
             //  Opredelenie bazovy`kh nastroek polei`

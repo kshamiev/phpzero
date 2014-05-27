@@ -50,51 +50,33 @@ final class Zero_Lib_FileSystem
         return 0;
     }
 
+    public static function Get_Modules()
+    {
+        $result = [];
+        foreach (glob(ZERO_PATH_APPLICATION . '/*', GLOB_ONLYDIR) as $path)
+        {
+            $result[] = basename($path);
+        }
+        return $result;
+    }
+
     /**
      * Getting the module configuration
      *
      * @param string $module module
-     * @param string $section section configure
      * @return array
      */
-    public static function Get_Config($module = '', $section = '')
+    public static function Get_Config($module)
     {
         $configuration = [];
         if ( $module = strtolower($module) )
         {
-            if ( $section )
-            {
-                if ( file_exists($path = ZERO_PATH_APPLICATION . '/' . $module . '/config/' . $section . '.php') )
-                    $configuration = require $path;
-            }
-            else if ( is_dir($path = ZERO_PATH_APPLICATION . '/' . $module . '/config') )
+            if ( is_dir($path = ZERO_PATH_APPLICATION . '/' . $module . '/config') )
             {
                 foreach (glob($path . '/*.php') as $config)
                 {
                     $section = substr(basename($config), 0, -4);
                     $configuration[$section] = require $config;
-                }
-            }
-        }
-        else
-        {
-            foreach (glob(ZERO_PATH_APPLICATION . '/*', GLOB_ONLYDIR) as $path)
-            {
-                $module = basename($path);
-                if ( !is_dir($path . '/config') )
-                    continue;
-                if ( $section )
-                {
-                    if ( file_exists($path .= '/config/' . $section . '.php') )
-                        $configuration[$module] = require $path;
-                }
-                else
-                {
-                    foreach (glob($path . '/config/*.php') as $config)
-                    {
-                        $section = substr(basename($config), 0, -4);
-                        $configuration[$module][$section] = require $config;
-                    }
                 }
             }
         }
