@@ -3,7 +3,7 @@
 /**
  * Controller. Page by page
  *
- * Sample: {plugin "Zero_Crud_Pager" Count=$PagerCount Page=$PagerPage PageItem=$PagerPageItem PageStep=$PagerPageStep}
+ * Sample: {plugin "Zero_Crud_Pager" view="" Count=$PagerCount Page=$PagerPage PageItem=$PagerPageItem PageStep=$PagerPageStep}
  *
  * @package Zero.Crud.Controller
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
@@ -74,7 +74,10 @@ class Zero_Crud_Pager extends Zero_Controller
         {
             $StepRight = $page_count;
         }
-        $this->View = new Zero_View(__CLASS__);
+        if ( isset($this->Params['view']) )
+            $this->View = new Zero_View($this->Params['view']);
+        else
+            $this->View = new Zero_View(__CLASS__);
         $this->View->Assign('Page', $this->Params['Page']);
         $this->View->Assign('PageBeg', 1);
         $this->View->Assign('StepLeft', $StepLeft);
