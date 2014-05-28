@@ -294,7 +294,9 @@ class Zero_DB
     public static function Escape_D($datetime)
     {
         $datetime = trim(strval($datetime));
-        if ( $datetime )
+        if ( $datetime == "NOW" || $datetime == "NOW()" )
+            return "NOW()";
+        else if ( $datetime )
             return "'" . self::$DB->real_escape_string($datetime) . "'";
         else
             return 'NULL';

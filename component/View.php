@@ -233,36 +233,12 @@ class Zero_View
      */
     public static function Search_Template($template)
     {
-        //        if ( true == $layout )
-        //        {
-        //            if ( Zero_App::$Section instanceof Zero_Section && '' != Zero_App::$Section->Url )
-        //                $path = ZERO_PATH_VIEW . '/' . Zero_App::$Section->Url . '/' . $template . self::EXT_VIEW;
-        //            else
-        //                $path = ZERO_PATH_VIEW . '/' . $template . self::EXT_VIEW;
-        //
-        //            $i = 0;
-        //            $path1 = $path;
-        //            while ( !file_exists($path1) )
-        //            {
-        //                $i++;
-        //                $path1 = dirname(dirname($path1)) . '/' . basename($path1);
-        //                if ( 10 < $i )
-        //                {
-        //                    Zero_Logs::Set_Message_Error('NOT FOUND view [LAYOUT] ' . $path, "error");
-        //                    return '';
-        //                }
-        //            }
-        //            return $path1;
-        //        }
-        //        else
-        //        {
         $arr = explode('_', $template);
         $module = strtolower(array_shift($arr));
         $path = ZERO_PATH_APPLICATION . '/' . $module . '/view/' . implode('/', $arr) . self::EXT_VIEW;
         if ( file_exists($path) )
             return $path;
-        Zero_Logs::Set_Message_Error('NOT FOUND view [CONTROLLER] ' . $path, "code");
-        //        }
+        Zero_Logs::Set_Message_Warninng('NOT FOUND view [CONTROLLER] ' . $path);
         return '';
     }
 
