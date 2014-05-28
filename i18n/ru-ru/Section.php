@@ -35,10 +35,8 @@ return [
     'controller' => [
         'Zero_Section_Edit' => 'Изменение разделов',
         'Action_Add' => 'добавить',
+        'Save' => 'сохранено',
         'Action_Save' => 'сохранить',
-//        'Error_Validate' => 'Ошибка валидации',
-//        'Error_Save' => 'Ошибка сохранения',
-//        'Action_Save' => 'Сохранено',
         'Zero_Section_Grid' => 'Список разделов сайты постранично',
         'Action_Edit' => 'изменить',
         'Action_CatalogMove' => 'переместить',
@@ -47,11 +45,5 @@ return [
         'Action_Default' => 'контроллер по умолчанию',
         'Action_FilterSet' => 'утановка фильтра',
         'Action_FilterReset' => 'сброс фильтра',
-//        'Update_Url' => 'Роутинг обновлен',
-//        'Error_Update_Url' => 'Ошибка обновления роутинга',
-//        'Action_Move' => 'Перемещено',
-//        'Action_Error_NotParam' => 'Нечего перемещать',
-//        'Action_Remove' => 'Удалено',
-//        'Error_Remove' => 'Ошибка удаления',
     ],
 ];

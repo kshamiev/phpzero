@@ -117,7 +117,7 @@ class Zero_Logs
      */
     public static function Set_Message_Notice($value)
     {
-        self::$_Message[] = [$value, 'code'];
+        self::$_Message[] = [$value, 'notice'];
     }
 
     public static function Get_Message()

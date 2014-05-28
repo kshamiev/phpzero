@@ -255,16 +255,31 @@ class Zero_DB
     }
 
     /**
-     * Proverka perechislenii` (ENUM)
+     * Proverka tekstovy`kh strok
      *
      * @param string $str
      * @return string or NULL
      */
-    public static function Escape_E($str)
+    public static function Escape_TL($str)
     {
         $str = trim(strval($str));
         if ( $str )
-            return "'" . self::$DB->real_escape_string($str) . "'";
+            return "'%" . self::$DB->real_escape_string($str) . "%'";
+        else
+            return 'NULL';
+    }
+
+    /**
+     * Proverka perechislenii` (ENUM)
+     *
+     * @param string $enum
+     * @return string or NULL
+     */
+    public static function Escape_E($enum)
+    {
+        $enum = trim(strval($enum));
+        if ( $enum )
+            return "'" . self::$DB->real_escape_string($enum) . "'";
         else
             return 'NULL';
     }
@@ -305,17 +320,17 @@ class Zero_DB
     /**
      * Perevod binarny`kh danny`kh v format binarnogo SQL (0xFFFF...)
      *
-     * @param string $data
+     * @param string $databinary
      * @return string or NULL
      */
-    public static function Escape_B($data)
+    public static function Escape_B($databinary)
     {
         $rph = "0x";
-        if ( 0 < strlen($data) )
+        if ( 0 < strlen($databinary) )
         {
-            for ($i = 0; $i < strlen($data); $i++)
+            for ($i = 0; $i < strlen($databinary); $i++)
             {
-                $chr = dechex(ord($data[$i]));
+                $chr = dechex(ord($databinary[$i]));
                 if ( strlen($chr) < 2 )
                     $chr = "0" . $chr;
                 $rph .= $chr;
