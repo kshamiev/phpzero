@@ -411,7 +411,8 @@ class Zero_App
         $code = $exception->getCode();
         Zero_Logs::Set_Message_Error('Section Url: ' . Zero_App::$Config->Site_DomainSub . Zero_App::$Route->Url);
         Zero_Logs::Set_Message_Error("#{ERROR_EXCEPTION} " . $exception->getMessage() . ' ' . $exception->getFile() . '(' . $exception->getLine() . ')');
-        Zero_Logs::Set_Message_Error(Zero_Logs::Get_SourceCode($exception->getFile(), $exception->getLine(), $range_file_error), '');
+        if ( Zero_App::$Mode == 'web' )
+            Zero_Logs::Set_Message_Error(Zero_Logs::Get_SourceCode($exception->getFile(), $exception->getLine(), $range_file_error), '');
         $traceList = $exception->getTrace();
         array_shift($traceList);
         foreach ($traceList as $id => $trace)
@@ -442,7 +443,7 @@ class Zero_App
                 $trace['line'] = 0;
             $error = "   #{" . $id . "}" . $trace['file'] . '(' . $trace['line'] . '): ' . $callback . "(" . str_replace("\n", "", $trace['args']) . ");";
             Zero_Logs::Set_Message_Error($error);
-            if ( $trace['file'] && $trace['line'] )
+            if ( Zero_App::$Mode == 'web' && $trace['file'] && $trace['line'] )
                 Zero_Logs::Set_Message_Notice(Zero_Logs::Get_SourceCode($trace['file'], $trace['line'], $range_file_error));
         }
 

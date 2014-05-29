@@ -25,7 +25,7 @@
 </form>
 
 <form id="formedit" method="post" enctype="multipart/form-data">
-<input type="hidden" name="act">
+<input type="hidden" name="act" value="Save">
 
 {set $props_content = []}
 {foreach ($Props as $Prop => $row)}
@@ -37,8 +37,8 @@
 <div id="tabs">
 
 {if ( count($props_content) )}
-<script type="text/javascript" src="/zero/assets/ckeditor/ckeditor.js"></script>
-<script type="text/javascript" src="/zero/assets/ckeditor/config.js"></script>
+<script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="/ckeditor/config.js"></script>
 <script type="text/javascript">
     $(function () {
         $("#tabs").tabs();
