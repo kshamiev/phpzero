@@ -409,7 +409,7 @@ class Zero_App
     {
         $range_file_error = 10;
         $code = $exception->getCode();
-        Zero_Logs::Set_Message_Error('Section Url: ' . Zero_App::$Config->Site_DomainSub . Zero_App::$Route->Url);
+//        Zero_Logs::Set_Message_Error('Section Url: ' . Zero_App::$Config->Site_DomainSub . Zero_App::$Route->Url);
         Zero_Logs::Set_Message_Error("#{ERROR_EXCEPTION} " . $exception->getMessage() . ' ' . $exception->getFile() . '(' . $exception->getLine() . ')');
         if ( Zero_App::$Mode == 'web' )
             Zero_Logs::Set_Message_Error(Zero_Logs::Get_SourceCode($exception->getFile(), $exception->getLine(), $range_file_error), '');

@@ -205,7 +205,7 @@ class Zero_Logs
             {
                 array_unshift($errors, str_replace(["\r", "\t"], " ", $output));
                 $errors = preg_replace('![ ]{2,}!', ' ', join("\n", $errors));
-                $errors = date('[d.m.Y H:i:s]') . "\n" . $errors . "\n\n";
+                $errors = date('[d.m.Y H:i:s]') . "\n" . $errors . "\n";
                 self::Save_File($errors, self::$_FileLog . '_errors');
             }
             // логирование предупреждений в файл
@@ -213,7 +213,7 @@ class Zero_Logs
             {
                 array_unshift($warnings, str_replace(["\r", "\t"], " ", $output));
                 $warnings = preg_replace('![ ]{2,}!', ' ', join("\n", $warnings));
-                $warnings = date('[d.m.Y H:i:s]') . "\n" . $warnings . "\n\n";
+                $warnings = date('[d.m.Y H:i:s]') . "\n" . $warnings . "\n";
                 self::Save_File($warnings, self::$_FileLog . '_warnings');
             }
             // логирование операций пользователиа в файл
