@@ -174,15 +174,12 @@ class Zero_Cache
             self::$_Memcache->set($index, $value, 0, $time);
         }
         //  dependent binding cache
-        if ( 0 < count(self::$_Link) )
+        foreach (self::$_Link as $arr)
         {
-            foreach (self::$_Link as $arr)
-            {
-                $path = ZERO_PATH_CACHE . '/' . $arr[0] . '/' . Zero_Lib_FileSystem::Get_Path_Cache($arr[1]) . '/' . $arr[1] . '/cache.cache';
-                Zero_Lib_FileSystem::File_Save_After($path, $index);
-            }
-            self::$_Link = [];
+            $path = ZERO_PATH_CACHE . '/' . $arr[0] . '/' . Zero_Lib_FileSystem::Get_Path_Cache($arr[1]) . '/' . $arr[1] . '/cache.cache';
+            Zero_Lib_FileSystem::File_Save_After($path, $index);
         }
+        self::$_Link = [];
         return true;
     }
 
