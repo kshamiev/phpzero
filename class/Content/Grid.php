@@ -25,4 +25,18 @@ class Zero_Content_Grid extends Zero_Crud_Grid
      * @var string
      */
     protected $Template = 'Zero_Crud_Grid';
+
+    /**
+     * Create views.
+     *
+     * @return boolean flag stop execute of the next chunk
+     */
+    protected function Chunk_View()
+    {
+        $this->Model->DB->Sql_Where_IsNull("Zero_Section_ID");
+        parent::Chunk_View();
+    }
+
+
+
 }
