@@ -194,9 +194,11 @@ class Zero_Logs
             foreach (self::$_Message as $row)
             {
                 if ( 'error' == $row[1] )
-                    $errors[] = str_replace(["\r", "\t"], " ", var_export($row[0], true));
+//                    $errors[] = str_replace(["\r", "\t"], " ", var_export($row[0], true));
+                    $errors[] = str_replace(["\r", "\t"], " ", $row[0]);
                 else if ( 'warning' == $row[1] )
-                    $warnings[] = str_replace(["\r", "\t"], " ", var_export($row[0], true));
+//                    $warnings[] = str_replace(["\r", "\t"], " ", var_export($row[0], true));
+                    $warnings[] = str_replace(["\r", "\t"], " ", $row[0]);
                 else if ( 'action' == $row[1] )
                     $action[] = $row[0];
             }
