@@ -1,6 +1,6 @@
 /*
 SQLyog Enterprise v9.50 
-MySQL - 5.5.25a-log : Database - phpzero
+MySQL - 5.5.25a-log : Database - test
 *********************************************************************
 */
 
@@ -41,6 +41,7 @@ CREATE TABLE `Zero_Content` (
   `Zero_Language_ID` bigint(20) NOT NULL DEFAULT '1',
   `Name` varchar(50) DEFAULT NULL,
   `Content` text,
+  `Layout` varchar(100) DEFAULT NULL,
   `Block` varchar(50) NOT NULL,
   PRIMARY KEY (`ID`),
   KEY `Zero_Language_ID` (`Zero_Language_ID`),
@@ -50,7 +51,7 @@ CREATE TABLE `Zero_Content` (
 
 /*Data for the table `Zero_Content` */
 
-insert  into `Zero_Content`(`ID`,`Zero_Section_ID`,`Zero_Language_ID`,`Name`,`Content`,`Block`) values (10,NULL,2,'Заголовок','<p>Заголовок</p>','head'),(11,NULL,2,'Подвал','<p>Подвал</p>','footer');
+insert  into `Zero_Content`(`ID`,`Zero_Section_ID`,`Zero_Language_ID`,`Name`,`Content`,`Layout`,`Block`) values (10,NULL,2,'Заголовок','<p>Заголовок</p>',NULL,'head'),(11,NULL,2,'Подвал','<p>Подвал</p>',NULL,'footer');
 
 /*Table structure for table `Zero_Groups` */
 
@@ -78,7 +79,7 @@ CREATE TABLE `Zero_Section` (
   `Url` varchar(150) DEFAULT NULL,
   `UrlThis` varchar(50) NOT NULL,
   `UrlRedirect` varchar(150) DEFAULT NULL,
-  `Layout` varchar(100) NOT NULL DEFAULT 'Zero_Content',
+  `Layout` varchar(100) DEFAULT NULL,
   `Controller` varchar(50) DEFAULT NULL,
   `IsAuthorized` enum('no','yes') NOT NULL DEFAULT 'no',
   `IsEnable` enum('yes','no') NOT NULL DEFAULT 'yes',
@@ -139,6 +140,7 @@ CREATE TABLE `Zero_Users` (
   `IsOnline` enum('no','yes') NOT NULL DEFAULT 'no',
   `DateOnline` datetime DEFAULT NULL,
   `Date` datetime DEFAULT NULL,
+  `Address` varchar(500) DEFAULT NULL,
   PRIMARY KEY (`ID`),
   KEY `Zero_Groups_ID` (`Zero_Groups_ID`),
   KEY `Zero_Users_ID` (`Zero_Users_ID`),
@@ -148,7 +150,7 @@ CREATE TABLE `Zero_Users` (
 
 /*Data for the table `Zero_Users` */
 
-insert  into `Zero_Users`(`ID`,`Zero_Groups_ID`,`Zero_Users_ID`,`Name`,`Login`,`Password`,`IsAccess`,`Email`,`Phone`,`Skype`,`IsCondition`,`ImgAvatar`,`IsOnline`,`DateOnline`,`Date`) values (1,1,NULL,'Разработчик','dev','e77989ed21758e78331b20e477fc5582','open','test@test.ru',NULL,NULL,'no',NULL,'yes',NULL,NULL);
+insert  into `Zero_Users`(`ID`,`Zero_Groups_ID`,`Zero_Users_ID`,`Name`,`Login`,`Password`,`IsAccess`,`Email`,`Phone`,`Skype`,`IsCondition`,`ImgAvatar`,`IsOnline`,`DateOnline`,`Date`,`Address`) values (1,1,NULL,'Разработчик','dev','e77989ed21758e78331b20e477fc5582','open','test@test.ru',NULL,NULL,'no',NULL,'yes',NULL,NULL,NULL);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

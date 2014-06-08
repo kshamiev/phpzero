@@ -36,6 +36,7 @@ class Zero_Content_Page extends Zero_Controller
             {
                 $Content = Zero_Model::Make('Zero_Content');
                 $Content->DB->Sql_Where('Zero_Language_ID', '=', LANG_ID);
+                $Content->DB->Sql_Where('Layout', '=', Zero_App::$Section->Layout);
                 $Content->DB->Sql_Where('Block', '=', $this->Params['block']);
                 $Content->DB->Select('*');
             }
