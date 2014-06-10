@@ -169,6 +169,7 @@ class Zero_Filter
         {
             $result[$val['ID']] = $val['Name'];
         }
+        pre($result);
         return $result;
     }
 

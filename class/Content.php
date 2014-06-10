@@ -78,11 +78,11 @@ class Zero_Content extends Zero_Model
             /*BEG_CONFIG_PROP*/
             'ID' => ['AliasDB' => 'z.ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => '', 'Form' => ''],
             'Zero_Section_ID' => ['AliasDB' => 'z.Zero_Section_ID', 'DB' => 'I', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Hidden'],
-            'Zero_Language_ID' => ['AliasDB' => 'z.Zero_Language_ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => 1, 'Form' => 'Link'],
+            'Zero_Language_ID' => ['AliasDB' => 'z.Zero_Language_ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => 2, 'Form' => 'Link'],
             'Name' => ['AliasDB' => 'z.Name', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'],
             'Content' => ['AliasDB' => 'z.Content', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Content'],
             'Layout' => ['AliasDB' => 'z.Layout', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Select'],
-            'Block' => ['AliasDB' => 'z.Block', 'DB' => 'T', 'IsNull' => 'NO', 'Default' => '', 'Form' => 'Text'],
+            'Block' => ['AliasDB' => 'z.Block', 'DB' => 'T', 'IsNull' => 'NO', 'Default' => 'content', 'Form' => 'Text'],
             /*END_CONFIG_PROP*/
         ];
     }

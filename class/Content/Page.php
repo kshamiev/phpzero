@@ -24,7 +24,6 @@ class Zero_Content_Page extends Zero_Controller
         if ( empty($this->Params['block']) )
             $this->Params['block'] = 'content';
         $index = 'Content_' . $this->Params['block'] . LANG_ID;
-        pre($index);
         if ( false === $Content = Zero_App::$Section->Cache->Get($index) )
         {
             $Content = Zero_Model::Make('Zero_Content');
