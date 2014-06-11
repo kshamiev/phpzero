@@ -62,6 +62,10 @@ class Zero_Route
         if ( !isset($_SERVER['REQUEST_URI']) )
             return;
 
+        if ( substr($_SERVER['REQUEST_URI'], -1) == '/' ) {
+            Zero_App::ResponseRedirect(substr($_SERVER['REQUEST_URI'], 0, -1));
+        }
+
         $row = explode('/', strtolower(rtrim(ltrim(explode('?', $_SERVER['REQUEST_URI'])[0], '/'), '/')));
 
         // язык

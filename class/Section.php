@@ -29,6 +29,7 @@
  * @property string $IsAuthorized
  * @property string $IsVisible
  * @property string $IsEnable
+ * @property string $IsIndex
  * @property integer $Sort
  * @property string $Name
  * @property string $Title
@@ -119,6 +120,7 @@ class Zero_Section extends Zero_Model
             'IsAuthorized' => ['AliasDB' => 'z.IsAuthorized', 'DB' => 'E', 'IsNull' => 'NO', 'Default' => 'no', 'Form' => 'Radio'],
             'IsVisible' => ['AliasDB' => 'z.IsVisible', 'DB' => 'E', 'IsNull' => 'NO', 'Default' => 'no', 'Form' => 'Radio'],
             'IsEnable' => ['AliasDB' => 'z.IsEnable', 'DB' => 'E', 'IsNull' => 'NO', 'Default' => 'yes', 'Form' => 'Radio'],
+            'IsIndex' => ['AliasDB' => 'z.IsIndex', 'DB' => 'E', 'IsNull' => 'NO', 'Default' => 'yes', 'Form' => 'Radio'],
             'Sort' => ['AliasDB' => 'z.Sort', 'DB' => 'I', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Number'],
             'Name' => ['AliasDB' => 'z.Name', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'],
             'Title' => ['AliasDB' => 'z.Title', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'],
@@ -176,7 +178,6 @@ class Zero_Section extends Zero_Model
             'Name' => [],
             'Controller' => [],
             'Url' => [],
-            'Sort' => [],
             /*END_CONFIG_GRID_PROP*/
         ];
     }
@@ -207,6 +208,7 @@ class Zero_Section extends Zero_Model
             'IsAuthorized' => [],
             'IsVisible' => [],
             'IsEnable' => [],
+            'IsIndex' => [],
             'Sort' => [],
             'Name' => [],
             'Title' => [],

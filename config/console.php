@@ -23,4 +23,13 @@ return [
         'Week' => '*',
         'IsActive' => '1'
     ],
+    'Zero_Console_SiteMap-SiteMap' => [
+        'Description' => 'Create SiteMap',
+        'Minute' => '*/5',
+        'Hour' => '*',
+        'Day' => '*',
+        'Month' => '*',
+        'Week' => '*',
+        'IsActive' => '1'
+    ],
 ];

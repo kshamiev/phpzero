@@ -3,7 +3,7 @@
 /**
  * Controller. Output meta tags.
  *
- * {plugin "Zero_Section_SeoTag"}
+ * {plugin "Zero_Section_SeoTag" view="Zero_Section_SeoTag"}
  *
  * @package Zero.Section.Controller
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
@@ -22,9 +22,9 @@ class Zero_Section_SeoTag extends Zero_Controller
     public function Action_Default()
     {
         $seo_data = [
-            'Title' => '',
-            'Description' => '',
-            'Keywords' => ''
+            'Title' => Zero_App::Get_Variable('Title'),
+            'Description' => Zero_App::Get_Variable('Keywords'),
+            'Keywords' => Zero_App::Get_Variable('Description'),
         ];
         if ( is_object(Zero_App::$Section) && 0 < Zero_App::$Section->ID )
         {
@@ -32,8 +32,16 @@ class Zero_Section_SeoTag extends Zero_Controller
             $seo_data['Keywords'] .= Zero_App::$Section->Keywords;
             $seo_data['Description'] .= Zero_App::$Section->Description;
         }
-        $this->View = new Zero_View(get_class($this));
+        if ( isset($this->Params['view']) )
+            $this->View = new Zero_View($this->Params['view']);
+        else
+            $this->View = new Zero_View(get_class($this));
         $this->View->Assign('seo_data', $seo_data);
+        if ( Zero_App::$Section->IsIndex == 'no' ) {
+            $this->View->Assign('seo_index', '<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">' . "\n");
+        } else {
+            $this->View->Assign('seo_index', '');
+        }
         return $this->View;
     }
 }

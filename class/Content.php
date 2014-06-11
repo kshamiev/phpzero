@@ -81,7 +81,6 @@ class Zero_Content extends Zero_Model
             'Zero_Language_ID' => ['AliasDB' => 'z.Zero_Language_ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => 2, 'Form' => 'Link'],
             'Name' => ['AliasDB' => 'z.Name', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'],
             'Content' => ['AliasDB' => 'z.Content', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Content'],
-            'Layout' => ['AliasDB' => 'z.Layout', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Select'],
             'Block' => ['AliasDB' => 'z.Block', 'DB' => 'T', 'IsNull' => 'NO', 'Default' => 'content', 'Form' => 'Text'],
             /*END_CONFIG_PROP*/
         ];
@@ -108,8 +107,6 @@ class Zero_Content extends Zero_Model
             'Zero_Language_ID' => ['Visible' => true, 'Search' => '', 'Sort' => false],
             'Name' => ['Visible' => true, 'Search' => 'Text', 'Sort' => false],
             'Content' => ['Visible' => true, 'Search' => 'Text', 'Sort' => false],
-            'Layout' => ['Visible' => true, 'Search' => '', 'Sort' => false],
-            //            'Block' => ['Filter' => 'Select', 'Search' => '', 'Sort' => false],
             /*END_CONFIG_FILTER_PROP*/
         ];
     }
@@ -157,7 +154,6 @@ class Zero_Content extends Zero_Model
             'Zero_Language_ID' => [],
             'Name' => [],
             'Content' => [],
-            'Layout' => [],
             'Block' => [],
             /*END_CONFIG_FORM_PROP*/
         ];
@@ -169,7 +165,7 @@ class Zero_Content extends Zero_Model
      * @return array
      * @throws Exception
      */
-    public function FL_Block()
+    public function FL_Block_Old()
     {
         $Model = Zero_Model::Make('Zero_Section', Zero_App::$Section->Zero_Section_ID);
         if ( !$Model->Layout )
@@ -208,7 +204,7 @@ class Zero_Content extends Zero_Model
      *
      * @return array
      */
-    public function FL_Layout()
+    public function FL_Layout_Old()
     {
         $arr = [];
         foreach (glob(ZERO_PATH_APPLICATION . "/*", GLOB_ONLYDIR) as $dir)

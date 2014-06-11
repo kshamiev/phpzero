@@ -31,15 +31,16 @@ class Zero_Section_NavigationLine extends Zero_Controller
         */
         $navigation[] = [
             'Url' => URL . $url,
+            'Title' => Zero_App::$Section->Title,
             'Name' => Zero_App::$Section->Name
         ];
         $id = Zero_App::$Section->Zero_Section_ID;
         while ( 0 < $id )
         {
             $Zero_Section = Zero_Model::Make('Www_Section', $id);
-            $Zero_Section->DB->Select("Name, SUBSTRING(Url, POSITION('/' IN Url)) as Url, Zero_Section_ID");
+            $Zero_Section->DB->Select("Name, Title, SUBSTRING(Url, POSITION('/' IN Url)) as Url, Zero_Section_ID");
             $id = $Zero_Section->Zero_Section_ID;
-            $navigation[] = ['Url' => $Zero_Section->Url, 'Name' => $Zero_Section->Name];
+            $navigation[] = ['Url' => $Zero_Section->Url, 'Name' => $Zero_Section->Name, 'Title' => $Zero_Section->Title];
         }
         $navigation = array_reverse($navigation);
         //  шаблон
