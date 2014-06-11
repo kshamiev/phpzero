@@ -1,27 +1,25 @@
 /*
-Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.html or http://ckeditor.com/license
+Copyright (c) 2003-2014, CKSource - Frederico Knabben. All rights reserved.
+For licensing, see LICENSE.md or http://ckeditor.com/license
 */
-
+@import url(http://fonts.googleapis.com/css?family=Open+Sans&subset=latin,cyrillic-ext,cyrillic);
 body
 {
 	/* Font */
-	font-family: sans-serif, Arial, Verdana, "Trebuchet MS";
-	font-size: 12px;
-
-	/* Text color */
-	color: #333;
-
-	/* Remove the background color to make it transparent */
-	background-color: #fff;
-
-	margin: 20px;
+    font-family: 'Open Sans', "Trebuchet MS", Liberation Sans, Tahoma, Arial, sans-serif;
+    clear: right;
+    margin-top: 15px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    width: 735px;
+    font-size: 14px;
 }
 
 .cke_editable
 {
 	font-size: 13px;
-	line-height: 1.6em;
+	line-height: 1.6;
 }
 
 blockquote
@@ -61,10 +59,28 @@ ol,ul,dl
 	padding: 0 40px;
 }
 
-h1,h2,h3,h4,h5,h6
+h1
 {
 	font-weight: normal;
-	line-height: 1.2em;
+	line-height: 1.2;
+    margin: 3px 10px;
+    font-size: 20px;
+    color: rgb(105, 64, 47);
+}
+
+h2,h3
+ {
+     font-weight: normal;
+     line-height: 1.2;
+     margin: 2px 10px;
+     color: rgb(105, 64, 47);
+ }
+
+h4,h5 {
+    font-weight: bold;
+    line-height: 1.2;
+    margin: 2px 10px;
+    color: rgb(105, 64, 47);
 }
 
 hr
@@ -73,31 +89,87 @@ hr
 	border-top: 1px solid #ccc;
 }
 
-img.right {
-    border: 1px solid #ccc;
-    float: right;
-    margin-left: 15px;
-    padding: 5px;
+img.right
+{
+	border: 1px solid #ccc;
+	float: right;
+	margin-left: 15px;
+	padding: 5px;
 }
 
-img.left {
-    border: 1px solid #ccc;
-    float: left;
-    margin-right: 15px;
-    padding: 5px;
-}
-
-img:hover {
-	opacity: .9;
-	filter: alpha(opacity = 90);
+img.left
+{
+	border: 1px solid #ccc;
+	float: left;
+	margin-right: 15px;
+	padding: 5px;
 }
 
 pre
 {
 	white-space: pre-wrap; /* CSS 2.1 */
 	word-wrap: break-word; /* IE7 */
+	-moz-tab-size: 4;
+	-o-tab-size: 4;
+	-webkit-tab-size: 4;
+	tab-size: 4;
 }
 
-.marker {
-    background-color: Yellow;
+.marker
+{
+	background-color: Yellow;
+}
+
+span[lang]
+{
+	font-style: italic;
+}
+
+figure
+{
+	text-align: center;
+	border: solid 1px #ccc;
+	border-radius: 2px;
+	background: rgba(0,0,0,0.05);
+	padding: 10px;
+	margin: 10px 20px;
+	display: inline-block;
+}
+
+figure > figcaption
+{
+	text-align: center;
+	display: block; /* For IE8 */
+}
+
+a > img {
+	padding: 1px;
+	margin: 1px;
+	border: none;
+	outline: 1px solid #0782C1;
+}
+
+p {
+    text-align: justify;
+    margin: 10px 10px;
+    color: rgb(140, 111, 95);
+}
+
+ul {
+    margin: 2px 10px !important;
+}
+
+ul li {
+    margin: 2px 5px !important;
+    color: rgb(140, 111, 95);
+
+}
+
+ol {
+    margin: 2px 10px;
+}
+
+ol li {
+    margin: 2px 5px;
+    color: rgb(140, 111, 95);
 }

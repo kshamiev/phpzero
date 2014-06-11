@@ -27,6 +27,7 @@ return [
         'UrlThis' => 'Относительная ссылка',
         'Zero_Section_ID' => 'Родительский раздел',
         'Description' => 'Описание',
+        'Content' => 'Контент',
         'Keywords' => 'Ключи',
         'Title' => 'Титул',
         'Layout' => 'Шаблон',

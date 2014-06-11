@@ -3,8 +3,6 @@
 /**
  * Controller. Content Page.
  *
- * {plugin "Zero_Section_Page" view=""}
- *
  * @package Zero.Content.Controller
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
  * @version $Id$
