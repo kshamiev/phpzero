@@ -84,7 +84,7 @@ class Zero_Groups_Access extends Zero_Controller
     /**
      * Create views.
      *
-     * @return boolean flag stop execute of the next chunk
+     * @throws Exception
      */
     protected function Chunk_View()
     {

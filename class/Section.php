@@ -126,6 +126,7 @@ class Zero_Section extends Zero_Model
             'Title' => ['AliasDB' => 'z.Title', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'],
             'Keywords' => ['AliasDB' => 'z.Keywords', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'],
             'Description' => ['AliasDB' => 'z.Description', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Textarea'],
+            'Content' => ['AliasDB' => 'z.Content', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Content'],
             /*END_CONFIG_PROP*/
         ];
     }
@@ -214,6 +215,7 @@ class Zero_Section extends Zero_Model
             'Title' => [],
             'Keywords' => [],
             'Description' => [],
+            'Content' => [],
         ];
     }
 
@@ -237,9 +239,9 @@ class Zero_Section extends Zero_Model
         {
             $this->DB->Sql_Where('Url', '=', $url);
             $row = $this->DB->Select('*');
-            $this->Set_Props($row);
-//            Мультиязычный вариант
-//            $row = array_replace($row, $this->DB->Select_Language('*'));
+//            $this->Set_Props($row);
+            // Мультиязычный вариант
+            $row = array_replace($row, $this->DB->Select_Language('*'));
 //            $this->Set_Props($row);
             Zero_Cache::Set_Link('Zero_Section', $this->ID);
             Zero_Cache::Set_Data($index, $row);
@@ -271,46 +273,46 @@ class Zero_Section extends Zero_Model
             $this->_Action_List = $Model->DB->Select_Array_Index('Action');
             foreach ($this->_Action_List as $action => $row)
             {
-//                $index = "controller action {$action}";
-//                if ( 'Default' == $action )
-//                    $index = "controller action {$action}";
-//                else
-//                    $index = "controller {$this->Controller} action {$action}";
+                //                $index = "controller action {$action}";
+                //                if ( 'Default' == $action )
+                //                    $index = "controller action {$action}";
+                //                else
+                //                    $index = "controller {$this->Controller} action {$action}";
                 $this->_Action_List[$action] = ['Name' => Zero_I18n::Controller($this->Controller, 'Action_' . $action)];
             }
             //
-//            $reflection = new ReflectionClass($this->Controller);
-//            foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method)
-//            {
-//                $name = $method->getName();
-//                if ( 'Action' == substr($name, 0, 6) )
-//                {
-//                    $name = str_replace('Action_', '', $name);
-//                    $index = "controller action {$name}";
-////                    if ( 'Default' == $name )
-////                        $index = "controller action {$name}";
-////                    else
-////                        $index = "controller {$this->Controller} action {$name}";
-//                    $this->_Action_List[$name] = ['Name' => Zero_I18n::T($this->Controller, $index, $name)];
-//                }
-//            }
+            //            $reflection = new ReflectionClass($this->Controller);
+            //            foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method)
+            //            {
+            //                $name = $method->getName();
+            //                if ( 'Action' == substr($name, 0, 6) )
+            //                {
+            //                    $name = str_replace('Action_', '', $name);
+            //                    $index = "controller action {$name}";
+            ////                    if ( 'Default' == $name )
+            ////                        $index = "controller action {$name}";
+            ////                    else
+            ////                        $index = "controller {$this->Controller} action {$name}";
+            //                    $this->_Action_List[$name] = ['Name' => Zero_I18n::T($this->Controller, $index, $name)];
+            //                }
+            //            }
         }
         else if ( '' != $this->Controller )
         {
 
             $reflection = new ReflectionClass($this->Controller);
-//            foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC | ReflectionMethod::IS_PROTECTED) as $method)
+            //            foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC | ReflectionMethod::IS_PROTECTED) as $method)
             foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method)
             {
                 $name = $method->getName();
                 if ( 'Action' == substr($name, 0, 6) )
                 {
                     $index = str_replace('Action_', '', $name);
-//                    $index = "controller action {$name}";
-//                    if ( 'Default' == $name )
-//                        $index = "controller action {$name}";
-//                    else
-//                        $index = "controller {$this->Controller} action {$name}";
+                    //                    $index = "controller action {$name}";
+                    //                    if ( 'Default' == $name )
+                    //                        $index = "controller action {$name}";
+                    //                    else
+                    //                        $index = "controller {$this->Controller} action {$name}";
                     $this->_Action_List[$index] = ['Name' => Zero_I18n::Controller($this->Controller, $name)];
                 }
             }
@@ -439,7 +441,8 @@ class Zero_Section extends Zero_Model
                 `Zero_SectionLanguage`.`Name` = `Zero_Section`.`Name`,
                 `Zero_SectionLanguage`.`Title` = `Zero_Section`.`Title`,
                 `Zero_SectionLanguage`.`Keywords` = `Zero_Section`.`Keywords`,
-                `Zero_SectionLanguage`.`Description` = `Zero_Section`.`Description`
+                `Zero_SectionLanguage`.`Description` = `Zero_Section`.`Description`,
+                `Zero_SectionLanguage`.`Content` = `Zero_Section`.`Content`
             WHERE
                 `Zero_SectionLanguage`.`Zero_Language_ID` = " . LANG_ID . "
             ";
@@ -447,10 +450,10 @@ class Zero_Section extends Zero_Model
         else
         {
             $sql = "INSERT INTO `Zero_SectionLanguage` (
-              `Zero_Section_ID`, `Zero_Language_ID`, `Name`, `Title`, `Keywords`, `Description`
+              `Zero_Section_ID`, `Zero_Language_ID`, `Name`, `Title`, `Keywords`, `Description`, `Content`
               )
               SELECT
-                `ID`, " . LANG_ID . ", `Name`, `Title`, `Keywords`, `Description`
+                `ID`, " . LANG_ID . ", `Name`, `Title`, `Keywords`, `Description`, `Content`
               FROM
                 `Zero_Section`
               WHERE `ID` = {$section_id}

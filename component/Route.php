@@ -59,10 +59,11 @@ class Zero_Route
         $this->Url = '/';
 
         // если запрос консольный
-        if ( !isset($_SERVER['REQUEST_URI']) )
+        if ( !isset($_SERVER['REQUEST_URI']) || $_SERVER['REQUEST_URI'] == '/' )
             return;
 
-        if ( substr($_SERVER['REQUEST_URI'], -1) == '/' ) {
+        if ( substr($_SERVER['REQUEST_URI'], -1) == '/' )
+        {
             Zero_App::ResponseRedirect(substr($_SERVER['REQUEST_URI'], 0, -1));
         }
 

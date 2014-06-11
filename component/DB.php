@@ -1301,6 +1301,14 @@ class Zero_DB
             $sql_prop = $props;
         $sql_prop .= ", {$source}_ID";
 
+        /**
+         * Usloviia Where
+         */
+        if ( isset($this->Params['Where']) )
+            $sql_where = $this->Sql_Where_Compilation();
+        else
+            $sql_where = '1';
+
         //  Sortirovka
         $sql_sort = '';
         if ( isset($prop_list['Sort']) )
@@ -1314,10 +1322,10 @@ class Zero_DB
         $this->Params['__CATALOG__'] = [];
         if ( 'tree' == $mode )
         {
-            $sql_tpl = "SELECT {$sql_prop} FROM {$source} WHERE {$source}_ID = <ID> {$sql_sort}";
+            $sql_tpl = "SELECT {$sql_prop} FROM {$source} WHERE {$source}_ID = <ID> AND {$sql_where} {$sql_sort}";
             if ( 0 == $this->Model->ID )
             {
-                $sql = "SELECT {$sql_prop} FROM {$source} WHERE {$source}_ID IS NULL {$sql_sort}";
+                $sql = "SELECT {$sql_prop} FROM {$source} WHERE {$source}_ID IS NULL AND {$sql_where} {$sql_sort}";
                 foreach (self::Sel_Array_Index($sql) as $id => $row)
                 {
                     $this->Params['__CATALOG__'][$id] = $row;
@@ -1332,16 +1340,16 @@ class Zero_DB
         {
             if ( 0 < $this->Model->ID )
             {
-                $sql_tpl = "SELECT {$sql_prop} FROM {$source} WHERE ID = <ID>";
+                $sql_tpl = "SELECT {$sql_prop} FROM {$source} WHERE ID = <ID> AND {$sql_where}";
                 $this->_Select_TreeLine($sql_tpl, $this->Model->ID);
                 $this->Params['__CATALOG__'] = array_reverse($this->Params['__CATALOG__'], true);
             }
         }
-        else if ( 'child' == $mode )
+        else if ( 'child' == $mode ) // этот вариант можно получить другим уже реализованным методом
         {
             if ( 0 < $this->Model->ID )
             {
-                $sql = "SELECT {$sql_prop} FROM {$source} WHERE {$source}_ID = {$this->Model->ID} {$sql_sort}";
+                $sql = "SELECT {$sql_prop} FROM {$source} WHERE {$source}_ID = {$this->Model->ID} AND {$sql_where} {$sql_sort}";
                 $this->Params['__CATALOG__'] = self::Sel_Array_Index($sql);
             }
         }

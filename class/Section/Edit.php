@@ -41,6 +41,7 @@ class Zero_Section_Edit extends Zero_Crud_Edit
      */
     protected function Chunk_Save()
     {
+        // языки
         if ( true == parent::Chunk_Save() )
         {
             Zero_Section::DB_LanguageSet($this->Model->ID);

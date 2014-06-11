@@ -3,7 +3,7 @@
 /**
  * Controller. Content Page.
  *
- * {plugin "Www_Content_Page" view="" block="content"}
+ * {plugin "Zero_Content_Page" block="footer"}
  *
  * @package Zero.Content.Controller
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
@@ -23,7 +23,7 @@ class Zero_Content_Page extends Zero_Controller
     {
         if ( empty($this->Params['block']) )
             $this->Params['block'] = 'content';
-        $index = 'Content_' . $this->Params['block'] . LANG_ID;
+        $index = 'Content_' . $this->Params['block'] . '_' . LANG_ID;
         if ( false === $Content = Zero_App::$Section->Cache->Get($index) )
         {
             $Content = Zero_Model::Make('Zero_Content');
@@ -35,25 +35,14 @@ class Zero_Content_Page extends Zero_Controller
             {
                 $Content = Zero_Model::Make('Zero_Content');
                 $Content->DB->Sql_Where('Zero_Language_ID', '=', LANG_ID);
+                $Content->DB->Sql_Where_IsNull('Zero_Section_ID');
                 $Content->DB->Sql_Where('Block', '=', $this->Params['block']);
                 $Content->DB->Select('*');
             }
             Zero_Cache::Set_Link('Zero_Content', $Content->ID);
             Zero_App::$Section->Cache->Set($index, $Content);
         }
-        if ( 'content' == $this->Params['block'] )
-        {
-            if ( isset($this->Params['view']) )
-                $this->View = new Zero_View($this->Params['view']);
-            else
-                $this->View = new Zero_View(get_class($this));
-            $this->View->Assign('Name', $Content->Name);
-            $this->View->Assign('Content', $Content->Content);
-        }
-        else
-        {
-            $this->View = $Content->Content;
-        }
-        return $this->View;
+//        $this->View = $Content->Content;
+        return $Content->Content;
     }
 }
