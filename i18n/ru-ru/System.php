@@ -26,7 +26,17 @@ return [
 
     ],
     'controller' => [
-
+        'Action_FolderGo' => 'переход по папкам',
+        'Action_FolderRemove' => 'удаление папки',
+        'Action_FileRemove' => 'удаление файла',
+        'Action_FileDownLoad' => 'отдача файла пользователю',
+        'Action_FileUpload' => 'загрузка файла на сервер',
+        'Action_FolderAdd' => 'создание папки',
+        'Action_EditFile' => 'изменение файла',
+        'Action_FileSave' => 'сохранение файла',
+        'Action_EngineModulesDB' => 'инженеринг моделей',
+        'Action_CacheReset' => 'полный сброс кеша',
+        'Action_SessionReset' => 'сброс всех сессий',
     ],
 ];
 return [
@@ -47,7 +57,7 @@ return [
     'controller Zero_System_FileEdit message FileSave' => 'Файл сохранен',
     'controller Zero_System_FileManager' => 'Файловый менеджер',
     'controller Zero_System_FileManager action FolderGo' => 'переход по папкам',
-    'controller Zero_System_FileManager action FolderRemove' => 'удаление папки',
+    'controller Zero_System_FileManager action FolderRemove' => '',
     'controller Zero_System_FileManager action FileRemove' => 'удаление файла',
     'controller Zero_System_FileManager action FileDownLoad' => 'отдача файла пользователю',
     'controller Zero_System_FileManager action FileUpload' => 'загрузка файла на сервер',

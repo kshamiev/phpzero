@@ -334,7 +334,7 @@ class Zero_Users extends Zero_Model
                 $this->DB->Sql_Where('ID', '!=', $this->ID);
             $cnt = $this->DB->Select_Count();
             if ( 0 < $cnt )
-                return 'Error_Registration';
+                return 'Error_Exists';
         }
         $this->Email = $value;
         return '';

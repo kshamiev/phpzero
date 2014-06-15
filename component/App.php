@@ -407,44 +407,48 @@ class Zero_App
      */
     public static function Handler_Exception(Exception $exception)
     {
-        $range_file_error = 10;
         $code = $exception->getCode();
-//        Zero_Logs::Set_Message_Error('Section Url: ' . Zero_App::$Config->Site_DomainSub . Zero_App::$Route->Url);
-        Zero_Logs::Set_Message_Error("#{ERROR_EXCEPTION} " . $exception->getMessage() . ' ' . $exception->getFile() . '(' . $exception->getLine() . ')');
-        if ( Zero_App::$Mode == 'web' )
-            Zero_Logs::Set_Message_Notice(Zero_Logs::Get_SourceCode($exception->getFile(), $exception->getLine(), $range_file_error));
-        $traceList = $exception->getTrace();
-        array_shift($traceList);
-        foreach ($traceList as $id => $trace)
+        if ( $code != 403 && $code != 404 )
         {
-            if ( !isset($trace['args']) )
-                continue;
-            $args = [];
-            $range_file_error = $range_file_error - 2;
-            foreach ($trace['args'] as $arg)
+            $range_file_error = 10;
+
+            Zero_Logs::Set_Message_Error("#{ERROR_EXCEPTION} " . $exception->getMessage() . ' ' . $exception->getFile() . '(' . $exception->getLine() . ')');
+            if ( Zero_App::$Mode == 'web' )
+                Zero_Logs::Set_Message_Notice(Zero_Logs::Get_SourceCode($exception->getFile(), $exception->getLine(), $range_file_error));
+
+            $traceList = $exception->getTrace();
+            array_shift($traceList);
+            foreach ($traceList as $id => $trace)
             {
-                if ( is_scalar($arg) )
-                    $args[] = "'" . $arg . "'";
-                else if ( is_array($arg) )
-                    $args[] = print_r($arg, true);
-                else if ( is_object($arg) )
-                    $args[] = get_class($arg) . ' Object...';
+                if ( !isset($trace['args']) )
+                    continue;
+                $args = [];
+                $range_file_error = $range_file_error - 2;
+                foreach ($trace['args'] as $arg)
+                {
+                    if ( is_scalar($arg) )
+                        $args[] = "'" . $arg . "'";
+                    else if ( is_array($arg) )
+                        $args[] = print_r($arg, true);
+                    else if ( is_object($arg) )
+                        $args[] = get_class($arg) . ' Object...';
+                }
+                $trace['args'] = join(', ', $args);
+                if ( isset($trace['class']) )
+                    $callback = $trace['class'] . $trace['type'] . $trace['function'];
+                else if ( isset($trace['function']) )
+                    $callback = $trace['function'];
+                else
+                    $callback = '';
+                if ( !isset($trace['file']) )
+                    $trace['file'] = '';
+                if ( !isset($trace['line']) )
+                    $trace['line'] = 0;
+                $error = "\t#{" . $id . "}" . $trace['file'] . '(' . $trace['line'] . '): ' . $callback . "(" . str_replace("\n", "", $trace['args']) . ");";
+                Zero_Logs::Set_Message_Error($error);
+                if ( Zero_App::$Mode == 'web' && $trace['file'] && $trace['line'] )
+                    Zero_Logs::Set_Message_Notice(Zero_Logs::Get_SourceCode($trace['file'], $trace['line'], $range_file_error));
             }
-            $trace['args'] = join(', ', $args);
-            if ( isset($trace['class']) )
-                $callback = $trace['class'] . $trace['type'] . $trace['function'];
-            else if ( isset($trace['function']) )
-                $callback = $trace['function'];
-            else
-                $callback = '';
-            if ( !isset($trace['file']) )
-                $trace['file'] = '';
-            if ( !isset($trace['line']) )
-                $trace['line'] = 0;
-            $error = "\t#{" . $id . "}" . $trace['file'] . '(' . $trace['line'] . '): ' . $callback . "(" . str_replace("\n", "", $trace['args']) . ");";
-            Zero_Logs::Set_Message_Error($error);
-            if ( Zero_App::$Mode == 'web' && $trace['file'] && $trace['line'] )
-                Zero_Logs::Set_Message_Notice(Zero_Logs::Get_SourceCode($trace['file'], $trace['line'], $range_file_error));
         }
 
         if ( Zero_App::$Mode == 'api' )

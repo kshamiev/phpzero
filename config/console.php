@@ -25,8 +25,8 @@ return [
     ],
     'Zero_Console_SiteMap-SiteMap' => [
         'Description' => 'Create SiteMap',
-        'Minute' => '*/5',
-        'Hour' => '*',
+        'Minute' => '0',
+        'Hour' => '0',
         'Day' => '*',
         'Month' => '*',
         'Week' => '*',

@@ -90,7 +90,7 @@ class Zero_Logs
      */
     public static function Set_Message_Action($value)
     {
-        self::$_Message[] = [$value, 'action'];
+        self::$_Message[] = [print_r($value, true), 'action'];
     }
     /**
      * Инициализация входиащего системного сообщения.
@@ -99,7 +99,7 @@ class Zero_Logs
      */
     public static function Set_Message_Error($value)
     {
-        self::$_Message[] = [$value, 'error'];
+        self::$_Message[] = [print_r($value, true), 'error'];
     }
     /**
      * Инициализация входиащего системного сообщения.
@@ -108,7 +108,7 @@ class Zero_Logs
      */
     public static function Set_Message_Warninng($value)
     {
-        self::$_Message[] = [$value, 'warning'];
+        self::$_Message[] = [print_r($value, true), 'warning'];
     }
     /**
      * Инициализация входиащего системного сообщения.
@@ -117,7 +117,7 @@ class Zero_Logs
      */
     public static function Set_Message_Notice($value)
     {
-        self::$_Message[] = [$value, 'notice'];
+        self::$_Message[] = [print_r($value, true), 'notice'];
     }
 
     public static function Get_Message()
