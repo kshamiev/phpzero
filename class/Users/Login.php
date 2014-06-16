@@ -78,11 +78,12 @@ class Zero_Users_Login extends Zero_Controller
         $this->View = new Zero_View(get_class($this));
         if ( !Zero_App::$Users->UrlRedirect )
         {
-            if ( 3 == count(explode($_SERVER["HTTP_HOST"], ZERO_HTTPH)) )
+            if ( 1 < count(explode($_SERVER["HTTP_HOST"], ZERO_HTTPH)) )
                 Zero_App::$Users->UrlRedirect = ZERO_HTTPH;
             else
                 Zero_App::$Users->UrlRedirect = '/';
         }
+        Zero_App::$Users->Factory_Set();
     }
 
     /**

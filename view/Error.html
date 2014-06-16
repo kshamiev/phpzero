@@ -8,7 +8,7 @@
 {if ($http_status == '403')}
     <p align="center">Доступ запрещен</p>
     <p align="center"><a href="{HTTP}">На главную страницу</a></p>
-    <p align="center"><a href="{HTTPH}">Вернуться обратно</a></p>
+    <p align="center"><a href="#" onclick="window.history.back();">Вернуться обратно</a></p>
     <p align="center"><a href="{HTTP}/user">Авторизация</a></p>
 {else if ($http_status == '404')}
     <p align="center">Страница не найдена</p>
