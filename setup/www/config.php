@@ -60,6 +60,8 @@ return [
             'Error' => true,
             //  Warning
             'Warning' => true,
+            //  Notice
+            'Notice' => true,
             //  User action
             'Action' => true,
             //  Work the application as a whole

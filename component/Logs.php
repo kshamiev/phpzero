@@ -190,6 +190,7 @@ class Zero_Logs
             $output = self::Get_Usage_MemoryAndTime()[0];
             $errors = [];
             $warnings = [];
+            $notice = [];
             $action = [];
             foreach (self::$_Message as $row)
             {
@@ -199,6 +200,9 @@ class Zero_Logs
                 else if ( 'warning' == $row[1] )
 //                    $warnings[] = str_replace(["\r", "\t"], " ", var_export($row[0], true));
                     $warnings[] = str_replace(["\r", "\t"], " ", $row[0]);
+                else if ( 'notice' == $row[1] )
+//                    $warnings[] = str_replace(["\r", "\t"], " ", var_export($row[0], true));
+                    $notice[] = str_replace(["\r", "\t"], " ", $row[0]);
                 else if ( 'action' == $row[1] )
                     $action[] = $row[0];
             }
@@ -217,6 +221,14 @@ class Zero_Logs
                 $warnings = preg_replace('![ ]{2,}!', ' ', join("\n", $warnings));
                 $warnings = date('[d.m.Y H:i:s]') . "\n" . $warnings . "\n";
                 self::Save_File($warnings, self::$_FileLog . '_warnings');
+            }
+            // логирование предупреждений в файл
+            if ( Zero_App::$Config->Log_Profile_Notice && 0 < count($notice) )
+            {
+                array_unshift($notice, str_replace(["\r", "\t"], " ", $output));
+                $notice = preg_replace('![ ]{2,}!', ' ', join("\n", $notice));
+                $notice = date('[d.m.Y H:i:s]') . "\n" . $notice . "\n";
+                self::Save_File($notice, self::$_FileLog . '_notice');
             }
             // логирование операций пользователиа в файл
             if ( Zero_App::$Config->Log_Profile_Action && 0 < count($action) )

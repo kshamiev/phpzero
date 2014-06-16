@@ -238,7 +238,7 @@ class Zero_View
         $path = ZERO_PATH_APPLICATION . '/' . $module . '/view/' . implode('/', $arr) . self::EXT_VIEW;
         if ( file_exists($path) )
             return $path;
-        Zero_Logs::Set_Message_Warninng('NOT FOUND view [CONTROLLER] ' . $path);
+        Zero_Logs::Set_Message_Notice('NOT FOUND view [CONTROLLER] ' . $path);
         return '';
     }
 

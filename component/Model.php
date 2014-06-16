@@ -389,8 +389,6 @@ abstract class Zero_Model
             foreach (static::Config_Prop($this) as $prop => $row)
             {
                 $row['Comment'] = Zero_I18n::Model($index, $prop);
-                //                if ( 'S' == $row['DB'] || 'E' == $row['DB'] )
-                //                    $row['Value'] = Zero_DB::Sel_EnumSet($this, $prop);
                 self::$_Config[$index]['props'][$prop] = $row;
             }
         }
@@ -562,7 +560,7 @@ abstract class Zero_Model
         if ( 0 == $this->ID || !isset($this->Get_Config_Prop()[$prop]) )
             return null;
         //  svoi`stvo pustoe, ne zagruzhennoe iz BD
-        Zero_Logs::Set_Message_Warninng('#{LOAD PROP} load prop "' . $prop . '" for model "' . get_class($this) . '"');
+        Zero_Logs::Set_Message_Notice('#{LOAD PROP} load prop "' . $prop . '" for model "' . get_class($this) . '"');
         $this->_Props[$prop] = Zero_DB::Sel_Filed($this->ID, $this->Source, $prop);
         return $this->_Props[$prop];
     }

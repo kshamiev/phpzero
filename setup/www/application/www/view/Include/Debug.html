@@ -9,7 +9,7 @@
     <div style="margin: 2px; background: #d0f0c0; padding: 4px;">
         <pre>{print_r($row[0], true)}</pre>
     </div>
-    {else}
+    {else if ( $row[1] == 'notice' )}
     <div style="margin: 2px; background: #eeeeee; padding: 4px;">
         <pre>{print_r($row[0], true)}</pre>
     </div>

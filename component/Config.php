@@ -153,6 +153,13 @@ class Zero_Config
     public $Log_Profile_Warning = true;
 
     /**
+     * Monitoring. Warning
+     *
+     * @var bool
+     */
+    public $Log_Profile_Notice = true;
+
+    /**
      * Monitoring. User action
      *
      * @var bool
@@ -270,6 +277,8 @@ class Zero_Config
         $this->Log_Profile_Error = $Config['Log']['Profile']['Error'];
         // Monitoring. Warning
         $this->Log_Profile_Warning = $Config['Log']['Profile']['Warning'];
+        // Monitoring. Warning
+        $this->Log_Profile_Notice = $Config['Log']['Profile']['Notice'];
         // Monitoring. User action
         $this->Log_Profile_Action = $Config['Log']['Profile']['Action'];
         // Monitoring. Work the application as a whole
@@ -331,7 +340,9 @@ class Zero_Config
  */
 function pre($var)
 {
-    Zero_Logs::Set_Message_Notice($var);
+    echo '<pre>';
+    print_r($var);
+    echo '</pre>';
 }
 
 /**

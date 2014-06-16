@@ -62,13 +62,6 @@ if ( count($_SERVER['argv']) > 1 )
     Zero_App::Init('console', 'console_' . $_SERVER['argv'][1]);
     set_time_limit(36000);
 
-    $module = explode('_', $_SERVER['argv'][1])[0];
-
-    $arr = Zero_Lib_FileSystem::Get_Config($module, 'console');
-    if ( !isset($arr[$_SERVER['argv'][1]]) )
-    {
-        throw new Exception('консольная задача не определена ни в одной в конфигурации: ' . $_SERVER['argv'][1], 500);
-    }
     $arr = explode('-', $_SERVER['argv'][1]);
     if ( 2 != count($arr) )
     {
@@ -77,11 +70,7 @@ if ( count($_SERVER['argv']) > 1 )
 
     $arr[1] = 'Action_' . $arr[1];
     $Controller = Zero_Controller::Make($arr[0]);
-    //    Zero_Logs::Start('#{CONTROLLER.Action} ' . $arr[0] . ' -> ' . $arr[1]);
-    $Controller->__call($arr[1], []);
-    //    if ( $arr[1] != 'Action_Default' )
-    //        Zero_Logs::Set_Message_Action($arr[1]);
-    //    Zero_Logs::Stop('#{CONTROLLER.Action} ' . $arr[0] . ' -> ' . $arr[1]);
+    $Controller->$arr[1]();
 }
 //  Launch Manager console task
 else
@@ -96,9 +85,14 @@ else
     // check whether the process is running on a server
     exec("ps ax | grep -v 'grep' | grep -v 'cd ' | grep -v 'sudo ' | grep 'console.php '", $result);
     $result = join("\n", $result);
-    foreach (Zero_Lib_FileSystem::Get_Config('', 'console') as $module)
+    $modules = Zero_Lib_FileSystem::Get_Modules();
+    foreach ($modules as $module)
     {
-        foreach ($module as $sys_demon => $sys_cron)
+        $config = Zero_Lib_FileSystem::Get_Config($module);
+        if ( !isset($config['console']) )
+            continue;
+        //        Zero_Logs::Set_Message_Notice($config)
+        foreach ($config['console'] as $sys_demon => $sys_cron)
         {
             if ( !$sys_cron['IsActive'] || false !== strpos($result, Zero_App::$Config->System_PathPhp . ' ' . ZERO_PATH_SITE . '/console.php ' . $sys_demon) )
                 continue;

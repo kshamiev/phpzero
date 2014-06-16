@@ -889,7 +889,7 @@ class Zero_DB
             {
                 $this->Sql_Where_And();
                 unset($search['List']['ALL_PROPS']);
-                foreach ($search['List'] as $prop => $row)
+                foreach ($search['List'] as $row)
                 {
                     if ( 'Number' == $row['Form'] )
                         $this->Sql_Where($row['AliasDB'], '=', $value, 'OR');
@@ -907,15 +907,15 @@ class Zero_DB
                     if ( 1 < count($arr) )
                     {
                         if ( 0 < $arr[0] )
-                            $this->Sql_Where($row['AliasDB'], '>=', $arr[0] * 1);
+                            $this->Sql_Where($search['List'][$prop]['AliasDB'], '>=', $arr[0] * 1);
                         if ( 0 < $arr[1] )
-                            $this->Sql_Where($row['AliasDB'], '<=', $arr[1] * 1);
+                            $this->Sql_Where($search['List'][$prop]['AliasDB'], '<=', $arr[1] * 1);
                     }
                     else
-                        $this->Sql_Where($row['AliasDB'], '=', $value * 1);
+                        $this->Sql_Where($search['List'][$prop]['AliasDB'], '=', $value * 1);
                 }
                 else
-                    $this->Sql_Where_Like($row['AliasDB'], $value);
+                    $this->Sql_Where_Like($search['List'][$prop]['AliasDB'], $value);
             }
         }
 

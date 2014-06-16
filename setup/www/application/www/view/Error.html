@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {include "Zero_Include_Header"}
+</head>
+<body>
+<br>
+{if ($http_status == '403')}
+    <p align="center">Доступ запрещен</p>
+    <p align="center"><a href="{HTTP}">На главную страницу</a></p>
+    <p align="center"><a href="#" onclick="window.history.back();">Вернуться обратно</a></p>
+    <p align="center"><a href="{HTTP}/user">Авторизация</a></p>
+{else if ($http_status == '404')}
+    <p align="center">Страница не найдена</p>
+    <p align="center"><a href="{HTTP}">На главную страницу</a></p>
+{else if ($http_status == '409')}
+    <p align="center">Ошибка в работе логики приложения</p>
+{else if ($http_status == '500')}
+    <p align="center">Ошибка в работе приложения либо сервера</p>
+{/if}
+</body>
+</html>

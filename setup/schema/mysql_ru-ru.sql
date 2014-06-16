@@ -1,5 +1,5 @@
 /*
-SQLyog Enterprise v9.50 
+SQLyog Ultimate v9.50 
 MySQL - 5.5.25a-log : Database - test
 *********************************************************************
 */
@@ -31,6 +31,10 @@ CREATE TABLE `Zero_Action` (
 
 /*Data for the table `Zero_Action` */
 
+LOCK TABLES `Zero_Action` WRITE;
+
+UNLOCK TABLES;
+
 /*Table structure for table `Zero_Content` */
 
 DROP TABLE IF EXISTS `Zero_Content`;
@@ -41,7 +45,6 @@ CREATE TABLE `Zero_Content` (
   `Zero_Language_ID` bigint(20) NOT NULL DEFAULT '1',
   `Name` varchar(50) DEFAULT NULL,
   `Content` text,
-  `Layout` varchar(100) DEFAULT NULL,
   `Block` varchar(50) NOT NULL,
   PRIMARY KEY (`ID`),
   KEY `Zero_Language_ID` (`Zero_Language_ID`),
@@ -51,7 +54,12 @@ CREATE TABLE `Zero_Content` (
 
 /*Data for the table `Zero_Content` */
 
-insert  into `Zero_Content`(`ID`,`Zero_Section_ID`,`Zero_Language_ID`,`Name`,`Content`,`Layout`,`Block`) values (10,NULL,2,'Заголовок','<p>Заголовок</p>',NULL,'head'),(11,NULL,2,'Подвал','<p>Подвал</p>',NULL,'footer');
+LOCK TABLES `Zero_Content` WRITE;
+
+insert  into `Zero_Content`(`ID`,`Zero_Section_ID`,`Zero_Language_ID`,`Name`,`Content`,`Block`) values (10,NULL,2,'Заголовок','<p>Заголовок</p>','head');
+insert  into `Zero_Content`(`ID`,`Zero_Section_ID`,`Zero_Language_ID`,`Name`,`Content`,`Block`) values (11,NULL,2,'Подвал','<p>Подвал</p>','footer');
+
+UNLOCK TABLES;
 
 /*Table structure for table `Zero_Groups` */
 
@@ -67,7 +75,14 @@ CREATE TABLE `Zero_Groups` (
 
 /*Data for the table `Zero_Groups` */
 
-insert  into `Zero_Groups`(`ID`,`Name`,`Status`,`Description`) values (1,'Разработчики','open',NULL),(2,'Гости','open',NULL),(3,'Пользователи','open',NULL),(4,'Администратор','open',NULL);
+LOCK TABLES `Zero_Groups` WRITE;
+
+insert  into `Zero_Groups`(`ID`,`Name`,`Status`,`Description`) values (1,'Разработчики','open',NULL);
+insert  into `Zero_Groups`(`ID`,`Name`,`Status`,`Description`) values (2,'Гости','open',NULL);
+insert  into `Zero_Groups`(`ID`,`Name`,`Status`,`Description`) values (3,'Пользователи','open',NULL);
+insert  into `Zero_Groups`(`ID`,`Name`,`Status`,`Description`) values (4,'Администратор','open',NULL);
+
+UNLOCK TABLES;
 
 /*Table structure for table `Zero_Section` */
 
@@ -84,11 +99,13 @@ CREATE TABLE `Zero_Section` (
   `IsAuthorized` enum('no','yes') NOT NULL DEFAULT 'no',
   `IsEnable` enum('yes','no') NOT NULL DEFAULT 'yes',
   `IsVisible` enum('no','yes') NOT NULL DEFAULT 'no',
+  `IsIndex` enum('yes','no') DEFAULT 'yes',
   `Sort` int(11) DEFAULT NULL,
   `Name` varchar(100) DEFAULT NULL,
   `Title` varchar(150) DEFAULT NULL,
   `Keywords` varchar(250) DEFAULT NULL,
   `Description` text,
+  `Content` text,
   PRIMARY KEY (`ID`),
   KEY `Zero_Section_ID` (`Zero_Section_ID`),
   CONSTRAINT `Zero_Section_ibfk_3` FOREIGN KEY (`Zero_Section_ID`) REFERENCES `Zero_Section` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -96,7 +113,31 @@ CREATE TABLE `Zero_Section` (
 
 /*Data for the table `Zero_Section` */
 
-insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Url`,`UrlThis`,`UrlRedirect`,`Layout`,`Controller`,`IsAuthorized`,`IsEnable`,`IsVisible`,`Sort`,`Name`,`Title`,`Keywords`,`Description`) values (1,NULL,'www/','www',NULL,'Zero_Main','Zero_Users_Login','no','yes','no',10,'PhpZero','PhpZero','PhpZero','PhpZero'),(3,33,'www/admin/user','user',NULL,'Zero_Main','Zero_Content_Page','yes','yes','yes',30,'Пользователи','Пользователи','Пользователи','Пользователи'),(8,3,'www/admin/user/users','users',NULL,'Zero_Main','Zero_Users_Grid','yes','yes','yes',10,'Пользователи','Пользователи','Пользователи','Пользователи'),(9,8,'www/admin/user/users/edit','edit',NULL,'Zero_Main','Zero_Users_Edit','yes','yes','no',10,'Пользователи изменение','Пользователи изменение','Пользователи изменение','Пользователи изменение'),(10,3,'www/admin/user/groups','groups',NULL,'Zero_Main','Zero_Groups_Grid','yes','yes','yes',20,'Группы','Группы','Группы','Группы'),(11,10,'www/admin/user/groups/edit','edit',NULL,'Zero_Main','Zero_Groups_Edit','yes','yes','no',10,'Группы изменение','Группы изменение','Группы изменение','Группы изменение'),(12,33,'www/admin/site','site',NULL,'Zero_Main','Zero_Content_Page','yes','yes','yes',40,'Сайт','Сайт','Сайт','Сайт'),(13,12,'www/admin/site/section','section',NULL,'Zero_Main','Zero_Section_Grid','yes','yes','yes',40,'Разделы','Разделы','Разделы','Разделы'),(14,13,'www/admin/site/section/edit','edit',NULL,'Zero_Main','Zero_Section_Edit','yes','yes','no',10,'Разделы изменение','Разделы изменение','Разделы изменение','Разделы изменение'),(15,11,'www/admin/user/groups/edit/access','access',NULL,'Zero_Main','Zero_Groups_Access','yes','yes','yes',10,'Права доступа','Права доступа','Права доступа','Права доступа'),(16,29,'www/admin/site/section/edit/content/edit','edit',NULL,'Zero_Main','Zero_Content_EditSection','yes','yes','no',10,'Контент изменение','Контент изменение','Контент изменение','Контент изменение'),(19,33,'www/admin/system','system',NULL,'Zero_Main','Zero_Content_Page','yes','yes','yes',20,'Система','Система','Система','Система'),(20,19,'www/admin/system/service','service',NULL,'Zero_Main','Zero_System_GridService','yes','yes','yes',20,'Обслуживание','Обслуживание','Обслуживание','Обслуживание'),(21,19,'www/admin/system/file','file',NULL,'Zero_Main','Zero_System_FileManager','yes','yes','yes',10,'Файловый менеджер','Файловый менеджер','Файловый менеджер','Файловый менеджер'),(22,21,'www/admin/system/file/edit','edit',NULL,'Zero_Main','Zero_System_FileEdit','yes','yes','no',10,'Редактирование файла','Редактирование файла','Редактирование файла','Редактирование файла'),(29,14,'www/admin/site/section/edit/content','content',NULL,'Zero_Main','Zero_Content_GridSection','yes','yes','yes',10,'Контент','Контент','Контент','Контент'),(31,14,'www/admin/site/section/edit/translation','translation',NULL,'Zero_Main','Zero_SectionLanguage_GridSection','yes','yes','yes',20,'Переводы','Переводы','Переводы','Переводы'),(32,31,'www/admin/site/section/edit/translation/edit','edit',NULL,'Zero_Main','Zero_SectionLanguage_EditSection','yes','yes','no',10,'Переводы изменение','Переводы изменение','Переводы изменение','Переводы изменение'),(33,1,'www/admin','admin',NULL,'Zero_Main','Zero_Content_Page','yes','yes','yes',800,'CP','Административная часть','Административная часть','Административная часть'),(40,12,'www/admin/site/content','content',NULL,'Zero_Main','Zero_Content_Grid','yes','yes','yes',10,'Контент','Контент','Контент','Контент'),(41,40,'www/admin/site/content/edit','edit',NULL,'Zero_Main','Zero_Content_Edit','yes','yes','no',10,'Контент изменение','Контент изменение','Контент изменение','Контент изменение');
+LOCK TABLES `Zero_Section` WRITE;
+
+insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Url`,`UrlThis`,`UrlRedirect`,`Layout`,`Controller`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (1,NULL,'www/','www',NULL,'Zero_Main','Zero_Users_Login','no','yes','no','yes',10,'PhpZero','PhpZero','PhpZero','PhpZero',NULL);
+insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Url`,`UrlThis`,`UrlRedirect`,`Layout`,`Controller`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (3,33,'www/admin/user','user',NULL,'Zero_Main','Zero_Section_Page','yes','yes','yes','yes',30,'Пользователи','Пользователи','Пользователи','Пользователи',NULL);
+insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Url`,`UrlThis`,`UrlRedirect`,`Layout`,`Controller`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (8,3,'www/admin/user/users','users',NULL,'Zero_Main','Zero_Users_Grid','yes','yes','yes','yes',10,'Пользователи','Пользователи','Пользователи','Пользователи',NULL);
+insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Url`,`UrlThis`,`UrlRedirect`,`Layout`,`Controller`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (9,8,'www/admin/user/users/edit','edit',NULL,'Zero_Main','Zero_Users_Edit','yes','yes','no','yes',10,'Пользователи изменение','Пользователи изменение','Пользователи изменение','Пользователи изменение',NULL);
+insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Url`,`UrlThis`,`UrlRedirect`,`Layout`,`Controller`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (10,3,'www/admin/user/groups','groups',NULL,'Zero_Main','Zero_Groups_Grid','yes','yes','yes','yes',20,'Группы','Группы','Группы','Группы',NULL);
+insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Url`,`UrlThis`,`UrlRedirect`,`Layout`,`Controller`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (11,10,'www/admin/user/groups/edit','edit',NULL,'Zero_Main','Zero_Groups_Edit','yes','yes','no','yes',10,'Группы изменение','Группы изменение','Группы изменение','Группы изменение',NULL);
+insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Url`,`UrlThis`,`UrlRedirect`,`Layout`,`Controller`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (12,33,'www/admin/site','site',NULL,'Zero_Main','Zero_Section_Page','yes','yes','yes','yes',40,'Сайт','Сайт','Сайт','Сайт',NULL);
+insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Url`,`UrlThis`,`UrlRedirect`,`Layout`,`Controller`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (13,12,'www/admin/site/section','section',NULL,'Zero_Main','Zero_Section_Grid','yes','yes','yes','yes',40,'Разделы','Разделы','Разделы','Разделы',NULL);
+insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Url`,`UrlThis`,`UrlRedirect`,`Layout`,`Controller`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (14,13,'www/admin/site/section/edit','edit',NULL,'Zero_Main','Zero_Section_Edit','yes','yes','no','yes',10,'Разделы изменение','Разделы изменение','Разделы изменение','Разделы изменение',NULL);
+insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Url`,`UrlThis`,`UrlRedirect`,`Layout`,`Controller`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (15,11,'www/admin/user/groups/edit/access','access',NULL,'Zero_Main','Zero_Groups_Access','yes','yes','yes','yes',10,'Права доступа','Права доступа','Права доступа','Права доступа',NULL);
+insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Url`,`UrlThis`,`UrlRedirect`,`Layout`,`Controller`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (16,29,'www/admin/site/section/edit/content/edit','edit',NULL,'Zero_Main','Zero_Content_EditSection','yes','yes','no','yes',10,'Контент изменение','Контент изменение','Контент изменение','Контент изменение',NULL);
+insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Url`,`UrlThis`,`UrlRedirect`,`Layout`,`Controller`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (19,33,'www/admin/system','system',NULL,'Zero_Main','Zero_Section_Page','yes','yes','yes','yes',20,'Система','Система','Система','Система',NULL);
+insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Url`,`UrlThis`,`UrlRedirect`,`Layout`,`Controller`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (20,19,'www/admin/system/service','service',NULL,'Zero_Main','Zero_System_GridService','yes','yes','yes','yes',20,'Обслуживание','Обслуживание','Обслуживание','Обслуживание',NULL);
+insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Url`,`UrlThis`,`UrlRedirect`,`Layout`,`Controller`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (21,19,'www/admin/system/file','file',NULL,'Zero_Main','Zero_System_FileManager','yes','yes','yes','yes',10,'Файловый менеджер','Файловый менеджер','Файловый менеджер','Файловый менеджер',NULL);
+insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Url`,`UrlThis`,`UrlRedirect`,`Layout`,`Controller`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (22,21,'www/admin/system/file/edit','edit',NULL,'Zero_Main','Zero_System_FileEdit','yes','yes','no','yes',10,'Редактирование файла','Редактирование файла','Редактирование файла','Редактирование файла',NULL);
+insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Url`,`UrlThis`,`UrlRedirect`,`Layout`,`Controller`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (29,14,'www/admin/site/section/edit/content','content',NULL,'Zero_Main','Zero_Content_GridSection','yes','yes','yes','yes',10,'Контент','Контент','Контент','Контент',NULL);
+insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Url`,`UrlThis`,`UrlRedirect`,`Layout`,`Controller`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (31,14,'www/admin/site/section/edit/translation','translation',NULL,'Zero_Main','Zero_SectionLanguage_GridSection','yes','yes','yes','yes',20,'Переводы','Переводы','Переводы','Переводы',NULL);
+insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Url`,`UrlThis`,`UrlRedirect`,`Layout`,`Controller`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (32,31,'www/admin/site/section/edit/translation/edit','edit',NULL,'Zero_Main','Zero_SectionLanguage_EditSection','yes','yes','no','yes',10,'Переводы изменение','Переводы изменение','Переводы изменение','Переводы изменение',NULL);
+insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Url`,`UrlThis`,`UrlRedirect`,`Layout`,`Controller`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (33,1,'www/admin','admin',NULL,'Zero_Main','Zero_Section_Page','yes','yes','yes','yes',800,'CP','Административная часть','Административная часть','Административная часть',NULL);
+insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Url`,`UrlThis`,`UrlRedirect`,`Layout`,`Controller`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (40,12,'www/admin/site/content','content',NULL,'Zero_Main','Zero_Content_Grid','yes','yes','yes','yes',10,'Контент','Контент','Контент','Контент',NULL);
+insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Url`,`UrlThis`,`UrlRedirect`,`Layout`,`Controller`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (41,40,'www/admin/site/content/edit','edit',NULL,'Zero_Main','Zero_Content_Edit','yes','yes','no','yes',10,'Контент изменение','Контент изменение','Контент изменение','Контент изменение',NULL);
+
+UNLOCK TABLES;
 
 /*Table structure for table `Zero_SectionLanguage` */
 
@@ -110,6 +151,7 @@ CREATE TABLE `Zero_SectionLanguage` (
   `Title` varchar(150) DEFAULT NULL,
   `Keywords` varchar(250) DEFAULT NULL,
   `Description` text,
+  `Content` text,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `Zero_Section_ID` (`Zero_Section_ID`,`Zero_Language_ID`),
   KEY `Zero_Section_ID_2` (`Zero_Section_ID`),
@@ -118,7 +160,31 @@ CREATE TABLE `Zero_SectionLanguage` (
 
 /*Data for the table `Zero_SectionLanguage` */
 
-insert  into `Zero_SectionLanguage`(`ID`,`Zero_Section_ID`,`Zero_Language_ID`,`Name`,`Title`,`Keywords`,`Description`) values (1,1,2,'PhpZero','PhpZero','PhpZero','PhpZero'),(3,3,2,'Пользователи','Пользователи','Пользователи','Пользователи'),(8,8,2,'Пользователи','Пользователи','Пользователи','Пользователи'),(9,9,2,'Пользователи изменение','Пользователи изменение','Пользователи изменение','Пользователи изменение'),(10,10,2,'Группы','Группы','Группы','Группы'),(11,11,2,'Группы изменение','Группы изменение','Группы изменение','Группы изменение'),(12,12,2,'Сайт','Сайт','Сайт','Сайт'),(13,13,2,'Разделы','Разделы','Разделы','Разделы'),(14,14,2,'Разделы изменение','Разделы изменение','Разделы изменение','Разделы изменение'),(15,15,2,'Права доступа','Права доступа','Права доступа','Права доступа'),(16,16,2,'Контент изменение','Контент изменение','Контент изменение','Контент изменение'),(18,19,2,'Система','Система','Система','Система'),(19,20,2,'Обслуживание','Обслуживание','Обслуживание','Обслуживание'),(20,21,2,'Файловый менеджер','Файловый менеджер','Файловый менеджер','Файловый менеджер'),(21,22,2,'Редактирование файла','Редактирование файла','Редактирование файла','Редактирование файла'),(27,29,2,'Контент','Контент','Контент','Контент'),(29,31,2,'Переводы','Переводы','Переводы','Переводы'),(30,32,2,'Переводы изменение','Переводы изменение','Переводы изменение','Переводы изменение'),(34,33,2,'CP','Административная часть','Административная часть','Административная часть'),(36,40,2,'Контент','Контент','Контент','Контент'),(37,41,2,'Контент изменение','Контент изменение','Контент изменение','Контент изменение');
+LOCK TABLES `Zero_SectionLanguage` WRITE;
+
+insert  into `Zero_SectionLanguage`(`ID`,`Zero_Section_ID`,`Zero_Language_ID`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (1,1,2,'PhpZero','PhpZero','PhpZero','PhpZero',NULL);
+insert  into `Zero_SectionLanguage`(`ID`,`Zero_Section_ID`,`Zero_Language_ID`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (3,3,2,'Пользователи','Пользователи','Пользователи','Пользователи',NULL);
+insert  into `Zero_SectionLanguage`(`ID`,`Zero_Section_ID`,`Zero_Language_ID`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (8,8,2,'Пользователи','Пользователи','Пользователи','Пользователи',NULL);
+insert  into `Zero_SectionLanguage`(`ID`,`Zero_Section_ID`,`Zero_Language_ID`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (9,9,2,'Пользователи изменение','Пользователи изменение','Пользователи изменение','Пользователи изменение',NULL);
+insert  into `Zero_SectionLanguage`(`ID`,`Zero_Section_ID`,`Zero_Language_ID`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (10,10,2,'Группы','Группы','Группы','Группы',NULL);
+insert  into `Zero_SectionLanguage`(`ID`,`Zero_Section_ID`,`Zero_Language_ID`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (11,11,2,'Группы изменение','Группы изменение','Группы изменение','Группы изменение',NULL);
+insert  into `Zero_SectionLanguage`(`ID`,`Zero_Section_ID`,`Zero_Language_ID`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (12,12,2,'Сайт','Сайт','Сайт','Сайт',NULL);
+insert  into `Zero_SectionLanguage`(`ID`,`Zero_Section_ID`,`Zero_Language_ID`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (13,13,2,'Разделы','Разделы','Разделы','Разделы',NULL);
+insert  into `Zero_SectionLanguage`(`ID`,`Zero_Section_ID`,`Zero_Language_ID`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (14,14,2,'Разделы изменение','Разделы изменение','Разделы изменение','Разделы изменение',NULL);
+insert  into `Zero_SectionLanguage`(`ID`,`Zero_Section_ID`,`Zero_Language_ID`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (15,15,2,'Права доступа','Права доступа','Права доступа','Права доступа',NULL);
+insert  into `Zero_SectionLanguage`(`ID`,`Zero_Section_ID`,`Zero_Language_ID`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (16,16,2,'Контент изменение','Контент изменение','Контент изменение','Контент изменение',NULL);
+insert  into `Zero_SectionLanguage`(`ID`,`Zero_Section_ID`,`Zero_Language_ID`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (18,19,2,'Система','Система','Система','Система',NULL);
+insert  into `Zero_SectionLanguage`(`ID`,`Zero_Section_ID`,`Zero_Language_ID`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (19,20,2,'Обслуживание','Обслуживание','Обслуживание','Обслуживание',NULL);
+insert  into `Zero_SectionLanguage`(`ID`,`Zero_Section_ID`,`Zero_Language_ID`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (20,21,2,'Файловый менеджер','Файловый менеджер','Файловый менеджер','Файловый менеджер',NULL);
+insert  into `Zero_SectionLanguage`(`ID`,`Zero_Section_ID`,`Zero_Language_ID`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (21,22,2,'Редактирование файла','Редактирование файла','Редактирование файла','Редактирование файла',NULL);
+insert  into `Zero_SectionLanguage`(`ID`,`Zero_Section_ID`,`Zero_Language_ID`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (27,29,2,'Контент','Контент','Контент','Контент',NULL);
+insert  into `Zero_SectionLanguage`(`ID`,`Zero_Section_ID`,`Zero_Language_ID`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (29,31,2,'Переводы','Переводы','Переводы','Переводы',NULL);
+insert  into `Zero_SectionLanguage`(`ID`,`Zero_Section_ID`,`Zero_Language_ID`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (30,32,2,'Переводы изменение','Переводы изменение','Переводы изменение','Переводы изменение',NULL);
+insert  into `Zero_SectionLanguage`(`ID`,`Zero_Section_ID`,`Zero_Language_ID`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (34,33,2,'CP','Административная часть','Административная часть','Административная часть',NULL);
+insert  into `Zero_SectionLanguage`(`ID`,`Zero_Section_ID`,`Zero_Language_ID`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (36,40,2,'Контент','Контент','Контент','Контент',NULL);
+insert  into `Zero_SectionLanguage`(`ID`,`Zero_Section_ID`,`Zero_Language_ID`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (37,41,2,'Контент изменение','Контент изменение','Контент изменение','Контент изменение',NULL);
+
+UNLOCK TABLES;
 
 /*Table structure for table `Zero_Users` */
 
@@ -150,7 +216,11 @@ CREATE TABLE `Zero_Users` (
 
 /*Data for the table `Zero_Users` */
 
+LOCK TABLES `Zero_Users` WRITE;
+
 insert  into `Zero_Users`(`ID`,`Zero_Groups_ID`,`Zero_Users_ID`,`Name`,`Login`,`Password`,`IsAccess`,`Email`,`Phone`,`Skype`,`IsCondition`,`ImgAvatar`,`IsOnline`,`DateOnline`,`Date`,`Address`) values (1,1,NULL,'Разработчик','dev','e77989ed21758e78331b20e477fc5582','open','test@test.ru',NULL,NULL,'no',NULL,'yes',NULL,NULL,NULL);
+
+UNLOCK TABLES;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

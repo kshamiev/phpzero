@@ -59,16 +59,17 @@ class Zero_I18n
         if ( isset(self::$_I18n[$file_name][$section][$key]) )
             return self::$_I18n[$file_name][$section][$key];
         // поиск в общем фалйе перевода
-        if ( 'Www_App' != $file_name )
+        $file_name_all = $folder_list[0] . '_All';
+        if ( $file_name_all != $file_name )
         {
-            if ( !isset(self::$_I18n['Www_App']) )
+            if ( !isset(self::$_I18n[$file_name_all]) )
             {
-                self::$_I18n['Www_App'] = [];
-                if ( $path = self::Search_Path_I18n(['Www', 'App']) )
-                    self::$_I18n['Www_App'] = include $path;
+                self::$_I18n[$file_name_all] = [];
+                if ( $path = self::Search_Path_I18n([$folder_list[0], 'All']) )
+                    self::$_I18n[$file_name_all] = include $path;
             }
-            if ( isset(self::$_I18n['Www_App'][$section][$key]) )
-                return self::$_I18n['Www_App'][$section][$key];
+            if ( isset(self::$_I18n[$file_name_all][$section][$key]) )
+                return self::$_I18n[$file_name_all][$section][$key];
         }
         //
         Zero_Logs::Set_Message_Warninng('I18N NOT FOUND KEY: ' . LANG . ' -> ' . $file_name . ' -> ' . $section . ' -> ' . $key);
