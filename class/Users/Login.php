@@ -53,15 +53,14 @@ class Zero_Users_Login extends Zero_Controller
     /**
      * User exit.
      *
-     * @return boolean flag stop execute of the next chunk
      */
     public function Action_Logout()
     {
         Zero_Session::Unset_Instance();
         session_unset();
         session_destroy();
+        setcookie('i09u9Maf6l6sr7Um0m8A3u0r9i55m3il');
         Zero_App::ResponseRedirect(ZERO_HTTP);
-        return $this->View;
     }
 
     /**
@@ -71,7 +70,8 @@ class Zero_Users_Login extends Zero_Controller
      */
     protected function Chunk_Init()
     {
-        if ( 2 != Zero_App::$Users->Zero_Groups_ID ) {
+        if ( 0 < Zero_App::$Users->ID )
+        {
             Zero_App::ResponseRedirect('/admin');
         }
         $this->Model = Zero_Model::Make('Www_Users');
@@ -109,6 +109,10 @@ class Zero_Users_Login extends Zero_Controller
         else if ( !$Users->Zero_Groups_ID )
             return $this->Set_Message("Error_Groups", 1);
 
+        if ( isset($_REQUEST['Memory']) && $_REQUEST['Memory'] )
+        {
+            setcookie('i09u9Maf6l6sr7Um0m8A3u0r9i55m3il', $Users->ID, time() + 2592000, '/');
+        }
         $url_history = Zero_App::$Users->UrlRedirect;
 
         Zero_App::$Users = $Users;

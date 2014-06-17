@@ -161,15 +161,17 @@ abstract class Zero_Model
      *
      * @param string $model imia istochnika model` kotoroi` sozdaetsia
      * @param integer $id identifikator ob``ekta
-     * @param boolean|bool $flag_load flag polnoi` zagruzki ob``ekta
+     * @param bool $flag flag polnoi` zagruzki ob``ekta
      * @return Zero_Model
      */
-    public static function Factory($model, $id = 0, $flag_load = false)
+    public static function Factory($model, $id = 0, $flag = false)
     {
-        $index = $model . (0 < $id ? '_' . $id : '');
+        $index = $model;
+        if ( $flag )
+            $index .= '_' . $id;
         if ( !$result = Zero_Session::Get($index) )
         {
-            $result = self::Make($model, $id, $flag_load);
+            $result = self::Make($model, $id, true);
             $result->Init();
             Zero_Session::Set($index, $result);
         }
@@ -181,12 +183,12 @@ abstract class Zero_Model
      *
      * Indeks source + [_{$id} - esli 0 < $flag]
      *
-     * @param integer $flag opredeleniia indeksa ob``ekta (1 - uchity`vaia id, 0 - ne uchity`vaia id)
+     * @param bool $flag opredeleniia indeksa ob``ekta (1 - uchity`vaia id, 0 - ne uchity`vaia id)
      */
-    public function Factory_Set($flag = 0)
+    public function Factory_Set($flag = false)
     {
         $index = get_class($this);
-        if ( 0 < $flag )
+        if ( $flag )
             $index .= '_' . $this->ID;
         Zero_Session::Set($index, $this);
     }
@@ -196,12 +198,12 @@ abstract class Zero_Model
      *
      * Indeks source + [_{$id} - esli 0 < $flag]
      *
-     * @param integer $flag opredeleniia indeksa ob``ekta (1 - uchity`vaia id, 0 - ne uchity`vaia id)
+     * @param bool $flag opredeleniia indeksa ob``ekta (1 - uchity`vaia id, 0 - ne uchity`vaia id)
      */
-    public function Factory_Unset($flag = 0)
+    public function Factory_Unset($flag = false)
     {
         $index = get_class($this);
-        if ( 0 < $flag )
+        if ( $flag )
             $index .= '_' . $this->ID;
         Zero_Session::Rem($index);
     }

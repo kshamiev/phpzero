@@ -296,7 +296,15 @@ class Zero_App
 
         //  Инициализация запрошенного раздела (Zero_Section)
         self::$Section = Zero_Model::Instance('Www_Section');
-        self::$Users = Zero_Model::Factory('Www_Users');
+        if ( isset($_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il']) && 0 < $_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il'] )
+        {
+            self::$Users = Zero_Model::Factory('Www_Users', $_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il']);
+            setcookie('i09u9Maf6l6sr7Um0m8A3u0r9i55m3il', $_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il'], time() + 2592000, '/');
+        }
+        else
+        {
+            self::$Users = Zero_Model::Factory('Www_Users');
+        }
 
         //  Checking for non-existent section
         if ( 0 == self::$Section->ID || 'no' == self::$Section->IsEnable )
