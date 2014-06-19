@@ -23,6 +23,10 @@ return [
         'Error_Exists' => 'уже занято',
         'Error_NotRegistration' => 'не зарегистрирован',
         'Error_Keystring' => 'контрольная строка неправильна',
+        'IsAccess close' => 'закрыт',
+        'IsAccess open' => 'открыт',
+        'IsCondition no' => 'нет',
+        'IsCondition yes' => 'да',
     ],
     'view' => [
         'Login' => 'Логин',

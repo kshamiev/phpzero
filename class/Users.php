@@ -234,8 +234,11 @@ class Zero_Users extends Zero_Model
      */
     protected function Init()
     {
-        $this->Zero_Groups_ID = 2;
-        $this->Login = 'guest';
+        if ( $this->ID == 0 )
+        {
+            $this->Zero_Groups_ID = 2;
+            $this->Login = 'guest';
+        }
     }
 
     /**

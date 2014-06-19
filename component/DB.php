@@ -255,21 +255,6 @@ class Zero_DB
     }
 
     /**
-     * Proverka tekstovy`kh strok
-     *
-     * @param string $str
-     * @return string or NULL
-     */
-    public static function Escape_TL($str)
-    {
-        $str = trim(strval($str));
-        if ( $str )
-            return "'%" . self::$DB->real_escape_string($str) . "%'";
-        else
-            return 'NULL';
-    }
-
-    /**
      * Proverka perechislenii` (ENUM)
      *
      * @param string $enum
@@ -308,13 +293,14 @@ class Zero_DB
      */
     public static function Escape_D($datetime)
     {
-        $datetime = trim(strval($datetime));
-        if ( $datetime == "NOW" || $datetime == "NOW()" )
-            return "NOW()";
-        else if ( $datetime )
-            return "'" . self::$DB->real_escape_string($datetime) . "'";
-        else
-            return 'NULL';
+        return self::Escape_T($datetime);
+//        $datetime = trim(strval($datetime));
+//        if ( $datetime == "NOW" || $datetime == "NOW()" )
+//            return "NOW()";
+//        else if ( $datetime )
+//            return "'" . self::$DB->real_escape_string($datetime) . "'";
+//        else
+//            return 'NULL';
     }
 
     /**
@@ -854,10 +840,25 @@ class Zero_DB
     public function Sql_Where_Filter(Zero_Filter $Filter)
     {
         $filter_list = $Filter->Get_Filter();
-        foreach ($filter_list as $prop => $row)
+        foreach ($filter_list as $row)
         {
+            // если фильтр не установлен
             if ( !$row['Value'] )
                 continue;
+
+            // если нулевое или не нулевое значение
+            if ( 'NULL' == $row['Value'] || 'IS NULL' == $row['Value'] )
+            {
+                $this->Sql_Where_IsNull($row['AliasDB']);
+                continue;
+            }
+            else if ( 'NOTNULL' == $row['Value'] || 'IS NOT NULL' == $row['Value'] )
+            {
+                $this->Sql_Where_IsNotNull($row['AliasDB']);
+                continue;
+            }
+
+            // остальные значения
             //  data i vremia
             if ( 'DateTime' == $row['Filter'] )
             {
@@ -871,12 +872,7 @@ class Zero_DB
             //  fil`try` perechisleniia i sviazei` - ssy`lki
             else if ( 'Radio' == $row['Filter'] || 'Select' == $row['Filter'] || 'Link' == $row['Filter'] || 'LinkMore' == $row['Filter'] )
             {
-                if ( 'NULL' == $row['Value'] )
-                    $this->Sql_Where_IsNull($row['AliasDB']);
-                else if ( 'NOTNULL' == $row['Value'] )
-                    $this->Sql_Where_IsNotNull($row['AliasDB']);
-                else
-                    $this->Sql_Where($row['AliasDB'], '=', $row['Value']);
+                $this->Sql_Where($row['AliasDB'], '=', $row['Value']);
             }
         }
         //  atomarny`i` poisk i poisk po vsem poliam
@@ -1133,11 +1129,11 @@ class Zero_DB
     {
         //  initcializatciia
         if ( is_array($props) )
-            $sql_prop = "SELECT " . implode(', ', $props);
+            $sql_prop = "SELECT DISTINCT " . implode(', ', $props);
         else if ( '*' == $props )
-            $sql_prop = "SELECT " . implode(', ', array_keys($this->Model->Get_Config_Prop()));
+            $sql_prop = "SELECT DISTINCT " . implode(', ', array_keys($this->Model->Get_Config_Prop()));
         else
-            $sql_prop = "SELECT " . $props;
+            $sql_prop = "SELECT DISTINCT " . $props;
         /**
          * Usloviia Where
          */
@@ -1234,7 +1230,7 @@ class Zero_DB
     public function Select_Count($flag_param_reset = true)
     {
         //  initcializatciia
-        $sql_prop = "SELECT COUNT(z.ID)";
+        $sql_prop = "SELECT COUNT(DISTINCT z.ID)";
         /**
          * Usloviia Where
          */
@@ -1345,7 +1341,7 @@ class Zero_DB
                 $this->Params['__CATALOG__'] = array_reverse($this->Params['__CATALOG__'], true);
             }
         }
-        else if ( 'child' == $mode ) // этот вариант можно получить другим уже реализованным методом
+        else if ( 'child' == $mode ) // TODO этот вариант можно получить другим уже реализованным методом
         {
             if ( 0 < $this->Model->ID )
             {

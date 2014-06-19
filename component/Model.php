@@ -147,8 +147,9 @@ abstract class Zero_Model
         $index = $model . (0 < $id ? '_' . $id : '');
         if ( !isset(self::$_Instance[$index]) )
         {
-            self::$_Instance[$index] = self::Make($model, $id, $flag_load);
-            self::$_Instance[$index]->Init();
+            $result = self::Make($model, $id, $flag_load);
+            $result->Init();
+            self::$_Instance[$index] = $result;
         }
         return self::$_Instance[$index];
     }
@@ -166,14 +167,11 @@ abstract class Zero_Model
      */
     public static function Factory($model, $id = 0, $flag = false)
     {
-        $index = $model;
-        if ( $flag )
-            $index .= '_' . $id;
-        if ( !$result = Zero_Session::Get($index) )
+        if ( !$result = Zero_Session::Get($model) )
         {
-            $result = self::Make($model, $id, true);
+            $result = self::Make($model, $id, $flag);
             $result->Init();
-            Zero_Session::Set($index, $result);
+            Zero_Session::Set($model, $result);
         }
         return $result;
     }
@@ -423,12 +421,16 @@ abstract class Zero_Model
     {
         $props = static::Config_Filter($this, $scenario);
         $propsBase = $this->Get_Config_Prop();
-        foreach ($propsBase as $prop => $row)
+        foreach ($props as $prop => $row)
         {
-            if ( isset($props[$prop]) )
-                $propsBase[$prop] = array_replace($row, $props[$prop]);
+            if ( isset($propsBase[$prop]) )
+                $props[$prop] = array_replace($propsBase[$prop], $row);
+            else
+            {
+                $props[$prop]['Comment'] = Zero_I18n::Model(get_class($this), $prop);
+            }
         }
-        return $propsBase;
+        return $props;
     }
 
     /**
@@ -458,7 +460,12 @@ abstract class Zero_Model
         $propsBase = $this->Get_Config_Prop();
         foreach ($props as $prop => $row)
         {
-            $props[$prop] = array_replace($propsBase[$prop], $row);
+            if ( isset($propsBase[$prop]) )
+                $props[$prop] = array_replace($propsBase[$prop], $row);
+            else
+            {
+                $props[$prop]['Comment'] = Zero_I18n::Model(get_class($this), $prop);
+            }
         }
         return $props;
     }
@@ -492,7 +499,12 @@ abstract class Zero_Model
         $propsBase = $this->Get_Config_Prop();
         foreach ($props as $prop => $row)
         {
-            $props[$prop] = array_replace($propsBase[$prop], $row);
+            if ( isset($propsBase[$prop]) )
+                $props[$prop] = array_replace($propsBase[$prop], $row);
+            else
+            {
+                $props[$prop]['Comment'] = Zero_I18n::Model(get_class($this), $prop);
+            }
         }
         return $props;
     }

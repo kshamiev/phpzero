@@ -224,7 +224,10 @@ class Zero_Section extends Zero_Model
      */
     protected function Init()
     {
-        $this->Init_Url(Zero_App::$Config->Site_DomainSub . Zero_App::$Route->Url);
+        if ( $this->ID == 0 )
+        {
+            $this->Init_Url(Zero_App::$Config->Site_DomainSub . Zero_App::$Route->Url);
+        }
     }
 
     /**
@@ -239,10 +242,10 @@ class Zero_Section extends Zero_Model
         {
             $this->DB->Sql_Where('Url', '=', $url);
             $row = $this->DB->Select('*');
-//            $this->Set_Props($row);
+            //            $this->Set_Props($row);
             // Мультиязычный вариант
             $row = array_replace($row, $this->DB->Select_Language('*'));
-//            $this->Set_Props($row);
+            //            $this->Set_Props($row);
             Zero_Cache::Set_Link('Zero_Section', $this->ID);
             Zero_Cache::Set_Data($index, $row);
         }

@@ -169,7 +169,6 @@ class Zero_Filter
         {
             $result[$val['ID']] = $val['Name'];
         }
-        pre($result);
         return $result;
     }
 
@@ -455,7 +454,7 @@ class Zero_Filter
             $this->Filter = [];
             //  poisk
             $this->Search = ['List' => [], 'Value' => []];
-            $this->Add_Search_Text('ALL_PROPS', ['Comment' => Zero_I18n::Model('Www_App', 'Property all')]);
+            $this->Add_Search_Text('ALL_PROPS', ['Comment' => Zero_I18n::Model('Www_All', 'Property all')]);
             //  sortirovka
             $this->Sort = ['List' => [], 'Value' => []];
             //

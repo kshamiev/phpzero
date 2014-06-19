@@ -121,17 +121,35 @@ abstract class Zero_Crud_Edit extends Zero_Controller
                     else
                         $Filter->$method($prop, $row, $row['Visible'], 1);
                 }
-                if ( isset($row['Search']) && $row['Search'] )
+                else if ( isset($row['DB']) )
                 {
-                    $method = 'Add_Search_' . $row['Search'];
-                    $Filter->$method($prop, $row);
+                    $method = '';
+                    if ( $row['DB'] == 'I' || $row['DB'] == 'F' )
+                        $method = 'Add_Search_Number';
+                    else if ( $row['DB'] == 'T' )
+                        $method = 'Add_Search_Text';
+
+                    if ( method_exists($Filter, $method) )
+                        $Filter->$method($prop, $row);
+
+                    if ( $method != '' )
+                    {
+                        $Filter->Add_Sort($prop, $row);
+                        if ( 'Sort' == $prop )
+                            $Filter->Set_Sort($prop);
+                    }
                 }
-                if ( isset($row['Sort']) && $row['Sort'] )
-                {
-                    $Filter->Add_Sort($prop, $row);
-                    if ( 'Sort' == $prop || 'ID' == $prop )
-                        $Filter->Set_Sort($prop);
-                }
+//                if ( isset($row['Search']) && $row['Search'] )
+//                {
+//                    $method = 'Add_Search_' . $row['Search'];
+//                    $Filter->$method($prop, $row);
+//                }
+//                if ( isset($row['Sort']) && $row['Sort'] )
+//                {
+//                    $Filter->Add_Sort($prop, $row);
+//                    if ( 'Sort' == $prop || 'ID' == $prop )
+//                        $Filter->Set_Sort($prop);
+//                }
             }
             $Filter->IsInit = true;
         }

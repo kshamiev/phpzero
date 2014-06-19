@@ -94,7 +94,7 @@ class Zero_Users_Login extends Zero_Controller
     protected function Chunk_Login()
     {
         // Инициализация чанков
-        if ( !$_REQUEST['Login'] || !$_REQUEST['Password'] )
+        if ( !$_POST['Login'] || !$_POST['Password'] )
             return true;
 
         $Users = Zero_Model::Make('Www_Users');
