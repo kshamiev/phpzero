@@ -294,13 +294,13 @@ class Zero_DB
     public static function Escape_D($datetime)
     {
         return self::Escape_T($datetime);
-//        $datetime = trim(strval($datetime));
-//        if ( $datetime == "NOW" || $datetime == "NOW()" )
-//            return "NOW()";
-//        else if ( $datetime )
-//            return "'" . self::$DB->real_escape_string($datetime) . "'";
-//        else
-//            return 'NULL';
+        //        $datetime = trim(strval($datetime));
+        //        if ( $datetime == "NOW" || $datetime == "NOW()" )
+        //            return "NOW()";
+        //        else if ( $datetime )
+        //            return "'" . self::$DB->real_escape_string($datetime) . "'";
+        //        else
+        //            return 'NULL';
     }
 
     /**
@@ -937,7 +937,7 @@ class Zero_DB
     public function Sql_Group($prop = '')
     {
         if ( $prop )
-            $this->Params['Group'][] = $prop;
+            $this->Params['Group'] = $prop;
         else
             unset($this->Params['Group']);
     }
@@ -1129,11 +1129,11 @@ class Zero_DB
     {
         //  initcializatciia
         if ( is_array($props) )
-            $sql_prop = "SELECT DISTINCT " . implode(', ', $props);
+            $sql_prop = "SELECT " . implode(', ', $props);
         else if ( '*' == $props )
-            $sql_prop = "SELECT DISTINCT " . implode(', ', array_keys($this->Model->Get_Config_Prop()));
+            $sql_prop = "SELECT " . implode(', ', array_keys($this->Model->Get_Config_Prop()));
         else
-            $sql_prop = "SELECT DISTINCT " . $props;
+            $sql_prop = "SELECT " . $props;
         /**
          * Usloviia Where
          */
@@ -1147,12 +1147,7 @@ class Zero_DB
         $sql_group = '';
         if ( isset($this->Params['Group']) )
         {
-            $sql_group = 'GROUP BY';
-            foreach ($this->Params['Group'] as $prop)
-            {
-                $sql_group .= ' ' . $prop . ',';
-            }
-            $sql_group = substr($sql_group, 0, -1);
+            $sql_group = 'GROUP BY ' . $this->Params['Group'];
         }
         /**
          * Sortirovka
@@ -1239,19 +1234,6 @@ class Zero_DB
         else
             $sql_where = 'WHERE 1';
         /**
-         * Gruppirovka
-         */
-        $sql_group = '';
-        if ( isset($this->Params['Group']) )
-        {
-            $sql_group = 'GROUP BY';
-            foreach ($this->Params['Group'] as $prop)
-            {
-                $sql_group .= ' ' . $prop . ',';
-            }
-            $sql_group = substr($sql_group, 0, -1);
-        }
-        /**
          * From
          */
         $source = $this->Model->Get_Source();
@@ -1266,7 +1248,6 @@ class Zero_DB
         {$sql_prop}
         {$sql_from}
         {$sql_where}
-        {$sql_group}
         ";
         if ( $flag_param_reset )
             $this->Sql_Reset();
@@ -1281,10 +1262,71 @@ class Zero_DB
      * - Formirovanie zaprosa i poluchenie danny`kh v nuzhnoi formate
      *
      * @param mixed $props stroka zagruzhaemy`kh svoi`stv cherez zapiatuiu s probelom, libo odnomerny`i` massiv so svoi`stvami
-     * @param string $mode tip zaprosa k katalogu (tree, line, child)
      * @return array nai`denny`e danny`e
      */
-    public function Select_Tree($props, $mode = 'tree')
+    public function Select_Line($props)
+    {
+        if ( 0 == $this->Model->ID )
+            return [];
+        //  initcializatciia
+        $source = $this->Model->Get_Source();
+        $prop_list = $this->Model->Get_Config_Prop();
+        if ( is_array($props) )
+            $sql_prop = implode(', ', $props);
+        else if ( '*' == $props )
+            $sql_prop = implode(', ', array_keys($prop_list));
+        else
+            $sql_prop = $props;
+        $sql_prop .= ", {$source}_ID";
+
+        /**
+         * Usloviia Where
+         */
+        if ( isset($this->Params['Where']) )
+            $sql_where = $this->Sql_Where_Compilation();
+        else
+            $sql_where = '1';
+
+        //  OB``EKTY
+        $this->Params['__CATALOG__'] = [];
+        $sql_tpl = "SELECT {$sql_prop} FROM {$source} WHERE ID = <ID> AND {$sql_where}";
+        $this->_Select_Line($sql_tpl, $this->Model->ID);
+        $this->Params['__CATALOG__'] = array_reverse($this->Params['__CATALOG__'], true);
+        return $this->Params['__CATALOG__'];
+    }
+
+    /**
+     * Rekusrivny`i` obhod kataloga.
+     *
+     * Poluchenie vsego dereva kataloga, libo ego otdel`noi` vetki
+     *
+     * @param string $sql_tpl shablon sql zaprosa
+     * @param int $id identifikator
+     */
+    private function _Select_Line($sql_tpl, $id)
+    {
+        if ( 0 < $id )
+        {
+            $sql = str_replace('<ID>', $id, $sql_tpl);
+            foreach (self::Sel_Array_Index($sql) as $id => $row)
+            {
+                $this->Params['__CATALOG__'][$id] = $row;
+                $this->_Select_Line($sql_tpl, $row[$this->Model->Get_Source() . '_ID']);
+            }
+        }
+    }
+
+    /**
+     * Poisk ob``ektov s signaturoi` ravnoi` delegirovannomu ob``ektu rekursivno po derevu.
+     *
+     * Poriadok formirovanie zaprosa:
+     * - Sortirovka (mozhet ne by`t`).
+     * - Formirovanie zaprosa i poluchenie danny`kh v nuzhnoi formate
+     *
+     * @param mixed $props stroka zagruzhaemy`kh svoi`stv cherez zapiatuiu s probelom, libo odnomerny`i` massiv so svoi`stvami
+     * @return array nai`denny`e danny`e
+     */
+    public function Select_Tree($props)
     {
         //  initcializatciia
         $source = $this->Model->Get_Source();
@@ -1316,39 +1358,19 @@ class Zero_DB
 
         //  OB``EKTY
         $this->Params['__CATALOG__'] = [];
-        if ( 'tree' == $mode )
+        $sql_tpl = "SELECT {$sql_prop} FROM {$source} WHERE {$source}_ID = <ID> AND {$sql_where} {$sql_sort}";
+        if ( 0 == $this->Model->ID )
         {
-            $sql_tpl = "SELECT {$sql_prop} FROM {$source} WHERE {$source}_ID = <ID> AND {$sql_where} {$sql_sort}";
-            if ( 0 == $this->Model->ID )
+            $sql = "SELECT {$sql_prop} FROM {$source} WHERE {$source}_ID IS NULL AND {$sql_where} {$sql_sort}";
+            foreach (self::Sel_Array_Index($sql) as $id => $row)
             {
-                $sql = "SELECT {$sql_prop} FROM {$source} WHERE {$source}_ID IS NULL AND {$sql_where} {$sql_sort}";
-                foreach (self::Sel_Array_Index($sql) as $id => $row)
-                {
-                    $this->Params['__CATALOG__'][$id] = $row;
-                    $this->Params['__CATALOG__'][$id]['Level'] = 1;
-                    $this->_Select_Tree($sql_tpl, $id);
-                }
-            }
-            else
-                $this->_Select_Tree($sql_tpl, $this->Model->ID);
-        }
-        else if ( 'line' == $mode )
-        {
-            if ( 0 < $this->Model->ID )
-            {
-                $sql_tpl = "SELECT {$sql_prop} FROM {$source} WHERE ID = <ID> AND {$sql_where}";
-                $this->_Select_TreeLine($sql_tpl, $this->Model->ID);
-                $this->Params['__CATALOG__'] = array_reverse($this->Params['__CATALOG__'], true);
+                $this->Params['__CATALOG__'][$id] = $row;
+                $this->Params['__CATALOG__'][$id]['Level'] = 1;
+                $this->_Select_Tree($sql_tpl, $id);
             }
         }
-        else if ( 'child' == $mode ) // TODO этот вариант можно получить другим уже реализованным методом
-        {
-            if ( 0 < $this->Model->ID )
-            {
-                $sql = "SELECT {$sql_prop} FROM {$source} WHERE {$source}_ID = {$this->Model->ID} AND {$sql_where} {$sql_sort}";
-                $this->Params['__CATALOG__'] = self::Sel_Array_Index($sql);
-            }
-        }
+        else
+            $this->_Select_Tree($sql_tpl, $this->Model->ID);
         return $this->Params['__CATALOG__'];
     }
 
@@ -1369,27 +1391,6 @@ class Zero_DB
             $this->Params['__CATALOG__'][$id] = $row;
             $this->Params['__CATALOG__'][$id]['Level'] = $level;
             $this->_Select_Tree($sql_tpl, $id, $level + 1);
-        }
-    }
-
-    /**
-     * Rekusrivny`i` obhod kataloga.
-     *
-     * Poluchenie vsego dereva kataloga, libo ego otdel`noi` vetki
-     *
-     * @param string $sql_tpl shablon sql zaprosa
-     * @param int $id identifikator
-     */
-    private function _Select_TreeLine($sql_tpl, $id)
-    {
-        if ( 0 < $id )
-        {
-            $sql = str_replace('<ID>', $id, $sql_tpl);
-            foreach (self::Sel_Array_Index($sql) as $id => $row)
-            {
-                $this->Params['__CATALOG__'][$id] = $row;
-                $this->_Select_TreeLine($sql_tpl, $row[$this->Model->Get_Source() . '_ID']);
-            }
         }
     }
 
