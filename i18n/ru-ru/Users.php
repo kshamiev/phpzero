@@ -21,6 +21,7 @@ return [
     'model' => [
         'Property all' => 'Все свойства',
         'Error_Exists' => 'уже занято',
+        'Error_ValidEmail' => 'Электронный адрес неправильный',
         'Error_NotRegistration' => 'не зарегистрирован',
         'Error_Keystring' => 'контрольная строка неправильна',
         'IsAccess close' => 'закрыт',

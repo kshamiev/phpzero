@@ -20,6 +20,9 @@
 return [
     'model' => [
         'Property all' => 'Все свойства',
+        'ID' => 'ID',
+        'Name' => 'Название',
+        'Description' => 'Описание',
         'Status' => 'Статус',
         'Status close' => 'закрыт',
         'Status open' => 'открыт',

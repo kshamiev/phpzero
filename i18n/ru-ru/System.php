@@ -23,7 +23,10 @@ return [
 
     ],
     'view' => [
-
+        'engine' => 'Инженеринг',
+        'model factory' => 'Создание моделей',
+        'controller Zero_System_GridService action Cache_Reset' => 'Сброс всего кеша',
+        'controller Zero_System_GridService action Session_Reset' => 'Сброс всех сессий',
     ],
     'controller' => [
         'Action_FolderGo' => 'переход по папкам',

@@ -322,7 +322,7 @@ class Zero_Users extends Zero_Model
     public function VL_Email($value, $scenario)
     {
         if ( !preg_match(Zero_Validator::PATTERN_EMAIL, $value) )
-            return 'Error_NotValid';
+            return 'Error_ValidEmail';
         if ( 'reminder' == $scenario )
         {
             $this->DB->Sql_Where('Email', '=', $value);
