@@ -156,18 +156,18 @@ class Zero_Users extends Zero_Model
     {
         return [
             /*BEG_CONFIG_FILTER_PROP*/
-            'ID' => ['Visible' => true, 'Search' => 'Number', 'Sort' => true],
-            'Zero_Groups_ID' => ['Visible' => true, 'Search' => '', 'Sort' => false],
-            'Zero_Users_ID' => ['Visible' => true, 'Search' => '', 'Sort' => false],
-            'Name' => ['Visible' => true, 'Search' => 'Text', 'Sort' => true],
-            'Login' => ['Visible' => true, 'Search' => 'Text', 'Sort' => true],
-            'IsAccess' => ['Visible' => true, 'Search' => '', 'Sort' => false],
-            'Email' => ['Visible' => true, 'Search' => 'Text', 'Sort' => true],
-            'Phone' => ['Visible' => true, 'Search' => 'Text', 'Sort' => true],
-            'Skype' => ['Visible' => true, 'Search' => 'Text', 'Sort' => true],
-            'IsCondition' => ['Visible' => true, 'Search' => '', 'Sort' => false],
-            'IsOnline' => ['Visible' => true, 'Search' => '', 'Sort' => false],
-            'Date' => ['Visible' => true, 'Search' => '', 'Sort' => true],
+            'ID' => ['Visible' => true],
+            'Zero_Groups_ID' => ['Visible' => true],
+            'Zero_Users_ID' => ['Visible' => true],
+            'Name' => ['Visible' => true],
+            'Login' => ['Visible' => true],
+            'IsAccess' => ['Visible' => true],
+            'Email' => ['Visible' => true],
+            'Phone' => ['Visible' => true],
+            'Skype' => ['Visible' => true],
+            'IsCondition' => ['Visible' => true],
+            'IsOnline' => ['Visible' => true],
+            'Date' => ['Visible' => true],
             /*END_CONFIG_FILTER_PROP*/
         ];
     }

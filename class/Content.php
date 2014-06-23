@@ -102,11 +102,11 @@ class Zero_Content extends Zero_Model
     {
         return [
             /*BEG_CONFIG_FILTER_PROP*/
-            'ID' => ['Visible' => true, 'Search' => 'Number', 'Sort' => true],
-            'Zero_Section_ID' => ['Visible' => true, 'Search' => '', 'Sort' => false],
-            'Zero_Language_ID' => ['Visible' => true, 'Search' => '', 'Sort' => false],
-            'Name' => ['Visible' => true, 'Search' => 'Text', 'Sort' => false],
-            'Content' => ['Visible' => true, 'Search' => 'Text', 'Sort' => false],
+            'ID' => ['Visible' => true],
+            'Zero_Section_ID' => ['Visible' => true],
+            'Zero_Language_ID' => ['Visible' => true],
+            'Name' => ['Visible' => true],
+            'Content' => ['Visible' => true],
             /*END_CONFIG_FILTER_PROP*/
         ];
     }

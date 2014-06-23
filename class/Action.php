@@ -99,10 +99,10 @@ class Zero_Action extends Zero_Model
     {
         return [
             /*BEG_CONFIG_FILTER_PROP*/
-            'ID' => ['Visible' => true, 'Search' => 'Number', 'Sort' => true],
-            'Zero_Section_ID' => ['Visible' => true, 'Search' => '', 'Sort' => false],
-            'Zero_Groups_ID' => ['Visible' => true, 'Search' => '', 'Sort' => false],
-            'Action' => ['Visible' => true, 'Search' => '', 'Sort' => false],
+            'ID' => ['Visible' => true],
+            'Zero_Section_ID' => ['Visible' => true],
+            'Zero_Groups_ID' => ['Visible' => true],
+            'Action' => ['Visible' => true],
             /*END_CONFIG_FILTER_PROP*/
         ];
     }

@@ -147,16 +147,16 @@ class Zero_Section extends Zero_Model
     {
         return [
             /*BEG_CONFIG_FILTER_PROP*/
-            'ID' => ['Visible' => true, 'Search' => 'Number', 'Sort' => true],
-            'Controller' => ['Visible' => true, 'Search' => 'Text', 'Sort' => false],
-            'IsAuthorized' => ['Visible' => true, 'Search' => '', 'Sort' => false],
-            'IsVisible' => ['Visible' => true, 'Search' => '', 'Sort' => false],
-            'IsEnable' => ['Visible' => true, 'Search' => '', 'Sort' => false],
-            'Name' => ['Visible' => true, 'Search' => 'Text', 'Sort' => true],
-            'Title' => ['Visible' => true, 'Search' => 'Text', 'Sort' => true],
-            'Keywords' => ['Visible' => true, 'Search' => 'Text', 'Sort' => true],
-            'Description' => ['Visible' => true, 'Search' => 'Text', 'Sort' => true],
-            'Sort' => ['Visible' => true, 'Search' => '', 'Sort' => true],
+            'ID' => ['Visible' => true],
+            'Controller' => ['Visible' => true],
+            'IsAuthorized' => ['Visible' => true],
+            'IsVisible' => ['Visible' => true],
+            'IsEnable' => ['Visible' => true],
+            'Name' => ['Visible' => true],
+            'Title' => ['Visible' => true],
+            'Keywords' => ['Visible' => true],
+            'Description' => ['Visible' => true],
+            'Sort' => ['Visible' => true],
             /*END_CONFIG_FILTER_PROP*/
         ];
     }

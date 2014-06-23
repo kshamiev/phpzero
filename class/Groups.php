@@ -99,10 +99,10 @@ class Zero_Groups extends Zero_Model
     {
         return [
             /*BEG_CONFIG_FILTER_PROP*/
-            'ID' => ['Visible' => true, 'Search' => 'Number', 'Sort' => true],
-            'Name' => ['Visible' => true, 'Search' => 'Text', 'Sort' => false],
-            'Status' => ['Visible' => true, 'Search' => '', 'Sort' => false],
-            'Description' => ['Visible' => true, 'Search' => 'Text', 'Sort' => false],
+            'ID' => ['Visible' => true],
+            'Name' => ['Visible' => true],
+            'Status' => ['Visible' => true],
+            'Description' => ['Visible' => true],
             /*END_CONFIG_FILTER_PROP*/
         ];
     }

@@ -105,13 +105,13 @@ class Zero_SectionLanguage extends Zero_Model
     {
         return [
             /*BEG_CONFIG_FILTER_PROP*/
-            'ID' => array('Visible' => true, 'Search' => '', 'Sort' => false),
-            'Zero_Section_ID' => array('Visible' => true, 'Search' => '', 'Sort' => false),
-            'Zero_Language_ID' => array('Visible' => true, 'Search' => '', 'Sort' => false),
-            'Name' => array('Visible' => true, 'Search' => 'Text', 'Sort' => true),
-            'Title' => array('Visible' => true, 'Search' => 'Text', 'Sort' => true),
-            'Keywords' => array('Visible' => true, 'Search' => 'Text', 'Sort' => true),
-            'Description' => array('Visible' => true, 'Search' => 'Text', 'Sort' => false),
+            'ID' => array('Visible' => true),
+            'Zero_Section_ID' => array('Visible' => true),
+            'Zero_Language_ID' => array('Visible' => true),
+            'Name' => array('Visible' => true),
+            'Title' => array('Visible' => true),
+            'Keywords' => array('Visible' => true),
+            'Description' => array('Visible' => true),
             /*END_CONFIG_FILTER_PROP*/
         ];
     }
