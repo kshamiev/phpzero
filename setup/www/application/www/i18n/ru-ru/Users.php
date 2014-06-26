@@ -43,9 +43,7 @@ return [
 
     ],
     'view' => [
-
     ],
     'controller' => [
-
     ],
 ];

@@ -1,6 +1,6 @@
 /*
 SQLyog Ultimate v9.50 
-MySQL - 5.5.25a-log : Database - test
+MySQL - 5.5.25a-log : Database - search
 *********************************************************************
 */
 
@@ -115,8 +115,9 @@ CREATE TABLE `Zero_Section` (
 
 LOCK TABLES `Zero_Section` WRITE;
 
-insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Url`,`UrlThis`,`UrlRedirect`,`Layout`,`Controller`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (1,NULL,'www/','www',NULL,'Zero_Main','Zero_Users_Login','no','yes','no','yes',10,'PhpZero','PhpZero','PhpZero','PhpZero',NULL);
+insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Url`,`UrlThis`,`UrlRedirect`,`Layout`,`Controller`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (1,NULL,'www/','www',NULL,'Zero_Content','Zero_Users_Login','no','yes','no','yes',10,'PhpZero','PhpZero','PhpZero','PhpZero',NULL);
 insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Url`,`UrlThis`,`UrlRedirect`,`Layout`,`Controller`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (3,33,'www/admin/user','user',NULL,'Zero_Main','Zero_Section_Page','yes','yes','yes','yes',30,'Пользователи','Пользователи','Пользователи','Пользователи',NULL);
+insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Url`,`UrlThis`,`UrlRedirect`,`Layout`,`Controller`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (5,3,'www/admin/user/captcha','captcha',NULL,NULL,'Zero_Users_Kcaptcha','no','yes','no','yes',50,'Капча','Капча','Капча','Капча',NULL);
 insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Url`,`UrlThis`,`UrlRedirect`,`Layout`,`Controller`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (8,3,'www/admin/user/users','users',NULL,'Zero_Main','Zero_Users_Grid','yes','yes','yes','yes',10,'Пользователи','Пользователи','Пользователи','Пользователи',NULL);
 insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Url`,`UrlThis`,`UrlRedirect`,`Layout`,`Controller`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (9,8,'www/admin/user/users/edit','edit',NULL,'Zero_Main','Zero_Users_Edit','yes','yes','no','yes',10,'Пользователи изменение','Пользователи изменение','Пользователи изменение','Пользователи изменение',NULL);
 insert  into `Zero_Section`(`ID`,`Zero_Section_ID`,`Url`,`UrlThis`,`UrlRedirect`,`Layout`,`Controller`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (10,3,'www/admin/user/groups','groups',NULL,'Zero_Main','Zero_Groups_Grid','yes','yes','yes','yes',20,'Группы','Группы','Группы','Группы',NULL);
@@ -156,7 +157,7 @@ CREATE TABLE `Zero_SectionLanguage` (
   UNIQUE KEY `Zero_Section_ID` (`Zero_Section_ID`,`Zero_Language_ID`),
   KEY `Zero_Section_ID_2` (`Zero_Section_ID`),
   CONSTRAINT `Zero_SectionLanguage_ibfk_1` FOREIGN KEY (`Zero_Section_ID`) REFERENCES `Zero_Section` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=115 DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=FIXED;
+) ENGINE=InnoDB AUTO_INCREMENT=116 DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=FIXED;
 
 /*Data for the table `Zero_SectionLanguage` */
 
@@ -183,6 +184,7 @@ insert  into `Zero_SectionLanguage`(`ID`,`Zero_Section_ID`,`Zero_Language_ID`,`N
 insert  into `Zero_SectionLanguage`(`ID`,`Zero_Section_ID`,`Zero_Language_ID`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (34,33,2,'CP','Административная часть','Административная часть','Административная часть',NULL);
 insert  into `Zero_SectionLanguage`(`ID`,`Zero_Section_ID`,`Zero_Language_ID`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (36,40,2,'Контент','Контент','Контент','Контент',NULL);
 insert  into `Zero_SectionLanguage`(`ID`,`Zero_Section_ID`,`Zero_Language_ID`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (37,41,2,'Контент изменение','Контент изменение','Контент изменение','Контент изменение',NULL);
+insert  into `Zero_SectionLanguage`(`ID`,`Zero_Section_ID`,`Zero_Language_ID`,`Name`,`Title`,`Keywords`,`Description`,`Content`) values (115,5,2,'Капча','Капча','Капча','Капча',NULL);
 
 UNLOCK TABLES;
 
