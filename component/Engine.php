@@ -543,26 +543,6 @@ class Zero_Engine
         {
             //  Opredeleine fil`trov
             $config_filter[$Prop]['Visible'] = "true";
-            $config_filter[$Prop]['Search'] = "''";
-            $config_filter[$Prop]['Sort'] = 'false';
-            if ( in_array($config[$Prop]['Form'], self::$PropValidatorFilter) )
-            {
-//                $config_filter[$Prop]['Filter'] = "'{$config[$Prop]['Form']}'";
-            }
-            else
-            {
-                if ( in_array($config[$Prop]['Form'], self::$PropValidatorSearch) )
-                {
-                    if ( 'Number' == $config[$Prop]['Form'] )
-                        $config_filter[$Prop]['Search'] = "'Number'";
-                    else
-                        $config_filter[$Prop]['Search'] = "'Text'";
-                }
-                if ( in_array($config[$Prop]['Form'], self::$PropValidatorSort) )
-                {
-                    $config_filter[$Prop]['Sort'] = 'true';
-                }
-            }
             //  Opredelenie grida
             if ( 'Text' == $config[$Prop]['Form'] )
             {

@@ -26,10 +26,16 @@ class Zero_Content_GridSection extends Zero_Crud_Grid
      */
     protected $Template = 'Zero_Crud_Grid';
 
+    /**
+     * Initialization of the input parameters
+     *
+     * @return boolean flag stop execute of the next chunk
+     */
     protected function Chunk_Init()
     {
         $this->Params['obj_parent_prop'] = 'Zero_Section_ID';
         $this->Params['obj_parent_name'] = '';
         parent::Chunk_Init();
+        return true;
     }
 }

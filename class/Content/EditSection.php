@@ -26,10 +26,16 @@ class Zero_Content_EditSection extends Zero_Crud_Edit
      */
     protected $Template = 'Zero_Crud_Edit';
 
+    /**
+     * Initialization of the input parameters
+     *
+     * @return boolean flag stop execute of the next chunk
+     */
     protected function Chunk_Init()
     {
         $this->Params['obj_parent_prop'] = 'Zero_Section_ID';
         $this->Params['obj_parent_name'] = '';
         parent::Chunk_Init();
+        return true;
     }
 }

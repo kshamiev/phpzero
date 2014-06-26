@@ -110,7 +110,6 @@ abstract class Zero_Crud_Grid extends Zero_Controller
     /**
      * Initialization and set filters
      *
-     * @todo Переработать Search и Sort на Form
      * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_Filter()
@@ -186,6 +185,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
     protected function Chunk_Filter_Set()
     {
         $Filter = Zero_Filter::Factory($this->Model);
+        $Filter->IsSet = true;
         //  Filters
         if ( isset($_REQUEST['Filter']) )
         {

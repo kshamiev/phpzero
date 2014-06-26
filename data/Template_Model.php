@@ -192,8 +192,10 @@ class Zero_Model_Pattern extends Zero_Model
 
     /**
      * Формирование from запроса
+     *
+     * @param array $params параметры контроллера
      */
-    public function DB_From()
+    public function DB_From($params)
     {
         $this->DB->Sql_From("FROM {$this->Source} as z");
     }

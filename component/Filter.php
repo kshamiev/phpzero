@@ -90,6 +90,13 @@ class Zero_Filter
     public $IsInit = false;
 
     /**
+     * Статус установленного фильтра
+     *
+     * @var boolean
+     */
+    public $IsSet = false;
+
+    /**
      * Sozdanie i initcializatciia fil`tra.
      *
      * @param Zero_Model $Model  Delegirovannaia model` dlia kotoroi` sozdaiutsia fil`try`
@@ -461,6 +468,7 @@ class Zero_Filter
             $this->Page = 1;
             $this->Page_Item = Zero_App::$Config->View_PageItem;
             $this->IsInit = false;
+            $this->IsSet = false;
         }
         else
         {
