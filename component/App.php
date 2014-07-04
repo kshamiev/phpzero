@@ -420,9 +420,13 @@ class Zero_App
         {
             $range_file_error = 10;
 
-            Zero_Logs::Set_Message_Error("#{ERROR_EXCEPTION} " . $exception->getMessage() . ' ' . $exception->getFile() . '(' . $exception->getLine() . ')');
-            if ( Zero_App::$Mode == 'web' )
-                Zero_Logs::Set_Message_Error(Zero_Logs::Get_SourceCode($exception->getFile(), $exception->getLine(), $range_file_error));
+            $error = "#{ERROR_EXCEPTION} " . $exception->getMessage() . ' ' . $exception->getFile() . '(' . $exception->getLine() . ')';
+            Zero_Logs::Set_Message_Error($error);
+            if ( Zero_App::$Config->Log_Output_Display == true )
+            {
+                Zero_Logs::Set_Message_ErrorTrace($error);
+                Zero_Logs::Set_Message_ErrorTrace(Zero_Logs::Get_SourceCode($exception->getFile(), $exception->getLine(), $range_file_error));
+            }
 
             $traceList = $exception->getTrace();
             array_shift($traceList);
@@ -454,8 +458,11 @@ class Zero_App
                     $trace['line'] = 0;
                 $error = "\t#{" . $id . "}" . $trace['file'] . '(' . $trace['line'] . '): ' . $callback . "(" . str_replace("\n", "", $trace['args']) . ");";
                 Zero_Logs::Set_Message_Error($error);
-                if ( Zero_App::$Mode == 'web' && $trace['file'] && $trace['line'] )
-                    Zero_Logs::Set_Message_Error(Zero_Logs::Get_SourceCode($trace['file'], $trace['line'], $range_file_error));
+                if ( Zero_App::$Config->Log_Output_Display == true )
+                {
+                    Zero_Logs::Set_Message_ErrorTrace($error);
+                    Zero_Logs::Set_Message_ErrorTrace(Zero_Logs::Get_SourceCode($trace['file'], $trace['line'], $range_file_error));
+                }
             }
         }
 

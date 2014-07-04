@@ -97,8 +97,6 @@ abstract class Zero_Controller
         {
             if ( 1 == count($row) )
             {
-                //                $index = 'controller ' . get_class($this) . ' message ' . $key;
-//                $index = 'controller message ' . $key;
                 self::$_Message[$message][] = Zero_I18n::Controller(get_class($this), $message);
             }
         }

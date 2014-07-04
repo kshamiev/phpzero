@@ -5,6 +5,10 @@
     <div style="margin: 2px; background: #fadadd; padding: 4px;">
         <pre>{print_r($row[0], true)}</pre>
     </div>
+    {else if ( $row[1] == 'errorTrace' )}
+    <div style="margin: 2px; background: #fadadd; padding: 4px;">
+        <pre>{print_r($row[0], true)}</pre>
+    </div>
     {else if ( $row[1] == 'warning' )}
     <div style="margin: 2px; background: #d0f0c0; padding: 4px;">
         <pre>{print_r($row[0], true)}</pre>

@@ -12,7 +12,12 @@
         <td>
             {translation "Www_All" "Project"}: {Zero_App::$Config->Site_Name}&nbsp;&nbsp;
             {foreach (Zero_App::Get_Variable('action_message') as $row)}
-            {$row[1]}&nbsp;&nbsp;
+            {if ( $row[0] == 1 )}
+            <font color="red">{$row[1]}</font>
+            {else}
+            {$row[1]}
+            {/}
+            &nbsp;&nbsp;
             {/}
         </td>
         <td width="150px" align="center">

@@ -106,6 +106,15 @@ class Zero_Logs
      *
      * @param string $value Soobshchenie ob oshibke
      */
+    public static function Set_Message_ErrorTrace($value)
+    {
+        self::$_Message[] = [print_r($value, true), 'errorTrace'];
+    }
+    /**
+     * Инициализация входиащего системного сообщения.
+     *
+     * @param string $value Soobshchenie ob oshibke
+     */
     public static function Set_Message_Warninng($value)
     {
         self::$_Message[] = [print_r($value, true), 'warning'];
