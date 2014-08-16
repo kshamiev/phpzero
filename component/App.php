@@ -141,7 +141,6 @@ class Zero_App
             require_once $path;
             return true;
         }
-        echo $path . '<br>';
         return false;
     }
 
