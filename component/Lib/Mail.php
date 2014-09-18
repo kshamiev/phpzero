@@ -41,67 +41,7 @@ class Zero_Lib_Mail
             $Mailer->CharSet = 'UTF-8';
             //  The message body
             $Mailer->Subject = $subject;
-            if ( preg_match('~</?[\w\d]+[<>]*>~si', $message) )
                 $Mailer->MsgHTML($message);
-            else
-                $Mailer->Body = $message;
-            //  Attachments
-            if ( is_array($attach) )
-            {
-                foreach ($attach as $path => $name)
-                {
-                    $Mailer->AddAttachment($path, $name);
-                }
-            }
-            //  Send
-            if ( !$Mailer->Send() )
-                Zero_Logs::Set_Message_Error("From: {$from}; To: {$email}; Subject: {$subject}");
-
-            $Mailer->ClearAddresses();
-            $Mailer->ClearAttachments();
-        }
-        return true;
-    }
-
-    /**
-     * Sending messages via smtp server
-     *
-     * @param string $from from
-     * @param string $to to
-     * @param string $subject subject
-     * @param string $message message
-     * @param array $attach attachments
-     * @return bool
-     */
-    public static function Send_Smtp($from, $to, $subject, $message, $attach = [])
-    {
-        foreach (explode(';', $to) as $email)
-        {
-            //  Header mail
-            $email = trim($email);
-            $Mailer = new PHPMailer($from);
-            //
-            $Mailer->Host = false;
-            $Mailer->Port = false;
-            $Mailer->SMTPAuth = true;
-            $Mailer->Username = false;
-            $Mailer->Password = false;
-            $Mailer->Mailer = "smtp";
-            //
-            $Mailer->From = $from;
-            $Mailer->FromName = '';
-            $Mailer->Sender = $from;
-            $Mailer->Priority = 3;
-            //
-            $Mailer->AddReplyTo($from);
-            $Mailer->AddAddress($email);
-            $Mailer->CharSet = 'UTF-8';
-            //  The message body
-            $Mailer->Subject = $subject;
-            if ( preg_match('~</?[\w\d]+[<>]*>~si', $message) )
-                $Mailer->MsgHTML($message);
-            else
-                $Mailer->Body = $message;
             //  Attachments
             if ( is_array($attach) )
             {
