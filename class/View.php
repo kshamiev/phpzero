@@ -198,7 +198,7 @@ class Zero_View
             {
                 $tpl = $html . '_' . ZERO_LANG . '.tpl';
                 if ( 1 == Zero_App::$Config->Site_TemplateParsing || !file_exists($tpl) )
-                    Zero_Lib_FileSystem::File_Save($tpl, $this->_Parsing(file_get_contents($html)));
+                    Zero_FileSystem::File_Save($tpl, $this->_Parsing(file_get_contents($html)));
                 break;
             }
         }

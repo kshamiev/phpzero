@@ -394,7 +394,7 @@ class Zero_Engine
                 $class = str_replace('<Subpackage>', $package[1], $class);
                 $class = str_replace('<Date>', date('Y.m.d'), $class);
                 $class = str_replace('Zero_Model_Pattern', $row['Name'], $class);
-                Zero_Lib_FileSystem::File_Save($path_model, $class);
+                Zero_FileSystem::File_Save($path_model, $class);
             }
             //  Konfiguratciia modeli v tcelom
             $this->Config_Model($row['Name']);
@@ -415,7 +415,7 @@ class Zero_Engine
                 $class = str_replace('<Date>', date('Y.m.d'), $class);
                 $class = str_replace('Zero_Controller_Grid', $row['Name'] . '_Grid', $class);
                 $class = str_replace('Zero_Model_Pattern', $row['Name'], $class);
-                Zero_Lib_FileSystem::File_Save($path_target, $class);
+                Zero_FileSystem::File_Save($path_target, $class);
             }
             //  Razdel v BD
             $url = strtolower($package[0] . '/' . $package[1]);
@@ -454,7 +454,7 @@ class Zero_Engine
                 $class = str_replace('<Date>', date('Y.m.d'), $class);
                 $class = str_replace('Zero_Controller_Edit', $row['Name'] . '_Edit', $class);
                 $class = str_replace('Zero_Model_Pattern', $row['Name'], $class);
-                Zero_Lib_FileSystem::File_Save($path_target, $class);
+                Zero_FileSystem::File_Save($path_target, $class);
             }
             //  Razdel v BD
             $url = strtolower($package[0] . '/' . $package[1] . '/edit');
@@ -764,7 +764,7 @@ class Zero_Engine
             //        echo 'CONFIG I18N MODEL ' . $path2 . '<br>';
             $file_data = file_get_contents($path1);
             $file_data = str_replace('# CONFIG', $str, $file_data);
-            Zero_Lib_FileSystem::File_Save($path2, $file_data);
+            Zero_FileSystem::File_Save($path2, $file_data);
         }
     }
 }

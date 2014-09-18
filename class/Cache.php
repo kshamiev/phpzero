@@ -164,7 +164,7 @@ class Zero_Cache
         if ( null == self::$_Memcache )
         {
             $index = ZERO_PATH_CACHE . '/' . $index . '.data';
-            Zero_Lib_FileSystem::File_Save($index, serialize($value));
+            Zero_FileSystem::File_Save($index, serialize($value));
         }
         //  Memcache
         else
@@ -176,8 +176,8 @@ class Zero_Cache
         //  dependent binding cache
         foreach (self::$_Link as $arr)
         {
-            $path = ZERO_PATH_CACHE . '/' . $arr[0] . '/' . Zero_Lib_FileSystem::Get_Path_Cache($arr[1]) . '/' . $arr[1] . '/cache.cache';
-            Zero_Lib_FileSystem::File_Save_After($path, $index);
+            $path = ZERO_PATH_CACHE . '/' . $arr[0] . '/' . Zero_FileSystem::Get_Path_Cache($arr[1]) . '/' . $arr[1] . '/cache.cache';
+            Zero_FileSystem::File_Save_After($path, $index);
         }
         self::$_Link = [];
         return true;
@@ -230,7 +230,7 @@ class Zero_Cache
      */
     public function Reset()
     {
-        $path_file = ZERO_PATH_CACHE . '/' . $this->Model->Source . '/' . Zero_Lib_FileSystem::Get_Path_Cache($this->Model->ID) . '/' . $this->Model->ID . '/cache.cache';
+        $path_file = ZERO_PATH_CACHE . '/' . $this->Model->Source . '/' . Zero_FileSystem::Get_Path_Cache($this->Model->ID) . '/' . $this->Model->ID . '/cache.cache';
         if ( !file_exists($path_file) )
             return true;
         rename($path_file, $path_file = $path_file . '.log');
@@ -270,7 +270,7 @@ class Zero_Cache
             // self::$_Memcache->delete($key, 0);
         }
         //  file cache
-        Zero_Lib_FileSystem::File_Remove(ZERO_PATH_CACHE);
+        Zero_FileSystem::File_Remove(ZERO_PATH_CACHE);
     }
 
     /**
@@ -288,7 +288,7 @@ class Zero_Cache
     {
         $path = $source;
         if ( null == self::$_Memcache )
-            $path .= '/' . Zero_Lib_FileSystem::Get_Path_Cache($id);
+            $path .= '/' . Zero_FileSystem::Get_Path_Cache($id);
         return $path . '/' . $id . '/' . LANG_ID . '/' . $index;
     }
 }

@@ -318,9 +318,9 @@ abstract class Zero_Crud_Grid extends Zero_Controller
     {
         $ObjectRem = Zero_Model::Make($this->ModelName, $_REQUEST['obj_id']);
         //  Remove binary data object
-        $path = ZERO_PATH_DATA . '/' . strtolower($ObjectRem->Source) . '/' . Zero_Lib_FileSystem::Get_Path_Cache($ObjectRem->ID) . '/' . $ObjectRem->ID;
+        $path = ZERO_PATH_DATA . '/' . strtolower($ObjectRem->Source) . '/' . Zero_FileSystem::Get_Path_Cache($ObjectRem->ID) . '/' . $ObjectRem->ID;
         if ( is_dir($path) )
-            Zero_Lib_FileSystem::Folder_Remove($path);
+            Zero_FileSystem::Folder_Remove($path);
         // Remove from session
         $ObjectRem->Factory_Unset(1);
         //  Reset Cache

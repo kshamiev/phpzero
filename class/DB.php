@@ -1477,13 +1477,13 @@ class Zero_DB
                 if ( 'File Upload Ok' == $value )
                 {
                     // V fai`lovoi` sisteme
-                    $file = strtolower($this->Model->Source) . '/' . Zero_Lib_FileSystem::Get_Path_Cache($this->Model->ID) . '/' . $this->Model->ID . '/' . $_FILES[$prop]['name'];
+                    $file = strtolower($this->Model->Source) . '/' . Zero_FileSystem::Get_Path_Cache($this->Model->ID) . '/' . $this->Model->ID . '/' . $_FILES[$prop]['name'];
                     $path = ZERO_PATH_DATA . '/' . $file;
                     if ( file_exists($path) )
                     {
                         $pos = strrpos($_FILES[$prop]['name'], ".", -1);
                         $_FILES[$prop]['name'] = substr($_FILES[$prop]['name'], 0, $pos) . '_' . $prop . substr($_FILES[$prop]['name'], $pos);
-                        $file = strtolower($this->Model->Source) . '/' . Zero_Lib_FileSystem::Get_Path_Cache($this->Model->ID) . '/' . $this->Model->ID . '/' . $_FILES[$prop]['name'];
+                        $file = strtolower($this->Model->Source) . '/' . Zero_FileSystem::Get_Path_Cache($this->Model->ID) . '/' . $this->Model->ID . '/' . $_FILES[$prop]['name'];
                         $path = ZERO_PATH_DATA . '/' . $file;
                     }
                     if ( !is_dir(dirname($path)) )
@@ -1561,13 +1561,13 @@ class Zero_DB
                 if ( 'File Upload Ok' == $value )
                 {
                     // V fai`lovoi` sisteme
-                    $file = strtolower($this->Model->Source) . '/' . Zero_Lib_FileSystem::Get_Path_Cache($this->Model->ID) . '/' . $this->Model->ID . '/' . $_FILES[$prop]['name'];
+                    $file = strtolower($this->Model->Source) . '/' . Zero_FileSystem::Get_Path_Cache($this->Model->ID) . '/' . $this->Model->ID . '/' . $_FILES[$prop]['name'];
                     $path = ZERO_PATH_DATA . '/' . $file;
                     if ( file_exists($path) )
                     {
                         $pos = strrpos($_FILES[$prop]['name'], ".", -1);
                         $_FILES[$prop]['name'] = substr($_FILES[$prop]['name'], 0, $pos) . '_' . $prop . substr($_FILES[$prop]['name'], $pos);
-                        $file = strtolower($this->Model->Source) . '/' . Zero_Lib_FileSystem::Get_Path_Cache($this->Model->ID) . '/' . $this->Model->ID . '/' . $_FILES[$prop]['name'];
+                        $file = strtolower($this->Model->Source) . '/' . Zero_FileSystem::Get_Path_Cache($this->Model->ID) . '/' . $this->Model->ID . '/' . $_FILES[$prop]['name'];
                         $path = ZERO_PATH_DATA . '/' . $file;
                     }
                     if ( !is_dir(dirname($path)) )

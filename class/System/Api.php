@@ -109,7 +109,7 @@ class Zero_System_Api extends Zero_Controller
         $_FILES['myFile']['tmp_name'] = $pathData;
         // сохранение информации о загруженном файле
         $data = json_encode($_FILES['myFile'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-        Zero_Lib_FileSystem::File_Save($pathInfo, $data);
+        Zero_FileSystem::File_Save($pathInfo, $data);
         Zero_App::ResponseJson([$sha1, '/' . explode('/www/', $path)[1], $ext], 200, "Файл загружен");
     }
 }

@@ -135,7 +135,7 @@ class Zero_App
             require_once $path;
             return true;
         }
-        $path = ZERO_PATH_APPLICATION . '/' . $module . '/component/' . $class . '.php';
+        $path = ZERO_PATH_APPLICATION . '/' . $module . '/library/' . $class . '.php';
         if ( file_exists($path) )
         {
             require_once $path;
@@ -198,7 +198,7 @@ class Zero_App
 
     public static function ResponseImg($path)
     {
-        header("Content-Type: " . Zero_Lib_FileSystem::File_Type($path));
+        header("Content-Type: " . Zero_FileSystem::File_Type($path));
         header("Content-Length: " . filesize($path));
         if ( file_exists($path) )
             echo file_get_contents($path);
@@ -207,7 +207,7 @@ class Zero_App
 
     public static function ResponseFile($path)
     {
-        header("Content-Type: " . Zero_Lib_FileSystem::File_Type($path));
+        header("Content-Type: " . Zero_FileSystem::File_Type($path));
         header("Content-Length: " . filesize($path));
         header('Content-Disposition: attachment; filename = "' . basename($path) . '"');
         if ( file_exists($path) )
@@ -231,11 +231,11 @@ class Zero_App
     public static function Init($mode = 'web', $file_log = 'application')
     {
         //  Include Components
-        require_once ZERO_PATH_ZERO . '/component/Config.php';
-        require_once ZERO_PATH_ZERO . '/component/Session.php';
-        require_once ZERO_PATH_ZERO . '/component/Cache.php';
-        require_once ZERO_PATH_ZERO . '/component/Logs.php';
-        require_once ZERO_PATH_ZERO . '/component/Route.php';
+        require_once ZERO_PATH_ZERO . '/class/Config.php';
+        require_once ZERO_PATH_ZERO . '/class/Session.php';
+        require_once ZERO_PATH_ZERO . '/class/Cache.php';
+        require_once ZERO_PATH_ZERO . '/class/Logs.php';
+        require_once ZERO_PATH_ZERO . '/class/Route.php';
 
         spl_autoload_register(['Zero_App', 'Autoload']);
 
@@ -256,7 +256,7 @@ class Zero_App
         //  Session Initialization (Zero_Session)
         Zero_Session::Init(self::$Config->Db['Name']);
 
-        require_once ZERO_PATH_ZERO . '/component/View.php';
+        require_once ZERO_PATH_ZERO . '/class/View.php';
 
         // Initialization of the profiled application processors
         //        error_reporting(2147483647);

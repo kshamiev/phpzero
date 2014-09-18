@@ -478,7 +478,7 @@ class Zero_Section extends Zero_Model
     {
         if ( !$value )
             return 'Error_Prop';
-        $this->UrlThis = Zero_Lib_String::Transliteration_Url($value);
+        $this->UrlThis = Zero_String::Transliteration_Url($value);
         if ( 0 < $this->Zero_Section_ID )
         {
             $Object = Zero_Model::Make($this->Source, $this->Zero_Section_ID);

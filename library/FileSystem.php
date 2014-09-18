@@ -10,7 +10,7 @@
  * @copyright <PHP_ZERO_COPYRIGHT>
  * @license http://www.phpzero.com/license/
  */
-final class Zero_Lib_FileSystem
+final class Zero_FileSystem
 {
     /**
      * Spisok papok raspolozheniia binarny`kh danny`kh ob``ekta (ot identifikatora, kratny`i` 100)
@@ -419,7 +419,7 @@ final class Zero_Lib_FileSystem
         if ( !is_dir($path) )
             mkdir($path, 0777, true);
         //  korrektciia imeni fai`la i polny`i` put` do fai`la
-        $path .= '/' . Zero_Lib_String::Transliteration_FileName(basename($path_file));
+        $path .= '/' . Zero_String::Transliteration_FileName(basename($path_file));
         //  resize
         $row = getimagesize($path_file);
         if ( 0 < count($resize) && 'image' == substr($row['mime'], 0, 5) )

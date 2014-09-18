@@ -24,8 +24,8 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 ini_set('magic_quotes_gpc', 0);
 
-require dirname(__DIR__) . '/component/App.php';
-require dirname(__DIR__) . '/component/Lib/FileSystem.php';
+require dirname(__DIR__) . '/class/App.php';
+require dirname(__DIR__) . '/Library/FileSystem.php';
 $error_init_list = [];
 $message_install_list = [];
 
@@ -96,7 +96,7 @@ while ( isset($_REQUEST['act']) && 'Install_System' == $_REQUEST['act'] && 0 == 
 
     //  Creating a filesystem structure. Copy the system and base  module
 
-    Zero_Lib_FileSystem::Folder_Copy(__DIR__ . "/www", ZERO_PATH_SITE);
+    Zero_FileSystem::Folder_Copy(__DIR__ . "/www", ZERO_PATH_SITE);
 
     //  Baseline configuration
     $config = file_get_contents(ZERO_PATH_SITE . '/config.php');

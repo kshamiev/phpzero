@@ -1,6 +1,6 @@
 <?php
 
-include_once(dirname(dirname(__DIR__)) . '/library/PHPMailer/class.phpmailer.php');
+include_once(dirname(__DIR__) . '/library/PHPMailer/class.phpmailer.php');
 /**
  * Lib. PHP email transport class
  *
@@ -11,7 +11,7 @@ include_once(dirname(dirname(__DIR__)) . '/library/PHPMailer/class.phpmailer.php
  * @copyright <PHP_ZERO_COPYRIGHT>
  * @license http://www.phpzero.com/license/
  */
-class Zero_Lib_Mail
+class Zero_Mail
 {
     /**
      * Отправка сообщения
