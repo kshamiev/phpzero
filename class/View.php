@@ -204,7 +204,7 @@ class Zero_View
         }
         if ( '' == $html )
         {
-            //            Zero_Logs::Set_Message_Error("Not found layout or template [{" . implode(', ', $this->_Template) . "}]");
+            Zero_Logs::Set_Message_Error('NOT FOUND view [' . implode(', ', $this->_Template) . ']');
             return '';
         }
         if ( Zero_App::$Config->Site_TemplateParsing )
@@ -238,7 +238,6 @@ class Zero_View
         $path = ZERO_PATH_APPLICATION . '/' . $module . '/view/' . implode('/', $arr) . self::EXT_VIEW;
         if ( file_exists($path) )
             return $path;
-        Zero_Logs::Set_Message_Notice('NOT FOUND view [CONTROLLER] ' . $path);
         return '';
     }
 
@@ -288,10 +287,13 @@ class Zero_View
      */
     private function _Parsing_Include($matches)
     {
-        if ( '' != $template = $this->Search_Template($matches[1], true) )
+        if ( '' != $template = $this->Search_Template($matches[1]) )
             $matches = file_get_contents($template);
         else
+        {
             $matches = '';
+            Zero_Logs::Set_Message_Error('NOT FOUND view [Include] [' . $matches[1] . ']');
+        }
         return preg_replace_callback(self::PATTERN_INCLUDE, [$this, '_Parsing_Include'], $matches);
     }
 

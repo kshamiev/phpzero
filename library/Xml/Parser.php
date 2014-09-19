@@ -144,7 +144,7 @@ class Zero_Xml_Parser
         }
         else
         {
-            $this->_Xml[($this->_Level - 1)]->Set_Node($this->_Xml[$this->_Level]);
+            $this->_Xml[($this->_Level - 1)]->Node_Add($this->_Xml[$this->_Level]);
         }
         unset($this->_Xml[$this->_Level]);
         $this->_Level--;
@@ -158,7 +158,7 @@ class Zero_Xml_Parser
      *
      * @param string $file - путь до xml файла
      * @param string $class_handler обработчик нод (по умолчанию класс Zero_Xml_Handler, для примера)
-     * @return void
+     * @return Zero_Xml_Object
      */
     public function Parser($file, $class_handler = 'Zero_Xml_Handler')
     {
@@ -187,6 +187,7 @@ class Zero_Xml_Parser
         }
         xml_parser_free($fp_xml);
         $this->_Handler = null;
+        return $this->Get_Xml();
     }
 
     /**

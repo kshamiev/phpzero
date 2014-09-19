@@ -173,7 +173,7 @@ class Zero_Content extends Zero_Model
             Zero_Logs::Set_Message_Error('Layout not Set');
             return [];
         }
-        $template = Zero_View::Search_Template($Model->Layout, true);
+        $template = Zero_View::Search_Template($Model->Layout);
         if ( !$template )
         {
             Zero_Logs::Set_Message_Error("Layout '{$Model->Layout}' Not Found");
@@ -199,25 +199,4 @@ class Zero_Content extends Zero_Model
         }
         return $result;
     }
-    /**
-     * Sample. Filter for property.
-     *
-     * @return array
-     */
-    public function FL_Layout_Old()
-    {
-        $arr = [];
-        foreach (glob(ZERO_PATH_APPLICATION . "/*", GLOB_ONLYDIR) as $dir)
-        {
-            $mod = ucfirst(basename($dir));
-            $row = glob($dir . "/view/*.html");
-            foreach ($row as $r)
-            {
-                $index = $mod . '_' . substr(basename($r), 0, -5);
-                $arr[$index] = $index;
-            }
-        }
-        return $arr;
-    }
-
 }

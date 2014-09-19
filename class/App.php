@@ -418,7 +418,6 @@ class Zero_App
         if ( $code != 403 && $code != 404 )
         {
             $range_file_error = 10;
-
             $error = "#{ERROR_EXCEPTION} " . $exception->getMessage() . ' ' . $exception->getFile() . '(' . $exception->getLine() . ')';
             Zero_Logs::Set_Message_Error($error);
             if ( Zero_App::$Config->Log_Output_Display == true )

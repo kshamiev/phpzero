@@ -56,12 +56,10 @@ class Zero_Xml_Object
      * Конструткор, создание ноды.
      *
      * @param string $name - имя ноды
-     * @param string $data - значение ноды или содержимое
      */
-    public function __construct($name, $data = '')
+    public function __construct($name)
     {
         $this->_Name = $name;
-        $this->_Data = $data;
     }
 
     public function Get_Name()
@@ -136,11 +134,10 @@ class Zero_Xml_Object
         return $this->_Node;
     }
 
-    public function Set_Node(Zero_Xml_Object $Zero_Xml_Object)
+    public function Node_Add(Zero_Xml_Object $Zero_Xml_Object)
     {
         $this->_Node[$Zero_Xml_Object->_Name][] = $Zero_Xml_Object;
     }
-
 
     /**
      * Поиск нод по имени в передаваемом Xml объекте.
@@ -149,9 +146,9 @@ class Zero_Xml_Object
      * @param string $name - имя ноды которую ищем
      * @return Zero_Xml_Object - найденая нода/список нод либо null
      */
-    public static function Search_Node(Zero_Xml_Object $Zero_Xml_Object, $name)
+    public static function Search_Nodes(Zero_Xml_Object $Zero_Xml_Object, $name)
     {
-        if ( false != $Xml = $Zero_Xml_Object->$name )
+        if ( !is_null($Xml = $Zero_Xml_Object->Get_Nodes($name)) )
         {
             return $Xml;
         }
@@ -161,7 +158,7 @@ class Zero_Xml_Object
             {
                 foreach ($xml_list as $xml)
                 {
-                    if ( false != $Xml = self::Search_Node($xml, $name) )
+                    if ( false != $Xml = self::Search_Nodes($xml, $name) )
                     {
                         return $Xml;
                     }
@@ -175,13 +172,12 @@ class Zero_Xml_Object
      * Создание дочерней ноды.
      *
      * @param string $name - имя ноды
-     * @param string $data - значение ноды или содержимое
      * @return Zero_Xml_Object - созданная дочерняя нода.
      */
-    public function Add_Node($name, $data = '')
+    public function Node_Create($name)
     {
-        $Xml_Node = new Zero_Xml_Object($name, $data);
-        $this->Set_Node($Xml_Node);
+        $Xml_Node = new Zero_Xml_Object($name);
+        $this->Node_Add($Xml_Node);
         return $Xml_Node;
     }
 }
