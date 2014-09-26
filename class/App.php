@@ -321,6 +321,7 @@ class Zero_App
         //  Execute controller
         if ( !isset($_REQUEST['act']) )
             $_REQUEST['act'] = 'Default';
+        /*
         if ( $_REQUEST['act'] == 'Logout' )
         {
             $Controller = Zero_Controller::Factory("Zero_Users_Login");
@@ -332,6 +333,7 @@ class Zero_App
             $Controller->Action_Login();
             Zero_App::Set_Variable('action_message', $Controller->Get_Message());
         }
+        */
 
         //  Execute controller
         $view = "";

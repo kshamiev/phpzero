@@ -190,7 +190,7 @@ class Zero_Logs
         if ( Zero_App::$Config->Log_Profile_Application )
         {
             $output = self::Get_Usage_MemoryAndTime();
-            $output = date('[d.m.Y H:i:s]') . "\n" . join("\n", $output) . "\n\n";
+            $output = date('[d.m.Y H:i:s]') . "\n" . join("\n", $output) . "\n";
             self::Save_File($output, self::$_FileLog);
         }
         //
@@ -220,7 +220,7 @@ class Zero_Logs
             {
                 array_unshift($errors, str_replace(["\r", "\t"], " ", $output));
                 $errors = preg_replace('![ ]{2,}!', ' ', join("\n", $errors));
-                $errors = date('[d.m.Y H:i:s]') . "\n" . $errors . "\n";
+                $errors = date('[d.m.Y H:i:s]') . "\n" . $errors;
                 self::Save_File($errors, self::$_FileLog . '_errors');
             }
             // логирование предупреждений в файл
@@ -228,7 +228,7 @@ class Zero_Logs
             {
                 array_unshift($warnings, str_replace(["\r", "\t"], " ", $output));
                 $warnings = preg_replace('![ ]{2,}!', ' ', join("\n", $warnings));
-                $warnings = date('[d.m.Y H:i:s]') . "\n" . $warnings . "\n";
+                $warnings = date('[d.m.Y H:i:s]') . "\n" . $warnings;
                 self::Save_File($warnings, self::$_FileLog . '_warnings');
             }
             // логирование предупреждений в файл
@@ -236,7 +236,7 @@ class Zero_Logs
             {
                 array_unshift($notice, str_replace(["\r", "\t"], " ", $output));
                 $notice = preg_replace('![ ]{2,}!', ' ', join("\n", $notice));
-                $notice = date('[d.m.Y H:i:s]') . "\n" . $notice . "\n";
+                $notice = date('[d.m.Y H:i:s]') . "\n" . $notice;
                 self::Save_File($notice, self::$_FileLog . '_notice');
             }
             // логирование операций пользователиа в файл
@@ -244,7 +244,7 @@ class Zero_Logs
             {
                 $act = date('[d.m.Y H:i:s]') . "\t";
                 $act .= Zero_App::$Users->Login . "\t" . Zero_App::$Section->Controller . " -> " . join($action, ", ") . "\t";
-                $act .= ZERO_HTTP . $_SERVER['REQUEST_URI'] . "\n";
+                $act .= ZERO_HTTP . $_SERVER['REQUEST_URI'];
                 self::Save_File($act, self::$_FileLog . '_action');
             }
         }
