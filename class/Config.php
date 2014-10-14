@@ -301,7 +301,7 @@ class Zero_Config
             $this->Ip = $_SERVER["REMOTE_ADDR"];
 
         // Setting php
-        error_reporting(E_ALL | E_NOTICE | E_STRICT);
+        error_reporting(-1);
         date_default_timezone_set('Europe/Moscow');
         setlocale(LC_CTYPE, 'ru_RU.UTF-8');
         setlocale(LC_COLLATE, 'ru_RU.UTF-8');

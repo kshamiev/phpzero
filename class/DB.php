@@ -294,13 +294,6 @@ class Zero_DB
     public static function Escape_D($datetime)
     {
         return self::Escape_T($datetime);
-        //        $datetime = trim(strval($datetime));
-        //        if ( $datetime == "NOW" || $datetime == "NOW()" )
-        //            return "NOW()";
-        //        else if ( $datetime )
-        //            return "'" . self::$DB->real_escape_string($datetime) . "'";
-        //        else
-        //            return 'NULL';
     }
 
     /**
@@ -374,19 +367,6 @@ class Zero_DB
             throw new Exception(self::$DB->error, 500);
         }
         return $res;
-    }
-
-    /**
-     * Vy`borka odnogo polia zapisi odnoi` zapisi (svoi`stva ob``ekta).
-     *
-     * @param int $id identifikator zapisi
-     * @param string $source istochnik zapisi (tablitca)
-     * @param string $filed pole zapisi
-     * @return mixed
-     */
-    public static function Sel_Filed($id, $source, $filed)
-    {
-        return self::Sel_Agg("SELECT `{$filed}` FROM {$source} WHERE ID = {$id}");
     }
 
     /**

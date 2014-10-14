@@ -575,7 +575,8 @@ abstract class Zero_Model
             return null;
         //  svoi`stvo pustoe, ne zagruzhennoe iz BD
         Zero_Logs::Set_Message_Notice('#{LOAD PROP} load prop "' . $prop . '" for model "' . get_class($this) . '"');
-        $this->_Props[$prop] = Zero_DB::Sel_Filed($this->ID, $this->Source, $prop);
+        $arr = Zero_DB::Sel_Row("SELECT `{$prop}` FROM {$this->Source} WHERE ID = {$this->ID}");
+        $this->_Props[$prop] = isset($arr[$prop]) ? $arr[$prop]: null;
         return $this->_Props[$prop];
     }
 
