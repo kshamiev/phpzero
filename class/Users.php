@@ -256,8 +256,8 @@ class Zero_Users extends Zero_Model
             {
                 //                $prop = 'Zero_Users_' . $this->Zero_Groups_ID . '_ID';
                 $prop = 'Zero_Users_ID';
-                $this->DB->Sql_Where('Zero_Users_ID', '=', $this->ID);
-                $this->_Condition[$prop] = $this->DB->Select_List_Index('ID, Name');
+                $this->AR->Sql_Where('Zero_Users_ID', '=', $this->ID);
+                $this->_Condition[$prop] = $this->AR->Select_List_Index('ID, Name');
                 $this->_Condition[$prop][$this->ID] = $this->Name;
             }
             //  uslovie gruppy`
@@ -290,7 +290,7 @@ class Zero_Users extends Zero_Model
     public static function DB_Offline($seconds = 600)
     {
         $sql = "UPDATE Zero_Users SET IsOnline = 'no' WHERE DateOnline < NOW() - INTERVAL {$seconds} SECOND";
-        Zero_DB::Set($sql);
+        Zero_DB::Update($sql);
     }
 
     /**
@@ -303,9 +303,9 @@ class Zero_Users extends Zero_Model
     public function VL_Login($value, $scenario)
     {
         if ( 0 < $this->ID )
-            $this->DB->Sql_Where('ID', '!=', $this->ID);
-        $this->DB->Sql_Where('Login', '=', $value);
-        $cnt = $this->DB->Select_Count();
+            $this->AR->Sql_Where('ID', '!=', $this->ID);
+        $this->AR->Sql_Where('Login', '=', $value);
+        $cnt = $this->AR->Select_Count();
         if ( 0 < $cnt )
             return 'Error_Exists';
         $this->Login = $value;
@@ -325,17 +325,17 @@ class Zero_Users extends Zero_Model
             return 'Error_ValidEmail';
         if ( 'reminder' == $scenario )
         {
-            $this->DB->Sql_Where('Email', '=', $value);
-            $cnt = $this->DB->Select_Count();
+            $this->AR->Sql_Where('Email', '=', $value);
+            $cnt = $this->AR->Select_Count();
             if ( !$cnt )
                 return 'Error_NotRegistration';
         }
         else
         {
-            $this->DB->Sql_Where('Email', '=', $value);
+            $this->AR->Sql_Where('Email', '=', $value);
             if ( 0 < $this->ID )
-                $this->DB->Sql_Where('ID', '!=', $this->ID);
-            $cnt = $this->DB->Select_Count();
+                $this->AR->Sql_Where('ID', '!=', $this->ID);
+            $cnt = $this->AR->Select_Count();
             if ( 0 < $cnt )
                 return 'Error_Exists';
         }

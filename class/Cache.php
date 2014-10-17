@@ -22,47 +22,38 @@ class Zero_Cache
      * Cache lifetime 1 minute
      */
     const TIME_M1 = 60;
-
     /**
      * Cache lifetime 3 minute
      */
     const TIME_M3 = 180;
-
     /**
      * Cache lifetime 6 minute
      */
     const TIME_M6 = 360;
-
     /**
      * Cache lifetime 12 minute
      */
     const TIME_M12 = 720;
-
     /**
      * Cache lifetime 24 minute
      */
     const TIME_M24 = 1440;
-
     /**
      * Cache lifetime 1 hour
      */
     const TIME_H1 = 3600;
-
     /**
      * Cache lifetime 3 hour
      */
     const TIME_H3 = 10800;
-
     /**
      * Cache lifetime 6 hours
      */
     const TIME_H6 = 21600;
-
     /**
      * Cache lifetime 12 hours
      */
     const TIME_H12 = 43200;
-
     /**
      * Cache lifetime 24 hour
      */
@@ -101,22 +92,21 @@ class Zero_Cache
 
     /**
      * Initialize cache system (Memcache or Files).
+     *
+     * @param $config array конфигурация серверов
      */
-    public static function Init($arrConfig)
+    public static function InitMemcache($config)
     {
-        if ( class_exists('Memcache') && 0 < count($arrConfig) )
+        $counter = 0;
+        self::$_Memcache = new Memcache;
+        foreach ($config as $server)
         {
-            self::$_Memcache = new Memcache;
-            $counter = 0;
-            foreach (Zero_App::$Config->Memcache['Cache'] as $server)
-            {
-                $arr = explode(':', $server);
-                if ( self::$_Memcache->addServer($arr[0], $arr[1], true, 1, 1000, 15, true) )
-                    $counter++;
-            }
-            if ( 0 < $counter )
-                return;
+            $arr = explode(':', $server);
+            if ( self::$_Memcache->addServer($arr[0], $arr[1], true, 1, 1000, 15, true) )
+                $counter++;
         }
+        if ( 0 < $counter )
+            return;
         self::$_Memcache = null;
     }
 

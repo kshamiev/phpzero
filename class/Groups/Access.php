@@ -89,8 +89,8 @@ class Zero_Groups_Access extends Zero_Controller
     protected function Chunk_View()
     {
         $Section = Zero_Model::Make('Zero_Section');
-        $Section->DB->Sql_Where_IsNotNull('Controller');
-        $section_list = $Section->DB->Select_Tree('ID, Name, Controller, Url, IsAuthorized');
+        $Section->AR->Sql_Where_IsNotNull('Controller');
+        $section_list = $Section->AR->Select_Tree('ID, Name, Controller, Url, IsAuthorized');
         foreach ($section_list as $id => $row)
         {
             if ( 'no' == $row['IsAuthorized'] )
@@ -123,10 +123,10 @@ class Zero_Groups_Access extends Zero_Controller
             $section_list[$id]['action_list_all_count'] = count($method_list) + 1;
 
             $Action = Zero_Model::Make('Zero_Action');
-            $Action->DB->Sql_Where('Zero_Section_ID', '=', $id);
-            $Action->DB->Sql_Where('Zero_Groups_ID', '=', $this->Params['obj_parent_id']);
-            $Action->DB->Sql_Order('Action', 'ASC');
-            $action_list = $Action->DB->Select_Array_Index('Action');
+            $Action->AR->Sql_Where('Zero_Section_ID', '=', $id);
+            $Action->AR->Sql_Where('Zero_Groups_ID', '=', $this->Params['obj_parent_id']);
+            $Action->AR->Sql_Order('Action', 'ASC');
+            $action_list = $Action->AR->Select_Array_Index('Action');
             $section_list[$id]['action_list'] = $action_list;
         }
 
@@ -135,9 +135,9 @@ class Zero_Groups_Access extends Zero_Controller
         $this->View->Assign('Params', $this->Params);
 
         $Groups = Zero_Model::Make('Zero_Groups');
-        $Groups->DB->Sql_Where('ID', '!=', $this->Params['obj_parent_id']);
-        $Groups->DB->Sql_Order('Name', 'ASC');
-        $groups_list = $Groups->DB->Select_List_Index('ID, Name');
+        $Groups->AR->Sql_Where('ID', '!=', $this->Params['obj_parent_id']);
+        $Groups->AR->Sql_Order('Name', 'ASC');
+        $groups_list = $Groups->AR->Select_List_Index('ID, Name');
         $this->View->Assign('groups_list', $groups_list);
         $this->View->Assign('pid', $this->Params['obj_parent_id']);
     }
@@ -151,7 +151,7 @@ class Zero_Groups_Access extends Zero_Controller
     {
         foreach ($_REQUEST['RoleAccessSection'] as $section_id => $access)
         {
-            Zero_DB::Set("DELETE FROM Zero_Action WHERE Zero_Groups_ID = {$this->Params['obj_parent_id']} AND Zero_Section_ID = {$section_id}");
+            Zero_DB::Update("DELETE FROM Zero_Action WHERE Zero_Groups_ID = {$this->Params['obj_parent_id']} AND Zero_Section_ID = {$section_id}");
             //  Access to the section for the group
             if ( 'access' == $access )
             {
@@ -159,7 +159,7 @@ class Zero_Groups_Access extends Zero_Controller
                 $Action->Zero_Section_ID = $section_id;
                 $Action->Zero_Groups_ID = $this->Params['obj_parent_id'];
                 $Action->Action = 'Default';
-                $Action->DB->Insert();
+                $Action->AR->Insert();
             }
             else
                 continue;
@@ -174,7 +174,7 @@ class Zero_Groups_Access extends Zero_Controller
                         $Action->Zero_Section_ID = $section_id;
                         $Action->Zero_Groups_ID = $this->Params['obj_parent_id'];
                         $Action->Action = $action;
-                        $Action->DB->Insert();
+                        $Action->AR->Insert();
                     }
                 }
             }
@@ -192,7 +192,7 @@ class Zero_Groups_Access extends Zero_Controller
      */
     protected function Chunk_Copy()
     {
-        Zero_DB::Set("DELETE FROM Zero_Action WHERE Zero_Groups_ID = {$_REQUEST['obj_id']}");
+        Zero_DB::Update("DELETE FROM Zero_Action WHERE Zero_Groups_ID = {$_REQUEST['obj_id']}");
         $sql = "
         INSERT INTO `Zero_Action`
           (
@@ -207,7 +207,7 @@ class Zero_Groups_Access extends Zero_Controller
         WHERE
           `Zero_Groups_ID` = {$this->Params['obj_parent_id']}
         ";
-        Zero_DB::Set($sql);
+        Zero_DB::Update($sql);
         return $this->Set_Message('AccessCopy', 0);
     }
 }

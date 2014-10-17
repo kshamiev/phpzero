@@ -20,11 +20,11 @@
  * @copyright <PHP_ZERO_COPYRIGHT>
  * @license http://www.phpzero.com/license/
  *
- * @property integer $ID Identifikator ob``ekta
- * @property string $Source Istochnik ili khraniashchaia danny`kh ob``ektov
- * @property Zero_DB $DB Ob``ekt dlia raboty` s BD
- * @property Zero_Validator $VL Ob``ekt dlia raboty` po validatcii (proverki) vhodny`kh danny`kh
- * @property Zero_Cache $Cache Ob``ekt dlia dlia raboty` s keshem
+ * @property integer $ID Идентификатор объекта
+ * @property string $Source Источник или храниащая данных объектов
+ * @property Zero_AR $AR Объект для работы с BD в контексте модели
+ * @property Zero_Validator $VL Объект длиа работы по валидации (проверки) входных данных
+ * @property Zero_Cache $Cache Объект для работы с кешем
  */
 abstract class Zero_Model
 {
@@ -62,11 +62,11 @@ abstract class Zero_Model
     private $_Props_Change = [];
 
     /**
-     * Ob``ekt dlia raboty` s BD
+     * Объект длиа работы с БД в контексте модели
      *
-     * @var Zero_DB
+     * @var Zero_AR
      */
-    private $_DB = null;
+    private $_AR = null;
 
     /**
      * Ob``ekt dlia raboty` po validatcii (proverki) vhodny`kh danny`kh
@@ -111,7 +111,7 @@ abstract class Zero_Model
         if ( '' == $this->Source )
             $this->Source = get_class($this);
         if ( 0 < $this->ID && $flag_load )
-            $this->DB->Select('*');
+            $this->AR->Select('*');
     }
 
     /**
@@ -510,15 +510,15 @@ abstract class Zero_Model
     }
 
     /**
-     * Poluchenie ssy`lki na ob`ekt Zero_DB
+     * Получение ссылки на обьект Zero_DB
      *
-     * @return Zero_DB
+     * @return Zero_AR
      */
-    public function Get_DB()
+    public function Get_AR()
     {
-        if ( !is_object($this->_DB) )
-            $this->_DB = new Zero_DB($this);
-        return $this->_DB;
+        if ( !is_object($this->_AR) )
+            $this->_AR = new Zero_AR($this);
+        return $this->_AR;
     }
 
     /**
@@ -550,7 +550,7 @@ abstract class Zero_Model
      */
     public function DB_From($params)
     {
-        $this->DB->Sql_From("FROM {$this->Source} as z");
+        $this->AR->Sql_From("FROM {$this->Source} as z");
     }
 
     /**
@@ -575,7 +575,7 @@ abstract class Zero_Model
             return null;
         //  svoi`stvo pustoe, ne zagruzhennoe iz BD
         Zero_Logs::Set_Message_Notice('#{LOAD PROP} load prop "' . $prop . '" for model "' . get_class($this) . '"');
-        $arr = Zero_DB::Sel_Row("SELECT `{$prop}` FROM {$this->Source} WHERE ID = {$this->ID}");
+        $arr = Zero_DB::Select_Row("SELECT `{$prop}` FROM {$this->Source} WHERE ID = {$this->ID}");
         $this->_Props[$prop] = isset($arr[$prop]) ? $arr[$prop]: null;
         return $this->_Props[$prop];
     }

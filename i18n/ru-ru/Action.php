@@ -29,11 +29,3 @@ return [
 
     ],
 ];
-return [
-	'model' => 'Действия контроллеров разделов',
-	'model prop Action' => 'Действие',
-	'model prop ID' => 'Идентификатор',
-	'model prop Zero_Groups_ID' => 'Группа',
-	'model prop Zero_Section_ID' => 'Раздел',
-    'translation Key' => 'Translation Value',
-];

@@ -157,8 +157,8 @@ class Zero_Filter
             else
             {
                 $Model = Zero_Model::Make(zero_relation($prop));
-                $Model->DB->Sql_Order('Name', 'ASC');
-                $this->Filter[$prop]['List'] = $Model->DB->Select_List_Index('ID, Name');
+                $Model->AR->Sql_Order('Name', 'ASC');
+                $this->Filter[$prop]['List'] = $Model->AR->Select_List_Index('ID, Name');
             }
         }
         return true;
@@ -206,7 +206,7 @@ class Zero_Filter
             if ( method_exists($this->Model, $method = 'FL_' . $prop) )
                 $this->Filter[$prop]['List'] = $this->Model->$method();
             else
-                $this->Filter[$prop]['List'] = Zero_DB::Sel_EnumSet($this->Model, $prop);
+                $this->Filter[$prop]['List'] = Zero_I18n::ModelArr($this->Model->Get_Source(), $prop . ' options');
         }
         return true;
     }
@@ -237,7 +237,7 @@ class Zero_Filter
             if ( method_exists($this->Model, $method = 'FL_' . $prop) )
                 $this->Filter[$prop]['List'] = $this->Model->$method();
             else
-                $this->Filter[$prop]['List'] = Zero_DB::Sel_EnumSet($this->Model, $prop);
+                $this->Filter[$prop]['List'] = Zero_I18n::ModelArr($this->Model->Get_Source(), $prop . ' options');
         }
         return true;
     }
@@ -268,7 +268,7 @@ class Zero_Filter
             if ( method_exists($this->Model, $method = 'FL_' . $prop) )
                 $this->Filter[$prop]['List'] = $this->Model->$method();
             else
-                $this->Filter[$prop]['List'] = Zero_DB::Sel_EnumSet($this->Model, $prop);
+                $this->Filter[$prop]['List'] = Zero_I18n::ModelArr($this->Model->Get_Source(), $prop . ' options');
         }
         return true;
     }

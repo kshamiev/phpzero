@@ -98,8 +98,8 @@ class Zero_Users_Login extends Zero_Controller
             return true;
 
         $Users = Zero_Model::Make('Www_Users');
-        $Users->DB->Sql_Where('Login', '=', $_REQUEST['Login']);
-        $Users->DB->Select('*');
+        $Users->AR->Sql_Where('Login', '=', $_REQUEST['Login']);
+        $Users->AR->Select('*');
 
         //  Check
         if ( 0 == $Users->ID )
@@ -135,12 +135,12 @@ class Zero_Users_Login extends Zero_Controller
             return $this->Set_Message('Error_Validate', 1, false);
         }
 
-        $this->Model->DB->Sql_Where('Email', '=', $_REQUEST['Users']['Email']);
-        $this->Model->DB->Select('ID, Name, Login');
+        $this->Model->AR->Sql_Where('Email', '=', $_REQUEST['Users']['Email']);
+        $this->Model->AR->Select('ID, Name, Login');
 
         $password = substr(md5(uniqid(mt_rand())), 0, 10);
         $this->Model->Password = md5($password);
-        $this->Model->DB->Update();
+        $this->Model->AR->Update();
 
         $subject = "Reminder access details " . HTTP;
         $View = new Zero_View('Www_Users_ReminderMail');

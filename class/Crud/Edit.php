@@ -267,12 +267,12 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         // Save
         if ( 0 < $this->Model->ID )
         {
-            if ( false == $this->Model->DB->Update() )
+            if ( false == $this->Model->AR->Update() )
                 return $this->Set_Message('Error_Save', 1, false);
         }
         else
         {
-            if ( false == $this->Model->DB->Insert() )
+            if ( false == $this->Model->AR->Insert() )
                 return $this->Set_Message('Error_Save', 1, false);
 
             //  When you add an object having a cross (many to many) relationship with the parent object
@@ -281,7 +281,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
                 //  target parent object
                 $Object = Zero_Model::Make($this->Params['obj_parent_table'], $this->Params['obj_parent_id']);
                 //  creating a connection
-                if ( !$this->Model->DB->Insert_Cross($Object) )
+                if ( !$this->Model->AR->Insert_Cross($Object) )
                     return $this->Set_Message('Error_Save', 1, false);
             }
         }

@@ -242,11 +242,11 @@ class Zero_Section extends Zero_Model
         $index = $this->Source . '/' . $url . '/' . LANG . '/url';
         if ( false === $row = Zero_Cache::Get_Data($index) )
         {
-            $this->DB->Sql_Where('Url', '=', $url);
-            $row = $this->DB->Select('*');
+            $this->AR->Sql_Where('Url', '=', $url);
+            $row = $this->AR->Select('*');
             //            $this->Set_Props($row);
             // Мультиязычный вариант
-            $row = array_replace($row, $this->DB->Select_Language('*'));
+            $row = array_replace($row, $this->AR->Select_Language('*'));
             //            $this->Set_Props($row);
             Zero_Cache::Set_Link('Zero_Section', $this->ID);
             Zero_Cache::Set_Data($index, $row);
@@ -273,9 +273,9 @@ class Zero_Section extends Zero_Model
         if ( 'yes' == $this->IsAuthorized && 1 < Zero_App::$Users->Zero_Groups_ID )
         {
             $Model = Zero_Model::Make('Zero_Action');
-            $Model->DB->Sql_Where('Zero_Section_ID', '=', $this->ID);
-            $Model->DB->Sql_Where('Zero_Groups_ID', '=', Zero_App::$Users->Zero_Groups_ID);
-            $this->_Action_List = $Model->DB->Select_Array_Index('Action');
+            $Model->AR->Sql_Where('Zero_Section_ID', '=', $this->ID);
+            $Model->AR->Sql_Where('Zero_Groups_ID', '=', Zero_App::$Users->Zero_Groups_ID);
+            $this->_Action_List = $Model->AR->Select_Array_Index('Action');
             foreach ($this->_Action_List as $action => $row)
             {
                 //                $index = "controller action {$action}";
@@ -401,7 +401,7 @@ class Zero_Section extends Zero_Model
               s.`Sort` ASC
             ";
         }
-        return Zero_DB::Sel_Array_Index($sql);
+        return Zero_DB::Select_Array_Index($sql);
     }
 
     /**
@@ -413,7 +413,7 @@ class Zero_Section extends Zero_Model
     public static function DB_Update_Url($section_id)
     {
         $sql = "SELECT Url FROM Zero_Section WHERE ID = {$section_id}";
-        $url = Zero_DB::Sel_Row($sql);
+        $url = Zero_DB::Select_Row($sql);
         if ( !isset($url['Url']) )
             return false;
         // Update absolute reference in child partitions
@@ -424,10 +424,10 @@ class Zero_Section extends Zero_Model
         WHERE
             Zero_Section_ID = {$section_id}
         ";
-        Zero_DB::Set($sql);
+        Zero_DB::Update($sql);
         //  recurses
         $sql = "SELECT ID FROM Zero_Section WHERE Zero_Section_ID = " . $section_id;
-        foreach (Zero_DB::Sel_List($sql) as $section_id)
+        foreach (Zero_DB::Select_List($sql) as $section_id)
         {
             self::DB_Update_Url($section_id);
         }
@@ -436,7 +436,7 @@ class Zero_Section extends Zero_Model
 
     public static function DB_LanguageSet($section_id)
     {
-        $row = Zero_DB::Sel_Row("SELECT ID FROM Zero_SectionLanguage WHERE Zero_Section_ID = {$section_id} AND Zero_Language_ID = " . LANG_ID);
+        $row = Zero_DB::Select_Row("SELECT ID FROM Zero_SectionLanguage WHERE Zero_Section_ID = {$section_id} AND Zero_Language_ID = " . LANG_ID);
         if ( 0 < count($row) )
         {
             $sql = "
@@ -464,7 +464,7 @@ class Zero_Section extends Zero_Model
               WHERE `ID` = {$section_id}
             ";
         }
-        Zero_DB::Set($sql);
+        Zero_DB::Update($sql);
     }
 
     /**

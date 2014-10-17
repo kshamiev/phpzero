@@ -256,33 +256,33 @@ abstract class Zero_Crud_Grid extends Zero_Controller
         }
 
         // УСЛОВИЯ ЗАПРОСА ДАННЫХ ДЛЯ ГРИДА
-        $this->Model->DB->Sql_Where_Filter($Filter);
+        $this->Model->AR->Sql_Where_Filter($Filter);
         //  Condition of cross connection
         $this->Model->DB_From($this->Params);
         //  The coupling condition
         if ( isset($this->Params['obj_parent_prop']) )
         {
             if ( 0 < $this->Params['obj_parent_id'] )
-                $this->Model->DB->Sql_Where('z.' . $this->Params['obj_parent_prop'], '=', $this->Params['obj_parent_id']);
+                $this->Model->AR->Sql_Where('z.' . $this->Params['obj_parent_prop'], '=', $this->Params['obj_parent_id']);
             else
-                $this->Model->DB->Sql_Where_IsNull('z.' . $this->Params['obj_parent_prop']);
+                $this->Model->AR->Sql_Where_IsNull('z.' . $this->Params['obj_parent_prop']);
         }
         //  The user conditions
         foreach (array_keys($this->Model->Get_Config_Prop()) as $prop)
         {
             if ( isset($users_condition[$prop]) )
-                $this->Model->DB->Sql_Where_In('z.' . $prop, array_keys($users_condition[$prop]));
+                $this->Model->AR->Sql_Where_In('z.' . $prop, array_keys($users_condition[$prop]));
         }
         unset($users_condition);
 
         //  ПОЛУЧЕНИЕ ДАННЫХ
-        $data_grid = $this->Model->DB->Select_Array($props, false);
+        $data_grid = $this->Model->AR->Select_Array($props, false);
         //  Count
-        $pager_count = $this->Model->DB->Select_Count();
+        $pager_count = $this->Model->AR->Select_Count();
         //  Unrelated
         //  TODO sample catalog move (for linked Add)
         $data_link = [];
-        $this->Model->DB->Sql_Reset();
+        $this->Model->AR->Sql_Reset();
 
         //  Template
         $this->View->Assign('Section', Zero_App::$Section);
@@ -326,7 +326,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
         //  Reset Cache
         $ObjectRem->Cache->Reset();
         //  Remove
-        if ( $ObjectRem->DB->Delete() )
+        if ( $ObjectRem->AR->Delete() )
             return $this->Set_Message('Remove', 0);
         else
             return $this->Set_Message('Error_Remove', 1, false);

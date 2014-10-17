@@ -50,6 +50,7 @@ define('ZERO_PATH_ZERO', ZERO_PATH_SITE . '/zero');
  */
 class Zero_App
 {
+
     /**
      * An array of abstract and key additional application variables
      *
@@ -236,25 +237,35 @@ class Zero_App
         require_once ZERO_PATH_ZERO . '/class/Cache.php';
         require_once ZERO_PATH_ZERO . '/class/Logs.php';
         require_once ZERO_PATH_ZERO . '/class/Route.php';
+        require_once ZERO_PATH_ZERO . '/class/DB.php';
 
         spl_autoload_register(['Zero_App', 'Autoload']);
 
         self::$Mode = $mode;
 
         //  Configuration (Zero_Config)
-        self::$Config = new Zero_Config();
+        self::$Config = new Zero_Config($file_log);
 
         //  Initializing monitoring system (Zero_Logs)
         Zero_Logs::Init($file_log);
 
         //  Initialize cache subsystem (Zero_Cache)
-        Zero_Cache::Init(Zero_App::$Config->Memcache['Cache']);
+        if ( class_exists('Memcache') && 0 < count(self::$Config->Memcache['Cache']) )
+        {
+            Zero_Cache::InitMemcache(self::$Config->Memcache['Cache']);
+        }
 
         //  Processing incoming request (Zero_Route)
         self::$Route = new Www_Route();
 
         //  Session Initialization (Zero_Session)
-        Zero_Session::Init(self::$Config->Db['Name']);
+        Zero_Session::Init(self::$Config->Site_Domain);
+
+        // DB init config
+        foreach (self::$Config->Db as $name => $config)
+        {
+            Zero_DB::Add_Config($name, $config);
+        }
 
         require_once ZERO_PATH_ZERO . '/class/View.php';
 
@@ -263,7 +274,6 @@ class Zero_App
         set_error_handler(['Zero_App', 'Handler_Error'], 2147483647);
         set_exception_handler(['Zero_App', 'Handler_Exception']);
         //        register_shutdown_function(['Zero_App', 'Exit_Application']);
-
     }
 
     /**
@@ -292,7 +302,6 @@ class Zero_App
                 echo 'Auth Failed';
                 exit;
             }
-
         //  Инициализация запрошенного раздела (Zero_Section)
         self::$Section = Zero_Model::Instance('Www_Section');
         if ( isset($_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il']) && 0 < $_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il'] )
@@ -334,7 +343,6 @@ class Zero_App
             Zero_App::Set_Variable('action_message', $Controller->Get_Message());
         }
         */
-
         //  Execute controller
         $view = "";
         self::Set_Variable('action_message', []);

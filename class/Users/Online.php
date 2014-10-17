@@ -37,7 +37,7 @@ class Zero_Users_Online extends Zero_Controller
             $Model = Zero_Model::Make('Www_Users', Zero_App::$Users->ID);
             $Model->IsOnline = Zero_App::$Users->IsOnline;
             $Model->DateOnline = Zero_App::$Users->DateOnline;
-            $Model->DB->Update();
+            $Model->AR->Update();
         }
         return $this->View;
     }

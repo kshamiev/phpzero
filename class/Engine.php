@@ -210,7 +210,7 @@ class Zero_Engine
     public static function Get_Modules_DB()
     {
         $result = [];
-        foreach (Zero_DB::Sel_List("SHOW TABLES;") as $table)
+        foreach (Zero_DB::Select_List("SHOW TABLES;") as $table)
         {
             $arr = explode('_', $table);
             $result[] = array_shift($arr);
@@ -233,7 +233,7 @@ class Zero_Engine
     public static function Get_Source_Info($source_name)
     {
         $result = [];
-        foreach (Zero_DB::Sel_Array("SHOW FULL COLUMNS FROM `{$source_name}`") as $row)
+        foreach (Zero_DB::Select_Array("SHOW FULL COLUMNS FROM `{$source_name}`") as $row)
         {
             $arr = explode('(', $row['Type']);
             $type = array_shift($arr);
@@ -318,7 +318,7 @@ class Zero_Engine
          * Modeli i Kontrollery`
          */
         $sql = "SHOW TABLE STATUS WHERE `Name` LIKE '{$module}\_%' AND `Name` NOT LIKE '%\_2\_%'";
-        $table_list = Zero_DB::Sel_Array($sql);
+        $table_list = Zero_DB::Select_Array($sql);
         if ( 0 == count($table_list) )
             return false;
         /**
@@ -355,8 +355,8 @@ class Zero_Engine
         $url = strtolower($module);
         $Section_Two = Zero_Model::Make('Zero_Section');
         /* @var $Section_Two Zero_Section */
-        $Section_Two->DB->Sql_Where('Url', '=', Zero_App::$Config->Site_DomainSub . '/admin/' . $url);
-        $Section_Two->DB->Select('ID');
+        $Section_Two->AR->Sql_Where('Url', '=', Zero_App::$Config->Site_DomainSub . '/admin/' . $url);
+        $Section_Two->AR->Select('ID');
         if ( 0 == $Section_Two->ID )
         {
             $Section_Two->Zero_Section_ID = $Section->ID;
@@ -371,7 +371,7 @@ class Zero_Engine
             $Section_Two->Title = $module;
             $Section_Two->Keywords = $module;
             $Section_Two->Description = $module;
-            $Section_Two->DB->Insert();
+            $Section_Two->AR->Insert();
             $Section_Two->Cache->Reset();
             Zero_Section::DB_LanguageSet($Section_Two->ID);
         }
@@ -421,8 +421,8 @@ class Zero_Engine
             $url = strtolower($package[0] . '/' . $package[1]);
             $Section_Three = Zero_Model::Make('Zero_Section');
             /* @var $Section_Three Zero_Section */
-            $Section_Three->DB->Sql_Where('Url', '=', Zero_App::$Config->Site_DomainSub . '/admin/' . $url);
-            $Section_Three->DB->Select('ID');
+            $Section_Three->AR->Sql_Where('Url', '=', Zero_App::$Config->Site_DomainSub . '/admin/' . $url);
+            $Section_Three->AR->Select('ID');
             if ( $flag_grid && 0 == $Section_Three->ID )
             {
                 $Section_Three->Zero_Section_ID = $Section_Two->ID;
@@ -437,7 +437,7 @@ class Zero_Engine
                 $Section_Three->Title = $row['Comment'];
                 $Section_Three->Keywords = $row['Comment'];
                 $Section_Three->Description = $row['Comment'];
-                $Section_Three->DB->Insert();
+                $Section_Three->AR->Insert();
                 $Section_Three->Cache->Reset();
                 Zero_Section::DB_LanguageSet($Section_Three->ID);
             }
@@ -460,8 +460,8 @@ class Zero_Engine
             $url = strtolower($package[0] . '/' . $package[1] . '/edit');
             $Section_Four = Zero_Model::Make('Zero_Section');
             /* @var $Section_Four Zero_Section */
-            $Section_Four->DB->Sql_Where('Url', '=', Zero_App::$Config->Site_DomainSub . '/admin/' . $url);
-            $Section_Four->DB->Select('ID');
+            $Section_Four->AR->Sql_Where('Url', '=', Zero_App::$Config->Site_DomainSub . '/admin/' . $url);
+            $Section_Four->AR->Select('ID');
             if ( $flag_edit && 0 == $Section_Four->ID && 0 < $Section_Three->ID )
             {
                 $Section_Four->Zero_Section_ID = $Section_Three->ID;
@@ -476,7 +476,7 @@ class Zero_Engine
                 $Section_Four->Title = $row['Comment'] . ' изменение';
                 $Section_Four->Keywords = $row['Comment'] . ' изменение';
                 $Section_Four->Description = $row['Comment'] . ' изменение';
-                $Section_Four->DB->Insert();
+                $Section_Four->AR->Insert();
                 $Section_Four->Cache->Reset();
                 Zero_Section::DB_LanguageSet($Section_Four->ID);
             }
@@ -499,7 +499,7 @@ class Zero_Engine
         $config = [];
         //  proverka realizatcii sinkhronnoi` mul`tiiazy`chnosti ob``ekta
         $sql = "SHOW TABLE STATUS WHERE `Name` = '{$Table}Language';";
-        $row = Zero_DB::Sel_Row($sql);
+        $row = Zero_DB::Select_Row($sql);
         $config['Language'] = 0;
         if ( 0 < count($row) )
             $config['Language'] = 1;
@@ -671,7 +671,7 @@ class Zero_Engine
     {
         $config = [];
         $sql = "SHOW TABLE STATUS WHERE `Name` LIKE '{$Table}_2_%' OR `Name` LIKE '%_2_{$Table}'";
-        $rows = Zero_DB::Sel_List($sql);
+        $rows = Zero_DB::Select_List($sql);
         foreach ($rows as $tbl)
         {
             //  zashchita ot skry`ty`kh i nekorretkny`kh tablitc
@@ -681,10 +681,10 @@ class Zero_Engine
             }
             //
             $sql = "SHOW FULL COLUMNS FROM `{$tbl}` WHERE `Field` LIKE '{$Table}_%ID';";
-            $row = Zero_DB::Sel_Row($sql);
+            $row = Zero_DB::Select_Row($sql);
             $PropThis = isset($row['Field']) ? $row['Field'] : '' ;
             $sql = "SHOW FULL COLUMNS FROM `{$tbl}` WHERE `Field` NOT LIKE '{$Table}_%ID';";
-            $row = Zero_DB::Sel_Row($sql);
+            $row = Zero_DB::Select_Row($sql);
             $PropTarget = isset($row['Field']) ? $row['Field'] : '' ;
             $TableTarget = zero_relation($PropTarget);
             $config[$TableTarget]['table_link'] = $tbl;
@@ -728,9 +728,9 @@ class Zero_Engine
          * Model`
          */
         $sql = "SHOW TABLE STATUS WHERE `Name` = '{$Table}';";
-        $row = Zero_DB::Sel_Row($sql);
+        $row = Zero_DB::Select_Row($sql);
         $config['model'] = $row['Comment'];
-        foreach (Zero_DB::Sel_Array("SHOW FULL COLUMNS FROM {$Table};") as $row)
+        foreach (Zero_DB::Select_Array("SHOW FULL COLUMNS FROM {$Table};") as $row)
         {
             $Type = explode('(', $row['Type']);
             $Type = array_shift($Type);

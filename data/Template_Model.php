@@ -197,7 +197,7 @@ class Zero_Model_Pattern extends Zero_Model
      */
     public function DB_From($params)
     {
-        $this->DB->Sql_From("FROM {$this->Source} as z");
+        $this->AR->Sql_From("FROM {$this->Source} as z");
     }
 
     /**
@@ -213,6 +213,6 @@ class Zero_Model_Pattern extends Zero_Model
         $sql = "FROM {$this->Source} as z
             INNER JOIN {$link['table_link']} as p ON p.{$link['prop_this']} = z.ID AND p.{$link['prop_target']} = $parent_id
         ";
-        $this->DB->Sql_From($sql);
+        $this->AR->Sql_From($sql);
     }
 }

@@ -24,8 +24,7 @@ return [
         'Name' => 'Название',
         'Description' => 'Описание',
         'Status' => 'Статус',
-        'Status close' => 'закрыт',
-        'Status open' => 'открыт',
+        'Status options' => ['close' => 'закрыт', 'open' => 'открыт'],
     ],
     'view' => [
 
@@ -34,36 +33,4 @@ return [
         'Action_Copy' => '',
 
     ],
-];
-
-return [
-    'model' => 'Группы',
-    'model prop Description' => 'Описание',
-    'model prop ID' => 'Идентификатор',
-    'model prop Name' => 'Название',
-    'model prop Status' => 'Статус доступа',
-    'model prop Status option close' => 'закрыто',
-    'model prop Status option open' => 'открыто',
-	'controller Zero_Groups_Access' => 'Управление правами доступа или ролями',
-	'controller Zero_Groups_Access action Copy' => 'копировать права доступа',
-	'controller Zero_Groups_Access action Save' => 'сохранить права доступа',
-	'controller Zero_Groups_Access message RoleAccess' => 'Права сохранены',
-	'controller Zero_Groups_Access message AccessCopy' => 'Права скопированы',
-	'controller Zero_Groups_Edit' => 'Изменение групп',
-    'controller Zero_Groups_Edit action Add' => 'добавить',
-    'controller Zero_Groups_Edit action Save' => 'сохранить',
-    'controller Zero_Groups_Edit action Default' => 'контроллер по умолчанию',
-    'controller Zero_Groups_Edit message Error_Validate' => 'Ошибка валидации',
-    'controller Zero_Groups_Edit message Error_Save' => 'Ошибка сохранения',
-    'controller Zero_Groups_Edit message Save' => 'Сохранено',
-	'controller Zero_Groups_Grid' => 'Список групп постранично',
-	'controller Zero_Groups_Grid action Add' => 'добавить',
-	'controller Zero_Groups_Grid action Edit' => 'изменить',
-	'controller Zero_Groups_Grid action Default' => 'контроллер по умолчанию',
-	'controller Zero_Groups_Grid action FilterSet' => 'установка фильтра',
-	'controller Zero_Groups_Grid action FilterReset' => 'сброс фильтра',
-	'controller Zero_Groups_Grid action Remove' => 'удалить',
-    'controller Zero_Groups_Grid message Remove' => 'Удалено',
-    'controller Zero_Groups_Grid message Error_Remove' => 'Ошибка удаления',
-    'translation Key' => 'Translation Value',
 ];

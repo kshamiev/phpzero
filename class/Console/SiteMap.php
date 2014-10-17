@@ -23,10 +23,10 @@ class Zero_Console_SiteMap extends Zero_Controller
 
         // разделы
         $Section = Zero_Model::Make('Zero_Section');
-        $Section->DB->Sql_Where('IsAuthorized', '=', 'no');
-        $Section->DB->Sql_Where('IsIndex', '=', 'yes');
-        $Section->DB->Sql_Where('IsEnable', '=', 'yes');
-        $section_list = $Section->DB->Select_Tree('ID, Name, Url');
+        $Section->AR->Sql_Where('IsAuthorized', '=', 'no');
+        $Section->AR->Sql_Where('IsIndex', '=', 'yes');
+        $Section->AR->Sql_Where('IsEnable', '=', 'yes');
+        $section_list = $Section->AR->Select_Tree('ID, Name, Url');
         foreach ($section_list as $row)
         {
             $str .= '
@@ -39,7 +39,7 @@ class Zero_Console_SiteMap extends Zero_Controller
         }
 
         // товары
-        foreach (Zero_DB::Sel_Array("SELECT ID, `Name` FROM Shop_Wares") as $row)
+        foreach (Zero_DB::Select_Array("SELECT ID, `Name` FROM Shop_Wares") as $row)
         {
             $str .= '
             <url>

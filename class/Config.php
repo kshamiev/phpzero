@@ -210,8 +210,10 @@ class Zero_Config
 
     /**
      * Configuration
+     *
+     * @param string $file_log the base name of the log file
      */
-    public function __construct()
+    public function __construct($file_log = 'application')
     {
         $Config = require ZERO_PATH_SITE . '/config.php';
 
@@ -315,8 +317,8 @@ class Zero_Config
             ini_set('display_errors', 0);
             ini_set('display_startup_errors', 0);
         }
-        //        ini_set('log_errors', 1);
-        //        ini_set('error_log', ZERO_PATH_SITE . '/log/error_php.log');
+        ini_set('log_errors', true);
+        ini_set('error_log', ZERO_PATH_LOG . '/' . $file_log);
         ini_set('magic_quotes_gpc', 0);
 
         //  Storage sessions

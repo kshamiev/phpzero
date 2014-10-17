@@ -27,17 +27,17 @@ class Zero_Content_Page extends Zero_Controller
         if ( false === $Content = Zero_App::$Section->Cache->Get($index) )
         {
             $Content = Zero_Model::Make('Zero_Content');
-            $Content->DB->Sql_Where('Zero_Language_ID', '=', LANG_ID);
-            $Content->DB->Sql_Where('Zero_Section_ID', '=', Zero_App::$Section->ID);
-            $Content->DB->Sql_Where('Block', '=', $this->Params['block']);
-            $Content->DB->Select('*');
+            $Content->AR->Sql_Where('Zero_Language_ID', '=', LANG_ID);
+            $Content->AR->Sql_Where('Zero_Section_ID', '=', Zero_App::$Section->ID);
+            $Content->AR->Sql_Where('Block', '=', $this->Params['block']);
+            $Content->AR->Select('*');
             if ( 0 == $Content->ID )
             {
                 $Content = Zero_Model::Make('Zero_Content');
-                $Content->DB->Sql_Where('Zero_Language_ID', '=', LANG_ID);
-                $Content->DB->Sql_Where_IsNull('Zero_Section_ID');
-                $Content->DB->Sql_Where('Block', '=', $this->Params['block']);
-                $Content->DB->Select('*');
+                $Content->AR->Sql_Where('Zero_Language_ID', '=', LANG_ID);
+                $Content->AR->Sql_Where_IsNull('Zero_Section_ID');
+                $Content->AR->Sql_Where('Block', '=', $this->Params['block']);
+                $Content->AR->Select('*');
             }
             Zero_Cache::Set_Link('Zero_Content', $Content->ID);
             Zero_App::$Section->Cache->Set($index, $Content);
