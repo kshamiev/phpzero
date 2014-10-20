@@ -21,13 +21,6 @@ class Zero_Config
     public $System_PathPhp = '';
 
     /**
-     * File storage sessions
-     *
-     * @var string
-     */
-    public $System_PathSession = '';
-
-    /**
      * Access for DB (Mysql)
      *
      * @var array
@@ -220,8 +213,6 @@ class Zero_Config
 
         // The path to the php Interpreter
         $this->System_PathPhp = $Config['System']['PathPhp'];
-        // File storage sessions
-        $this->System_PathSession = $Config['System']['PathSession'];
 
         // The path to the php Interpreter
         $this->Site_AccessLogin = $Config['Site']['AccessLogin'];

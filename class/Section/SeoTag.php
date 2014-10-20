@@ -26,12 +26,12 @@ class Zero_Section_SeoTag extends Zero_Controller
             'Description' => Zero_App::Get_Variable('Keywords'),
             'Keywords' => Zero_App::Get_Variable('Description'),
         ];
-        if ( is_object(Zero_App::$Section) && 0 < Zero_App::$Section->ID )
-        {
-            $seo_data['Title'] .= Zero_App::$Section->Title;
-            $seo_data['Keywords'] .= Zero_App::$Section->Keywords;
-            $seo_data['Description'] .= Zero_App::$Section->Description;
-        }
+//        if ( is_object(Zero_App::$Section) && 0 < Zero_App::$Section->ID )
+//        {
+//            $seo_data['Title'] .= Zero_App::$Section->Title;
+//            $seo_data['Keywords'] .= Zero_App::$Section->Keywords;
+//            $seo_data['Description'] .= Zero_App::$Section->Description;
+//        }
         if ( isset($this->Params['view']) )
             $this->View = new Zero_View($this->Params['view']);
         else

@@ -373,7 +373,6 @@ class Zero_Engine
             $Section_Two->Description = $module;
             $Section_Two->AR->Insert();
             $Section_Two->Cache->Reset();
-            Zero_Section::DB_LanguageSet($Section_Two->ID);
         }
         foreach ($table_list as $row)
         {
@@ -439,7 +438,6 @@ class Zero_Engine
                 $Section_Three->Description = $row['Comment'];
                 $Section_Three->AR->Insert();
                 $Section_Three->Cache->Reset();
-                Zero_Section::DB_LanguageSet($Section_Three->ID);
             }
             //  Kontroller redaktirovaniia
             $path_target = substr($path_model, 0, -4) . '/Edit.php';
@@ -478,7 +476,6 @@ class Zero_Engine
                 $Section_Four->Description = $row['Comment'] . ' изменение';
                 $Section_Four->AR->Insert();
                 $Section_Four->Cache->Reset();
-                Zero_Section::DB_LanguageSet($Section_Four->ID);
             }
             //  Internatcionalizatciia
             $this->Config_I18n($row['Name']);

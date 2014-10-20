@@ -29,17 +29,6 @@ define('URL', Zero_App::$Route->Url);
  */
 define('ZERO_LANG', Zero_App::$Route->Lang);
 define('LANG', Zero_App::$Route->Lang);
-/**
- *
- */
-define('ZERO_LANG_ID', Zero_App::$Route->LangId);
-define('LANG_ID', Zero_App::$Route->LangId);
-/**
- * The language suffix
- */
-//$lang = '';
-//if ( Zero_App::$Route->Lang != Zero_App::$Config->Site_Language )
-//    $lang = '/' . Zero_App::$Route->Lang;
 
 /**
  * Component. Representation.
@@ -198,7 +187,7 @@ class Zero_View
             {
                 $tpl = ZERO_PATH_CACHE . '/' . $html . '_' . ZERO_LANG . '.tpl';
                 if ( true == Zero_App::$Config->Site_TemplateParsing || !file_exists($tpl) )
-                    Zero_FileSystem::File_Save($tpl, $this->_Parsing(file_get_contents($html)));
+                    Zero_FileSystem::File_Save($tpl, $this->_Parsing(file_get_contents(ZERO_PATH_APPLICATION . '/' . $html)));
                 break;
             }
         }

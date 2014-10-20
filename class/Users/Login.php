@@ -59,7 +59,7 @@ class Zero_Users_Login extends Zero_Controller
         Zero_Session::Unset_Instance();
         session_unset();
         session_destroy();
-        setcookie('i09u9Maf6l6sr7Um0m8A3u0r9i55m3il');
+        setcookie('i09u9Maf6l6sr7Um0m8A3u0r9i55m3il', null, 0, '/');
         Zero_App::ResponseRedirect(ZERO_HTTP);
     }
 
@@ -94,7 +94,7 @@ class Zero_Users_Login extends Zero_Controller
     protected function Chunk_Login()
     {
         // Инициализация чанков
-        if ( !$_POST['Login'] || !$_POST['Password'] )
+        if ( !$_REQUEST['Login'] || !$_REQUEST['Password'] )
             return true;
 
         $Users = Zero_Model::Make('Www_Users');

@@ -940,9 +940,9 @@ class Zero_AR
         if ( 0 == $this->Model->ID )
             return [];
         $source = $this->Model->Get_Source();
-        $sql = "SELECT {$props} FROM {$source}Language WHERE {$source}_ID = {$this->Model->ID} AND Zero_Language_ID = " . LANG_ID;
+        $sql = "SELECT {$props} FROM {$source}Language WHERE {$source}_ID = {$this->Model->ID} AND Lang = '" . ZERO_LANG . "'";
         $row = Zero_DB::Select_Row($sql);
-        unset($row['Zero_Language_ID']);
+        unset($row['Lang']);
         unset($row[$source . '_ID']);
         unset($row['ID']);
         $this->Model->Set_Props($row);

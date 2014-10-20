@@ -22,13 +22,6 @@ class Zero_Route
     public $Lang = '';
 
     /**
-     * Identifikator iazy`ka
-     *
-     * @var integer
-     */
-    public $LangId = 0;
-
-    /**
      * Routing razdela s parametrami dlia navigatcii
      *
      * @var string
@@ -47,7 +40,17 @@ class Zero_Route
      *
      * @var array
      */
-    public $ApiUrlSegment = [];
+    public $UrlSegment = [];
+
+    /**
+     * Пользовательский роутинг
+     *
+     * Sample:
+     * '/page/page/page' => 'Zero_Section_Page', '/page/page/page' => 'Zero_Section_Page', '/page/page/page' => 'Zero_Section_Page' ...
+     *
+     * @var array
+     */
+    public static $Routes = [];
 
     /**
      * Analiz request url
@@ -55,7 +58,6 @@ class Zero_Route
     public function __construct()
     {
         $this->Lang = Zero_App::$Config->Site_Language;
-        $this->LangId = Zero_App::$Config->Language[$this->Lang]['ID'];
         $this->Url = '/';
 
         // если запрос консольный
@@ -73,7 +75,6 @@ class Zero_Route
         if ( $this->Lang != $row[0] && isset(Zero_App::$Config->Language[$row[0]]) )
         {
             $this->Lang = array_shift($row);
-            $this->LangId = Zero_App::$Config->Language[$this->Lang]['ID'];
             $this->Url .= $this->Lang;
         }
 
@@ -81,7 +82,7 @@ class Zero_Route
         if ( 'api' == $row[0] )
         {
             Zero_App::$Mode = 'api';
-            $this->ApiUrlSegment = $row;
+            $this->UrlSegment = $row;
             $this->Url .= 'api' . (isset($row[1]) ? '/' . $row[1] : '');
             if ( $_SERVER['REQUEST_METHOD'] === "PUT" )
             {

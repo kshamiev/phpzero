@@ -150,8 +150,8 @@ class Zero_Filter
         }
         else if ( 0 < $load )
         {
-            if ( 'Zero_Language_ID' == $prop )
-                $this->Filter[$prop]['List'] = $this->FL_Zero_Language_ID();
+            if ( 'Lang' == $prop )
+                $this->Filter[$prop]['List'] = $this->FL_Lang();
             else if ( method_exists($this->Model, $method = 'FL_' . $prop) )
                 $this->Filter[$prop]['List'] = $this->Model->$method();
             else
@@ -162,21 +162,6 @@ class Zero_Filter
             }
         }
         return true;
-    }
-
-    /**
-     * Zagruzka fil`tra iazy`kov
-     *
-     * @return array
-     */
-    public static function FL_Zero_Language_ID()
-    {
-        $result = [];
-        foreach (Zero_App::$Config->Language as $val)
-        {
-            $result[$val['ID']] = $val['Name'];
-        }
-        return $result;
     }
 
     /**
@@ -203,12 +188,29 @@ class Zero_Filter
         }
         else if ( 0 < $load )
         {
-            if ( method_exists($this->Model, $method = 'FL_' . $prop) )
+            if ( 'Lang' == $prop )
+                $this->Filter[$prop]['List'] = $this->FL_Lang();
+            else if ( method_exists($this->Model, $method = 'FL_' . $prop) )
                 $this->Filter[$prop]['List'] = $this->Model->$method();
             else
                 $this->Filter[$prop]['List'] = Zero_I18n::ModelArr($this->Model->Get_Source(), $prop . ' options');
         }
         return true;
+    }
+
+    /**
+     * Zagruzka fil`tra iazy`kov
+     *
+     * @return array
+     */
+    public static function FL_Lang()
+    {
+        $result = [];
+        foreach (Zero_App::$Config->Language as $key => $name)
+        {
+            $result[$key] = $name;
+        }
+        return $result;
     }
 
     /**

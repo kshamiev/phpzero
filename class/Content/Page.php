@@ -22,19 +22,22 @@ class Zero_Content_Page extends Zero_Controller
     public function Action_Default()
     {
         if ( empty($this->Params['block']) )
-            $this->Params['block'] = 'content';
-        $index = 'Content_' . $this->Params['block'] . '_' . LANG_ID;
+        {
+            Zero_Logs::Set_Message_Error('Контент блок не указан');
+            return '';
+        }
+        $index = 'Content_' . $this->Params['block'] . '_' . ZERO_LANG;
         if ( false === $Content = Zero_App::$Section->Cache->Get($index) )
         {
             $Content = Zero_Model::Make('Zero_Content');
-            $Content->AR->Sql_Where('Zero_Language_ID', '=', LANG_ID);
+            $Content->AR->Sql_Where('Lang', '=', ZERO_LANG);
             $Content->AR->Sql_Where('Zero_Section_ID', '=', Zero_App::$Section->ID);
             $Content->AR->Sql_Where('Block', '=', $this->Params['block']);
             $Content->AR->Select('*');
             if ( 0 == $Content->ID )
             {
                 $Content = Zero_Model::Make('Zero_Content');
-                $Content->AR->Sql_Where('Zero_Language_ID', '=', LANG_ID);
+                $Content->AR->Sql_Where('Lang', '=', ZERO_LANG);
                 $Content->AR->Sql_Where_IsNull('Zero_Section_ID');
                 $Content->AR->Sql_Where('Block', '=', $this->Params['block']);
                 $Content->AR->Select('*');
@@ -42,7 +45,6 @@ class Zero_Content_Page extends Zero_Controller
             Zero_Cache::Set_Link('Zero_Content', $Content->ID);
             Zero_App::$Section->Cache->Set($index, $Content);
         }
-//        $this->View = $Content->Content;
         return $Content->Content;
     }
 }

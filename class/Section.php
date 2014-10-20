@@ -244,10 +244,6 @@ class Zero_Section extends Zero_Model
         {
             $this->AR->Sql_Where('Url', '=', $url);
             $row = $this->AR->Select('*');
-            //            $this->Set_Props($row);
-            // Мультиязычный вариант
-            $row = array_replace($row, $this->AR->Select_Language('*'));
-            //            $this->Set_Props($row);
             Zero_Cache::Set_Link('Zero_Section', $this->ID);
             Zero_Cache::Set_Data($index, $row);
         }
@@ -378,9 +374,9 @@ class Zero_Section extends Zero_Model
         {
             $sql = "
             SELECT
-              s.ID, l.Name, SUBSTRING(s.Url, POSITION('/' IN s.Url)) AS Url, UrlThis, Title
+              s.ID, l.Name, SUBSTRING(s.Url, POSITION('/' IN s.Url)) AS Url, s.UrlThis, l.Title
             FROM Zero_Section AS s
-                INNER JOIN Zero_SectionLanguage AS l ON l.Zero_Section_ID = s.ID AND l.Zero_Language_ID = " . LANG_ID . "
+                INNER JOIN Zero_Content AS l ON l.Zero_Section_ID = s.ID AND l.Lang = " . ZERO_LANG . " AND l.Block = 'Content'
                 LEFT JOIN Zero_Action AS a ON a.`Zero_Section_ID` = s.`ID`
             WHERE
                 {$sql_where}
@@ -432,39 +428,6 @@ class Zero_Section extends Zero_Model
             self::DB_Update_Url($section_id);
         }
         return true;
-    }
-
-    public static function DB_LanguageSet($section_id)
-    {
-        $row = Zero_DB::Select_Row("SELECT ID FROM Zero_SectionLanguage WHERE Zero_Section_ID = {$section_id} AND Zero_Language_ID = " . LANG_ID);
-        if ( 0 < count($row) )
-        {
-            $sql = "
-            UPDATE `Zero_SectionLanguage`
-                INNER JOIN `Zero_Section` ON `Zero_Section`.ID = `Zero_SectionLanguage`.`Zero_Section_ID`
-            SET
-                `Zero_SectionLanguage`.`Name` = `Zero_Section`.`Name`,
-                `Zero_SectionLanguage`.`Title` = `Zero_Section`.`Title`,
-                `Zero_SectionLanguage`.`Keywords` = `Zero_Section`.`Keywords`,
-                `Zero_SectionLanguage`.`Description` = `Zero_Section`.`Description`,
-                `Zero_SectionLanguage`.`Content` = `Zero_Section`.`Content`
-            WHERE
-                `Zero_SectionLanguage`.`Zero_Language_ID` = " . LANG_ID . "
-            ";
-        }
-        else
-        {
-            $sql = "INSERT INTO `Zero_SectionLanguage` (
-              `Zero_Section_ID`, `Zero_Language_ID`, `Name`, `Title`, `Keywords`, `Description`, `Content`
-              )
-              SELECT
-                `ID`, " . LANG_ID . ", `Name`, `Title`, `Keywords`, `Description`, `Content`
-              FROM
-                `Zero_Section`
-              WHERE `ID` = {$section_id}
-            ";
-        }
-        Zero_DB::Update($sql);
     }
 
     /**

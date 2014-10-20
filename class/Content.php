@@ -12,7 +12,11 @@
  *
  * <BEG_CONFIG_PROPERTY>
  * @property integer $Zero_Section_ID
+ * @property string $Lang
  * @property string $Name
+ * @property string $Title
+ * @property string $Keywords
+ * @property string $Description
  * @property string $Content
  * @property string $Block
  * <END_CONFIG_PROPERTY>
@@ -78,8 +82,11 @@ class Zero_Content extends Zero_Model
             /*BEG_CONFIG_PROP*/
             'ID' => ['AliasDB' => 'z.ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => '', 'Form' => ''],
             'Zero_Section_ID' => ['AliasDB' => 'z.Zero_Section_ID', 'DB' => 'I', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Hidden'],
-            'Zero_Language_ID' => ['AliasDB' => 'z.Zero_Language_ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => 2, 'Form' => 'Link'],
+            'Lang' => ['AliasDB' => 'z.Lang', 'DB' => 'T', 'IsNull' => 'NO', 'Default' => '', 'Form' => 'Select'],
             'Name' => ['AliasDB' => 'z.Name', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'],
+            'Title' => array('AliasDB' => 'z.Name', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'),
+            'Keywords' => array('AliasDB' => 'z.Keywords', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'),
+            'Description' => array('AliasDB' => 'z.Description', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Textarea'),
             'Content' => ['AliasDB' => 'z.Content', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Content'],
             'Block' => ['AliasDB' => 'z.Block', 'DB' => 'T', 'IsNull' => 'NO', 'Default' => 'content', 'Form' => 'Text'],
             /*END_CONFIG_PROP*/
@@ -104,7 +111,7 @@ class Zero_Content extends Zero_Model
             /*BEG_CONFIG_FILTER_PROP*/
             'ID' => ['Visible' => true],
             'Zero_Section_ID' => ['Visible' => true],
-            'Zero_Language_ID' => ['Visible' => true],
+            'Lang' => ['Visible' => true],
             'Name' => ['Visible' => true],
             'Content' => ['Visible' => true],
             /*END_CONFIG_FILTER_PROP*/
@@ -151,8 +158,11 @@ class Zero_Content extends Zero_Model
             /*BEG_CONFIG_FORM_PROP*/
             'ID' => [],
             'Zero_Section_ID' => [],
-            'Zero_Language_ID' => [],
+            'Lang' => [],
             'Name' => [],
+            'Title' => [],
+            'Keywords' => [],
+            'Description' => [],
             'Content' => [],
             'Block' => [],
             /*END_CONFIG_FORM_PROP*/
