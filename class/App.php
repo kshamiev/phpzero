@@ -16,6 +16,10 @@ define('ZERO_PATH_DATA', ZERO_PATH_SITE . '/upload/data');
  */
 define('ZERO_PATH_LOG', dirname(ZERO_PATH_SITE) . '/log');
 /**
+ * The location of the site log
+ */
+define('ZERO_PATH_SESSION', dirname(ZERO_PATH_SITE) . '/session');
+/**
  * Location cache
  */
 define('ZERO_PATH_CACHE', ZERO_PATH_SITE . '/cache');
@@ -231,6 +235,8 @@ class Zero_App
      */
     public static function Init($mode = 'web', $file_log = 'application')
     {
+        self::$Mode = $mode;
+
         //  Include Components
         require_once ZERO_PATH_ZERO . '/class/Config.php';
         require_once ZERO_PATH_ZERO . '/class/Session.php';
@@ -238,10 +244,7 @@ class Zero_App
         require_once ZERO_PATH_ZERO . '/class/Logs.php';
         require_once ZERO_PATH_ZERO . '/class/Route.php';
         require_once ZERO_PATH_ZERO . '/class/DB.php';
-
         spl_autoload_register(['Zero_App', 'Autoload']);
-
-        self::$Mode = $mode;
 
         //  Initializing monitoring system (Zero_Logs)
         Zero_Logs::Init($file_log);

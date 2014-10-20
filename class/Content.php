@@ -167,36 +167,36 @@ class Zero_Content extends Zero_Model
      */
     public function FL_Block_Old()
     {
-        $Model = Zero_Model::Make('Zero_Section', Zero_App::$Section->Zero_Section_ID);
-        if ( !$Model->Layout )
-        {
-            Zero_Logs::Set_Message_Error('Layout not Set');
-            return [];
-        }
-        $template = Zero_View::Search_Template($Model->Layout);
-        if ( !$template )
-        {
-            Zero_Logs::Set_Message_Error("Layout '{$Model->Layout}' Not Found");
-            return [];
-        }
-
-        $result = [];
-        $result['content'] = 'content';
-        $template = file_get_contents($template);
-        if ( preg_match_all(Zero_View::PATTERN_PLUGIN, $template, $match, PREG_SET_ORDER) )
-        {
-            foreach ($match as $row)
-            {
-                if ( 'Zero_Content_Page' == $row[1] )
-                {
-                    if ( isset($row[2]) )
-                    {
-                        $block = explode('"', $row[2])[1];
-                        $result[$block] = $block;
-                    }
-                }
-            }
-        }
-        return $result;
+//        $Model = Zero_Model::Make('Zero_Section', Zero_App::$Section->Zero_Section_ID);
+//        if ( !$Model->Layout )
+//        {
+//            Zero_Logs::Set_Message_Error('Layout not Set');
+//            return [];
+//        }
+//        $template = Zero_View::Search_Template($Model->Layout);
+//        if ( !$template )
+//        {
+//            Zero_Logs::Set_Message_Error("Layout '{$Model->Layout}' Not Found");
+//            return [];
+//        }
+//
+//        $result = [];
+//        $result['content'] = 'content';
+//        $template = file_get_contents($template);
+//        if ( preg_match_all(Zero_View::PATTERN_PLUGIN, $template, $match, PREG_SET_ORDER) )
+//        {
+//            foreach ($match as $row)
+//            {
+//                if ( 'Zero_Content_Page' == $row[1] )
+//                {
+//                    if ( isset($row[2]) )
+//                    {
+//                        $block = explode('"', $row[2])[1];
+//                        $result[$block] = $block;
+//                    }
+//                }
+//            }
+//        }
+//        return $result;
     }
 }

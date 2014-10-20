@@ -325,14 +325,10 @@ class Zero_Logs
      *
      * @param string $data statisticheskie danny`e
      * @param string $file_log imia fai`l-loga ('zero_application_error')
+     * @return bool
      */
     public static function Save_File($data, $file_log)
     {
-        $path = ZERO_PATH_LOG . '/' . $file_log;
-        $fp = fopen($path, 'a');
-        fputs($fp, $data . "\n");
-        fclose($fp);
-        chmod($path, 0666);
-        return;
+        return Zero_FileSystem::File_Save_After(ZERO_PATH_LOG . '/' . $file_log, $data);
     }
 }

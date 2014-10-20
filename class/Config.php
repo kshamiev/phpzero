@@ -12,6 +12,7 @@
  */
 class Zero_Config
 {
+
     /**
      * The path to the php Interpreter
      *
@@ -306,19 +307,8 @@ class Zero_Config
         date_default_timezone_set('Europe/Moscow');
         setlocale(LC_CTYPE, 'ru_RU.UTF-8');
         setlocale(LC_COLLATE, 'ru_RU.UTF-8');
-        if ( $this->Log_Output_Display )
-        {
-            ini_set('display_errors', 1);
-            ini_set('display_startup_errors', 1);
-        }
-        else
-        {
-            ini_set('display_errors', 0);
-            ini_set('display_startup_errors', 0);
-        }
-        ini_set('log_errors', true);
-        ini_set('error_log', ZERO_PATH_LOG . '/' . $file_log);
-        ini_set('magic_quotes_gpc', 0);
+        ini_set('display_errors', 0);
+        ini_set('display_startup_errors', 0);
 
         //  Storage sessions
         if ( 0 < count($Config['Memcache']['Session']) )
@@ -328,14 +318,36 @@ class Zero_Config
         }
         else
         {
+            if ( !is_dir(ZERO_PATH_SESSION) )
+                if ( !mkdir(ZERO_PATH_SESSION, 0777, true) )
+                    die('session path: "' . ZERO_PATH_SESSION . '" not exists');
             ini_set('session.save_handler', 'files');
-            ini_set('session.save_path', $Config['System']['PathSession']);
+            ini_set('session.save_path', ZERO_PATH_SESSION);
         }
+
         // Initialization of the profiled application processors
+        ini_set('log_errors', true);
+        ini_set('error_log', ZERO_PATH_LOG . '/' . $file_log . '.log');
+        ini_set('magic_quotes_gpc', 0);
+        if ( !is_dir(ZERO_PATH_LOG) )
+            if ( !mkdir(ZERO_PATH_LOG, 0777, true) )
+                die('logs path: "' . ZERO_PATH_LOG . '" not exists');
         error_reporting(-1);
         set_error_handler(['Zero_App', 'Error_Handler'], -1);
         set_exception_handler(['Zero_App', 'Exception_Handler']);
         // register_shutdown_function(['Zero_App', 'Exit_Application']);
+
+        if ( !is_dir(ZERO_PATH_EXCHANGE) )
+            if ( !mkdir(ZERO_PATH_EXCHANGE, 0777, true) )
+                die('path "exchange": "' . ZERO_PATH_EXCHANGE . '" not exists');
+
+        if ( !is_dir(ZERO_PATH_CACHE) )
+            if ( !mkdir(ZERO_PATH_CACHE, 0777, true) )
+                die('path "cache": "' . ZERO_PATH_CACHE . '" not exists');
+
+        if ( !is_dir(ZERO_PATH_APPLICATION . '/zero') )
+            if ( !symlink(ZERO_PATH_ZERO, ZERO_PATH_APPLICATION . '/zero') )
+                die('module "zero" path: "' . ZERO_PATH_APPLICATION . '/zero" not exists');
     }
 }
 

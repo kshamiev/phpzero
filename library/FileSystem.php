@@ -467,6 +467,7 @@ final class Zero_FileSystem
         $fp = fopen($path_file, 'a');
         fputs($fp, trim($value) . "\n");
         fclose($fp);
+        chmod($path_file, 0666);
         return true;
     }
 

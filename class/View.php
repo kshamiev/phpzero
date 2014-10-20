@@ -196,8 +196,8 @@ class Zero_View
             $html = $this->Search_Template($template);
             if ( '' != $html )
             {
-                $tpl = $html . '_' . ZERO_LANG . '.tpl';
-                if ( 1 == Zero_App::$Config->Site_TemplateParsing || !file_exists($tpl) )
+                $tpl = ZERO_PATH_CACHE . '/' . $html . '_' . ZERO_LANG . '.tpl';
+                if ( true == Zero_App::$Config->Site_TemplateParsing || !file_exists($tpl) )
                     Zero_FileSystem::File_Save($tpl, $this->_Parsing(file_get_contents($html)));
                 break;
             }
@@ -235,8 +235,8 @@ class Zero_View
     {
         $arr = explode('_', $template);
         $module = strtolower(array_shift($arr));
-        $path = ZERO_PATH_APPLICATION . '/' . $module . '/view/' . implode('/', $arr) . self::EXT_VIEW;
-        if ( file_exists($path) )
+        $path = $module . '/view/' . implode('/', $arr) . self::EXT_VIEW;
+        if ( file_exists(ZERO_PATH_APPLICATION . '/' .  $path) )
             return $path;
         return '';
     }
@@ -288,7 +288,7 @@ class Zero_View
     private function _Parsing_Include($matches)
     {
         if ( '' != $template = $this->Search_Template($matches[1]) )
-            $matches = file_get_contents($template);
+            $matches = file_get_contents(ZERO_PATH_APPLICATION . '/' .  $template);
         else
         {
             $matches = '';
