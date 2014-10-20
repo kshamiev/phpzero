@@ -155,13 +155,10 @@ class Zero_AR
      */
     public function Sql_Where($prop = '', $sign = '', $value = '', $separator = 'AND')
     {
-
-
         if ( $prop )
             return $this->Sql_Where_Expression($prop . ' ' . $sign . ' ' . Zero_DB::Escape_T($value), $separator);
         else
             unset($this->Params['Where']);
-
     }
 
     /**

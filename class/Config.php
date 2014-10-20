@@ -303,7 +303,6 @@ class Zero_Config
             $this->Ip = $_SERVER["REMOTE_ADDR"];
 
         // Setting php
-        error_reporting(-1);
         date_default_timezone_set('Europe/Moscow');
         setlocale(LC_CTYPE, 'ru_RU.UTF-8');
         setlocale(LC_COLLATE, 'ru_RU.UTF-8');
@@ -332,6 +331,11 @@ class Zero_Config
             ini_set('session.save_handler', 'files');
             ini_set('session.save_path', $Config['System']['PathSession']);
         }
+        // Initialization of the profiled application processors
+        error_reporting(-1);
+        set_error_handler(['Zero_App', 'Error_Handler'], -1);
+        set_exception_handler(['Zero_App', 'Exception_Handler']);
+        // register_shutdown_function(['Zero_App', 'Exit_Application']);
     }
 }
 

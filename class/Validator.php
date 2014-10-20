@@ -131,13 +131,13 @@ class Zero_Validator
             $this->Model->$prop = '';
         }
 
-        if ( Zero_App::$Mode == 'api' && isset($value['Hash']) && $value['Hash'] )
+        if ( (Zero_App::$Mode == 'json' || Zero_App::$Mode == 'api') && isset($value['Hash']) && $value['Hash'] )
         {
             $pathInfo = dirname(ZERO_PATH_DATA) . '/temp/' . $value['Hash'] . '.txt';
             if ( !file_exists($pathInfo) )
                 return 'Ошибка загрузки файла (информация)';
             $_FILES[$prop] = json_decode(file_get_contents($pathInfo), true);
-//            $pathData = dirname(ZERO_PATH_DATA) . '/temp/' . $_FILES[$prop]['tmp_name'];
+            //            $pathData = dirname(ZERO_PATH_DATA) . '/temp/' . $_FILES[$prop]['tmp_name'];
             if ( !file_exists($_FILES[$prop]['tmp_name']) )
                 return 'Ошибка загрузки файла (данные)';
         }
@@ -146,7 +146,7 @@ class Zero_Validator
         if ( isset($_FILES[$prop]) && 4 != $_FILES[$prop]['error'] )
         {
             //  fai`l ne zagruzhen ili zagruzhen s oshibkami
-//            if ( !is_uploaded_file($_FILES[$prop]['tmp_name']) || 0 != $_FILES[$prop]['error'] )
+            //            if ( !is_uploaded_file($_FILES[$prop]['tmp_name']) || 0 != $_FILES[$prop]['error'] )
             if ( 0 != $_FILES[$prop]['error'] )
             {
                 Zero_Logs::Set_Message_Error("{$this->Model->Source} - {$this->Model->ID} - {$_FILES[$prop]['error']} - Error Upload File");

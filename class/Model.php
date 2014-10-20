@@ -624,6 +624,6 @@ abstract class Zero_Model
         //  rabota so sviazanny`m roditel`skim ob``etom cherez svoi`tsvo sviazi (odin ko mnogim)
         if ( isset($this->Get_Config_Prop()[$method]) )
             return self::Make(zero_relation($method), $this->$method, !empty($params[0]));
-        throw new Exception('metod not found: ' . get_class($this) . ' -> ' . $method);
+        throw new Exception('metod not found: ' . get_class($this) . ' -> ' . $method, 409);
     }
 }

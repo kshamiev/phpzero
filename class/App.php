@@ -192,7 +192,7 @@ class Zero_App
             fastcgi_finish_request();
 
         // Логирование в файлы
-        if ( Zero_App::$Config->Log_Output_File )
+        if ( self::$Config->Log_Output_File )
             Zero_Logs::Output_File();
         exit;
     }
@@ -243,11 +243,11 @@ class Zero_App
 
         self::$Mode = $mode;
 
-        //  Configuration (Zero_Config)
-        self::$Config = new Zero_Config($file_log);
-
         //  Initializing monitoring system (Zero_Logs)
         Zero_Logs::Init($file_log);
+
+        //  Configuration (Zero_Config)
+        self::$Config = new Zero_Config($file_log);
 
         //  Initialize cache subsystem (Zero_Cache)
         if ( class_exists('Memcache') && 0 < count(self::$Config->Memcache['Cache']) )
@@ -268,12 +268,6 @@ class Zero_App
         }
 
         require_once ZERO_PATH_ZERO . '/class/View.php';
-
-        // Initialization of the profiled application processors
-        //        error_reporting(2147483647);
-        set_error_handler(['Zero_App', 'Handler_Error'], 2147483647);
-        set_exception_handler(['Zero_App', 'Handler_Exception']);
-        //        register_shutdown_function(['Zero_App', 'Exit_Application']);
     }
 
     /**
@@ -316,7 +310,7 @@ class Zero_App
 
         //  Checking for non-existent section
         if ( 0 == self::$Section->ID || 'no' == self::$Section->IsEnable )
-            throw new Exception('Page Not Found', 404);
+            self::ResponseError(404);
 
         //  Call forwarding
         if ( self::$Section->UrlRedirect )
@@ -325,31 +319,18 @@ class Zero_App
         //  Checking the rights to the current section
         $Action_List = self::$Section->Get_Action_List();
         if ( 1 < self::$Users->Zero_Groups_ID && 'yes' == self::$Section->IsAuthorized && 0 == count($Action_List) )
-            throw new Exception('Access Denied', 403);
+            self::ResponseError(403);
 
         //  Execute controller
         if ( !isset($_REQUEST['act']) )
             $_REQUEST['act'] = 'Default';
-        /*
-        if ( $_REQUEST['act'] == 'Logout' )
-        {
-            $Controller = Zero_Controller::Factory("Zero_Users_Login");
-            $Controller->Action_Logout();
-        }
-        else if ( $_REQUEST['act'] == 'Login' )
-        {
-            $Controller = Zero_Controller::Factory("Zero_Users_Login");
-            $Controller->Action_Login();
-            Zero_App::Set_Variable('action_message', $Controller->Get_Message());
-        }
-        */
         //  Execute controller
         $view = "";
         self::Set_Variable('action_message', []);
         if ( self::$Section->Controller )
         {
             if ( !isset($Action_List[$_REQUEST['act']]) )
-                throw new Exception('Access Denied', 403);
+                self::ResponseError(403);
             $_REQUEST['act'] = 'Action_' . $_REQUEST['act'];
             //
             $Controller = Zero_Controller::Factory(self::$Section->Controller);
@@ -408,7 +389,7 @@ class Zero_App
      * @param string $line stroka, v kotoroi` proizoshla oshibka
      * @throws ErrorException
      */
-    public static function Handler_Error($code, $message, $filename, $line)
+    public static function Error_Handler($code, $message, $filename, $line)
     {
         throw new ErrorException($message, $code, 0, $filename, $line);
     }
@@ -422,55 +403,52 @@ class Zero_App
      *
      * @param Exception $exception
      */
-    public static function Handler_Exception(Exception $exception)
+    public static function Exception_Handler(Exception $exception)
     {
         $code = $exception->getCode();
-        if ( $code != 403 && $code != 404 )
+        $range_file_error = 10;
+        $error = "#{ERROR_EXCEPTION} " . $exception->getMessage() . ' ' . $exception->getFile() . '(' . $exception->getLine() . ')';
+        Zero_Logs::Set_Message_Error($error);
+        if ( Zero_App::$Config->Log_Output_Display == true )
         {
-            $range_file_error = 10;
-            $error = "#{ERROR_EXCEPTION} " . $exception->getMessage() . ' ' . $exception->getFile() . '(' . $exception->getLine() . ')';
+            Zero_Logs::Set_Message_ErrorTrace($error);
+            Zero_Logs::Set_Message_ErrorTrace(Zero_Logs::Get_SourceCode($exception->getFile(), $exception->getLine(), $range_file_error));
+        }
+
+        $traceList = $exception->getTrace();
+        array_shift($traceList);
+        foreach ($traceList as $id => $trace)
+        {
+            if ( !isset($trace['args']) )
+                continue;
+            $args = [];
+            $range_file_error = $range_file_error - 2;
+            foreach ($trace['args'] as $arg)
+            {
+                if ( is_scalar($arg) )
+                    $args[] = "'" . $arg . "'";
+                else if ( is_array($arg) )
+                    $args[] = print_r($arg, true);
+                else if ( is_object($arg) )
+                    $args[] = get_class($arg) . ' Object...';
+            }
+            $trace['args'] = join(', ', $args);
+            if ( isset($trace['class']) )
+                $callback = $trace['class'] . $trace['type'] . $trace['function'];
+            else if ( isset($trace['function']) )
+                $callback = $trace['function'];
+            else
+                $callback = '';
+            if ( !isset($trace['file']) )
+                $trace['file'] = '';
+            if ( !isset($trace['line']) )
+                $trace['line'] = 0;
+            $error = "\t#{" . $id . "}" . $trace['file'] . '(' . $trace['line'] . '): ' . $callback . "(" . str_replace("\n", "", $trace['args']) . ");";
             Zero_Logs::Set_Message_Error($error);
             if ( Zero_App::$Config->Log_Output_Display == true )
             {
                 Zero_Logs::Set_Message_ErrorTrace($error);
-                Zero_Logs::Set_Message_ErrorTrace(Zero_Logs::Get_SourceCode($exception->getFile(), $exception->getLine(), $range_file_error));
-            }
-
-            $traceList = $exception->getTrace();
-            array_shift($traceList);
-            foreach ($traceList as $id => $trace)
-            {
-                if ( !isset($trace['args']) )
-                    continue;
-                $args = [];
-                $range_file_error = $range_file_error - 2;
-                foreach ($trace['args'] as $arg)
-                {
-                    if ( is_scalar($arg) )
-                        $args[] = "'" . $arg . "'";
-                    else if ( is_array($arg) )
-                        $args[] = print_r($arg, true);
-                    else if ( is_object($arg) )
-                        $args[] = get_class($arg) . ' Object...';
-                }
-                $trace['args'] = join(', ', $args);
-                if ( isset($trace['class']) )
-                    $callback = $trace['class'] . $trace['type'] . $trace['function'];
-                else if ( isset($trace['function']) )
-                    $callback = $trace['function'];
-                else
-                    $callback = '';
-                if ( !isset($trace['file']) )
-                    $trace['file'] = '';
-                if ( !isset($trace['line']) )
-                    $trace['line'] = 0;
-                $error = "\t#{" . $id . "}" . $trace['file'] . '(' . $trace['line'] . '): ' . $callback . "(" . str_replace("\n", "", $trace['args']) . ");";
-                Zero_Logs::Set_Message_Error($error);
-                if ( Zero_App::$Config->Log_Output_Display == true )
-                {
-                    Zero_Logs::Set_Message_ErrorTrace($error);
-                    Zero_Logs::Set_Message_ErrorTrace(Zero_Logs::Get_SourceCode($trace['file'], $trace['line'], $range_file_error));
-                }
+                Zero_Logs::Set_Message_ErrorTrace(Zero_Logs::Get_SourceCode($trace['file'], $trace['line'], $range_file_error));
             }
         }
 
@@ -480,11 +458,8 @@ class Zero_App
         }
         else if ( Zero_App::$Mode == 'web' )
         {
-            //            Zero_App::$Users->UrlRedirect = $_SERVER['REQUEST_URI'];
-            $View = new Zero_View(ucfirst(self::$Config->Site_DomainSub) . '_Error');
-            $View->Template_Add('Zero_Error');
-            $View->Assign('http_status', $code);
-            self::ResponseHtml($View->Fetch(), $code);
+            $code = 409;
+            self::ResponseError($code);
         }
         else if ( Zero_App::$Mode == 'console' )
         {
@@ -521,5 +496,20 @@ class Zero_App
         if ( Zero_App::$Config->Log_Output_File )
             Zero_Logs::Output_File();
         exit;
+    }
+
+    /**
+     * Profilirovanie raboty` prilozheniia pri ego zavershenii
+     *
+     * - Sbor vsekh tai`merov i zatrachennoi` pamiati
+     * - Zamer polnogo vremeni vy`polneniia prilozheniia
+     * - Vy`vod vsei` profilirovannoi` informatcii v ukazanny`e istochniki
+     */
+    public static function ResponseError($code)
+    {
+        $View = new Zero_View(ucfirst(self::$Config->Site_DomainSub) . '_Error');
+        $View->Template_Add('Zero_Error');
+        $View->Assign('http_status', $code);
+        self::ResponseHtml($View->Fetch(), $code);
     }
 }

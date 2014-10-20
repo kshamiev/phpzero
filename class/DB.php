@@ -112,7 +112,7 @@ class Zero_DB
         $sql = array_shift($arr);
         preg_match_all("~(%[d|s|f]{1})~si", $sql, $match);
         if ( count($arr) != count($match[1]) )
-            throw new Exception("Wrong number of parameters", 500);
+            throw new Exception("Wrong number of parameters", 409);
         foreach ($match[1] as $k => $v)
         {
             $match[1][$k] = '~' . $v . '~i';
@@ -177,10 +177,10 @@ class Zero_DB
             self::Init('main');
         $str = trim(strval($str));
         if ( $str )
-            return "'" . self::$DB['main']->real_escape_string($str) . "'";
+            //            return "'" . self::$DB['main']->real_escape_string($str) . "'";
+            return "'" . addslashes($str) . "'";
         else
             return 'NULL';
-
     }
 
     /**
@@ -195,7 +195,8 @@ class Zero_DB
             self::Init('main');
         $enum = trim(strval($enum));
         if ( $enum )
-            return "'" . self::$DB['main']->real_escape_string($enum) . "'";
+            //            return "'" . self::$DB['main']->real_escape_string($enum) . "'";
+            return "'" . addslashes($enum) . "'";
         else
             return 'NULL';
     }
@@ -213,7 +214,8 @@ class Zero_DB
             self::Init('main');
         $str = trim(implode($separator, $array));
         if ( $str )
-            return "'" . self::$DB['main']->real_escape_string($str) . "'";
+            //            return "'" . self::$DB['main']->real_escape_string($str) . "'";
+            return "'" . addslashes($str) . "'";
         else
             return 'NULL';
     }

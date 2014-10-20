@@ -180,7 +180,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
             if ( isset($users_condition[$prop]) )
             {
                 if ( 0 < $this->Model->ID && !isset($users_condition[$prop][$this->Model->$prop]) )
-                    throw new Exception('Access Denied', 403);
+                    Zero_App::ResponseError(403);
                 if ( 1 == count($users_condition[$prop]) )
                     unset($props_form[$prop]);
             }

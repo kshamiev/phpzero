@@ -65,7 +65,7 @@ if ( count($_SERVER['argv']) > 1 )
     $arr = explode('-', $_SERVER['argv'][1]);
     if ( 2 != count($arr) )
     {
-        throw new Exception('консольная задача определена не правильно: ' . $_SERVER['argv'][1], 500);
+        throw new Exception('консольная задача определена не правильно: ' . $_SERVER['argv'][1], 409);
     }
 
     $arr[1] = 'Action_' . $arr[1];

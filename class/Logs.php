@@ -20,6 +20,7 @@
  */
 class Zero_Logs
 {
+
     /**
      * Massiv soobshchenii` sistemy`
      *
@@ -92,6 +93,7 @@ class Zero_Logs
     {
         self::$_Message[] = [print_r($value, true), 'action'];
     }
+
     /**
      * Инициализация входиащего системного сообщения.
      *
@@ -101,6 +103,7 @@ class Zero_Logs
     {
         self::$_Message[] = [print_r($value, true), 'error'];
     }
+
     /**
      * Инициализация входиащего системного сообщения.
      *
@@ -110,6 +113,7 @@ class Zero_Logs
     {
         self::$_Message[] = [print_r($value, true), 'errorTrace'];
     }
+
     /**
      * Инициализация входиащего системного сообщения.
      *
@@ -119,6 +123,7 @@ class Zero_Logs
     {
         self::$_Message[] = [print_r($value, true), 'warning'];
     }
+
     /**
      * Инициализация входиащего системного сообщения.
      *
@@ -191,7 +196,7 @@ class Zero_Logs
         {
             $output = self::Get_Usage_MemoryAndTime();
             $output = date('[d.m.Y H:i:s]') . "\n" . join("\n", $output) . "\n";
-            self::Save_File($output, self::$_FileLog);
+            self::Save_File($output, self::$_FileLog . '.log');
         }
         //
         if ( 0 < count(self::$_Message) )
@@ -204,13 +209,13 @@ class Zero_Logs
             foreach (self::$_Message as $row)
             {
                 if ( 'error' == $row[1] )
-//                    $errors[] = str_replace(["\r", "\t"], " ", var_export($row[0], true));
+                    //                    $errors[] = str_replace(["\r", "\t"], " ", var_export($row[0], true));
                     $errors[] = str_replace(["\r", "\t"], " ", $row[0]);
                 else if ( 'warning' == $row[1] )
-//                    $warnings[] = str_replace(["\r", "\t"], " ", var_export($row[0], true));
+                    //                    $warnings[] = str_replace(["\r", "\t"], " ", var_export($row[0], true));
                     $warnings[] = str_replace(["\r", "\t"], " ", $row[0]);
                 else if ( 'notice' == $row[1] )
-//                    $warnings[] = str_replace(["\r", "\t"], " ", var_export($row[0], true));
+                    //                    $warnings[] = str_replace(["\r", "\t"], " ", var_export($row[0], true));
                     $notice[] = str_replace(["\r", "\t"], " ", $row[0]);
                 else if ( 'action' == $row[1] )
                     $action[] = $row[0];
@@ -221,7 +226,7 @@ class Zero_Logs
                 array_unshift($errors, str_replace(["\r", "\t"], " ", $output));
                 $errors = preg_replace('![ ]{2,}!', ' ', join("\n", $errors));
                 $errors = date('[d.m.Y H:i:s]') . "\n" . $errors;
-                self::Save_File($errors, self::$_FileLog . '_errors');
+                self::Save_File($errors, self::$_FileLog . '_errors.log');
             }
             // логирование предупреждений в файл
             if ( Zero_App::$Config->Log_Profile_Warning && 0 < count($warnings) )
@@ -229,7 +234,7 @@ class Zero_Logs
                 array_unshift($warnings, str_replace(["\r", "\t"], " ", $output));
                 $warnings = preg_replace('![ ]{2,}!', ' ', join("\n", $warnings));
                 $warnings = date('[d.m.Y H:i:s]') . "\n" . $warnings;
-                self::Save_File($warnings, self::$_FileLog . '_warnings');
+                self::Save_File($warnings, self::$_FileLog . '_warnings.log');
             }
             // логирование предупреждений в файл
             if ( Zero_App::$Config->Log_Profile_Notice && 0 < count($notice) )
@@ -237,7 +242,7 @@ class Zero_Logs
                 array_unshift($notice, str_replace(["\r", "\t"], " ", $output));
                 $notice = preg_replace('![ ]{2,}!', ' ', join("\n", $notice));
                 $notice = date('[d.m.Y H:i:s]') . "\n" . $notice;
-                self::Save_File($notice, self::$_FileLog . '_notice');
+                self::Save_File($notice, self::$_FileLog . '_notice.log');
             }
             // логирование операций пользователиа в файл
             if ( Zero_App::$Config->Log_Profile_Action && 0 < count($action) )
@@ -245,7 +250,7 @@ class Zero_Logs
                 $act = date('[d.m.Y H:i:s]') . "\t";
                 $act .= Zero_App::$Users->Login . "\t" . Zero_App::$Section->Controller . " -> " . join($action, ", ") . "\t";
                 $act .= ZERO_HTTP . $_SERVER['REQUEST_URI'];
-                self::Save_File($act, self::$_FileLog . '_action');
+                self::Save_File($act, self::$_FileLog . '_action.log');
             }
         }
     }
@@ -323,7 +328,7 @@ class Zero_Logs
      */
     public static function Save_File($data, $file_log)
     {
-        $path = ZERO_PATH_LOG . '/' . $file_log . '.log';
+        $path = ZERO_PATH_LOG . '/' . $file_log;
         $fp = fopen($path, 'a');
         fputs($fp, $data . "\n");
         fclose($fp);

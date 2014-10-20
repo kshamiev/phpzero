@@ -366,7 +366,7 @@ class Zero_Engine
             $Section_Two->Controller = 'Zero_Content_Page';
             $Section_Two->IsAuthorized = 'yes';
             $Section_Two->IsVisible = 'yes';
-            $Section_Two->Sort = 500;
+            $Section_Two->Sort = 1;
             $Section_Two->Name = $module;
             $Section_Two->Title = $module;
             $Section_Two->Keywords = $module;
@@ -432,7 +432,7 @@ class Zero_Engine
                 $Section_Three->Controller = $row['Name'] . '_Grid';
                 $Section_Three->IsAuthorized = 'yes';
                 $Section_Three->IsVisible = 'yes';
-                $Section_Three->Sort = 500;
+                $Section_Three->Sort = 1;
                 $Section_Three->Name = $row['Comment'];
                 $Section_Three->Title = $row['Comment'];
                 $Section_Three->Keywords = $row['Comment'];
@@ -471,7 +471,7 @@ class Zero_Engine
                 $Section_Four->Controller = $row['Name'] . '_Edit';
                 $Section_Four->IsAuthorized = 'yes';
                 $Section_Four->IsVisible = 'no';
-                $Section_Four->Sort = 500;
+                $Section_Four->Sort = 1;
                 $Section_Four->Name = $row['Comment'] . ' изменение';
                 $Section_Four->Title = $row['Comment'] . ' изменение';
                 $Section_Four->Keywords = $row['Comment'] . ' изменение';
