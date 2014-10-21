@@ -22,6 +22,24 @@ require dirname(__DIR__) . '/class/Config.php';
 require dirname(__DIR__) . '/class/App.php';
 require dirname(__DIR__) . '/class/Lib/FileSystem.php';
 
+if ( !isset($_REQUEST['site_name']) )
+    $_REQUEST['site_name'] = '';
+if ( !isset($_REQUEST['site_email']) )
+    $_REQUEST['site_email'] = '';
+if ( !isset($_REQUEST['db_login']) )
+    $_REQUEST['db_login'] = '';
+if ( !isset($_REQUEST['db_password']) )
+    $_REQUEST['db_password'] = '';
+if ( !isset($_REQUEST['db_name']) )
+    $_REQUEST['db_name'] = '';
+if ( !isset($_REQUEST['domain_www']) )
+    $_REQUEST['domain_www'] = str_replace('www.', '', $_SERVER['SERVER_NAME']);
+if ( !isset($_REQUEST['db_host']) )
+    $_REQUEST['db_host'] = 'localhost';
+if ( !isset($_REQUEST['db_use']) )
+    $_REQUEST['db_use'] = 0;
+if ( !isset($_REQUEST['lang']) )
+    $_REQUEST['lang'] = '';
 $error_init_list = [];
 $message_install_list = [];
 /**
@@ -63,7 +81,7 @@ if ( file_exists(ZERO_PATH_SITE . '/config.php') )
 while ( isset($_REQUEST['act']) && 'Install_System' == $_REQUEST['act'] && 0 == count($error_init_list) )
 {
     //  Checking the input parameters
-    if ( !isset($_REQUEST['site_name']) || !$_REQUEST['site_name'] || !isset($_REQUEST['site_email']) || !$_REQUEST['site_email'] || !isset($_REQUEST['domain_www']) || !$_REQUEST['domain_www'] || !isset($_REQUEST['db_host']) || !$_REQUEST['db_host'] || !isset($_REQUEST['db_login']) || !$_REQUEST['db_login'] || !isset($_REQUEST['db_password']) || !$_REQUEST['db_password'] || !isset($_REQUEST['db_name']) || !$_REQUEST['db_name'] || !isset($_REQUEST['lang']) || !$_REQUEST['lang'] )
+    if ( !$_REQUEST['site_name'] || !$_REQUEST['site_email'] || !$_REQUEST['domain_www'] || !$_REQUEST['lang'] )
     {
         $message_install_list[] = "Request empty";
         break;
@@ -74,16 +92,31 @@ while ( isset($_REQUEST['act']) && 'Install_System' == $_REQUEST['act'] && 0 == 
     // file_put_contents('db_create.sql', "CREATE DATABASE IF NOT EXISTS `{$_REQUEST['db_name']}`;");
     // exec("mysql -h {$_REQUEST['db_host']} -u {$_REQUEST['db_login']} -p{$_REQUEST['db_password']} < db_create.sql", $arr1, $arr2);
     // exec("mysql -h {$_REQUEST['db_host']} -u {$_REQUEST['db_login']} -p{$_REQUEST['db_password']} {$_REQUEST['db_name']} < schema/mysql_{$_REQUEST['lang']}.sql", $arr1, $arr2);
-    $db = mysqli_connect($_REQUEST['db_host'], $_REQUEST['db_login'], $_REQUEST['db_password'], $_REQUEST['db_name']);
-    if ( !$db )
+    if ( $_REQUEST['db_use'] )
     {
-        $message_install_list[] = "Error create DB (Access Denied)";
-        break;
+        $db = mysqli_connect($_REQUEST['db_host'], $_REQUEST['db_login'], $_REQUEST['db_password'], $_REQUEST['db_name']);
+        if ( !$db )
+        {
+            $message_install_list[] = "Error create DB (Access Denied)";
+            break;
+        }
     }
     $arr = ini_get_all();
 
     //  Creating a filesystem structure. Copy the system and base  module
     Zero_Lib_FileSystem::Folder_Copy(__DIR__ . "/www", ZERO_PATH_SITE);
+    $index = file_get_contents(ZERO_PATH_SITE . '/index.php');
+    if ( $_REQUEST['db_use'] )
+    {
+        $index = str_replace('//--USE--//', '', $index);
+        $index = str_replace('//--NOT--//', '// ', $index);
+    }
+    else
+    {
+        $index = str_replace('//--USE--//', '// ', $index);
+        $index = str_replace('//--NOT--//', '', $index);
+    }
+    file_put_contents(ZERO_PATH_SITE . '/index.php', $index);
 
     //  Baseline configuration
     $config = file_get_contents(ZERO_PATH_SITE . '/config.php');
@@ -106,25 +139,8 @@ while ( isset($_REQUEST['act']) && 'Install_System' == $_REQUEST['act'] && 0 == 
 
     $message_install_list[110] = "System install success full";
     $error_init_list[120] = 'system is already installed (remove /config.php)';
-
-    $_REQUEST = [];
     break;
 }
-
-if ( !isset($_REQUEST['site_name']) )
-    $_REQUEST['site_name'] = '';
-if ( !isset($_REQUEST['site_email']) )
-    $_REQUEST['site_email'] = '';
-if ( !isset($_REQUEST['db_login']) )
-    $_REQUEST['db_login'] = '';
-if ( !isset($_REQUEST['db_password']) )
-    $_REQUEST['db_password'] = '';
-if ( !isset($_REQUEST['db_name']) )
-    $_REQUEST['db_name'] = '';
-if ( !isset($_REQUEST['domain_www']) )
-    $_REQUEST['domain_www'] = str_replace('www.', '', $_SERVER['SERVER_NAME']);
-if ( !isset($_REQUEST['db_host']) )
-    $_REQUEST['db_host'] = 'localhost';
 ?>
 <table width="600px" cellspacing="1" cellpadding="4" border="1" align="center">
     <form action="index.php" method="post">
@@ -175,25 +191,31 @@ if ( !isset($_REQUEST['db_host']) )
             </td>
         </tr>
         <tr>
+            <td width="300px"><b>Use Mysql</b></td>
+            <td>
+                <input type="checkbox" name="db_use" value="1" <?= $_REQUEST['db_use'] ? ' checked' : '' ?> style="width: 99%;">
+            </td>
+        </tr>
+        <tr>
             <td width="300px">Mysql - The host and port or socket (*)</td>
             <td>
                 <input type="text" name="db_host" value="<?= $_REQUEST['db_host'] ?>" style="width: 99%;">
             </td>
         </tr>
         <tr>
-            <td width="300px">Mysql - User (*)</td>
+            <td width="300px">Mysql - User (* if use mysql)</td>
             <td>
                 <input type="text" name="db_login" value="<?= $_REQUEST['db_login'] ?>" style="width: 99%;">
             </td>
         </tr>
         <tr>
-            <td width="300px">Mysql - Password (*)</td>
+            <td width="300px">Mysql - Password (* if use mysql)</td>
             <td>
                 <input type="text" name="db_password" value="<?= $_REQUEST['db_password'] ?>" style="width: 99%;">
             </td>
         </tr>
         <tr>
-            <td width="300px">Mysql - DB name (*)</td>
+            <td width="300px">Mysql - DB name (* if use mysql)</td>
             <td>
                 <input type="text" name="db_name" value="<?= $_REQUEST['db_name'] ?>" style="width: 99%;">
             </td>

@@ -193,6 +193,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         $this->View->Assign('Object', $this->Model);
         $this->View->Assign('ObjectID', $this->Model->ID);
         $this->View->Assign('Props', $props_form);
+        $this->View->Assign('Action', Zero_App::$Section->Get_Action_List());
         //  Filter
         $this->View->Assign('Filter', $Filter->Get_Filter());
         // CKEDITOR - this -> Object

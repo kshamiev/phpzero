@@ -54,7 +54,6 @@ define('ZERO_PATH_ZERO', ZERO_PATH_SITE . '/zero');
  */
 class Zero_App
 {
-
     /**
      * An array of abstract and key additional application variables
      *
@@ -79,7 +78,7 @@ class Zero_App
     /**
      * Routing (по URL)
      *
-     * @var Zero_Route
+     * @var Www_Route
      */
     public static $Route;
 
@@ -230,12 +229,11 @@ class Zero_App
      * - Processing incoming request (GET). Component Zero_Route
      * - Session Initialization. Component Zero_Session
      *
-     * @param string $mode режим работы приложения
      * @param string $file_log the base name of the log file
      */
-    public static function Init($mode = 'web', $file_log = 'application')
+    public static function Init($file_log = 'application')
     {
-        self::$Mode = $mode;
+        self::$Mode = $mode = 'web';
 
         //  Include Components
         require_once ZERO_PATH_ZERO . '/class/Config.php';
@@ -259,16 +257,79 @@ class Zero_App
         }
 
         //  Processing incoming request (Zero_Route)
-        self::$Route = new self::$Config->Site_ClassRoute();
+        self::$Route = new Www_Route();
 
         //  Session Initialization (Zero_Session)
         Zero_Session::Init(self::$Config->Site_Domain);
 
         // DB init config
         foreach (self::$Config->Db as $name => $config)
+        {
             Zero_DB::Add_Config($name, $config);
+        }
 
         require_once ZERO_PATH_ZERO . '/class/View.php';
+    }
+
+    public static function ExecuteSimple()
+    {
+        // General Authorization Application
+        if ( self::$Config->Site_AccessLogin )
+            if ( !isset($_SERVER['PHP_AUTH_USER']) || $_SERVER['PHP_AUTH_USER'] != self::$Config->Site_AccessLogin || $_SERVER['PHP_AUTH_PW'] != self::$Config->Site_AccessPassword )
+            {
+                header('WWW-Authenticate: Basic realm="Auth"');
+                header('HTTP/1.0 401 Unauthorized');
+                echo 'Auth Failed';
+                exit;
+            }
+
+        //  Инициализация запрошенного раздела (Zero_Section)
+        if ( isset($_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il']) && 0 < $_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il'] )
+        {
+            self::$Users = Zero_Model::Factory('Www_Users', $_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il']);
+            setcookie('i09u9Maf6l6sr7Um0m8A3u0r9i55m3il', $_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il'], time() + 2592000, '/');
+        }
+        else
+        {
+            self::$Users = Zero_Model::Factory('Www_Users');
+        }
+
+        self::$Section = Zero_Model::Make('Www_Section');
+        //  Checking for non-existent route
+        if ( !isset(self::$Route->Routes[ZERO_URL]) )
+            self::ResponseError(404);
+
+        //  Execute controller
+        $view = '';
+        Zero_App::Set_Variable('action_message', []);
+        if ( isset(self::$Route->Routes[ZERO_URL]['Controller']) && self::$Route->Routes[ZERO_URL]['Controller'] )
+        {
+            if ( !isset($_REQUEST['act']) )
+                $_REQUEST['act'] = 'Default';
+            $_REQUEST['act'] = 'Action_' . $_REQUEST['act'];
+            $Controller = Zero_Controller::Factory(self::$Route->Routes[ZERO_URL]['Controller']);
+            Zero_Logs::Start('#{CONTROLLER.Action} ' . self::$Route->Routes[ZERO_URL]['Controller'] . ' -> ' . $_REQUEST['act']);
+            $view = $Controller->$_REQUEST['act']();
+            if ( $_REQUEST['act'] != 'Action_Default' )
+                Zero_Logs::Set_Message_Action($_REQUEST['act']);
+            Zero_Logs::Stop('#{CONTROLLER.Action} ' . self::$Route->Routes[ZERO_URL]['Controller'] . ' -> ' . $_REQUEST['act']);
+            Zero_App::Set_Variable('action_message', $Controller->Get_Message());
+        }
+
+        // Основные данные
+        if ( isset(self::$Route->Routes[ZERO_URL]['View']) && self::$Route->Routes[ZERO_URL]['View'] )
+        {
+            $viewLayout = new Zero_View(self::$Route->Routes[ZERO_URL]['View']);
+            if ( true == $view instanceof Zero_View )
+            {
+                /* @var $view Zero_View */
+                $viewLayout->Assign('Content', $view->Fetch());
+            }
+            else
+                $viewLayout->Assign('Content', $view);
+            $view = $viewLayout->Fetch();
+        }
+        self::ResponseHtml($view, 200);
     }
 
     /**
@@ -297,8 +358,8 @@ class Zero_App
                 echo 'Auth Failed';
                 exit;
             }
+
         //  Инициализация запрошенного раздела (Zero_Section)
-        self::$Section = Zero_Model::Instance('Www_Section');
         if ( isset($_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il']) && 0 < $_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il'] )
         {
             self::$Users = Zero_Model::Factory('Www_Users', $_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il']);
@@ -309,6 +370,7 @@ class Zero_App
             self::$Users = Zero_Model::Factory('Www_Users');
         }
 
+        self::$Section = Zero_Model::Instance('Www_Section');
         //  Checking for non-existent section
         if ( 0 == self::$Section->ID || 'no' == self::$Section->IsEnable )
             self::ResponseError(404);
@@ -323,13 +385,12 @@ class Zero_App
             self::ResponseError(403);
 
         //  Execute controller
-        if ( !isset($_REQUEST['act']) )
-            $_REQUEST['act'] = 'Default';
-        //  Execute controller
         $view = "";
         self::Set_Variable('action_message', []);
         if ( self::$Section->Controller )
         {
+            if ( !isset($_REQUEST['act']) )
+                $_REQUEST['act'] = 'Default';
             if ( !isset($Action_List[$_REQUEST['act']]) )
                 self::ResponseError(403);
             $_REQUEST['act'] = 'Action_' . $_REQUEST['act'];
@@ -344,16 +405,18 @@ class Zero_App
         }
 
         // Основные данные
-        $viewLayout = new Zero_View(self::$Section->Layout);
-        if ( true == $view instanceof Zero_View )
+        if ( self::$Section->Layout )
         {
-            /* @var $view Zero_View */
-            $view->Assign('Action', $Action_List);
-            $viewLayout->Assign('Content', $view->Fetch());
+            $viewLayout = new Zero_View(self::$Section->Layout);
+            if ( true == $view instanceof Zero_View )
+            {
+                /* @var $view Zero_View */
+                $viewLayout->Assign('Content', $view->Fetch());
+            }
+            else
+                $viewLayout->Assign('Content', $view);
+            $view = $viewLayout->Fetch();
         }
-        else
-            $viewLayout->Assign('Content', $view);
-        $view = $viewLayout->Fetch();
         self::ResponseHtml($view, 200);
     }
 
@@ -390,7 +453,7 @@ class Zero_App
      * @param string $line stroka, v kotoroi` proizoshla oshibka
      * @throws ErrorException
      */
-    public static function Error_Handler($code, $message, $filename, $line)
+    public static function ErrorHandler($code, $message, $filename, $line)
     {
         throw new ErrorException($message, $code, 0, $filename, $line);
     }
@@ -404,15 +467,13 @@ class Zero_App
      *
      * @param Exception $exception
      */
-    public static function Exception_Handler(Exception $exception)
+    public static function ExceptionHandler(Exception $exception)
     {
-        $code = $exception->getCode();
         $range_file_error = 10;
         $error = "#{ERROR_EXCEPTION} " . $exception->getMessage() . ' ' . $exception->getFile() . '(' . $exception->getLine() . ')';
         Zero_Logs::Set_Message_Error($error);
         if ( Zero_App::$Config->Log_Output_Display == true )
         {
-            Zero_Logs::Set_Message_ErrorTrace($error);
             Zero_Logs::Set_Message_ErrorTrace(Zero_Logs::Get_SourceCode($exception->getFile(), $exception->getLine(), $range_file_error));
         }
 
@@ -448,24 +509,17 @@ class Zero_App
             Zero_Logs::Set_Message_Error($error);
             if ( Zero_App::$Config->Log_Output_Display == true )
             {
-                Zero_Logs::Set_Message_ErrorTrace($error);
                 Zero_Logs::Set_Message_ErrorTrace(Zero_Logs::Get_SourceCode($trace['file'], $trace['line'], $range_file_error));
             }
         }
 
-        if ( Zero_App::$Mode == 'api' )
-        {
-            self::ResponseJson(Zero_Logs::Get_Message(), $code, $exception->getMessage(), $exception->getFile() . '(' . $exception->getLine() . ')');
-        }
-        else if ( Zero_App::$Mode == 'web' )
-        {
-            $code = 409;
-            self::ResponseError($code);
-        }
-        else if ( Zero_App::$Mode == 'console' )
-        {
+        $code = $exception->getCode();
+        if ( !isset($_SERVER['REQUEST_URI']) )
             self::ResponseConsole();
-        }
+        else if ( Zero_App::$Mode == 'api' )
+            self::ResponseJson(Zero_Logs::Get_Message(), $code, $exception->getMessage());
+        else if ( Zero_App::$Mode == 'web' )
+            self::ResponseError(409);
     }
 
     /**

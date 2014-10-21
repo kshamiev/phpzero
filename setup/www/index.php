@@ -7,8 +7,12 @@
 // Including the class Zero_App
 require __DIR__ . '/zero/class/App.php';
 
-Zero_App::Init('web', 'application');
+Zero_App::Init('application');
 
-Zero_App::Execute();
+//`Full (use Mysql)
+//--USE--//Zero_App::Execute();
+
+// Native (no sql mode)
+//--NOT--//Zero_App::ExecuteSimple();
 
 exit;

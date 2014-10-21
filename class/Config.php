@@ -116,21 +116,21 @@ class Zero_Config
      *
      * @var string
      */
-    public $Site_ClassRoute = '';
+//    public $Site_ClassRoute = '';
 
     /**
      * Default language
      *
      * @var string
      */
-    public $Site_ClassSection = '';
+//    public $Site_ClassSection = '';
 
     /**
      * Default language
      *
      * @var string
      */
-    public $Site_ClassUsers = '';
+//    public $Site_ClassUsers = '';
 
     /**
      * Access for DB (Mysql)
@@ -283,15 +283,15 @@ class Zero_Config
             }
         }
 
-        $this->Site_ClassRoute = $Config['Site']['ClassRoute'];
-        if ( !$this->Site_ClassRoute )
-            die('class Route undefined');
-        $this->Site_ClassSection = $Config['Site']['ClassSection'];
-        if ( !$this->Site_ClassSection )
-            die('class Route undefined');
-        $this->Site_ClassUsers = $Config['Site']['ClassUsers'];
-        if ( !$this->Site_ClassUsers )
-            die('class Route undefined');
+//        $this->Site_ClassRoute = $Config['Site']['ClassRoute'];
+//        if ( !$this->Site_ClassRoute )
+//            die('class Route undefined');
+//        $this->Site_ClassSection = $Config['Site']['ClassSection'];
+//        if ( !$this->Site_ClassSection )
+//            die('class Route undefined');
+//        $this->Site_ClassUsers = $Config['Site']['ClassUsers'];
+//        if ( !$this->Site_ClassUsers )
+//            die('class Route undefined');
 
         //  Number of items per page
         $this->View_PageItem = $Config['View']['PageItem'];
@@ -355,8 +355,8 @@ class Zero_Config
             if ( !mkdir(ZERO_PATH_LOG, 0777, true) )
                 die('logs path: "' . ZERO_PATH_LOG . '" not exists');
         error_reporting(-1);
-        set_error_handler(['Zero_App', 'Error_Handler'], -1);
-        set_exception_handler(['Zero_App', 'Exception_Handler']);
+        set_error_handler(['Zero_App', 'ErrorHandler'], -1);
+        set_exception_handler(['Zero_App', 'ExceptionHandler']);
         // register_shutdown_function(['Zero_App', 'Exit_Application']);
 
         if ( !is_dir(ZERO_PATH_EXCHANGE) )

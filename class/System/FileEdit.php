@@ -45,6 +45,7 @@ class Zero_System_FileEdit extends Zero_Controller
         $this->View->Assign('path', $this->Params['obj_parent_path'] . '/' . $this->Params['file_name']);
         $this->View->Assign('name', $this->Params['file_name']);
         $this->View->Assign('data', file_get_contents($this->Params['obj_parent_path'] . '/' . $this->Params['file_name']));
+        $this->View->Assign('Action', Zero_App::$Section->Get_Action_List());
     }
 
     public function Action_FileSave()

@@ -39,11 +39,11 @@ class Zero_Route
      * Пользовательский роутинг
      *
      * Sample:
-     * '/page/page/page' => 'Zero_Section_Page', '/page/page/page' => 'Zero_Section_Page', '/page/page/page' => 'Zero_Section_Page' ...
+     * '/page/page/page' => ['Controller'=>'Zero_Section_Page', 'View'=>'Zero_Content'], ...
      *
      * @var array
      */
-    public static $Routes = [];
+    public $Routes = ['/' => ['Controller' => 'Zero_Content_Simple', 'View' => 'Zero_Content']];
 
     /**
      * Analiz request url
@@ -72,7 +72,7 @@ class Zero_Route
                 return;
         }
         $this->UrlSegment = $row;
-        $this->Url .= '/'. implode('/', $row);
+        $this->Url .= '/' . implode('/', $row);
 
         // api
         if ( 'api' == $row[0] )
@@ -88,6 +88,5 @@ class Zero_Route
                 $_POST = json_decode($GLOBALS["HTTP_RAW_POST_DATA"], true);
             }
         }
-        Zero_Logs::Save_File($this->Url, 'debug.log');
     }
 }

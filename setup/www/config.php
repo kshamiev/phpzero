@@ -28,12 +28,6 @@ return [
         'DomainAssets' => '',
         //  Domain binary data (uploaded by users)
         'DomainUpload' => '',
-        //  Domain binary data (uploaded by users)
-        'ClassRoute' => 'Zero_Route',
-        //  Domain binary data (uploaded by users)
-        'ClassSection' => 'Zero_Section',
-        //  Domain binary data (uploaded by users)
-        'ClassUsers' => 'Zero_Users',
     ],
     //  Access for DB (Mysql)
     'Db' => [

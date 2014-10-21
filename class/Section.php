@@ -228,7 +228,7 @@ class Zero_Section extends Zero_Model
     {
         if ( $this->ID == 0 )
         {
-            $this->Init_Url(Zero_App::$Config->Site_DomainSub . Zero_App::$Route->Url);
+            $this->Init_Url(Zero_App::$Config->Site_DomainSub . ZERO_URL);
         }
     }
 
@@ -259,7 +259,9 @@ class Zero_Section extends Zero_Model
     public function Get_Action_List()
     {
         if ( 0 == $this->ID )
-            return $this->_Action_List = [];
+            return [];
+        else if ( !is_null($this->_Action_List) )
+            return $this->_Action_List;
 
         $index_cache = 'Action_List_' . Zero_App::$Users->Zero_Groups_ID . '_' . $this->Controller;
         if ( false !== $this->_Action_List = $this->Cache->Get($index_cache) )
@@ -274,46 +276,18 @@ class Zero_Section extends Zero_Model
             $this->_Action_List = $Model->AR->Select_Array_Index('Action');
             foreach ($this->_Action_List as $action => $row)
             {
-                //                $index = "controller action {$action}";
-                //                if ( 'Default' == $action )
-                //                    $index = "controller action {$action}";
-                //                else
-                //                    $index = "controller {$this->Controller} action {$action}";
                 $this->_Action_List[$action] = ['Name' => Zero_I18n::Controller($this->Controller, 'Action_' . $action)];
             }
-            //
-            //            $reflection = new ReflectionClass($this->Controller);
-            //            foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method)
-            //            {
-            //                $name = $method->getName();
-            //                if ( 'Action' == substr($name, 0, 6) )
-            //                {
-            //                    $name = str_replace('Action_', '', $name);
-            //                    $index = "controller action {$name}";
-            ////                    if ( 'Default' == $name )
-            ////                        $index = "controller action {$name}";
-            ////                    else
-            ////                        $index = "controller {$this->Controller} action {$name}";
-            //                    $this->_Action_List[$name] = ['Name' => Zero_I18n::T($this->Controller, $index, $name)];
-            //                }
-            //            }
         }
         else if ( '' != $this->Controller )
         {
-
             $reflection = new ReflectionClass($this->Controller);
-            //            foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC | ReflectionMethod::IS_PROTECTED) as $method)
             foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method)
             {
                 $name = $method->getName();
                 if ( 'Action' == substr($name, 0, 6) )
                 {
                     $index = str_replace('Action_', '', $name);
-                    //                    $index = "controller action {$name}";
-                    //                    if ( 'Default' == $name )
-                    //                        $index = "controller action {$name}";
-                    //                    else
-                    //                        $index = "controller {$this->Controller} action {$name}";
                     $this->_Action_List[$index] = ['Name' => Zero_I18n::Controller($this->Controller, $name)];
                 }
             }
