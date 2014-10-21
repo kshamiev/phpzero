@@ -93,13 +93,13 @@ abstract class Zero_Crud_Grid extends Zero_Controller
      */
     protected function Chunk_Init()
     {
-        if ( isset(Zero_App::$Route->Param['pid']) )
-            $this->Params['obj_parent_id'] = Zero_App::$Route->Param['pid'];
+        if ( isset($_GET['pid']) )
+            $this->Params['obj_parent_id'] = $_GET['pid'];
         else if ( empty($this->Params['obj_parent_id']) )
             $this->Params['obj_parent_id'] = 0;
         //
-        if ( isset(Zero_App::$Route->Param['id']) )
-            $this->Params['id'] = Zero_App::$Route->Param['id'];
+        if ( isset($_GET['id']) )
+            $this->Params['id'] = $_GET['id'];
         else if ( empty($this->Params['id']) )
             $this->Params['id'] = 0;
         //
@@ -173,8 +173,8 @@ abstract class Zero_Crud_Grid extends Zero_Controller
         }
 
         //  Page by page
-        if ( isset(Zero_App::$Route->Param['pg']) && 0 < Zero_App::$Route->Param['pg'] )
-            $Filter->Page = Zero_App::$Route->Param['pg'];
+        if ( isset($_GET['pg']) && 0 < $_GET['pg'] )
+            $Filter->Page = $_GET['pg'];
     }
 
     /**
@@ -318,9 +318,9 @@ abstract class Zero_Crud_Grid extends Zero_Controller
     {
         $ObjectRem = Zero_Model::Make($this->ModelName, $_REQUEST['obj_id']);
         //  Remove binary data object
-        $path = ZERO_PATH_DATA . '/' . strtolower($ObjectRem->Source) . '/' . Zero_FileSystem::Get_Path_Cache($ObjectRem->ID) . '/' . $ObjectRem->ID;
+        $path = ZERO_PATH_DATA . '/' . strtolower($ObjectRem->Source) . '/' . Zero_Lib_FileSystem::Get_Path_Cache($ObjectRem->ID) . '/' . $ObjectRem->ID;
         if ( is_dir($path) )
-            Zero_FileSystem::Folder_Remove($path);
+            Zero_Lib_FileSystem::Folder_Remove($path);
         // Remove from session
         $ObjectRem->Factory_Unset(1);
         //  Reset Cache

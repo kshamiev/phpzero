@@ -123,11 +123,11 @@
         <td height="26px">
             {if ( isset($Params['obj_parent_path']) )}
             {foreach ($Params['obj_parent_path'] as $ID => $Name)}
-            &nbsp;/ <a href="{URL}-pid:{$ID}">{$Name}</a>
+            &nbsp;/ <a href="{URL}?pid={$ID}">{$Name}</a>
             {/foreach}
             <br><br>
             {/if}
-            <input class="btn" type="button" value="{translation "Www_All" "Add"}" onclick="location.href='{URL}/edit-pid:{$pid}?act=Add';">
+            <input class="btn" type="button" value="{translation "Www_All" "Add"}" onclick="location.href='{URL}/edit?pid={$pid}&act=Add';">
             {if ( isset($Action['CatalogMove']) )}
             ID: <input type="text" id="catalog_move1" style="width: 50px;">
             <input class="btn" type="button" value="{$Action['CatalogMove']['Name']}" onclick="button_form_obj_id(this.form, '{URL}', 'CatalogMove', $('#catalog_move1').val(), 0);">
@@ -157,10 +157,10 @@
   <tr>
     <td width="80" align="center">
       {if ( isset($Params['obj_parent_path']) )}
-      <a href="{URL}-pid:{$Data['ID']}"><img style="vertical-align: middle;" src="{HTTPA}/img/button/button_folder_open.gif" border="0"></a>
+      <a href="{URL}?pid={$Data['ID']}"><img style="vertical-align: middle;" src="{HTTPA}/img/button/button_folder_open.gif" border="0"></a>
       {/if}
       {if ( isset($Action['Link_Rem']) )}<input type="image" src="{HTTPA}/img/button/button_unlink.gif" onclick="button_form_obj_id('formpanel', '{URL}', 'Link_Rem', {$Data['ID']}, 1);">{/if}
-      <a href="{URL}/edit-pid:{$pid}-id:{$Data['ID']}"><img style="vertical-align: middle;" src="{HTTPA}/img/button/button_edit.gif" border="0"></a>
+      <a href="{URL}/edit?pid={$pid}&id={$Data['ID']}"><img style="vertical-align: middle;" src="{HTTPA}/img/button/button_edit.gif" border="0"></a>
       {if ( isset($Action['Remove']) )}<input type="image" src="{HTTPA}/img/button/button_trash.gif" onclick="button_form_obj_id('formpanel', '{URL}', 'Remove', {$Data['ID']}, 1);">{/if}
     </td>
     {foreach ($PropsGrid as $Prop => $row)}

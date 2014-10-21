@@ -85,16 +85,16 @@ else
     // check whether the process is running on a server
     exec("ps ax | grep -v 'grep' | grep -v 'cd ' | grep -v 'sudo ' | grep 'console.php '", $result);
     $result = join("\n", $result);
-    $modules = Zero_FileSystem::Get_Modules();
+    $modules = Zero_Lib_FileSystem::Get_Modules();
     foreach ($modules as $module)
     {
-        $config = Zero_FileSystem::Get_Config($module);
+        $config = Zero_Lib_FileSystem::Get_Config($module);
         if ( !isset($config['console']) )
             continue;
-        //        Zero_Logs::Set_Message_Notice($config)
+        // Zero_Logs::Set_Message_Notice($config)
         foreach ($config['console'] as $sys_demon => $sys_cron)
         {
-            if ( !$sys_cron['IsActive'] || false !== strpos($result, Zero_App::$Config->System_PathPhp . ' ' . ZERO_PATH_SITE . '/console.php ' . $sys_demon) )
+            if ( !$sys_cron['IsActive'] || false !== strpos($result, Zero_App::$Config->Site_PathPhp . ' ' . ZERO_PATH_SITE . '/console.php ' . $sys_demon) )
                 continue;
             //  check date and time to run
             if ( false == zero_crontab_check_datetime($week, $sys_cron['Week']) )
@@ -109,8 +109,8 @@ else
                 continue;
 
             //  run
-            // exec(Zero_App::$Config->System_PathPhp . ' ' . ZERO_PATH_SITE . '/console.php ' . $sys_demon . ' > /dev/null 2>&1 &');
-            exec(Zero_App::$Config->System_PathPhp . ' ' . ZERO_PATH_SITE . '/console.php ' . $sys_demon);
+            // exec(Zero_App::$Config->Site_PathPhp . ' ' . ZERO_PATH_SITE . '/console.php ' . $sys_demon . ' > /dev/null 2>&1 &');
+            exec(Zero_App::$Config->Site_PathPhp . ' ' . ZERO_PATH_SITE . '/console.php ' . $sys_demon);
         }
     }
 }

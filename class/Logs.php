@@ -329,6 +329,6 @@ class Zero_Logs
      */
     public static function Save_File($data, $file_log)
     {
-        return Zero_FileSystem::File_Save_After(ZERO_PATH_LOG . '/' . $file_log, $data);
+        return Zero_Lib_FileSystem::File_Save_After(ZERO_PATH_LOG . '/' . $file_log, $data);
     }
 }

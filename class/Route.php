@@ -26,14 +26,7 @@ class Zero_Route
      *
      * @var string
      */
-    public $Url = '';
-
-    /**
-     * Routing iazy`ka
-     *
-     * @var array
-     */
-    public $Param = [];
+    public $Url = '/';
 
     /**
      * Routing iazy`ka
@@ -60,30 +53,31 @@ class Zero_Route
         $this->Lang = Zero_App::$Config->Site_Language;
         $this->Url = '/';
 
-        // если запрос консольный
+        // если запрос консольный либо главная страница
         if ( !isset($_SERVER['REQUEST_URI']) || $_SERVER['REQUEST_URI'] == '/' )
             return;
 
+        // инициализация
         if ( substr($_SERVER['REQUEST_URI'], -1) == '/' )
-        {
             Zero_App::ResponseRedirect(substr($_SERVER['REQUEST_URI'], 0, -1));
-        }
-
+        $this->Url = '';
         $row = explode('/', strtolower(rtrim(ltrim(explode('?', $_SERVER['REQUEST_URI'])[0], '/'), '/')));
 
         // язык
         if ( $this->Lang != $row[0] && isset(Zero_App::$Config->Language[$row[0]]) )
         {
             $this->Lang = array_shift($row);
-            $this->Url .= $this->Lang;
+            $this->Url = '/' . $this->Lang;
+            if ( count($row) == 0 )
+                return;
         }
+        $this->UrlSegment = $row;
+        $this->Url .= '/'. implode('/', $row);
 
         // api
         if ( 'api' == $row[0] )
         {
             Zero_App::$Mode = 'api';
-            $this->UrlSegment = $row;
-            $this->Url .= 'api' . (isset($row[1]) ? '/' . $row[1] : '');
             if ( $_SERVER['REQUEST_METHOD'] === "PUT" )
             {
                 $data = file_get_contents('php://input', false, null, -1, $_SERVER['CONTENT_LENGTH']);
@@ -93,26 +87,7 @@ class Zero_Route
             {
                 $_POST = json_decode($GLOBALS["HTTP_RAW_POST_DATA"], true);
             }
-            return;
         }
-
-        // парамтеры
-        if ( 0 < count($row) && $row[0] )
-        {
-            $param = array_pop($row);
-            if ( preg_match("~.+?-([^/]+)$~", $param, $arr) )
-            {
-                $row[] = str_replace('-' . $arr[1], '', $param);
-                foreach (explode('-', explode('.', $arr[1])[0]) as $segment)
-                {
-                    $arr = explode(':', $segment);
-                    if ( 1 < count($arr) )
-                        $this->Param[$arr[0]] = $arr[1];
-                }
-            }
-            else
-                $row[] = $param;
-            $this->Url .= implode('/', $row);
-        }
+        Zero_Logs::Save_File($this->Url, 'debug.log');
     }
 }

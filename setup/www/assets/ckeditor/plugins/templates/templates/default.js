@@ -84,6 +84,428 @@ CKEDITOR.addTemplates( 'default', {
 				'Type the text here' +
 			'</p>' +
 			'</div>'
-	}
-	]
+	},
+        {
+            title: 'Заголовок(h2) 2 рисунка в шахмтном порядке 3 параграфа (ps100х100)',
+            image: 'template1.gif',
+            description: 'Заголовок 2 рисунка в шахмтном порядке 3 параграфа. Размер рисунков 100х100 пикселов.',
+            html: '<h2>' +
+                'Заголовок h2' +
+                '</h2>' +
+                '<div>' +
+                '<img src=" " alt="" style="margin: 3px 10px" height="100" width="100" align="left" />' +
+                '</div>' +
+                '<p>' +
+                '!!!Параграф 1 к рисунку 1 !!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>' +
+                '<p>' +
+                '!!! Параграф 2!!!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>' +
+                '<div>' +
+                '<img src=" " alt="" style="margin: 3px 10px" height="100" width="100" align="right" />' +
+                '</div>' +
+                '<p>' +
+                '!! Параграф 3 к рисунку 2!!!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>'
+        },
+        {
+            title: 'Заголовок(h2) 2 рисунка в обратном шахмтном порядке 3 параграфа (ps100х100)',
+            image: 'template1.gif',
+            description: 'Заголовок 2 рисунка в обратном шахмтном порядке 3 параграфа. Размер рисунков 100х100 пикселов.',
+            html: '<h2>' +
+                'Заголовок h2' +
+                '</h2>' +
+                '<div>' +
+                '<img src=" " alt="" style="margin: 3px 10px" height="100" width="100" align="right" />' +
+                '</div>' +
+                '<p>' +
+                '!!!Параграф 1 к рисунку 1 !!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>' +
+                '<p>' +
+                '!!! Параграф 2!!!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>' +
+                '<div>' +
+                '<img src=" " alt="" style="margin: 3px 10px" height="100" width="100" align="left" />' +
+                '</div>' +
+                '<p>' +
+                '!! Параграф 3 к рисунку 2!!!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>'
+        },
+        {
+            title: 'Заголовок(h2) 3 рисунка в шахмтном порядке 3 параграфа (ps100х100)',
+            image: 'template1.gif',
+            description: 'Заголовок 3 рисунка в шахмтном порядке 3 параграфа. Размер рисунков 100х100 пикселов.',
+            html: '<h2>' +
+                'Заголовок h2' +
+                '</h2>' +
+                '<div>' +
+                '<img src=" " alt="" style="margin: 3px 10px" height="100" width="100" align="left" />' +
+                '</div>' +
+                '<p>' +
+                '!!!Параграф 1 к рисунку 1 !!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>' +
+                '<div>'+
+                '<img src=" " alt="" style="margin: 3px 10px" height="100" width="100" align="right" />'+
+                '</div>'+
+                '<p>' +
+                '!!! Параграф 2!!!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>' +
+                '<div>' +
+                '<img src=" " alt="" style="margin: 3px 10px" height="100" width="100" align="left" />' +
+                '</div>' +
+                '<p>' +
+                '!! Параграф 3 к рисунку 2!!!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>'
+        },
+        {
+            title: 'Заголовок(h2) 3 рисунка в обратном шахмтном порядке 3 параграфа (ps100х100)',
+            image: 'template1.gif',
+            description: 'Заголовок 3 рисунка в обратном шахмтном порядке 3 параграфа. Размер рисунков 100х100 пикселов.',
+            html: '<h2>' +
+                'Заголовок h2' +
+                '</h2>' +
+                '<div>' +
+                '<img src=" " alt="" style="margin: 3px 10px" height="100" width="100" align="right" />' +
+                '</div>' +
+                '<p>' +
+                '!!!Параграф 1 к рисунку 1 !!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>' +
+                '<div>'+
+                '<img src=" " alt="" style="margin: 3px 10px" height="100" width="100" align="left" />'+
+                '</div>'+
+                '<p>' +
+                '!!! Параграф 2!!!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>' +
+                '<div>' +
+                '<img src=" " alt="" style="margin: 3px 10px" height="100" width="100" align="right" />' +
+                '</div>' +
+                '<p>' +
+                '!! Параграф 3 к рисунку 2!!!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>'
+        }, {
+            title: 'Заголовок(h2) 2 рисунка в шахмтном порядке 3 параграфа (ps200х200)',
+            image: 'template1.gif',
+            description: 'Заголовок 2 рисунка в шахмтном порядке 3 параграфа. Размер рисунков 200х200 пикселов.',
+            html: '<h2>' +
+                'Заголовок h2' +
+                '</h2>' +
+                '<div>' +
+                '<img src=" " alt="" style="margin: 3px 10px" height="200" width="200" align="left" />' +
+                '</div>' +
+                '<p>' +
+                '!!!Параграф 1 к рисунку 1 !!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>' +
+                '<p>' +
+                '!!! Параграф 2!!!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>' +
+                '<div>' +
+                '<img src=" " alt="" style="margin: 3px 10px" height="200" width="200" align="right" />' +
+                '</div>' +
+                '<p>' +
+                '!! Параграф 3 к рисунку 2!!!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>'
+        },
+        {
+            title: 'Заголовок(h2) 2 рисунка в обратном шахмтном порядке 3 параграфа (ps200х200)',
+            image: 'template1.gif',
+            description: 'Заголовок 2 рисунка в обратном шахмтном порядке 3 параграфа. Размер рисунков 200х200 пикселов.',
+            html: '<h2>' +
+                'Заголовок h2' +
+                '</h2>' +
+                '<div>' +
+                '<img src=" " alt="" style="margin: 3px 10px" height="200" width="200" align="right" />' +
+                '</div>' +
+                '<p>' +
+                '!!!Параграф 1 к рисунку 1 !!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>' +
+                '<p>' +
+                '!!! Параграф 2!!!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>' +
+                '<div>' +
+                '<img src=" " alt="" style="margin: 3px 10px" height="200" width="200" align="left" />' +
+                '</div>' +
+                '<p>' +
+                '!! Параграф 3 к рисунку 2!!!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>'
+        },
+        {
+            title: 'Заголовок(h2) 3 рисунка в шахмтном порядке 3 параграфа (ps200х200)',
+            image: 'template1.gif',
+            description: 'Заголовок 3 рисунка в шахмтном порядке 3 параграфа. Размер рисунков 200х200 пикселов.',
+            html: '<h2>' +
+                'Заголовок h2' +
+                '</h2>' +
+                '<div>' +
+                '<img src=" " alt="" style="margin: 3px 10px" height="200" width="200" align="left" />' +
+                '</div>' +
+                '<p>' +
+                '!!!Параграф 1 к рисунку 1 !!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>' +
+                '<div>'+
+                '<img src=" " alt="" style="margin: 3px 10px" height="200" width="200" align="right" />'+
+                '</div>'+
+                '<p>' +
+                '!!! Параграф 2!!!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>' +
+                '<div>' +
+                '<img src=" " alt="" style="margin: 3px 10px" height="200" width="200" align="left" />' +
+                '</div>' +
+                '<p>' +
+                '!! Параграф 3 к рисунку 2!!!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>'
+        },
+        {
+            title: 'Заголовок(h2) 3 рисунка в обратном шахмтном порядке 3 параграфа (ps200х200)',
+            image: 'template1.gif',
+            description: 'Заголовок 3 рисунка в обратном шахмтном порядке 3 параграфа. Размер рисунков 200х200 пикселов.',
+            html: '<h2>' +
+                'Заголовок h2' +
+                '</h2>' +
+                '<div>' +
+                '<img src=" " alt="" style="margin: 3px 10px" height="200" width="200" align="right" />' +
+                '</div>' +
+                '<p>' +
+                '!!!Параграф 1 к рисунку 1 !!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>' +
+                '<div>'+
+                '<img src=" " alt="" style="margin: 3px 10px" height="200" width="200" align="left" />'+
+                '</div>'+
+                '<p>' +
+                '!!! Параграф 2!!!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>' +
+                '<div>' +
+                '<img src=" " alt="" style="margin: 3px 10px" height="200" width="200" align="right" />' +
+                '</div>' +
+                '<p>' +
+                '!! Параграф 3 к рисунку 2!!!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>'
+        },
+        {
+            title: 'Заголовок(h2) 1 большой рисунок слева 3 параграфа (ps250х250)',
+            image: 'template1.gif',
+            description: 'Заголовок 1 рисунк слева 3 параграфа. Размер рисунка 250х250 пикселов.',
+            html: '<h2>' +
+                'Заголовок h2' +
+                '</h2>' +
+                '<div>' +
+                '<img src=" " alt="" style="margin: 3px 10px" height="250" width="250" align="left" />' +
+                '</div>' +
+                '<p>' +
+                '!!!Параграф 1 к рисунку 1 !!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>' +
+                '<p>' +
+                '!!! Параграф 2!!!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>' +
+                '<p>' +
+                '!! Параграф 3 к рисунку 2!!!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>'
+        },
+        {
+            title: 'Заголовок(h2) 1 большой рисунок слева 1 маленький рисунок справа 3 параграфа',
+            image: 'template1.gif',
+            description: 'Заголовок 1 большой рисунк слева 1 маленький рисунок справа 3 параграфа. Размер рисунков 250х250 пикселов и 100х100 пикселов, соответственно.',
+            html: '<h2>' +
+                'Заголовок h2' +
+                '</h2>' +
+                '<div>' +
+                '<img src=" " alt="" style="margin: 3px 10px" height="250" width="250" align="left" />' +
+                '</div>' +
+                '<p>' +
+                '!!!Параграф 1 к рисунку 1 !!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>' +
+                '<p>' +
+                '!!! Параграф 2!!!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>' +
+                '<div>' +
+                '<img src=" " alt="" style="margin: 3px 10px" height="250" width="250" align="right" />' +
+                '</div>' +
+                '<p>' +
+                '!! Параграф 3 к рисунку 2!!!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>'
+        },
+        {
+            title: 'Заголовок(h2) 1 большой рисунок слева 1 маленький рисунок слева 3 параграфа',
+            image: 'template1.gif',
+            description: 'Заголовок 1 большой рисунк слева 1 маленький рисунок слева 3 параграфа. Размер рисунков 250х250 пикселов и 100х100 пикселов, соответственно.',
+            html: '<h2>' +
+                'Заголовок h2' +
+                '</h2>' +
+                '<div>' +
+                '<img src=" " alt="" style="margin: 3px 10px" height="250" width="250" align="left" />' +
+                '</div>' +
+                '<p>' +
+                '!!!Параграф 1 к рисунку 1 !!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>' +
+                '<p>' +
+                '!!! Параграф 2!!!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>' +
+                '<div>' +
+                '<img src=" " alt="" style="margin: 3px 10px" height="250" width="250" align="left" />' +
+                '</div>' +
+                '<p>' +
+                '!! Параграф 3 к рисунку 2!!!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>'
+        },
+        {
+            title: 'Заголовок(h2) 3 рисунка с заголовками(h3) 3 параграфа (ps100x100)',
+            image: 'template1.gif',
+            description: 'Заголовок 3 рисунка с заголовками 3 параграфа. Размер рисунков 100х100 пикселов. Риунки выровняны по левому краю.',
+            html: '<h2>' +
+                'Заголовок h2' +
+                '</h2>' +
+                '<h3>' +
+                '<img src=" " alt="" style="margin: 3px 10px" height="100" width="100" align="left" />' +
+                'Заголовок писать здесь'+
+                '</h3>' +
+                '<p>' +
+                '!!!Параграф 1 к рисунку 1 !!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>' +
+                '<h3>' +
+                '<img src=" " alt="" style="margin: 3px 10px" height="100" width="100" align="left" />' +
+                'Заголовок писать здесь'+
+                '</h3>' +
+                '<p>' +
+                '!!! Параграф 2!!!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>' +
+                '<h3>' +
+                '<img src=" " alt="" style="margin: 3px 10px" height="100" width="100" align="left" />' +
+                'Заголовок писать здесь'+
+                '</h3>' +
+                '<p>' +
+                '!! Параграф 3 к рисунку 2!!!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>'
+        },
+        {
+            title: 'Заголовок(h2) 3 рисунка с заголовками(h3) 3 параграфа (ps100x100)',
+            image: 'template1.gif',
+            description: 'Заголовок 3 рисунка с заголовками 3 параграфа. Размер рисунков 100х100 пикселов. 2 риунка выровняны по левому краю. 1 выровнен по правому краю(центральный).',
+            html: '<h2>' +
+                'Заголовок h2' +
+                '</h2>' +
+                '<h3>' +
+                '<img src=" " alt="" style="margin: 3px 10px" height="100" width="100" align="left" />' +
+                'Заголовок писать здесь'+
+                '</h3>' +
+                '<p>' +
+                '!!!Параграф 1 к рисунку 1 !!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>' +
+                '<h3>' +
+                '<img src=" " alt="" style="margin: 3px 10px" height="100" width="100" align="right" />' +
+                'Заголовок писать здесь'+
+                '</h3>' +
+                '<p>' +
+                '!!! Параграф 2!!!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>' +
+                '<h3>' +
+                '<img src=" " alt="" style="margin: 3px 10px" height="100" width="100" align="left" />' +
+                'Заголовок писать здесь'+
+                '</h3>' +
+                '<p>' +
+                '!! Параграф 3 к рисунку 2!!!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>'
+        },
+        {
+            title: 'Заголовок(h2) 3 рисунка с заголовками(h3) 3 параграфа (ps200x200)',
+            image: 'template1.gif',
+            description: 'Заголовок 3 рисунка с заголовками 3 параграфа. Размер рисунков 200х200 пикселов. Риунки выровняны по левому краю.',
+            html: '<h2>' +
+                'Заголовок h2' +
+                '</h2>' +
+                '<h3>' +
+                '<img src=" " alt="" style="margin: 3px 10px" height="200" width="200" align="left" />' +
+                'Заголовок писать здесь'+
+                '</h3>' +
+                '<p>' +
+                '!!!Параграф 1 к рисунку 1 !!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>' +
+                '<h3>' +
+                '<img src=" " alt="" style="margin: 3px 10px" height="200" width="200" align="left" />' +
+                'Заголовок писать здесь'+
+                '</h3>' +
+                '<p>' +
+                '!!! Параграф 2!!!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>' +
+                '<h3>' +
+                '<img src=" " alt="" style="margin: 3px 10px" height="200" width="200" align="left" />' +
+                'Заголовок писать здесь'+
+                '</h3>' +
+                '<p>' +
+                '!! Параграф 3 к рисунку 2!!!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>'
+        },
+        {
+            title: 'Заголовок(h2) 3 рисунка с заголовками(h3) 3 параграфа (ps200x200)',
+            image: 'template1.gif',
+            description: 'Заголовок 3 рисунка с заголовками 3 параграфа. Размер рисунков 200х200 пикселов. 2 риунка выровняны по левому краю. 1 выровнен по правому краю(центральный).',
+            html: '<h2>' +
+                'Заголовок h2' +
+                '</h2>' +
+                '<h3>' +
+                '<img src=" " alt="" style="margin: 3px 10px" height="200" width="200" align="left" />' +
+                'Заголовок писать здесь'+
+                '</h3>' +
+                '<p>' +
+                '!!!Параграф 1 к рисунку 1 !!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>' +
+                '<h3>' +
+                '<img src=" " alt="" style="margin: 3px 10px" height="200" width="200" align="right" />' +
+                'Заголовок писать здесь'+
+                '</h3>' +
+                '<p>' +
+                '!!! Параграф 2!!!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>' +
+                '<h3>' +
+                '<img src=" " alt="" style="margin: 3px 10px" height="200" width="200" align="left" />' +
+                'Заголовок писать здесь'+
+                '</h3>' +
+                '<p>' +
+                '!! Параграф 3 к рисунку 2!!!!' +
+                'Elementum. Odio, quis natoque tristique, odio, rhoncus duis in sed aenean lundium, enim nunc mid ut, sociis dolor dapibus? Tempor integer, facilisis tortor non tincidunt. Ut ac. Risus cum duis porta placerat. Elementum nascetur sociis ridiculus, ridiculus odio nec nisi et magnis? Parturient sagittis egestas. Ac urna scelerisque! Tortor hac hac! Nunc, sit platea integer elit porttitor purus parturient cursus pulvinar enim ultrices, dis. Sed pellentesque tortor in vut! Cum dis ac? Tincidunt a elementum aliquet egestas. A augue turpis. Est arcu, diam magna. Ut enim. Adipiscing ridiculus lectus pid, in nunc ac aliquam! Parturient! Dapibus nascetur mattis pulvinar massa! Urna lorem! Elit elementum, integer augue egestas eros lorem elementum purus cursus? Nec quis porttitor placerat, arcu magnis turpis risus.'+
+                '</p>'
+        }
+    ]
 } );

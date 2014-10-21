@@ -62,7 +62,6 @@ for ($i = 0; $i < $min_chars; $i++)
   Do not do this on a production server. Might be helpful when debugging why CKFinder does not work as expected.
  */
 // error_reporting(E_ALL);
-// ini_set('display_errors', 1);
 
 /*
   To make it easy to configure CKFinder, the $baseUrl and $baseDir can be used.
@@ -141,8 +140,6 @@ $config['Images'] = Array(
  */
 $config['RoleSessionVar'] = 'CKFinder_UserRole';
 $_SESSION['CKFinder_UserRole'] = $Users->Zero_Groups_ID;
-//$fp = fopen(__FILE__ . '1.log', 'a'); fputs($fp, $Users->Zero_Groups_ID . "\n"); fclose($fp);
-//$fp = fopen(__FILE__ . '1.log', 'a'); fputs($fp, var_export($Users)); fclose($fp);
 
 /*
   AccessControl : used to restrict access or features to specific folders.
@@ -156,7 +153,23 @@ $_SESSION['CKFinder_UserRole'] = $Users->Zero_Groups_ID;
   means "all resource types".
  */
 
-if ( 2 != $Users->Zero_Groups_ID )
+if ( 1 == $Users->Zero_Groups_ID )
+{
+    $config['AccessControl'][] = Array(
+        'role' => $Users->Zero_Groups_ID,
+        'resourceType' => 'Content',
+        'folder' => '/',
+        'folderView' => true,
+        'folderCreate' => true,
+        'folderRename' => true,
+        'folderDelete' => true,
+        'fileView' => true,
+        'fileUpload' => true,
+        'fileRename' => true,
+        'fileDelete' => true
+    );
+}
+else if ( 2 != $Users->Zero_Groups_ID )
 {
     $config['AccessControl'][] = Array(
         'role' => $Users->Zero_Groups_ID,
@@ -171,6 +184,9 @@ if ( 2 != $Users->Zero_Groups_ID )
         'fileRename' => false,
         'fileDelete' => false
     );
+}
+if ( 2 != $Users->Zero_Groups_ID )
+{
     $config['AccessControl'][] = Array(
         'role' => $Users->Zero_Groups_ID,
         'resourceType' => 'User-' . $Users->Login,
@@ -198,34 +214,6 @@ if ( 2 != $Users->Zero_Groups_ID )
         'fileDelete' => true
     );
 }
-
-/*
-$config['AccessControl'][] = Array(
-    'role' => '1',
-    'resourceType' => '*',
-    'folder' => '/',
-    'folderView' => true,
-    'folderCreate' => true,
-    'folderRename' => true,
-    'folderDelete' => true,
-    'fileView' => true,
-    'fileUpload' => true,
-    'fileRename' => true,
-    'fileDelete' => true);
-
-$config['AccessControl'][] = Array(
-    'role' => '5',
-    'resourceType' => '*',
-    'folder' => '/',
-    'folderView' => true,
-    'folderCreate' => true,
-    'folderRename' => true,
-    'folderDelete' => true,
-    'fileView' => true,
-    'fileUpload' => true,
-    'fileRename' => true,
-    'fileDelete' => true);
-*/
 
 /*
   $config['AccessControl'][] = Array(
@@ -282,16 +270,6 @@ $config['AccessControl'][] = Array(
   Example: 'maxSize' => "8M",
  */
 $config['DefaultResourceTypes'] = '';
-
-/*
-  $config['ResourceType'][] = Array(
-  'name' => 'All', // Single quotes not allowed
-  'url' => $baseUrl,
-  'directory' => $baseDir,
-  'maxSize' => 0,
-  'allowedExtensions' => '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pptx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip,bmp,gif,jpeg,jpg,png,swf,flv,f4v',
-  'deniedExtensions' => '');
- */
 
 $config['ResourceType'][] = Array(
     'name' => 'Content', // Single quotes not allowed

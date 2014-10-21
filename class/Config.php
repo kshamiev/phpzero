@@ -18,14 +18,7 @@ class Zero_Config
      *
      * @var string
      */
-    public $System_PathPhp = '';
-
-    /**
-     * Access for DB (Mysql)
-     *
-     * @var array
-     */
-    public $Db = [];
+    public $Site_PathPhp = '';
 
     /**
      * Site name (of the project)
@@ -117,6 +110,34 @@ class Zero_Config
      * @var string
      */
     public $Site_DomainSub = '';
+
+    /**
+     * Default language
+     *
+     * @var string
+     */
+    public $Site_ClassRoute = '';
+
+    /**
+     * Default language
+     *
+     * @var string
+     */
+    public $Site_ClassSection = '';
+
+    /**
+     * Default language
+     *
+     * @var string
+     */
+    public $Site_ClassUsers = '';
+
+    /**
+     * Access for DB (Mysql)
+     *
+     * @var array
+     */
+    public $Db = [];
 
     /**
      * Number of items per page
@@ -212,7 +233,7 @@ class Zero_Config
         $Config = require ZERO_PATH_SITE . '/config.php';
 
         // The path to the php Interpreter
-        $this->System_PathPhp = $Config['System']['PathPhp'];
+        $this->Site_PathPhp = $Config['Site']['PathPhp'];
 
         // The path to the php Interpreter
         $this->Site_AccessLogin = $Config['Site']['AccessLogin'];
@@ -261,6 +282,16 @@ class Zero_Config
                 $this->Site_DomainSub = $arr[0];
             }
         }
+
+        $this->Site_ClassRoute = $Config['Site']['ClassRoute'];
+        if ( !$this->Site_ClassRoute )
+            die('class Route undefined');
+        $this->Site_ClassSection = $Config['Site']['ClassSection'];
+        if ( !$this->Site_ClassSection )
+            die('class Route undefined');
+        $this->Site_ClassUsers = $Config['Site']['ClassUsers'];
+        if ( !$this->Site_ClassUsers )
+            die('class Route undefined');
 
         //  Number of items per page
         $this->View_PageItem = $Config['View']['PageItem'];
@@ -345,13 +376,15 @@ class Zero_Config
 /**
  * Debug output to the browser
  *
- * @param mixed $var variable
  */
-function pre($var)
+function pre()
 {
-    echo '<pre>';
-    print_r($var);
-    echo '</pre>';
+    foreach (func_get_args() as $var)
+    {
+        echo '<pre>';
+        print_r($var);
+        echo '</pre>';
+    }
 }
 
 /**

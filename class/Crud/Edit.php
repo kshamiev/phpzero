@@ -76,13 +76,13 @@ abstract class Zero_Crud_Edit extends Zero_Controller
      */
     protected function Chunk_Init()
     {
-        if ( isset(Zero_App::$Route->Param['pid']) )
-            $this->Params['obj_parent_id'] = Zero_App::$Route->Param['pid'];
+        if ( isset($_GET['pid']) )
+            $this->Params['obj_parent_id'] = $_GET['pid'];
         else if ( empty($this->Params['obj_parent_id']) )
             $this->Params['obj_parent_id'] = 0;
         //
-        if ( isset(Zero_App::$Route->Param['id']) )
-            $this->Params['id'] = Zero_App::$Route->Param['id'];
+        if ( isset($_GET['id']) )
+            $this->Params['id'] = $_GET['id'];
         else if ( empty($this->Params['id']) )
             $this->Params['id'] = 0;
         //
@@ -155,8 +155,8 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         }
 
         //  Page by page
-        if ( isset(Zero_App::$Route->Param['pg']) && 0 < Zero_App::$Route->Param['pg'] )
-            $Filter->Page = Zero_App::$Route->Param['pg'];
+        if ( isset($_GET['pg']) && 0 < $_GET['pg'] )
+            $Filter->Page = $_GET['pg'];
     }
 
     /**
@@ -196,7 +196,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         //  Filter
         $this->View->Assign('Filter', $Filter->Get_Filter());
         // CKEDITOR - this -> Object
-        $pathObject = '/' . strtolower($this->Model->Get_Source()) . '/' . Zero_FileSystem::Get_Path_Cache($this->Model->ID) . '/' . $this->Model->ID;
+        $pathObject = '/' . strtolower($this->Model->Get_Source()) . '/' . Zero_Lib_FileSystem::Get_Path_Cache($this->Model->ID) . '/' . $this->Model->ID;
         //$pathObject = '/ssss';
         if ( !is_dir(ZERO_PATH_DATA . $pathObject) )
             mkdir(ZERO_PATH_DATA . $pathObject, 0777, true);
@@ -287,7 +287,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         }
 
         $this->Params['id'] = $this->Model->ID;
-        //        Zero_App::$Route->Param['id'] = $this->Model->ID;
+        //        $_GET['id'] = $this->Model->ID;
 
         //  Reset Cache
         $this->Model->Cache->Reset();

@@ -73,8 +73,8 @@ class Zero_Groups_Access extends Zero_Controller
     {
         $this->Params['obj_parent_prop'] = 'Zero_Groups_ID';
         $this->Params['obj_parent_name'] = '';
-        if ( isset(Zero_App::$Route->Param['pid']) )
-            $this->Params['obj_parent_id'] = Zero_App::$Route->Param['pid'];
+        if ( isset($_GET['pid']) )
+            $this->Params['obj_parent_id'] = $_GET['pid'];
         else if ( empty($this->Params['obj_parent_id']) )
             $this->Params['obj_parent_id'] = 0;
         $this->View = new Zero_View($this->Template);

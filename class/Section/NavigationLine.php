@@ -23,8 +23,8 @@ class Zero_Section_NavigationLine extends Zero_Controller
     {
         $url = '';
         /*
-        if ( 0 < count(Zero_App::$Route->Param) && false )
-            foreach (Zero_App::$Route->Param as $k => $v)
+        if ( 0 < count($_GET) && false )
+            foreach ($_GET as $k => $v)
             {
                 $url .= '-' . $k . ':' . $v;
             }

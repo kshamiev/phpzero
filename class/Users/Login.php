@@ -147,7 +147,7 @@ class Zero_Users_Login extends Zero_Controller
         $View->Assign('Users', $this->Model);
         $View->Assign('password', $password);
         $message = $View->Fetch();
-        Zero_Mail::Send(Zero_App::$Config->Site_Email, $this->Model->Email, $subject, $message);
+        Zero_Lib_Mail::Send(Zero_App::$Config->Site_Email, $this->Model->Email, $subject, $message);
 
         $this->Model = Zero_Model::Make('Www_Users');
 

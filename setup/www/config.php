@@ -3,26 +3,10 @@
  * The basic configuration of the all application.
  */
 return [
-    //  system Settings
-    'System' => [
-        //  The path to the php Interpreter
-        'PathPhp' => '/usr/bin/php',
-        //  File storage sessions
-        'PathSession' => '<PATH_SESSION>',
-    ],
-    //  Access for DB (Mysql)
-    'Db' => [
-        //  Host or Socket
-        'Host' => "<DB_HOST>",
-        //  User
-        'Login' => "<DB_LOGIN>",
-        //  Password
-        'Password' => "<DB_PASSWORD>",
-        //  Name DB
-        'Name' => "<DB_NAME>",
-    ],
     //  site settings
     'Site' => [
+        //  The path to the php Interpreter (see command: whereis php)
+        'PathPhp' => '/usr/bin/php',
         //  General Authorization Application
         'AccessLogin' => '',
         'AccessPassword' => '',
@@ -44,6 +28,22 @@ return [
         'DomainAssets' => '',
         //  Domain binary data (uploaded by users)
         'DomainUpload' => '',
+        //  Domain binary data (uploaded by users)
+        'ClassRoute' => 'Zero_Route',
+        //  Domain binary data (uploaded by users)
+        'ClassSection' => 'Zero_Section',
+        //  Domain binary data (uploaded by users)
+        'ClassUsers' => 'Zero_Users',
+    ],
+    //  Access for DB (Mysql)
+    'Db' => [
+        //  Profiling
+        'main' => [
+            'Host' => "<DB_HOST>", //  Host or Socket
+            'Login' => "<DB_LOGIN>", //  User
+            'Password' => "<DB_PASSWORD>", //  Password
+            'Name' => "<DB_NAME>", //  Name DB
+        ],
     ],
     //  The settings of the presentation of data
     'View' => [
@@ -77,8 +77,8 @@ return [
     ],
     //  Languages
     'Language' => [
-        'en-en' => ['ID' => 1, 'Name' => 'English'],
-        'ru-ru' => ['ID' => 2, 'Name' => 'Русский'],
+        'en-en' => 'English',
+        'ru-ru' => 'Русский',
     ],
     //  Servers Memcache
     'Memcache' => [

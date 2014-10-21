@@ -2,20 +2,18 @@
 Copyright (c) 2003-2014, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.md or http://ckeditor.com/license
 */
-
+@import url(http://fonts.googleapis.com/css?family=Open+Sans&subset=latin,cyrillic-ext,cyrillic);
 body
 {
 	/* Font */
-	font-family: sans-serif, Arial, Verdana, "Trebuchet MS";
-	font-size: 12px;
-
-	/* Text color */
-	color: #333;
-
-	/* Remove the background color to make it transparent */
-	background-color: #fff;
-
-	margin: 20px;
+    font-family: 'Open Sans', "Trebuchet MS", Liberation Sans, Tahoma, Arial, sans-serif;
+    clear: right;
+    margin-top: 15px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    width: 735px;
+    font-size: 14px;
 }
 
 .cke_editable
@@ -61,10 +59,28 @@ ol,ul,dl
 	padding: 0 40px;
 }
 
-h1,h2,h3,h4,h5,h6
+h1
 {
 	font-weight: normal;
 	line-height: 1.2;
+    margin: 3px 10px;
+    font-size: 20px;
+    color: rgb(105, 64, 47);
+}
+
+h2,h3
+ {
+     font-weight: normal;
+     line-height: 1.2;
+     margin: 2px 10px;
+     color: rgb(105, 64, 47);
+ }
+
+h4,h5 {
+    font-weight: bold;
+    line-height: 1.2;
+    margin: 2px 10px;
+    color: rgb(105, 64, 47);
 }
 
 hr
@@ -131,4 +147,29 @@ a > img {
 	margin: 1px;
 	border: none;
 	outline: 1px solid #0782C1;
+}
+
+p {
+    text-align: justify;
+    margin: 10px 10px;
+    color: rgb(140, 111, 95);
+}
+
+ul {
+    margin: 2px 10px !important;
+}
+
+ul li {
+    margin: 2px 5px !important;
+    color: rgb(140, 111, 95);
+
+}
+
+ol {
+    margin: 2px 10px;
+}
+
+ol li {
+    margin: 2px 5px;
+    color: rgb(140, 111, 95);
 }

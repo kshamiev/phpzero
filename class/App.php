@@ -203,7 +203,7 @@ class Zero_App
 
     public static function ResponseImg($path)
     {
-        header("Content-Type: " . Zero_FileSystem::File_Type($path));
+        header("Content-Type: " . Zero_Lib_FileSystem::File_Type($path));
         header("Content-Length: " . filesize($path));
         if ( file_exists($path) )
             echo file_get_contents($path);
@@ -212,7 +212,7 @@ class Zero_App
 
     public static function ResponseFile($path)
     {
-        header("Content-Type: " . Zero_FileSystem::File_Type($path));
+        header("Content-Type: " . Zero_Lib_FileSystem::File_Type($path));
         header("Content-Length: " . filesize($path));
         header('Content-Disposition: attachment; filename = "' . basename($path) . '"');
         if ( file_exists($path) )
@@ -259,16 +259,14 @@ class Zero_App
         }
 
         //  Processing incoming request (Zero_Route)
-        self::$Route = new Www_Route();
+        self::$Route = new self::$Config->Site_ClassRoute();
 
         //  Session Initialization (Zero_Session)
         Zero_Session::Init(self::$Config->Site_Domain);
 
         // DB init config
         foreach (self::$Config->Db as $name => $config)
-        {
             Zero_DB::Add_Config($name, $config);
-        }
 
         require_once ZERO_PATH_ZERO . '/class/View.php';
     }

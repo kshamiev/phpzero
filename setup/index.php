@@ -9,11 +9,14 @@
  * @copyright <PHP_ZERO_COPYRIGHT>
  * @license http://www.phpzero.com/license/
  */
-function pre($str)
+function pre()
 {
-    echo '<pre>';
-    print_r($str);
-    echo '</pre>';
+    foreach (func_get_args() as $var)
+    {
+        echo '<pre>';
+        print_r($var);
+        echo '</pre>';
+    }
 }
 
 error_reporting(-1);
@@ -96,7 +99,7 @@ while ( isset($_REQUEST['act']) && 'Install_System' == $_REQUEST['act'] && 0 == 
 
     //  Creating a filesystem structure. Copy the system and base  module
 
-    Zero_FileSystem::Folder_Copy(__DIR__ . "/www", ZERO_PATH_SITE);
+    Zero_Lib_FileSystem::Folder_Copy(__DIR__ . "/www", ZERO_PATH_SITE);
 
     //  Baseline configuration
     $config = file_get_contents(ZERO_PATH_SITE . '/config.php');

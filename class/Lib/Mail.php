@@ -11,7 +11,7 @@ include_once(dirname(__DIR__) . '/library/PHPMailer/class.phpmailer.php');
  * @copyright <PHP_ZERO_COPYRIGHT>
  * @license http://www.phpzero.com/license/
  */
-class Zero_Mail
+class Zero_Lib_Mail
 {
     /**
      * Отправка сообщения
