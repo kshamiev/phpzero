@@ -9,15 +9,6 @@
  * @copyright <PHP_ZERO_COPYRIGHT>
  * @license http://www.phpzero.com/license/
  */
-function pre()
-{
-    foreach (func_get_args() as $var)
-    {
-        echo '<pre>';
-        print_r($var);
-        echo '</pre>';
-    }
-}
 
 error_reporting(-1);
 date_default_timezone_set('Europe/Moscow');
@@ -27,11 +18,12 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 ini_set('magic_quotes_gpc', 0);
 
+require dirname(__DIR__) . '/class/Config.php';
 require dirname(__DIR__) . '/class/App.php';
-require dirname(__DIR__) . '/Library/FileSystem.php';
+require dirname(__DIR__) . '/class/Lib/FileSystem.php';
+
 $error_init_list = [];
 $message_install_list = [];
-
 /**
  * Checking the software environment
  */
@@ -78,27 +70,19 @@ while ( isset($_REQUEST['act']) && 'Install_System' == $_REQUEST['act'] && 0 == 
     }
     $_REQUEST['domain_www'] = strtolower($_REQUEST['domain_www']);
 
-    //  installation database
-    file_put_contents('db_create.sql', "CREATE DATABASE IF NOT EXISTS `{$_REQUEST['db_name']}`;");
-    exec("mysql -h {$_REQUEST['db_host']} -u {$_REQUEST['db_login']} -p{$_REQUEST['db_password']} < db_create.sql", $arr1, $arr2);
-    if ( 0 < $arr2 )
+    // installation database
+    // file_put_contents('db_create.sql', "CREATE DATABASE IF NOT EXISTS `{$_REQUEST['db_name']}`;");
+    // exec("mysql -h {$_REQUEST['db_host']} -u {$_REQUEST['db_login']} -p{$_REQUEST['db_password']} < db_create.sql", $arr1, $arr2);
+    // exec("mysql -h {$_REQUEST['db_host']} -u {$_REQUEST['db_login']} -p{$_REQUEST['db_password']} {$_REQUEST['db_name']} < schema/mysql_{$_REQUEST['lang']}.sql", $arr1, $arr2);
+    $db = mysqli_connect($_REQUEST['db_host'], $_REQUEST['db_login'], $_REQUEST['db_password'], $_REQUEST['db_name']);
+    if ( !$db )
     {
         $message_install_list[] = "Error create DB (Access Denied)";
-        unlink('db_create.sql');
         break;
     }
-    unlink('db_create.sql');
-    exec("mysql -h {$_REQUEST['db_host']} -u {$_REQUEST['db_login']} -p{$_REQUEST['db_password']} {$_REQUEST['db_name']} < schema/mysql_{$_REQUEST['lang']}.sql", $arr1, $arr2);
-    if ( 0 < $arr2 )
-    {
-        $message_install_list[] = "Error import DB (Access Denied)";
-        break;
-    }
-
     $arr = ini_get_all();
 
     //  Creating a filesystem structure. Copy the system and base  module
-
     Zero_Lib_FileSystem::Folder_Copy(__DIR__ . "/www", ZERO_PATH_SITE);
 
     //  Baseline configuration
@@ -114,7 +98,11 @@ while ( isset($_REQUEST['act']) && 'Install_System' == $_REQUEST['act'] && 0 == 
     $config = str_replace('<SITE_LANGDEFAULT>', $_REQUEST['lang'], $config);
     file_put_contents(ZERO_PATH_SITE . '/config.php', $config);
 
-    symlink(ZERO_PATH_ZERO, ZERO_PATH_APPLICATION . '/zero');
+    if ( !symlink(ZERO_PATH_ZERO, ZERO_PATH_APPLICATION . '/zero') )
+    {
+        $message_install_list[] = "Error create symlink from module zero";
+        break;
+    }
 
     $message_install_list[110] = "System install success full";
     $error_init_list[120] = 'system is already installed (remove /config.php)';
@@ -142,6 +130,7 @@ if ( !isset($_REQUEST['db_host']) )
     <form action="index.php" method="post">
         <tr>
             <td colspan="2" height="50px">
+                Перед инсталяцией нужно установить БД и получить доступ к оной.<br>
                 После инсталяции <a href="/" target="_blank">сюда</a> логин и пароль: "dev" "dev"<br>
                 <?php foreach ($error_init_list as $kod => $error)
                 {
@@ -180,7 +169,7 @@ if ( !isset($_REQUEST['db_host']) )
             </td>
         </tr>
         <tr>
-            <td width="300px">Domain site (*)<br>(<strong><font color="blue">www.site-name.com</font></strong>)</td>
+            <td width="300px">Domain site (*)<br>(<strong><font color="blue">site-name.com</font></strong>)</td>
             <td>
                 <input type="text" name="domain_www" value="<?= $_REQUEST['domain_www'] ?>" style="width: 99%;">
             </td>
@@ -213,8 +202,8 @@ if ( !isset($_REQUEST['db_host']) )
             <td width="300px">Default language (*)</td>
             <td>
                 <select name="lang" style="width: 99%;">
-                    <option value="en-en">english</option>
                     <option value="ru-ru">русский</option>
+                    <option value="en-en">english</option>
                 </select>
             </td>
         </tr>
