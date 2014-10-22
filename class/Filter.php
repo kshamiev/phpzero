@@ -175,7 +175,7 @@ class Zero_Filter
         if ( isset($this->Filter[$prop]) )
             return true;
         $this->Filter[$prop] = $row;
-        $this->Filter[$prop]['Comment'] = Zero_I18n::Model($this->Model->Get_Source(), $prop);
+        $this->Filter[$prop]['Comment'] = Zero_I18n::Model(get_class($this->Model), $prop);
         $this->Filter[$prop]['Filter'] = 'Select';
         $this->Filter[$prop]['Visible'] = $is_visible;
         $this->Filter[$prop]['Value'] = '';
@@ -191,7 +191,7 @@ class Zero_Filter
             else if ( method_exists($this->Model, $method = 'FL_' . $prop) )
                 $this->Filter[$prop]['List'] = $this->Model->$method();
             else
-                $this->Filter[$prop]['List'] = Zero_I18n::ModelArr($this->Model->Get_Source(), $prop . ' options');
+                $this->Filter[$prop]['List'] = Zero_I18n::ModelArr(get_class($this->Model), $prop . ' options');
         }
         return true;
     }
@@ -237,7 +237,7 @@ class Zero_Filter
             if ( method_exists($this->Model, $method = 'FL_' . $prop) )
                 $this->Filter[$prop]['List'] = $this->Model->$method();
             else
-                $this->Filter[$prop]['List'] = Zero_I18n::ModelArr($this->Model->Get_Source(), $prop . ' options');
+                $this->Filter[$prop]['List'] = Zero_I18n::ModelArr(get_class($this->Model), $prop . ' options');
         }
         return true;
     }
@@ -268,7 +268,7 @@ class Zero_Filter
             if ( method_exists($this->Model, $method = 'FL_' . $prop) )
                 $this->Filter[$prop]['List'] = $this->Model->$method();
             else
-                $this->Filter[$prop]['List'] = Zero_I18n::ModelArr($this->Model->Get_Source(), $prop . ' options');
+                $this->Filter[$prop]['List'] = Zero_I18n::ModelArr(get_class($this->Model), $prop . ' options');
         }
         return true;
     }
