@@ -359,7 +359,7 @@ class Zero_Engine
         $Section_Two->AR->Select('ID');
         if ( 0 == $Section_Two->ID )
         {
-            $Section_Two->Zero_Section_ID = $Section->ID;
+            $Section_Two->Section_ID = $Section->ID;
             $Section_Two->Url = Zero_App::$Config->Site_DomainSub . '/admin/' . $url;
             $Section_Two->UrlThis = $url;
             $Section_Two->Layout = 'Zero_Main';
@@ -424,7 +424,7 @@ class Zero_Engine
             $Section_Three->AR->Select('ID');
             if ( $flag_grid && 0 == $Section_Three->ID )
             {
-                $Section_Three->Zero_Section_ID = $Section_Two->ID;
+                $Section_Three->Section_ID = $Section_Two->ID;
                 $Section_Three->Url = Zero_App::$Config->Site_DomainSub . '/admin/' . $url;
                 $Section_Three->UrlThis = strtolower($package[1]);
                 $Section_Three->Layout = 'Zero_Main';
@@ -462,7 +462,7 @@ class Zero_Engine
             $Section_Four->AR->Select('ID');
             if ( $flag_edit && 0 == $Section_Four->ID && 0 < $Section_Three->ID )
             {
-                $Section_Four->Zero_Section_ID = $Section_Three->ID;
+                $Section_Four->Section_ID = $Section_Three->ID;
                 $Section_Four->Url = Zero_App::$Config->Site_DomainSub . '/admin/' . $url;
                 $Section_Four->UrlThis = 'edit';
                 $Section_Four->Layout = 'Zero_Main';

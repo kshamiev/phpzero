@@ -11,8 +11,8 @@
  * @license http://www.phpzero.com/license/
  *
  * <BEG_CONFIG_PROPERTY>
- * @property integer $Zero_Groups_ID
- * @property integer $Zero_Users_ID
+ * @property integer $Groups_ID
+ * @property integer $Users_ID
  * @property string $Name
  * @property string $Login
  * @property string $Password
@@ -35,7 +35,7 @@ class Zero_Users extends Zero_Model
      *
      * @var string
      */
-    protected $Source = 'Zero_Users';
+    protected $Source = 'Users';
 
     /**
      * KCAPTCacheA
@@ -123,8 +123,8 @@ class Zero_Users extends Zero_Model
                 'Default' => '',
                 'Form' => ''
             ],
-            'Zero_Groups_ID' => ['AliasDB' => 'z.Zero_Groups_ID', 'DB' => 'I', 'IsNull' => 'YES', 'Default' => '2', 'Form' => 'Link'],
-            'Zero_Users_ID' => ['AliasDB' => 'z.Zero_Users_ID', 'DB' => 'I', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Link'],
+            'Groups_ID' => ['AliasDB' => 'z.Groups_ID', 'DB' => 'I', 'IsNull' => 'YES', 'Default' => '2', 'Form' => 'Link'],
+            'Users_ID' => ['AliasDB' => 'z.Users_ID', 'DB' => 'I', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Link'],
             'Name' => ['AliasDB' => 'z.Name', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'],
             'Login' => ['AliasDB' => 'z.Login', 'DB' => 'T', 'IsNull' => 'NO', 'Default' => '', 'Form' => 'Text'],
             'Password' => ['AliasDB' => 'z.Password', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Password'],
@@ -158,8 +158,8 @@ class Zero_Users extends Zero_Model
         return [
             /*BEG_CONFIG_FILTER_PROP*/
             'ID' => ['Visible' => true],
-            'Zero_Groups_ID' => ['Visible' => true],
-            'Zero_Users_ID' => ['Visible' => true],
+            'Groups_ID' => ['Visible' => true],
+            'Users_ID' => ['Visible' => true],
             'Name' => ['Visible' => true],
             'Login' => ['Visible' => true],
             'IsAccess' => ['Visible' => true],
@@ -212,8 +212,8 @@ class Zero_Users extends Zero_Model
         return [
             /*BEG_CONFIG_FORM_PROP*/
             'ID' => [],
-            'Zero_Groups_ID' => [],
-            'Zero_Users_ID' => [],
+            'Groups_ID' => [],
+            'Users_ID' => [],
             'Name' => [],
             'Login' => [],
             'Password' => [],
@@ -237,7 +237,7 @@ class Zero_Users extends Zero_Model
     {
         if ( $this->ID == 0 )
         {
-            $this->Zero_Groups_ID = 2;
+            $this->Groups_ID = 2;
             $this->Login = 'guest';
         }
     }
@@ -255,18 +255,17 @@ class Zero_Users extends Zero_Model
             //  uslovie pol`zovatelia
             if ( 'yes' == $this->IsCondition )
             {
-                //                $prop = 'Zero_Users_' . $this->Zero_Groups_ID . '_ID';
-                $prop = 'Zero_Users_ID';
-                $this->_Condition[$prop] = Zero_DB::Select_List_Index("SELECT ID, Name FROM Zero_Users WHERE Zero_Users_ID = {$this->ID}");
+                $prop = 'Users_ID';
+                $this->_Condition[$prop] = Zero_DB::Select_List_Index("SELECT ID, Name FROM Users WHERE Users_ID = {$this->ID}");
                 $this->_Condition[$prop][$this->ID] = $this->Name;
             }
             //  uslovie gruppy`
-            if ( 1 != $this->Zero_Groups_ID )
-                $this->_Condition['Zero_Groups_ID'][$this->Zero_Groups_ID] = $this->Zero_Groups_ID()->Name;
+            if ( 1 != $this->Groups_ID )
+                $this->_Condition['Groups_ID'][$this->Groups_ID] = $this->Groups_ID()->Name;
             //  dopolnitel`ny`e usloviia
             foreach ($this->Get_Props(1) as $prop => $value)
             {
-                if ( 'Zero_Groups_ID' == $prop || 'Zero_Users_ID' == $prop )
+                if ( 'Groups_ID' == $prop || 'Users_ID' == $prop )
                     continue;
                 if ( '_ID' == substr($prop, -3) && 0 < $value )
                 {
@@ -288,7 +287,7 @@ class Zero_Users extends Zero_Model
      */
     public static function DB_Offline($seconds = 600)
     {
-        $sql = "UPDATE Zero_Users SET IsOnline = 'no' WHERE DateOnline < NOW() - INTERVAL {$seconds} SECOND";
+        $sql = "UPDATE Users SET IsOnline = 'no' WHERE DateOnline < NOW() - INTERVAL {$seconds} SECOND";
         Zero_DB::Update($sql);
     }
 

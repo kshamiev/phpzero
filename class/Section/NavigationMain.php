@@ -23,7 +23,7 @@ class Zero_Section_NavigationMain extends Zero_Controller
     public function Action_Default()
     {
         $Section = Zero_Model::Make('Www_Section');
-        /* @var $Section Zero_Section */
+        /* @var $Section Www_Section */
         $Section->Init_Url(Zero_App::$Config->Site_DomainSub . '/');
         //  шаблон
         if ( isset($this->Params['view']) )

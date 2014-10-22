@@ -11,8 +11,8 @@
  * @license http://www.phpzero.com/license/
  *
  * <BEG_CONFIG_PROPERTY>
- * @property integer $Zero_Section_ID
- * @property integer $Zero_Groups_ID
+ * @property integer $Section_ID
+ * @property integer $Groups_ID
  * @property string $Action
  * <END_CONFIG_PROPERTY>
  */
@@ -23,7 +23,7 @@ class Zero_Action extends Zero_Model
      *
      * @var string
      */
-    protected $Source = 'Zero_Action';
+    protected $Source = 'Action';
 
     /**
      * Configuration model
@@ -76,8 +76,8 @@ class Zero_Action extends Zero_Model
         return [
             /*BEG_CONFIG_PROP*/
             'ID' => ['AliasDB' => 'z.ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => '', 'Form' => ''],
-            'Zero_Section_ID' => ['AliasDB' => 'z.Zero_Section_ID', 'DB' => 'I', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Link'],
-            'Zero_Groups_ID' => ['AliasDB' => 'z.Zero_Groups_ID', 'DB' => 'I', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Link'],
+            'Section_ID' => ['AliasDB' => 'z.Section_ID', 'DB' => 'I', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Link'],
+            'Groups_ID' => ['AliasDB' => 'z.Groups_ID', 'DB' => 'I', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Link'],
             'Action' => ['AliasDB' => 'z.Action', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'],
             /*END_CONFIG_PROP*/
         ];
@@ -100,8 +100,8 @@ class Zero_Action extends Zero_Model
         return [
             /*BEG_CONFIG_FILTER_PROP*/
             'ID' => ['Visible' => true],
-            'Zero_Section_ID' => ['Visible' => true],
-            'Zero_Groups_ID' => ['Visible' => true],
+            'Section_ID' => ['Visible' => true],
+            'Groups_ID' => ['Visible' => true],
             'Action' => ['Visible' => true],
             /*END_CONFIG_FILTER_PROP*/
         ];
@@ -145,8 +145,8 @@ class Zero_Action extends Zero_Model
         return [
             /*BEG_CONFIG_FORM_PROP*/
             'ID' => [],
-            'Zero_Section_ID' => [],
-            'Zero_Groups_ID' => [],
+            'Section_ID' => [],
+            'Groups_ID' => [],
             'Action' => [],
             /*END_CONFIG_FORM_PROP*/
         ];

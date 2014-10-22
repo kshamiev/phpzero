@@ -23,7 +23,7 @@ class Zero_Groups extends Zero_Model
      *
      * @var string
      */
-    protected $Source = 'Zero_Groups';
+    protected $Source = 'Groups';
 
     /**
      * Configuration model

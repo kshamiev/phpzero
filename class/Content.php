@@ -11,7 +11,7 @@
  * @license http://www.phpzero.com/license/
  *
  * <BEG_CONFIG_PROPERTY>
- * @property integer $Zero_Section_ID
+ * @property integer $Section_ID
  * @property string $Lang
  * @property string $Name
  * @property string $Title
@@ -28,7 +28,7 @@ class Zero_Content extends Zero_Model
      *
      * @var string
      */
-    protected $Source = 'Zero_Content';
+    protected $Source = 'Content';
 
     /**
      * Configuration model
@@ -81,7 +81,7 @@ class Zero_Content extends Zero_Model
         return [
             /*BEG_CONFIG_PROP*/
             'ID' => ['AliasDB' => 'z.ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => '', 'Form' => ''],
-            'Zero_Section_ID' => ['AliasDB' => 'z.Zero_Section_ID', 'DB' => 'I', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Hidden'],
+            'Section_ID' => ['AliasDB' => 'z.Section_ID', 'DB' => 'I', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Hidden'],
             'Lang' => ['AliasDB' => 'z.Lang', 'DB' => 'T', 'IsNull' => 'NO', 'Default' => '', 'Form' => 'Select'],
             'Name' => ['AliasDB' => 'z.Name', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'],
             'Title' => array('AliasDB' => 'z.Name', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'),
@@ -110,7 +110,7 @@ class Zero_Content extends Zero_Model
         return [
             /*BEG_CONFIG_FILTER_PROP*/
             'ID' => ['Visible' => true],
-            'Zero_Section_ID' => ['Visible' => true],
+            'Section_ID' => ['Visible' => true],
             'Lang' => ['Visible' => true],
             'Name' => ['Visible' => true],
             'Content' => ['Visible' => true],
@@ -157,7 +157,7 @@ class Zero_Content extends Zero_Model
         return [
             /*BEG_CONFIG_FORM_PROP*/
             'ID' => [],
-            'Zero_Section_ID' => [],
+            'Section_ID' => [],
             'Lang' => [],
             'Name' => [],
             'Title' => [],
@@ -167,46 +167,5 @@ class Zero_Content extends Zero_Model
             'Block' => [],
             /*END_CONFIG_FORM_PROP*/
         ];
-    }
-
-    /**
-     * Getting a list of blocks for template
-     *
-     * @return array
-     * @throws Exception
-     */
-    public function FL_Block_Old()
-    {
-//        $Model = Zero_Model::Make('Zero_Section', Zero_App::$Section->Zero_Section_ID);
-//        if ( !$Model->Layout )
-//        {
-//            Zero_Logs::Set_Message_Error('Layout not Set');
-//            return [];
-//        }
-//        $template = Zero_View::Search_Template($Model->Layout);
-//        if ( !$template )
-//        {
-//            Zero_Logs::Set_Message_Error("Layout '{$Model->Layout}' Not Found");
-//            return [];
-//        }
-//
-//        $result = [];
-//        $result['content'] = 'content';
-//        $template = file_get_contents($template);
-//        if ( preg_match_all(Zero_View::PATTERN_PLUGIN, $template, $match, PREG_SET_ORDER) )
-//        {
-//            foreach ($match as $row)
-//            {
-//                if ( 'Zero_Content_Page' == $row[1] )
-//                {
-//                    if ( isset($row[2]) )
-//                    {
-//                        $block = explode('"', $row[2])[1];
-//                        $result[$block] = $block;
-//                    }
-//                }
-//            }
-//        }
-//        return $result;
     }
 }

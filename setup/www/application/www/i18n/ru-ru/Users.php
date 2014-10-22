@@ -37,8 +37,8 @@ return [
         'PasswordR validate Error_PasswordValid' => 'Пароли не совпадают',
         'Phone' => 'Телефон',
         'Skype' => 'Скайп',
-        'Zero_Groups_ID' => 'Группа',
-        'Zero_Users_ID' => 'Пользователь',
+        'Groups_ID' => 'Группа',
+        'Users_ID' => 'Пользователь',
         'Address' => 'Адрес доставки по умолчанию',
 
     ],

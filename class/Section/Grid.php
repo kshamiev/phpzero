@@ -37,7 +37,7 @@ class Zero_Section_Grid extends Zero_Crud_Grid
     {
         if ( !isset($this->Params['obj_parent_prop']) )
         {
-            $this->Params['obj_parent_prop'] = 'Zero_Section_ID';
+            $this->Params['obj_parent_prop'] = 'Section_ID';
             $this->Params['obj_parent_id'] = 0;
             $this->Params['obj_parent_name'] = '';
             $this->Params['obj_parent_path'] = ['root'];

@@ -20,7 +20,7 @@
  * @license http://www.phpzero.com/license/
  *
  * <BEG_CONFIG_PROPERTY>
- * @property integer $Zero_Section_ID
+ * @property integer $Section_ID
  * @property string $Url
  * @property string $UrlThis
  * @property string $UrlRedirect
@@ -44,7 +44,7 @@ class Zero_Section extends Zero_Model
      *
      * @var string
      */
-    protected $Source = 'Zero_Section';
+    protected $Source = 'Section';
 
     /**
      * Action List
@@ -111,7 +111,7 @@ class Zero_Section extends Zero_Model
         return [
             /*BEG_CONFIG_PROP*/
             'ID' => ['AliasDB' => 'z.ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => '', 'Form' => ''],
-            'Zero_Section_ID' => ['AliasDB' => 'z.Zero_Section_ID', 'DB' => 'I', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Link'],
+            'Section_ID' => ['AliasDB' => 'z.Section_ID', 'DB' => 'I', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Link'],
             'Url' => ['AliasDB' => 'z.Url', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'ReadOnly'],
             'UrlThis' => ['AliasDB' => 'z.UrlThis', 'DB' => 'T', 'IsNull' => 'NO', 'Default' => '', 'Form' => 'Text'],
             'UrlRedirect' => ['AliasDB' => 'z.UrlRedirect', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'],
@@ -202,7 +202,7 @@ class Zero_Section extends Zero_Model
     {
         return [
             'ID' => [],
-            'Zero_Section_ID' => [],
+            'Section_ID' => [],
             'Url' => [],
             'UrlThis' => [],
             'UrlRedirect' => [],
@@ -263,16 +263,16 @@ class Zero_Section extends Zero_Model
         else if ( !is_null($this->_Action_List) )
             return $this->_Action_List;
 
-        $index_cache = 'Action_List_' . Zero_App::$Users->Zero_Groups_ID . '_' . $this->Controller;
+        $index_cache = 'Action_List_' . Zero_App::$Users->Groups_ID . '_' . $this->Controller;
         if ( false !== $this->_Action_List = $this->Cache->Get($index_cache) )
             return $this->_Action_List;
 
         $this->_Action_List = [];
-        if ( 'yes' == $this->IsAuthorized && 1 < Zero_App::$Users->Zero_Groups_ID )
+        if ( 'yes' == $this->IsAuthorized && 1 < Zero_App::$Users->Groups_ID )
         {
             $Model = Zero_Model::Make('Zero_Action');
-            $Model->AR->Sql_Where('Zero_Section_ID', '=', $this->ID);
-            $Model->AR->Sql_Where('Zero_Groups_ID', '=', Zero_App::$Users->Zero_Groups_ID);
+            $Model->AR->Sql_Where('Section_ID', '=', $this->ID);
+            $Model->AR->Sql_Where('Groups_ID', '=', Zero_App::$Users->Groups_ID);
             $this->_Action_List = $Model->AR->Select_Array_Index('Action');
             foreach ($this->_Action_List as $action => $row)
             {
@@ -292,7 +292,7 @@ class Zero_Section extends Zero_Model
                 }
             }
         }
-        Zero_Cache::Set_Link('Zero_Groups', Zero_App::$Users->Zero_Groups_ID);
+        Zero_Cache::Set_Link('Zero_Groups', Zero_App::$Users->Groups_ID);
         $this->Cache->Set($index_cache, $this->_Action_List);
         return $this->_Action_List;
     }
@@ -311,7 +311,7 @@ class Zero_Section extends Zero_Model
         }
         if ( is_null($this->_Navigation_Child) )
         {
-            $index = 'Section_Child_' . Zero_App::$Users->Zero_Groups_ID;
+            $index = 'Section_Child_' . Zero_App::$Users->Groups_ID;
             if ( false === $this->_Navigation_Child = $this->Cache->Get($index) )
             {
                 $this->_Navigation_Child = self::DB_Navigation_Child($this->ID);
@@ -330,18 +330,18 @@ class Zero_Section extends Zero_Model
     public static function DB_Navigation_Child($id)
     {
         //  Access
-        if ( 1 < Zero_App::$Users->Zero_Groups_ID )
+        if ( 1 < Zero_App::$Users->Groups_ID )
             $sql_where = "
-            s.Zero_Section_ID = {$id} AND s.IsVisible = 'yes' AND
+            s.Section_ID = {$id} AND s.IsVisible = 'yes' AND
             (
                 s.IsAuthorized = 'no'
                 OR
-                ( s.IsAuthorized = 'yes' AND a.`Zero_Groups_ID` = " . Zero_App::$Users->Zero_Groups_ID . " )
+                ( s.IsAuthorized = 'yes' AND a.`Groups_ID` = " . Zero_App::$Users->Groups_ID . " )
             )
             ";
         else
             $sql_where = "
-            s.Zero_Section_ID = {$id} AND s.IsVisible = 'yes'
+            s.Section_ID = {$id} AND s.IsVisible = 'yes'
             ";
         //  Translation
         if ( LANG != Zero_App::$Config->Site_Language )
@@ -349,9 +349,9 @@ class Zero_Section extends Zero_Model
             $sql = "
             SELECT
               s.ID, l.Name, SUBSTRING(s.Url, POSITION('/' IN s.Url)) AS Url, s.UrlThis, l.Title
-            FROM Zero_Section AS s
-                INNER JOIN Zero_Content AS l ON l.Zero_Section_ID = s.ID AND l.Lang = " . ZERO_LANG . " AND l.Block = 'Content'
-                LEFT JOIN Zero_Action AS a ON a.`Zero_Section_ID` = s.`ID`
+            FROM Section AS s
+                INNER JOIN Content AS l ON l.Section_ID = s.ID AND l.Lang = " . ZERO_LANG . " AND l.Block = 'Content'
+                LEFT JOIN Action AS a ON a.`Section_ID` = s.`ID`
             WHERE
                 {$sql_where}
             ORDER BY
@@ -363,8 +363,8 @@ class Zero_Section extends Zero_Model
             $sql = "
             SELECT
               s.ID, s.Name, SUBSTRING(s.Url, POSITION('/' IN s.Url)) AS Url, UrlThis, Title
-            FROM Zero_Section AS s
-                LEFT JOIN Zero_Action AS a ON a.`Zero_Section_ID` = s.`ID`
+            FROM Section AS s
+                LEFT JOIN Action AS a ON a.`Section_ID` = s.`ID`
             WHERE
                 {$sql_where}
             ORDER BY
@@ -382,21 +382,21 @@ class Zero_Section extends Zero_Model
      */
     public static function DB_Update_Url($section_id)
     {
-        $sql = "SELECT Url FROM Zero_Section WHERE ID = {$section_id}";
+        $sql = "SELECT Url FROM Section WHERE ID = {$section_id}";
         $url = Zero_DB::Select_Row($sql);
         if ( !isset($url['Url']) )
             return false;
         // Update absolute reference in child partitions
         $sql = "
-        UPDATE Zero_Section
+        UPDATE Section
         SET
           Url = CONCAT('" . rtrim($url, '/') . "', '/', UrlThis)
         WHERE
-            Zero_Section_ID = {$section_id}
+            Section_ID = {$section_id}
         ";
         Zero_DB::Update($sql);
         //  recurses
-        $sql = "SELECT ID FROM Zero_Section WHERE Zero_Section_ID = " . $section_id;
+        $sql = "SELECT ID FROM Section WHERE Section_ID = " . $section_id;
         foreach (Zero_DB::Select_List($sql) as $section_id)
         {
             self::DB_Update_Url($section_id);
@@ -416,9 +416,9 @@ class Zero_Section extends Zero_Model
         if ( !$value )
             return 'Error_Prop';
         $this->UrlThis = Zero_Lib_String::Transliteration_Url($value);
-        if ( 0 < $this->Zero_Section_ID )
+        if ( 0 < $this->Section_ID )
         {
-            $Object = Zero_Model::Make(__CLASS__, $this->Zero_Section_ID);
+            $Object = Zero_Model::Make(__CLASS__, $this->Section_ID);
             $this->Url = rtrim($Object->Url, '/') . '/' . $this->UrlThis;
         }
         else

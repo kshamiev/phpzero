@@ -28,8 +28,8 @@ class Zero_Section_NavigationChild extends Zero_Controller
         $navigation = $Section->Get_Navigation_Child();
         if ( 0 == count($navigation) )
         {
-            $Section = Zero_Model::Make('Www_Section', Zero_App::$Section->Zero_Section_ID);
-            /* @var $Section Zero_Section */
+            $Section = Zero_Model::Make('Www_Section', Zero_App::$Section->Section_ID);
+            /* @var $Section Www_Section */
             $navigation = $Section->Get_Navigation_Child();
         }
         if ( isset($this->Params['view']) )

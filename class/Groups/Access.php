@@ -71,7 +71,7 @@ class Zero_Groups_Access extends Zero_Controller
      */
     protected function Chunk_Init()
     {
-        $this->Params['obj_parent_prop'] = 'Zero_Groups_ID';
+        $this->Params['obj_parent_prop'] = 'Groups_ID';
         $this->Params['obj_parent_name'] = '';
         if ( isset($_GET['pid']) )
             $this->Params['obj_parent_id'] = $_GET['pid'];
@@ -123,8 +123,8 @@ class Zero_Groups_Access extends Zero_Controller
             $section_list[$id]['action_list_all_count'] = count($method_list) + 1;
 
             $Action = Zero_Model::Make('Zero_Action');
-            $Action->AR->Sql_Where('Zero_Section_ID', '=', $id);
-            $Action->AR->Sql_Where('Zero_Groups_ID', '=', $this->Params['obj_parent_id']);
+            $Action->AR->Sql_Where('Section_ID', '=', $id);
+            $Action->AR->Sql_Where('Groups_ID', '=', $this->Params['obj_parent_id']);
             $Action->AR->Sql_Order('Action', 'ASC');
             $action_list = $Action->AR->Select_Array_Index('Action');
             $section_list[$id]['action_list'] = $action_list;
@@ -134,7 +134,7 @@ class Zero_Groups_Access extends Zero_Controller
         $this->View->Assign('section_list', $section_list);
         $this->View->Assign('Params', $this->Params);
 
-        $groups_list = Zero_DB::Select_List_Index("SELECT ID, Name FROM Zero_Groups WHERE ID != {$this->Params['obj_parent_id']} ORDER BY Name ASC");
+        $groups_list = Zero_DB::Select_List_Index("SELECT ID, Name FROM Groups WHERE ID != {$this->Params['obj_parent_id']} ORDER BY Name ASC");
         $this->View->Assign('groups_list', $groups_list);
         $this->View->Assign('pid', $this->Params['obj_parent_id']);
     }
@@ -148,13 +148,13 @@ class Zero_Groups_Access extends Zero_Controller
     {
         foreach ($_REQUEST['RoleAccessSection'] as $section_id => $access)
         {
-            Zero_DB::Update("DELETE FROM Zero_Action WHERE Zero_Groups_ID = {$this->Params['obj_parent_id']} AND Zero_Section_ID = {$section_id}");
+            Zero_DB::Update("DELETE FROM Action WHERE Groups_ID = {$this->Params['obj_parent_id']} AND Section_ID = {$section_id}");
             //  Access to the section for the group
             if ( 'access' == $access )
             {
                 $Action = Zero_Model::Make('Zero_Action');
-                $Action->Zero_Section_ID = $section_id;
-                $Action->Zero_Groups_ID = $this->Params['obj_parent_id'];
+                $Action->Section_ID = $section_id;
+                $Action->Groups_ID = $this->Params['obj_parent_id'];
                 $Action->Action = 'Default';
                 $Action->AR->Insert();
             }
@@ -168,8 +168,8 @@ class Zero_Groups_Access extends Zero_Controller
                     if ( 'access' == $panel )
                     {
                         $Action = Zero_Model::Make('Zero_Action');
-                        $Action->Zero_Section_ID = $section_id;
-                        $Action->Zero_Groups_ID = $this->Params['obj_parent_id'];
+                        $Action->Section_ID = $section_id;
+                        $Action->Groups_ID = $this->Params['obj_parent_id'];
                         $Action->Action = $action;
                         $Action->AR->Insert();
                     }
@@ -189,20 +189,20 @@ class Zero_Groups_Access extends Zero_Controller
      */
     protected function Chunk_Copy()
     {
-        Zero_DB::Update("DELETE FROM Zero_Action WHERE Zero_Groups_ID = {$_REQUEST['obj_id']}");
+        Zero_DB::Update("DELETE FROM Action WHERE Groups_ID = {$_REQUEST['obj_id']}");
         $sql = "
-        INSERT INTO `Zero_Action`
+        INSERT INTO `Action`
           (
-          `Zero_Section_ID`,
-          `Zero_Groups_ID`,
+          `Section_ID`,
+          `Groups_ID`,
           `Action`
         ) SELECT
-          `Zero_Section_ID`,
+          `Section_ID`,
           {$_REQUEST['obj_id']},
           `Action`
-        FROM `Zero_Action`
+        FROM `Action`
         WHERE
-          `Zero_Groups_ID` = {$this->Params['obj_parent_id']}
+          `Groups_ID` = {$this->Params['obj_parent_id']}
         ";
         Zero_DB::Update($sql);
         return $this->Set_Message('AccessCopy', 0);

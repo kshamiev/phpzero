@@ -106,7 +106,7 @@ class Zero_Users_Login extends Zero_Controller
             return $this->Set_Message("Error_Registration", 1);
         else if ( $Users->Password != md5($_REQUEST['Password']) )
             return $this->Set_Message("Error_Password", 1);
-        else if ( !$Users->Zero_Groups_ID )
+        else if ( !$Users->Groups_ID )
             return $this->Set_Message("Error_Groups", 1);
 
         if ( isset($_REQUEST['Memory']) && $_REQUEST['Memory'] )

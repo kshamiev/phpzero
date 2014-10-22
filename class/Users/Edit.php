@@ -30,7 +30,7 @@ class Zero_Users_Edit extends Zero_Crud_Edit
 
     protected function Chunk_Init()
     {
-        $this->Params['obj_parent_prop'] = 'Zero_Users_ID';
+        $this->Params['obj_parent_prop'] = 'Users_ID';
         $this->Params['obj_parent_name'] = '';
         parent::Chunk_Init();
     }

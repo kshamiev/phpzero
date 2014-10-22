@@ -139,7 +139,7 @@ $config['Images'] = Array(
   uncommenting the following "session_start()" call.
  */
 $config['RoleSessionVar'] = 'CKFinder_UserRole';
-$_SESSION['CKFinder_UserRole'] = $Users->Zero_Groups_ID;
+$_SESSION['CKFinder_UserRole'] = $Users->Groups_ID;
 
 /*
   AccessControl : used to restrict access or features to specific folders.
@@ -153,10 +153,10 @@ $_SESSION['CKFinder_UserRole'] = $Users->Zero_Groups_ID;
   means "all resource types".
  */
 
-if ( 1 == $Users->Zero_Groups_ID )
+if ( 1 == $Users->Groups_ID )
 {
     $config['AccessControl'][] = Array(
-        'role' => $Users->Zero_Groups_ID,
+        'role' => $Users->Groups_ID,
         'resourceType' => 'Content',
         'folder' => '/',
         'folderView' => true,
@@ -169,10 +169,10 @@ if ( 1 == $Users->Zero_Groups_ID )
         'fileDelete' => true
     );
 }
-else if ( 2 != $Users->Zero_Groups_ID )
+else if ( 2 != $Users->Groups_ID )
 {
     $config['AccessControl'][] = Array(
-        'role' => $Users->Zero_Groups_ID,
+        'role' => $Users->Groups_ID,
         'resourceType' => 'Content',
         'folder' => '/',
         'folderView' => true,
@@ -185,10 +185,10 @@ else if ( 2 != $Users->Zero_Groups_ID )
         'fileDelete' => false
     );
 }
-if ( 2 != $Users->Zero_Groups_ID )
+if ( 2 != $Users->Groups_ID )
 {
     $config['AccessControl'][] = Array(
-        'role' => $Users->Zero_Groups_ID,
+        'role' => $Users->Groups_ID,
         'resourceType' => 'User-' . $Users->Login,
         'folder' => '/',
         'folderView' => true,
@@ -201,7 +201,7 @@ if ( 2 != $Users->Zero_Groups_ID )
         'fileDelete' => true
     );
     $config['AccessControl'][] = Array(
-        'role' => $Users->Zero_Groups_ID,
+        'role' => $Users->Groups_ID,
         'resourceType' => 'Object',
         'folder' => '/',
         'folderView' => true,

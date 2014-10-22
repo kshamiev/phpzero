@@ -85,14 +85,14 @@ class Zero_App
     /**
      * User
      *
-     * @var Zero_Users
+     * @var Www_Users
      */
     public static $Users;
 
     /**
      * Section (page)
      *
-     * @var Zero_Section
+     * @var Www_Section
      */
     public static $Section;
 
@@ -283,7 +283,7 @@ class Zero_App
                 exit;
             }
 
-        //  Инициализация запрошенного раздела (Zero_Section)
+        //  Инициализация запрошенного раздела (Www_Section)
         if ( isset($_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il']) && 0 < $_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il'] )
         {
             self::$Users = Zero_Model::Factory('Www_Users', $_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il']);
@@ -359,7 +359,7 @@ class Zero_App
                 exit;
             }
 
-        //  Инициализация запрошенного раздела (Zero_Section)
+        //  Инициализация запрошенного раздела (Www_Section)
         if ( isset($_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il']) && 0 < $_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il'] )
         {
             self::$Users = Zero_Model::Factory('Www_Users', $_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il']);
@@ -381,7 +381,7 @@ class Zero_App
 
         //  Checking the rights to the current section
         $Action_List = self::$Section->Get_Action_List();
-        if ( 1 < self::$Users->Zero_Groups_ID && 'yes' == self::$Section->IsAuthorized && 0 == count($Action_List) )
+        if ( 1 < self::$Users->Groups_ID && 'yes' == self::$Section->IsAuthorized && 0 == count($Action_List) )
             self::ResponseError(403);
 
         //  Execute controller

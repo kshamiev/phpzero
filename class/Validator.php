@@ -62,7 +62,7 @@ class Zero_Validator
         {
             if ( 1 == count($row) )
             {
-                $this->Errors[$prop][] = Zero_I18n::Model($this->Model->Source, $row[0]);
+                $this->Errors[$prop][] = Zero_I18n::Model(get_class($this->Model), $row[0]);
             }
         }
         return $this->Errors;
