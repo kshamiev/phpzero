@@ -335,13 +335,13 @@ class Zero_App
     /**
      * Method of Application Execution
      *
-     * - Инициализация запрошенного раздела (Zero_Section)
-     * - Инициализация пользователя (Zero_Users)
+     * - Инициализация запрошенного раздела (ZSection)
+     * - Инициализация пользователя (Users)
      * - Инициализация и выполнение контролера и его действия
      * - Формирование и вывод профилированного результата
      *
-     * - Initialization of the requested section (Zero_Section)
-     * - User Initialization (Zero_Users)
+     * - Initialization of the requested section (Section)
+     * - User Initialization (Users)
      * - Initialization and execution of the controller and its actions
      * - The formation results and conclusion of the profiled format
      *

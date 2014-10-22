@@ -497,6 +497,7 @@ class Zero_AR
      * @param string $source_target istochnik danny`kh s kotory`m postroena sviaz` (mnogie ko mnogim)
      * @param mixed $source_target_id identifikator(y` stroka cherez zapiatuiu) ob``ekta tcelevogo istochnika s kotory`m postroena sviaz` (mnogie ko mnogim)
      * @return int est` li sviaz`
+     * TODO работу с cross таблицами упростить.
      */
     public function Select_Cross_IsExist($source_target, $source_target_id)
     {
@@ -517,46 +518,6 @@ class Zero_AR
         ";
         unset($link);
         return Zero_DB::Select_Field($sql);
-    }
-
-    /**
-     * Poisk ob``ektov s signaturoi` ravnoi` delegirovannomu ob``ektu (odin ko mnogim i mnogie ko mnogim).
-     *
-     * Poriadok formirovanie zaprosa:
-     * - Ustanovka fil`trov (mozhet ne by`t`)
-     * - Ustanovka sviazanny`kh ob``ektov (mnogie ko mnogim, uslovie I) (mozhet ne by`t`) (zadaetsia v Sql_Cross)
-     * - Gruppirovka (mozhet ne by`t`).
-     * - Sortirovka (mozhet ne by`t`).
-     * - Postranichnost` (mozhet ne by`t`).
-     * - Formirovanie zaprosa i poluchenie danny`kh v nuzhnoi formate
-     *
-     * @param string $props stroka zagruzhaemy`kh svoi`stv cherez zapiatuiu s probelom
-     * @param bool $flag_param_reset flag sbrosa parametrov posle zaprosa
-     * @return array Nai`denny`e danny`e v vide odnomernogo massiva
-     */
-    public function Select_Row($props, $flag_param_reset = true)
-    {
-        return $this->_Select($props, 'row', $flag_param_reset);
-    }
-
-    /**
-     * Poisk ob``ektov s signaturoi` ravnoi` delegirovannomu ob``ektu (odin ko mnogim i mnogie ko mnogim).
-     *
-     * Poriadok formirovanie zaprosa:
-     * - Ustanovka fil`trov (mozhet ne by`t`)
-     * - Ustanovka sviazanny`kh ob``ektov (mnogie ko mnogim, uslovie I) (mozhet ne by`t`) (zadaetsia v Sql_Cross)
-     * - Gruppirovka (mozhet ne by`t`).
-     * - Sortirovka (mozhet ne by`t`).
-     * - Postranichnost` (mozhet ne by`t`).
-     * - Formirovanie zaprosa i poluchenie danny`kh v nuzhnoi formate
-     *
-     * @param string $props stroka zagruzhaemy`kh svoi`stv cherez zapiatuiu s probelom
-     * @param bool $flag_param_reset flag sbrosa parametrov posle zaprosa
-     * @return array Nai`denny`e danny`e v vide spiska
-     */
-    public function Select_List_Index($props, $flag_param_reset = true)
-    {
-        return $this->_Select($props, 'list', $flag_param_reset);
     }
 
     /**
@@ -597,26 +558,6 @@ class Zero_AR
     public function Select_Array_Index($props, $flag_param_reset = true)
     {
         return $this->_Select($props, 'index', $flag_param_reset);
-    }
-
-    /**
-     * Poisk ob``ektov s signaturoi` ravnoi` delegirovannomu ob``ektu (odin ko mnogim i mnogie ko mnogim).
-     *
-     * Poriadok formirovanie zaprosa:
-     * - Ustanovka fil`trov (mozhet ne by`t`)
-     * - Ustanovka sviazanny`kh ob``ektov (mnogie ko mnogim, uslovie I) (mozhet ne by`t`) (zadaetsia v Sql_Cross)
-     * - Gruppirovka (mozhet ne by`t`).
-     * - Sortirovka (mozhet ne by`t`).
-     * - Postranichnost` (mozhet ne by`t`).
-     * - Formirovanie zaprosa i poluchenie danny`kh v nuzhnoi formate
-     *
-     * @param string $props stroka zagruzhaemy`kh svoi`stv cherez zapiatuiu s probelom
-     * @param bool $flag_param_reset flag sbrosa parametrov posle zaprosa
-     * @return Zero_Model[] Nai`denny`e odanny`e v vide indeksirovannogo spiska ob``ektov
-     */
-    public function Select_Model($props, $flag_param_reset = true)
-    {
-        return $this->_Select($props, 'model', $flag_param_reset);
     }
 
     /**
@@ -711,15 +652,6 @@ class Zero_AR
             $result = Zero_DB::Select_List_Index($sql);
         else if ( 'row' == $mode )
             $result = Zero_DB::Select_Row($sql);
-        else if ( 'model' == $mode )
-        {
-            $rows = Zero_DB::Select_Array_Index($sql);
-            foreach ($rows as $id => $row)
-            {
-                $result[$id] = Zero_Model::Make($source, $id);
-                $result[$id]->Set_Props($row);
-            }
-        }
         if ( $flag_param_reset )
             $this->Sql_Reset();
         return $result;

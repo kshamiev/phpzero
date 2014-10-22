@@ -418,7 +418,7 @@ class Zero_Section extends Zero_Model
         $this->UrlThis = Zero_Lib_String::Transliteration_Url($value);
         if ( 0 < $this->Zero_Section_ID )
         {
-            $Object = Zero_Model::Make($this->Source, $this->Zero_Section_ID);
+            $Object = Zero_Model::Make(__CLASS__, $this->Zero_Section_ID);
             $this->Url = rtrim($Object->Url, '/') . '/' . $this->UrlThis;
         }
         else

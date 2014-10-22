@@ -12,7 +12,7 @@
  */
 class Zero_Console_SiteMap extends Zero_Controller
 {
-    /**
+    /** TODO Тут есть проектные части
      * Initialize the online status is not active users.
      *
      * @return boolean flag stop execute of the next chunk

@@ -156,9 +156,7 @@ class Zero_Filter
                 $this->Filter[$prop]['List'] = $this->Model->$method();
             else
             {
-                $Model = Zero_Model::Make(zero_relation($prop));
-                $Model->AR->Sql_Order('Name', 'ASC');
-                $this->Filter[$prop]['List'] = $Model->AR->Select_List_Index('ID, Name');
+                $this->Filter[$prop]['List'] = Zero_DB::Select_List_Index("SELECT ID, Name FROM `". zero_relation($prop) ."` ORDER BY `Name`");
             }
         }
         return true;

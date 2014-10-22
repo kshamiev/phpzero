@@ -134,10 +134,7 @@ class Zero_Groups_Access extends Zero_Controller
         $this->View->Assign('section_list', $section_list);
         $this->View->Assign('Params', $this->Params);
 
-        $Groups = Zero_Model::Make('Zero_Groups');
-        $Groups->AR->Sql_Where('ID', '!=', $this->Params['obj_parent_id']);
-        $Groups->AR->Sql_Order('Name', 'ASC');
-        $groups_list = $Groups->AR->Select_List_Index('ID, Name');
+        $groups_list = Zero_DB::Select_List_Index("SELECT ID, Name FROM Zero_Groups WHERE ID != {$this->Params['obj_parent_id']} ORDER BY Name ASC");
         $this->View->Assign('groups_list', $groups_list);
         $this->View->Assign('pid', $this->Params['obj_parent_id']);
     }

@@ -68,6 +68,7 @@ class Zero_Section_Grid extends Zero_Crud_Grid
             Zero_Filter::Factory($this->Model)->Reset();
         }
         parent::Chunk_Init();
+        return true;
     }
 
     /**

@@ -29,13 +29,6 @@ class Zero_Controller_Grid extends Zero_Crud_Grid
     protected $Template = 'Zero_Crud_Grid';
 
     /**
-     * Take into account the conditions user
-     *
-     * @var boolean
-     */
-    protected $User_Condition = true;
-
-    /**
      * Initialization of the input parameters
      *
      * @param string $action action
@@ -45,12 +38,11 @@ class Zero_Controller_Grid extends Zero_Crud_Grid
     {
         if ( !isset($this->Params['obj_parent_prop']) )
         {
-            $this->Params['obj_parent_prop'] = $this->Source . '_ID';
+            $this->Params['obj_parent_prop'] = 'TableName_ID';
             $this->Params['obj_parent_id'] = 0;
             $this->Params['obj_parent_name'] = '';
             $this->Params['obj_parent_path'] = ['root'];
         }
-
         if ( isset($_GET['pid']) && $this->Params['obj_parent_id'] != $_GET['pid'] )
         {
             $this->Params['obj_parent_id'] = $_GET['pid'];
@@ -69,7 +61,7 @@ class Zero_Controller_Grid extends Zero_Crud_Grid
             //  move down
             else
             {
-                $ObjectGo = Zero_Model::Make($this->Source, $_GET['pid']);
+                $ObjectGo = Zero_Model::Make($this->ModelName, $_GET['pid']);
                 $ObjectGo->AR->Select('Name');
                 $this->Params['obj_parent_path'][$_GET['pid']] = $ObjectGo->Name;
                 unset($ObjectGo);

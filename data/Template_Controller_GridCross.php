@@ -54,7 +54,7 @@ class Zero_Controller_Grid extends Zero_Crud_Grid
         //  target parent object
         $Object1 = Zero_Model::Make($this->Params['obj_parent_table'], $this->Params['obj_parent_id']);
         //  this object
-        $Object2 = Zero_Model::Make($this->Source, $_REQUEST['obj_id']);
+        $Object2 = Zero_Model::Make($this->ModelName, $_REQUEST['obj_id']);
         //
         if ( !$Object1->AR->Insert_Cross($Object2) )
             return $this->Set_Message('Error_ParamNot', 1, false);
@@ -73,7 +73,7 @@ class Zero_Controller_Grid extends Zero_Crud_Grid
         //  target parent object
         $Object1 = Zero_Model::Make($this->Params['obj_parent_table'], $this->Params['obj_parent_id']);
         //  this object
-        $Object2 = Zero_Model::Make($this->Source, $_REQUEST['obj_id']);
+        $Object2 = Zero_Model::Make($this->ModelName, $_REQUEST['obj_id']);
         //
         if ( !$Object1->AR->Delete_Cross($Object2) )
             return $this->Set_Message('Error_Link_Rem', 1, false);

@@ -29,6 +29,7 @@
  */
 class Zero_Users extends Zero_Model
 {
+
     /**
      * The table stores the objects this model
      *
@@ -256,8 +257,7 @@ class Zero_Users extends Zero_Model
             {
                 //                $prop = 'Zero_Users_' . $this->Zero_Groups_ID . '_ID';
                 $prop = 'Zero_Users_ID';
-                $this->AR->Sql_Where('Zero_Users_ID', '=', $this->ID);
-                $this->_Condition[$prop] = $this->AR->Select_List_Index('ID, Name');
+                $this->_Condition[$prop] = Zero_DB::Select_List_Index("SELECT ID, Name FROM Zero_Users WHERE Zero_Users_ID = {$this->ID}");
                 $this->_Condition[$prop][$this->ID] = $this->Name;
             }
             //  uslovie gruppy`
@@ -270,8 +270,7 @@ class Zero_Users extends Zero_Model
                     continue;
                 if ( '_ID' == substr($prop, -3) && 0 < $value )
                 {
-                    $Model = Zero_Model::Make(zero_relation($prop), $value);
-                    $this->_Condition[$prop][$value] = $Model->Name;
+                    $this->_Condition[$prop][$value] = Zero_DB::Select_Field("SELECT `Name` FROM `" . zero_relation($prop) . "` WHERE ID = {$value}");
                 }
             }
         }
@@ -371,7 +370,7 @@ class Zero_Users extends Zero_Model
     {
         if ( !$value )
             return '';
-//        if ( $value != $_REQUEST['Users']['Password'] )
+        //        if ( $value != $_REQUEST['Users']['Password'] )
         if ( md5($value) != $this->Password )
             return 'Error_PasswordValid';
         return '';
@@ -392,5 +391,4 @@ class Zero_Users extends Zero_Model
             return 'Error_Keystring';
         return '';
     }
-
 }
