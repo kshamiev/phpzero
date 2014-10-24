@@ -74,7 +74,7 @@ class Zero_Users_Login extends Zero_Controller
         {
             Zero_App::ResponseRedirect('/admin');
         }
-        $this->Model = Zero_Model::Make('Www_Users');
+        $this->Model = Zero_Model::Make('Zero_Users');
         $this->View = new Zero_View(get_class($this));
         if ( !Zero_App::$Users->UrlRedirect )
         {
@@ -97,7 +97,7 @@ class Zero_Users_Login extends Zero_Controller
         if ( !$_REQUEST['Login'] || !$_REQUEST['Password'] )
             return true;
 
-        $Users = Zero_Model::Make('Www_Users');
+        $Users = Zero_Model::Make('Zero_Users');
         $Users->AR->Sql_Where('Login', '=', $_REQUEST['Login']);
         $Users->AR->Select('*');
 
@@ -143,13 +143,13 @@ class Zero_Users_Login extends Zero_Controller
         $this->Model->AR->Update();
 
         $subject = "Reminder access details " . HTTP;
-        $View = new Zero_View('Www_Users_ReminderMail');
+        $View = new Zero_View('Zero_Users_ReminderMail');
         $View->Assign('Users', $this->Model);
         $View->Assign('password', $password);
         $message = $View->Fetch();
         Zero_Lib_Mail::Send(Zero_App::$Config->Site_Email, $this->Model->Email, $subject, $message);
 
-        $this->Model = Zero_Model::Make('Www_Users');
+        $this->Model = Zero_Model::Make('Zero_Users');
 
         return $this->Set_Message("Reminder", 0);
     }

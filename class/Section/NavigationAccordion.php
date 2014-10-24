@@ -12,6 +12,7 @@
  * @link http://www.phpzero.com/
  * @copyright <PHP_ZERO_COPYRIGHT>
  * @license http://www.phpzero.com/license/
+ * @todo разделить на чанки
  */
 class Zero_Section_NavigationAccordion extends Zero_Controller
 {
@@ -23,11 +24,11 @@ class Zero_Section_NavigationAccordion extends Zero_Controller
     public function Action_Default()
     {
         $index = __CLASS__ . Zero_App::$Users->Groups_ID . Zero_App::$Config->Site_DomainSub;
-        $Section = Zero_Model::Make('Www_Section');
+        $Section = Zero_Model::Make('Zero_Section');
         /* @var $Section Www_Section */
         if ( isset($this->Params['section_id']) && 0 < $this->Params['section_id'] )
         {
-            $Section = Zero_Model::Make('Www_Section', $this->Params['section_id']);
+            $Section = Zero_Model::Make('Zero_Section', $this->Params['section_id']);
             $index .= $this->Params['section_id'];
         }
         else
