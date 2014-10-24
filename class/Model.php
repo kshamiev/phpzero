@@ -28,6 +28,7 @@
  */
 abstract class Zero_Model
 {
+
     /**
      * Identifikator ob``ekta
      *
@@ -125,11 +126,9 @@ abstract class Zero_Model
      */
     public static function Make($model, $id = 0, $flag_load = false)
     {
+        if ( '' == $model )
+            throw new Exception('Имя класса создаваемой модели не указано', 500);
         return new $model($id, $flag_load);
-        //        $model_name = $source;
-        //        if ( isset(Zero_App::$Config->FactoryModel[$source]) )
-        //            $model_name = Zero_App::$Config->FactoryModel[$source];
-        //        return new $model_name($id, $flag_load, $source);
     }
 
     /**
@@ -576,7 +575,7 @@ abstract class Zero_Model
         //  svoi`stvo pustoe, ne zagruzhennoe iz BD
         Zero_Logs::Set_Message_Notice('#{LOAD PROP} load prop "' . $prop . '" for model "' . get_class($this) . '"');
         $arr = Zero_DB::Select_Row("SELECT `{$prop}` FROM {$this->Source} WHERE ID = {$this->ID}");
-        $this->_Props[$prop] = isset($arr[$prop]) ? $arr[$prop]: null;
+        $this->_Props[$prop] = isset($arr[$prop]) ? $arr[$prop] : null;
         return $this->_Props[$prop];
     }
 

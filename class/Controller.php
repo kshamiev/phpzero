@@ -17,6 +17,7 @@
  */
 abstract class Zero_Controller
 {
+
     /**
      * Massiv soobshchenii` sistemy`
      *
@@ -57,6 +58,8 @@ abstract class Zero_Controller
      */
     public static function Make($class_name, $properties = [])
     {
+        if ( '' == $class_name )
+            throw new Exception('Имя класса создаваемого контроллера не указано', 500);
         $Controller = new $class_name();
         foreach ($properties as $property => $value)
         {

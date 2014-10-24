@@ -145,6 +145,7 @@ class Zero_App
             require_once $path;
             return true;
         }
+        Zero_Logs::Set_Message_Error('Класс не найден: ' . $class_name);
         return false;
     }
 
