@@ -180,7 +180,7 @@ class Zero_App
 
         // Логирование в файлы
         if ( Zero_App::$Config->Log_Output_File )
-            Zero_Logs::Output_File();
+            Zero_Logs::File();
         exit;
     }
 
@@ -197,7 +197,7 @@ class Zero_App
 
         // Логирование в файлы
         if ( self::$Config->Log_Output_File )
-            Zero_Logs::Output_File();
+            Zero_Logs::File();
         exit;
     }
 
@@ -235,8 +235,6 @@ class Zero_App
      */
     public static function Init($file_log = 'application', $mode = 'web')
     {
-        self::$Mode = $mode;
-
         //  Include Components
         require_once ZERO_PATH_ZERO . '/class/Config.php';
         require_once ZERO_PATH_ZERO . '/class/Session.php';
@@ -245,34 +243,31 @@ class Zero_App
         require_once ZERO_PATH_ZERO . '/class/Route.php';
         require_once ZERO_PATH_ZERO . '/class/DB.php';
         require_once ZERO_PATH_APPLICATION . '/www/class/Route.php';
-
-        //  Initializing monitoring system (Zero_Logs)
-        Zero_Logs::Init($file_log);
+        self::$Mode = $mode;
 
         //  Configuration (Zero_Config)
         self::$Config = new Zero_Config($file_log);
 
+        //  Initializing monitoring system (Zero_Logs)
+        Zero_Logs::Init($file_log);
+
         //  Initialize cache subsystem (Zero_Cache)
         if ( class_exists('Memcache') && 0 < count(self::$Config->Memcache['Cache']) )
-        {
             Zero_Cache::InitMemcache(self::$Config->Memcache['Cache']);
-        }
+
+        // DB init config
+        foreach (self::$Config->Db as $name => $config)
+            Zero_DB::Add_Config($name, $config);
 
         //  Processing incoming request (Zero_Route)
         self::$Route = new Www_Route();
 
+        spl_autoload_register(['Zero_App', 'Autoload']);
+
         //  Session Initialization (Zero_Session)
         Zero_Session::Init(self::$Config->Site_Domain);
 
-        // DB init config
-        foreach (self::$Config->Db as $name => $config)
-        {
-            Zero_DB::Add_Config($name, $config);
-        }
-
         require_once ZERO_PATH_ZERO . '/class/View.php';
-
-        spl_autoload_register(['Zero_App', 'Autoload']);
     }
 
     public static function ExecuteSimple()
@@ -473,57 +468,18 @@ class Zero_App
      */
     public static function Exception(Exception $exception)
     {
-        $range_file_error = 10;
-        $error = "#{ERROR_EXCEPTION} " . $exception->getMessage() . ' ' . $exception->getFile() . '(' . $exception->getLine() . ')';
-        Zero_Logs::Set_Message_Error($error);
-        if ( Zero_App::$Config->Log_Output_Display == true )
-        {
-            Zero_Logs::Set_Message_ErrorTrace(Zero_Logs::Get_SourceCode($exception->getFile(), $exception->getLine(), $range_file_error));
-        }
-
-        $traceList = $exception->getTrace();
-        array_shift($traceList);
-        foreach ($traceList as $id => $trace)
-        {
-            if ( !isset($trace['args']) )
-                continue;
-            $args = [];
-            $range_file_error = $range_file_error - 2;
-            foreach ($trace['args'] as $arg)
-            {
-                if ( is_scalar($arg) )
-                    $args[] = "'" . $arg . "'";
-                else if ( is_array($arg) )
-                    $args[] = print_r($arg, true);
-                else if ( is_object($arg) )
-                    $args[] = get_class($arg) . ' Object...';
-            }
-            $trace['args'] = join(', ', $args);
-            if ( isset($trace['class']) )
-                $callback = $trace['class'] . $trace['type'] . $trace['function'];
-            else if ( isset($trace['function']) )
-                $callback = $trace['function'];
-            else
-                $callback = '';
-            if ( !isset($trace['file']) )
-                $trace['file'] = '';
-            if ( !isset($trace['line']) )
-                $trace['line'] = 0;
-            $error = "\t#{" . $id . "}" . $trace['file'] . '(' . $trace['line'] . '): ' . $callback . "(" . str_replace("\n", "", $trace['args']) . ");";
-            Zero_Logs::Set_Message_Error($error);
-            if ( Zero_App::$Config->Log_Output_Display == true )
-            {
-                Zero_Logs::Set_Message_ErrorTrace(Zero_Logs::Get_SourceCode($trace['file'], $trace['line'], $range_file_error));
-            }
-        }
+        Zero_Logs::Exception($exception);
 
         $code = $exception->getCode();
+        if ( $code == 501 )
+            return;
+
         if ( Zero_App::$Mode == 'console' || !isset($_SERVER['REQUEST_URI']) )
             self::ResponseConsole();
         else if ( Zero_App::$Mode == 'api' )
             self::ResponseJson(Zero_Logs::Get_Message(), $code, $exception->getMessage());
         else if ( Zero_App::$Mode == 'web' )
-            self::ResponseError(409);
+            self::ResponseError($code);
     }
 
     /**
@@ -545,7 +501,7 @@ class Zero_App
 
         // Логирование (в браузер)
         if ( self::$Config->Log_Output_Display )
-            echo Zero_Logs::Output_Display();
+            echo Zero_Logs::Display();
 
         // закрываем соединение с браузером (работает только под нгинx)
         if ( function_exists('fastcgi_finish_request') )
@@ -553,7 +509,7 @@ class Zero_App
 
         // Логирование в файлы
         if ( Zero_App::$Config->Log_Output_File )
-            Zero_Logs::Output_File();
+            Zero_Logs::File();
         exit;
     }
 

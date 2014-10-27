@@ -15,7 +15,6 @@
  */
 class Zero_Session extends ArrayObject
 {
-
     /**
      * Zero_Session object provides storage for shared objects.
      *

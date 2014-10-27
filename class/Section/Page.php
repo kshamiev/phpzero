@@ -41,7 +41,6 @@ class Zero_Section_Page extends Zero_Controller
                 $Content->AR->Sql_Where('Section_ID', '=', Zero_App::$Section->ID);
                 $Content->AR->Sql_Where_In('Block', ['content', 'Content']);
                 $Content->AR->Select('*');
-                // TODO разобраться с кешем (индексы таблицы или модели?)
                 Zero_Cache::Set_Link('Zero_Content', $Content->ID);
                 Zero_App::$Section->Cache->Set($index, $Content);
             }

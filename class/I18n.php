@@ -60,17 +60,14 @@ class Zero_I18n
             return self::$_I18n[$file_name][$section][$key];
         // поиск в общем фалйе перевода
         $file_name_all = $folder_list[0] . '_All';
-        if ( $file_name_all != $file_name )
+        if ( !isset(self::$_I18n[$file_name_all]) )
         {
-            if ( !isset(self::$_I18n[$file_name_all]) )
-            {
-                self::$_I18n[$file_name_all] = [];
-                if ( $path = self::Search_Path_I18n([$folder_list[0], 'All']) )
-                    self::$_I18n[$file_name_all] = include $path;
-            }
-            if ( isset(self::$_I18n[$file_name_all][$section][$key]) )
-                return self::$_I18n[$file_name_all][$section][$key];
+            self::$_I18n[$file_name_all] = [];
+            if ( $path = self::Search_Path_I18n([$folder_list[0], 'All']) )
+                self::$_I18n[$file_name_all] = include $path;
         }
+        if ( isset(self::$_I18n[$file_name_all][$section][$key]) )
+            return self::$_I18n[$file_name_all][$section][$key];
         //
         Zero_Logs::Set_Message_Warninng('I18N NOT FOUND KEY: ' . LANG . ' -> ' . $file_name . ' -> ' . $section . ' -> ' . $key);
         return $key;
@@ -80,6 +77,7 @@ class Zero_I18n
     {
         return self::T($file_name, 'model', $key);
     }
+
     public static function ModelArr($file_name, $key)
     {
         $data = self::T($file_name, 'model', $key);
@@ -87,10 +85,12 @@ class Zero_I18n
             return [];
         return $data;
     }
+
     public static function View($file_name, $key)
     {
         return self::T($file_name, 'view', $key);
     }
+
     public static function ViewArr($file_name, $key)
     {
         $data = self::T($file_name, 'view', $key);
@@ -98,10 +98,12 @@ class Zero_I18n
             return [];
         return $data;
     }
+
     public static function Controller($file_name, $key)
     {
         return self::T($file_name, 'controller', $key);
     }
+
     public static function ControllerArr($file_name, $key)
     {
         $data = self::T($file_name, 'controller', $key);

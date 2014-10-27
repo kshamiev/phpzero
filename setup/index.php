@@ -94,7 +94,7 @@ while ( isset($_REQUEST['act']) && 'Install_System' == $_REQUEST['act'] && 0 == 
     // exec("mysql -h {$_REQUEST['db_host']} -u {$_REQUEST['db_login']} -p{$_REQUEST['db_password']} {$_REQUEST['db_name']} < schema/mysql_{$_REQUEST['lang']}.sql", $arr1, $arr2);
     if ( $_REQUEST['db_use'] )
     {
-        $db = mysqli_connect($_REQUEST['db_host'], $_REQUEST['db_login'], $_REQUEST['db_password'], $_REQUEST['db_name']);
+        $db = @mysqli_connect($_REQUEST['db_host'], $_REQUEST['db_login'], $_REQUEST['db_password'], $_REQUEST['db_name']);
         if ( !$db )
         {
             $message_install_list[] = "Error create DB (Access Denied)";

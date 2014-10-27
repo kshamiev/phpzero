@@ -9,7 +9,6 @@
  * @link http://www.phpzero.com/
  * @copyright <PHP_ZERO_COPYRIGHT>
  * @license http://www.phpzero.com/license/
- * TODO 'obj_parent_table' доработать этот момент
  */
 abstract class Zero_Crud_Edit extends Zero_Controller
 {

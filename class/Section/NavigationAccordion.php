@@ -12,7 +12,6 @@
  * @link http://www.phpzero.com/
  * @copyright <PHP_ZERO_COPYRIGHT>
  * @license http://www.phpzero.com/license/
- * @todo разделить на чанки
  */
 class Zero_Section_NavigationAccordion extends Zero_Controller
 {

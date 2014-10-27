@@ -8,6 +8,10 @@
 return [
     'model' => [
         'Property all' => 'Все свойства',
+        'Lang' => 'Язык',
+        'Title' => 'Титул',
+        'Keywords' => 'Ключи',
+        'Description' => 'Описание',
     ],
     'view' => [
         'Properties' => 'Свойства',

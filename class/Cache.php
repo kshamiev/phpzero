@@ -205,12 +205,12 @@ class Zero_Cache
      * According to the parameters you pass identifies specific objects to be associated with the saved cache.
      * If you change these objects will be reset to associate cache.
      *
-     * @param string $source_name the data source (table) is bound to cache data
+     * @param string $model_name the data source (table) is bound to cache data
      * @param integer $id object identifier is associated with the data cache
      */
-    public static function Set_Link($source_name, $id)
+    public static function Set_Link($model_name, $id)
     {
-        self::$_Link[] = [$source_name, $id];
+        self::$_Link[] = [$model_name, $id];
     }
 
     /**
