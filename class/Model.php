@@ -166,6 +166,7 @@ abstract class Zero_Model
      */
     public static function Factory($model, $id = 0, $flag = false)
     {
+        // $index = 'Source' . substr($class, strpos($class, '_') + 1);
         if ( !$result = Zero_Session::Get($model) )
         {
             $result = self::Make($model, $id, $flag);
@@ -184,6 +185,7 @@ abstract class Zero_Model
      */
     public function Factory_Set($flag = false)
     {
+        // $index = 'Source' . substr($class, strpos($class, '_') + 1);
         $index = get_class($this);
         if ( $flag )
             $index .= '_' . $this->ID;
@@ -199,6 +201,7 @@ abstract class Zero_Model
      */
     public function Factory_Unset($flag = false)
     {
+        // $index = 'Source' . substr($class, strpos($class, '_') + 1);
         $index = get_class($this);
         if ( $flag )
             $index .= '_' . $this->ID;

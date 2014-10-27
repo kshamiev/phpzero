@@ -355,8 +355,7 @@ class Zero_Config
             if ( !mkdir(ZERO_PATH_LOG, 0777, true) )
                 die('logs path: "' . ZERO_PATH_LOG . '" not exists');
         error_reporting(-1);
-        set_error_handler(['Zero_App', 'ErrorHandler'], -1);
-        set_exception_handler(['Zero_App', 'ExceptionHandler']);
+        set_exception_handler(['Zero_App', 'Exception']);
         // register_shutdown_function(['Zero_App', 'Exit_Application']);
 
         if ( !is_dir(ZERO_PATH_EXCHANGE) )

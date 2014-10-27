@@ -2,19 +2,6 @@
 /**
  * File Language
  *
- * model =
- * model prop Status =
- * model prop Status validate key1 =
- * model prop Status validate key2 =
- * model prop Status option cold =
- * model prop Status option hot =
- *
- * controller Zero_Users_Grid =
- * controller Zero_Users_Grid action name1 =
- * controller Zero_Users_Grid action name2 =
- * controller Zero_Users_Grid message name1 =
- * controller Zero_Users_Grid message name2 =
- *
  * 'translation Key' => 'Translation Value'
  */
 return [
@@ -27,11 +14,38 @@ return [
         'IsAccess options' => ['close' => 'закрыт', 'open' => 'открыт'],
         'IsCondition options' => ['no' => 'нет', 'yes' => 'да'],
         'IsOnline options' => ['no' => 'нет', 'yes' => 'да'],
+        'Section_ID' => 'Раздел',
+        'Lang' => 'Язык',
+        'Date' => 'Дата регистрации',
+        'DateOnline' => 'Дата посещения',
+        'Email' => 'Email',
+        'Error_NotValid' => 'Поле заполнено не корректно',
+        'Error_Registration' => 'Адрес уже занят',
+        'ID' => 'Идентификатор',
+        'ImgAvatar' => 'Фото - Аватар',
+        'ImgAvatar validate Error Upload File' => 'Ошибка загрузки файла',
+        'ImgAvatar validate Error Image Resize' => 'Ошибка обработки картинки',
+        'IsAccess' => 'Статус доступа',
+        'IsCondition' => 'Условие пользователя',
+        'IsOnline' => 'Статус присутствия',
+        'Keystring' => 'Контрольная строка',
+        'Keystring validate Error_Keystring' => 'Контрольная строка не совпадает',
+        'Login' => 'Логин',
+        'Login validate Error_Exists' => 'Логин уже занят',
+        'Name' => 'ФИО',
+        'Password' => 'Пароль',
+        'PasswordR' => 'Пароль еще раз',
+        'Password validate Error_PasswordValid' => 'Пароли не совпадают',
+        'PasswordR validate Error_PasswordValid' => 'Пароли не совпадают',
+        'Phone' => 'Телефон',
+        'Skype' => 'Скайп',
+        'Groups_ID' => 'Группа',
+        'Users_ID' => 'Пользователь',
+        'Address' => 'Адрес доставки по умолчанию',
     ],
     'view' => [
         'Login' => 'Логин',
         'Password' => 'Пароль',
-
     ],
     'controller' => [
         'Action_Login' => 'Авторизация',

@@ -25,6 +25,9 @@ return [
         'Count' => 'количество',
         'Action' => 'действия',
         'Project' => 'Проект',
+        'Title' => 'Титул',
+        'Keywords' => 'Ключи',
+        'Description' => 'Описание',
     ],
     'controller' => [
         'Action_Default' => 'Контроллер по умолчанию',

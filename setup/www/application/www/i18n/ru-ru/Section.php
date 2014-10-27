@@ -8,6 +8,7 @@
 return [
     'model' => [
         'ID' => 'Идентификатор',
+        'Section_ID' => 'Раздел',
         'IsAuthorized' => 'Раздел авторизованный',
         'IsAuthorized no' => 'нет',
         'IsAuthorized yes' => 'да',

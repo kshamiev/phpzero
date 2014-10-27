@@ -454,10 +454,10 @@ class Zero_App
      * @param string $line stroka, v kotoroi` proizoshla oshibka
      * @throws ErrorException
      */
-    public static function ErrorHandler($code, $message, $filename, $line)
-    {
-        throw new ErrorException($message, $code, 0, $filename, $line);
-    }
+//    public static function ErrorHandler($code, $message, $filename, $line)
+//    {
+//        throw new ErrorException($message, $code, 0, $filename, $line);
+//    }
 
     /**
      * Obrabotchik iscliuchenii` dlia funktcii set_exception_handler()
@@ -468,7 +468,7 @@ class Zero_App
      *
      * @param Exception $exception
      */
-    public static function ExceptionHandler(Exception $exception)
+    public static function Exception(Exception $exception)
     {
         $range_file_error = 10;
         $error = "#{ERROR_EXCEPTION} " . $exception->getMessage() . ' ' . $exception->getFile() . '(' . $exception->getLine() . ')';
