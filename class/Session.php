@@ -15,6 +15,7 @@
  */
 class Zero_Session extends ArrayObject
 {
+
     /**
      * Zero_Session object provides storage for shared objects.
      *
@@ -29,8 +30,12 @@ class Zero_Session extends ArrayObject
      */
     public static function Init($sessionName)
     {
-        session_name(md5($sessionName));
-        session_start();
+        // проверяем запущена ли сессия
+        if ( !session_id() )
+        {
+            session_name(md5($sessionName));
+            session_start();
+        }
         if ( !isset($_SESSION['Session']) || !$_SESSION['Session'] instanceof Zero_Session )
         {
             if ( self::$_Session === null )
@@ -39,7 +44,7 @@ class Zero_Session extends ArrayObject
         }
         else
         {
-            self::$_Session = & $_SESSION['Session'];
+            self::$_Session = &$_SESSION['Session'];
         }
     }
 
@@ -54,7 +59,6 @@ class Zero_Session extends ArrayObject
             self::$_Session = new self;
         return self::$_Session;
     }
-
 
     /**
      * Set the default Zero_Session instance to a specified instance.

@@ -231,10 +231,11 @@ class Zero_App
      * - Session Initialization. Component Zero_Session
      *
      * @param string $file_log the base name of the log file
+     * @param string $mode the base name of the log file
      */
-    public static function Init($file_log = 'application')
+    public static function Init($file_log = 'application', $mode = 'web')
     {
-        self::$Mode = $mode = 'web';
+        self::$Mode = $mode;
 
         //  Include Components
         require_once ZERO_PATH_ZERO . '/class/Config.php';
@@ -243,7 +244,7 @@ class Zero_App
         require_once ZERO_PATH_ZERO . '/class/Logs.php';
         require_once ZERO_PATH_ZERO . '/class/Route.php';
         require_once ZERO_PATH_ZERO . '/class/DB.php';
-        spl_autoload_register(['Zero_App', 'Autoload']);
+        require_once ZERO_PATH_APPLICATION . '/www/class/Route.php';
 
         //  Initializing monitoring system (Zero_Logs)
         Zero_Logs::Init($file_log);
@@ -270,6 +271,8 @@ class Zero_App
         }
 
         require_once ZERO_PATH_ZERO . '/class/View.php';
+
+        spl_autoload_register(['Zero_App', 'Autoload']);
     }
 
     public static function ExecuteSimple()
@@ -515,7 +518,7 @@ class Zero_App
         }
 
         $code = $exception->getCode();
-        if ( !isset($_SERVER['REQUEST_URI']) )
+        if ( Zero_App::$Mode == 'console' || !isset($_SERVER['REQUEST_URI']) )
             self::ResponseConsole();
         else if ( Zero_App::$Mode == 'api' )
             self::ResponseJson(Zero_Logs::Get_Message(), $code, $exception->getMessage());

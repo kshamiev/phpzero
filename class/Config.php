@@ -116,21 +116,21 @@ class Zero_Config
      *
      * @var string
      */
-//    public $Site_ClassRoute = '';
+    //    public $Site_ClassRoute = '';
 
     /**
      * Default language
      *
      * @var string
      */
-//    public $Site_ClassSection = '';
+    //    public $Site_ClassSection = '';
 
     /**
      * Default language
      *
      * @var string
      */
-//    public $Site_ClassUsers = '';
+    //    public $Site_ClassUsers = '';
 
     /**
      * Access for DB (Mysql)
@@ -283,15 +283,15 @@ class Zero_Config
             }
         }
 
-//        $this->Site_ClassRoute = $Config['Site']['ClassRoute'];
-//        if ( !$this->Site_ClassRoute )
-//            die('class Route undefined');
-//        $this->Site_ClassSection = $Config['Site']['ClassSection'];
-//        if ( !$this->Site_ClassSection )
-//            die('class Route undefined');
-//        $this->Site_ClassUsers = $Config['Site']['ClassUsers'];
-//        if ( !$this->Site_ClassUsers )
-//            die('class Route undefined');
+        //        $this->Site_ClassRoute = $Config['Site']['ClassRoute'];
+        //        if ( !$this->Site_ClassRoute )
+        //            die('class Route undefined');
+        //        $this->Site_ClassSection = $Config['Site']['ClassSection'];
+        //        if ( !$this->Site_ClassSection )
+        //            die('class Route undefined');
+        //        $this->Site_ClassUsers = $Config['Site']['ClassUsers'];
+        //        if ( !$this->Site_ClassUsers )
+        //            die('class Route undefined');
 
         //  Number of items per page
         $this->View_PageItem = $Config['View']['PageItem'];
@@ -349,7 +349,7 @@ class Zero_Config
 
         // Initialization of the profiled application processors
         ini_set('log_errors', true);
-        ini_set('error_log', ZERO_PATH_LOG . '/' . $file_log . '.log');
+        ini_set('error_log', ZERO_PATH_LOG . '/error_php_' . $file_log . '.log');
         ini_set('magic_quotes_gpc', 0);
         if ( !is_dir(ZERO_PATH_LOG) )
             if ( !mkdir(ZERO_PATH_LOG, 0777, true) )
@@ -369,6 +369,9 @@ class Zero_Config
         if ( !is_dir(ZERO_PATH_APPLICATION . '/zero') )
             if ( !symlink(ZERO_PATH_ZERO, ZERO_PATH_APPLICATION . '/zero') )
                 die('module "zero" path: "' . ZERO_PATH_APPLICATION . '/zero" not exists');
+
+        if ( !file_exists(ZERO_PATH_APPLICATION . '/www/class/Route.php') )
+            die('class "Www_Route" not exists');
     }
 }
 
