@@ -39,6 +39,14 @@
  */
 class Zero_Engine
 {
+
+    /**
+     * Путь до гереруемого модуля
+     *
+     * @var string
+     */
+    protected static $path = '';
+
     /**
      * Validatciia BD
      *
@@ -283,21 +291,6 @@ class Zero_Engine
     }
 
     /**
-     * Poluchneie puti do classa.
-     *
-     * Dlia prilozheniia
-     *
-     * @param string $class_name imia classa (modeli, kontrollera)
-     * @return string
-     */
-    protected static function Get_Path_Class($class_name)
-    {
-        $class_name = str_replace('_', '/', $class_name);
-        $str_pos = strpos($class_name, '/');
-        return ZERO_PATH_APPLICATION . '/' . strtolower(substr($class_name, 0, $str_pos)) . '/class' . substr($class_name, $str_pos) . '.php';
-    }
-
-    /**
      * Sozdanie/Izmenenie modelei`.
      *
      * Chitaet gruppu tablitc ili tcelevuiu tablitcu i sozdaet dlia nikh modeli.
@@ -317,23 +310,24 @@ class Zero_Engine
         /**
          * Modeli i Kontrollery`
          */
-        $sql = "SHOW TABLE STATUS WHERE `Name` LIKE '{$module}\_%' AND `Name` NOT LIKE '%\_2\_%'";
+        if ( $module == '' )
+            $sql = "SHOW TABLE STATUS WHERE `Name` NOT LIKE '%\_%'";
+        else
+            $sql = "SHOW TABLE STATUS WHERE `Name` = '{$module}%' AND `Name` NOT LIKE '%\_%'";
         $table_list = Zero_DB::Select_Array($sql);
         if ( 0 == count($table_list) )
             return false;
         /**
-         * Strutura papok
+         * Струтура папок
          */
-        $dir = ZERO_PATH_APPLICATION . '/' . strtolower($module);
+        self::$path = ZERO_PATH_SITE . '/engineModule';
+        $dir = self::$path;
         if ( !is_dir($dir) )
             mkdir($dir);
         $dir1 = $dir . '/assets';
         if ( !is_dir($dir1) )
             mkdir($dir1);
         $dir1 = $dir . '/class';
-        if ( !is_dir($dir1) )
-            mkdir($dir1);
-        $dir1 = $dir . '/component';
         if ( !is_dir($dir1) )
             mkdir($dir1);
         $dir1 = $dir . '/config';
@@ -348,137 +342,52 @@ class Zero_Engine
         $dir1 = $dir . '/view';
         if ( !is_dir($dir1) )
             mkdir($dir1);
-        //  Razdel v BD
-        $Section = Zero_Model::Make('Zero_Section');
-        /* @var $Section Zero_Section */
-        $Section->Init_Url(Zero_App::$Config->Site_DomainSub . '/admin');
-        $url = strtolower($module);
-        $Section_Two = Zero_Model::Make('Zero_Section');
-        /* @var $Section_Two Zero_Section */
-        $Section_Two->AR->Sql_Where('Url', '=', Zero_App::$Config->Site_DomainSub . '/admin/' . $url);
-        $Section_Two->AR->Select('ID');
-        if ( 0 == $Section_Two->ID )
-        {
-            $Section_Two->Section_ID = $Section->ID;
-            $Section_Two->Url = Zero_App::$Config->Site_DomainSub . '/admin/' . $url;
-            $Section_Two->UrlThis = $url;
-            $Section_Two->Layout = 'Zero_Main';
-            $Section_Two->Controller = 'Zero_Content_Page';
-            $Section_Two->IsAuthorized = 'yes';
-            $Section_Two->IsVisible = 'yes';
-            $Section_Two->Sort = 1;
-            $Section_Two->Name = $module;
-            $Section_Two->Title = $module;
-            $Section_Two->Keywords = $module;
-            $Section_Two->Description = $module;
-            $Section_Two->AR->Insert();
-            $Section_Two->Cache->Reset();
-        }
+        // Модель
         foreach ($table_list as $row)
         {
-            //  zashchita ot skry`ty`kh i nekorretkny`kh tablitc
-            $package = explode('_', $row['Name']);
-            if ( 2 != count($package) )
-                continue;
-            //  Sozdanie modeli
             $path_pattern = ZERO_PATH_ZERO . '/data/Template_Model.php';
-            $path_model = self::Get_Path_Class($row['Name']);
-            if ( !file_exists($path_model) )
-            {
-                //        echo 'CREATE MODEL ' . $path_model . '<br>';
-                //  Model
-                $class = file_get_contents($path_pattern);
-                $class = str_replace('<Comment>', $row['Name'], $class);
-                $class = str_replace('<Package>', $package[0], $class);
-                $class = str_replace('<Subpackage>', $package[1], $class);
-                $class = str_replace('<Date>', date('Y.m.d'), $class);
-                $class = str_replace('Zero_Model_Pattern', $row['Name'], $class);
-                Zero_Lib_FileSystem::File_Save($path_model, $class);
-            }
+            $path_model = $dir . '/class/' . $row['Name'] . '.php';
+            $class = file_get_contents($path_pattern);
+            $class = str_replace('<Comment>', $row['Name'], $class);
+            $class = str_replace('<Subpackage>', $row['Name'], $class);
+            $class = str_replace('<Date>', date('Y.m.d'), $class);
+            $class = str_replace('Zero_Model_Pattern', $row['Name'], $class);
+            Zero_Lib_FileSystem::File_Save($path_model, $class);
             //  Konfiguratciia modeli v tcelom
-            $this->Config_Model($row['Name']);
+            $this->Config_Model($path_model, $row['Name']);
             //  Konfiguratciia svoi`stv motceli
-            $this->Config_Model_Prop($row['Name']);
+            $this->Config_Model_Prop($path_model, $row['Name']);
             //  Konfiguratciia sviazei` motceli (mnogie ko mnogim)
-            $this->Config_Model_Link($row['Name']);
+            $this->Config_Model_Link($path_model, $row['Name']);
             //  Kontroller spiska
             $path_target = substr($path_model, 0, -4) . '/Grid.php';
-            if ( $flag_grid && !file_exists($path_target) )
+            if ( $flag_grid )
             {
                 //          echo 'CREATE CONTROLLER ' . $path_target . '<br>';
                 $path_pattern = ZERO_PATH_ZERO . '/data/Template_Controller_Grid.php';
                 $class = file_get_contents($path_pattern);
                 $class = str_replace('<Comment>', 'Контроллер просмотра списка объектов', $class);
-                $class = str_replace('<Package>', $package[0], $class);
-                $class = str_replace('<Subpackage>', $package[1], $class);
+                $class = str_replace('<Subpackage>', $row['Name'], $class);
                 $class = str_replace('<Date>', date('Y.m.d'), $class);
                 $class = str_replace('Zero_Controller_Grid', $row['Name'] . '_Grid', $class);
                 $class = str_replace('Zero_Model_Pattern', $row['Name'], $class);
                 Zero_Lib_FileSystem::File_Save($path_target, $class);
             }
-            //  Razdel v BD
-            $url = strtolower($package[0] . '/' . $package[1]);
-            $Section_Three = Zero_Model::Make('Zero_Section');
-            /* @var $Section_Three Zero_Section */
-            $Section_Three->AR->Sql_Where('Url', '=', Zero_App::$Config->Site_DomainSub . '/admin/' . $url);
-            $Section_Three->AR->Select('ID');
-            if ( $flag_grid && 0 == $Section_Three->ID )
-            {
-                $Section_Three->Section_ID = $Section_Two->ID;
-                $Section_Three->Url = Zero_App::$Config->Site_DomainSub . '/admin/' . $url;
-                $Section_Three->UrlThis = strtolower($package[1]);
-                $Section_Three->Layout = 'Zero_Main';
-                $Section_Three->Controller = $row['Name'] . '_Grid';
-                $Section_Three->IsAuthorized = 'yes';
-                $Section_Three->IsVisible = 'yes';
-                $Section_Three->Sort = 1;
-                $Section_Three->Name = $row['Comment'];
-                $Section_Three->Title = $row['Comment'];
-                $Section_Three->Keywords = $row['Comment'];
-                $Section_Three->Description = $row['Comment'];
-                $Section_Three->AR->Insert();
-                $Section_Three->Cache->Reset();
-            }
             //  Kontroller redaktirovaniia
             $path_target = substr($path_model, 0, -4) . '/Edit.php';
-            if ( $flag_edit && !file_exists($path_target) )
+            if ( $flag_edit )
             {
-                //          echo 'CREATE CONTROLLER ' . $path_target . '<br>';
                 $path_pattern = ZERO_PATH_ZERO . '/data/Template_Controller_Edit.php';
                 $class = file_get_contents($path_pattern);
                 $class = str_replace('<Comment>', 'Контроллер изменения объекта', $class);
-                $class = str_replace('<Package>', $package[0], $class);
-                $class = str_replace('<Subpackage>', $package[1], $class);
+                $class = str_replace('<Subpackage>', $row['Name'], $class);
                 $class = str_replace('<Date>', date('Y.m.d'), $class);
                 $class = str_replace('Zero_Controller_Edit', $row['Name'] . '_Edit', $class);
                 $class = str_replace('Zero_Model_Pattern', $row['Name'], $class);
                 Zero_Lib_FileSystem::File_Save($path_target, $class);
             }
-            //  Razdel v BD
-            $url = strtolower($package[0] . '/' . $package[1] . '/edit');
-            $Section_Four = Zero_Model::Make('Zero_Section');
-            /* @var $Section_Four Zero_Section */
-            $Section_Four->AR->Sql_Where('Url', '=', Zero_App::$Config->Site_DomainSub . '/admin/' . $url);
-            $Section_Four->AR->Select('ID');
-            if ( $flag_edit && 0 == $Section_Four->ID && 0 < $Section_Three->ID )
-            {
-                $Section_Four->Section_ID = $Section_Three->ID;
-                $Section_Four->Url = Zero_App::$Config->Site_DomainSub . '/admin/' . $url;
-                $Section_Four->UrlThis = 'edit';
-                $Section_Four->Layout = 'Zero_Main';
-                $Section_Four->Controller = $row['Name'] . '_Edit';
-                $Section_Four->IsAuthorized = 'yes';
-                $Section_Four->IsVisible = 'no';
-                $Section_Four->Sort = 1;
-                $Section_Four->Name = $row['Comment'] . ' изменение';
-                $Section_Four->Title = $row['Comment'] . ' изменение';
-                $Section_Four->Keywords = $row['Comment'] . ' изменение';
-                $Section_Four->Description = $row['Comment'] . ' изменение';
-                $Section_Four->AR->Insert();
-                $Section_Four->Cache->Reset();
-            }
             //  Internatcionalizatciia
-            $this->Config_I18n($row['Name']);
+            $this->Config_I18n($path_model, $row['Name']);
         }
         return true;
     }
@@ -491,7 +400,7 @@ class Zero_Engine
      *
      * @param string $Table tablitca v BD kotoruiu dolzhna obsluzhivat` model`
      */
-    protected function Config_Model($Table)
+    protected function Config_Model($path_model, $Table)
     {
         $config = [];
         //  proverka realizatcii sinkhronnoi` mul`tiiazy`chnosti ob``ekta
@@ -506,19 +415,14 @@ class Zero_Engine
             $str .= "'" . $key . "' => '" . $value . "', ";
         }
         $str = substr($str, 0, -2);
-        $path = self::Get_Path_Class($Table);
-        $class = file_get_contents($path);
+        $class = file_get_contents($path_model);
         preg_match('~/\*BEG_CONFIG_MODEL\*/(.*?)/\*END_CONFIG_MODEL\*/~si', $class, $arr);
         if ( strlen(trim($arr[1])) < 3 )
         {
             //      echo 'CONFIG MODEL ' . $path . '<br>';
             $class = preg_replace('~/\*BEG_CONFIG_MODEL\*/(.*?)/\*END_CONFIG_MODEL\*/~si', "/*BEG_CONFIG_MODEL*/{$str}\n\t\t\t/*END_CONFIG_MODEL*/", $class);
-            file_put_contents($path, $class);
+            file_put_contents($path_model, $class);
         }
-        unset($str);
-        unset($path);
-        unset($class);
-        unset($config);
     }
 
     /**
@@ -528,7 +432,7 @@ class Zero_Engine
      *
      * @param string $Table tablitca v BD kotoruiu dolzhna obsluzhivat` model`
      */
-    protected function Config_Model_Prop($Table)
+    protected function Config_Model_Prop($path_model, $Table)
     {
         /**
          * Analiz i initcializatciia svoi`stv na osnove polei` v BD
@@ -592,8 +496,7 @@ class Zero_Engine
         /**
          * Faktoring / Refaktoring modeli po poluchennoi` konfiguratcii
          */
-        $path = self::Get_Path_Class($Table);
-        $class = file_get_contents($path);
+        $class = file_get_contents($path_model);
         //  Bazovaia konfiguratciia svoi`stv
         preg_match('~/\*BEG_CONFIG_PROP\*/(.*?)/\*END_CONFIG_PROP\*/~si', $class, $arr);
         if ( strlen(trim($arr[1])) < 3 )
@@ -652,7 +555,7 @@ class Zero_Engine
             $str_props = substr($str_props, 0, -1);
             $class = preg_replace('~/\*BEG_CONFIG_FORM_PROP\*/(.*?)/\*END_CONFIG_FORM_PROP\*/~si', "/*BEG_CONFIG_FORM_PROP*/{$str_props}\n\t\t\t/*END_CONFIG_FORM_PROP*/", $class);
         }
-        file_put_contents($path, $class);
+        file_put_contents($path_model, $class);
     }
 
     /**
@@ -664,25 +567,23 @@ class Zero_Engine
      *
      * @param string $Table tablitca v BD kotoruiu dolzhna obsluzhivat` model`
      */
-    protected function Config_Model_Link($Table)
+    protected function Config_Model_Link($path_model, $Table)
     {
         $config = [];
-        $sql = "SHOW TABLE STATUS WHERE `Name` LIKE '{$Table}_2_%' OR `Name` LIKE '%_2_{$Table}'";
+        $sql = "SHOW TABLE STATUS WHERE `Name` LIKE '{$Table}_%' OR `Name` LIKE '%_{$Table}'";
         $rows = Zero_DB::Select_List($sql);
         foreach ($rows as $tbl)
         {
             //  zashchita ot skry`ty`kh i nekorretkny`kh tablitc
-            if ( 5 != count(explode('_', $tbl)) )
-            {
+            if ( 2 != count(explode('_', $tbl)) )
                 continue;
-            }
             //
             $sql = "SHOW FULL COLUMNS FROM `{$tbl}` WHERE `Field` LIKE '{$Table}_%ID';";
             $row = Zero_DB::Select_Row($sql);
-            $PropThis = isset($row['Field']) ? $row['Field'] : '' ;
+            $PropThis = isset($row['Field']) ? $row['Field'] : '';
             $sql = "SHOW FULL COLUMNS FROM `{$tbl}` WHERE `Field` NOT LIKE '{$Table}_%ID';";
             $row = Zero_DB::Select_Row($sql);
-            $PropTarget = isset($row['Field']) ? $row['Field'] : '' ;
+            $PropTarget = isset($row['Field']) ? $row['Field'] : '';
             $TableTarget = zero_relation($PropTarget);
             $config[$TableTarget]['table_link'] = $tbl;
             $config[$TableTarget]['prop_this'] = $PropThis;
@@ -701,14 +602,13 @@ class Zero_Engine
             $str .= "),\n";
         }
         $str = substr($str, 0, -2);
-        $path = self::Get_Path_Class($Table);
-        $class = file_get_contents($path);
+        $class = file_get_contents($path_model);
         preg_match('~/\*BEG_CONFIG_LINK\*/(.*?)/\*END_CONFIG_LINK\*/~si', $class, $arr);
         if ( strlen(trim($arr[1])) < 3 )
         {
             //      echo 'CONFIG LINK ' . $path . '<br>';
             $class = preg_replace('~/\*BEG_CONFIG_LINK\*/(.*?)/\*END_CONFIG_LINK\*/~si', "/*BEG_CONFIG_LINK*/{$str}\n\t\t\t/*END_CONFIG_LINK*/", $class);
-            file_put_contents($path, $class);
+            file_put_contents($path_model, $class);
         }
     }
 
@@ -717,10 +617,9 @@ class Zero_Engine
      *
      * @param string $Table tablitca v BD kotoruiu dolzhna obsluzhivat` model`
      */
-    protected function Config_I18n($Table)
+    protected function Config_I18n($path_model, $Table)
     {
         $config = [];
-        $folder_list = explode('_', $Table);
         /*
          * Model`
          */
@@ -754,10 +653,7 @@ class Zero_Engine
         $path1 = ZERO_PATH_ZERO . '/data/Template_I18n.php';
         foreach (array_keys(Zero_App::$Config->Language) as $lang)
         {
-            $path2 = ZERO_PATH_APPLICATION . '/' . strtolower($folder_list[0]) . '/i18n/' . $lang . '/' . $folder_list[1] . '.php';
-            if ( file_exists($path2) )
-                continue;
-            $path2 = ZERO_PATH_APPLICATION . '/' . strtolower($folder_list[0]) . '/i18n/' . $lang . '/' . $folder_list[1] . '.php';
+            $path2 = self::$path . '/i18n/' . $lang . '/' . $Table . '.php';
             //        echo 'CONFIG I18N MODEL ' . $path2 . '<br>';
             $file_data = file_get_contents($path1);
             $file_data = str_replace('# CONFIG', $str, $file_data);
