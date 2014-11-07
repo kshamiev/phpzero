@@ -1,6 +1,7 @@
 <?php
 
-include_once(dirname(__DIR__) . '/library/PHPMailer/class.phpmailer.php');
+require ZERO_PATH_ZERO . '/library/PHPMailer/PHPMailerAutoload.php';
+
 /**
  * Lib. PHP email transport class
  *
@@ -23,39 +24,31 @@ class Zero_Lib_Mail
      * @param array $attach attachments
      * @return bool
      */
-    public static function Send($from, $to, $subject, $message, $attach = [])
+    public static function Send($from, $to, $reply, $subject, $message, $attach = [])
     {
-        foreach (explode(';', $to) as $email)
+        foreach ($to as $row)
         {
+            $mail = new PHPMailer;
             //  Header mail
-            $email = trim($email);
-            $Mailer = new PHPMailer($from);
-            //
-            $Mailer->From = $from;
-            $Mailer->FromName = '';
-            $Mailer->Sender = $from;
-            //
-            $Mailer->Priority = 3;
-            $Mailer->AddReplyTo($from);
-            $Mailer->AddAddress($email);
-            $Mailer->CharSet = 'UTF-8';
+            $mail->CharSet = 'utf-8';
+            $mail->setFrom($from['Email'], $from['Name']);
+            $mail->addReplyTo($reply['Email'], $reply['Name']);
+            $mail->addAddress($row['Email'], $row['Name']);
             //  The message body
-            $Mailer->Subject = $subject;
-                $Mailer->MsgHTML($message);
+            $mail->Subject = $subject;
+            $mail->msgHTML($message);
+            $mail->AltBody = $message;
             //  Attachments
-            if ( is_array($attach) )
+            foreach ($attach as $path => $name)
             {
-                foreach ($attach as $path => $name)
-                {
-                    $Mailer->AddAttachment($path, $name);
-                }
+                $mail->AddAttachment($path, $name);
             }
             //  Send
-            if ( !$Mailer->Send() )
-                Zero_Logs::Set_Message_Error("From: {$from}; To: {$email}; Subject: {$subject}");
-
-            $Mailer->ClearAddresses();
-            $Mailer->ClearAttachments();
+            if ( !$mail->send() )
+                Zero_Logs::Set_Message_Error("From: {$from['Email']}; To: {$row['Email']}; Subject: {$subject}");
+            //
+            $mail->ClearAddresses();
+            $mail->ClearAttachments();
         }
         return true;
     }

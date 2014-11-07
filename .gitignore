@@ -12,8 +12,11 @@ nbproject*
 ## PhpZero
 #################
 test.php
-dev*
 
+#################
+## library
+#################
+#PHPMailer
 
 #################
 ## Eclipse
@@ -79,9 +82,6 @@ local.properties
 *.vspscc
 .builds
 *.dotCover
-
-## TODO: If you have NuGet Package Restore enabled, uncomment this
-#packages/
 
 # Visual C++ cache files
 ipch/

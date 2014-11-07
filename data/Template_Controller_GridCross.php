@@ -37,6 +37,7 @@ class Zero_Controller_Grid extends Zero_Crud_Grid
     protected function Chunk_Init()
     {
         $this->Params['obj_parent_table'] = 'relation_table';
+        $this->Params['obj_parent_prop'] = 'relation_prop';
         $this->Params['obj_parent_name'] = '';
         parent::Chunk_Init();
         return true;

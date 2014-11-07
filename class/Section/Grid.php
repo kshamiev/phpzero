@@ -14,6 +14,7 @@
  */
 class Zero_Section_Grid extends Zero_Crud_Grid
 {
+
     /**
      * The table stores the objects handled by this controller.
      *
@@ -35,13 +36,10 @@ class Zero_Section_Grid extends Zero_Crud_Grid
      */
     protected function Chunk_Init()
     {
-        if ( !isset($this->Params['obj_parent_prop']) )
-        {
-            $this->Params['obj_parent_prop'] = 'Section_ID';
-            $this->Params['obj_parent_id'] = 0;
-            $this->Params['obj_parent_name'] = '';
+        $this->Params['obj_parent_prop'] = 'Section_ID';
+        $this->Params['obj_parent_name'] = '';
+        if ( !isset($this->Params['obj_parent_path']) )
             $this->Params['obj_parent_path'] = ['root'];
-        }
         if ( isset($_GET['pid']) && $this->Params['obj_parent_id'] != $_GET['pid'] )
         {
             $this->Params['obj_parent_id'] = $_GET['pid'];

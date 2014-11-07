@@ -497,7 +497,6 @@ class Zero_AR
      * @param string $source_target istochnik danny`kh s kotory`m postroena sviaz` (mnogie ko mnogim)
      * @param mixed $source_target_id identifikator(y` stroka cherez zapiatuiu) ob``ekta tcelevogo istochnika s kotory`m postroena sviaz` (mnogie ko mnogim)
      * @return int est` li sviaz`
-     * TODO работу с cross таблицами упростить.
      */
     public function Select_Cross_IsExist($source_target, $source_target_id)
     {

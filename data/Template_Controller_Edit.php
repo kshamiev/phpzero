@@ -38,6 +38,7 @@ class Zero_Controller_Edit extends Zero_Crud_Edit
         $this->Params['obj_parent_name'] = '';
         //  relation transition many to many (CCL)
         $this->Params['obj_parent_table'] = 'relation_table';
+        $this->Params['obj_parent_prop'] = 'relation_prop';
         $this->Params['obj_parent_name'] = '';
         //
         parent::Chunk_Init();
