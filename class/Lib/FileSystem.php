@@ -12,6 +12,7 @@
  */
 final class Zero_Lib_FileSystem
 {
+
     /**
      * Spisok papok raspolozheniia binarny`kh danny`kh ob``ekta (ot identifikatora, kratny`i` 100)
      *
@@ -465,7 +466,10 @@ final class Zero_Lib_FileSystem
         if ( !is_dir(dirname($path_file)) )
             mkdir(dirname($path_file), 0777, true);
         $fp = fopen($path_file, 'a');
-        fputs($fp, trim($value) . "\n");
+        if ( 'array' == gettype($value) || 'object' == gettype($value) )
+            fputs($fp, print_r($value, true) . "\n");
+        else
+            fputs($fp, trim($value) . "\n");
         fclose($fp);
         chmod($path_file, 0666);
         return true;

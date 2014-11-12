@@ -155,10 +155,9 @@ class Zero_App
      * @param mixed $value Отдаваемые данные
      * @param int $code Код ошибки
      * @param string $message Сообщение
-     * @param string $messageDebug Служебное сообщение
      * @return bool
      */
-    public static function ResponseJson($value, $code, $message, $messageDebug = "")
+    public static function ResponseJson($value, $code, $message)
     {
         header('Pragma: no-cache');
         header('Last-Modified: ' . date('D, d M Y H:i:s') . 'GMT');
@@ -169,7 +168,6 @@ class Zero_App
         $data = [
             'Code' => $code,
             'Message' => $message,
-            'MessageDebug' => "" != $messageDebug ? $messageDebug : $message,
             'Data' => $value,
         ];
         echo json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
@@ -471,13 +469,11 @@ class Zero_App
         Zero_Logs::Exception($exception);
 
         $code = $exception->getCode();
-        if ( $code == 501 )
-            return;
 
         if ( Zero_App::$Mode == 'console' || !isset($_SERVER['REQUEST_URI']) )
             self::ResponseConsole();
         else if ( Zero_App::$Mode == 'api' )
-            self::ResponseJson(Zero_Logs::Get_Message(), $code, $exception->getMessage());
+            self::ResponseJson('', $code, $exception->getMessage());
         else if ( Zero_App::$Mode == 'web' )
             self::ResponseError($code);
     }
