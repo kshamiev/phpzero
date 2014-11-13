@@ -1,6 +1,6 @@
 <?php
 
-include_once(dirname(__DIR__) . '/library/PHPMailer/class.phpmailer.php');
+require_once dirname(dirname(__DIR__)) . '/library/PHPMailer/class.phpmailer.php';
 /**
  * Lib. PHP email transport class
  *
