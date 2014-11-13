@@ -329,7 +329,7 @@ class Zero_Logs
      */
     public static function File_Custom($data, $file_log)
     {
-        return Zero_Lib_FileSystem::File_Save_After(ZERO_PATH_LOG . '/' . $file_log, $data);
+        return Zero_System_File::File_Save_After(ZERO_PATH_LOG . '/' . $file_log, $data);
     }
 
 

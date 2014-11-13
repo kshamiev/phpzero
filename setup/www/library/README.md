@@ -1,7 +1,5 @@
-## Сторонние библиотеки используемые в модуле.
+## Сторонние библиотеки используемые в приложении.
 
-### PHPMailer
-
-* install:
+* install PHPMailer:
 
     git clone https://github.com/PHPMailer/PHPMailer

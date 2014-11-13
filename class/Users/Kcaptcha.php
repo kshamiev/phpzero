@@ -17,7 +17,7 @@ class Zero_Users_Kcaptcha extends Zero_Controller
      */
     public function Action_Default()
     {
-        include_once ZERO_PATH_ZERO . '/library/kcaptcha/kcaptcha.php';
+        include_once ZERO_PATH_LIBRARY . '/kcaptcha/kcaptcha.php';
         $Captcha = new KCAPTCHA();
         Zero_App::$Users->Keystring = $Captcha->getKeyString();
         exit;

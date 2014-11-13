@@ -14,6 +14,10 @@ define('ZERO_PATH_DATA', ZERO_PATH_SITE . '/upload/data');
 /**
  * The location of the site log
  */
+define('ZERO_PATH_LIBRARY', ZERO_PATH_SITE . '/library');
+/**
+ * The location of the site log
+ */
 define('ZERO_PATH_LOG', dirname(ZERO_PATH_SITE) . '/log');
 /**
  * The location of the site log
@@ -139,12 +143,6 @@ class Zero_App
             require_once $path;
             return true;
         }
-        $path = ZERO_PATH_APPLICATION . '/' . $module . '/library/' . $class . '.php';
-        if ( file_exists($path) )
-        {
-            require_once $path;
-            return true;
-        }
         Zero_Logs::Set_Message_Error('Класс не найден: ' . $class_name);
         return false;
     }
@@ -201,7 +199,7 @@ class Zero_App
 
     public static function ResponseImg($path)
     {
-        header("Content-Type: " . Zero_Lib_FileSystem::File_Type($path));
+        header("Content-Type: " . Zero_System_File::File_Type($path));
         header("Content-Length: " . filesize($path));
         if ( file_exists($path) )
             echo file_get_contents($path);
@@ -210,7 +208,7 @@ class Zero_App
 
     public static function ResponseFile($path)
     {
-        header("Content-Type: " . Zero_Lib_FileSystem::File_Type($path));
+        header("Content-Type: " . Zero_System_File::File_Type($path));
         header("Content-Length: " . filesize($path));
         header('Content-Disposition: attachment; filename = "' . basename($path) . '"');
         if ( file_exists($path) )

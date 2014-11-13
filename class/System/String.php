@@ -10,7 +10,7 @@
  * @copyright <PHP_ZERO_COPYRIGHT>
  * @license http://www.phpzero.com/license/
  */
-final class Zero_Lib_String
+final class Zero_System_String
 {
     public static $Transliteration = [
         0 => 0,

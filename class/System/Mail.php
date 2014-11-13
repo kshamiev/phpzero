@@ -1,6 +1,6 @@
 <?php
 
-require ZERO_PATH_ZERO . '/library/PHPMailer/PHPMailerAutoload.php';
+require ZERO_PATH_LIBRARY . '/PHPMailer/PHPMailerAutoload.php';
 
 /**
  * Lib. PHP email transport class
@@ -12,7 +12,7 @@ require ZERO_PATH_ZERO . '/library/PHPMailer/PHPMailerAutoload.php';
  * @copyright <PHP_ZERO_COPYRIGHT>
  * @license http://www.phpzero.com/license/
  */
-class Zero_Lib_Mail
+class Zero_System_Mail
 {
     /**
      * Отправка сообщения
