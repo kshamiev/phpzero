@@ -48,6 +48,7 @@ return [
         'Password' => 'Пароль',
     ],
     'controller' => [
+        'Reminder' => 'Письмо с реквизитами отправлено',
         'Action_Login' => 'Авторизация',
         'Action_Reminder' => 'Восстановление пароля',
         'Action_Logout' => 'Выход',
