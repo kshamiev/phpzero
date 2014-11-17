@@ -194,8 +194,7 @@ class Zero_Logs
         // Logiruem rabotu prilozheniia v tcelom
         if ( Zero_App::$Config->Log_Profile_Application )
         {
-            $output = self::Get_Usage_MemoryAndTime();
-            $output = date('[d.m.Y H:i:s]') . "\n" . join("\n", $output) . "\n";
+            $output = join("\n", self::Get_Usage_MemoryAndTime()) . "\n";
             self::File_Custom($output, self::$_FileLog . '.log');
         }
         //
@@ -290,9 +289,9 @@ class Zero_Logs
         {
             // initcializatciia logov
             if ( isset($_SERVER['REQUEST_URI']) )
-                self::$_OutputApplication = ["#{REQUEST_URI} " . ZERO_HTTP . $_SERVER['REQUEST_URI']];
+                self::$_OutputApplication = [date('[d.m.Y H:i:s]') . ' [' . $_SERVER['REQUEST_METHOD'] . '] ' . ZERO_HTTP . $_SERVER['REQUEST_URI']];
             else if ( isset($_SERVER['argv'][1]) )
-                self::$_OutputApplication = ["#{DEMON} " . $_SERVER['argv'][1] . ' ' . ZERO_HTTP];
+                self::$_OutputApplication = [date('[d.m.Y H:i:s]') . ' {DEMON} ' . $_SERVER['argv'][1] . ' ' . ZERO_HTTP];
             // Sobiraem tai`mery` v kuchu
             foreach (self::$_CurrentTime as $description => $time)
             {
@@ -331,7 +330,6 @@ class Zero_Logs
     {
         return Zero_System_File::File_Save_After(ZERO_PATH_LOG . '/' . $file_log, $data);
     }
-
 
     /**
      * Obrabotchik iscliuchenii` dlia funktcii set_exception_handler()

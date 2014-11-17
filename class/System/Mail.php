@@ -17,8 +17,9 @@ class Zero_System_Mail
     /**
      * Отправка сообщения
      *
-     * @param string $from from
-     * @param string $to to
+     * @param array $from from
+     * @param array $to to
+     * @param array $reply to
      * @param string $subject subject
      * @param string $message message
      * @param array $attach attachments

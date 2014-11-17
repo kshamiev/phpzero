@@ -159,7 +159,7 @@ class Zero_App
                 'timeout' => 30,
             )
         );
-        $fp = fopen($url, 'rb', false, $opts);
+        $fp = fopen($url, 'rb', false, stream_context_create($opts));
         $response = stream_get_contents($fp);
         fclose($fp);
         return json_decode($response, true);
@@ -173,7 +173,7 @@ class Zero_App
      * @param string $message Сообщение
      * @return bool
      */
-    public static function ResponseJson($content, $code, $message)
+    public static function ResponseJson($content, $code, $message = '')
     {
         header('Pragma: no-cache');
         header('Last-Modified: ' . date('D, d M Y H:i:s') . 'GMT');
@@ -184,8 +184,9 @@ class Zero_App
         $data = [
             'Code' => $code,
             'Message' => $message,
-            'Data' => $content,
         ];
+        if ( $content )
+            $data['Content'] = $content;
         echo json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
         // закрываем соединение с браузером (работает только под нгинx)
@@ -299,6 +300,7 @@ class Zero_App
             }
 
         //  Инициализация запрошенного раздела (Www_Section)
+        // TODO Доработать инициализацию пользователя по токену и исключение если он есть а пользователя нет - либо в гостя его
         if ( isset($_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il']) && 0 < $_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il'] )
         {
             self::$Users = Zero_Model::Factory('Www_Users', $_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il']);
@@ -309,7 +311,6 @@ class Zero_App
             self::$Users = Zero_Model::Factory('Www_Users');
         }
 
-        self::$Section = Zero_Model::Make('Www_Section');
         //  Checking for non-existent route
         if ( !isset(self::$Route->Routes[ZERO_URL]) )
             self::ResponseError(404);
@@ -344,6 +345,7 @@ class Zero_App
                 $viewLayout->Assign('Content', $view);
             $view = $viewLayout->Fetch();
         }
+
         self::ResponseHtml($view, 200);
     }
 
@@ -432,6 +434,7 @@ class Zero_App
                 $viewLayout->Assign('Content', $view);
             $view = $viewLayout->Fetch();
         }
+
         self::ResponseHtml($view, 200);
     }
 
@@ -551,23 +554,3 @@ $opts_sample = array(
         'timeout' => 60,
     )
 );
-
-/**
- * $opts_sample = array('http' =>
- * array(
- * 'method'  => 'POST',
- * 'header'  =>
- * "Content-Type: text/xml; charset=utf-8\r\n".
- * "Content-Type: tapplication/json; charset=utf-8\r\n".
- * "Content-Length: 10000\r\n".
- * "Referer: http://ya.ru\r\n".
- * "Host: hostkey.ru\r\n".
- * "Connection: close\r\n".
- * "Cookie: foo=bar\r\n".
- * "Accept-language: en\r\n".
- * "Authorization: Basic ".base64_encode("login:password")."\r\n",
- * 'content' => 'bla bla bla',
- * 'timeout' => 60,
- * )
- * );
- */
