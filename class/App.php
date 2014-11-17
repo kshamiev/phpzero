@@ -58,6 +58,7 @@ define('ZERO_PATH_ZERO', ZERO_PATH_SITE . '/zero');
  */
 class Zero_App
 {
+
     /**
      * An array of abstract and key additional application variables
      *
@@ -147,15 +148,32 @@ class Zero_App
         return false;
     }
 
+    public static function RequestJson($method, $url, $content)
+    {
+        $content = json_encode($content, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        $opts = array(
+            'http' => array(
+                'method' => $method,
+                'header' => "Content-Type: tapplication/json; charset=utf-8\r\n" . "Content-Length: " . strlen($content) . "\r\n" . "",
+                'content' => $content,
+                'timeout' => 30,
+            )
+        );
+        $fp = fopen($url, 'rb', false, $opts);
+        $response = stream_get_contents($fp);
+        fclose($fp);
+        return json_decode($response, true);
+    }
+
     /**
      * Сборка ответа клиенту
      *
-     * @param mixed $value Отдаваемые данные
+     * @param mixed $content Отдаваемые данные
      * @param int $code Код ошибки
      * @param string $message Сообщение
      * @return bool
      */
-    public static function ResponseJson($value, $code, $message)
+    public static function ResponseJson($content, $code, $message)
     {
         header('Pragma: no-cache');
         header('Last-Modified: ' . date('D, d M Y H:i:s') . 'GMT');
@@ -166,7 +184,7 @@ class Zero_App
         $data = [
             'Code' => $code,
             'Message' => $message,
-            'Data' => $value,
+            'Data' => $content,
         ];
         echo json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
@@ -253,7 +271,9 @@ class Zero_App
 
         // DB init config
         foreach (self::$Config->Db as $name => $config)
+        {
             Zero_DB::Add_Config($name, $config);
+        }
 
         //  Processing incoming request (Zero_Route)
         self::$Route = new Www_Route();
@@ -448,10 +468,10 @@ class Zero_App
      * @param string $line stroka, v kotoroi` proizoshla oshibka
      * @throws ErrorException
      */
-//    public static function ErrorHandler($code, $message, $filename, $line)
-//    {
-//        throw new ErrorException($message, $code, 0, $filename, $line);
-//    }
+    //    public static function ErrorHandler($code, $message, $filename, $line)
+    //    {
+    //        throw new ErrorException($message, $code, 0, $filename, $line);
+    //    }
 
     /**
      * Obrabotchik iscliuchenii` dlia funktcii set_exception_handler()
@@ -522,3 +542,32 @@ class Zero_App
         self::ResponseHtml($View->Fetch(), $code);
     }
 }
+
+$opts_sample = array(
+    'http' => array(
+        'method' => 'POST',
+        'header' => "Content-Type: text/xml; charset=utf-8\r\n" . "Content-Type: tapplication/json; charset=utf-8\r\n" . "Content-Length: 10000\r\n" . "Referer: http://ya.ru\r\n" . "Host: hostkey.ru\r\n" . "Connection: close\r\n" . "Cookie: foo=bar\r\n" . "Accept-language: en\r\n" . "Authorization: Basic " . base64_encode("login:password") . "\r\n",
+        'content' => 'bla bla bla',
+        'timeout' => 60,
+    )
+);
+
+/**
+ * $opts_sample = array('http' =>
+ * array(
+ * 'method'  => 'POST',
+ * 'header'  =>
+ * "Content-Type: text/xml; charset=utf-8\r\n".
+ * "Content-Type: tapplication/json; charset=utf-8\r\n".
+ * "Content-Length: 10000\r\n".
+ * "Referer: http://ya.ru\r\n".
+ * "Host: hostkey.ru\r\n".
+ * "Connection: close\r\n".
+ * "Cookie: foo=bar\r\n".
+ * "Accept-language: en\r\n".
+ * "Authorization: Basic ".base64_encode("login:password")."\r\n",
+ * 'content' => 'bla bla bla',
+ * 'timeout' => 60,
+ * )
+ * );
+ */
