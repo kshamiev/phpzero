@@ -13,7 +13,7 @@
 class Zero_System_Api extends Zero_Controller
 {
     /**
-     * Управляющий метод (API).
+     * (API) Контроллер по умолчанию.
      */
     public function Action_Default()
     {
@@ -23,11 +23,6 @@ class Zero_System_Api extends Zero_Controller
             case 'GET':
                 break;
             case 'POST':
-                switch ( Zero_App::$Route->UrlSegment[2] )
-                {
-                    case 'upload':
-                        $this->Put_Upload(); // Авторизация пользователя
-                }
                 break;
             case 'PUT':
                 break;
@@ -36,13 +31,36 @@ class Zero_System_Api extends Zero_Controller
             case 'OPTIONS':
                 break;
         }
-        Zero_App::ResponseJson($_SERVER['REQUEST_METHOD'] . ':' . ZERO_URL, 409, "Запрос не определен");
+        Zero_App::ResponseJson($_SERVER['REQUEST_METHOD'] . ':' . ZERO_URL, 409, "Запрос не реализован");
+    }
+
+    /**
+     * (API) Загрузка бинарных данных.
+     */
+    public function Action_Upload()
+    {
+        $this->View = new Zero_View();
+        switch ( $_SERVER['REQUEST_METHOD'] )
+        {
+            case 'GET':
+                break;
+            case 'POST':
+                $this->Action_UploadPut();
+                break;
+            case 'PUT':
+                break;
+            case 'DELETE':
+                break;
+            case 'OPTIONS':
+                break;
+        }
+        Zero_App::ResponseJson($_SERVER['REQUEST_METHOD'] . ':' . ZERO_URL, 409, "Запрос не реализован");
     }
 
     /**
      * Загрузка бинарных данных
      */
-    protected function Put_Upload()
+    protected function Action_UploadPut()
     {
         if ( !isset($_FILES['myFile']) )
             Zero_App::ResponseJson("", 409, "Данные не получены");

@@ -65,20 +65,24 @@ final class Zero_System_File
      * Getting the module configuration
      *
      * @param string $module module
+     * @param string $fileConfig config file
      * @return array
      */
-    public static function Get_Config($module)
+    public static function Get_Config($module, $fileConfig = '')
     {
         $configuration = [];
         if ( $module = strtolower($module) )
         {
             if ( is_dir($path = ZERO_PATH_APPLICATION . '/' . $module . '/config') )
             {
-                foreach (glob($path . '/*.php') as $config)
-                {
-                    $section = substr(basename($config), 0, -4);
-                    $configuration[$section] = require $config;
-                }
+                if ( $fileConfig == '' )
+                    foreach (glob($path . '/*.php') as $fileConfig)
+                    {
+                        $fileConfig = substr(basename($fileConfig), 0, -4);
+                        $configuration[$fileConfig] = require $fileConfig;
+                    }
+                else if ( file_exists($path . '/' . $fileConfig . '.php') )
+                    $configuration[$fileConfig] = require $path . '/' . $fileConfig . '.php';
             }
         }
         return $configuration;

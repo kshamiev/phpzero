@@ -14,6 +14,7 @@
  */
 class Zero_Route
 {
+
     /**
      * Routing iazy`ka
      *
@@ -34,16 +35,6 @@ class Zero_Route
      * @var array
      */
     public $UrlSegment = [];
-
-    /**
-     * Пользовательский роутинг
-     *
-     * Sample:
-     * '/page/page/page' => ['Controller'=>'Zero_Section_Page', 'View'=>'Zero_Content'], ...
-     *
-     * @var array
-     */
-    public $Routes = ['/' => ['Controller' => 'Zero_Content_Simple', 'View' => 'Zero_Content']];
 
     /**
      * Analiz request url
@@ -76,17 +67,6 @@ class Zero_Route
 
         // api
         if ( 'api' == $row[0] )
-        {
             Zero_App::$Mode = 'api';
-            if ( $_SERVER['REQUEST_METHOD'] === "PUT" )
-            {
-                $data = file_get_contents('php://input', false, null, -1, $_SERVER['CONTENT_LENGTH']);
-                $_POST = json_decode($data, true);
-            }
-            else if ( $_SERVER['REQUEST_METHOD'] === "POST" && isset($GLOBALS["HTTP_RAW_POST_DATA"]) )
-            {
-                $_POST = json_decode($GLOBALS["HTTP_RAW_POST_DATA"], true);
-            }
-        }
     }
 }

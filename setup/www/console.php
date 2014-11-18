@@ -64,9 +64,7 @@ if ( count($_SERVER['argv']) > 1 )
 
     $arr = explode('-', $_SERVER['argv'][1]);
     if ( 2 != count($arr) )
-    {
         throw new Exception('консольная задача определена не правильно: ' . $_SERVER['argv'][1], 409);
-    }
 
     $arr[1] = 'Action_' . $arr[1];
     $Controller = Zero_Controller::Make($arr[0]);
@@ -85,10 +83,9 @@ else
     // check whether the process is running on a server
     exec("ps ax | grep -v 'grep' | grep -v 'cd ' | grep -v 'sudo ' | grep 'console.php '", $result);
     $result = join("\n", $result);
-    $modules = Zero_System_File::Get_Modules();
-    foreach ($modules as $module)
+    foreach (Zero_System_File::Get_Modules() as $module)
     {
-        $config = Zero_System_File::Get_Config($module);
+        $config = Zero_System_File::Get_Config($module, 'console');
         if ( !isset($config['console']) )
             continue;
         // Zero_Logs::Set_Message_Notice($config)

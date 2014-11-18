@@ -5,7 +5,7 @@
 return [
     //  'ClassName-Method' => array('Description' => 'Description', 'Minute' => 'exp.', 'Hour' => 'exp.', 'Day' => 'exp.', 'Month' => 'exp.', 'Week' => 'exp.', 'IsActive' => 'exp.',
     //  expression "*", "20", "*/10", "3-8", "6/2", "5,6,7"
-    'Zero_Console_Users-Offline' => [
+    'Zero_Users_Console-Offline' => [
         'Description' => 'Users Offline',
         'Minute' => '*/10',
         'Hour' => '*',
@@ -14,7 +14,7 @@ return [
         'Week' => '*',
         'IsActive' => '1'
     ],
-    'Zero_Console_FileUpload-RemoveTempFileUpload' => [
+    'Zero_System_Console-RemoveTempFileUpload' => [
         'Description' => 'Remove TempFileUpload',
         'Minute' => '0',
         'Hour' => '*',
@@ -23,7 +23,7 @@ return [
         'Week' => '*',
         'IsActive' => '1'
     ],
-    'Zero_Console_SiteMap-SiteMap' => [
+    'Zero_Section_Console-SiteMap' => [
         'Description' => 'Create SiteMap',
         'Minute' => '0',
         'Hour' => '0',

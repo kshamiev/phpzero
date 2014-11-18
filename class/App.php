@@ -285,6 +285,20 @@ class Zero_App
         Zero_Session::Init(self::$Config->Site_Domain);
 
         require_once ZERO_PATH_ZERO . '/class/View.php';
+
+        // Инициализация входных параметров и данных в случае api
+        if ( 'api' == self::$Mode )
+        {
+            if ( $_SERVER['REQUEST_METHOD'] === "PUT" )
+            {
+                $data = file_get_contents('php://input', false, null, -1, $_SERVER['CONTENT_LENGTH']);
+                $_POST = json_decode($data, true);
+            }
+            else if ( $_SERVER['REQUEST_METHOD'] === "POST" && isset($GLOBALS["HTTP_RAW_POST_DATA"]) )
+            {
+                $_POST = json_decode($GLOBALS["HTTP_RAW_POST_DATA"], true);
+            }
+        }
     }
 
     public static function ExecuteSimple()
@@ -311,31 +325,43 @@ class Zero_App
             self::$Users = Zero_Model::Factory('Www_Users');
         }
 
-        //  Checking for non-existent route
-        if ( !isset(self::$Route->Routes[ZERO_URL]) )
+        $route = [];
+        foreach (Zero_System_File::Get_Modules() as $module)
+        {
+            $config = Zero_System_File::Get_Config($module, 'route');
+            if ( isset($config['route'][ZERO_URL]) )
+                $route = $config['route'][ZERO_URL];
+                break;
+        }
+        if ( 0 == count($route) )
             self::ResponseError(404);
 
         //  Execute controller
         $view = '';
         Zero_App::Set_Variable('action_message', []);
-        if ( isset(self::$Route->Routes[ZERO_URL]['Controller']) && self::$Route->Routes[ZERO_URL]['Controller'] )
+        if ( isset($route['Controller']) && $route['Controller'] )
         {
+            $routeDetails = explode('-', $route['Controller']);
+            if ( 2 != count($routeDetails) )
+                throw new Exception('контроллер определен неправильно: ' . $route['Controller'], 409);
+            //
             if ( !isset($_REQUEST['act']) )
-                $_REQUEST['act'] = 'Default';
+                $_REQUEST['act'] = $routeDetails[1];
             $_REQUEST['act'] = 'Action_' . $_REQUEST['act'];
-            $Controller = Zero_Controller::Factory(self::$Route->Routes[ZERO_URL]['Controller']);
-            Zero_Logs::Start('#{CONTROLLER.Action} ' . self::$Route->Routes[ZERO_URL]['Controller'] . ' -> ' . $_REQUEST['act']);
+            //
+            $Controller = Zero_Controller::Factory($routeDetails[0]);
+            Zero_Logs::Start('#{CONTROLLER.Action} ' . $routeDetails[0] . ' -> ' . $_REQUEST['act']);
             $view = $Controller->$_REQUEST['act']();
             if ( $_REQUEST['act'] != 'Action_Default' )
                 Zero_Logs::Set_Message_Action($_REQUEST['act']);
-            Zero_Logs::Stop('#{CONTROLLER.Action} ' . self::$Route->Routes[ZERO_URL]['Controller'] . ' -> ' . $_REQUEST['act']);
+            Zero_Logs::Stop('#{CONTROLLER.Action} ' . $routeDetails[0] . ' -> ' . $_REQUEST['act']);
             Zero_App::Set_Variable('action_message', $Controller->Get_Message());
         }
 
         // Основные данные
-        if ( isset(self::$Route->Routes[ZERO_URL]['View']) && self::$Route->Routes[ZERO_URL]['View'] )
+        if ( isset($route['View']) && $route['View'] )
         {
-            $viewLayout = new Zero_View(self::$Route->Routes[ZERO_URL]['View']);
+            $viewLayout = new Zero_View($route['View']);
             if ( true == $view instanceof Zero_View )
             {
                 /* @var $view Zero_View */
