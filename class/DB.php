@@ -60,6 +60,8 @@ class Zero_DB
      */
     protected static function Init($name)
     {
+        if ( $name == '' )
+            $name = key(self::$Config);
         //  Initcializatciia ob``ekta mysqli
         /* create a connection object which is not connected */
         try
@@ -120,17 +122,17 @@ class Zero_DB
             {
                 case '%d':
                 {
-                    $arr[$k] = Zero_DB::Escape_I($arr[$k]);
+                    $arr[$k] = Zero_DB::EscI($arr[$k]);
                     break;
                 }
                 case '%f':
                 {
-                    $arr[$k] = Zero_DB::Escape_F($arr[$k]);
+                    $arr[$k] = Zero_DB::EscF($arr[$k]);
                     break;
                 }
                 case '%s':
                 {
-                    $arr[$k] = Zero_DB::Escape_T($arr[$k]);
+                    $arr[$k] = Zero_DB::EscT($arr[$k]);
                     break;
                 }
             }
@@ -145,7 +147,7 @@ class Zero_DB
      * @param int $int
      * @return int or NULL
      */
-    public static function Escape_I($int)
+    public static function EscI($int)
     {
         if ( 0 == strlen($int) )
             return 'NULL';
@@ -158,7 +160,7 @@ class Zero_DB
      * @param float $float
      * @return float or NULL
      */
-    public static function Escape_F($float)
+    public static function EscF($float)
     {
         if ( 0 == strlen($float) )
             return 'NULL';
@@ -171,13 +173,13 @@ class Zero_DB
      * @param string $str
      * @return string or NULL
      */
-    public static function Escape_T($str)
+    public static function EscT($str)
     {
-        if ( !isset(self::$DB['main']) )
-            self::Init('main');
+        //        if ( !isset(self::$DB['']) )
+        //            self::Init('');
         $str = trim(strval($str));
         if ( $str )
-            //            return "'" . self::$DB['main']->real_escape_string($str) . "'";
+            //            return "'" . self::$DB['']->real_escape_string($str) . "'";
             return "'" . addslashes($str) . "'";
         else
             return 'NULL';
@@ -189,13 +191,13 @@ class Zero_DB
      * @param string $enum
      * @return string or NULL
      */
-    public static function Escape_E($enum)
+    public static function EscE($enum)
     {
-        if ( !isset(self::$DB['main']) )
-            self::Init('main');
+        //        if ( !isset(self::$DB['']) )
+        //            self::Init('');
         $enum = trim(strval($enum));
         if ( $enum )
-            //            return "'" . self::$DB['main']->real_escape_string($enum) . "'";
+            //            return "'" . self::$DB['']->real_escape_string($enum) . "'";
             return "'" . addslashes($enum) . "'";
         else
             return 'NULL';
@@ -208,27 +210,16 @@ class Zero_DB
      * @param string $separator razdelitel` e`lementov mnozhestva
      * @return string or NULL
      */
-    public static function Escape_S($array, $separator = ',')
+    public static function EscS($array, $separator = ',')
     {
-        if ( !isset(self::$DB['main']) )
-            self::Init('main');
+        //        if ( !isset(self::$DB['']) )
+        //            self::Init('');
         $str = trim(implode($separator, $array));
         if ( $str )
-            //            return "'" . self::$DB['main']->real_escape_string($str) . "'";
+            //            return "'" . self::$DB['']->real_escape_string($str) . "'";
             return "'" . addslashes($str) . "'";
         else
             return 'NULL';
-    }
-
-    /**
-     * Proverka daty` i vremeni
-     *
-     * @param string $datetime
-     * @return string or NULL
-     */
-    public static function Escape_D($datetime)
-    {
-        return self::Escape_T($datetime);
     }
 
     /**
@@ -237,7 +228,7 @@ class Zero_DB
      * @param string $databinary
      * @return string or NULL
      */
-    public static function Escape_B($databinary)
+    public static function EscB($databinary)
     {
         $rph = "0x";
         if ( 0 < strlen($databinary) )
@@ -264,7 +255,7 @@ class Zero_DB
      * @return bool|mysqli_result
      * @throws Exception
      */
-    protected static function Query($sql, $nameConnect = 'main')
+    protected static function Query($sql, $nameConnect = '')
     {
         if ( !isset(self::$DB[$nameConnect]) )
             self::Init($nameConnect);
@@ -292,7 +283,7 @@ class Zero_DB
      * @return bool|mysqli_result
      * @throws Exception
      */
-    protected static function Query_Real($sql, $nameConnect = 'main')
+    protected static function Query_Real($sql, $nameConnect = '')
     {
         if ( !isset(self::$DB[$nameConnect]) )
             self::Init($nameConnect);
@@ -314,7 +305,7 @@ class Zero_DB
      * @param string $sql zapros
      * @return array
      */
-    public static function Select_Row($sql, $nameConnect = 'main')
+    public static function Select_Row($sql, $nameConnect = '')
     {
         if ( !$res = self::Query($sql, $nameConnect) )
             return false;
@@ -332,7 +323,7 @@ class Zero_DB
      * @param string $sql zapros
      * @return array
      */
-    public static function Select_List($sql, $nameConnect = 'main')
+    public static function Select_List($sql, $nameConnect = '')
     {
         $result = [];
         if ( !$res = self::Query($sql, $nameConnect) )
@@ -352,7 +343,7 @@ class Zero_DB
      * @param string $sql zapros
      * @return array
      */
-    public static function Select_List_Index($sql, $nameConnect = 'main')
+    public static function Select_List_Index($sql, $nameConnect = '')
     {
         $result = [];
         if ( !$res = self::Query($sql, $nameConnect) )
@@ -372,7 +363,7 @@ class Zero_DB
      * @param string $sql zapros
      * @return array
      */
-    public static function Select_Array($sql, $nameConnect = 'main')
+    public static function Select_Array($sql, $nameConnect = '')
     {
         $result = [];
         if ( !$res = self::Query($sql, $nameConnect) )
@@ -392,7 +383,7 @@ class Zero_DB
      * @param string $sql zapros
      * @return array
      */
-    public static function Select_Array_Index($sql, $nameConnect = 'main')
+    public static function Select_Array_Index($sql, $nameConnect = '')
     {
         $result = [];
         if ( !$res = self::Query($sql, $nameConnect) )
@@ -412,7 +403,7 @@ class Zero_DB
      * @param string $sql zapros
      * @return string|integer
      */
-    public static function Select_Field($sql, $nameConnect = 'main')
+    public static function Select_Field($sql, $nameConnect = '')
     {
         if ( !$res = self::Query($sql, $nameConnect) )
             return false;
@@ -431,7 +422,7 @@ class Zero_DB
      * @param string $sql zapros k BD
      * @return boolean or integer
      */
-    public static function Update($sql, $nameConnect = 'main')
+    public static function Update($sql, $nameConnect = '')
     {
         if ( self::Query($sql, $nameConnect) )
             return self::$DB[$nameConnect]->affected_rows;
@@ -447,7 +438,7 @@ class Zero_DB
      * @param string $sql zapros k BD
      * @return int
      */
-    public static function Insert($sql, $nameConnect = 'main')
+    public static function Insert($sql, $nameConnect = '')
     {
         if ( self::Query($sql, $nameConnect) )
             return self::$DB[$nameConnect]->insert_id;
@@ -464,7 +455,7 @@ class Zero_DB
      * @param string $nameConnect имя коннекта
      * @return array результат
      */
-    public static function Call_Procedure($store_procedure_name, $params = [], $nameConnect = 'main')
+    public static function Call_Procedure($store_procedure_name, $params = [], $nameConnect = '')
     {
         $quotedparams = [];
         foreach ($params as $param)

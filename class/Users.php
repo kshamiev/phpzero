@@ -135,8 +135,8 @@ class Zero_Users extends Zero_Model
             'IsCondition' => ['AliasDB' => 'z.IsCondition', 'DB' => 'E', 'IsNull' => 'NO', 'Default' => 'yes', 'Form' => 'Radio'],
             'ImgAvatar' => ['AliasDB' => 'z.ImgAvatar', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Img'],
             'IsOnline' => ['AliasDB' => 'z.IsOnline', 'DB' => 'E', 'IsNull' => 'NO', 'Default' => 'no', 'Form' => 'ReadOnly'],
-            'DateOnline' => ['AliasDB' => 'z.DateOnline', 'DB' => 'D', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'ReadOnly'],
-            'Date' => ['AliasDB' => 'z.Date', 'DB' => 'D', 'IsNull' => 'NO', 'Default' => 'NOW', 'Form' => 'DateTime'],
+            'DateOnline' => ['AliasDB' => 'z.DateOnline', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'ReadOnly'],
+            'Date' => ['AliasDB' => 'z.Date', 'DB' => 'T', 'IsNull' => 'NO', 'Default' => 'NOW', 'Form' => 'DateTime'],
             /*END_CONFIG_PROP*/
         ];
     }

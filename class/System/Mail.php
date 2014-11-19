@@ -23,10 +23,11 @@ class Zero_System_Mail
      * @param string $subject subject
      * @param string $message message
      * @param array $attach attachments
-     * @return bool
+     * @return int количесвто ошибок отправления
      */
     public static function Send($from, $to, $reply, $subject, $message, $attach = [])
     {
+        $cntFail = 0;
         foreach ($to as $row)
         {
             $mail = new PHPMailer;
@@ -46,11 +47,14 @@ class Zero_System_Mail
             }
             //  Send
             if ( !$mail->send() )
+            {
+                $cntFail++;
                 Zero_Logs::Set_Message_Error("From: {$from['Email']}; To: {$row['Email']}; Subject: {$subject}");
+            }
             //
             $mail->ClearAddresses();
             $mail->ClearAttachments();
         }
-        return true;
+        return $cntFail;
     }
 }

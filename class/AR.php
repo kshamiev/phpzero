@@ -156,7 +156,7 @@ class Zero_AR
     public function Sql_Where($prop = '', $sign = '', $value = '', $separator = 'AND')
     {
         if ( $prop )
-            return $this->Sql_Where_Expression($prop . ' ' . $sign . ' ' . Zero_DB::Escape_T($value), $separator);
+            return $this->Sql_Where_Expression($prop . ' ' . $sign . ' ' . Zero_DB::EscT($value), $separator);
         else
             unset($this->Params['Where']);
     }
@@ -189,7 +189,7 @@ class Zero_AR
     {
         if ( is_array($value) && !is_scalar($value) )
             $value = implode("%", $value);
-        $value = Zero_DB::Escape_T('%' . str_replace(' ', '%', $value) . '%'); //  ??? vozmozhno probely` ne stoit zameniat` (tonkaia nastroi`ka)
+        $value = Zero_DB::EscT('%' . str_replace(' ', '%', $value) . '%'); //  ??? vozmozhno probely` ne stoit zameniat` (tonkaia nastroi`ka)
         $this->Params['Where'][] = [$separator => "{$prop} LIKE {$value}"];
     }
 
@@ -207,7 +207,7 @@ class Zero_AR
     {
         if ( is_array($value) && !is_scalar($value) )
             $value = implode("%", $value);
-        $value = Zero_DB::Escape_T('%' . str_replace(' ', '%', $value) . '%'); //  ??? vozmozhno probely` ne stoit zameniat` (tonkaia nastroi`ka)
+        $value = Zero_DB::EscT('%' . str_replace(' ', '%', $value) . '%'); //  ??? vozmozhno probely` ne stoit zameniat` (tonkaia nastroi`ka)
         $this->Params['Where'][] = [$separator => "{$prop} NOT LIKE {$value}"];
     }
 
@@ -227,12 +227,12 @@ class Zero_AR
         {
             foreach ($value as $k => $v)
             {
-                $value[$k] = Zero_DB::Escape_T($v);
+                $value[$k] = Zero_DB::EscT($v);
             }
             $value = implode(", ", $value);
         }
         else
-            $value = Zero_DB::Escape_T($value);
+            $value = Zero_DB::EscT($value);
         //        if ( 'NULL' == $value || !$value )
         //          return;
         $this->Params['Where'][] = [$separator => "{$prop} IN ({$value})"];
@@ -254,12 +254,12 @@ class Zero_AR
         {
             foreach ($value as $k => $v)
             {
-                $value[$k] = Zero_DB::Escape_T($v);
+                $value[$k] = Zero_DB::EscT($v);
             }
             $value = implode(", ", $value);
         }
         else
-            $value = Zero_DB::Escape_T($value);
+            $value = Zero_DB::EscT($value);
         //        if ( 'NULL' == $value || !$value )
         //            return false;
         $this->Params['Where'][] = [$separator => "{$prop} NOT IN ({$value})"];
@@ -306,7 +306,7 @@ class Zero_AR
      */
     public function Sql_Where_Between($prop, $value_begin, $value_end, $separator = 'AND')
     {
-        $this->Params['Where'][] = [$separator => "{$prop} BETWEEN " . Zero_DB::Escape_T($value_begin) . " AND " . Zero_DB::Escape_T($value_end)];
+        $this->Params['Where'][] = [$separator => "{$prop} BETWEEN " . Zero_DB::EscT($value_begin) . " AND " . Zero_DB::EscT($value_end)];
     }
 
     /**
@@ -898,7 +898,7 @@ class Zero_AR
         {
             if ( !isset($prop_list[$prop]) )
                 continue;
-            $method = "Escape_" . $prop_list[$prop]['DB'];
+            $method = "Esc" . $prop_list[$prop]['DB'];
             $sql_update[] = '`' . $prop . '` = ' . Zero_DB::$method($value);
         }
 
@@ -938,7 +938,7 @@ class Zero_AR
                     $this->Model->$prop = $file;
                     //  V BD
                     if ( isset($prop_list[$prop . 'B']) )
-                        $sql_update[] = "`" . $prop . "B` = '" . Zero_DB::Escape_B(file_get_contents($path)) . "'";
+                        $sql_update[] = "`" . $prop . "B` = '" . Zero_DB::EscB(file_get_contents($path)) . "'";
                 }
                 else if ( !$value )
                 {
@@ -996,7 +996,7 @@ class Zero_AR
         {
             if ( !isset($prop_list[$prop]) )
                 continue;
-            $method = "Escape_" . $prop_list[$prop]['DB'];
+            $method = "Esc" . $prop_list[$prop]['DB'];
             if ( isset($_FILES[$prop]) )
             {
                 if ( 'File Upload Ok' == $value )
@@ -1022,7 +1022,7 @@ class Zero_AR
                     $this->Model->$prop = $file;
                     //  V BD
                     if ( isset($prop_list[$prop . 'B']) )
-                        $sql_update[] = "`" . $prop . "B` = '" . Zero_DB::Escape_B(file_get_contents($path)) . "'";
+                        $sql_update[] = "`" . $prop . "B` = '" . Zero_DB::EscB(file_get_contents($path)) . "'";
                 }
                 else if ( !$value )
                 {

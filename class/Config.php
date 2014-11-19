@@ -349,7 +349,7 @@ class Zero_Config
 
         // Initialization of the profiled application processors
         ini_set('log_errors', true);
-        ini_set('error_log', ZERO_PATH_LOG . '/error_php_' . $file_log . '.log');
+        ini_set('error_log', ZERO_PATH_LOG . '/php_errors_' . $file_log . '.log');
         ini_set('magic_quotes_gpc', 0);
         if ( !is_dir(ZERO_PATH_LOG) )
             if ( !mkdir(ZERO_PATH_LOG, 0777, true) )

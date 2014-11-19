@@ -257,7 +257,6 @@ class Zero_App
         require_once ZERO_PATH_ZERO . '/class/Logs.php';
         require_once ZERO_PATH_ZERO . '/class/Route.php';
         require_once ZERO_PATH_ZERO . '/class/DB.php';
-        require_once ZERO_PATH_APPLICATION . '/www/class/Route.php';
         self::$Mode = $mode;
 
         //  Configuration (Zero_Config)
@@ -277,7 +276,7 @@ class Zero_App
         }
 
         //  Processing incoming request (Zero_Route)
-        self::$Route = new Www_Route();
+        self::$Route = new Zero_Route();
 
         spl_autoload_register(['Zero_App', 'Autoload']);
 

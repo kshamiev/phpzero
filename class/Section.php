@@ -35,6 +35,7 @@
  * @property string $Title
  * @property string $Keywords
  * @property string $Description
+ * @property string $Content
  * <END_CONFIG_PROPERTY>
  */
 class Zero_Section extends Zero_Model

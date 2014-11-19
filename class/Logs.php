@@ -87,21 +87,25 @@ class Zero_Logs
     /**
      * Инициализация входиащего системного сообщения.
      *
-     * @param string $value Soobshchenie ob oshibke
+     * @param mixed $value Сообщение об ошибке
+     * @return mixed
      */
     public static function Set_Message_Action($value)
     {
         self::$_Message[] = [print_r($value, true), 'action'];
+        return $value;
     }
 
     /**
      * Инициализация входиащего системного сообщения.
      *
-     * @param string $value Soobshchenie ob oshibke
+     * @param mixed $value Сообщение об ошибке
+     * @return mixed
      */
     public static function Set_Message_Error($value)
     {
         self::$_Message[] = [print_r($value, true), 'error'];
+        return $value;
     }
 
     /**
@@ -117,21 +121,25 @@ class Zero_Logs
     /**
      * Инициализация входиащего системного сообщения.
      *
-     * @param string $value Soobshchenie ob oshibke
+     * @param mixed $value Сообщение об ошибке
+     * @return mixed
      */
     public static function Set_Message_Warninng($value)
     {
         self::$_Message[] = [print_r($value, true), 'warning'];
+        return $value;
     }
 
     /**
      * Инициализация входиащего системного сообщения.
      *
-     * @param string $value Soobshchenie ob oshibke
+     * @param mixed $value Сообщение об ошибке
+     * @return mixed
      */
     public static function Set_Message_Notice($value)
     {
         self::$_Message[] = [print_r($value, true), 'notice'];
+        return $value;
     }
 
     public static function Get_Message()
