@@ -83,7 +83,7 @@ class Zero_App
     /**
      * Routing (по URL)
      *
-     * @var Www_Route
+     * @var Zero_Route
      */
     public static $Route;
 

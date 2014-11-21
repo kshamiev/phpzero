@@ -369,9 +369,6 @@ class Zero_Config
         if ( !is_dir(ZERO_PATH_APPLICATION . '/zero') )
             if ( !symlink(ZERO_PATH_ZERO, ZERO_PATH_APPLICATION . '/zero') )
                 die('module "zero" path: "' . ZERO_PATH_APPLICATION . '/zero" not exists');
-
-        if ( !file_exists(ZERO_PATH_APPLICATION . '/www/class/Route.php') )
-            die('class "Www_Route" not exists');
     }
 }
 
