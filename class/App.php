@@ -71,7 +71,7 @@ class Zero_App
      *
      * @var string
      */
-    public static $Mode = 'web';
+    public static $Mode = '';
 
     /**
      * Configuration
