@@ -344,7 +344,8 @@ class Zero_Config
                 if ( !mkdir(ZERO_PATH_SESSION, 0777, true) )
                     die('session path: "' . ZERO_PATH_SESSION . '" not exists');
             ini_set('session.save_handler', 'files');
-            ini_set('session.save_path', ZERO_PATH_SESSION);
+            if ( !ini_get('session.save_path') )
+                ini_set('session.save_path', ZERO_PATH_SESSION);
         }
 
         // Initialization of the profiled application processors
