@@ -43,7 +43,7 @@ class Zero_Section_Console extends Zero_Controller
         {
             $str .= '
             <url>
-                <loc>' . HTTP . '/product-id:' . $row['ID'] . '-' . Zero_System_String::Transliteration_Url($row['Name']) . '.html</loc>
+                <loc>' . HTTP . '/product-id:' . $row['ID'] . '-' . Zero_Lib_String::Transliteration_Url($row['Name']) . '.html</loc>
                 <lastmod>' . date('Y-m-d') . '</lastmod>
                 <changefreq>monthly</changefreq>
                 <priority>0.8</priority>
@@ -51,7 +51,7 @@ class Zero_Section_Console extends Zero_Controller
         }
 
         $str .= "\n</urlset>";
-        Zero_System_File::File_Save(ZERO_PATH_SITE . '/sitemap.xml', $str);
+        Zero_Lib_File::File_Save(ZERO_PATH_SITE . '/sitemap.xml', $str);
         return $this->View;
     }
 }

@@ -104,7 +104,7 @@ while ( isset($_REQUEST['act']) && 'Install_System' == $_REQUEST['act'] && 0 == 
     $arr = ini_get_all();
 
     //  Creating a filesystem structure. Copy the system and base  module
-    Zero_System_File::Folder_Copy(__DIR__ . "/www", ZERO_PATH_SITE);
+    Zero_Lib_File::Folder_Copy(__DIR__ . "/www", ZERO_PATH_SITE);
     $index = file_get_contents(ZERO_PATH_SITE . '/index.php');
     if ( $_REQUEST['db_use'] )
     {

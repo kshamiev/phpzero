@@ -16,7 +16,7 @@
  * @copyright <PHP_ZERO_COPYRIGHT>
  * @license http://www.phpzero.com/license/
  */
-class Zero_System_FileManager extends Zero_Controller
+class Zero_Lib_FileManager extends Zero_Controller
 {
     public function Action_Default()
     {
@@ -134,7 +134,7 @@ class Zero_System_FileManager extends Zero_Controller
         if ( !$_REQUEST['dir_name'] )
             return $this->Set_Message('Error_FolderRemove', 1, false);
         $path = end($this->Params['obj_parent_path']) . '/' . $_REQUEST['dir_name'];
-        Zero_System_File::Folder_Remove($path);
+        Zero_Lib_File::Folder_Remove($path);
         return $this->Set_Message('FolderRemove', 0);
     }
 
@@ -199,7 +199,7 @@ class Zero_System_FileManager extends Zero_Controller
                 Zero_Logs::Set_Message_Error("файловый менеджер - {$_FILES['FileUpload']['error']}");
                 return $this->Set_Message('Error_FileUpload', 1, false);
             }
-            $filename = Zero_System_String::Transliteration_FileName($_FILES['FileUpload']['name']);
+            $filename = Zero_Lib_String::Transliteration_FileName($_FILES['FileUpload']['name']);
             $path = end($this->Params['obj_parent_path']) . '/' . $filename;
             copy($_FILES['FileUpload']['tmp_name'], $path);
             chmod($path, 0666);
@@ -225,7 +225,7 @@ class Zero_System_FileManager extends Zero_Controller
     {
         if ( !isset($_REQUEST['FolderName']) || !$_REQUEST['FolderName'] )
             return $this->Set_Message('Error_FolderAdd', 1, false);
-        $path = end($this->Params['obj_parent_path']) . '/' . Zero_System_String::Transliteration_FileName($_REQUEST['FolderName']);
+        $path = end($this->Params['obj_parent_path']) . '/' . Zero_Lib_String::Transliteration_FileName($_REQUEST['FolderName']);
         mkdir($path);
         chmod($path, 0777);
         return $this->Set_Message('FolderAdd', 0);

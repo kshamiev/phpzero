@@ -105,7 +105,7 @@ class Zero_System_GridService extends Zero_Controller
      */
     protected function Chunk_SessionReset()
     {
-        Zero_System_File::File_Remove(ZERO_PATH_SESSION);
+        Zero_Lib_File::File_Remove(ZERO_PATH_SESSION);
         return $this->Set_Message("Session_Reset", 0);
     }
 }

@@ -349,7 +349,7 @@ class Zero_Engine
             $class = str_replace('<Subpackage>', $row['Name'], $class);
             $class = str_replace('<Date>', date('Y.m.d'), $class);
             $class = str_replace('Zero_Model_Pattern', $row['Name'], $class);
-            Zero_System_File::File_Save($path_model, $class);
+            Zero_Lib_File::File_Save($path_model, $class);
             //  Konfiguratciia modeli v tcelom
             $this->Config_Model($path_model, $row['Name']);
             //  Konfiguratciia svoi`stv motceli
@@ -368,7 +368,7 @@ class Zero_Engine
                 $class = str_replace('<Date>', date('Y.m.d'), $class);
                 $class = str_replace('Zero_Controller_Grid', $row['Name'] . '_Grid', $class);
                 $class = str_replace('Zero_Model_Pattern', $row['Name'], $class);
-                Zero_System_File::File_Save($path_target, $class);
+                Zero_Lib_File::File_Save($path_target, $class);
             }
             //  Kontroller redaktirovaniia
             $path_target = substr($path_model, 0, -4) . '/Edit.php';
@@ -381,7 +381,7 @@ class Zero_Engine
                 $class = str_replace('<Date>', date('Y.m.d'), $class);
                 $class = str_replace('Zero_Controller_Edit', $row['Name'] . '_Edit', $class);
                 $class = str_replace('Zero_Model_Pattern', $row['Name'], $class);
-                Zero_System_File::File_Save($path_target, $class);
+                Zero_Lib_File::File_Save($path_target, $class);
             }
             //  Internatcionalizatciia
             $this->Config_I18n($path_model, $row['Name']);
@@ -654,7 +654,7 @@ class Zero_Engine
             //        echo 'CONFIG I18N MODEL ' . $path2 . '<br>';
             $file_data = file_get_contents($path1);
             $file_data = str_replace('# CONFIG', $str, $file_data);
-            Zero_System_File::File_Save($path2, $file_data);
+            Zero_Lib_File::File_Save($path2, $file_data);
         }
     }
 }

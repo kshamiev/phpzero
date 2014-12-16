@@ -55,13 +55,12 @@ function zero_crontab_check_datetime($date_this, $date_cron)
 
 //  Connecting application
 require __DIR__ . '/zero/class/App.php';
+Zero_App::Init('console', 'console');
+set_time_limit(36000);
 
 //  Work console task
 if ( count($_SERVER['argv']) > 1 )
 {
-    Zero_App::Init('console', 'console');
-    set_time_limit(36000);
-
     $arr = explode('-', $_SERVER['argv'][1]);
     if ( 2 != count($arr) )
         throw new Exception('консольная задача определена не правильно: ' . $_SERVER['argv'][1], 409);
@@ -73,7 +72,6 @@ if ( count($_SERVER['argv']) > 1 )
 //  Launch Manager console task
 else
 {
-    Zero_App::Init('console', 'console');
     $week = date('w');
     $month = date('n');
     $day = date('j');
@@ -83,9 +81,9 @@ else
     // check whether the process is running on a server
     exec("ps ax | grep -v 'grep' | grep -v 'cd ' | grep -v 'sudo ' | grep 'console.php '", $result);
     $result = join("\n", $result);
-    foreach (Zero_System_File::Get_Modules() as $module)
+    foreach (Zero_Lib_File::Get_Modules() as $module)
     {
-        $config = Zero_System_File::Get_Config($module, 'console');
+        $config = Zero_Lib_File::Get_Config($module, 'console');
         if ( !isset($config['console']) )
             continue;
         // Zero_Logs::Set_Message_Notice($config)

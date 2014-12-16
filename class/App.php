@@ -218,7 +218,7 @@ class Zero_App
 
     public static function ResponseImg($path)
     {
-        header("Content-Type: " . Zero_System_File::File_Type($path));
+        header("Content-Type: " . Zero_Lib_File::File_Type($path));
         header("Content-Length: " . filesize($path));
         if ( file_exists($path) )
             echo file_get_contents($path);
@@ -227,7 +227,7 @@ class Zero_App
 
     public static function ResponseFile($path)
     {
-        header("Content-Type: " . Zero_System_File::File_Type($path));
+        header("Content-Type: " . Zero_Lib_File::File_Type($path));
         header("Content-Length: " . filesize($path));
         header('Content-Disposition: attachment; filename = "' . basename($path) . '"');
         if ( file_exists($path) )
@@ -325,9 +325,9 @@ class Zero_App
         }
 
         $route = [];
-        foreach (Zero_System_File::Get_Modules() as $module)
+        foreach (Zero_Lib_File::Get_Modules() as $module)
         {
-            $config = Zero_System_File::Get_Config($module, 'route');
+            $config = Zero_Lib_File::Get_Config($module, 'route');
             if ( isset($config['route'][ZERO_URL]) )
                 $route = $config['route'][ZERO_URL];
                 break;

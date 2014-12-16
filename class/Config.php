@@ -230,6 +230,24 @@ class Zero_Config
      */
     public function __construct($file_log = 'application')
     {
+        // Setting php
+        date_default_timezone_set('Europe/Moscow');
+        setlocale(LC_CTYPE, 'ru_RU.UTF-8');
+        setlocale(LC_COLLATE, 'ru_RU.UTF-8');
+        ini_set('display_errors', 0);
+        ini_set('display_startup_errors', 0);
+
+        // Initialization of the profiled application processors
+        if ( !is_dir(ZERO_PATH_LOG) )
+            if ( !mkdir(ZERO_PATH_LOG, 0777, true) )
+                die('logs path: "' . ZERO_PATH_LOG . '" not exists');
+        ini_set('log_errors', true);
+        ini_set('error_log', ZERO_PATH_LOG . '/php_errors_' . $file_log . '.log');
+        ini_set('magic_quotes_gpc', 0);
+        error_reporting(-1);
+        set_exception_handler(['Zero_App', 'Exception']);
+        // register_shutdown_function(['Zero_App', 'Exit_Application']);
+
         if ( file_exists($path = ZERO_PATH_SITE . '/config.php') )
             $Config = require ZERO_PATH_SITE . '/config.php';
         else
@@ -328,40 +346,6 @@ class Zero_Config
         else if ( isset($_SERVER["REMOTE_ADDR"]) )
             $this->Ip = $_SERVER["REMOTE_ADDR"];
 
-        // Setting php
-        date_default_timezone_set('Europe/Moscow');
-        setlocale(LC_CTYPE, 'ru_RU.UTF-8');
-        setlocale(LC_COLLATE, 'ru_RU.UTF-8');
-        ini_set('display_errors', 0);
-        ini_set('display_startup_errors', 0);
-
-        //  Storage sessions
-        if ( 0 < count($Config['Memcache']['Session']) )
-        {
-            ini_set('session.save_handler', 'memcache');
-            ini_set('session.save_path', $Config['Memcache']['Session'][0]);
-        }
-        else
-        {
-            if ( !is_dir(ZERO_PATH_SESSION) )
-                if ( !mkdir(ZERO_PATH_SESSION, 0777, true) )
-                    die('session path: "' . ZERO_PATH_SESSION . '" not exists');
-            ini_set('session.save_handler', 'files');
-            if ( !ini_get('session.save_path') )
-                ini_set('session.save_path', ZERO_PATH_SESSION);
-        }
-
-        // Initialization of the profiled application processors
-        ini_set('log_errors', true);
-        ini_set('error_log', ZERO_PATH_LOG . '/php_errors_' . $file_log . '.log');
-        ini_set('magic_quotes_gpc', 0);
-        if ( !is_dir(ZERO_PATH_LOG) )
-            if ( !mkdir(ZERO_PATH_LOG, 0777, true) )
-                die('logs path: "' . ZERO_PATH_LOG . '" not exists');
-        error_reporting(-1);
-        set_exception_handler(['Zero_App', 'Exception']);
-        // register_shutdown_function(['Zero_App', 'Exit_Application']);
-
         if ( !is_dir(ZERO_PATH_EXCHANGE) )
             if ( !mkdir(ZERO_PATH_EXCHANGE, 0777, true) )
                 die('path "exchange": "' . ZERO_PATH_EXCHANGE . '" not exists');
@@ -373,6 +357,24 @@ class Zero_Config
         if ( !is_dir(ZERO_PATH_APPLICATION . '/zero') )
             if ( !symlink(ZERO_PATH_ZERO, ZERO_PATH_APPLICATION . '/zero') )
                 die('module "zero" path: "' . ZERO_PATH_APPLICATION . '/zero" not exists');
+
+        //  Storage sessions
+        if ( !session_id() )
+            if ( 0 < count($Config['Memcache']['Session']) )
+            {
+                ini_set('session.save_handler', 'memcache');
+                ini_set('session.save_path', $Config['Memcache']['Session'][0]);
+            }
+            else
+            {
+                ini_set('session.save_handler', 'files');
+                if ( !ini_get('session.save_path') )
+                    ini_set('session.save_path', ZERO_PATH_SESSION);
+                $path = ini_get('session.save_path');
+                if ( !is_dir($path) )
+                    if ( !mkdir($path, 0777, true) )
+                        die('session path: "' . $path . '" not exists');
+            }
     }
 }
 
