@@ -251,7 +251,7 @@ class Zero_Config
         if ( file_exists($path = ZERO_PATH_SITE . '/config.php') )
             $Config = require ZERO_PATH_SITE . '/config.php';
         else
-            $Config = require ZERO_PATH_SITE . '/configPhpZero.php';
+            $Config = require ZERO_PATH_SITE . '/configNew.php';
 
         // The path to the php Interpreter
         $this->Site_PathPhp = $Config['Site']['PathPhp'];
