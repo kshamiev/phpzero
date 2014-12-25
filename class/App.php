@@ -341,8 +341,9 @@ class Zero_App
         if ( isset($route['Controller']) && $route['Controller'] )
         {
             $routeDetails = explode('-', $route['Controller']);
-            if ( 2 != count($routeDetails) )
-                throw new Exception('контроллер определен неправильно: ' . $route['Controller'], 409);
+            if ( 1 == count($routeDetails) )
+                $routeDetails[1] = 'Default';
+                //throw new Exception('контроллер определен неправильно: ' . $route['Controller'], 409);
             //
             if ( !isset($_REQUEST['act']) )
                 $_REQUEST['act'] = $routeDetails[1];
