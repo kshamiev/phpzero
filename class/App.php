@@ -572,6 +572,7 @@ class Zero_App
     }
 }
 
+/*
 $opts_sample = array(
     'http' => array(
         'method' => 'POST',
@@ -580,3 +581,4 @@ $opts_sample = array(
         'timeout' => 60,
     )
 );
+*/
