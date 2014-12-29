@@ -64,9 +64,5 @@ class Zero_Route
         }
         $this->UrlSegment = $row;
         $this->Url .= '/' . implode('/', $row);
-
-        // api
-        if ( 'api' == $row[0] )
-            Zero_App::$Mode = 'api';
     }
 }

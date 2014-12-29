@@ -55,6 +55,7 @@ define('ZERO_PATH_ZERO', ZERO_PATH_SITE . '/zero');
  * @link http://www.phpzero.com/
  * @copyright <PHP_ZERO_COPYRIGHT>
  * @license http://www.phpzero.com/license/
+ * @todo раскидать шаблоны include по теме
  */
 class Zero_App
 {
@@ -284,20 +285,6 @@ class Zero_App
         Zero_Session::Init(self::$Config->Site_Domain);
 
         require_once ZERO_PATH_ZERO . '/class/View.php';
-
-        // Инициализация входных параметров и данных в случае api
-        if ( 'api' == self::$Mode )
-        {
-            if ( $_SERVER['REQUEST_METHOD'] === "PUT" )
-            {
-                $data = file_get_contents('php://input', false, null, -1, $_SERVER['CONTENT_LENGTH']);
-                $_POST = json_decode($data, true);
-            }
-            else if ( $_SERVER['REQUEST_METHOD'] === "POST" && isset($GLOBALS["HTTP_RAW_POST_DATA"]) )
-            {
-                $_POST = json_decode($GLOBALS["HTTP_RAW_POST_DATA"], true);
-            }
-        }
     }
 
     public static function ExecuteSimple()

@@ -131,7 +131,7 @@ class Zero_Validator
             $this->Model->$prop = '';
         }
 
-        if ( (Zero_App::$Mode == 'json' || Zero_App::$Mode == 'api') && isset($value['Hash']) && $value['Hash'] )
+        if ( Zero_App::$Mode == 'api' && isset($value['Hash']) && $value['Hash'] )
         {
             $pathInfo = dirname(ZERO_PATH_DATA) . '/temp/' . $value['Hash'] . '.txt';
             if ( !file_exists($pathInfo) )
