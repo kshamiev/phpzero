@@ -25,6 +25,7 @@
  * @property string $IsOnline
  * @property string $DateOnline
  * @property string $Date
+ * @property string $Token
  * <END_CONFIG_PROPERTY>
  */
 class Zero_Users extends Zero_Model
@@ -239,6 +240,15 @@ class Zero_Users extends Zero_Model
         {
             $this->Groups_ID = 2;
             $this->Login = 'guest';
+            if ( isset($_GET['access-token']) )
+            {
+                $sql = "SELECT * FROM Users WHERE Token = " . Zero_DB::EscT($_GET['access-token']);
+                $row = Zero_DB::Select_Row($sql);
+                if ( 0 < count($row) )
+                    $this->Set_Props($row);
+                else
+                    setcookie('i09u9Maf6l6sr7Um0m8A3u0r9i55m3il', null, 0, '/');
+            }
         }
     }
 

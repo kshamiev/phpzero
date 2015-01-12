@@ -55,7 +55,6 @@ define('ZERO_PATH_ZERO', ZERO_PATH_SITE . '/zero');
  * @link http://www.phpzero.com/
  * @copyright <PHP_ZERO_COPYRIGHT>
  * @license http://www.phpzero.com/license/
- * @todo раскидать шаблоны include по теме
  */
 class Zero_App
 {
@@ -300,16 +299,13 @@ class Zero_App
             }
 
         //  Инициализация запрошенного раздела (Www_Section)
-        // TODO Доработать инициализацию пользователя по токену и исключение если он есть а пользователя нет - либо в гостя его
-        if ( isset($_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il']) && 0 < $_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il'] )
-        {
-            self::$Users = Zero_Model::Factory('Www_Users', $_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il']);
+        if ( isset($_SERVER['HTTP_X_ACCESS_TOKEN']) )
+            $_GET['access-token'] = $_SERVER['HTTP_X_ACCESS_TOKEN'];
+        else if ( isset($_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il']) )
+            $_GET['access-token'] = $_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il'];
+        if ( isset($_GET['access-token']) )
             setcookie('i09u9Maf6l6sr7Um0m8A3u0r9i55m3il', $_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il'], time() + 2592000, '/');
-        }
-        else
-        {
-            self::$Users = Zero_Model::Factory('Www_Users');
-        }
+        self::$Users = Zero_Model::Factory('Www_Users');
 
         $route = [];
         foreach (Zero_Lib_File::Get_Modules() as $module)
@@ -390,15 +386,13 @@ class Zero_App
             }
 
         //  Инициализация запрошенного раздела (Www_Section)
-        if ( isset($_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il']) && 0 < $_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il'] )
-        {
-            self::$Users = Zero_Model::Factory('Www_Users', $_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il']);
+        if ( isset($_SERVER['HTTP_X_ACCESS_TOKEN']) )
+            $_GET['access-token'] = $_SERVER['HTTP_X_ACCESS_TOKEN'];
+        else if ( isset($_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il']) )
+            $_GET['access-token'] = $_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il'];
+        if ( isset($_GET['access-token']) )
             setcookie('i09u9Maf6l6sr7Um0m8A3u0r9i55m3il', $_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il'], time() + 2592000, '/');
-        }
-        else
-        {
-            self::$Users = Zero_Model::Factory('Www_Users');
-        }
+        self::$Users = Zero_Model::Factory('Www_Users');
 
         self::$Section = Zero_Model::Instance('Www_Section');
         //  Checking for non-existent section

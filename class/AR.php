@@ -981,7 +981,7 @@ class Zero_AR
     }
 
     /**
-     * Izmenenie danny`kh v BD.
+     * Изменение данных в БД.
      *
      * @param string $source
      * @return bool

@@ -98,6 +98,7 @@ class Zero_Users_Login extends Zero_Controller
             return true;
 
         $Users = Zero_Model::Make('Www_Users');
+        /* @var $Users Zero_Users */
         $Users->AR->Sql_Where('Login', '=', $_REQUEST['Login']);
         $Users->AR->Select('*');
 
@@ -111,8 +112,18 @@ class Zero_Users_Login extends Zero_Controller
 
         if ( isset($_REQUEST['Memory']) && $_REQUEST['Memory'] )
         {
-            setcookie('i09u9Maf6l6sr7Um0m8A3u0r9i55m3il', $Users->ID, time() + 2592000, '/');
+            $Users->Token = crypt($_REQUEST['Password'], crypt($_REQUEST['Password']));
+            setcookie('i09u9Maf6l6sr7Um0m8A3u0r9i55m3il', $Users->Token, time() + 2592000, '/');
         }
+        else
+        {
+            $Users->Token = '';
+            setcookie('i09u9Maf6l6sr7Um0m8A3u0r9i55m3il', null, 0, '/');
+        }
+        $Users->IsOnline = 'yes';
+        $Users->DateOnline = date('Y-m-d H:i:s');
+        $Users->AR->Update();
+
         $url_history = Zero_App::$Users->UrlRedirect;
 
         Zero_App::$Users = $Users;

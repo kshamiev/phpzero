@@ -122,6 +122,7 @@ CREATE TABLE `Users` (
   `DateOnline` datetime DEFAULT NULL,
   `Date` datetime DEFAULT NULL,
   `Address` varchar(500) DEFAULT NULL,
+  `Token` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`ID`),
   KEY `Zero_Groups_ID` (`Groups_ID`),
   KEY `Zero_Users_ID` (`Users_ID`),
