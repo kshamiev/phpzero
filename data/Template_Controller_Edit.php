@@ -4,11 +4,8 @@
  * Controller. <Comment>
  *
  * @package <Package>.<Subpackage>.Controller
- * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
+ * @author
  * @version $Id$
- * @link http://www.phpzero.com/
- * @copyright <PHP_ZERO_COPYRIGHT>
- * @license http://www.phpzero.com/license/
  */
 class Zero_Controller_Edit extends Zero_Crud_Edit
 {

@@ -156,18 +156,6 @@ abstract class Zero_Crud_Grid extends Zero_Controller
                             $Filter->Set_Sort($prop);
                     }
                 }
-//                if ( isset($row['Search']) && $row['Search'] )
-//                {
-//                    $method = 'Add_Search_' . $row['Search'];
-//                    if ( method_exists($Filter, $method) )
-//                        $Filter->$method($prop, $row);
-//                }
-//                if ( isset($row['Sort']) && $row['Sort'] )
-//                {
-//                    $Filter->Add_Sort($prop, $row);
-//                    if ( 'Sort' == $prop )
-//                        $Filter->Set_Sort($prop);
-//                }
             }
             $Filter->IsInit = true;
         }
@@ -317,7 +305,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
      */
     protected function Chunk_Remove()
     {
-        $ObjectRem = Zero_Model::Make($this->ModelName, $_REQUEST['obj_id']);
+        $ObjectRem = Zero_Model::Make(get_class($this->Model), $_REQUEST['id']);
         //  Remove binary data object
         $path = ZERO_PATH_DATA . '/' . strtolower($ObjectRem->Source) . '/' . Zero_Lib_File::Get_Path_Cache($ObjectRem->ID) . '/' . $ObjectRem->ID;
         if ( is_dir($path) )

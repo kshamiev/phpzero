@@ -6,9 +6,6 @@
  * @package <Package>.<Subpackage>.Model
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
  * @version $Id$
- * @link http://www.phpzero.com/
- * @copyright <PHP_ZERO_COPYRIGHT>
- * @license http://www.phpzero.com/license/
  *
  * <BEG_CONFIG_PROPERTY>
  * <END_CONFIG_PROPERTY>
@@ -153,7 +150,7 @@ class Zero_Model_Pattern extends Zero_Model
      * @param string $scenario scenario validation
      * @return string
      */
-    public function Validate_PropertyName($value, $scenario)
+    public function VL_PropertyName($value, $scenario)
     {
         $this->PropertyName = $value;
         return '';

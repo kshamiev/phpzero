@@ -18,6 +18,7 @@
  */
 class Zero_Filter
 {
+
     /**
      * Model` dlia kotoroi` sozdaiutsia fil`try`
      *
@@ -99,7 +100,7 @@ class Zero_Filter
     /**
      * Sozdanie i initcializatciia fil`tra.
      *
-     * @param Zero_Model $Model  Delegirovannaia model` dlia kotoroi` sozdaiutsia fil`try`
+     * @param Zero_Model $Model Delegirovannaia model` dlia kotoroi` sozdaiutsia fil`try`
      */
     public function __construct($Model)
     {
@@ -117,7 +118,7 @@ class Zero_Filter
      */
     public static function Factory($Model)
     {
-//        $index = '_Filter' . '_' . $Model->Get_Source();
+        //        $index = '_Filter' . '_' . $Model->Get_Source();
         $index = '_Filter' . '_' . get_class($Model);
         if ( !$result = Zero_Session::Get($index) )
         {
@@ -142,7 +143,7 @@ class Zero_Filter
         $this->Filter[$prop] = $row;
         $this->Filter[$prop]['Filter'] = 'Link';
         $this->Filter[$prop]['Visible'] = $is_visible;
-        $this->Filter[$prop]['Value'] = '';
+        $this->Filter[$prop]['Value'] = $row['Default'];;
         $this->Filter[$prop]['List'] = [];
         if ( is_array($load) )
         {
@@ -156,7 +157,7 @@ class Zero_Filter
                 $this->Filter[$prop]['List'] = $this->Model->$method();
             else
             {
-                $this->Filter[$prop]['List'] = Zero_DB::Select_List_Index("SELECT ID, Name FROM `". zero_relation($prop) ."` ORDER BY `Name`");
+                $this->Filter[$prop]['List'] = Zero_DB::Select_List_Index("SELECT ID, Name FROM `" . zero_relation($prop) . "` ORDER BY `Name`");
             }
         }
         return true;
@@ -178,7 +179,7 @@ class Zero_Filter
         $this->Filter[$prop]['Comment'] = Zero_I18n::Model(get_class($this->Model), $prop);
         $this->Filter[$prop]['Filter'] = 'Select';
         $this->Filter[$prop]['Visible'] = $is_visible;
-        $this->Filter[$prop]['Value'] = '';
+        $this->Filter[$prop]['Value'] = $row['Default'];
         $this->Filter[$prop]['List'] = [];
         if ( is_array($load) )
         {
@@ -191,7 +192,12 @@ class Zero_Filter
             else if ( method_exists($this->Model, $method = 'FL_' . $prop) )
                 $this->Filter[$prop]['List'] = $this->Model->$method();
             else
-                $this->Filter[$prop]['List'] = Zero_I18n::ModelArr(get_class($this->Model), $prop . ' options');
+            {
+                $this->Filter[$prop]['List'] = [];
+                $data = Zero_I18n::Model(get_class($this->Model), $prop . ' options');
+                if ( $data != $prop . ' options' )
+                    $this->Filter[$prop]['List'] = $data;
+            }
         }
         return true;
     }
@@ -226,7 +232,7 @@ class Zero_Filter
         $this->Filter[$prop] = $row;
         $this->Filter[$prop]['Filter'] = 'Radio';
         $this->Filter[$prop]['Visible'] = $is_visible;
-        $this->Filter[$prop]['Value'] = '';
+        $this->Filter[$prop]['Value'] = $row['Default'];
         $this->Filter[$prop]['List'] = [];
         if ( is_array($load) )
         {
@@ -237,7 +243,12 @@ class Zero_Filter
             if ( method_exists($this->Model, $method = 'FL_' . $prop) )
                 $this->Filter[$prop]['List'] = $this->Model->$method();
             else
-                $this->Filter[$prop]['List'] = Zero_I18n::ModelArr(get_class($this->Model), $prop . ' options');
+            {
+                $this->Filter[$prop]['List'] = [];
+                $data = Zero_I18n::Model(get_class($this->Model), $prop . ' options');
+                if ( $data != $prop . ' options' )
+                    $this->Filter[$prop]['List'] = $data;
+            }
         }
         return true;
     }
@@ -257,7 +268,7 @@ class Zero_Filter
         $this->Filter[$prop] = $row;
         $this->Filter[$prop]['Filter'] = 'Checkbox';
         $this->Filter[$prop]['Visible'] = $is_visible;
-        $this->Filter[$prop]['Value'] = '';
+        $this->Filter[$prop]['Value'] = $row['Default'];
         $this->Filter[$prop]['List'] = [];
         if ( is_array($load) )
         {
@@ -268,7 +279,12 @@ class Zero_Filter
             if ( method_exists($this->Model, $method = 'FL_' . $prop) )
                 $this->Filter[$prop]['List'] = $this->Model->$method();
             else
-                $this->Filter[$prop]['List'] = Zero_I18n::ModelArr(get_class($this->Model), $prop . ' options');
+            {
+                $this->Filter[$prop]['List'] = [];
+                $data = Zero_I18n::Model(get_class($this->Model), $prop . ' options');
+                if ( $data != $prop . ' options' )
+                    $this->Filter[$prop]['List'] = $data;
+            }
         }
         return true;
     }

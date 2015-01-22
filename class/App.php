@@ -173,14 +173,14 @@ class Zero_App
      * @param string $message Сообщение
      * @return bool
      */
-    public static function ResponseJson($content, $code, $message = '')
+    public static function ResponseJson($content, $status, $code, $message = '')
     {
         header('Pragma: no-cache');
         header('Last-Modified: ' . date('D, d M Y H:i:s') . 'GMT');
         header('Expires: Mon, 26 Jul 2007 05:00:00 GMT');
         header('Cache-Control: no-store, no-cache, must-revalidate');
         header("Content-Type: application/json; charset=utf-8");
-        header('HTTP/1.1 ' . $code . ' ' . $code);
+        header('HTTP/1.1 ' . $status . ' ' . $status);
         $data = [
             'Code' => $code,
             'Message' => $message,
@@ -313,7 +313,7 @@ class Zero_App
             $config = Zero_Lib_File::Get_Config($module, 'route');
             if ( isset($config['route'][ZERO_URL]) )
                 $route = $config['route'][ZERO_URL];
-                break;
+            break;
         }
         if ( 0 == count($route) )
             self::ResponseError(404);
@@ -326,14 +326,16 @@ class Zero_App
             $routeDetails = explode('-', $route['Controller']);
             if ( 1 == count($routeDetails) )
                 $routeDetails[1] = 'Default';
-                //throw new Exception('контроллер определен неправильно: ' . $route['Controller'], 409);
+            //throw new Exception('контроллер определен неправильно: ' . $route['Controller'], 409);
             //
-            if ( !isset($_REQUEST['act']) )
+            if ( !isset($_REQUEST['act']) || !$_REQUEST['act'] )
                 $_REQUEST['act'] = $routeDetails[1];
             $_REQUEST['act'] = 'Action_' . $_REQUEST['act'];
             //
             $Controller = Zero_Controller::Factory($routeDetails[0]);
             Zero_Logs::Start('#{CONTROLLER.Action} ' . $routeDetails[0] . ' -> ' . $_REQUEST['act']);
+            if ( !method_exists($Controller, $_REQUEST['act']) )
+                throw new Exception('Контроллер не имеет метода: ' . $_REQUEST['act'], 500);
             $view = $Controller->$_REQUEST['act']();
             if ( $_REQUEST['act'] != 'Action_Default' )
                 Zero_Logs::Set_Message_Action($_REQUEST['act']);
@@ -413,7 +415,7 @@ class Zero_App
         self::Set_Variable('action_message', []);
         if ( self::$Section->Controller )
         {
-            if ( !isset($_REQUEST['act']) )
+            if ( !isset($_REQUEST['act']) || !$_REQUEST['act'] )
                 $_REQUEST['act'] = 'Default';
             if ( !isset($Action_List[$_REQUEST['act']]) )
                 self::ResponseError(403);
@@ -421,6 +423,8 @@ class Zero_App
             //
             $Controller = Zero_Controller::Factory(self::$Section->Controller);
             Zero_Logs::Start('#{CONTROLLER.Action} ' . self::$Section->Controller . ' -> ' . $_REQUEST['act']);
+            if ( !method_exists($Controller, $_REQUEST['act']) )
+                throw new Exception('Контроллер не имеет метода: ' . $_REQUEST['act'], 500);
             $view = $Controller->$_REQUEST['act']();
             if ( $_REQUEST['act'] != 'Action_Default' )
                 Zero_Logs::Set_Message_Action($_REQUEST['act']);
@@ -501,7 +505,7 @@ class Zero_App
         if ( Zero_App::$Mode == 'console' || !isset($_SERVER['REQUEST_URI']) )
             self::ResponseConsole();
         else if ( Zero_App::$Mode == 'api' )
-            self::ResponseJson('', $code, $exception->getMessage());
+            self::ResponseJson('', $code, $code, $exception->getMessage());
         else if ( Zero_App::$Mode == 'web' )
             self::ResponseError($code);
     }

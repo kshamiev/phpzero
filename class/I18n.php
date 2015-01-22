@@ -78,37 +78,13 @@ class Zero_I18n
         return self::T($file_name, 'model', $key);
     }
 
-    public static function ModelArr($file_name, $key)
-    {
-        $data = self::T($file_name, 'model', $key);
-        if ( $data == $key )
-            return [];
-        return $data;
-    }
-
     public static function View($file_name, $key)
     {
         return self::T($file_name, 'view', $key);
     }
 
-    public static function ViewArr($file_name, $key)
-    {
-        $data = self::T($file_name, 'view', $key);
-        if ( $data == $key )
-            return [];
-        return $data;
-    }
-
     public static function Controller($file_name, $key)
     {
         return self::T($file_name, 'controller', $key);
-    }
-
-    public static function ControllerArr($file_name, $key)
-    {
-        $data = self::T($file_name, 'controller', $key);
-        if ( $data == $key )
-            return [];
-        return $data;
     }
 }

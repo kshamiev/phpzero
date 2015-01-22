@@ -49,10 +49,10 @@ abstract class Zero_Controller
     protected $Params = [];
 
     /**
-     * Fabrika po sozdaniiu kontrollerov.
+     * Фабрика по созданию контроллеров.
      *
-     * @param string $class_name imia kontrollera e`ekzempliar kotorogo sozdaetsia
-     * @param array $properties vhodny`e parametry` plagina
+     * @param string $class_name имиа контроллера эекземплиар которого создаетсиа
+     * @param array $properties входные параметры плагина
      * @return Zero_Controller
      * @throws Exception
      */
@@ -60,6 +60,8 @@ abstract class Zero_Controller
     {
         if ( '' == $class_name )
             throw new Exception('Имя класса создаваемого контроллера не указано', 500);
+        if ( false == Zero_App::Autoload($class_name) )
+            throw new Exception('Контроллер "' . $class_name . '" отсутсвует в приложении', 500);
         $Controller = new $class_name();
         foreach ($properties as $property => $value)
         {

@@ -353,7 +353,7 @@ class Zero_AR
         foreach ($filter_list as $row)
         {
             // если фильтр не установлен
-            if ( !$row['Value'] )
+            if ( !$row['Value'] || $row['AR'] == false )
                 continue;
 
             // если нулевое или не нулевое значение
@@ -377,8 +377,18 @@ class Zero_AR
                 if ( $row['Value'][1] )
                     $this->Sql_Where($row['AliasDB'], '<', $row['Value'][1]);
             } //  mnozhestva
-            else if ( 'Checkbox' == $row['Filter'] )
+            else if ( 'Checkbox' == $row['Filter'] && 0 < count($row['Value']) )
+            {
                 $this->Sql_Where_Like($row['AliasDB'], $row['Value']);
+//                $this->Sql_Where_And();
+//                foreach($row['Value'] as $val)
+//                {
+//                    $this->Sql_Where_Like($row['AliasDB'], $val);
+//                }
+//                $this->Sql_Where_And();
+//                $this->Sql_Where_Like($row['AliasDB'], $row['Value'], 'OR');
+            }
+
             //  fil`try` perechisleniia i sviazei` - ssy`lki
             else if ( 'Radio' == $row['Filter'] || 'Select' == $row['Filter'] || 'Link' == $row['Filter'] || 'LinkMore' == $row['Filter'] )
             {

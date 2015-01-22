@@ -55,13 +55,18 @@ class Zero_DB
     }
 
     /**
-     * Initcializatciia soedineniia s BD.
+     * Инициализация соединения с БД.
      *
+     * @param $name string имя используемого коннекта (может быть не указан)
+     * @return string имя реально используемого коннекта
+     * @throws Exception
      */
     protected static function Init($name)
     {
         if ( $name == '' )
             $name = key(self::$Config);
+        if ( isset(self::$DB[$name]) )
+            return $name;
         //  Initcializatciia ob``ekta mysqli
         /* create a connection object which is not connected */
         try
@@ -89,6 +94,7 @@ class Zero_DB
         //  mysql_query('SET CacheDataACTER SET cp1251_koi8');
         //  mysql_query('set names cp1251');
         //  mysql_query("SET CacheDataACTER SET DEFAULT", self::$DB_Link);
+        return $name;
     }
 
     /**
@@ -258,7 +264,7 @@ class Zero_DB
     protected static function Query($sql, $nameConnect = '')
     {
         if ( !isset(self::$DB[$nameConnect]) )
-            self::Init($nameConnect);
+            $nameConnect = self::Init($nameConnect);
         Zero_Logs::Start('#{SQL} ' . $sql);
         $res = self::$DB[$nameConnect]->query($sql);
         Zero_Logs::Stop('#{SQL} ' . $sql);
@@ -286,7 +292,7 @@ class Zero_DB
     protected static function Query_Real($sql, $nameConnect = '')
     {
         if ( !isset(self::$DB[$nameConnect]) )
-            self::Init($nameConnect);
+            $nameConnect = self::Init($nameConnect);
         Zero_Logs::Start('#{SQL} ' . $sql);
         $res = self::$DB[$nameConnect]->real_query($sql);
         Zero_Logs::Stop('#{SQL} ' . $sql);
@@ -398,6 +404,26 @@ class Zero_DB
     }
 
     /**
+     * Priamoi` zapros k BD na poluchenie danny`kh v vide indeksirovannogo dvukhmernogo assotciativnogo massiva
+     *
+     * @param string $sql zapros
+     * @return array
+     */
+    public static function Select_Array_Index_Array($sql, $nameConnect = '')
+    {
+        $result = [];
+        if ( !$res = self::Query($sql, $nameConnect) )
+            return false;
+        /* @var $res mysqli_result */
+        while ( false != $row = $res->fetch_assoc() )
+        {
+            $result[reset($row)][] = $row;
+        }
+        $res->close();
+        return $result;
+    }
+
+    /**
      * Priamoi` zapros k BD na poluchenie rezul`tata raboty` dlia agregiruiushchikh funktcii`
      *
      * @param string $sql zapros
@@ -424,6 +450,7 @@ class Zero_DB
      */
     public static function Update($sql, $nameConnect = '')
     {
+        $nameConnect = self::Init($nameConnect);
         if ( self::Query($sql, $nameConnect) )
             return self::$DB[$nameConnect]->affected_rows;
         return false;
@@ -440,6 +467,7 @@ class Zero_DB
      */
     public static function Insert($sql, $nameConnect = '')
     {
+        $nameConnect = self::Init($nameConnect);
         if ( self::Query($sql, $nameConnect) )
             return self::$DB[$nameConnect]->insert_id;
         return false;
@@ -457,6 +485,7 @@ class Zero_DB
      */
     public static function Call_Procedure($store_procedure_name, $params = [], $nameConnect = '')
     {
+        $nameConnect = self::Init($nameConnect);
         $quotedparams = [];
         foreach ($params as $param)
         {

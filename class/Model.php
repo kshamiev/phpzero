@@ -116,37 +116,39 @@ abstract class Zero_Model
     }
 
     /**
-     * Fabrika po sozdaniiu ob``ektov.
+     * Фабрика по созданию объектов.
      *
-     * @param string $model imia istochnika model` kotoroi` sozdaetsia
-     * @param int $id identifikator ob``ekta
-     * @param bool $flag_load flag polnoi` zagruzki ob``ekta
+     * @param string $class_name имиа источника модель которой создаетсиа
+     * @param int $id идентификатор объекта
+     * @param bool $flag_load flag полной загрузки объекта
      * @return Zero_Model
      * @throws Exception
      */
-    public static function Make($model, $id = 0, $flag_load = false)
+    public static function Make($class_name, $id = 0, $flag_load = false)
     {
-        if ( '' == $model )
+        if ( '' == $class_name )
             throw new Exception('Имя класса создаваемой модели не указано', 500);
-        return new $model($id, $flag_load);
+        if ( false == Zero_App::Autoload($class_name) )
+            throw new Exception('Модель "' . $class_name . '" отсутсвует в приложении', 500);
+        return new $class_name($id, $flag_load);
     }
 
     /**
-     * Fabrika po sozdaniiu ob``ektov.
+     * Фабрика по созданию объектов.
      *
-     * Sokhraniaetsia v {$this->_Instance}
+     * Сохраниаетсиа в {$тис->_Инстанcе}
      *
-     * @param string $model imia istochnika model` kotoroi` sozdaetsia
-     * @param integer $id identifikator ob``ekta
-     * @param bool $flag_load flag polnoi` zagruzki ob``ekta
+     * @param string $class_name имя источника модель которой создаетсиа
+     * @param integer $id идентификатор объекта
+     * @param bool $flag_load flag полной загрузки объекта
      * @return Zero_Model
      */
-    public static function Instance($model, $id = 0, $flag_load = false)
+    public static function Instance($class_name, $id = 0, $flag_load = false)
     {
-        $index = $model . (0 < $id ? '_' . $id : '');
+        $index = $class_name . (0 < $id ? '_' . $id : '');
         if ( !isset(self::$_Instance[$index]) )
         {
-            $result = self::Make($model, $id, $flag_load);
+            $result = self::Make($class_name, $id, $flag_load);
             $result->Init();
             self::$_Instance[$index] = $result;
         }
@@ -159,19 +161,19 @@ abstract class Zero_Model
      * Rabotaet cherez sessiiu (Zero_Session).
      * Indeks source + [_{$id} - esli 0 < $flag]
      *
-     * @param string $model imia istochnika model` kotoroi` sozdaetsia
+     * @param string $class_name imia istochnika model` kotoroi` sozdaetsia
      * @param integer $id identifikator ob``ekta
      * @param bool $flag flag polnoi` zagruzki ob``ekta
      * @return Zero_Model
      */
-    public static function Factory($model, $id = 0, $flag = false)
+    public static function Factory($class_name, $id = 0, $flag = false)
     {
         // $index = 'Source' . substr($class, strpos($class, '_') + 1);
-        if ( !$result = Zero_Session::Get($model) )
+        if ( !$result = Zero_Session::Get($class_name) )
         {
-            $result = self::Make($model, $id, $flag);
+            $result = self::Make($class_name, $id, $flag);
             $result->Init();
-            Zero_Session::Set($model, $result);
+            Zero_Session::Set($class_name, $result);
         }
         return $result;
     }
@@ -625,7 +627,10 @@ abstract class Zero_Model
             return $this->$method1($params);
         //  rabota so sviazanny`m roditel`skim ob``etom cherez svoi`tsvo sviazi (odin ko mnogim)
         if ( isset($this->Get_Config_Prop()[$method]) )
-            return self::Make(zero_relation($method), $this->$method, !empty($params[0]));
+        {
+            return Zero_DB::Select_Field("SELECT `{$params[0]}` FROM " . zero_relation($method) . " WHERE ID = {$this->$method}");
+//            return self::Make(zero_relation($method), $this->$method, !empty($params[0]));
+        }
         throw new Exception('metod not found: ' . get_class($this) . ' -> ' . $method, 409);
     }
 }

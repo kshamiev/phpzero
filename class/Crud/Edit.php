@@ -76,13 +76,13 @@ abstract class Zero_Crud_Edit extends Zero_Controller
      */
     protected function Chunk_Init()
     {
-        if ( isset($_GET['pid']) )
-            $this->Params['obj_parent_id'] = $_GET['pid'];
+        if ( isset($_REQUEST['pid']) )
+            $this->Params['obj_parent_id'] = $_REQUEST['pid'];
         else if ( empty($this->Params['obj_parent_id']) )
             $this->Params['obj_parent_id'] = 0;
         //
-        if ( isset($_GET['id']) )
-            $this->Params['id'] = $_GET['id'];
+        if ( isset($_REQUEST['id']) )
+            $this->Params['id'] = $_REQUEST['id'];
         else if ( empty($this->Params['id']) )
             $this->Params['id'] = 0;
         //
@@ -213,12 +213,13 @@ abstract class Zero_Crud_Edit extends Zero_Controller
      */
     protected function Chunk_Add()
     {
+        $this->Params['id'] = 0;
         $this->Model->Set_ID(0);
         foreach ($this->Model->Get_Config_Prop() as $prop => $row)
         {
             if ( 'NOW' == $row['Default'] )
                 $this->Model->$prop = date('Y-m-d H:i:s');
-            else if ( $row['Default'] )
+            else if ( 0 < strlen($row['Default']) )
                 $this->Model->$prop = $row['Default'];
             else if ( 'S' == $row['DB'] )
                 $this->Model->$prop = [];

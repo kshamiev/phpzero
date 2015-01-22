@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Controller. User authentication.
+ * Controller. Удаление старых ошибочных загруженных файлов.
  *
- * @package Zero.Users.Controller
+ * @package Zero.System.Controller
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
  * @version $Id$
  * @link http://www.phpzero.com/

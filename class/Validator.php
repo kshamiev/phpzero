@@ -198,21 +198,19 @@ class Zero_Validator
             $data = $this->Model->Validate_Before($data, $scenario);
 
         $props = $this->Model->Get_Config_Form($scenario);
-
         foreach ($data as $prop => $value)
         {
             if ( isset($props[$prop]) && 'ReadOnly' == $props[$prop]['Form'] )
                 continue;
 
-            //  initcializatciia znacheniia ili pervichnach obrabotka
+            //  инициализация значения или первичнач обработка
             if ( is_scalar($value) )
             {
                 $value = trim($value);
                 if ( 0 == strlen($value) )
                     $value = null;
             }
-
-            // validatciia
+            // валидация
             $subj = '';
             if ( isset($props[$prop]) && 'NO' == $props[$prop]['IsNull'] && !$value )
                 $subj = 'Error_NotNull';

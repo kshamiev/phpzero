@@ -4,11 +4,8 @@
  * Controller. <Comment>
  *
  * @package <Package>.<Subpackage>.Controller
- * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
+ * @author
  * @version $Id$
- * @link http://www.phpzero.com/
- * @copyright <PHP_ZERO_COPYRIGHT>
- * @license http://www.phpzero.com/license/
  */
 class Zero_Controller_Sample extends Zero_Controller
 {
@@ -46,4 +43,64 @@ class Zero_Controller_Sample extends Zero_Controller
     {
         return $this->View;
     }
+
+    //// Пример контроллера для API
+    /**
+     * (API) Контроллер по умолчанию.
+     */
+    public function Action_Default()
+    {
+        $this->View = new Zero_View();
+        switch ( $_SERVER['REQUEST_METHOD'] )
+        {
+            case 'GET':
+                break;
+            case 'POST':
+                break;
+            case 'PUT':
+                break;
+            case 'DELETE':
+                break;
+            case 'OPTIONS':
+                break;
+        }
+        Zero_App::ResponseJson($_SERVER['REQUEST_METHOD'] . ':' . ZERO_URL, 409, 409, "Запрос не реализован");
+    }
+    protected function Action_DefaultGet()
+    {
+        Zero_App::ResponseJson('', 200, 200, '');
+    }
+    protected function Action_DefaultPut()
+    {
+        Zero_App::ResponseJson($_POST, 200, 200, '');
+    }
+    protected function Action_DefaultPost()
+    {
+        Zero_App::ResponseJson($_POST, 200, 200, '');
+    }
+    protected function Action_DefaultDelete()
+    {
+        Zero_App::ResponseJson('', 200, 200, '');
+    }
+
+
+
+    //// Пример консольного контроллера
+    /**
+     * Initialize the online status is not active users.
+     *
+     * @return boolean flag stop execute of the next chunk
+     */
+    public function Action_RemoveTempFileUpload()
+    {
+        $path = dirname(ZERO_PATH_DATA) . '/temp';
+        foreach (glob($path . '/.+') as $file)
+        {
+            $timeOutMinute = (time() - filemtime($file)) * 60;
+            if ( 60 < $timeOutMinute )
+                unlink($file);
+        }
+        return $this->View;
+    }
+
 }
