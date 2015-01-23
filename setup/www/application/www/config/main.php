@@ -1,5 +1,6 @@
 <?php
 /**
+ * @mainpage qwerty
  * File Configure. Main.
  *
  */

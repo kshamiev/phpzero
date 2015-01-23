@@ -49,12 +49,10 @@ define('ZERO_PATH_ZERO', ZERO_PATH_SITE . '/zero');
  *
  * The main component of execute the application as a whole.
  *
- * @package Zero.Component
- * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
- * @version $Id$
- * @link http://www.phpzero.com/
- * @copyright <PHP_ZERO_COPYRIGHT>
- * @license http://www.phpzero.com/license/
+ * @package Test
+ * @subpackage Component
+ * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
+ * @link http://www.phpzero.ru/
  */
 class Zero_App
 {
