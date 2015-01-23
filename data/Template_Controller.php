@@ -41,6 +41,8 @@ class Zero_Controller_Sample extends Zero_Controller
      */
     public function Action_Name()
     {
+        $this->Chunk_Init();
+        $this->Chunk_View();
         return $this->View;
     }
 
