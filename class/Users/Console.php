@@ -17,7 +17,7 @@ class Zero_Users_Console extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    public function Action_Offline()
+    public function Console_Offline()
     {
         Zero_Users::DB_Offline(Zero_App::$Config->Site_UsersTimeoutOnline);
         return $this->View;

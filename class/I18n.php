@@ -12,6 +12,7 @@
  */
 class Zero_I18n
 {
+
     /**
      * Massiv soderzhashchii` danny`e iazy`kovy`kh fai`lov perevoda
      *
@@ -31,8 +32,13 @@ class Zero_I18n
         if ( '' == $lang )
             $lang = ZERO_LANG;
         $path = ZERO_PATH_APPLICATION . '/' . strtolower($folder_list[0]) . '/i18n/' . $lang . '/' . $folder_list[1] . '.php';
+        //
+        self::$_I18n[$folder_list[0] . '_' . $folder_list[1]] = [];
         if ( file_exists($path) )
+        {
+            self::$_I18n[$folder_list[0] . '_' . $folder_list[1]] = include $path;
             return $path;
+        }
         Zero_Logs::Set_Message_Warninng('I18N NOT FOUND FILE: ' . strtolower($folder_list[0]) . '/i18n/' . $lang . '/' . $folder_list[1]);
         return '';
     }
@@ -52,9 +58,9 @@ class Zero_I18n
         // поиск в целевом фалйе перевода
         if ( !isset(self::$_I18n[$file_name]) )
         {
-            self::$_I18n[$file_name] = [];
-            if ( $path = self::Search_Path_I18n($folder_list) )
-                self::$_I18n[$file_name] = include $path;
+            self::Search_Path_I18n($folder_list);
+            //            if ( $path = self::Search_Path_I18n($folder_list) )
+            //                self::$_I18n[$file_name] = include $path;
         }
         if ( isset(self::$_I18n[$file_name][$section][$key]) )
             return self::$_I18n[$file_name][$section][$key];
@@ -62,9 +68,10 @@ class Zero_I18n
         $file_name_all = $folder_list[0] . '_All';
         if ( !isset(self::$_I18n[$file_name_all]) )
         {
-            self::$_I18n[$file_name_all] = [];
-            if ( $path = self::Search_Path_I18n([$folder_list[0], 'All']) )
-                self::$_I18n[$file_name_all] = include $path;
+//            self::$_I18n[$file_name_all] = [];
+            self::Search_Path_I18n([$folder_list[0], 'All']);
+            //            if ( $path = self::Search_Path_I18n([$folder_list[0], 'All']) )
+            //                self::$_I18n[$file_name_all] = include $path;
         }
         if ( isset(self::$_I18n[$file_name_all][$section][$key]) )
             return self::$_I18n[$file_name_all][$section][$key];

@@ -17,7 +17,7 @@ class Zero_System_Console extends Zero_Controller
      *
      * @return boolean flag stop execute of the next chunk
      */
-    public function Action_RemoveTempFileUpload()
+    public function Console_RemoveTempFileUpload()
     {
         $path = dirname(ZERO_PATH_DATA) . '/temp';
         foreach (glob($path . '/.+') as $file)

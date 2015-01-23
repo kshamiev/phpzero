@@ -12,6 +12,7 @@
  */
 class Zero_Groups_Access extends Zero_Controller
 {
+
     /**
      * The table stores the objects handled by this controller.
      *
@@ -112,10 +113,12 @@ class Zero_Groups_Access extends Zero_Controller
                 $name = $method->getName();
                 if ( 'Action_Default' == $name )
                     continue;
-                if ( 'Action' == substr($name, 0, 6) )
+                //                    $index = substr($name, strpos($name, '_') + 1);
+                $arr = explode('_', $name);
+                if ( $arr[0] == 'Action' || $arr[0] == 'Api' || $arr[0] == 'Console' )
                 {
-                    $index = str_replace('Action_', '', $name);
-//                    $index = "controller {$row['Controller']} action {$name}";
+                    array_shift($arr);
+                    $index = join('_', $arr);
                     $method_list[$index] = Zero_I18n::Controller($row['Controller'], $name);
                 }
             }

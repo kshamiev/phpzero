@@ -40,6 +40,7 @@
  */
 class Zero_Section extends Zero_Model
 {
+
     /**
      * The table stores the objects this model
      *
@@ -264,7 +265,7 @@ class Zero_Section extends Zero_Model
         else if ( !is_null($this->_Action_List) )
             return $this->_Action_List;
 
-        $index_cache = 'Action_List_' . Zero_App::$Users->Groups_ID . '_' . $this->Controller;
+        $index_cache = 'ControllerList_' . Zero_App::$Users->Groups_ID . '_' . $this->Controller;
         if ( false !== $this->_Action_List = $this->Cache->Get($index_cache) )
             return $this->_Action_List;
 
@@ -286,11 +287,15 @@ class Zero_Section extends Zero_Model
             foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method)
             {
                 $name = $method->getName();
-                if ( 'Action' == substr($name, 0, 6) )
+//                $index = substr($name, strpos($name, '_') + 1);
+                $arr = explode('_', $name);
+                if ( $arr[0] == 'Action' || $arr[0] == 'Api' || $arr[0] == 'Console' )
                 {
-                    $index = str_replace('Action_', '', $name);
+                    array_shift($arr);
+                    $index = join('_', $arr);
                     $this->_Action_List[$index] = ['Name' => Zero_I18n::Controller($this->Controller, $name)];
                 }
+
             }
         }
         Zero_Cache::Set_Link('Zero_Groups', Zero_App::$Users->Groups_ID);

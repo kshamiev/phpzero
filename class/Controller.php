@@ -98,13 +98,8 @@ abstract class Zero_Controller
      */
     public function Get_Message()
     {
-        foreach (self::$_Message as $message => $row)
-        {
-            if ( 1 == count($row) )
-            {
-                self::$_Message[$message][] = Zero_I18n::Controller(get_class($this), $message);
-            }
-        }
+        if ( count(self::$_Message) == 0 )
+            $this->Set_Message();
         return self::$_Message;
     }
 
@@ -117,10 +112,24 @@ abstract class Zero_Controller
      */
     public function Set_Message($message = '', $code = 1)
     {
-        if ( !$message && !$code )
-            self::$_Message = [];
-        else
-            self::$_Message[$message] = [$code];
+        self::$_Message = [
+            'Code' => $code,
+            'Message' => Zero_I18n::Controller(get_class($this), $message),
+        ];
+
+        $arr = func_get_args();
+        switch ( count($arr) )
+        {
+            case 3:
+                self::$_Message['Message'] = sprintf(self::$_Message['Message'], $arr[2]);
+                break;
+            case 4:
+                self::$_Message['Message'] = sprintf(self::$_Message['Message'], $arr[2], $arr[3]);
+                break;
+            case 5:
+                self::$_Message['Message'] = sprintf(self::$_Message['Message'], $arr[2], $arr[3], $arr[4]);
+                break;
+        }
         return $code ? false : true;
     }
 

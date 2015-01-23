@@ -379,12 +379,12 @@ class Zero_AR
             } //  mnozhestva
             else if ( 'Checkbox' == $row['Filter'] && 0 < count($row['Value']) )
             {
-                $this->Sql_Where_Like($row['AliasDB'], $row['Value']);
+//                $this->Sql_Where_Like($row['AliasDB'], $row['Value']);
 //                $this->Sql_Where_And();
-//                foreach($row['Value'] as $val)
-//                {
-//                    $this->Sql_Where_Like($row['AliasDB'], $val);
-//                }
+                foreach($row['Value'] as $val)
+                {
+                    $this->Sql_Where_Like($row['AliasDB'], $val);
+                }
 //                $this->Sql_Where_And();
 //                $this->Sql_Where_Like($row['AliasDB'], $row['Value'], 'OR');
             }

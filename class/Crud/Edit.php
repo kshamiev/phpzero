@@ -139,17 +139,6 @@ abstract class Zero_Crud_Edit extends Zero_Controller
                             $Filter->Set_Sort($prop);
                     }
                 }
-//                if ( isset($row['Search']) && $row['Search'] )
-//                {
-//                    $method = 'Add_Search_' . $row['Search'];
-//                    $Filter->$method($prop, $row);
-//                }
-//                if ( isset($row['Sort']) && $row['Sort'] )
-//                {
-//                    $Filter->Add_Sort($prop, $row);
-//                    if ( 'Sort' == $prop || 'ID' == $prop )
-//                        $Filter->Set_Sort($prop);
-//                }
             }
             $Filter->IsInit = true;
         }
@@ -263,19 +252,19 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         if ( 0 < count($this->Model->VL->Get_Errors()) )
         {
             $this->View->Assign('Error_Validator', $this->Model->VL->Get_Errors());
-            return $this->Set_Message('Error_Validate', 1, false);
+            return $this->Set_Message('Error_Validate', 1);
         }
 
         // Save
         if ( 0 < $this->Model->ID )
         {
             if ( false == $this->Model->AR->Update() )
-                return $this->Set_Message('Error_Save', 1, false);
+                return $this->Set_Message('Error_Save', 1);
         }
         else
         {
             if ( false == $this->Model->AR->Insert() )
-                return $this->Set_Message('Error_Save', 1, false);
+                return $this->Set_Message('Error_Save', 1);
 
             //  When you add an object having a cross (many to many) relationship with the parent object
             if ( isset($this->Params['obj_parent_table']) )
@@ -284,7 +273,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
                 $Object = Zero_Model::Make($this->Params['obj_parent_table'], $this->Params['obj_parent_id']);
                 //  creating a connection
                 if ( !$this->Model->AR->Insert_Cross($Object) )
-                    return $this->Set_Message('Error_Save', 1, false);
+                    return $this->Set_Message('Error_Save', 1);
             }
         }
 

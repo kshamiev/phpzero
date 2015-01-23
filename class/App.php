@@ -307,6 +307,7 @@ class Zero_App
             setcookie('i09u9Maf6l6sr7Um0m8A3u0r9i55m3il', $_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il'], time() + 2592000, '/');
         self::$Users = Zero_Model::Factory('Www_Users');
 
+        // Роутинг. Поиск урла.
         $route = [];
         foreach (Zero_Lib_File::Get_Modules() as $module)
         {
@@ -320,33 +321,40 @@ class Zero_App
 
         //  Execute controller
         $view = '';
-        Zero_App::Set_Variable('action_message', []);
         if ( isset($route['Controller']) && $route['Controller'] )
         {
             $routeDetails = explode('-', $route['Controller']);
-            if ( 1 == count($routeDetails) )
-                $routeDetails[1] = 'Default';
-            //throw new Exception('контроллер определен неправильно: ' . $route['Controller'], 409);
             //
-            if ( !isset($_REQUEST['act']) || !$_REQUEST['act'] )
+            if ( isset($_REQUEST['act']) && $_REQUEST['act'] )
+                $_REQUEST['act'] = trim($_REQUEST['act']);
+            else if ( 1 < count($routeDetails) )
                 $_REQUEST['act'] = $routeDetails[1];
-            $_REQUEST['act'] = 'Action_' . $_REQUEST['act'];
+            else
+                $_REQUEST['act'] = 'Default';
             //
-            $Controller = Zero_Controller::Factory($routeDetails[0]);
+            if ( self::$Mode == 'web' )
+                $_REQUEST['act'] = 'Action_' . $_REQUEST['act'];
+            else if ( self::$Mode == 'api' )
+                $_REQUEST['act'] = 'Api_' . $_REQUEST['act'];
+            else if ( self::$Mode == 'console' )
+                $_REQUEST['act'] = 'Console_' . $_REQUEST['act'];
+            //
             Zero_Logs::Start('#{CONTROLLER.Action} ' . $routeDetails[0] . ' -> ' . $_REQUEST['act']);
+            $Controller = Zero_Controller::Factory($routeDetails[0]);
             if ( !method_exists($Controller, $_REQUEST['act']) )
                 throw new Exception('Контроллер не имеет метода: ' . $_REQUEST['act'], 500);
             $view = $Controller->$_REQUEST['act']();
             if ( $_REQUEST['act'] != 'Action_Default' )
                 Zero_Logs::Set_Message_Action($_REQUEST['act']);
             Zero_Logs::Stop('#{CONTROLLER.Action} ' . $routeDetails[0] . ' -> ' . $_REQUEST['act']);
-            Zero_App::Set_Variable('action_message', $Controller->Get_Message());
         }
 
         // Основные данные
         if ( isset($route['View']) && $route['View'] )
         {
             $viewLayout = new Zero_View($route['View']);
+            if ( isset($Controller) )
+                $viewLayout->Assign('Message', $Controller->Get_Message());
             if ( true == $view instanceof Zero_View )
             {
                 /* @var $view Zero_View */
@@ -412,30 +420,43 @@ class Zero_App
 
         //  Execute controller
         $view = "";
-        self::Set_Variable('action_message', []);
         if ( self::$Section->Controller )
         {
-            if ( !isset($_REQUEST['act']) || !$_REQUEST['act'] )
+            $routeDetails = explode('-', self::$Section->Controller);
+            //
+            if ( isset($_REQUEST['act']) && $_REQUEST['act'] )
+                $_REQUEST['act'] = trim($_REQUEST['act']);
+            else if ( 1 < count($routeDetails) )
+                $_REQUEST['act'] = $routeDetails[1];
+            else
                 $_REQUEST['act'] = 'Default';
+            //
             if ( !isset($Action_List[$_REQUEST['act']]) )
                 self::ResponseError(403);
-            $_REQUEST['act'] = 'Action_' . $_REQUEST['act'];
             //
-            $Controller = Zero_Controller::Factory(self::$Section->Controller);
-            Zero_Logs::Start('#{CONTROLLER.Action} ' . self::$Section->Controller . ' -> ' . $_REQUEST['act']);
+            if ( self::$Mode == 'web' )
+                $_REQUEST['act'] = 'Action_' . $_REQUEST['act'];
+            else if ( self::$Mode == 'api' )
+                $_REQUEST['act'] = 'Api_' . $_REQUEST['act'];
+            else if ( self::$Mode == 'console' )
+                $_REQUEST['act'] = 'Console_' . $_REQUEST['act'];
+            //
+            Zero_Logs::Start('#{CONTROLLER.Action} ' . $routeDetails[0] . ' -> ' . $_REQUEST['act']);
+            $Controller = Zero_Controller::Factory($routeDetails[0]);
             if ( !method_exists($Controller, $_REQUEST['act']) )
                 throw new Exception('Контроллер не имеет метода: ' . $_REQUEST['act'], 500);
             $view = $Controller->$_REQUEST['act']();
             if ( $_REQUEST['act'] != 'Action_Default' )
                 Zero_Logs::Set_Message_Action($_REQUEST['act']);
-            Zero_Logs::Stop('#{CONTROLLER.Action} ' . self::$Section->Controller . ' -> ' . $_REQUEST['act']);
-            Zero_App::Set_Variable('action_message', $Controller->Get_Message());
+            Zero_Logs::Stop('#{CONTROLLER.Action} ' . $routeDetails[0] . ' -> ' . $_REQUEST['act']);
         }
 
         // Основные данные
         if ( self::$Section->Layout )
         {
             $viewLayout = new Zero_View(self::$Section->Layout);
+            if ( isset($Controller) )
+                $viewLayout->Assign('Message', $Controller->Get_Message());
             if ( true == $view instanceof Zero_View )
             {
                 /* @var $view Zero_View */

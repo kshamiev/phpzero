@@ -318,6 +318,6 @@ abstract class Zero_Crud_Grid extends Zero_Controller
         if ( $ObjectRem->AR->Delete() )
             return $this->Set_Message('Remove', 0);
         else
-            return $this->Set_Message('Error_Remove', 1, false);
+            return $this->Set_Message('Error_Remove', 1);
     }
 }

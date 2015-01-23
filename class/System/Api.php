@@ -15,7 +15,7 @@ class Zero_System_Api extends Zero_Controller
     /**
      * (API) Контроллер по умолчанию.
      */
-    public function Action_Default()
+    public function Api_Default()
     {
         $this->View = new Zero_View();
         switch ( $_SERVER['REQUEST_METHOD'] )
@@ -37,7 +37,7 @@ class Zero_System_Api extends Zero_Controller
     /**
      * (API) Загрузка бинарных данных.
      */
-    public function Action_Upload()
+    public function Api_Upload()
     {
         $this->View = new Zero_View();
         switch ( $_SERVER['REQUEST_METHOD'] )
@@ -45,7 +45,7 @@ class Zero_System_Api extends Zero_Controller
             case 'GET':
                 break;
             case 'POST':
-                $this->Action_UploadPut();
+                $this->Api_UploadPut();
                 break;
             case 'PUT':
                 break;
@@ -60,7 +60,7 @@ class Zero_System_Api extends Zero_Controller
     /**
      * Загрузка бинарных данных
      */
-    protected function Action_UploadPut()
+    protected function Api_UploadPut()
     {
         if ( !isset($_FILES['myFile']) )
             Zero_App::ResponseJson("", 409, 409, "Данные не получены");

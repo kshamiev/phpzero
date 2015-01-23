@@ -11,14 +11,11 @@
         <td width="220px" height="40px" align="center">{plugin "Zero_Content_Page" block="head_left"}</td>
         <td>
             {translation "Www_All" "Project"}: {Zero_App::$Config->Site_Name}&nbsp;&nbsp;
-            {foreach (Zero_App::Get_Variable('action_message') as $row)}
-            {if ( $row[0] == 1 )}
-            <font color="red">{$row[1]}</font>
+            {if ( $Message['Code'] > 0 )}
+            <font color="red">{$Message['Message']}</font>
             {else}
-            {$row[1]}
-            {/}
-            &nbsp;&nbsp;
-            {/}
+            <font color="green">{$Message['Message']}</font>
+            {/if}
         </td>
         <td width="150px" align="center">
             <a href="/" target="_blank">сайт</a>

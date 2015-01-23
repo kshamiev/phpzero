@@ -238,27 +238,27 @@ class Zero_View
      */
     private function _Parsing($template)
     {
-        //  DIREKTIVY
-        // podcliuchenie shablonov direktivoi` include {include "dirname/filename"}
+        //  ДИРЕКТИВЫ
+        // подключение шаблонов директивой инклуде {инклуде "дирнаме/филенаме"}
         $template = preg_replace_callback(self::PATTERN_INCLUDE, [$this, '_Parsing_Include'], $template);
-        // parsing iazy`kovy`kh konstruktcii`
+        // парсинг языковых конструкций
         $template = preg_replace_callback(self::PATTERN_TRANSLATION, [$this, '_Parsing_Translation'], $template);
-        // parsing plaginov
+        // парсинг плагинов
         $template = preg_replace_callback(self::PATTERN_PLUGIN, [$this, '_Parsing_Controller'], $template);
         //
-        // Vy`rezaem sluzhebny`e kommentarii
+        // Вырезаем служебные комментарии
         $template = preg_replace('~{#(.*?)#}~s', '', $template);
-        //	tcicly` i logika
+        //	циклы и логика
         $template = preg_replace('~{((foreach|for|while|if|switch|case|default) .+?)}~si', '<' . '?php $1 { ?' . '>', $template);
         $template = preg_replace('~{(/|/foreach|/for|/while|/if|/switch|/case|/default)}~si', '<' . '?php } ?' . '>', $template);
         $template = preg_replace('~{else if (.+?)}~si', '<' . '?php } else if $1 { ?' . '>', $template);
         $template = preg_replace('~{else}~si', '<' . '?php } else { ?' . '>', $template);
         $template = preg_replace('~{(break|continue)}~si', '<' . '?php $1; ?' . '>', $template);
-        //	peremenny`e ustanovka
+        //	переменные установка
         $template = preg_replace('~{set (\$[^}]{1,255})}~si', '<' . '?php $1; ?' . '>', $template);
-        //	peremenny`e vy`vod
+        //	переменные вывод
         $template = preg_replace('~{(\$[^}]{1,255})}~si', '<' . '?php echo $1; ?' . '>', $template);
-        //	funktcii i konstanty`
+        //	функции и константы
         $template = preg_replace('~{([a-z]{1}[^}]{0,150})}~si', '<' . '?php echo $1; ?' . '>', $template);
         //  Adjustment of links translation
         /*
