@@ -123,15 +123,4 @@ abstract class Zero_Controller
             self::$_Message[$message] = [$code];
         return $code ? false : true;
     }
-
-    /**
-     * Vy`polnenie dei`stvii`
-     *
-     * @return Zero_View or string
-     */
-    public function Action_Default()
-    {
-        $this->View = 'Controller -> ' . get_class($this);
-        return $this->View;
-    }
 }

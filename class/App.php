@@ -148,7 +148,7 @@ class Zero_App
         return false;
     }
 
-    public static function RequestJson($method, $url, $content)
+    public static function RequestJson($method, $url, $content = '')
     {
         $content = json_encode($content, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
         $opts = array(
