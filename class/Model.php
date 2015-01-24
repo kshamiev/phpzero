@@ -1,25 +1,20 @@
 <?php
 
 /**
- * Component. Bazovaia abstraktnaia model`.
+ * Базовая абстрактная модель (Компонент).
  *
- * - Realizuet spetcializirovannuiu i abstratknuiu obrabotku svoi`stv modeli
- * - Agregator razlichny`kh komponentov po rabote s nasleduemy`m ob``ektom
- * - Ispol`zuet pattern Kompozitciiu s delegirovaniem
- * - Rabota so svoi`stvami proishodit cherez metody` peregruzki
+ * - Реализует специализированную и абстраткную обработку свойств модели
+ * - Агрегатор различных компонентов по работе с наследуемым объектом
+ * - Использует паттерн Композицию с делегированием
+ * - Работа со свойствами проишодит через методы перегрузки
  *
- * Inkapusliruet v sebe sleduiushchie komponenty` sistemy`:
- * - Validator svoi`stv nasleduemogo ob``ekta pri ego izmenenii
- * - Sistema ob``ektnogo (tcelevogo) keshirovaniia
+ * Инкапуслирует в себе следующие компоненты системы:
+ * - Валидатор свойств наследуемого объекта при его изменении
+ * - Система объектного (целевого) кеширования
  * - Component on interaction and working with the database in the philosophy of ORM
  *
- * @package Zero.Component
- * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
- * @version $Id$
- * @link http://www.phpzero.com/
- * @copyright <PHP_ZERO_COPYRIGHT>
- * @license http://www.phpzero.com/license/
- *
+ * @package Test
+ * @subpackage Funtik
  * @property integer $ID Идентификатор объекта
  * @property string $Source Источник или храниащая данных объектов
  * @property Zero_AR $AR Объект для работы с BD в контексте модели

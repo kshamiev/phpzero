@@ -1,16 +1,13 @@
 <?php
 
 /**
- * Controller. Content Page.
+ * Контент страницы.
+ *
+ * Контент-блоки страницы.
+ * Главный контент страницы.
  *
  * {plugin "Zero_Content_Page" block="footer"}
  *
- * @package Zero.Content.Controller
- * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
- * @version $Id$
- * @link http://www.phpzero.com/
- * @copyright <PHP_ZERO_COPYRIGHT>
- * @license http://www.phpzero.com/license/
  */
 class Zero_Content_Page extends Zero_Controller
 {

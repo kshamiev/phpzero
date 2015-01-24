@@ -20,7 +20,7 @@ ini_set('magic_quotes_gpc', 0);
 
 require dirname(__DIR__) . '/class/Config.php';
 require dirname(__DIR__) . '/class/App.php';
-require dirname(__DIR__) . '/class/Lib/FileSystem.php';
+require dirname(__DIR__) . '/class/Lib/File.php';
 
 if ( !isset($_REQUEST['site_name']) )
     $_REQUEST['site_name'] = '';

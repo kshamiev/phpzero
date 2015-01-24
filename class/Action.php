@@ -5,10 +5,7 @@
  *
  * @package Zero.Action.Model
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
- * @version $Id$
- * @link http://www.phpzero.com/
- * @copyright <PHP_ZERO_COPYRIGHT>
- * @license http://www.phpzero.com/license/
+ * @dat
  *
  * <BEG_CONFIG_PROPERTY>
  * @property integer $Section_ID

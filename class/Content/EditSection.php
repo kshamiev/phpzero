@@ -1,14 +1,8 @@
 <?php
 
 /**
- * Controller. Changing the content blocks page.
+ * Changing the content blocks page of related by page.
  *
- * @package Zero.Content.Controller
- * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
- * @version $Id$
- * @link http://www.phpzero.com/
- * @copyright <PHP_ZERO_COPYRIGHT>
- * @license http://www.phpzero.com/license/
  */
 class Zero_Content_EditSection extends Zero_Crud_Edit
 {

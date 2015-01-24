@@ -1,14 +1,8 @@
 <?php
 
 /**
- * Controller. Groups Edit.
+ * Changing the content blocks page.
  *
- * @package Zero.Groups.Controller
- * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
- * @version $Id$
- * @link http://www.phpzero.com/
- * @copyright <PHP_ZERO_COPYRIGHT>
- * @license http://www.phpzero.com/license/
  */
 class Zero_Content_Edit extends Zero_Crud_Edit
 {

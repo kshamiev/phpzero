@@ -1,14 +1,8 @@
 <?php
 
 /**
- * Controller. View a list of related objects by page.
+ * View a list content of related by page.
  *
- * @package Zero.Content.Controller
- * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
- * @version $Id$
- * @link http://www.phpzero.com/
- * @copyright <PHP_ZERO_COPYRIGHT>
- * @license http://www.phpzero.com/license/
  */
 class Zero_Content_GridSection extends Zero_Crud_Grid
 {
