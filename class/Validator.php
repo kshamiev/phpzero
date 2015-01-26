@@ -11,12 +11,9 @@
  * - Poisk validatora zdes` v validatore po forme predstavleniia svoi`stva
  * Esli ni odin validator ne by`l nai`den proishodit bezuslovnoe prisvoenie znachenie svoi`stvu ob``etu.
  *
- * @package Zero.Component
+ * @class Zero_Validator
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
- * @version $Id$
- * @link http://www.phpzero.com/
- * @copyright <PHP_ZERO_COPYRIGHT>
- * @license http://www.phpzero.com/license/
+ * @date 2015.01.01
  */
 class Zero_Validator
 {

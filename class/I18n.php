@@ -3,12 +3,9 @@
 /**
  * Component. Sistema pervodov.
  *
- * @package Zero.Component
+ * @class Zero_I18n
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
- * @version $Id$
- * @link http://www.phpzero.com/
- * @copyright <PHP_ZERO_COPYRIGHT>
- * @license http://www.phpzero.com/license/
+ * @date 2015.01.01
  */
 class Zero_I18n
 {

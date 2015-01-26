@@ -3,15 +3,13 @@
 /**
  * Model. Actions controllers and the access to them.
  *
- * @package Zero.Action.Model
+ * @class Zero_Action
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
- * @dat
+ * @date 2015.01.01
  *
- * <BEG_CONFIG_PROPERTY>
  * @property integer $Section_ID
  * @property integer $Groups_ID
  * @property string $Action
- * <END_CONFIG_PROPERTY>
  */
 class Zero_Action extends Zero_Model
 {

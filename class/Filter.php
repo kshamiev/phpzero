@@ -9,12 +9,9 @@
  * Reazlizuet fil`tratciiu pri vy`vode ob``ektov v gride.
  * V forme vy`stupaet kak spravochnik variantov znachenii` dlia svoi`stv.
  *
- * @package Zero.Component
+ * @class Zero_Filter
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
- * @version $Id$
- * @link http://www.phpzero.com/
- * @copyright <PHP_ZERO_COPYRIGHT>
- * @license http://www.phpzero.com/license/
+ * @date 2015.01.01
  */
 class Zero_Filter
 {

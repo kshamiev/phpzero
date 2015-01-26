@@ -13,13 +13,9 @@
  * - Система объектного (целевого) кеширования
  * - Component on interaction and working with the database in the philosophy of ORM
  *
- * @package Test
- * @subpackage Funtik
- * @property integer $ID Идентификатор объекта
- * @property string $Source Источник или храниащая данных объектов
- * @property Zero_AR $AR Объект для работы с BD в контексте модели
- * @property Zero_Validator $VL Объект длиа работы по валидации (проверки) входных данных
- * @property Zero_Cache $Cache Объект для работы с кешем
+ * @class Zero_Model
+ * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
+ * @date 2015.01.01
  */
 abstract class Zero_Model
 {

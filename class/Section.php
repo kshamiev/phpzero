@@ -12,14 +12,10 @@
  * - Visibility in the navigation
  * - Seo
  *
- * @package Zero.Section.Model
+ * @class Zero_Section
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
- * @version $Id$
- * @link http://www.phpzero.com/
- * @copyright <PHP_ZERO_COPYRIGHT>
- * @license http://www.phpzero.com/license/
+ * @date 2015.01.01
  *
- * <BEG_CONFIG_PROPERTY>
  * @property integer $Section_ID
  * @property string $Url
  * @property string $UrlThis
@@ -36,7 +32,6 @@
  * @property string $Keywords
  * @property string $Description
  * @property string $Content
- * <END_CONFIG_PROPERTY>
  */
 class Zero_Section extends Zero_Model
 {

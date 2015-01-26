@@ -4,7 +4,10 @@
  * Page content.
  *
  *
- * <BEG_CONFIG_PROPERTY>
+ * @class Zero_Action
+ * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
+ * @date 2015.01.01
+ *
  * @property integer $Section_ID
  * @property string $Lang
  * @property string $Name
@@ -13,7 +16,6 @@
  * @property string $Description
  * @property string $Content
  * @property string $Block
- * <END_CONFIG_PROPERTY>
  */
 class Zero_Content extends Zero_Model
 {

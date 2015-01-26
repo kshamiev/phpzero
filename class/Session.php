@@ -6,12 +6,9 @@
  * Realizuet centralizovannoe sokhranenie ob``ektov i drugikh tipov danny`kh v sessii.
  * Ispol`zuet pattern odinochka
  *
- * @package Zero.Component
+ * @class Zero_Session
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
- * @version $Id$
- * @link http://www.phpzero.com/
- * @copyright <PHP_ZERO_COPYRIGHT>
- * @license http://www.phpzero.com/license/
+ * @date 2015.01.01
  */
 class Zero_Session extends ArrayObject
 {

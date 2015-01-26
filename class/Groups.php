@@ -3,18 +3,13 @@
 /**
  * Model. Groups.
  *
- * @package Zero.Groups.Model
+ * @class Zero_Groups
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
- * @version $Id$
- * @link http://www.phpzero.com/
- * @copyright <PHP_ZERO_COPYRIGHT>
- * @license http://www.phpzero.com/license/
+ * @date 2015.01.01
  *
- * <BEG_CONFIG_PROPERTY>
  * @property string $Name
  * @property string $Status
  * @property string $Description
- * <END_CONFIG_PROPERTY>
  */
 class Zero_Groups extends Zero_Model
 {

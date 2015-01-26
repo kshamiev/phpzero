@@ -3,14 +3,10 @@
 /**
  * Model. Users.
  *
- * @package Zero.Users.Model
+ * @class Zero_Users
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
- * @version $Id$
- * @link http://www.phpzero.com/
- * @copyright <PHP_ZERO_COPYRIGHT>
- * @license http://www.phpzero.com/license/
+ * @date 2015.01.01
  *
- * <BEG_CONFIG_PROPERTY>
  * @property integer $Groups_ID
  * @property integer $Users_ID
  * @property string $Name
@@ -26,7 +22,6 @@
  * @property string $DateOnline
  * @property string $Date
  * @property string $Token
- * <END_CONFIG_PROPERTY>
  */
 class Zero_Users extends Zero_Model
 {
