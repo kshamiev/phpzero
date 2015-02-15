@@ -1,0 +1,57 @@
+C:\Work\phpzero>apigen generate -h
+Usage:
+ generate [-s|--source="..."] [-d|--destination="..."] 
+ [--access-levels="..."] 
+ [--base-url="..."] 
+ [--config="..."] 
+ [--google-cse-id="..."] 
+ [--google-analytics="..."] 
+ [--debug] 
+ [--deprecated] 
+ [--download] 
+ [--extensions="..."] 
+ [--exclude="..."] 
+ [--groups="..."] 
+ [--charset="..."] 
+ [--main="..."] 
+ [--internal] 
+ [--php] 
+ [--skip-doc-path="..."] 
+ [--no-source-code] 
+ [--template-theme="..."] 
+ [--template-config="..."] 
+ [--title="..."] 
+ [--todo] 
+ [--tree]
+
+Options:
+ --source (-s)       Dirs documentation is generated for (can be specified multiple times). (multiple values allowed)
+ --destination (-d)  Target dir for documentation.
+ --access-levels     Access levels of included method and properties (can be specified multiple times). (default: ["public","protected"]) (multiple values allowed)
+ --base-url          Base url used for sitemap (useful for public doc).
+ --config            Custom path to apigen.neon config file. (default: "C:\\Work\\phpzero/apigen.neon")
+ --google-cse-id     Custom google search engine id (for search box).
+ --google-analytics  Google Analytics tracking code.
+ --debug             Turn on debug mode.
+ --deprecated        Generate documentation for elements marked as @deprecated
+ --download          Add link to ZIP archive of documentation.
+ --extensions        Scanned file extensions (can be specified multiple times). (default: ["php"]) (multiple values allowed)
+ --exclude           Directories and files matching this mask will not be parsed (can be specified multiple times). (multiple values allowed)
+ --groups            The way elements are grouped in menu. (default: "auto")
+ --charset           Charset of scanned files (can be specified multiple times). (multiple values allowed)
+ --main              Elements with this name prefix will be first in tree.
+ --internal          Include elements marked as @internal.
+ --php               Generate documentation for PHP internal classes.
+ --skip-doc-path     Files matching this mask will be included in class tree, but will not create a link to their documentation (can be specified multiple times). (multiple values allowed)
+ --no-source-code    Do not generate highlighted source code for elements.
+ --template-theme    ApiGen template theme name. (default: "default")
+ --template-config   Your own template config, has higher priority templateTheme.
+ --title             Title of generated documentation.
+ --todo              Generate documentation for elements marked as @todo.
+ --tree              Generate tree view of classes, interfaces, traits and exceptions.
+ --help (-h)         Display this help message.
+ --quiet (-q)        Do not output any message.
+ --version (-V)      Display this application version.
+
+ 
+apigen generate --todo --tree --deprecated --download --main="Funtik" --title="Inventory" -d docs/test -s phpzero/zero/class -s phpzero/zero/i18n -s phpzero/application
