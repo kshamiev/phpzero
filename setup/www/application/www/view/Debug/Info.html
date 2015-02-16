@@ -1,0 +1,50 @@
+<div style="padding: 4px;">
+    <h3>Системные сообщения</h3>
+    {foreach ($message as $row)}
+    {if ( $row[1] == 'error' )}
+    <div style="margin: 2px; background: #fadadd; padding: 4px;">
+        <pre>{print_r($row[0], true)}</pre>
+    </div>
+    {else if ( $row[1] == 'errorTrace' )}
+    <div style="margin: 2px; background: #fadadd; padding: 4px;">
+        <pre>{print_r($row[0], true)}</pre>
+    </div>
+    {else if ( $row[1] == 'warning' )}
+    <div style="margin: 2px; background: #d0f0c0; padding: 4px;">
+        <pre>{print_r($row[0], true)}</pre>
+    </div>
+    {else if ( $row[1] == 'notice' )}
+    <div style="margin: 2px; background: #eeeeee; padding: 4px;">
+        <pre>{print_r($row[0], true)}</pre>
+    </div>
+    {/}
+    {/}
+    <br>
+    <h3>Время выполнения и расход памяти</h3>
+    {foreach ($output as $row)}
+    <div style="margin: 2px;background: #eeeeee; padding: 4px;">
+        <pre>{$row}</pre>
+    </div>
+    {/}
+    <br>
+
+    <h3>Массив $_REQUEST</h3>
+
+    <div style="margin: 2px;background: #eeeeee; padding: 4px;">
+        <pre>{$r = print_r($_REQUEST, true)}</pre>
+    </div>
+    <br>
+
+    <h3>Массив $_FILES</h3>
+
+    <div style="margin: 2px;background: #eeeeee; padding: 4px;">
+        <pre>{$r = print_r($_FILES, true)}</pre>
+    </div>
+    <br>
+
+    <h3>РЕЕСТОР (Сессия)</h3>
+    {foreach ( $iterator_list as $key => $value )}
+    <div>&nbsp;&nbsp;&nbsp;{$key} => {$value}</div>
+    {/}
+    <pre>{print_r($_SESSION)}</pre>
+</div>
