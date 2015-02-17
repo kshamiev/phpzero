@@ -10,30 +10,8 @@
  * @copyright <PHP_ZERO_COPYRIGHT>
  * @license http://www.phpzero.com/license/
  */
-class Zero_System_Api extends Zero_Controller
+class Zero_Api_System extends Zero_Controller
 {
-    /**
-     * (API) Контроллер по умолчанию.
-     */
-    public function Api_Default()
-    {
-        $this->View = new Zero_View();
-        switch ( $_SERVER['REQUEST_METHOD'] )
-        {
-            case 'GET':
-                break;
-            case 'POST':
-                break;
-            case 'PUT':
-                break;
-            case 'DELETE':
-                break;
-            case 'OPTIONS':
-                break;
-        }
-        Zero_App::ResponseJson($_SERVER['REQUEST_METHOD'] . ':' . ZERO_URL, 409, 409, "Запрос не реализован");
-    }
-
     /**
      * (API) Загрузка бинарных данных.
      */
