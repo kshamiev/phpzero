@@ -170,7 +170,7 @@ class Zero_App
      * @param string $message Сообщение
      * @return bool
      */
-    public static function ResponseJson($content, $status, $code, $message = '')
+    public static function ResponseJson($content, $status, $code = 0, $message = '')
     {
         header('Pragma: no-cache');
         header('Last-Modified: ' . date('D, d M Y H:i:s') . 'GMT');
