@@ -406,7 +406,7 @@ class Zero_DB
      * @param string $sql zapros
      * @return array
      */
-    public static function Select_Array_Index_Array($sql, $nameConnect = '')
+    public static function Select_Array_IndexTwo($sql, $nameConnect = '')
     {
         $result = [];
         if ( !$res = self::Query($sql, $nameConnect) )
@@ -414,7 +414,7 @@ class Zero_DB
         /* @var $res mysqli_result */
         while ( false != $row = $res->fetch_assoc() )
         {
-            $result[reset($row)][] = $row;
+            $result[reset($row)][next($row)] = $row;
         }
         $res->close();
         return $result;
