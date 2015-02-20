@@ -151,7 +151,7 @@ class Zero_App
         $opts = array(
             'http' => array(
                 'method' => $method,
-                'header' => "Content-Type: tapplication/json; charset=utf-8\r\n" . "Content-Length: " . strlen($content) . "\r\n" . "",
+                'header' => "Content-Type: application/json; charset=utf-8\r\n" . "Content-Length: " . strlen($content) . "\r\n" . "",
                 'content' => $content,
                 'timeout' => 30,
             )
@@ -159,7 +159,8 @@ class Zero_App
         $fp = fopen($url, 'rb', false, stream_context_create($opts));
         $response = stream_get_contents($fp);
         fclose($fp);
-        return json_decode($response, true);
+        $data = json_decode($response, true);
+        return $data;
     }
 
     /**
@@ -474,8 +475,8 @@ class Zero_App
      */
     public static function ResponseRedirect($url)
     {
-        header('Location: ' . $url);
         header('HTTP/1.1 301 Redirect');
+        header('Location: ' . $url);
         exit;
     }
 
