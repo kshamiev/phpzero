@@ -160,6 +160,8 @@ class Zero_App
         $response = stream_get_contents($fp);
         fclose($fp);
         $data = json_decode($response, true);
+        if ( !$data )
+            return $response;
         return $data;
     }
 
