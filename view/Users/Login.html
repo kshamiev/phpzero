@@ -1,7 +1,9 @@
 <p align="center" class="message-system">&nbsp;
-    {foreach (Zero_App::Get_Variable('action_message') as $row)}
-    {$row[1]}&nbsp;&nbsp;
-    {/}
+    {if ( $Message['Code'] > 0 )}
+    <font color="red">{$Message['Message']}</font>
+    {else}
+    <font color="green">{$Message['Message']}</font>
+    {/if}
 </p>
 <form action="{URL}" method="post">
     <input type="hidden" name="act" value="Login">

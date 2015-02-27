@@ -278,11 +278,13 @@ class Zero_Section extends Zero_Model
         }
         else if ( '' != $this->Controller )
         {
+            if ( false == Zero_App::Autoload($this->Controller) )
+                throw new Exception('Класс не найден: ' . $this->Controller, 500);
+
             $reflection = new ReflectionClass($this->Controller);
             foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method)
             {
                 $name = $method->getName();
-//                $index = substr($name, strpos($name, '_') + 1);
                 $arr = explode('_', $name);
                 if ( $arr[0] == 'Action' || $arr[0] == 'Api' || $arr[0] == 'Console' )
                 {
@@ -290,7 +292,6 @@ class Zero_Section extends Zero_Model
                     $index = join('_', $arr);
                     $this->_Action_List[$index] = ['Name' => Zero_I18n::Controller($this->Controller, $name)];
                 }
-
             }
         }
         Zero_Cache::Set_Link('Zero_Groups', Zero_App::$Users->Groups_ID);

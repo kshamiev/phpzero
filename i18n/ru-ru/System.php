@@ -16,6 +16,7 @@ return [
         'controller Zero_System_GridService action Session_Reset' => 'Сброс всех сессий',
     ],
     'controller' => [
+        '' => '',
         'Action_FolderGo' => 'переход по папкам',
         'Action_FolderRemove' => 'удаление папки',
         'Action_FileRemove' => 'удаление файла',

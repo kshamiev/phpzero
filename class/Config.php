@@ -109,27 +109,6 @@ class Zero_Config
     public $Site_DomainSub = '';
 
     /**
-     * Default language
-     *
-     * @var string
-     */
-    //    public $Site_ClassRoute = '';
-
-    /**
-     * Default language
-     *
-     * @var string
-     */
-    //    public $Site_ClassSection = '';
-
-    /**
-     * Default language
-     *
-     * @var string
-     */
-    //    public $Site_ClassUsers = '';
-
-    /**
      * Access for DB (Mysql)
      *
      * @var array

@@ -16,7 +16,7 @@
  * @copyright <PHP_ZERO_COPYRIGHT>
  * @license http://www.phpzero.com/license/
  */
-class Zero_Lib_FileManager extends Zero_Controller
+class Zero_System_FileManager extends Zero_Controller
 {
     public function Action_Default()
     {

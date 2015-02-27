@@ -16,6 +16,10 @@
  * @class Zero_Model
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
  * @date 2015.01.01
+ * @property int ID
+ * @property Zero_AR AR
+ * @property Zero_Cache Cache
+ * @property Zero_Validator VL
  */
 abstract class Zero_Model
 {

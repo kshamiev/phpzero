@@ -139,7 +139,8 @@ class Zero_App
         if ( file_exists($path) )
         {
             require_once $path;
-            return true;
+            if ( class_exists($class_name) )
+                return true;
         }
         Zero_Logs::Set_Message_Error('Класс не найден: ' . $class_name);
         return false;

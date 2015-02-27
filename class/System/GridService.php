@@ -40,7 +40,7 @@ class Zero_System_GridService extends Zero_Controller
         $this->View->Assign('Section', Zero_App::$Section);
         $this->View->Assign('Interface', $Interface_List);
         $this->View->Assign('Params', $this->Params);
-        $this->View->Assign('modules_db', Zero_Engine::Get_Modules_DB());
+        $this->View->Assign('modules_db', array_keys(Zero_App::$Config->Db));
         $this->View->Assign('Action', Zero_App::$Section->Get_Action_List());
     }
 
@@ -59,13 +59,13 @@ class Zero_System_GridService extends Zero_Controller
      */
     protected function Chunk_EngineModulesDB()
     {
-        $_REQUEST['paket'] = trim($_REQUEST['paket']);
-        if ( !$_REQUEST['paket'] )
+        $_REQUEST['connectDb'] = trim($_REQUEST['connectDb']);
+        if ( !$_REQUEST['connectDb'] )
             return $this->Set_Message('Error_NotParam', 1, false);
         $_REQUEST['flag_gird'] = isset($_REQUEST['flag_gird']) ? true : false;
         $_REQUEST['flag_edit'] = isset($_REQUEST['flag_edit']) ? true : false;
         $Controller_Factory = new Zero_Engine;
-        if ( $Controller_Factory->Factory_Modules_DB($_REQUEST['paket'], $_REQUEST['flag_gird'], $_REQUEST['flag_edit']) )
+        if ( $Controller_Factory->Factory_Modules_DB($_REQUEST['connectDb'], $_REQUEST['flag_gird'], $_REQUEST['flag_edit']) )
             return $this->Set_Message("Engine_Modules_DB", 0);
         else
             return $this->Set_Message("Error_Engine_Modules_DB", 1, false);

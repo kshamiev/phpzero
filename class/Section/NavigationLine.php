@@ -21,28 +21,25 @@ class Zero_Section_NavigationLine extends Zero_Controller
      */
     public function Action_Default()
     {
-        $url = '';
-        /*
-        if ( 0 < count($_GET) && false )
-            foreach ($_GET as $k => $v)
-            {
-                $url .= '-' . $k . ':' . $v;
-            }
-        */
-        $navigation[] = [
-            'Url' => URL . $url,
-            'Title' => Zero_App::$Section->Title,
-            'Name' => Zero_App::$Section->Name
-        ];
-        $id = Zero_App::$Section->Section_ID;
-        while ( 0 < $id )
+        $index = __CLASS__ . '_' . Zero_App::$Section->ID;
+        if ( false === $navigation = Zero_App::$Section->Cache->Get($index) )
         {
-            $Zero_Section = Zero_Model::Make('Zero_Section', $id);
-            $Zero_Section->AR->Select("Name, Title, SUBSTRING(Url, POSITION('/' IN Url)) as Url, Section_ID");
-            $id = $Zero_Section->Section_ID;
-            $navigation[] = ['Url' => $Zero_Section->Url, 'Name' => $Zero_Section->Name, 'Title' => $Zero_Section->Title];
+            $navigation[] = [
+                'Url' => URL,
+                'Title' => Zero_App::$Section->Title,
+                'Name' => Zero_App::$Section->Name
+            ];
+            $id = Zero_App::$Section->Section_ID;
+            while ( 0 < $id )
+            {
+                $Zero_Section = Zero_Model::Make('Zero_Section', $id);
+                $Zero_Section->AR->Select("Name, Title, SUBSTRING(Url, POSITION('/' IN Url)) as Url, Section_ID");
+                $id = $Zero_Section->Section_ID;
+                $navigation[] = ['Url' => $Zero_Section->Url, 'Name' => $Zero_Section->Name, 'Title' => $Zero_Section->Title];
+            }
+            $navigation = array_reverse($navigation);
+            Zero_App::$Section->Cache->Set($index, $navigation);
         }
-        $navigation = array_reverse($navigation);
         //  шаблон
         if ( isset($this->Params['view']) )
             $this->View = new Zero_View($this->Params['view']);

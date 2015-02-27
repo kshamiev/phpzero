@@ -33,11 +33,14 @@ return [
 
     ],
     'controller' => [
+        '' => '',
+        'Error_NotParam' => 'Параметры операции не определены',
+        'Error_NotFound' => 'Объект не найден',
         'Zero_Section_Edit' => 'Изменение разделов',
         'Action_Add' => 'добавить',
         'Save' => 'сохранено',
         'Action_Save' => 'сохранить',
-        'Zero_Section_Grid' => 'Список разделов сайты постранично',
+        'Zero_Section_Grid' => 'Список разделов сайта постранично',
         'Action_Edit' => 'изменить',
         'Action_CatalogMove' => 'переместить',
         'Action_Remove' => 'удалить',

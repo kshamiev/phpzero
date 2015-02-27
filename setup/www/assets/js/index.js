@@ -20,7 +20,7 @@ function button_form_obj_id(f, Url, Action, obj_id, flag) {
         f = document.getElementById(f);
     f.action = Url;
     f.act.value = Action;
-    f.id.value = obj_id;
+    f.obj_id.value = obj_id;
     f.submit();
     return true;
 }

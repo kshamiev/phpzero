@@ -297,21 +297,18 @@ class Zero_Engine
      * - Initcializatciia konfiguratcii sviazei` modeli
      * - Initcializatciia internatcionalizatcii
      *
-     * @param string $module tcelevaia tablitca libo paket tablitc (modelei`)
+     * @param string $connectDb имя коннекта к БД
      * @param boolean $flag_grid konfiguratciia modeli
      * @param boolean $flag_edit konfiguratciia svoi`stv modeli
      * @return boolean
      */
-    public function Factory_Modules_DB($module, $flag_grid = true, $flag_edit = true)
+    public function Factory_Modules_DB($connectDb, $flag_grid = true, $flag_edit = true)
     {
         /**
          * Modeli i Kontrollery`
          */
-        if ( $module == '' )
-            $sql = "SHOW TABLE STATUS WHERE `Name` NOT LIKE '%\_%'";
-        else
-            $sql = "SHOW TABLE STATUS WHERE `Name` = '{$module}%' AND `Name` NOT LIKE '%\_%'";
-        $table_list = Zero_DB::Select_Array($sql);
+        $sql = "SHOW TABLE STATUS WHERE `Name` NOT LIKE '\_%'";
+        $table_list = Zero_DB::Select_Array($sql, $connectDb);
         if ( 0 == count($table_list) )
             return false;
         /**
@@ -321,21 +318,21 @@ class Zero_Engine
         $dir = self::$path;
         if ( !is_dir($dir) )
             mkdir($dir);
-        $dir1 = $dir . '/assets';
-        if ( !is_dir($dir1) )
-            mkdir($dir1);
+//        $dir1 = $dir . '/assets';
+//        if ( !is_dir($dir1) )
+//            mkdir($dir1);
         $dir1 = $dir . '/class';
         if ( !is_dir($dir1) )
             mkdir($dir1);
-        $dir1 = $dir . '/config';
-        if ( !is_dir($dir1) )
-            mkdir($dir1);
+//        $dir1 = $dir . '/config';
+//        if ( !is_dir($dir1) )
+//            mkdir($dir1);
         $dir1 = $dir . '/i18n';
         if ( !is_dir($dir1) )
             mkdir($dir1);
-        $dir1 = $dir . '/view';
-        if ( !is_dir($dir1) )
-            mkdir($dir1);
+//        $dir1 = $dir . '/view';
+//        if ( !is_dir($dir1) )
+//            mkdir($dir1);
         // Модель
         foreach ($table_list as $row)
         {
@@ -414,7 +411,7 @@ class Zero_Engine
         if ( strlen(trim($arr[1])) < 3 )
         {
             //      echo 'CONFIG MODEL ' . $path . '<br>';
-            $class = preg_replace('~/\*BEG_CONFIG_MODEL\*/(.*?)/\*END_CONFIG_MODEL\*/~si', "/*BEG_CONFIG_MODEL*/{$str}\n\t\t\t/*END_CONFIG_MODEL*/", $class);
+            $class = preg_replace('~/\*BEG_CONFIG_MODEL\*/(.*?)/\*END_CONFIG_MODEL\*/~si', "{$str}\n", $class);
             file_put_contents($path_model, $class);
         }
     }
@@ -438,6 +435,7 @@ class Zero_Engine
         {
             //  Opredeleine fil`trov
             $config_filter[$Prop]['Visible'] = "true";
+            $config_filter[$Prop]['AR'] = "true";
             //  Opredelenie grida
             if ( 'Text' == $config[$Prop]['Form'] )
             {
@@ -445,8 +443,8 @@ class Zero_Engine
             }
         }
         //  Bazovaia konfiguratciia
-        $str_props = "\n";
-        $str_property = "\n";
+        $str_props = "";
+        $str_property = "";
         foreach ($config as $prop => $row)
         {
             $str_props .= "\t\t\t'" . $prop . "' => [\n";
@@ -484,8 +482,8 @@ class Zero_Engine
                 $str_property .= " * @property string \${$prop}\n";
             }
         }
-        $str_props = substr($str_props, 0, -1);
-        $str_property = substr($str_property, 0, -1);
+        $str_props = substr(trim($str_props), 0, -1);
+        $str_property = substr(trim($str_property), 0, -1);
 
         /**
          * Faktoring / Refaktoring modeli po poluchennoi` konfiguratcii
@@ -496,15 +494,15 @@ class Zero_Engine
         if ( strlen(trim($arr[1])) < 3 )
         {
             //      echo 'CONFIG PROP ' . $path . '<br>';
-            $class = preg_replace('~<BEG_CONFIG_PROPERTY>(.*?)<END_CONFIG_PROPERTY>~si', "<BEG_CONFIG_PROPERTY>{$str_property}\n * <END_CONFIG_PROPERTY>", $class);
-            $class = preg_replace('~/\*BEG_CONFIG_PROP\*/(.*?)/\*END_CONFIG_PROP\*/~si', "/*BEG_CONFIG_PROP*/{$str_props}\n\t\t\t/*END_CONFIG_PROP*/", $class);
+            $class = preg_replace('~[*] <BEG_CONFIG_PROPERTY>(.*?)<END_CONFIG_PROPERTY>~si', "{$str_property}", $class);
+            $class = preg_replace('~/\*BEG_CONFIG_PROP\*/(.*?)/\*END_CONFIG_PROP\*/~si', "{$str_props}\n", $class);
         }
         //  Konfiguratciia fil`tra
         preg_match('~/\*BEG_CONFIG_FILTER_PROP\*/(.*?)/\*END_CONFIG_FILTER_PROP\*/~si', $class, $arr);
         if ( strlen(trim($arr[1])) < 3 )
         {
             //      echo 'CONFIG PROP FILTER' . $path . '<br>';
-            $str_props = "\n";
+            $str_props = "";
             foreach ($config_filter as $prop => $row)
             {
                 $str_props .= "\t\t\t'" . $prop . "' => [";
@@ -515,28 +513,28 @@ class Zero_Engine
                 $str_props = substr($str_props, 0, -2);
                 $str_props .= "],\n";
             }
-            $str_props = substr($str_props, 0, -1);
-            $class = preg_replace('~/\*BEG_CONFIG_FILTER_PROP\*/(.*?)/\*END_CONFIG_FILTER_PROP\*/~si', "/*BEG_CONFIG_FILTER_PROP*/{$str_props}\n\t\t\t/*END_CONFIG_FILTER_PROP*/", $class);
+            $str_props = substr(trim($str_props), 0, -1);
+            $class = preg_replace('~/\*BEG_CONFIG_FILTER_PROP\*/(.*?)/\*END_CONFIG_FILTER_PROP\*/~si', "{$str_props}\n", $class);
         }
         //  Konfiguratciia grida
         preg_match('~/\*BEG_CONFIG_GRID_PROP\*/(.*?)/\*END_CONFIG_GRID_PROP\*/~si', $class, $arr);
         if ( strlen(trim($arr[1])) < 3 )
         {
             //      echo 'CONFIG PROP GRID' . $path . '<br>';
-            $str_props = "\n";
+            $str_props = "";
             foreach ($config_grid as $prop)
             {
                 $str_props .= "\t\t\t'" . $prop . "' => [],\n";
             }
-            $str_props = substr($str_props, 0, -1);
-            $class = preg_replace('~/\*BEG_CONFIG_GRID_PROP\*/(.*?)/\*END_CONFIG_GRID_PROP\*/~si', "/*BEG_CONFIG_GRID_PROP*/{$str_props}\n\t\t\t/*END_CONFIG_GRID_PROP*/", $class);
+            $str_props = substr(trim($str_props), 0, -1);
+            $class = preg_replace('~/\*BEG_CONFIG_GRID_PROP\*/(.*?)/\*END_CONFIG_GRID_PROP\*/~si', "{$str_props}\n", $class);
         }
         //  Konfiguratciia formy`
         preg_match('~/\*BEG_CONFIG_FORM_PROP\*/(.*?)/\*END_CONFIG_FORM_PROP\*/~si', $class, $arr);
         if ( strlen(trim($arr[1])) < 3 )
         {
             //      echo 'CONFIG PROP FORM ' . $path . '<br>';
-            $str_props = "\n";
+            $str_props = "";
             foreach ($config as $prop => $row)
             {
                 $str_props .= "\t\t\t'" . $prop . "' => [],\n";
@@ -546,8 +544,8 @@ class Zero_Engine
                 //                $str_props = substr($str_props, 0, -2);
                 //                $str_props .= "),\n";
             }
-            $str_props = substr($str_props, 0, -1);
-            $class = preg_replace('~/\*BEG_CONFIG_FORM_PROP\*/(.*?)/\*END_CONFIG_FORM_PROP\*/~si', "/*BEG_CONFIG_FORM_PROP*/{$str_props}\n\t\t\t/*END_CONFIG_FORM_PROP*/", $class);
+            $str_props = substr(trim($str_props), 0, -1);
+            $class = preg_replace('~/\*BEG_CONFIG_FORM_PROP\*/(.*?)/\*END_CONFIG_FORM_PROP\*/~si', "{$str_props}\n", $class);
         }
         file_put_contents($path_model, $class);
     }
@@ -584,7 +582,7 @@ class Zero_Engine
             $config[$TableTarget]['prop_target'] = $PropTarget;
         }
         //
-        $str = "\n";
+        $str = "";
         foreach ($config as $prop => $row)
         {
             $str .= "\t\t\t'" . $prop . "' => array(";
@@ -601,7 +599,7 @@ class Zero_Engine
         if ( strlen(trim($arr[1])) < 3 )
         {
             //      echo 'CONFIG LINK ' . $path . '<br>';
-            $class = preg_replace('~/\*BEG_CONFIG_LINK\*/(.*?)/\*END_CONFIG_LINK\*/~si', "/*BEG_CONFIG_LINK*/{$str}\n\t\t\t/*END_CONFIG_LINK*/", $class);
+            $class = preg_replace('~/\*BEG_CONFIG_LINK\*/(.*?)/\*END_CONFIG_LINK\*/~si', "{$str}\n", $class);
             file_put_contents($path_model, $class);
         }
     }
@@ -617,23 +615,22 @@ class Zero_Engine
         /*
          * Model`
          */
-        $sql = "SHOW TABLE STATUS WHERE `Name` = '{$Table}';";
-        $row = Zero_DB::Select_Row($sql);
-        $config['model'] = $row['Comment'];
         foreach (Zero_DB::Select_Array("SHOW FULL COLUMNS FROM {$Table};") as $row)
         {
             $Type = explode('(', $row['Type']);
             $Type = array_shift($Type);
-            $config["model prop {$row['Field']}"] = $row['Comment'];
-            //            $config["model prop {$row['Field']} validate Error_NotNull"] = 'Value is not set';
+            $config["{$row['Field']}"] = "'" . $row['Comment'] . "'";
             //  Перечисления и множества
             if ( 'enum' == $Type || 'set' == $Type )
             {
                 $list = explode("','", substr($row['Type'], strpos($row['Type'], "'") + 1, -2));
+                $str = '[';
                 foreach ($list as $val)
                 {
-                    $config["model prop {$row['Field']} option {$val}"] = $val;
+                    $str .= "'" . $val . "' => '" . $val . "',";
+                    //$config["model prop {$row['Field']} option {$val}"] = $val;
                 }
+                $config["{$row['Field']} options"] = substr($str, 0, -1) . "]";
             }
         }
 
@@ -641,16 +638,16 @@ class Zero_Engine
         ksort($config);
         foreach ($config as $key => $val)
         {
-            $str .= "\t'{$key}' => '{$val}',\n";
+            $str .= "'{$key}' => {$val},\n\t\t";
         }
-        $str = substr($str, 0, -1);
+        $str = substr(trim($str), 0, -1);
         $path1 = ZERO_PATH_ZERO . '/data/Template_I18n.php';
         foreach (array_keys(Zero_App::$Config->Language) as $lang)
         {
             $path2 = self::$path . '/i18n/' . $lang . '/' . $Table . '.php';
             //        echo 'CONFIG I18N MODEL ' . $path2 . '<br>';
             $file_data = file_get_contents($path1);
-            $file_data = str_replace('# CONFIG', $str, $file_data);
+            $file_data = str_replace("'<PROPERTY?'", $str, $file_data);
             Zero_Lib_File::File_Save($path2, $file_data);
         }
     }
