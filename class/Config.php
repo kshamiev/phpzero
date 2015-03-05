@@ -207,6 +207,7 @@ class Zero_Config
     public function __construct($file_log = 'application')
     {
         // Setting php
+        set_time_limit(300);
         date_default_timezone_set('Europe/Moscow');
         setlocale(LC_CTYPE, 'ru_RU.UTF-8');
         setlocale(LC_COLLATE, 'ru_RU.UTF-8');

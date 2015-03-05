@@ -107,7 +107,7 @@ abstract class Zero_Controller
      * @param int $code kod soobshcheniia
      * @return int
      */
-    public function Set_Message($message = '', $code = 1)
+    public function Set_Message($message = '', $code = 0)
     {
         self::$_Message = [
             'Code' => $code,
@@ -125,6 +125,12 @@ abstract class Zero_Controller
                 break;
             case 5:
                 self::$_Message['Message'] = sprintf(self::$_Message['Message'], $arr[2], $arr[3], $arr[4]);
+                break;
+            case 6:
+                self::$_Message['Message'] = sprintf(self::$_Message['Message'], $arr[2], $arr[3], $arr[4], $arr[5]);
+                break;
+            case 7:
+                self::$_Message['Message'] = sprintf(self::$_Message['Message'], $arr[2], $arr[3], $arr[4], $arr[5], $arr[6]);
                 break;
         }
         return $code ? false : true;

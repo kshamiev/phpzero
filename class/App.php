@@ -359,6 +359,7 @@ class Zero_App
             if ( true == $view instanceof Zero_View )
             {
                 /* @var $view Zero_View */
+                $view->Assign('Message', $Controller->Get_Message());
                 $viewLayout->Assign('Content', $view->Fetch());
             }
             else
@@ -461,6 +462,7 @@ class Zero_App
             if ( true == $view instanceof Zero_View )
             {
                 /* @var $view Zero_View */
+                $view->Assign('Message', $Controller->Get_Message());
                 $viewLayout->Assign('Content', $view->Fetch());
             }
             else
