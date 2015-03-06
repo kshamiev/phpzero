@@ -142,7 +142,7 @@ class Zero_App
             if ( class_exists($class_name) )
                 return true;
         }
-        Zero_Logs::Set_Message_Error('Класс не найден: ' . $class_name);
+        Zero_Logs::Set_Message_Warninng('Класс не найден: ' . $class_name);
         return false;
     }
 
