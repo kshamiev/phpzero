@@ -286,7 +286,7 @@ class Zero_Section extends Zero_Model
             {
                 $name = $method->getName();
                 $arr = explode('_', $name);
-                if ( $arr[0] == 'Action' || $arr[0] == 'Api' || $arr[0] == 'Console' )
+                if ( $arr[0] == 'Action' )
                 {
                     array_shift($arr);
                     $index = join('_', $arr);

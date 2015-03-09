@@ -7,7 +7,7 @@
 return [
     'model' => [
         'Property all' => 'Все свойства',
-
+        'Error_Path_Class' => 'Контроллер не найден',
     ],
     'view' => [
         'engine' => 'Инженеринг',
@@ -29,5 +29,6 @@ return [
         'Engine_Modules_DB' => 'Произведено',
         'Action_CacheReset' => 'полный сброс кеша',
         'Action_SessionReset' => 'сброс всех сессий',
+        'Error_Validate' => 'Ошибка валидации',
     ],
 ];

@@ -14,7 +14,6 @@
  */
 abstract class Zero_Controller
 {
-
     /**
      * Massiv soobshchenii` sistemy`
      *
@@ -134,5 +133,15 @@ abstract class Zero_Controller
                 break;
         }
         return $code ? false : true;
+    }
+
+    /**
+     * Контроллер по умолчанию
+     *
+     * @return Zero_View
+     */
+    public function Action_Default()
+    {
+        return $this->View;
     }
 }

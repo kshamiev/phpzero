@@ -140,7 +140,8 @@ class Zero_Filter
         $this->Filter[$prop] = $row;
         $this->Filter[$prop]['Filter'] = 'Link';
         $this->Filter[$prop]['Visible'] = $is_visible;
-        $this->Filter[$prop]['Value'] = $row['Default'];;
+//        $this->Filter[$prop]['Value'] = $row['Default'];;
+        $this->Filter[$prop]['Value'] = '';
         $this->Filter[$prop]['List'] = [];
         if ( is_array($load) )
         {
@@ -176,7 +177,8 @@ class Zero_Filter
         $this->Filter[$prop]['Comment'] = Zero_I18n::Model(get_class($this->Model), $prop);
         $this->Filter[$prop]['Filter'] = 'Select';
         $this->Filter[$prop]['Visible'] = $is_visible;
-        $this->Filter[$prop]['Value'] = $row['Default'];
+//        $this->Filter[$prop]['Value'] = $row['Default'];
+        $this->Filter[$prop]['Value'] = '';
         $this->Filter[$prop]['List'] = [];
         if ( is_array($load) )
         {
@@ -229,7 +231,8 @@ class Zero_Filter
         $this->Filter[$prop] = $row;
         $this->Filter[$prop]['Filter'] = 'Radio';
         $this->Filter[$prop]['Visible'] = $is_visible;
-        $this->Filter[$prop]['Value'] = $row['Default'];
+//        $this->Filter[$prop]['Value'] = $row['Default'];
+        $this->Filter[$prop]['Value'] = '';
         $this->Filter[$prop]['List'] = [];
         if ( is_array($load) )
         {
@@ -250,6 +253,17 @@ class Zero_Filter
         return true;
     }
 
+    public function Add_Filter_Check($prop, $row, $is_visible = 0, $load = 0)
+    {
+        if ( isset($this->Filter[$prop]) )
+            return true;
+        $this->Filter[$prop] = $row;
+        $this->Filter[$prop]['Filter'] = 'Check';
+        $this->Filter[$prop]['Visible'] = $is_visible;
+        $this->Filter[$prop]['Value'] = '';
+        return true;
+    }
+
     /**
      * Dobavlenie fil`tra mnozhestva
      *
@@ -265,7 +279,8 @@ class Zero_Filter
         $this->Filter[$prop] = $row;
         $this->Filter[$prop]['Filter'] = 'Checkbox';
         $this->Filter[$prop]['Visible'] = $is_visible;
-        $this->Filter[$prop]['Value'] = $row['Default'];
+//        $this->Filter[$prop]['Value'] = $row['Default'];
+        $this->Filter[$prop]['Value'] = '';
         $this->Filter[$prop]['List'] = [];
         if ( is_array($load) )
         {

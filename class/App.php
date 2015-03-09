@@ -55,7 +55,6 @@ define('ZERO_PATH_ZERO', ZERO_PATH_SITE . '/zero');
  */
 class Zero_App
 {
-
     /**
      * An array of abstract and key additional application variables
      *
@@ -333,12 +332,7 @@ class Zero_App
             else
                 $_REQUEST['act'] = 'Default';
             //
-            if ( self::$Mode == 'web' )
-                $_REQUEST['act'] = 'Action_' . $_REQUEST['act'];
-            else if ( self::$Mode == 'api' )
-                $_REQUEST['act'] = 'Api_' . $_REQUEST['act'];
-            else if ( self::$Mode == 'console' )
-                $_REQUEST['act'] = 'Console_' . $_REQUEST['act'];
+            $_REQUEST['act'] = 'Action_' . $_REQUEST['act'];
             //
             Zero_Logs::Start('#{CONTROLLER.Action} ' . $routeDetails[0] . ' -> ' . $_REQUEST['act']);
             $Controller = Zero_Controller::Factory($routeDetails[0]);
@@ -436,12 +430,7 @@ class Zero_App
             if ( !isset($Action_List[$_REQUEST['act']]) )
                 self::ResponseError(403);
             //
-            if ( self::$Mode == 'web' )
-                $_REQUEST['act'] = 'Action_' . $_REQUEST['act'];
-            else if ( self::$Mode == 'api' )
-                $_REQUEST['act'] = 'Api_' . $_REQUEST['act'];
-            else if ( self::$Mode == 'console' )
-                $_REQUEST['act'] = 'Console_' . $_REQUEST['act'];
+            $_REQUEST['act'] = 'Action_' . $_REQUEST['act'];
             //
             Zero_Logs::Start('#{CONTROLLER.Action} ' . $routeDetails[0] . ' -> ' . $_REQUEST['act']);
             $Controller = Zero_Controller::Factory($routeDetails[0]);

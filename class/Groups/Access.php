@@ -115,7 +115,7 @@ class Zero_Groups_Access extends Zero_Controller
                     continue;
                 //                    $index = substr($name, strpos($name, '_') + 1);
                 $arr = explode('_', $name);
-                if ( $arr[0] == 'Action' || $arr[0] == 'Api' || $arr[0] == 'Console' )
+                if ( $arr[0] == 'Action' )
                 {
                     array_shift($arr);
                     $index = join('_', $arr);

@@ -42,6 +42,7 @@ return [
         'Groups_ID' => 'Группа',
         'Users_ID' => 'Пользователь',
         'Address' => 'Адрес доставки по умолчанию',
+        'Error_Path_Class' => 'Контроллер не найден',
     ],
     'view' => [
         'Login' => 'Логин',
@@ -58,5 +59,6 @@ return [
         'Error_Registration' => 'Не зарегистрирован',
         'Error_Password' => 'Пароль не верен',
         'Action_CatalogMove' => 'Перемещение пользователя',
+        'Error_Validate' => 'Ошибка валидации',
     ],
 ];

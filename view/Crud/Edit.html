@@ -1,5 +1,6 @@
+<!--
 <h1>{$Section->Name}</h1>
-
+-->
 <form method="post" enctype="multipart/form-data">
     <input type="hidden" name="act">
     <table width="100%" cellspacing="0" cellpadding="0" border="0">
@@ -19,7 +20,7 @@
                 {/if}
             </td>
             <td width="100px" align="right">{$Object->ID}</td>
-            <td width="25px" align="center"><img src="{HTTPA}/img/button/button_id.gif" border="0"></td>
+            <td width="25px" align="center"><img src="/assets/img/button/button_id.gif" border="0"></td>
         </tr>
     </table>
 </form>
@@ -71,23 +72,12 @@
             <td>
                 {if ( 'ReadOnly' == $row['Form'] )}
 
-                {if ( isset($Filter[$Prop]) )}
-
-                {if ( 'Link' == $Filter[$Prop]['Filter'] || 'LinkMore' == $Filter[$Prop]['Filter'] )}
-                {$Object->$Prop()->Name}
-                {else if ( ( 'Radio' == $Filter[$Prop]['Filter'] || 'Select' == $Filter[$Prop]['Filter'] ) && $Object->$Prop )}
-                {$Filter[$Prop]['List'][$Object->$Prop]}
+                {if ( $Object->$Prop && isset($Filter[$Prop]['List'][$Object->$Prop]) )}
+                    {$Filter[$Prop]['List'][$Object->$Prop]}
+                {else if ( '_ID' == substr($Prop, -3) )}
+                    {$Object->$Prop()->Name}
                 {else}
-                {nl2br($Object->$Prop)}
-                {/}
-
-                {else if ( $Object->$Prop && ( 'Img' == $row['Form'] || 'File' == $row['Form'] ) )}
-                <a href="{HTTPD}/{$Object->$Prop}" title="просмотреть файл" target="_blank">
-                    <img src="{HTTPA}/img/button/button_view_file.gif" border="0"></a>
-
-                {else}
-                {nl2br($Object->$Prop)}
-
+                    {nl2br($Object->$Prop)}
                 {/}
 
                 {else if ( 'Link' == $row['Form'] )}
@@ -122,9 +112,7 @@
                     <input type="hidden" name="Prop[{$Prop}]" value="">
                     {foreach ($Filter[$Prop]['List'] as $key => $name)}
                     <div>
-                        <input type="checkbox" name="Prop[{$Prop}][]" value="{$key}"{if (
-                        is_array($Object->$Prop) &&
-                        in_array($key, $Object->$Prop) )} checked{/if}>&nbsp;{$name}
+                        <input type="checkbox" name="Prop[{$Prop}][]" value="{$key}"{if ( is_array($Object->$Prop) && in_array($key, $Object->$Prop) )} checked{/if}>&nbsp;{$name}
                     </div>
                     {/foreach}
                 </div>
@@ -134,8 +122,8 @@
                     <input type="hidden" name="Prop[{$Prop}]" value="0">
 
                     <div id="blocklevel12">
-                        <div id="blocklevel2"><input type="checkbox" name="Prop[{$Prop}]" value="1"{if (
-                            $Object->$Prop )} checked{/if}>
+                        <div id="blocklevel2">
+                            <input type="checkbox" name="Prop[{$Prop}]" value="1"{if ( $Object->$Prop )} checked{/if}>
                         </div>
                     </div>
                 </div>
@@ -276,4 +264,9 @@
 {/foreach}
 
 </div>
+</form>
+
+<form id="formpanel" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="act">
+    <input type="hidden" name="id" value="{$Object->ID}">
 </form>

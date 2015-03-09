@@ -14,11 +14,13 @@ return [
         'Name' => 'Название',
         'Section_ID' => 'Раздел',
         'Zero_Language_ID' => 'Язык',
+        'Error_Path_Class' => 'Контроллер не найден',
     ],
     'view' => [
 
     ],
     'controller' => [
         '' => '',
+        'Error_Validate' => 'Ошибка валидации',
     ],
 ];

@@ -312,7 +312,8 @@ class Zero_View
         $properties = isset($matches[2]) ? trim($matches[2]) : '';
         if ( $properties )
         {
-            $properties = preg_replace('!([\w\d_]+)\s*=\s*!si', ',' . "\n" . '"\\1" => ', $properties);
+//            $properties = preg_replace('!([\w\d_]+)\s*=\s*!si', ',' . "\n" . '"\\1" => ', $properties);
+            $properties = preg_replace('!([\w\d_]+)\s*=\s*!si', ',' . '"\\1" => ', $properties);
             $properties = trim($properties, ',');
         }
         return $plugin_name ? '<' . '?php echo $this->_Execute_Controller("' . $plugin_name . '", [' . $properties . ']); ?' . '>' : '';
@@ -328,9 +329,10 @@ class Zero_View
     private function _Execute_Controller($plugin_name, $properties = [])
     {
         //        Zero_Logs::Start('#{APP.Controller} ' . $plugin_name);
-        $Plugin = Zero_Controller::Make($plugin_name, $properties);
+        $Controller = Zero_Controller::Make($plugin_name, $properties);
+        /* @var $Controller Zero_Controller */
         Zero_Logs::Start('#{PLUGIN.Action} ' . $plugin_name . ' -> Action_Default');
-        $View = $Plugin->Action_Default();
+        $View = $Controller->Action_Default();
         Zero_Logs::Stop('#{PLUGIN.Action} ' . $plugin_name . ' -> Action_Default');
         if ( $View instanceof Zero_View )
         {

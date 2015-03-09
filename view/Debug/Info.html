@@ -1,4 +1,19 @@
 <div style="padding: 4px;">
+
+    <h3>Массив $_REQUEST</h3>
+
+    <div style="margin: 2px;background: #eeeeee; padding: 4px;">
+        <pre>{$r = print_r($_REQUEST, true)}</pre>
+    </div>
+    <br>
+
+    <h3>Массив $_FILES</h3>
+
+    <div style="margin: 2px;background: #eeeeee; padding: 4px;">
+        <pre>{$r = print_r($_FILES, true)}</pre>
+    </div>
+    <br>
+
     <h3>Системные сообщения</h3>
     {foreach ($message as $row)}
     {if ( $row[1] == 'error' )}
@@ -26,20 +41,6 @@
         <pre>{$row}</pre>
     </div>
     {/}
-    <br>
-
-    <h3>Массив $_REQUEST</h3>
-
-    <div style="margin: 2px;background: #eeeeee; padding: 4px;">
-        <pre>{$r = print_r($_REQUEST, true)}</pre>
-    </div>
-    <br>
-
-    <h3>Массив $_FILES</h3>
-
-    <div style="margin: 2px;background: #eeeeee; padding: 4px;">
-        <pre>{$r = print_r($_FILES, true)}</pre>
-    </div>
     <br>
 
     <h3>РЕЕСТОР (Сессия)</h3>

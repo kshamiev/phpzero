@@ -28,6 +28,7 @@ return [
         'Title' => 'Титул',
         'Layout' => 'Шаблон',
         'Controller' => 'Контроллер',
+        'Error_Path_Class' => 'Контроллер не найден',
     ],
     'view' => [
 
@@ -48,5 +49,6 @@ return [
         'Action_Default' => 'контроллер по умолчанию',
         'Action_FilterSet' => 'утановка фильтра',
         'Action_FilterReset' => 'сброс фильтра',
+        'Error_Validate' => 'Ошибка валидации',
     ],
 ];

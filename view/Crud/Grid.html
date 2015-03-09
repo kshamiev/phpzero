@@ -1,9 +1,9 @@
-<br><br>
 <form method="post">
   <input type="hidden" name="act">
   <table class="tbledit" width="600px" cellspacing="1" cellpadding="0" border="0">
     <tr>
-      <th colspan="2">{translation "Www_All" "Filters"}</th>
+      <th>{translation "Www_All" "Filters"}</th>
+      <th>-</th>
     </tr>
       <tr>
           <td>{translation "Www_All" "Search"}</td>
@@ -52,6 +52,20 @@
         </select>
       </td>
     </tr>
+    {else if ( 'Check' == $row['Filter'] )}
+      <tr>
+          <td width="200px">{$row['Comment']}</td>
+          <td>
+              <div id="blockroot">
+                  <div id="blocklevel33">
+                      <div id="blocklevel2">
+                          <input type="hidden" name="Filter[{$prop}]" value="0">
+                          <input type="checkbox" name="Filter[{$prop}]" value="1"{if ( $row['Value'] )} checked{/if}>
+                      </div>
+                  </div>
+              </div>
+          </td>
+      </tr>
     {else if ( 'DateTime' == $row['Filter'] )}
     <tr>
       <td width="200px">{$row['Comment']}</td>
@@ -112,12 +126,12 @@
     </tr>
   </table>
 </form>
-
+<!--
 <h1>{$Section->Name}</h1>
-
+-->
 <form method="post" enctype="multipart/form-data">
 <input type="hidden" name="act">
-<input type="hidden" name="obj_id">
+<input type="hidden" name="id">
 <table width="100%" cellspacing="0" cellpadding="0" border="0">
     <tr>
         <td height="26px">
@@ -165,11 +179,7 @@
     </td>
     {foreach ($PropsGrid as $Prop => $row)}
     <td>
-      {if ( $Data[$Prop] && '_ID' == substr($Prop, -3) )}
-      {$Filter[$Prop]['List'][$Data[$Prop]]}
-      {else}
       {nl2br($Data[$Prop])}
-      {/if}
     </td>
     {/foreach}
   </tr>
@@ -181,9 +191,7 @@
 
 {plugin "Zero_Crud_Pager" Count=$PagerCount Page=$PagerPage PageItem=$PagerPageItem PageStep=$PagerPageStep}
 
-<form id="formpanel" method="post">
+<form id="formpanel" method="post" enctype="multipart/form-data">
   <input type="hidden" name="act">
-  <input type="hidden" name="obj_id">
+  <input type="hidden" name="id">
 </form>
-
-

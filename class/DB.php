@@ -189,6 +189,24 @@ class Zero_DB
     }
 
     /**
+     * Proverka tekstovy`kh strok
+     *
+     * @param string $str
+     * @return string or NULL
+     */
+    public static function EscD($str)
+    {
+        //        if ( !isset(self::$DB['']) )
+        //            self::Init('');
+        $str = trim(strval($str));
+        if ( $str )
+            //            return "'" . self::$DB['']->real_escape_string($str) . "'";
+            return "'" . addslashes($str) . "'";
+        else
+            return 'NULL';
+    }
+
+    /**
      * Proverka perechislenii` (ENUM)
      *
      * @param string $enum

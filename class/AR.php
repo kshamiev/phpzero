@@ -111,7 +111,7 @@ class Zero_AR
         return $sql;
     }
 
-   /**
+    /**
      * Get list id linked
      *
      * @param string $source_target tcelevaia tablitca s kotoroi` postroena sviaz` (mnogie ko mnogim)
@@ -350,7 +350,7 @@ class Zero_AR
         foreach ($filter_list as $row)
         {
             // если фильтр не установлен
-            if ( !$row['Value'] || empty($row['AR']) || $row['AR'] == false )
+            if ( empty($row['Value']) ||  !$row['Value'] || empty($row['AR']) || $row['AR'] == false )
                 continue;
 
             // если нулевое или не нулевое значение
@@ -376,16 +376,22 @@ class Zero_AR
             } //  mnozhestva
             else if ( 'Checkbox' == $row['Filter'] && 0 < count($row['Value']) )
             {
-//                $this->Sql_Where_Like($row['AliasDB'], $row['Value']);
-//                $this->Sql_Where_And();
-                foreach($row['Value'] as $val)
+                //                $this->Sql_Where_Like($row['AliasDB'], $row['Value']);
+                //                $this->Sql_Where_And();
+                foreach ($row['Value'] as $val)
                 {
                     $this->Sql_Where_Like($row['AliasDB'], $val);
                 }
-//                $this->Sql_Where_And();
-//                $this->Sql_Where_Like($row['AliasDB'], $row['Value'], 'OR');
+                //                $this->Sql_Where_And();
+                //                $this->Sql_Where_Like($row['AliasDB'], $row['Value'], 'OR');
             }
-
+            else if ( 'Check' == $row['Filter'] )
+            {
+                if ( $row['Value'] )
+                    $this->Sql_Where_IsNotNull($row['AliasDB']);
+                else
+                    $this->Sql_Where_IsNull($row['AliasDB']);
+            }
             //  fil`try` perechisleniia i sviazei` - ssy`lki
             else if ( 'Radio' == $row['Filter'] || 'Select' == $row['Filter'] || 'Link' == $row['Filter'] || 'LinkMore' == $row['Filter'] )
             {
@@ -673,7 +679,8 @@ class Zero_AR
     public function Select_Count($flag_param_reset = true)
     {
         //  initcializatciia
-        $sql_prop = "SELECT COUNT(DISTINCT z.ID)";
+//        $sql_prop = "SELECT COUNT(DISTINCT z.ID)";
+        $sql_prop = "SELECT COUNT(*)";
         /**
          * Usloviia Where
          */

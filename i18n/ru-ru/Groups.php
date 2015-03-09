@@ -12,6 +12,7 @@ return [
         'Description' => 'Описание',
         'Status' => 'Статус',
         'Status options' => ['close' => 'закрыт', 'open' => 'открыт'],
+        'Error_Path_Class' => 'Контроллер не найден',
     ],
     'view' => [
 
@@ -19,6 +20,6 @@ return [
     'controller' => [
         '' => '',
         'Action_Copy' => '',
-
+        'Error_Validate' => 'Ошибка валидации',
     ],
 ];

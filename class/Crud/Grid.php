@@ -137,6 +137,9 @@ abstract class Zero_Crud_Grid extends Zero_Controller
                     }
                     else
                         $Filter->$method($prop, $row, $row['Visible'], 1);
+                    //
+                    if ( isset($row['DB']) && $row['DB'] == 'D' )
+                        $Filter->Add_Sort($prop, $row);
                 }
                 else if ( isset($row['DB']) )
                 {
@@ -152,10 +155,10 @@ abstract class Zero_Crud_Grid extends Zero_Controller
                     if ( $method != '' )
                     {
                         $Filter->Add_Sort($prop, $row);
-                        if ( 'Sort' == $prop )
-                            $Filter->Set_Sort($prop);
                     }
                 }
+                if ( isset($row['Sort']) && $row['Sort'] )
+                    $Filter->Set_Sort($prop, $row['Sort']);
             }
             $Filter->IsInit = true;
         }
@@ -242,6 +245,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
         {
             $props[] = $row['AliasDB'] . ' AS ' . $prop;
         }
+        unset($props_grid['ID']);
 
         // УСЛОВИЯ ЗАПРОСА ДАННЫХ ДЛЯ ГРИДА
         $this->Model->AR->Sql_Where_Filter($Filter);
@@ -271,6 +275,24 @@ abstract class Zero_Crud_Grid extends Zero_Controller
         //  TODO sample catalog move (for linked Add)
         $data_link = [];
         $this->Model->AR->Sql_Reset();
+
+        // Переводы значений Radio, Select, Checkbox
+        $filterList = $Filter->Get_Filter();
+        foreach ($data_grid as $key => $row)
+        {
+            foreach ($row as $prop => $value)
+            {
+                if ( isset($filterList[$prop]['Form']) )
+                {
+                    $f = $filterList[$prop]['Form'];
+                    if ( $f == 'Radio' || $f == 'Select' || $f == 'Checkbox' )
+                    {
+                        $row[$prop] = $filterList[$prop]['List'][$value];
+                    }
+                }
+            }
+            $data_grid[$key] = $row;
+        }
 
         //  Template
         $this->View->Assign('Section', Zero_App::$Section);
