@@ -52,6 +52,8 @@ define('ZERO_PATH_ZERO', ZERO_PATH_SITE . '/zero');
  * @class Zero_App
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
  * @date 2015.01.01
+ * @todo фабрику моджелей и контроллеров перевести в фабричный метод
+ * @todo получение любых данных из БД должно быть строго в моделях. Убрать из контроллеров (View)
  */
 class Zero_App
 {

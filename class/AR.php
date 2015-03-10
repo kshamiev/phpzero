@@ -367,7 +367,7 @@ class Zero_AR
 
             // остальные значения
             //  data i vremia
-            if ( 'DateTime' == $row['Filter'] )
+            if ( 'DateTime' == $row['Filter'] || 'Date' == $row['Filter'] || 'Time' == $row['Filter'] )
             {
                 if ( $row['Value'][0] )
                     $this->Sql_Where($row['AliasDB'], '>=', $row['Value'][0]);
