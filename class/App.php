@@ -313,9 +313,12 @@ class Zero_App
         {
             $config = Zero_Lib_File::Get_Config($module, 'route');
             if ( isset($config['route'][ZERO_URL]) )
+            {
                 $route = $config['route'][ZERO_URL];
-            break;
+                break;
+            }
         }
+
         if ( 0 == count($route) )
             self::ResponseError(404);
 
