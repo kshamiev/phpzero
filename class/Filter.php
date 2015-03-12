@@ -27,7 +27,7 @@ class Zero_Filter
      * Конфигурация свойств длиа фильтров.
      *
      * - [$prop]['Comment'] Nazvanie fil`tra
-     * - [$prop]['Filter'] Tip fil`tra
+     * - [$prop]['Form'] Tip fil`tra
      * - [$prop]['Visible'] Vidimost` fil`tra
      * - [$prop]['Value'] Ustanovlennoi` znachenie
      * - [$prop]['List'] Spisok vozmozhny`kh znachenii`
@@ -138,7 +138,7 @@ class Zero_Filter
         if ( isset($this->Filter[$prop]) )
             return true;
         $this->Filter[$prop] = $row;
-        $this->Filter[$prop]['Filter'] = 'Link';
+        $this->Filter[$prop]['Form'] = 'Link';
         $this->Filter[$prop]['Visible'] = $is_visible;
 //        $this->Filter[$prop]['Value'] = $row['Default'];;
         $this->Filter[$prop]['Value'] = '';
@@ -175,7 +175,7 @@ class Zero_Filter
             return true;
         $this->Filter[$prop] = $row;
         $this->Filter[$prop]['Comment'] = Zero_I18n::Model(get_class($this->Model), $prop);
-        $this->Filter[$prop]['Filter'] = 'Select';
+        $this->Filter[$prop]['Form'] = 'Select';
         $this->Filter[$prop]['Visible'] = $is_visible;
 //        $this->Filter[$prop]['Value'] = $row['Default'];
         $this->Filter[$prop]['Value'] = '';
@@ -229,7 +229,7 @@ class Zero_Filter
         if ( isset($this->Filter[$prop]) )
             return true;
         $this->Filter[$prop] = $row;
-        $this->Filter[$prop]['Filter'] = 'Radio';
+        $this->Filter[$prop]['Form'] = 'Radio';
         $this->Filter[$prop]['Visible'] = $is_visible;
 //        $this->Filter[$prop]['Value'] = $row['Default'];
         $this->Filter[$prop]['Value'] = '';
@@ -258,7 +258,7 @@ class Zero_Filter
         if ( isset($this->Filter[$prop]) )
             return true;
         $this->Filter[$prop] = $row;
-        $this->Filter[$prop]['Filter'] = 'Check';
+        $this->Filter[$prop]['Form'] = 'Check';
         $this->Filter[$prop]['Visible'] = $is_visible;
         $this->Filter[$prop]['Value'] = '';
         return true;
@@ -277,7 +277,7 @@ class Zero_Filter
         if ( isset($this->Filter[$prop]) )
             return true;
         $this->Filter[$prop] = $row;
-        $this->Filter[$prop]['Filter'] = 'Checkbox';
+        $this->Filter[$prop]['Form'] = 'Checkbox';
         $this->Filter[$prop]['Visible'] = $is_visible;
 //        $this->Filter[$prop]['Value'] = $row['Default'];
         $this->Filter[$prop]['Value'] = '';
@@ -312,7 +312,7 @@ class Zero_Filter
         if ( isset($this->Filter[$prop]) )
             return true;
         $this->Filter[$prop] = $row;
-        $this->Filter[$prop]['Filter'] = 'DateTime';
+        $this->Filter[$prop]['Form'] = 'DateTime';
         $this->Filter[$prop]['Visible'] = $is_visible;
         $this->Filter[$prop]['Value'] = ['', ''];
         return true;
@@ -329,7 +329,7 @@ class Zero_Filter
         if ( isset($this->Filter[$prop]) )
             return true;
         $this->Filter[$prop] = $row;
-        $this->Filter[$prop]['Filter'] = 'Date';
+        $this->Filter[$prop]['Form'] = 'Date';
         $this->Filter[$prop]['Visible'] = $is_visible;
         $this->Filter[$prop]['Value'] = ['', ''];
         return true;
@@ -346,7 +346,7 @@ class Zero_Filter
         if ( isset($this->Filter[$prop]) )
             return true;
         $this->Filter[$prop] = $row;
-        $this->Filter[$prop]['Filter'] = 'Time';
+        $this->Filter[$prop]['Form'] = 'Time';
         $this->Filter[$prop]['Visible'] = $is_visible;
         $this->Filter[$prop]['Value'] = ['', ''];
         return true;

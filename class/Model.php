@@ -549,7 +549,7 @@ abstract class Zero_Model
      */
     public function DB_From($params)
     {
-        $this->AR->Sql_From("FROM {$this->Source} as z");
+        return "FROM {$this->Source} as z";
     }
 
     /**
@@ -623,7 +623,7 @@ abstract class Zero_Model
         //  rabota so sviazanny`m roditel`skim ob``etom cherez svoi`tsvo sviazi (odin ko mnogim)
         if ( isset($this->Get_Config_Prop()[$method]) )
         {
-            return Zero_DB::Select_Field("SELECT `{$params[0]}` FROM " . zero_relation($method) . " WHERE ID = {$this->$method}");
+            return Zero_DB::Select_Field("SELECT `{$params[0]}` FROM " . zero_relation($method) . " WHERE ID = " . intval($this->$method));
 //            return self::Make(zero_relation($method), $this->$method, !empty($params[0]));
         }
         throw new Exception('metod not found: ' . get_class($this) . ' -> ' . $method, 409);

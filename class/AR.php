@@ -367,14 +367,14 @@ class Zero_AR
 
             // остальные значения
             //  data i vremia
-            if ( 'DateTime' == $row['Filter'] || 'Date' == $row['Filter'] || 'Time' == $row['Filter'] )
+            if ( 'DateTime' == $row['Form'] || 'Date' == $row['Form'] || 'Time' == $row['Form'] )
             {
                 if ( $row['Value'][0] )
                     $this->Sql_Where($row['AliasDB'], '>=', $row['Value'][0]);
                 if ( $row['Value'][1] )
                     $this->Sql_Where($row['AliasDB'], '<', $row['Value'][1]);
             } //  mnozhestva
-            else if ( 'Checkbox' == $row['Filter'] && 0 < count($row['Value']) )
+            else if ( 'Checkbox' == $row['Form'] && 0 < count($row['Value']) )
             {
                 //                $this->Sql_Where_Like($row['AliasDB'], $row['Value']);
                 //                $this->Sql_Where_And();
@@ -385,7 +385,7 @@ class Zero_AR
                 //                $this->Sql_Where_And();
                 //                $this->Sql_Where_Like($row['AliasDB'], $row['Value'], 'OR');
             }
-            else if ( 'Check' == $row['Filter'] )
+            else if ( 'Null' == $row['Form'] )
             {
                 if ( $row['Value'] )
                     $this->Sql_Where_IsNotNull($row['AliasDB']);
@@ -393,7 +393,7 @@ class Zero_AR
                     $this->Sql_Where_IsNull($row['AliasDB']);
             }
             //  fil`try` perechisleniia i sviazei` - ssy`lki
-            else if ( 'Radio' == $row['Filter'] || 'Select' == $row['Filter'] || 'Link' == $row['Filter'] || 'LinkMore' == $row['Filter'] )
+            else if ( 'Radio' == $row['Form'] || 'Select' == $row['Form'] || 'Link' == $row['Form'] || 'LinkMore' == $row['Form'] )
             {
                 $this->Sql_Where($row['AliasDB'], '=', $row['Value']);
             }
@@ -1215,10 +1215,11 @@ class Zero_AR
      * Pozvoliaet tochno identifitcirvoat` obrabaty`vaemy`e ob``ekty`.
      * E`ti danny`e berutsia iz metoda modeli (DB_)
      *
-     * @param string $sql_from
+     * @param string $sql_from часть запроса from
      */
     public function Sql_From($sql_from)
     {
         $this->Params['From'] = $sql_from;
+//        $this->Params['From'] = $this->Model->DB_From($params);
     }
 }

@@ -54,6 +54,7 @@ define('ZERO_PATH_ZERO', ZERO_PATH_SITE . '/zero');
  * @date 2015.01.01
  * @todo фабрику моджелей и контроллеров перевести в фабричный метод
  * @todo получение любых данных из БД должно быть строго в моделях. Убрать из контроллеров (View)
+ * @todo Развязать наследование конфигурации свойств
  */
 class Zero_App
 {
@@ -461,9 +462,9 @@ class Zero_App
             }
             else
                 $viewLayout->Assign('Content', $view);
+
             $view = $viewLayout->Fetch();
         }
-
         self::ResponseHtml($view, 200);
     }
 

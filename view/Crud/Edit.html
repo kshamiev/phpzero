@@ -75,7 +75,7 @@
                 {if ( $Object->$Prop && isset($Filter[$Prop]['List'][$Object->$Prop]) )}
                     {$Filter[$Prop]['List'][$Object->$Prop]}
                 {else if ( '_ID' == substr($Prop, -3) )}
-                    {$Object->$Prop()->Name}
+                    {$Object->$Prop('Name')}
                 {else}
                     {nl2br($Object->$Prop)}
                 {/}

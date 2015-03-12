@@ -1,5 +1,3 @@
-<h1>{$Section->Name}</h1>
-
 <form method="post">
     <input type="hidden" name="act">
 <table width="100%" cellspacing="0" cellpadding="0" border="0">
@@ -8,8 +6,9 @@
             {if ( isset($Action['Save']) )}
             <input class="btn" type="button" value="сохранить" onclick="button_form('formedit', '{URL}', 'Save', 0);">
             {/if}
+            Текущая группа "{$Groups->Name}".
             {if ( isset($Action['Copy']) )}
-            Скопировать права в группу: <select name="obj_id" style="width: 200px;" onchange="button_form_obj_id(this.form, '{URL}', 'Copy', this.value, 0);"><option value="">not selected</option>{foreach ($groups_list as $id => $name)}<option value="{$id}">{$name}</option>{/foreach}</select>
+            Скопировать права в группу: <select name="obj_id" style="width: 200px;" onchange="button_form_obj_id(this.form, '{URL}', 'Copy', this.value, 0);"><option value="">не выбрано</option>{foreach ($groups_list as $id => $name)}<option value="{$id}">{$name}</option>{/foreach}</select>
             {/if}
         </td>
     </tr>

@@ -79,7 +79,7 @@ class Zero_Groups_Access extends Zero_Controller
         else if ( empty($this->Params['obj_parent_id']) )
             $this->Params['obj_parent_id'] = 0;
         $this->View = new Zero_View($this->Template);
-        $this->Model = Zero_Model::Make($this->ModelName);
+        $this->Model = Zero_Model::Make($this->ModelName, $this->Params['obj_parent_id'], true);
     }
 
     /**
@@ -136,8 +136,10 @@ class Zero_Groups_Access extends Zero_Controller
         $this->View->Assign('Section', Zero_App::$Section);
         $this->View->Assign('section_list', $section_list);
         $this->View->Assign('Params', $this->Params);
+        $this->View->Assign('Action', Zero_App::$Section->Get_Action_List());
 
         $groups_list = Zero_DB::Select_List_Index("SELECT ID, Name FROM Groups WHERE ID != {$this->Params['obj_parent_id']} ORDER BY Name ASC");
+        $this->View->Assign('Groups', $this->Model);
         $this->View->Assign('groups_list', $groups_list);
         $this->View->Assign('pid', $this->Params['obj_parent_id']);
     }
@@ -182,7 +184,7 @@ class Zero_Groups_Access extends Zero_Controller
         //  Reset Cache
         $Model = Zero_Model::Make('Zero_Groups', $this->Params['obj_parent_id']);
         $Model->Cache->Reset();
-        return $this->Set_Message('RoleAccess', 0);
+        return $this->Set_Message('Сохранено', 0);
     }
 
     /**
@@ -208,6 +210,6 @@ class Zero_Groups_Access extends Zero_Controller
           `Groups_ID` = {$this->Params['obj_parent_id']}
         ";
         Zero_DB::Update($sql);
-        return $this->Set_Message('AccessCopy', 0);
+        return $this->Set_Message('Скопировано', 0);
     }
 }

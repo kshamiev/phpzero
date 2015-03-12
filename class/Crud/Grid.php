@@ -118,7 +118,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
         if ( false == $Filter->IsInit )
         {
             $condition = Zero_App::$Users->Get_Condition();
-            foreach ($this->Model->Get_Config_Filter() as $prop => $row)
+            foreach ($this->Model->Get_Config_Filter(get_class($this)) as $prop => $row)
             {
                 $method = 'Add_Filter_' . $row['Form'];
                 if ( method_exists($Filter, $method) )
@@ -229,7 +229,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
         //  Move to one level up or down for catalogs
 
         //  МНМЦИАЛИЗАЦИЯ ПОЛЕЙ ГРИДА
-        $props_grid = $this->Model->Get_Config_Grid();
+        $props_grid = $this->Model->Get_Config_Grid(get_class($this));
         //  Remove the coupling condition
         if ( isset($this->Params['obj_parent_prop']) )
             unset($props_grid[$this->Params['obj_parent_prop']]);
@@ -260,7 +260,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
                 $this->Model->AR->Sql_Where_IsNull('z.' . $this->Params['obj_parent_prop']);
         }
         //  The user conditions
-        foreach (array_keys($this->Model->Get_Config_Prop()) as $prop)
+        foreach (array_keys($this->Model->Get_Config_Prop(get_class($this))) as $prop)
         {
             if ( isset($users_condition[$prop]) )
                 $this->Model->AR->Sql_Where_In('z.' . $prop, array_keys($users_condition[$prop]));

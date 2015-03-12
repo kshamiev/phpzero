@@ -19,7 +19,7 @@
       </tr>
     {foreach ($Filter as $prop => $row)}
     {if ( 1 == $row['Visible'] )}
-    {if ( 'Link' == $row['Filter'] && ( !isset($Params['obj_parent_prop']) || $prop != $Params['obj_parent_prop'] ) )}
+    {if ( 'Link' == $row['Form'] && ( !isset($Params['obj_parent_prop']) || $prop != $Params['obj_parent_prop'] ) )}
     <tr>
       <td width="200px">{$row['Comment']}</td>
       <td>
@@ -30,7 +30,7 @@
         </select>
       </td>
     </tr>
-    {else if ( 'Radio' == $row['Filter'] )}
+    {else if ( 'Radio' == $row['Form'] )}
     <tr>
       <td width="200px">{$row['Comment']}</td>
       <td>
@@ -41,7 +41,7 @@
         </div>
       </td>
     </tr>
-    {else if ( 'Select' == $row['Filter'] )}
+    {else if ( 'Select' == $row['Form'] )}
     <tr>
       <td width="200px">{$row['Comment']}</td>
       <td>
@@ -52,7 +52,7 @@
         </select>
       </td>
     </tr>
-    {else if ( 'Check' == $row['Filter'] )}
+    {else if ( 'Check' == $row['Form'] )}
       <tr>
           <td width="200px">{$row['Comment']}</td>
           <td>
@@ -66,7 +66,7 @@
               </div>
           </td>
       </tr>
-    {else if ( 'DateTime' == $row['Filter'] )}
+    {else if ( 'DateTime' == $row['Form'] )}
     <tr>
       <td width="200px">{$row['Comment']}</td>
       <td>
@@ -78,7 +78,7 @@
         </table>
       </td>
     </tr>
-    {else if ( 'Date' == $row['Filter'] )}
+    {else if ( 'Date' == $row['Form'] )}
     <tr>
       <td width="200px">{$row['Comment']}</td>
       <td>
@@ -90,7 +90,7 @@
         </table>
       </td>
     </tr>
-    {else if ( 'Time' == $row['Filter'] )}
+    {else if ( 'Time' == $row['Form'] )}
     <tr>
       <td width="200px">{$row['Comment']}</td>
       <td>

@@ -101,7 +101,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         if ( false == $Filter->IsInit )
         {
             $condition = Zero_App::$Users->Get_Condition();
-            foreach ($this->Model->Get_Config_Filter() as $prop => $row)
+            foreach ($this->Model->Get_Config_Filter(get_class($this)) as $prop => $row)
             {
                 $method = 'Add_Filter_' . $row['Form'];
                 if ( method_exists($Filter, $method) )
@@ -161,13 +161,13 @@ abstract class Zero_Crud_Edit extends Zero_Controller
     {
         $Filter = Zero_Filter::Factory($this->Model);
         //  Initialize the fields in the form
-        $props_form = $this->Model->Get_Config_Form();
+        $props_form = $this->Model->Get_Config_Form(get_class($this));
         //  Remove the coupling condition
         if ( isset($this->Params['obj_parent_prop']) )
             unset($props_form[$this->Params['obj_parent_prop']]);
         //  Remove the user conditions
         $users_condition = Zero_App::$Users->Get_Condition();
-        foreach (array_keys($this->Model->Get_Config_Prop()) as $prop)
+        foreach (array_keys($this->Model->Get_Config_Prop(get_class($this))) as $prop)
         {
             if ( isset($users_condition[$prop]) )
             {
@@ -207,7 +207,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
     {
         $this->Params['id'] = 0;
         $this->Model->Set_ID(0);
-        foreach ($this->Model->Get_Config_Prop() as $prop => $row)
+        foreach ($this->Model->Get_Config_Prop(get_class($this)) as $prop => $row)
         {
             if ( 'NOW' == $row['Default'] )
                 $this->Model->$prop = date('Y-m-d H:i:s');
@@ -245,7 +245,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
 
         //  Set the user conditions
         $users_condition = Zero_App::$Users->Get_Condition();
-        foreach (array_keys($this->Model->Get_Config_Prop()) as $prop)
+        foreach (array_keys($this->Model->Get_Config_Prop(get_class($this))) as $prop)
         {
             if ( isset($users_condition[$prop]) && 1 == count($users_condition[$prop]) )
                 $this->Model->$prop = key($users_condition[$prop]);
