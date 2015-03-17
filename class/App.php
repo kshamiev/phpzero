@@ -54,10 +54,10 @@ define('ZERO_PATH_ZERO', ZERO_PATH_SITE . '/zero');
  * @date 2015.01.01
  * @todo фабрику моджелей и контроллеров перевести в фабричный метод
  * @todo получение любых данных из БД должно быть строго в моделях. Убрать из контроллеров (View)
- * @todo Развязать наследование конфигурации свойств
  */
 class Zero_App
 {
+
     /**
      * An array of abstract and key additional application variables
      *
@@ -153,6 +153,26 @@ class Zero_App
         $content = json_encode($content, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
         $opts = array(
             'http' => array(
+                'method' => $method,
+                'header' => "Content-Type: application/json; charset=utf-8\r\n" . "Content-Length: " . strlen($content) . "\r\n" . "",
+                'content' => $content,
+                'timeout' => 30,
+            )
+        );
+        $fp = fopen($url, 'rb', false, stream_context_create($opts));
+        $response = stream_get_contents($fp);
+        fclose($fp);
+        $data = json_decode($response, true);
+        if ( !$data )
+            return $response;
+        return $data;
+    }
+
+    public static function RequestJsonHttps($method, $url, $content = '')
+    {
+        $content = json_encode($content, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        $opts = array(
+            'https' => array(
                 'method' => $method,
                 'header' => "Content-Type: application/json; charset=utf-8\r\n" . "Content-Length: " . strlen($content) . "\r\n" . "",
                 'content' => $content,
@@ -311,6 +331,7 @@ class Zero_App
         self::$Users = Zero_Model::Factory('Www_Users');
 
         // Роутинг. Поиск урла.
+        self::$Section = Zero_Model::Make('Www_Section');
         $route = [];
         foreach (Zero_Lib_File::Get_Modules() as $module)
         {
@@ -329,6 +350,7 @@ class Zero_App
         $view = '';
         if ( isset($route['Controller']) && $route['Controller'] )
         {
+            self::$Section->Controller = $route['Controller'];
             $routeDetails = explode('-', $route['Controller']);
             //
             if ( isset($_REQUEST['act']) && $_REQUEST['act'] )

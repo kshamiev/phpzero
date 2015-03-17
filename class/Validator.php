@@ -197,7 +197,7 @@ class Zero_Validator
         $props = $this->Model->Get_Config_Form($scenario);
         foreach ($data as $prop => $value)
         {
-            if ( isset($props[$prop]) && 'ReadOnly' == $props[$prop]['Form'] )
+            if ( !isset($props[$prop]) || 'ReadOnly' == $props[$prop]['Form'] )
                 continue;
 
             //  инициализация значения или первичнач обработка
@@ -213,7 +213,7 @@ class Zero_Validator
                 $subj = 'Error_NotNull';
             else if ( method_exists($this->Model, $method = 'VL_' . $prop) )
                 $subj = $this->Model->$method($value, $scenario);
-            else if ( method_exists($this, $method = 'VL_' . $props[$prop]['Form']) )
+             else if ( method_exists($this, $method = 'VL_' . $props[$prop]['Form']) )
                 $subj = $this->$method($value, $prop);
             else
                 $this->Model->$prop = $value;
