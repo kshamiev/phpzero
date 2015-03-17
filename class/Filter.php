@@ -253,12 +253,12 @@ class Zero_Filter
         return true;
     }
 
-    public function Add_Filter_Check($prop, $row, $is_visible = 0, $load = 0)
+    public function Add_Filter_Null($prop, $row, $is_visible = 0, $load = 0)
     {
         if ( isset($this->Filter[$prop]) )
             return true;
         $this->Filter[$prop] = $row;
-        $this->Filter[$prop]['Form'] = 'Check';
+        $this->Filter[$prop]['Form'] = 'Null';
         $this->Filter[$prop]['Visible'] = $is_visible;
         $this->Filter[$prop]['Value'] = '';
         return true;
