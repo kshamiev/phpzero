@@ -63,24 +63,6 @@ class Zero_Users extends Zero_Model
     public $Timeout = 0;
 
     /**
-     * Configuration model
-     *
-     * - 'Comment' => 'Comment'
-     * - 'Language' => '0, 1'
-     *
-     * @param Zero_Model $Model The exact working model
-     * @return array
-     */
-    protected static function Config_Model($Model)
-    {
-        return [
-            /*BEG_CONFIG_MODEL*/
-            'Language' => false,
-            /*END_CONFIG_MODEL*/
-        ];
-    }
-
-    /**
      * Configuration links many to many
      *
      * - 'table_target' => ['table_link', 'prop_this', 'prop_target']
@@ -88,7 +70,7 @@ class Zero_Users extends Zero_Model
      * @param Zero_Model $Model The exact working model
      * @return array
      */
-    protected static function Config_Link($Model)
+    protected static function Config_Link($Model, $scenario = '')
     {
         return [
             /*BEG_CONFIG_LINK*/
@@ -108,7 +90,7 @@ class Zero_Users extends Zero_Model
      * @param Zero_Model $Model The exact working model
      * @return array
      */
-    protected static function Config_Prop($Model)
+    protected static function Config_Prop($Model, $scenario = '')
     {
         return [
             /*BEG_CONFIG_PROP*/

@@ -3,8 +3,8 @@
 /**
  * Component. Sozdanie moedelei` i modulia po BD.
  *
- * Analiz strutury` BD i sozdanie modelei` na ee osnove
- * Formy` i tipy`  svoi`stv (opredeliaemy`e pri analize):
+ * Анализ струтуры БД и создание моделей на ее основе
+ * Формы и типы  свойств (определиаемые при анализе):
  * <ol>
  * <li> Number    - (text) Chislo
  * <li> Text      - (text) Stroka teksta
@@ -17,7 +17,7 @@
  * <li> DateTime  - (text) Data i vremia
  * <li> Link      - (select) Svoi`stvo sviazi s drugim ob``ektom
  * </ol>
- * Formy` i tipy` svoi`stv (ne opredeliaemy`e pri analize):
+ * Формы и типы свойств (не определиаемые при анализе):
  * <ol>
  * <li> Hidden    - (hidden) Skry`toe pole
  * <li> ReadOnly  - (-) Tol`ko dlia chteniia

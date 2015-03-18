@@ -17,6 +17,7 @@
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
  * @date 2015.01.01
  * @property int ID
+ * @property string Source
  * @property Zero_AR AR
  * @property Zero_Cache Cache
  * @property Zero_Validator VL
@@ -90,7 +91,7 @@ abstract class Zero_Model
      *
      * @var array Zero_Model
      */
-    private static $_Instance = [];
+    protected static $Instance = [];
 
     /**
      * Konstrutkor classa
@@ -118,13 +119,14 @@ abstract class Zero_Model
      * @param bool $flag_load flag полной загрузки объекта
      * @return Zero_Model
      * @throws Exception
+     * @deprecated
      */
     public static function Make($class_name, $id = 0, $flag_load = false)
     {
         if ( '' == $class_name )
-            throw new Exception('Имя класса создаваемой модели не указано', 500);
+            throw new Exception("Модель не указана", 500);
         if ( false == Zero_App::Autoload($class_name) )
-            throw new Exception('Модель "' . $class_name . '" отсутсвует в приложении', 500);
+            throw new Exception("Модель '{$class_name}' отсутсвует в приложении", 500);
         return new $class_name($id, $flag_load);
     }
 
@@ -137,17 +139,18 @@ abstract class Zero_Model
      * @param integer $id идентификатор объекта
      * @param bool $flag_load flag полной загрузки объекта
      * @return Zero_Model
+     * @deprecated
      */
     public static function Instance($class_name, $id = 0, $flag_load = false)
     {
         $index = $class_name . (0 < $id ? '_' . $id : '');
-        if ( !isset(self::$_Instance[$index]) )
+        if ( !isset(self::$Instance[$index]) )
         {
             $result = self::Make($class_name, $id, $flag_load);
             $result->Init();
-            self::$_Instance[$index] = $result;
+            self::$Instance[$index] = $result;
         }
-        return self::$_Instance[$index];
+        return self::$Instance[$index];
     }
 
     /**
@@ -160,6 +163,7 @@ abstract class Zero_Model
      * @param integer $id identifikator ob``ekta
      * @param bool $flag flag polnoi` zagruzki ob``ekta
      * @return Zero_Model
+     * @deprecated
      */
     public static function Factory($class_name, $id = 0, $flag = false)
     {
@@ -206,7 +210,7 @@ abstract class Zero_Model
     }
 
     /**
-     * Dinahmicheskii` fabrichny`i` metod dlia sozdanii ob``ekta cherez fabriku.
+     * Динамический фабричный метод длиа создании объекта через фабрику и инстанс.
      */
     protected function Init()
     {
@@ -311,33 +315,6 @@ abstract class Zero_Model
     }
 
     /**
-     * Configuration model
-     *
-     * @param Zero_Model $Model The exact working model
-     * @return array
-     */
-    protected static function Config_Model($Model)
-    {
-        return [];
-    }
-
-    /**
-     * Poluchenie konfiguratcii modeli
-     *
-     * @return array dvumerny`i` assotciativny`i` massiv konfiguratcii
-     */
-    public function Get_Config_Model()
-    {
-        $index = get_class($this);
-        if ( !isset(self::$_Config[$index]['model']) )
-        {
-            self::$_Config[$index]['model'] = static::Config_Model($this);
-            self::$_Config[$index]['model']['Comment'] = Zero_I18n::Model($index, $index);
-        }
-        return self::$_Config[$index]['model'];
-    }
-
-    /**
      * Configuration links many to many
      *
      * @param Zero_Model $Model The exact working model
@@ -362,9 +339,10 @@ abstract class Zero_Model
      * The configuration properties
      *
      * @param Zero_Model $Model The exact working model
+     * @param string $scenario scenario
      * @return array
      */
-    protected static function Config_Prop($Model)
+    protected static function Config_Prop($Model, $scenario = '')
     {
         return [];
     }
@@ -378,14 +356,15 @@ abstract class Zero_Model
      * - 'Comment'=> 'Comment'
      * - 'Value'=> [] 'Values ​​for Enum, Set'
      *
+     * @param string $scenario scenario
      * @return array
      */
-    public function Get_Config_Prop()
+    public function Get_Config_Prop($scenario = '')
     {
         $index = get_class($this);
         if ( !isset(self::$_Config[$index]['props']) )
         {
-            foreach (static::Config_Prop($this) as $prop => $row)
+            foreach (static::Config_Prop($this, $scenario) as $prop => $row)
             {
                 $row['Comment'] = Zero_I18n::Model($index, $prop);
                 self::$_Config[$index]['props'][$prop] = $row;
@@ -545,11 +524,15 @@ abstract class Zero_Model
     }
 
     /**
-     * Формирование from запроса
+     * Формирование from части запроса к БД
+     * May be removed
+     *
+     * @param array $params параметры контроллера
+     * @return string
      */
     public function DB_From($params)
     {
-        return "FROM {$this->Source} as z";
+        $this->AR->Sql_From("FROM {$this->Source} as z");
     }
 
     /**

@@ -12,6 +12,7 @@
  */
 class Zero_Model_Pattern extends Zero_Model
 {
+
     /**
      * The table stores the objects this model
      *
@@ -20,31 +21,15 @@ class Zero_Model_Pattern extends Zero_Model
     protected $Source = 'Zero_Model_Pattern';
 
     /**
-     * Configuration model
-     *
-     * - 'Comment' => 'Comment'
-     * - 'Language' => '0, 1'
-     *
-     * @param Zero_Model $Model The exact working model
-     * @return array
-     */
-    protected static function Config_Model($Model)
-    {
-        return [
-            /*BEG_CONFIG_MODEL*/
-            /*END_CONFIG_MODEL*/
-        ];
-    }
-
-    /**
      * Configuration links many to many
      *
      * - 'table_target' => ['table_link', 'prop_this', 'prop_target']
      *
-     * @param Zero_Model $Model The exact working model
+     * @param Zero_Model_Pattern $Model The exact working model
+     * @param string $scenario Сценарий свойств
      * @return array
      */
-    protected static function Config_Link($Model)
+    protected static function Config_Link($Model, $scenario = '')
     {
         return [
             /*BEG_CONFIG_LINK*/
@@ -53,18 +38,22 @@ class Zero_Model_Pattern extends Zero_Model
     }
 
     /**
-     * The configuration properties
+     * Базовая конфигурация свойств модели
      *
-     * - 'DB'=> 'T, I, F, E, S, D, B'
-     * - 'IsNull'=> 'YES, NO'
-     * - 'Default'=> 'mixed'
-     * - 'Value'=> [] 'Values ​​for Enum, Set'
-     * - 'Comment' = 'PropComment'
+     * Настройки свойств наследуются остальными конфигурациоными методами
+     * Каждое свойство имеет следующие настройки:
+     * - 'AliasDB'=> 'z.PropName'       - Реальное название свойства (поля) в БД
+     * - 'DB'=> 'T, I, F, E, S, D, B'   - Суффикс проверочного метода и косвенного типа хранения для прямой работы с БД
+     * - 'IsNull'=> 'YES, NO'           - Разрешено ли значение NULL
+     * - 'Default'=> mixed              - Значение по умолчанию
+     * - 'Form'=> string                - Форма предстваления свйоства в виджетах и вьюхах (смотри Zero_Engine)
+     * - 'Comment' => string            - Комментарий свойства (пользуйтесь системой перевода i18n)
      *
-     * @param Zero_Model $Model The exact working model
+     * @param Zero_Model_Pattern $Model The exact working model
+     * @param string $scenario Сценарий свойств
      * @return array
      */
-    protected static function Config_Prop($Model)
+    protected static function Config_Prop($Model, $scenario = '')
     {
         return [
             /*BEG_CONFIG_PROP*/
@@ -75,13 +64,16 @@ class Zero_Model_Pattern extends Zero_Model
     /**
      * Dynamic configuration properties for the filter
      *
-     * - 'Filter'=> 'Select, Radio, Checkbox, DateTime, Link, LinkMore, Number, Text, Textarea, Content
-     * - 'Search'=> 'Number, Text'
-     * - 'Sort'=> false, true
-     * - 'Comment' = 'PropComment'
+     * Каждое свойство имеет следующие настройки:
+     * - 'AliasDB'=> 'z.PropName'       - Реальное название свойства (поля) в БД
+     * - 'AR'=> bool                    - Использовать ли в запросах к БД
+     * - 'Visible'=> bool               - Видимость фильтра в виджите или вьюхе
+     * - 'Form'=> 'Select, Radio, Checkbox, DateTime, Link, Null' - Форма предстваления свйоства в виджетах и вьюхах (смотри Zero_Engine)
+     * - 'List'=> array                 - Варианты для свойств (полей) типа enum, set в БД (пользуйтесь системой перевода i18n)
+     * - 'Comment' => string            - Комментарий свойства (пользуйтесь системой перевода i18n)
      *
-     * @param Zero_Model $Model The exact working model
-     * @param string $scenario scenario
+     * @param Zero_Model_Pattern $Model The exact working model
+     * @param string $scenario Сценарий свойств
      * @return array
      */
     protected static function Config_Filter($Model, $scenario = '')
@@ -95,11 +87,12 @@ class Zero_Model_Pattern extends Zero_Model
     /**
      * Dynamic configuration properties for the Grid
      *
-     * - 'Grid' = 'AliasName.PropName'
-     * - 'Comment' = 'PropComment'
+     * Каждое свойство имеет следующие настройки:
+     * - 'AliasDB'=> 'z.PropName'       - Реальное название свойства (поля) в БД
+     * - 'Comment' => string            - Комментарий свойства (пользуйтесь системой перевода i18n)
      *
-     * @param Zero_Model $Model The exact working model
-     * @param string $scenario scenario
+     * @param Zero_Model_Pattern $Model The exact working model
+     * @param string $scenario Сценарий свойств
      * @return array
      */
     protected static function Config_Grid($Model, $scenario = '')
@@ -113,14 +106,13 @@ class Zero_Model_Pattern extends Zero_Model
     /**
      * Dynamic configuration properties for the form
      *
-     * - 'Form'=> [
-     *      Number, Text, Select, Radio, Checkbox, Textarea, Date, Time, DateTime, Link,
-     *      Hidden, ReadOnly, Password, File, FileData, Img, ImgData, Content', LinkMore
-     *      ]
-     * - 'Comment' = 'PropComment'
+     * Каждое свойство имеет следующие настройки:
+     * - 'IsNull'=> 'YES, NO'           - Разрешено ли значение NULL
+     * - 'Form'=> string                - Форма предстваления свйоства в виджетах и вьюхах (смотри Zero_Engine)
+     * - 'Comment' => string            - Комментарий свойства (пользуйтесь системой перевода i18n)
      *
-     * @param Zero_Model $Model The exact working model
-     * @param string $scenario scenario forms
+     * @param Zero_Model_Pattern $Model The exact working model
+     * @param string $scenario Сценарий свойств
      * @return array
      */
     protected static function Config_Form($Model, $scenario = '')
@@ -132,21 +124,10 @@ class Zero_Model_Pattern extends Zero_Model
     }
 
     /**
-     * Sample. The total initial validation properties
-     *
-     * @param array $data verifiable data array
-     * @param string $scenario scenario validation
-     * @return array
-     */
-    public function Validate_Before($data, $scenario)
-    {
-        return $data;
-    }
-
-    /**
      * Sample. The validation property
+     * May be removed
      *
-     * @param mixed $value value to check
+     * @param mixed $value value to check and set
      * @param string $scenario scenario validation
      * @return string
      */
@@ -157,17 +138,8 @@ class Zero_Model_Pattern extends Zero_Model
     }
 
     /**
-     * Sample. Total final validation properties
-     *
-     * @param array $data verifiable data array
-     * @param string $scenario scenario validation
-     */
-    public function Validate_After($data, $scenario)
-    {
-    }
-
-    /**
      * Sample. Filter for property.
+     * May be removed
      *
      * @return array
      */
@@ -177,20 +149,11 @@ class Zero_Model_Pattern extends Zero_Model
     }
 
     /**
-     * Sample. Direct query to the database
-     *
-     * @param mixed Any parameter
-     * @return array
-     */
-    public static function DB_QueryNameSample($param)
-    {
-        return [];
-    }
-
-    /**
-     * Формирование from запроса
+     * Формирование from части запроса к БД
+     * May be removed
      *
      * @param array $params параметры контроллера
+     * @return string
      */
     public function DB_From($params)
     {
@@ -198,18 +161,56 @@ class Zero_Model_Pattern extends Zero_Model
     }
 
     /**
-     * Формирование from запроса к крос таблице
+     * Фабрика по созданию объектов.
      *
-     * @param string $parent_table таблица связей
-     * @param int $parent_id идентификатор родительской связи
+     * @param integer $id идентификатор объекта
+     * @param bool $flagLoad флаг полной загрузки объекта
+     * @return Zero_Model_Pattern
      */
-    public function DB_From_Cross($parent_table, $parent_id)
+    public static function Make($id = 0, $flagLoad = false)
     {
-        $link = $this->Model->Get_Config_Link();
-        $link = $link[$parent_table];
-        $sql = "FROM {$this->Source} as z
-            INNER JOIN {$link['table_link']} as p ON p.{$link['prop_this']} = z.ID AND p.{$link['prop_target']} = $parent_id
-        ";
-        $this->AR->Sql_From($sql);
+        return new self($id, $flagLoad);
+    }
+
+    /**
+     * Фабрика по созданию объектов.
+     *
+     * Сохраниаетсиа в {$тис->_Инстанcе}
+     *
+     * @param integer $id идентификатор объекта
+     * @param bool $flagLoad флаг полной загрузки объекта
+     * @return Zero_Model_Pattern
+     */
+    public static function Instance($id = 0, $flagLoad = false)
+    {
+        $index = __CLASS__ . (0 < $id ? '_' . $id : '');
+        if ( !isset(self::$Instance[$index]) )
+        {
+            $result = self::Make($id, $flagLoad);
+            $result->Init();
+            self::$Instance[$index] = $result;
+        }
+        return self::$Instance[$index];
+    }
+
+    /**
+     * Фабрика по созданию объектов.
+     *
+     * Работает через сессию (Zero_Session).
+     * Индекс имя класса
+     *
+     * @param integer $id идентификатор объекта
+     * @param bool $flagLoad флаг полной загрузки объекта
+     * @return Zero_Model_Pattern
+     */
+    public static function Factory($id = 0, $flagLoad = false)
+    {
+        if ( !$result = Zero_Session::Get(__CLASS__) )
+        {
+            $result = self::Make($id, $flagLoad);
+            $result->Init();
+            Zero_Session::Set(__CLASS__, $result);
+        }
+        return $result;
     }
 }

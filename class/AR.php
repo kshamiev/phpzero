@@ -897,12 +897,12 @@ class Zero_AR
     /**
      * Save danny`kh v BD.
      *
-     * @param string $source
+     * @param string $scenario Сценарий сохраняем свойств
      * @return bool
      */
-    public function Insert($source = '')
+    public function Insert($scenario = '')
     {
-        $prop_list = $this->Model->Get_Config_Prop();
+        $prop_list = $this->Model->Get_Config_Prop($scenario);
         unset($prop_list['ID']);
 
         //  sborka svoi`stv dlia sokhraneniia v BD
@@ -962,10 +962,8 @@ class Zero_AR
                 }
             }
         }
-        if ( '' == $source )
-            $source = $this->Model->Source;
         if ( 0 < count($sql_update) )
-            Zero_DB::Update("UPDATE {$source} SET " . implode(', ', $sql_update) . " WHERE ID = " . $this->Model->ID);
+            Zero_DB::Update("UPDATE " . $this->Model->Get_Source() . " SET " . implode(', ', $sql_update) . " WHERE ID = " . $this->Model->ID);
 
         //  Ustanovka statusov
         $this->Model->Set_Props();
@@ -997,12 +995,12 @@ class Zero_AR
     /**
      * Изменение данных в БД.
      *
-     * @param string $source
+     * @param string $scenario Сценарий сохраняем свойств
      * @return bool
      */
-    public function Update($source = '')
+    public function Update($scenario = '')
     {
-        $prop_list = $this->Model->Get_Config_Prop();
+        $prop_list = $this->Model->Get_Config_Prop($scenario);
         unset($prop_list['ID']);
         //  sborka svoi`stv dlia sokhraneniia v BD
         $sql_update = [];
@@ -1062,9 +1060,7 @@ class Zero_AR
             if ( 0 < $this->Model->ID )
                 $sql_where .= ' AND `ID` = ' . $this->Model->ID;
 
-            if ( '' == $source )
-                $source = $this->Model->Source;
-            $sql = "UPDATE {$source} SET " . implode(', ', $sql_update) . " " . $sql_where;
+            $sql = "UPDATE " . $this->Model->Get_Source() . " SET " . implode(', ', $sql_update) . " " . $sql_where;
             $flag = Zero_DB::Update($sql);
         }
 

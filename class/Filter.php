@@ -140,7 +140,6 @@ class Zero_Filter
         $this->Filter[$prop] = $row;
         $this->Filter[$prop]['Form'] = 'Link';
         $this->Filter[$prop]['Visible'] = $is_visible;
-//        $this->Filter[$prop]['Value'] = $row['Default'];;
         $this->Filter[$prop]['Value'] = '';
         $this->Filter[$prop]['List'] = [];
         if ( is_array($load) )
@@ -153,6 +152,8 @@ class Zero_Filter
                 $this->Filter[$prop]['List'] = $this->FL_Lang();
             else if ( method_exists($this->Model, $method = 'FL_' . $prop) )
                 $this->Filter[$prop]['List'] = $this->Model->$method();
+            else if ( isset($row['List']) )
+                $this->Filter[$prop]['List'] = $row['List'];
             else
             {
                 $this->Filter[$prop]['List'] = Zero_DB::Select_List_Index("SELECT ID, Name FROM `" . zero_relation($prop) . "` ORDER BY `Name`");
@@ -177,7 +178,6 @@ class Zero_Filter
         $this->Filter[$prop]['Comment'] = Zero_I18n::Model(get_class($this->Model), $prop);
         $this->Filter[$prop]['Form'] = 'Select';
         $this->Filter[$prop]['Visible'] = $is_visible;
-//        $this->Filter[$prop]['Value'] = $row['Default'];
         $this->Filter[$prop]['Value'] = '';
         $this->Filter[$prop]['List'] = [];
         if ( is_array($load) )
@@ -190,6 +190,8 @@ class Zero_Filter
                 $this->Filter[$prop]['List'] = $this->FL_Lang();
             else if ( method_exists($this->Model, $method = 'FL_' . $prop) )
                 $this->Filter[$prop]['List'] = $this->Model->$method();
+            else if ( isset($row['List']) )
+                $this->Filter[$prop]['List'] = $row['List'];
             else
             {
                 $this->Filter[$prop]['List'] = [];
@@ -231,7 +233,6 @@ class Zero_Filter
         $this->Filter[$prop] = $row;
         $this->Filter[$prop]['Form'] = 'Radio';
         $this->Filter[$prop]['Visible'] = $is_visible;
-//        $this->Filter[$prop]['Value'] = $row['Default'];
         $this->Filter[$prop]['Value'] = '';
         $this->Filter[$prop]['List'] = [];
         if ( is_array($load) )
@@ -240,8 +241,12 @@ class Zero_Filter
         }
         else if ( 0 < $load )
         {
-            if ( method_exists($this->Model, $method = 'FL_' . $prop) )
+            if ( 'Lang' == $prop )
+                $this->Filter[$prop]['List'] = $this->FL_Lang();
+            else if ( method_exists($this->Model, $method = 'FL_' . $prop) )
                 $this->Filter[$prop]['List'] = $this->Model->$method();
+            else if ( isset($row['List']) )
+                $this->Filter[$prop]['List'] = $row['List'];
             else
             {
                 $this->Filter[$prop]['List'] = [];
@@ -279,7 +284,6 @@ class Zero_Filter
         $this->Filter[$prop] = $row;
         $this->Filter[$prop]['Form'] = 'Checkbox';
         $this->Filter[$prop]['Visible'] = $is_visible;
-//        $this->Filter[$prop]['Value'] = $row['Default'];
         $this->Filter[$prop]['Value'] = '';
         $this->Filter[$prop]['List'] = [];
         if ( is_array($load) )
@@ -290,6 +294,8 @@ class Zero_Filter
         {
             if ( method_exists($this->Model, $method = 'FL_' . $prop) )
                 $this->Filter[$prop]['List'] = $this->Model->$method();
+            else if ( isset($row['List']) )
+                $this->Filter[$prop]['List'] = $row['List'];
             else
             {
                 $this->Filter[$prop]['List'] = [];
