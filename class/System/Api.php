@@ -10,7 +10,7 @@
  * @copyright <PHP_ZERO_COPYRIGHT>
  * @license http://www.phpzero.com/license/
  */
-class Zero_Api_System extends Zero_Controller
+class Zero_System_Api extends Zero_Controller
 {
     /**
      * (API) Загрузка бинарных данных.

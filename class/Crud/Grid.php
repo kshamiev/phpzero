@@ -34,7 +34,6 @@ abstract class Zero_Crud_Grid extends Zero_Controller
     public function Action_Default()
     {
         $this->Chunk_Init();
-        $this->Chunk_Filter();
         $this->Chunk_View();
         return $this->View;
     }
@@ -47,7 +46,6 @@ abstract class Zero_Crud_Grid extends Zero_Controller
     public function Action_Remove()
     {
         $this->Chunk_Init();
-        $this->Chunk_Filter();
         $this->Chunk_Remove();
         $this->Chunk_View();
         return $this->View;
@@ -61,9 +59,9 @@ abstract class Zero_Crud_Grid extends Zero_Controller
     public function Action_FilterSet()
     {
         $this->Chunk_Init();
-        $this->Chunk_Filter();
 
-        $this->Chunk_Filter_Set();
+        $Filter = Zero_Filter::Factory($this->Model);
+        $Filter->Set($_REQUEST['Filter'], $_REQUEST['Search'], $_REQUEST['Sort']);
 
         $this->Chunk_View();
         return $this->View;
@@ -81,7 +79,6 @@ abstract class Zero_Crud_Grid extends Zero_Controller
         $Filter = Zero_Filter::Factory($this->Model);
         $Filter->Reset();
 
-        $this->Chunk_Filter();
         $this->Chunk_View();
         return $this->View;
     }
@@ -105,117 +102,10 @@ abstract class Zero_Crud_Grid extends Zero_Controller
         //
         $this->View = new Zero_View($this->Template);
         $this->Model = Zero_Model::Make($this->ModelName);
-    }
-
-    /**
-     * Initialization and set filters
-     *
-     * @return boolean flag stop execute of the next chunk
-     */
-    protected function Chunk_Filter()
-    {
+        //
         $Filter = Zero_Filter::Factory($this->Model);
-        if ( false == $Filter->IsInit )
-        {
-            $condition = Zero_App::$Users->Get_Condition();
-            foreach ($this->Model->Get_Config_Filter(get_class($this)) as $prop => $row)
-            {
-                $method = 'Add_Filter_' . $row['Form'];
-                if ( method_exists($Filter, $method) )
-                {
-                    if ( isset($row['Visible']) && true == $row['Visible'] )
-                        $row['Visible'] = 1;
-                    else
-                        $row['Visible'] = 0;
-                    //
-                    if ( isset($condition[$prop]) )
-                    {
-                        if ( 1 < count($condition[$prop]) )
-                            $Filter->$method($prop, $row, $row['Visible'], $condition[$prop]);
-                        else
-                            $Filter->$method($prop, $row, 0, $condition[$prop]);
-                    }
-                    else
-                        $Filter->$method($prop, $row, $row['Visible'], 1);
-                    //
-                    if ( isset($row['DB']) && $row['DB'] == 'D' )
-                        $Filter->Add_Sort($prop, $row);
-                }
-                else if ( isset($row['DB']) )
-                {
-                    $method = '';
-                    if ( $row['DB'] == 'I' || $row['DB'] == 'F' )
-                        $method = 'Add_Search_Number';
-                    else if ( $row['DB'] == 'T' )
-                        $method = 'Add_Search_Text';
-
-                    if ( method_exists($Filter, $method) )
-                        $Filter->$method($prop, $row);
-
-                    if ( $method != '' )
-                    {
-                        $Filter->Add_Sort($prop, $row);
-                    }
-                }
-                if ( isset($row['Sort']) && $row['Sort'] )
-                    $Filter->Set_Sort($prop, $row['Sort']);
-            }
-            $Filter->IsInit = true;
-        }
-
-        //  Page by page
         if ( isset($_GET['pg']) && 0 < $_GET['pg'] )
             $Filter->Page = $_GET['pg'];
-    }
-
-    /**
-     * Set Filters
-     *
-     * @return boolean flag stop execute of the next chunk
-     */
-    protected function Chunk_Filter_Set()
-    {
-        $Filter = Zero_Filter::Factory($this->Model);
-        $Filter->IsSet = true;
-        //  Filters
-        if ( isset($_REQUEST['Filter']) )
-        {
-            foreach ($_REQUEST['Filter'] as $Prop => $Value)
-            {
-                $Filter->Set_Filter($Prop, $Value);
-            }
-            $Filter->Page = 1;
-        }
-        //  Search
-        if ( isset($_REQUEST['Search']['List']) )
-        {
-            $Filter->Set_Search();
-            foreach ($_REQUEST['Search']['List'] as $prop => $value)
-            {
-                $Filter->Set_Search($prop, $value);
-            }
-            $Filter->Page = 1;
-        }
-        else if ( isset($_REQUEST['Search']['Prop']) )
-        {
-            $Filter->Set_Search();
-            $Filter->Set_Search($_REQUEST['Search']['Prop'], $_REQUEST['Search']['Value']);
-            $Filter->Page = 1;
-        }
-        //  Sorting
-        if ( isset($_REQUEST['Sort']['List']) )
-        {
-            $Filter->Set_Sort();
-            foreach ($_REQUEST['Sort']['List'] as $prop => $value)
-            {
-                $Filter->Set_Sort($prop, $value);
-            }
-        }
-        else if ( isset($_REQUEST['Sort']['Prop']) )
-        {
-            $Filter->Set_Sort();
-            $Filter->Set_Sort($_REQUEST['Sort']['Prop'], $_REQUEST['Sort']['Value']);
-        }
     }
 
     /**

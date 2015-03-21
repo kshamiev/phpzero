@@ -15,7 +15,6 @@
  */
 class Zero_Filter
 {
-
     /**
      * Model` dlia kotoroi` sozdaiutsia fil`try`
      *
@@ -106,17 +105,17 @@ class Zero_Filter
     }
 
     /**
-     * Sozdanie i initcializatciia fil`tra.
+     * Создание и инициализация фильтра.
      *
-     * Rabotaet cherez sessiiu (Zero_Session)
+     * Работает через сессию (Zero_Session)
      *
-     * @param Zero_Model $Model Delegirovannaia model` dlia kotoroi` sozdaiutsia fil`try`
+     * @param Zero_Model $Model Делегированная модель для которой создается фильтр
+     * @param string $suffix суффикс для создания дополнительных фильтров в рамках одной модели
      * @return Zero_Filter
      */
-    public static function Factory($Model)
+    public static function Factory($Model, $suffix = '')
     {
-        //        $index = '_Filter' . '_' . $Model->Get_Source();
-        $index = '_Filter' . '_' . get_class($Model);
+        $index = 'Filter' . '_' . get_class($Model) . $suffix;
         if ( !$result = Zero_Session::Get($index) )
         {
             $result = new self($Model);
@@ -126,17 +125,16 @@ class Zero_Filter
     }
 
     /**
-     * Dobavlenie fil`tra sviazi (s nebol`shim chislom ob``ektov)
+     * Добавление фильтра свиази (с небольшим числом объектов)
      *
-     * @param string $prop Svoi`stvo sviazi dlia kotorogo budet sozdan fil`tr.
-     * @param integer $is_visible Vidimost` fil`tra (1 - otobrazhaetsia, 0 - ne otobrazhaetsia po umolchaniiu)
-     * @param mixed $load 1 - avtonomnaia zagruzka fil`tra, 0 - bez zagruzki po umolchaniiu, array - peredanny`e varianty` (spisok ID => Name)
+     * @param string $prop
+     * @param array $row Конфигурация фильтра для указанного свойства
+     * @param int $is_visible Видимость в представлении
+     * @param mixed $load Загрузка фильтра (нет, да, массив вариантов)
      * @return bool
      */
     public function Add_Filter_Link($prop, $row, $is_visible = 0, $load = 0)
     {
-        if ( isset($this->Filter[$prop]) )
-            return true;
         $this->Filter[$prop] = $row;
         $this->Filter[$prop]['Form'] = 'Link';
         $this->Filter[$prop]['Visible'] = $is_visible;
@@ -172,8 +170,6 @@ class Zero_Filter
      */
     public function Add_Filter_Select($prop, $row, $is_visible = 0, $load = 0)
     {
-        if ( isset($this->Filter[$prop]) )
-            return true;
         $this->Filter[$prop] = $row;
         $this->Filter[$prop]['Comment'] = Zero_I18n::Model(get_class($this->Model), $prop);
         $this->Filter[$prop]['Form'] = 'Select';
@@ -228,8 +224,6 @@ class Zero_Filter
      */
     public function Add_Filter_Radio($prop, $row, $is_visible = 0, $load = 0)
     {
-        if ( isset($this->Filter[$prop]) )
-            return true;
         $this->Filter[$prop] = $row;
         $this->Filter[$prop]['Form'] = 'Radio';
         $this->Filter[$prop]['Visible'] = $is_visible;
@@ -260,8 +254,6 @@ class Zero_Filter
 
     public function Add_Filter_Null($prop, $row, $is_visible = 0, $load = 0)
     {
-        if ( isset($this->Filter[$prop]) )
-            return true;
         $this->Filter[$prop] = $row;
         $this->Filter[$prop]['Form'] = 'Null';
         $this->Filter[$prop]['Visible'] = $is_visible;
@@ -279,8 +271,6 @@ class Zero_Filter
      */
     public function Add_Filter_Checkbox($prop, $row, $is_visible = 0, $load = 0)
     {
-        if ( isset($this->Filter[$prop]) )
-            return true;
         $this->Filter[$prop] = $row;
         $this->Filter[$prop]['Form'] = 'Checkbox';
         $this->Filter[$prop]['Visible'] = $is_visible;
@@ -315,8 +305,6 @@ class Zero_Filter
      */
     public function Add_Filter_DateTime($prop, $row, $is_visible = 0)
     {
-        if ( isset($this->Filter[$prop]) )
-            return true;
         $this->Filter[$prop] = $row;
         $this->Filter[$prop]['Form'] = 'DateTime';
         $this->Filter[$prop]['Visible'] = $is_visible;
@@ -332,8 +320,6 @@ class Zero_Filter
      */
     public function Add_Filter_Date($prop, $row, $is_visible = 0)
     {
-        if ( isset($this->Filter[$prop]) )
-            return true;
         $this->Filter[$prop] = $row;
         $this->Filter[$prop]['Form'] = 'Date';
         $this->Filter[$prop]['Visible'] = $is_visible;
@@ -349,8 +335,6 @@ class Zero_Filter
      */
     public function Add_Filter_Time($prop, $row, $is_visible = 0)
     {
-        if ( isset($this->Filter[$prop]) )
-            return true;
         $this->Filter[$prop] = $row;
         $this->Filter[$prop]['Form'] = 'Time';
         $this->Filter[$prop]['Visible'] = $is_visible;
@@ -481,32 +465,112 @@ class Zero_Filter
     }
 
     /**
-     * Sbros fil`tra
+     * Сброс фильтра
      *
-     * Esli svoi`stvo ne ukazano sbrasy`vaetsia ves` fil`tr
-     *
-     * @param string $prop Svoi`stvo
+     * Если свойство не указано сбрасываетсиа весь фильтр
      */
-    public function Reset($prop = '')
+    public function Reset()
     {
-        if ( '' == $prop )
+        //  фильтры
+        $this->Filter = [];
+        //  поиск
+        $this->Search = ['List' => [], 'Value' => []];
+        $this->Add_Search_Text('ALL_PROPS', ['Comment' => Zero_I18n::Model('Www_All', 'Property all')]);
+        //  сортировка
+        $this->Sort = ['List' => [], 'Value' => []];
+        //
+        $this->Page = 1;
+        $this->Page_Item = Zero_App::$Config->View_PageItem;
+        $this->IsSet = false;
+
+        // Инициализация фильтра
+        $condition = Zero_App::$Users->Get_Condition();
+        foreach ($this->Model->Get_Config_Filter(get_class($this)) as $prop => $row)
         {
-            //  fil`try`
-            $this->Filter = [];
-            //  poisk
-            $this->Search = ['List' => [], 'Value' => []];
-            $this->Add_Search_Text('ALL_PROPS', ['Comment' => Zero_I18n::Model('Www_All', 'Property all')]);
-            //  sortirovka
-            $this->Sort = ['List' => [], 'Value' => []];
-            //
-            $this->Page = 1;
-            $this->Page_Item = Zero_App::$Config->View_PageItem;
-            $this->IsInit = false;
-            $this->IsSet = false;
+            $method = 'Add_Filter_' . $row['Form'];
+            if ( method_exists($this, $method) )
+            {
+                if ( isset($row['Visible']) && true == $row['Visible'] )
+                    $row['Visible'] = 1;
+                else
+                    $row['Visible'] = 0;
+                //
+                if ( isset($condition[$prop]) )
+                {
+                    if ( 1 < count($condition[$prop]) )
+                        $this->$method($prop, $row, $row['Visible'], $condition[$prop]);
+                    else
+                        $this->$method($prop, $row, 0, $condition[$prop]);
+                }
+                else
+                    $this->$method($prop, $row, $row['Visible'], 1);
+                //
+                if ( isset($row['DB']) && $row['DB'] == 'D' )
+                    $this->Add_Sort($prop, $row);
+            }
+            else if ( isset($row['DB']) )
+            {
+                $method = '';
+                if ( $row['DB'] == 'I' || $row['DB'] == 'F' )
+                    $method = 'Add_Search_Number';
+                else if ( $row['DB'] == 'T' )
+                    $method = 'Add_Search_Text';
+
+                if ( method_exists($this, $method) )
+                    $this->$method($prop, $row);
+
+                if ( $method != '' )
+                {
+                    $this->Add_Sort($prop, $row);
+                }
+            }
+            if ( isset($row['Sort']) && $row['Sort'] )
+                $this->Set_Sort($prop, $row['Sort']);
         }
-        else
+    }
+
+    /**
+     * Set Filters
+     *
+     * @param $filter
+     * @param $search
+     * @param $sort
+     */
+    public function Set($filter, $search, $sort)
+    {
+        $this->IsSet = true;
+        //  Filters
+        foreach ($filter as $Prop => $Value)
         {
-            unset($this->Filter[$prop]);
+            $this->Set_Filter($Prop, $Value);
         }
+        //  Search
+        $this->Set_Search();
+        if ( isset($search['List']) )
+        {
+            foreach ($search['List'] as $prop => $value)
+            {
+                $this->Set_Search($prop, $value);
+            }
+        }
+        else if ( isset($search['Prop']) )
+        {
+            $this->Set_Search($search['Prop'], $search['Value']);
+        }
+        //  Sorting
+        $this->Set_Sort();
+        if ( isset($sort['List']) )
+        {
+            foreach ($sort['List'] as $prop => $value)
+            {
+                $this->Set_Sort($prop, $value);
+            }
+        }
+        else if ( isset($sort['Prop']) )
+        {
+            $this->Set_Sort($sort['Prop'], $sort['Value']);
+        }
+        // page
+        $this->Page = 1;
     }
 }

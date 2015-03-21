@@ -10,7 +10,7 @@
  * @copyright <PHP_ZERO_COPYRIGHT>
  * @license http://www.phpzero.com/license/
  */
-class Zero_Console_Section extends Zero_Controller
+class Zero_Section_Console extends Zero_Controller
 {
     /**
      * Initialize the online status is not active users.

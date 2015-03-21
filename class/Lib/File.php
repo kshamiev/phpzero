@@ -29,10 +29,10 @@ final class Zero_Lib_File
      */
     public static function Check_Version($version_check, $version_target)
     {
-        if ( !$version_check )
-            return -1;
         $arr1 = explode('.', $version_check);
         $arr2 = explode('.', $version_target);
+        if ( 3 != count($arr1) || 3 != count($arr2) )
+            return 0;
         //  release
         if ( $arr1[0] < $arr2[0] )
             return -1;
@@ -51,6 +51,12 @@ final class Zero_Lib_File
         return 0;
     }
 
+    /**
+     * Получение списка существующий модулей в приложении
+     * 
+     * @return array
+     * @deprecated Zero_Config
+     */
     public static function Get_Modules()
     {
         $result = [];
@@ -66,7 +72,8 @@ final class Zero_Lib_File
      *
      * @param string $module module
      * @param string $fileConfig config file
-     * @return array
+     * @return array Массив конфигурации указанного модуля и файла 
+     * @deprecated Zero_Config
      */
     public static function Get_Config($module, $fileConfig = '')
     {

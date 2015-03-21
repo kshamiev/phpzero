@@ -119,7 +119,6 @@ abstract class Zero_Model
      * @param bool $flag_load flag полной загрузки объекта
      * @return Zero_Model
      * @throws Exception
-     * @deprecated
      */
     public static function Make($class_name, $id = 0, $flag_load = false)
     {
@@ -139,7 +138,6 @@ abstract class Zero_Model
      * @param integer $id идентификатор объекта
      * @param bool $flag_load flag полной загрузки объекта
      * @return Zero_Model
-     * @deprecated
      */
     public static function Instance($class_name, $id = 0, $flag_load = false)
     {
@@ -163,7 +161,6 @@ abstract class Zero_Model
      * @param integer $id identifikator ob``ekta
      * @param bool $flag flag polnoi` zagruzki ob``ekta
      * @return Zero_Model
-     * @deprecated
      */
     public static function Factory($class_name, $id = 0, $flag = false)
     {

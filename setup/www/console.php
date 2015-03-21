@@ -81,13 +81,11 @@ else
     // check whether the process is running on a server
     exec("ps ax | grep -v 'grep' | grep -v 'cd ' | grep -v 'sudo ' | grep 'console.php '", $result);
     $result = join("\n", $result);
-    foreach (Zero_Lib_File::Get_Modules() as $module)
+    foreach (Zero_Config::Get_Modules() as $module)
     {
-        $config = Zero_Lib_File::Get_Config($module, 'console');
-        if ( !isset($config['console']) )
-            continue;
+        $config = Zero_Config::Get_Config($module, 'console');
         // Zero_Logs::Set_Message_Notice($config)
-        foreach ($config['console'] as $sys_demon => $sys_cron)
+        foreach ($config as $sys_demon => $sys_cron)
         {
             if ( !$sys_cron['IsActive'] || false !== strpos($result, Zero_App::$Config->Site_PathPhp . ' ' . ZERO_PATH_SITE . '/console.php ' . $sys_demon) )
                 continue;
