@@ -1,9 +1,8 @@
 <?php
-
 /**
- * Model. Actions controllers and the access to them.
+ * Actions controllers and the access to them.
  *
- * @class Zero_Action
+ * @package Zero.Action
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
  * @date 2015.01.01
  *

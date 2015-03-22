@@ -1,7 +1,6 @@
 <?php
-
 /**
- * Component. Fil`tr.
+ * Фильтр.
  *
  * Fil`try`, poisk, sortirovka, nomer tekushchei` stranitcy`.
  * Fil`tr vedetsia po poliam sviazei`, perechisleniiam, mnozhestvam i vremenny`m (data i vremia).
@@ -9,7 +8,7 @@
  * Reazlizuet fil`tratciiu pri vy`vode ob``ektov v gride.
  * V forme vy`stupaet kak spravochnik variantov znachenii` dlia svoi`stv.
  *
- * @class Zero_Filter
+ * @package Zero.Component Фильтр
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
  * @date 2015.01.01
  */

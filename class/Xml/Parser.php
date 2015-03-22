@@ -1,9 +1,4 @@
 <?php
-/* vim: set expandtab tabstop=2 shiftwidth=2 softtabstop=2 foldmethod=marker: */
-/**
- * @package Service
- */
-
 /**
  * Класс реализующий работу с XML файлами.
  *
@@ -12,10 +7,9 @@
  * <li>Создание XML.
  * </lo>
  *
- * @package Service
- * @subpackage XML
- * @author Konstantin Shamiev aka marko-polo <konstanta75@mail.ru>
- * @version 16.03.2010
+ * @package Zero.Xml
+ * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
+ * @version 2014.09.21
  */
 class Zero_Xml_Parser
 {

@@ -1,9 +1,4 @@
 <?php
-/* vim: set expandtab tabstop=2 shiftwidth=2 softtabstop=2 foldmethod=marker: */
-/**
- * @package Service
- */
-
 /**
  * Класс реализующий обрабчики нод XML объекта.
  *
@@ -14,10 +9,9 @@
  * Во время парсинга файла очень большего размера.
  * После обработки он не добавляется в общее дерево объекта XML
  *
- * @package Service
- * @subpackage XML
- * @author Konstantin Shamiev aka marko-polo <konstanta75@mail.ru>
- * @version 16.03.2010
+ * @package Zero.Xml
+ * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
+ * @version 2014.09.21
  */
 class Zero_Xml_Handler
 {

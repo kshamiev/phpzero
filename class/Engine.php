@@ -1,7 +1,6 @@
 <?php
-
 /**
- * Component. Sozdanie moedelei` i modulia po BD.
+ * Sozdanie moedelei` i modulia po BD.
  *
  * Анализ струтуры БД и создание моделей на ее основе
  * Формы и типы  свойств (определиаемые при анализе):
@@ -30,7 +29,7 @@
  * <li> LinkMore  - (select) Svoi`stvo sviazi s drugim ob``ektom (mnogochislenny`m - ajax)
  * </ol>
  *
- * @class Zero_Engine
+ * @package Zero.Component
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
  * @date 2015.01.01
  */

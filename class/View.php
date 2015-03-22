@@ -31,7 +31,7 @@ define('ZERO_LANG', Zero_App::$Route->Lang);
 define('LANG', Zero_App::$Route->Lang);
 
 /**
- * Component. Representation.
+ * Representation.
  *
  * Implements a programmatic interaction of (business logic) with the presentation of data (patterns).
  * Collects and encapsulates data within the template.
@@ -39,7 +39,7 @@ define('LANG', Zero_App::$Route->Lang);
  * Gathers ready-made template to the transferred data (as it executes a program.)
  * The mechanism of the multi-language templates
  *
- * @class Zero_View
+ * @package Zero.Component Шаблонизатор
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
  * @date 2015.01.01
  */

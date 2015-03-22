@@ -1,14 +1,10 @@
 <?php
-
 /**
- * Controller. Abstract controller for editing objects.
+ * Abstract controller for editing objects.
  *
- * @package Zero.Crud.Controller
+ * @package Zero.Crud
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
- * @version $Id$
- * @link http://www.phpzero.com/
- * @copyright <PHP_ZERO_COPYRIGHT>
- * @license http://www.phpzero.com/license/
+ * @date 2015.01.01
  */
 abstract class Zero_Crud_Edit extends Zero_Controller
 {

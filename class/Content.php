@@ -1,10 +1,8 @@
 <?php
-
 /**
  * Page content.
  *
- *
- * @class Zero_Action
+ * @package Zero.Content
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
  * @date 2015.01.01
  *

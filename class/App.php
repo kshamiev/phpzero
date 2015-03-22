@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The version of PhpZero
  */
@@ -46,11 +45,11 @@ define('ZERO_PATH_VIEW', ZERO_PATH_SITE . '/view');
 define('ZERO_PATH_ZERO', ZERO_PATH_SITE . '/zero');
 
 /**
- * Component. Application.
+ * Application.
  *
  * The main component of execute the application as a whole.
  *
- * @class Zero_App
+ * @package Zero.Component
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
  * @date 2015.01.01
  * @todo получение любых данных из БД должно быть строго в моделях. Убрать из контроллеров (View)
@@ -262,6 +261,7 @@ class Zero_App {
      */
     public static function Init($file_log = 'application', $mode = 'web') {
         //  Include Components
+        require_once ZERO_PATH_APPLICATION . '/function.php';
         require_once ZERO_PATH_ZERO . '/class/Config.php';
         require_once ZERO_PATH_ZERO . '/class/Session.php';
         require_once ZERO_PATH_ZERO . '/class/Cache.php';

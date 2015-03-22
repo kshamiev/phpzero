@@ -1,9 +1,8 @@
 <?php
-
 /**
- * Model. Groups.
+ * Группы доступа пользователей.
  *
- * @class Zero_Groups
+ * @package Zero.Groups Группы
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
  * @date 2015.01.01
  *

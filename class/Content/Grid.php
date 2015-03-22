@@ -1,8 +1,10 @@
 <?php
-
 /**
  * List Content.
  *
+ * @package Zero.Content.Admin
+ * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
+ * @date 2015.01.01
  */
 class Zero_Content_Grid extends Zero_Crud_Grid
 {

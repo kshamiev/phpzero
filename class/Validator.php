@@ -1,7 +1,6 @@
 <?php
-
 /**
- * Component. Validatciia svoi`stv ob``ekta.
+ * Validatciia svoi`stv ob``ekta.
  *
  * Realizuet validatciiu svoi`stv ob``ekta pered ego sokhraneniem.
  * Soderzhit v sebe standartny`e metody` validatcii i upravliaiushchii` metod validatcii.
@@ -11,7 +10,7 @@
  * - Poisk validatora zdes` v validatore po forme predstavleniia svoi`stva
  * Esli ni odin validator ne by`l nai`den proishodit bezuslovnoe prisvoenie znachenie svoi`stvu ob``etu.
  *
- * @class Zero_Validator
+ * @package Zero.Component
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
  * @date 2015.01.01
  */

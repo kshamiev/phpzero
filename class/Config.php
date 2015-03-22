@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Component. The configuration of systems and applications in general.
+ * The configuration of systems and applications in general.
  *
- * @class Zero_Action
+ * @package Zero.Component
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
  * @date 2015.01.01
  */
-class Zero_Config {
-
+class Zero_Config
+{
     /**
      * The path to the php Interpreter
      *
@@ -203,7 +203,8 @@ class Zero_Config {
      *
      * @param string $file_log the base name of the log file
      */
-    public function __construct($file_log = 'application') {
+    public function __construct($file_log = 'application')
+    {
         // Setting php
         set_time_limit(300);
         date_default_timezone_set('Europe/Moscow');
@@ -213,8 +214,8 @@ class Zero_Config {
         ini_set('display_startup_errors', 0);
 
         // Initialization of the profiled application processors
-        if (!is_dir(ZERO_PATH_LOG))
-            if (!mkdir(ZERO_PATH_LOG, 0777, true))
+        if ( !is_dir(ZERO_PATH_LOG) )
+            if ( !mkdir(ZERO_PATH_LOG, 0777, true) )
                 die('logs path: "' . ZERO_PATH_LOG . '" not exists');
         ini_set('log_errors', true);
         ini_set('error_log', ZERO_PATH_LOG . '/php_errors_' . $file_log . '.log');
@@ -223,10 +224,7 @@ class Zero_Config {
         set_exception_handler(['Zero_App', 'Exception']);
         // register_shutdown_function(['Zero_App', 'Exit_Application']);
 
-        if (file_exists($path = ZERO_PATH_SITE . '/config.php'))
-            $Config = require ZERO_PATH_SITE . '/config.php';
-        else
-            $Config = require ZERO_PATH_SITE . '/configNew.php';
+        $Config = require ZERO_PATH_APPLICATION . '/config.php';
 
         // The path to the php Interpreter
         $this->Site_PathPhp = $Config['Site']['PathPhp'];
@@ -253,26 +251,28 @@ class Zero_Config {
         $this->Site_Language = $Config['Site']['Language'];
 
         $this->Site_Domain = $Config['Site']['Domain'];
-        if ($Config['Site']['DomainAssets'])
+        if ( $Config['Site']['DomainAssets'] )
             $this->Site_DomainAssets = $Config['Site']['DomainAssets'];
         else
             $this->Site_DomainAssets = $this->Site_Domain;
 
-        if ($Config['Site']['DomainUpload'])
+        if ( $Config['Site']['DomainUpload'] )
             $this->Site_DomainUpload = $Config['Site']['DomainUpload'];
         else
             $this->Site_DomainUpload = $this->Site_Domain;
 
-        if (isset($_SERVER["HTTP_HOST"]))
+        if ( isset($_SERVER["HTTP_HOST"]) )
             $this->Site_DomainAlias = $_SERVER["HTTP_HOST"];
         else
             $this->Site_DomainAlias = $Config['Site']['Domain'];
 
         //  Absolute system host a website.
         $this->Site_DomainSub = 'www';
-        if (isset($_SERVER['HTTP_HOST'])) {
+        if ( isset($_SERVER['HTTP_HOST']) )
+        {
             $arr = explode('.', strtolower($_SERVER['HTTP_HOST']));
-            if (2 < count($arr)) {
+            if ( 2 < count($arr) )
+            {
                 $this->Site_DomainSub = $arr[0];
             }
         }
@@ -313,35 +313,38 @@ class Zero_Config {
         $this->Memcache = $Config['Memcache'];
 
         // IP the source address of the request
-        if (isset($_SERVER["HTTP_X_FORWARDED_FOR"]))
+        if ( isset($_SERVER["HTTP_X_FORWARDED_FOR"]) )
             $this->Ip = $_SERVER["HTTP_X_FORWARDED_FOR"];
-        else if (isset($_SERVER["REMOTE_ADDR"]))
+        else if ( isset($_SERVER["REMOTE_ADDR"]) )
             $this->Ip = $_SERVER["REMOTE_ADDR"];
 
-        if (!is_dir(ZERO_PATH_EXCHANGE))
-            if (!mkdir(ZERO_PATH_EXCHANGE, 0777, true))
+        if ( !is_dir(ZERO_PATH_EXCHANGE) )
+            if ( !mkdir(ZERO_PATH_EXCHANGE, 0777, true) )
                 die('path "exchange": "' . ZERO_PATH_EXCHANGE . '" not exists');
 
-        if (!is_dir(ZERO_PATH_CACHE))
-            if (!mkdir(ZERO_PATH_CACHE, 0777, true))
+        if ( !is_dir(ZERO_PATH_CACHE) )
+            if ( !mkdir(ZERO_PATH_CACHE, 0777, true) )
                 die('path "cache": "' . ZERO_PATH_CACHE . '" not exists');
 
-        if (!is_dir(ZERO_PATH_APPLICATION . '/zero'))
-            if (!symlink(ZERO_PATH_ZERO, ZERO_PATH_APPLICATION . '/zero'))
+        if ( !is_dir(ZERO_PATH_APPLICATION . '/zero') )
+            if ( !symlink(ZERO_PATH_ZERO, ZERO_PATH_APPLICATION . '/zero') )
                 die('module "zero" path: "' . ZERO_PATH_APPLICATION . '/zero" not exists');
 
         //  Storage sessions
-        if (!session_id())
-            if (0 < count($Config['Memcache']['Session'])) {
+        if ( !session_id() )
+            if ( 0 < count($Config['Memcache']['Session']) )
+            {
                 ini_set('session.save_handler', 'memcache');
                 ini_set('session.save_path', $Config['Memcache']['Session'][0]);
-            } else {
+            }
+            else
+            {
                 ini_set('session.save_handler', 'files');
-                if (!ini_get('session.save_path'))
+                if ( !ini_get('session.save_path') )
                     ini_set('session.save_path', ZERO_PATH_SESSION);
                 $path = ini_get('session.save_path');
-                if (!is_dir($path))
-                    if (!mkdir($path, 0777, true))
+                if ( !is_dir($path) )
+                    if ( !mkdir($path, 0777, true) )
                         die('session path: "' . $path . '" not exists');
             }
     }
@@ -351,18 +354,25 @@ class Zero_Config {
      *
      * @param string $module module
      * @param string $fileConfig config file
-     * @return array Массив конфигурации указанного модуля и файла 
+     * @return array Массив конфигурации указанного модуля и файла
      */
-    public static function Get_Config($module, $fileConfig = '') {
+    public static function Get_Config($module, $fileConfig = '')
+    {
         $configuration = [];
-        if ($module = strtolower($module)) {
-            if (is_dir($path = ZERO_PATH_APPLICATION . '/' . $module . '/config')) {
-                if ($fileConfig == '') {
-                    foreach (glob($path . '/*.php') as $fileConfig) {
+        if ( $module = strtolower($module) )
+        {
+            if ( is_dir($path = ZERO_PATH_APPLICATION . '/' . $module . '/config') )
+            {
+                if ( $fileConfig == '' )
+                {
+                    foreach (glob($path . '/*.php') as $fileConfig)
+                    {
                         $fileConfig = substr(basename($fileConfig), 0, -4);
                         $configuration[$fileConfig] = require $fileConfig;
                     }
-                } else if (file_exists($path . '/' . $fileConfig . '.php')) {
+                }
+                else if ( file_exists($path . '/' . $fileConfig . '.php') )
+                {
                     $configuration = require $path . '/' . $fileConfig . '.php';
                 }
             }
@@ -372,37 +382,16 @@ class Zero_Config {
 
     /**
      * Получение списка существующий модулей в приложении
-     * 
+     *
      * @return array
      */
-    public static function Get_Modules() {
+    public static function Get_Modules()
+    {
         $result = [];
-        foreach (glob(ZERO_PATH_APPLICATION . '/*', GLOB_ONLYDIR) as $path) {
+        foreach (glob(ZERO_PATH_APPLICATION . '/*', GLOB_ONLYDIR) as $path)
+        {
             $result[] = basename($path);
         }
         return $result;
     }
-
-}
-
-/**
- * Debug output to the browser
- *
- */
-function pre() {
-    foreach (func_get_args() as $var) {
-        echo '<pre>';
-        print_r($var);
-        echo '</pre>';
-    }
-}
-
-/**
- * Getting source on the property due
- *
- * @param string $prop свойство связи
- * @return string source of related objects
- */
-function zero_relation($prop) {
-    return preg_replace('~(_[A-Z]{1}|_[0-9]{1,3})?_ID$~', '', $prop);
 }

@@ -1,16 +1,12 @@
 <?php
-
 /**
  * Controller. Users edit
  *
  * To work with the catalog.
  *
- * @package Zero.Users.Controller
+ * @package Zero.Users.Admin
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
- * @version $Id$
- * @link http://www.phpzero.com/
- * @copyright <PHP_ZERO_COPYRIGHT>
- * @license http://www.phpzero.com/license/
+ * @date 2015.01.01
  */
 class Zero_Users_Edit extends Zero_Crud_Edit
 {

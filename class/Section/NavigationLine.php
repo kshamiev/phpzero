@@ -1,11 +1,10 @@
 <?php
-
 /**
- * Controller. Formation of bread crumbs.
+ * Formation of bread crumbs.
  *
  * Sample: {plugin "Zero_Section_NavigationLine" view=""}
  *
- * @package Zero.Section.Controller
+ * @package Zero.Section.Navigation
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
  * @version $Id$
  * @link http://www.phpzero.com/

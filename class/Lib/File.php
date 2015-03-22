@@ -1,14 +1,10 @@
 <?php
-
 /**
- * Lib. A helper class for working with the file system.
+ * A helper class for working with the file system.
  *
  * @package Zero.Lib
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
- * @version $Id$
- * @link http://www.phpzero.com/
- * @copyright <PHP_ZERO_COPYRIGHT>
- * @license http://www.phpzero.com/license/
+ * @date 2015.01.01
  */
 final class Zero_Lib_File
 {

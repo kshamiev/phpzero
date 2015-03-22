@@ -1,7 +1,6 @@
 <?php
-
 /**
- * Model. Site Section.
+ * Site Section.
  *
  * Section or page of the site. Determined on the of routing.
  * Object section contains all the information on the basis of the page:
@@ -12,7 +11,7 @@
  * - Visibility in the navigation
  * - Seo
  *
- * @class Zero_Section
+ * @package Zero.Section
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
  * @date 2015.01.01
  *

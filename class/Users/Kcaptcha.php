@@ -1,12 +1,10 @@
 <?php
-
 /**
  * Controller. Generation cAPTCHA.
  *
- * @package Zero.Users.Controller
- * @author Maxim Rautkin <mrautkin@gmail.com>
- * @version 2013.01.31
- * @since 1.0.0
+ * @package Zero.Users.Login
+ * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
+ * @date 2015.01.01
  */
 class Zero_Users_Kcaptcha extends Zero_Controller
 {

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Базовая абстрактная модель (Компонент).
  *
@@ -13,7 +12,7 @@
  * - Система объектного (целевого) кеширования
  * - Component on interaction and working with the database in the philosophy of ORM
  *
- * @class Zero_Model
+ * @package Zero.Component Базовая абстрактная модель
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
  * @date 2015.01.01
  * @property int ID

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Контент страницы.
  *
@@ -8,6 +7,9 @@
  *
  * {plugin "Zero_Content_Page" block="footer"}
  *
+ * @package Zero.Content.Page
+ * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
+ * @date 2015.01.01
  */
 class Zero_Content_Page extends Zero_Controller
 {

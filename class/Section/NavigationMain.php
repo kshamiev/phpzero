@@ -1,12 +1,11 @@
 <?php
-
 /**
- * Controller. Navigating the root sections of the site.
+ * Navigating the root sections of the site.
  *
  * - two level
  * Sample: {plugin "Zero_Section_NavigationMain" view=""}
  *
- * @package Zero.Section.Controller
+ * @package Zero.Section.Navigation
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
  * @version $Id$
  * @link http://www.phpzero.com/

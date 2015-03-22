@@ -1,7 +1,6 @@
 <?php
-
 /**
- * Component. Inkapsuliruet v sebe vsiu rabotu s BD.
+ * Inkapsuliruet v sebe vsiu rabotu s BD.
  *
  * - Inkapsuliruet v sebe vsiu priamuiu rabotu s BD
  * - Realizovan sbor statistiki ob e`ffektivnosti raboty` s BD
@@ -19,7 +18,7 @@
  * - Metody` zagruzki, obnovleniia, vstavki i udaleniia po zadanny`m usloviiam (rabotaet ot modeli). Imeiut prefiks Load_, Update_, Insert_, Delete_
  * - Metody` kotory`e keshiruiut rezul`taty` zaprosov k BD imeiut konechny`i` suffiks _Cache
  *
- * @class Zero_AR
+ * @package Zero.Component
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
  * @date 2015.01.01
  */

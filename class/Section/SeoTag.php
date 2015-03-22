@@ -1,11 +1,10 @@
 <?php
-
 /**
- * Controller. Output meta tags.
+ * Output meta tags.
  *
  * {plugin "Zero_Section_SeoTag" view="Zero_Section_SeoTag"}
  *
- * @package Zero.Section.Controller
+ * @package Zero.Section.Page
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
  * @version $Id$
  * @link http://www.phpzero.com/

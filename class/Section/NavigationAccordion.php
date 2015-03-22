@@ -1,17 +1,13 @@
 <?php
-
 /**
- * Controller. A two-level navigation through the main sections of the site.
+ * A two-level navigation through the main sections of the site.
  *
  * - 2 и 3 уровень.
  * Sample: {plugin "Zero_Section_NavigationAccordion" view="" section_id="0"}
  *
- * @package Zero.Section.Controller
+ * @package Zero.Section.Navigation
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
- * @version $Id$
- * @link http://www.phpzero.com/
- * @copyright <PHP_ZERO_COPYRIGHT>
- * @license http://www.phpzero.com/license/
+ * @date 2015.01.01
  */
 class Zero_Section_NavigationAccordion extends Zero_Controller
 {

@@ -1,14 +1,10 @@
 <?php
-
 /**
  * Controller. Groups Edit.
  *
- * @package Zero.Groups.Controller
+ * @package Zero.Groups.Admin
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
- * @version $Id$
- * @link http://www.phpzero.com/
- * @copyright <PHP_ZERO_COPYRIGHT>
- * @license http://www.phpzero.com/license/
+ * @date 2015.01.01
  */
 class Zero_Groups_Edit extends Zero_Crud_Edit
 {

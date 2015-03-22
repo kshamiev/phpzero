@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Controller. File manager.
  *
@@ -9,12 +8,9 @@
  * - Create and delete folders.
  * - Change text files.
  *
- * @package Zero.System.Controller
+ * @package Zero.System.Admin
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
- * @version $Id$
- * @link http://www.phpzero.com/
- * @copyright <PHP_ZERO_COPYRIGHT>
- * @license http://www.phpzero.com/license/
+ * @date 2015.01.01
  */
 class Zero_System_FileManager extends Zero_Controller
 {

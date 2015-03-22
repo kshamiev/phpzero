@@ -1,11 +1,10 @@
 <?php
-
 /**
- * Controller. Navigating the subsections of the current section.
+ * Navigating the subsections of the current section.
  *
  * Sample: {plugin "Zero_Section_NavigationChild" view="" section_id="0"}
  *
- * @package Zero.Section.Controller
+ * @package Zero.Section.Navigation
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
  * @version $Id$
  * @link http://www.phpzero.com/

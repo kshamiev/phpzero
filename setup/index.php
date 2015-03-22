@@ -119,7 +119,7 @@ while ( isset($_REQUEST['act']) && 'Install_System' == $_REQUEST['act'] && 0 == 
     file_put_contents(ZERO_PATH_SITE . '/index.php', $index);
 
     //  Baseline configuration
-    $config = file_get_contents(ZERO_PATH_SITE . '/config.php');
+    $config = file_get_contents(ZERO_PATH_SITE . '/application/config.php');
     $config = str_replace('<PATH_SESSION>', $arr['session.save_path']['local_value'], $config);
     $config = str_replace('<SITE_NAME>', $_REQUEST['site_name'], $config);
     $config = str_replace('<SITE_EMAIL>', $_REQUEST['site_email'], $config);
@@ -129,7 +129,7 @@ while ( isset($_REQUEST['act']) && 'Install_System' == $_REQUEST['act'] && 0 == 
     $config = str_replace('<DB_PASSWORD>', $_REQUEST['db_password'], $config);
     $config = str_replace('<DB_NAME>', $_REQUEST['db_name'], $config);
     $config = str_replace('<SITE_LANGDEFAULT>', $_REQUEST['lang'], $config);
-    file_put_contents(ZERO_PATH_SITE . '/config.php', $config);
+    file_put_contents(ZERO_PATH_SITE . '/application/config.php', $config);
 
     if ( !symlink(ZERO_PATH_ZERO, ZERO_PATH_APPLICATION . '/zero') )
     {

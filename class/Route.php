@@ -1,11 +1,10 @@
 <?php
-
 /**
- * Component. RRouting or analysis of the incoming request.
+ * Routing or analysis of the incoming request.
  *
  * Definition and initialization of the input parameters of the request
  *
- * @class Zero_Route
+ * @package Zero.Component
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
  * @date 2015.01.01
  */

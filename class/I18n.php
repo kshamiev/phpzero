@@ -1,9 +1,8 @@
 <?php
-
 /**
- * Component. Sistema pervodov.
+ * Sistema pervodov.
  *
- * @class Zero_I18n
+ * @package Zero.Component Интернационализация
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
  * @date 2015.01.01
  */

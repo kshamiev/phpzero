@@ -1,14 +1,13 @@
 <?php
-
 /**
- * Component. Abstract base controller.
+ * Abstract base controller.
  *
  * Rabota kontrollerov realizovana s pomoshch`iu chankov.
  * Chankami mozhno upravliat`. Ikh mozhno pereopredeliat`.
  * Vy`polnenie dei`stvii` s uchetom prav
  * Mehanizm soobshchenii` o rezul`tatakh dei`stvii`
  *
- * @class Zero_Action
+ * @package Zero.Component
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
  * @date 2015.01.01
  */

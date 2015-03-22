@@ -1,16 +1,12 @@
 <?php
-
 /**
  * Controller. Page by page
  *
  * Sample: {plugin "Zero_Crud_Pager" view="" Count=$PagerCount Page=$PagerPage PageItem=$PagerPageItem PageStep=$PagerPageStep}
  *
- * @package Zero.Crud.Controller
+ * @package Zero.Crud
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
- * @version $Id$
- * @link http://www.phpzero.com/
- * @copyright <PHP_ZERO_COPYRIGHT>
- * @license http://www.phpzero.com/license/
+ * @date 2015.01.01
  */
 class Zero_Crud_Pager extends Zero_Controller
 {

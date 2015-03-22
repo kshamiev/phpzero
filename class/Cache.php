@@ -1,7 +1,6 @@
 <?php
-
 /**
- * Component. Caching subsystem.
+ * Caching subsystem.
  *
  * Implemented time level 2 cache
  * - 0 persistent cache (can only be removed by an explicit request)
@@ -9,7 +8,7 @@
  *
  * Implemented associated cache
  *
- * @class Zero_Action
+ * @package Zero.Component
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
  * @date 2015.01.01
  */

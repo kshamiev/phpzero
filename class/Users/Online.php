@@ -1,17 +1,13 @@
 <?php
-
 /**
  * Controller. Initialize the online status of the current user.
  *
  * Sample: {plugin "Zero_Users_Online" time="60"}
  * Только для зарегистрированных пользователей.
  *
- * @package Zero.Users.Controller
+ * @package Zero.Users.Login
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
- * @version $Id$
- * @link http://www.phpzero.com/
- * @copyright <PHP_ZERO_COPYRIGHT>
- * @license http://www.phpzero.com/license/
+ * @date 2015.01.01
  */
 class Zero_Users_Online extends Zero_Controller
 {

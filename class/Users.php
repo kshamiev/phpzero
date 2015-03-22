@@ -1,9 +1,8 @@
 <?php
-
 /**
- * Model. Users.
+ * Пользователи.
  *
- * @class Zero_Users
+ * @package Zero.Users Пользователи
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
  * @date 2015.01.01
  *

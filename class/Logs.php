@@ -1,7 +1,6 @@
 <?php
-
 /**
- * Component. Monitoring i sniatie statistiki raboty` prilozheniia.
+ * Мониторинг и сниатие статистики работы приложения.
  *
  * Profilirovanny`e danny`e po prilozheniiam:
  * - Paulzovatel`skie soobshcheniia
@@ -11,7 +10,7 @@
  * - Zatrachennaia pamiat`
  * - Dei`stvii` pol`zovatelia
  *
- * @class Zero_Logs
+ * @package Zero.Component
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
  * @date 2015.01.01
  */

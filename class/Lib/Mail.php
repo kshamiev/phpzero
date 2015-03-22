@@ -1,17 +1,14 @@
 <?php
-
-require ZERO_PATH_LIBRARY . '/PHPMailer/PHPMailerAutoload.php';
-
 /**
- * Lib. PHP email transport class
+ * PHP email transport class
  *
  * @package Zero.Lib
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
- * @version $Id$
- * @link http://www.phpzero.com/
- * @copyright <PHP_ZERO_COPYRIGHT>
- * @license http://www.phpzero.com/license/
+ * @date 2015.01.01
  */
+
+require ZERO_PATH_LIBRARY . '/PHPMailer/PHPMailerAutoload.php';
+
 class Zero_Lib_Mail
 {
     /**
