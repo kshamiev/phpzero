@@ -35,11 +35,11 @@ class Zero_Controller_Sample extends Zero_Controller
     }
 
     /**
-     * Some action.
+     * Контроллер по умолчанию.
      *
-     * @return boolean flag stop execute of the next chunk
+     * @return Zero_View
      */
-    public function Action_Name()
+    public function Action_Default()
     {
         $this->Chunk_Init();
         $this->Chunk_View();
@@ -85,8 +85,6 @@ class Zero_Controller_Sample extends Zero_Controller
         Zero_App::ResponseJson('', 200, 200, '');
     }
 
-
-
     //// Пример консольного контроллера
     /**
      * Initialize the online status is not active users.
@@ -105,4 +103,38 @@ class Zero_Controller_Sample extends Zero_Controller
         return $this->View;
     }
 
+        /**
+        * Фабричный метод по созданию контроллера.
+        *
+        * @param array $properties входные параметры плагина
+        * @return Zero_Controller
+        */
+        public static function Make($properties = [])
+        {
+        $Controller = new self();
+        foreach ($properties as $property => $value)
+        {
+        $Controller->Params[$property] = $value;
+        }
+        return $Controller;
+        }
+
+        /**
+        * Фабричный метод по созданию контроллера.
+        *
+        * Работает через сессию.
+        * Индекс: $class_name
+        *
+        * @param array $properties входные параметры контроллера
+        * @return Zero_Controller
+        */
+        public static function Factory($properties = [])
+        {
+        if ( !$result = Zero_Session::Get(__CLASS__) )
+        {
+        $result = self::Make($properties);
+        Zero_Session::Set(__CLASS__, $result);
+        }
+        return $result;
+        }
 }

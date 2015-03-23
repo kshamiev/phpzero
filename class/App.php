@@ -268,6 +268,7 @@ class Zero_App {
         require_once ZERO_PATH_ZERO . '/class/Logs.php';
         require_once ZERO_PATH_ZERO . '/class/Route.php';
         require_once ZERO_PATH_ZERO . '/class/DB.php';
+
         self::$Mode = $mode;
 
         //  Configuration (Zero_Config)
