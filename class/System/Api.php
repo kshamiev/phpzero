@@ -2,8 +2,8 @@
 /**
  * Общие и системные функциональности.
  *
- * @package Zero.System.Api
- * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
+ * @package Api.Zero
+ * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
 class Zero_System_Api extends Zero_Controller
@@ -53,7 +53,7 @@ class Zero_System_Api extends Zero_Controller
         $_FILES['myFile']['tmp_name'] = $pathData;
         // сохранение информации о загруженном файле
         $data = json_encode($_FILES['myFile'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-        Zero_Lib_File::File_Save($pathInfo, $data);
+        Zero_Helper_File::File_Save($pathInfo, $data);
         Zero_App::ResponseJson([$sha1, '/' . explode('/www/', $path)[1], $ext], 200, 200, "Файл загружен");
         /*
         array (

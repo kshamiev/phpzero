@@ -4,8 +4,9 @@
  * Model. <Comment>.
  *
  * @package <Package>.<Subpackage>.Model
- * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
+ * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @version $Id$
+ * @ignore
  *
  * <BEG_CONFIG_PROPERTY>
  * <END_CONFIG_PROPERTY>

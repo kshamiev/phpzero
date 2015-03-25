@@ -2,8 +2,8 @@
 /**
  * User authentication.
  *
- * @package Zero.Section.Console
- * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
+ * @package Console.Zero
+ * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
 class Zero_Section_Console extends Zero_Controller
@@ -39,7 +39,7 @@ class Zero_Section_Console extends Zero_Controller
         {
             $str .= '
             <url>
-                <loc>' . HTTP . '/product-id:' . $row['ID'] . '-' . Zero_Lib_String::Transliteration_Url($row['Name']) . '.html</loc>
+                <loc>' . HTTP . '/product-id:' . $row['ID'] . '-' . Zero_Helper_String::Transliteration_Url($row['Name']) . '.html</loc>
                 <lastmod>' . date('Y-m-d') . '</lastmod>
                 <changefreq>monthly</changefreq>
                 <priority>0.8</priority>
@@ -47,7 +47,7 @@ class Zero_Section_Console extends Zero_Controller
         }
 
         $str .= "\n</urlset>";
-        Zero_Lib_File::File_Save(ZERO_PATH_SITE . '/sitemap.xml', $str);
+        Zero_Helper_File::File_Save(ZERO_PATH_SITE . '/sitemap.xml', $str);
         return $this->View;
     }
 }

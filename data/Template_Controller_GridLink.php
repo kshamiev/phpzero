@@ -1,13 +1,16 @@
 <?php
 
 /**
- * Controller. <Comment>
+ * Controller. View a list of related objects by page.
+ *
+ * To work with the item. Relation one to many.
  *
  * @package <Package>.<Subpackage>.Controller
  * @author
  * @version $Id$
+ * @ignore
  */
-class Zero_Controller_Edit extends Zero_Crud_Edit
+class Zero_Controller_Grid extends Zero_Crud_Grid
 {
     /**
      * The table stores the objects handled by this controller.
@@ -21,23 +24,18 @@ class Zero_Controller_Edit extends Zero_Crud_Edit
      *
      * @var string
      */
-    protected $Template = 'Zero_Crud_Edit';
+    protected $Template = 'Zero_Crud_Grid';
 
     /**
      * Initialization of the input parameters
      *
+     * @param string $action action
      * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_Init()
     {
-        //  relation transition one to many (CL)
         $this->Params['obj_parent_prop'] = 'relation_prop';
         $this->Params['obj_parent_name'] = '';
-        //  relation transition many to many (CCL)
-        $this->Params['obj_parent_table'] = 'relation_table';
-        $this->Params['obj_parent_prop'] = 'relation_prop';
-        $this->Params['obj_parent_name'] = '';
-        //
         parent::Chunk_Init();
         return true;
     }

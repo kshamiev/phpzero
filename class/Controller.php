@@ -7,8 +7,8 @@
  * Vy`polnenie dei`stvii` s uchetom prav
  * Mehanizm soobshchenii` o rezul`tatakh dei`stvii`
  *
- * @package Zero.Component
- * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
+ * @package Component
+ * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
 abstract class Zero_Controller

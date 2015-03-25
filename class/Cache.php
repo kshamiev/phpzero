@@ -8,8 +8,8 @@
  *
  * Implemented associated cache
  *
- * @package Zero.Component
- * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
+ * @package Component
+ * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
 class Zero_Cache
@@ -150,7 +150,7 @@ class Zero_Cache
         if ( null == self::$_Memcache )
         {
             $index = ZERO_PATH_CACHE . '/' . $index . '.data';
-            Zero_Lib_File::File_Save($index, serialize($value));
+            Zero_Helper_File::File_Save($index, serialize($value));
         }
         //  Memcache
         else
@@ -162,8 +162,8 @@ class Zero_Cache
         //  dependent binding cache
         foreach (self::$_Link as $arr)
         {
-            $path = ZERO_PATH_CACHE . '/' . $arr[0] . '/' . Zero_Lib_File::Get_Path_Cache($arr[1]) . '/' . $arr[1] . '/cache.cache';
-            Zero_Lib_File::File_Save_After($path, $index);
+            $path = ZERO_PATH_CACHE . '/' . $arr[0] . '/' . Zero_Helper_File::Get_Path_Cache($arr[1]) . '/' . $arr[1] . '/cache.cache';
+            Zero_Helper_File::File_Save_After($path, $index);
         }
         self::$_Link = [];
         return true;
@@ -216,7 +216,7 @@ class Zero_Cache
      */
     public function Reset()
     {
-        $path_file = ZERO_PATH_CACHE . '/' . $this->Model->Source . '/' . Zero_Lib_File::Get_Path_Cache($this->Model->ID) . '/' . $this->Model->ID . '/cache.cache';
+        $path_file = ZERO_PATH_CACHE . '/' . $this->Model->Source . '/' . Zero_Helper_File::Get_Path_Cache($this->Model->ID) . '/' . $this->Model->ID . '/cache.cache';
         if ( !file_exists($path_file) )
             return true;
         rename($path_file, $path_file = $path_file . '.log');
@@ -256,7 +256,7 @@ class Zero_Cache
             // self::$_Memcache->delete($key, 0);
         }
         //  file cache
-        Zero_Lib_File::File_Remove(ZERO_PATH_CACHE);
+        Zero_Helper_File::File_Remove(ZERO_PATH_CACHE);
     }
 
     /**
@@ -274,7 +274,7 @@ class Zero_Cache
     {
         $path = $source;
         if ( null == self::$_Memcache )
-            $path .= '/' . Zero_Lib_File::Get_Path_Cache($id);
+            $path .= '/' . Zero_Helper_File::Get_Path_Cache($id);
         return $path . '/' . $id . '/' . ZERO_LANG . '/' . $index;
     }
 }

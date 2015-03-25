@@ -3,7 +3,7 @@
  * Controller. User authentication.
  *
  * @package Zero.Users.Login
- * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
+ * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
 class Zero_Users_Login extends Zero_Controller
@@ -158,10 +158,9 @@ class Zero_Users_Login extends Zero_Controller
         $from = ['Email' => Zero_App::$Config->Site_Email, 'Name' => Zero_App::$Config->Site_Name];
         $to = [['Email' => $this->Model->Email, 'Name' => $this->Model->Name]];
         $reply = $from;
-        Zero_Lib_Mail::Send($from, $to, $reply, $subject, $message);
+        Mail_Queue::SendMessage($reply, $from, $to, $subject, $message);
 
         $this->Model = Zero_Model::Make('Www_Users');
-
         return $this->Set_Message("Reminder", 0);
     }
 }

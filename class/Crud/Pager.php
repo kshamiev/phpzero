@@ -5,7 +5,7 @@
  * Sample: {plugin "Zero_Crud_Pager" view="" Count=$PagerCount Page=$PagerPage PageItem=$PagerPageItem PageStep=$PagerPageStep}
  *
  * @package Zero.Crud
- * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
+ * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
 class Zero_Crud_Pager extends Zero_Controller

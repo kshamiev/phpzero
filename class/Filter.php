@@ -8,8 +8,8 @@
  * Reazlizuet fil`tratciiu pri vy`vode ob``ektov v gride.
  * V forme vy`stupaet kak spravochnik variantov znachenii` dlia svoi`stv.
  *
- * @package Zero.Component Фильтр
- * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
+ * @package Component Фильтр
+ * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
 class Zero_Filter
@@ -535,7 +535,7 @@ class Zero_Filter
      * @param $search
      * @param $sort
      */
-    public function Set($filter, $search, $sort)
+    public function Set($filter = [], $search = [], $sort = [])
     {
         $this->IsSet = true;
         //  Filters

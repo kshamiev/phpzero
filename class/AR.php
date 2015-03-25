@@ -18,8 +18,8 @@
  * - Metody` zagruzki, obnovleniia, vstavki i udaleniia po zadanny`m usloviiam (rabotaet ot modeli). Imeiut prefiks Load_, Update_, Insert_, Delete_
  * - Metody` kotory`e keshiruiut rezul`taty` zaprosov k BD imeiut konechny`i` suffiks _Cache
  *
- * @package Zero.Component
- * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
+ * @package Component
+ * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
 class Zero_AR
@@ -931,13 +931,13 @@ class Zero_AR
                 if ( 'File Upload Ok' == $value )
                 {
                     // V fai`lovoi` sisteme
-                    $file = strtolower($this->Model->Source) . '/' . Zero_Lib_File::Get_Path_Cache($this->Model->ID) . '/' . $this->Model->ID . '/' . $_FILES[$prop]['name'];
+                    $file = strtolower($this->Model->Source) . '/' . Zero_Helper_File::Get_Path_Cache($this->Model->ID) . '/' . $this->Model->ID . '/' . $_FILES[$prop]['name'];
                     $path = ZERO_PATH_DATA . '/' . $file;
                     if ( file_exists($path) )
                     {
                         $pos = strrpos($_FILES[$prop]['name'], ".", -1);
                         $_FILES[$prop]['name'] = substr($_FILES[$prop]['name'], 0, $pos) . '_' . $prop . substr($_FILES[$prop]['name'], $pos);
-                        $file = strtolower($this->Model->Source) . '/' . Zero_Lib_File::Get_Path_Cache($this->Model->ID) . '/' . $this->Model->ID . '/' . $_FILES[$prop]['name'];
+                        $file = strtolower($this->Model->Source) . '/' . Zero_Helper_File::Get_Path_Cache($this->Model->ID) . '/' . $this->Model->ID . '/' . $_FILES[$prop]['name'];
                         $path = ZERO_PATH_DATA . '/' . $file;
                     }
                     if ( !is_dir(dirname($path)) )
@@ -1013,13 +1013,13 @@ class Zero_AR
                 if ( 'File Upload Ok' == $value )
                 {
                     // V fai`lovoi` sisteme
-                    $file = strtolower($this->Model->Source) . '/' . Zero_Lib_File::Get_Path_Cache($this->Model->ID) . '/' . $this->Model->ID . '/' . $_FILES[$prop]['name'];
+                    $file = strtolower($this->Model->Source) . '/' . Zero_Helper_File::Get_Path_Cache($this->Model->ID) . '/' . $this->Model->ID . '/' . $_FILES[$prop]['name'];
                     $path = ZERO_PATH_DATA . '/' . $file;
                     if ( file_exists($path) )
                     {
                         $pos = strrpos($_FILES[$prop]['name'], ".", -1);
                         $_FILES[$prop]['name'] = substr($_FILES[$prop]['name'], 0, $pos) . '_' . $prop . substr($_FILES[$prop]['name'], $pos);
-                        $file = strtolower($this->Model->Source) . '/' . Zero_Lib_File::Get_Path_Cache($this->Model->ID) . '/' . $this->Model->ID . '/' . $_FILES[$prop]['name'];
+                        $file = strtolower($this->Model->Source) . '/' . Zero_Helper_File::Get_Path_Cache($this->Model->ID) . '/' . $this->Model->ID . '/' . $_FILES[$prop]['name'];
                         $path = ZERO_PATH_DATA . '/' . $file;
                     }
                     if ( !is_dir(dirname($path)) )

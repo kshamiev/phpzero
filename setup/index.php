@@ -3,7 +3,7 @@
  * The installer of the system.
  *
  * @package Zero.Component
- * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
+ * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @version $Id$
  * @link http://www.phpzero.com/
  * @copyright <PHP_ZERO_COPYRIGHT>
@@ -104,7 +104,7 @@ while ( isset($_REQUEST['act']) && 'Install_System' == $_REQUEST['act'] && 0 == 
     $arr = ini_get_all();
 
     //  Creating a filesystem structure. Copy the system and base  module
-    Zero_Lib_File::Folder_Copy(__DIR__ . "/www", ZERO_PATH_SITE);
+    Zero_Helper_File::Folder_Copy(__DIR__ . "/www", ZERO_PATH_SITE);
     $index = file_get_contents(ZERO_PATH_SITE . '/index.php');
     if ( $_REQUEST['db_use'] )
     {

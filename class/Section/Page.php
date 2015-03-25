@@ -3,7 +3,7 @@
  * Content Page.
  *
  * @package Zero.Section.Page
- * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
+ * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
 class Zero_Section_Page extends Zero_Controller

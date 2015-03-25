@@ -3,7 +3,7 @@
  * Controller. Abstract controller for viewing a list of items.
  *
  * @package Zero.Crud
- * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
+ * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
 abstract class Zero_Crud_Grid extends Zero_Controller
@@ -86,13 +86,13 @@ abstract class Zero_Crud_Grid extends Zero_Controller
      */
     protected function Chunk_Init()
     {
-        if ( isset($_GET['pid']) )
-            $this->Params['obj_parent_id'] = $_GET['pid'];
+        if ( isset($_REQUEST['pid']) )
+            $this->Params['obj_parent_id'] = $_REQUEST['pid'];
         else if ( empty($this->Params['obj_parent_id']) )
             $this->Params['obj_parent_id'] = 0;
         //
-        if ( isset($_GET['id']) )
-            $this->Params['id'] = $_GET['id'];
+        if ( isset($_REQUEST['id']) )
+            $this->Params['id'] = $_REQUEST['id'];
         else if ( empty($this->Params['id']) )
             $this->Params['id'] = 0;
         //
@@ -100,8 +100,10 @@ abstract class Zero_Crud_Grid extends Zero_Controller
         $this->Model = Zero_Model::Make($this->ModelName);
         //
         $Filter = Zero_Filter::Factory($this->Model);
-        if ( isset($_GET['pg']) && 0 < $_GET['pg'] )
-            $Filter->Page = $_GET['pg'];
+        if ( isset($_REQUEST['pg']) && 0 < $_REQUEST['pg'] )
+            $Filter->Page = $_REQUEST['pg'];
+        //
+        return true;
     }
 
     /**
@@ -215,9 +217,9 @@ abstract class Zero_Crud_Grid extends Zero_Controller
     {
         $ObjectRem = Zero_Model::Make(get_class($this->Model), $_REQUEST['id']);
         //  Remove binary data object
-        $path = ZERO_PATH_DATA . '/' . strtolower($ObjectRem->Source) . '/' . Zero_Lib_File::Get_Path_Cache($ObjectRem->ID) . '/' . $ObjectRem->ID;
+        $path = ZERO_PATH_DATA . '/' . strtolower($ObjectRem->Source) . '/' . Zero_Helper_File::Get_Path_Cache($ObjectRem->ID) . '/' . $ObjectRem->ID;
         if ( is_dir($path) )
-            Zero_Lib_File::Folder_Remove($path);
+            Zero_Helper_File::Folder_Remove($path);
         // Remove from session
         $ObjectRem->Factory_Unset(1);
         //  Reset Cache

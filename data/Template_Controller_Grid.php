@@ -8,6 +8,7 @@
  * @package <Package>.<Subpackage>.Controller
  * @author
  * @version $Id$
+ * @ignore
  */
 class Zero_Controller_Grid extends Zero_Crud_Grid
 {

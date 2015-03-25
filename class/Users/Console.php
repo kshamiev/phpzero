@@ -2,8 +2,8 @@
 /**
  * Controller. User authentication.
  *
- * @package Zero.Users.Console
- * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
+ * @package Console.Zero
+ * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
 class Zero_Users_Console extends Zero_Controller

@@ -6,6 +6,7 @@
  * @package <Package>.<Subpackage>.Controller
  * @author
  * @version $Id$
+ * @ignore
  */
 class Zero_Controller_Sample extends Zero_Controller
 {
@@ -50,7 +51,7 @@ class Zero_Controller_Sample extends Zero_Controller
     /**
      * (API) Контроллер по умолчанию.
      */
-    public function Action_Default()
+    public function Action_DefaultApi()
     {
         $this->View = new Zero_View();
         switch ( $_SERVER['REQUEST_METHOD'] )
@@ -68,19 +69,23 @@ class Zero_Controller_Sample extends Zero_Controller
         }
         Zero_App::ResponseJson($_SERVER['REQUEST_METHOD'] . ':' . ZERO_URL, 409, 409, "Запрос не реализован");
     }
-    protected function Action_DefaultGet()
+
+    protected function Action_DefaultApiGet()
     {
         Zero_App::ResponseJson('', 200, 200, '');
     }
-    protected function Action_DefaultPut()
+
+    protected function Action_DefaultApiPut()
     {
         Zero_App::ResponseJson($_POST, 200, 200, '');
     }
-    protected function Action_DefaultPost()
+
+    protected function Action_DefaultApiPost()
     {
         Zero_App::ResponseJson($_POST, 200, 200, '');
     }
-    protected function Action_DefaultDelete()
+
+    protected function Action_DefaultApiDelete()
     {
         Zero_App::ResponseJson('', 200, 200, '');
     }
@@ -103,38 +108,40 @@ class Zero_Controller_Sample extends Zero_Controller
         return $this->View;
     }
 
-        /**
-        * Фабричный метод по созданию контроллера.
-        *
-        * @param array $properties входные параметры плагина
-        * @return Zero_Controller
-        */
-        public static function Make($properties = [])
-        {
+    ////
+
+    /**
+     * Фабричный метод по созданию контроллера.
+     *
+     * @param array $properties входные параметры плагина
+     * @return Zero_Controller
+     */
+    public static function Make($properties = [])
+    {
         $Controller = new self();
         foreach ($properties as $property => $value)
         {
-        $Controller->Params[$property] = $value;
+            $Controller->Params[$property] = $value;
         }
         return $Controller;
-        }
+    }
 
-        /**
-        * Фабричный метод по созданию контроллера.
-        *
-        * Работает через сессию.
-        * Индекс: $class_name
-        *
-        * @param array $properties входные параметры контроллера
-        * @return Zero_Controller
-        */
-        public static function Factory($properties = [])
-        {
+    /**
+     * Фабричный метод по созданию контроллера.
+     *
+     * Работает через сессию.
+     * Индекс: $class_name
+     *
+     * @param array $properties входные параметры контроллера
+     * @return Zero_Controller
+     */
+    public static function Factory($properties = [])
+    {
         if ( !$result = Zero_Session::Get(__CLASS__) )
         {
-        $result = self::Make($properties);
-        Zero_Session::Set(__CLASS__, $result);
+            $result = self::Make($properties);
+            Zero_Session::Set(__CLASS__, $result);
         }
         return $result;
-        }
+    }
 }

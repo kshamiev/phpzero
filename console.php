@@ -1,6 +1,8 @@
 <?php
 /**
  * Manager daemons on schedule.
+ *
+ * @package Console
  */
 
 /**
@@ -54,7 +56,7 @@ function zero_crontab_check_datetime($date_this, $date_cron)
 }
 
 //  Connecting application
-require __DIR__ . '/zero/class/App.php';
+require __DIR__ . '/class/App.php';
 Zero_App::Init('console', 'console');
 set_time_limit(36000);
 
@@ -84,7 +86,6 @@ else
     foreach (Zero_Config::Get_Modules() as $module)
     {
         $config = Zero_Config::Get_Config($module, 'console');
-        // Zero_Logs::Set_Message_Notice($config)
         foreach ($config as $sys_demon => $sys_cron)
         {
             if ( !$sys_cron['IsActive'] || false !== strpos($result, Zero_App::$Config->Site_PathPhp . ' ' . ZERO_PATH_SITE . '/console.php ' . $sys_demon) )
@@ -100,7 +101,6 @@ else
                 continue;
             if ( false == zero_crontab_check_datetime($minute, $sys_cron['Minute']) )
                 continue;
-
             //  run
             // exec(Zero_App::$Config->Site_PathPhp . ' ' . ZERO_PATH_SITE . '/console.php ' . $sys_demon . ' > /dev/null 2>&1 &');
             exec(Zero_App::$Config->Site_PathPhp . ' ' . ZERO_PATH_SITE . '/console.php ' . $sys_demon);

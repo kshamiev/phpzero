@@ -49,8 +49,8 @@ define('ZERO_PATH_ZERO', ZERO_PATH_SITE . '/zero');
  *
  * The main component of execute the application as a whole.
  *
- * @package Zero.Component
- * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
+ * @package Component
+ * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  * @todo получение любых данных из БД должно быть строго в моделях. Убрать из контроллеров (View)
  */
@@ -230,7 +230,7 @@ class Zero_App {
     }
 
     public static function ResponseImg($path) {
-        header("Content-Type: " . Zero_Lib_File::File_Type($path));
+        header("Content-Type: " . Zero_Helper_File::File_Type($path));
         header("Content-Length: " . filesize($path));
         if (file_exists($path))
             echo file_get_contents($path);
@@ -238,7 +238,7 @@ class Zero_App {
     }
 
     public static function ResponseFile($path) {
-        header("Content-Type: " . Zero_Lib_File::File_Type($path));
+        header("Content-Type: " . Zero_Helper_File::File_Type($path));
         header("Content-Length: " . filesize($path));
         header('Content-Disposition: attachment; filename = "' . basename($path) . '"');
         if (file_exists($path))
@@ -262,6 +262,7 @@ class Zero_App {
     public static function Init($file_log = 'application', $mode = 'web') {
         //  Include Components
         require_once ZERO_PATH_APPLICATION . '/function.php';
+        require_once ZERO_PATH_ZERO . '/function.php';
         require_once ZERO_PATH_ZERO . '/class/Config.php';
         require_once ZERO_PATH_ZERO . '/class/Session.php';
         require_once ZERO_PATH_ZERO . '/class/Cache.php';

@@ -3,7 +3,7 @@
  * Controller. Generation cAPTCHA.
  *
  * @package Zero.Users.Login
- * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
+ * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
 class Zero_Users_Kcaptcha extends Zero_Controller

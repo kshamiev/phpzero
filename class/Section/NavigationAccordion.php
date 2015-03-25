@@ -6,7 +6,7 @@
  * Sample: {plugin "Zero_Section_NavigationAccordion" view="" section_id="0"}
  *
  * @package Zero.Section.Navigation
- * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
+ * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
 class Zero_Section_NavigationAccordion extends Zero_Controller

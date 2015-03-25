@@ -2,8 +2,8 @@
 /**
  * Controller. Development and maintenance of the system.
  *
- * @package Zero.System.Admin
- * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
+ * @package Zero.Developer
+ * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
 class Zero_System_GridService extends Zero_Controller
@@ -101,7 +101,7 @@ class Zero_System_GridService extends Zero_Controller
      */
     protected function Chunk_SessionReset()
     {
-        Zero_Lib_File::File_Remove(ZERO_PATH_SESSION);
+        Zero_Helper_File::File_Remove(ZERO_PATH_SESSION);
         return $this->Set_Message("Session_Reset", 0);
     }
 }

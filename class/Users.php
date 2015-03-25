@@ -3,7 +3,7 @@
  * Пользователи.
  *
  * @package Zero.Users Пользователи
- * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
+ * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  *
  * @property integer $Groups_ID

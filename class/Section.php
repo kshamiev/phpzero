@@ -12,7 +12,7 @@
  * - Seo
  *
  * @package Zero.Section
- * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
+ * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  *
  * @property integer $Section_ID
@@ -398,7 +398,7 @@ class Zero_Section extends Zero_Model
     {
         if ( !$value )
             return 'Error_Prop';
-        $this->UrlThis = Zero_Lib_String::Transliteration_Url($value);
+        $this->UrlThis = Zero_Helper_String::Transliteration_Url($value);
         if ( 0 < $this->Section_ID )
         {
             $Object = Zero_Model::Make(__CLASS__, $this->Section_ID);

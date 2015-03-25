@@ -6,7 +6,7 @@
  * Sample: {plugin "Zero_Section_NavigationMain" view=""}
  *
  * @package Zero.Section.Navigation
- * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
+ * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @version $Id$
  * @link http://www.phpzero.com/
  * @copyright <PHP_ZERO_COPYRIGHT>

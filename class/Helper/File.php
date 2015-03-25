@@ -2,11 +2,11 @@
 /**
  * A helper class for working with the file system.
  *
- * @package Zero.Lib
- * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
+ * @package Helper
+ * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
-final class Zero_Lib_File
+final class Zero_Helper_File
 {
 
     /**
@@ -45,50 +45,6 @@ final class Zero_Lib_File
         else if ( $arr1[2] > $arr2[2] )
             return 1;
         return 0;
-    }
-
-    /**
-     * Получение списка существующий модулей в приложении
-     * 
-     * @return array
-     * @deprecated Zero_Config
-     */
-    public static function Get_Modules()
-    {
-        $result = [];
-        foreach (glob(ZERO_PATH_APPLICATION . '/*', GLOB_ONLYDIR) as $path)
-        {
-            $result[] = basename($path);
-        }
-        return $result;
-    }
-
-    /**
-     * Getting the module configuration
-     *
-     * @param string $module module
-     * @param string $fileConfig config file
-     * @return array Массив конфигурации указанного модуля и файла 
-     * @deprecated Zero_Config
-     */
-    public static function Get_Config($module, $fileConfig = '')
-    {
-        $configuration = [];
-        if ( $module = strtolower($module) )
-        {
-            if ( is_dir($path = ZERO_PATH_APPLICATION . '/' . $module . '/config') )
-            {
-                if ( $fileConfig == '' )
-                    foreach (glob($path . '/*.php') as $fileConfig)
-                    {
-                        $fileConfig = substr(basename($fileConfig), 0, -4);
-                        $configuration[$fileConfig] = require $fileConfig;
-                    }
-                else if ( file_exists($path . '/' . $fileConfig . '.php') )
-                    $configuration[$fileConfig] = require $path . '/' . $fileConfig . '.php';
-            }
-        }
-        return $configuration;
     }
 
     /**
@@ -427,7 +383,7 @@ final class Zero_Lib_File
         if ( !is_dir($path) )
             mkdir($path, 0777, true);
         //  korrektciia imeni fai`la i polny`i` put` do fai`la
-        $path .= '/' . Zero_Lib_String::Transliteration_FileName(basename($path_file));
+        $path .= '/' . Zero_Helper_String::Transliteration_FileName(basename($path_file));
         //  resize
         $row = getimagesize($path_file);
         if ( 0 < count($resize) && 'image' == substr($row['mime'], 0, 5) )
@@ -458,6 +414,7 @@ final class Zero_Lib_File
         if ( !is_dir(dirname($path_file)) )
             mkdir(dirname($path_file), 0777, true);
         file_put_contents($path_file, trim($value));
+        chmod($path_file, 0666);
         return true;
     }
 

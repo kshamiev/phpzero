@@ -39,8 +39,8 @@ define('LANG', Zero_App::$Route->Lang);
  * Gathers ready-made template to the transferred data (as it executes a program.)
  * The mechanism of the multi-language templates
  *
- * @package Zero.Component Шаблонизатор
- * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
+ * @package Component Шаблонизатор
+ * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
 class Zero_View
@@ -184,7 +184,7 @@ class Zero_View
             {
                 $tpl = ZERO_PATH_CACHE . '/' . $html . '_' . ZERO_LANG . '.tpl';
                 if ( true == Zero_App::$Config->Site_TemplateParsing || !file_exists($tpl) )
-                    Zero_Lib_File::File_Save($tpl, $this->_Parsing(file_get_contents(ZERO_PATH_APPLICATION . '/' . $html)));
+                    Zero_Helper_File::File_Save($tpl, $this->_Parsing(file_get_contents(ZERO_PATH_APPLICATION . '/' . $html)));
                 break;
             }
         }

@@ -10,8 +10,8 @@
  * - Poisk validatora zdes` v validatore po forme predstavleniia svoi`stva
  * Esli ni odin validator ne by`l nai`den proishodit bezuslovnoe prisvoenie znachenie svoi`stvu ob``etu.
  *
- * @package Zero.Component
- * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
+ * @package Component
+ * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
 class Zero_Validator
@@ -157,7 +157,7 @@ class Zero_Validator
                 if ( $value['X'] || $value['Y'] || $value['R'] )
                 {
                     //  exec('convert -resize [100]x[200] '.$imgs['tmp_name'].' -> ../path/goods/path/'.$goods_id.'.'.$ext);
-                    if ( false == Zero_Lib_File::Image_Resize($_FILES[$prop]['tmp_name'], $_FILES[$prop]['tmp_name'] . 'resize', $value['X'], $value['Y'], $value['R']) )
+                    if ( false == Zero_Helper_File::Image_Resize($_FILES[$prop]['tmp_name'], $_FILES[$prop]['tmp_name'] . 'resize', $value['X'], $value['Y'], $value['R']) )
                     {
                         Zero_Logs::Set_Message_Error("{$this->Model->Source} - {$this->Model->ID} - {$_FILES[$prop]['error']} - Error Image Resize");
                         return 'Error Image Resize';
@@ -165,7 +165,7 @@ class Zero_Validator
                     $_FILES[$prop]['tmp_name'] .= 'resize';
                 }
             }
-            $_FILES[$prop]['name'] = Zero_Lib_String::Transliteration_FileName($_FILES[$prop]['name']);
+            $_FILES[$prop]['name'] = Zero_Helper_String::Transliteration_FileName($_FILES[$prop]['name']);
             $this->Model->$prop = 'File Upload Ok';
         }
         return '';
