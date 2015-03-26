@@ -9,9 +9,8 @@
 class Zero_System_Console extends Zero_Controller
 {
     /**
-     * Initialize the online status is not active users.
+     * Удаление устаревших загруженных бинарных файлов
      *
-     * @return boolean flag stop execute of the next chunk
      */
     public function Action_RemoveTempFileUpload()
     {
@@ -22,6 +21,26 @@ class Zero_System_Console extends Zero_Controller
             if ( 60 < $timeOutMinute )
                 unlink($file);
         }
-        return $this->View;
-    }
+     }
+
+    /**
+     * Формирование документации
+     *
+     */
+    public function Action_ApiGen()
+    {
+        // title
+        $command = 'apigen.phar generate --title="'. Zero_App::$Config->Site_Name;
+        // source (источники)
+        $command .= ' -s '. ZERO_PATH_ZERO .' -s '. ZERO_PATH_APPLICATION;
+        // exclude (исключения)
+        $command .= ' --exclude="/setup/*" --exclude="/i18n/*" --exclude="/data/*"';
+        // target (куда)
+        $command .= ' -d '. ZERO_PATH_SITE .'/doc/api';
+        // advanced
+        $command .= ' --access-levels="public" --groups="packages" --debug --todo --deprecated --download';
+        //
+        Zero_Logs::File_Custom($command, 'apigen.log');
+        exec(Zero_App::$Config->Site_PathPhp . ' ' . $command);
+     }
 }
