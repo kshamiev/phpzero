@@ -1,35 +1,19 @@
-C:\Work\phpzero>apigen generate -h
+php apigen.phar generate -s inventory/zero -s inventory/application --exclude="setup/*" --exclude="i18n/*" --exclude="data/*" -d doc/api --title="Inventory" --access-levels="public" --groups="packages" --todo --deprecated --download
+sample server unix:
+/usr/bin/php /var/www/html/inv/zero/apigen.phar generate -s /var/www/html/inv/zero -s /var/www/html/inv/application --exclude="setup/*" --exclude="i18n/*" --exclude="data/*" -d /var/www/html/inv/doc --title="Инвентори" --access-levels="public" --groups="packages" --todo --deprecated --download
+
+C:\php5.6.7>php apigen.phar generate -h
 Usage:
- generate [-s|--source="..."] [-d|--destination="..."] 
- [--access-levels="..."] 
- [--base-url="..."] 
- [--config="..."] 
- [--google-cse-id="..."] 
- [--google-analytics="..."] 
- [--debug] 
- [--deprecated] 
- [--download] 
- [--extensions="..."] 
- [--exclude="..."] 
- [--groups="..."] 
- [--charset="..."] 
- [--main="..."] 
- [--internal] 
- [--php] 
- [--skip-doc-path="..."] 
- [--no-source-code] 
- [--template-theme="..."] 
- [--template-config="..."] 
- [--title="..."] 
- [--todo] 
- [--tree]
+ generate [-s|--source="..."] [-d|--destination="..."] [--access-levels="..."] [--base-url="..."] [--config="..."] [--google-cse-id="..."] [--google-analytics="..."] [--debug] [--deprecated] [
+--download] [--extensions="..."] [--exclude="..."] [--groups="..."] [--charset="..."] [--main="..."] [--internal] [--php] [--skip-doc-path="..."] [--no-source-code] [--template-theme="..."] [-
+-template-config="..."] [--title="..."] [--todo] [--tree]
 
 Options:
  --source (-s)       Dirs documentation is generated for (can be specified multiple times). (multiple values allowed)
  --destination (-d)  Target dir for documentation.
  --access-levels     Access levels of included method and properties (can be specified multiple times). (default: ["public","protected"]) (multiple values allowed)
  --base-url          Base url used for sitemap (useful for public doc).
- --config            Custom path to apigen.neon config file. (default: "C:\\Work\\phpzero/apigen.neon")
+ --config            Custom path to apigen.neon config file. (default: "C:\\php5.6.7/apigen.neon")
  --google-cse-id     Custom google search engine id (for search box).
  --google-analytics  Google Analytics tracking code.
  --debug             Turn on debug mode.
@@ -52,6 +36,3 @@ Options:
  --help (-h)         Display this help message.
  --quiet (-q)        Do not output any message.
  --version (-V)      Display this application version.
-
- 
-apigen generate --todo --tree --deprecated --download --main="Funtik" --title="Inventory" -d docs/test -s phpzero/zero/class -s phpzero/zero/i18n -s phpzero/application
