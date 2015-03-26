@@ -32,4 +32,13 @@ return [
         'Week' => '*',
         'IsActive' => true
     ],
+    'Zero_System_Console-ApiGen' => [
+        'Description' => 'Формирование документации',
+        'Minute' => '*/10',
+        'Hour' => '*',
+        'Day' => '*',
+        'Month' => '*',
+        'Week' => '*',
+        'IsActive' => true
+    ],
 ];

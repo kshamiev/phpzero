@@ -103,7 +103,7 @@ else
                 continue;
             //  run
             // exec(Zero_App::$Config->Site_PathPhp . ' ' . ZERO_PATH_SITE . '/console.php ' . $sys_demon . ' > /dev/null 2>&1 &');
-            exec(Zero_App::$Config->Site_PathPhp . ' ' . ZERO_PATH_SITE . '/console.php ' . $sys_demon);
+            exec(Zero_App::$Config->Site_PathPhp . ' ' . ZERO_PATH_ZERO . '/console.php ' . $sys_demon);
         }
     }
 }

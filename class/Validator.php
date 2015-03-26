@@ -10,7 +10,7 @@
  * - Poisk validatora zdes` v validatore po forme predstavleniia svoi`stva
  * Esli ni odin validator ne by`l nai`den proishodit bezuslovnoe prisvoenie znachenie svoi`stvu ob``etu.
  *
- * @package Component
+ * @package General.Component
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
@@ -165,7 +165,7 @@ class Zero_Validator
                     $_FILES[$prop]['tmp_name'] .= 'resize';
                 }
             }
-            $_FILES[$prop]['name'] = Zero_Helper_String::Transliteration_FileName($_FILES[$prop]['name']);
+            $_FILES[$prop]['name'] = Zero_Helper_Strings::Transliteration_FileName($_FILES[$prop]['name']);
             $this->Model->$prop = 'File Upload Ok';
         }
         return '';

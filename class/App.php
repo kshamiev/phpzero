@@ -49,7 +49,7 @@ define('ZERO_PATH_ZERO', ZERO_PATH_SITE . '/zero');
  *
  * The main component of execute the application as a whole.
  *
- * @package Component
+ * @package General.Component
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  * @todo получение любых данных из БД должно быть строго в моделях. Убрать из контроллеров (View)

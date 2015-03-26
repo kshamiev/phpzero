@@ -39,7 +39,7 @@ define('LANG', Zero_App::$Route->Lang);
  * Gathers ready-made template to the transferred data (as it executes a program.)
  * The mechanism of the multi-language templates
  *
- * @package Component Шаблонизатор
+ * @package General.Component Шаблонизатор
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */

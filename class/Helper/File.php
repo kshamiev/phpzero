@@ -2,7 +2,7 @@
 /**
  * A helper class for working with the file system.
  *
- * @package Helper
+ * @package General.Helper
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
@@ -383,7 +383,7 @@ final class Zero_Helper_File
         if ( !is_dir($path) )
             mkdir($path, 0777, true);
         //  korrektciia imeni fai`la i polny`i` put` do fai`la
-        $path .= '/' . Zero_Helper_String::Transliteration_FileName(basename($path_file));
+        $path .= '/' . Zero_Helper_Strings::Transliteration_FileName(basename($path_file));
         //  resize
         $row = getimagesize($path_file);
         if ( 0 < count($resize) && 'image' == substr($row['mime'], 0, 5) )

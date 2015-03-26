@@ -29,18 +29,19 @@ class Zero_System_Console extends Zero_Controller
      */
     public function Action_ApiGen()
     {
-        // title
-        $command = 'apigen.phar generate --title="'. Zero_App::$Config->Site_Name;
+        Zero_Helper_File::Folder_Copy(ZERO_PATH_ZERO .'/data/doc', ZERO_PATH_SITE .'/doc');
+        // ApiGen
+        $command = Zero_App::$Config->Site_PathPhp . ' ' . ZERO_PATH_ZERO . '/apigen.phar generate';
         // source (источники)
         $command .= ' -s '. ZERO_PATH_ZERO .' -s '. ZERO_PATH_APPLICATION;
         // exclude (исключения)
-        $command .= ' --exclude="/setup/*" --exclude="/i18n/*" --exclude="/data/*"';
+        $command .= ' --exclude="setup/*" --exclude="i18n/*" --exclude="data/*"';
         // target (куда)
         $command .= ' -d '. ZERO_PATH_SITE .'/doc/api';
         // advanced
-        $command .= ' --access-levels="public" --groups="packages" --debug --todo --deprecated --download';
+        $command .= ' --title="'. Zero_App::$Config->Site_Name. '" --access-levels="public" --groups="packages" --todo --deprecated --download';
         //
-        Zero_Logs::File_Custom($command, 'apigen.log');
-        exec(Zero_App::$Config->Site_PathPhp . ' ' . $command);
+        Zero_Logs::Set_Message_Notice($command);
+        exec($command);
      }
 }

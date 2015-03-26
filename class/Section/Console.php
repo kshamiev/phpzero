@@ -39,7 +39,7 @@ class Zero_Section_Console extends Zero_Controller
         {
             $str .= '
             <url>
-                <loc>' . HTTP . '/product-id:' . $row['ID'] . '-' . Zero_Helper_String::Transliteration_Url($row['Name']) . '.html</loc>
+                <loc>' . HTTP . '/product-id:' . $row['ID'] . '-' . Zero_Helper_Strings::Transliteration_Url($row['Name']) . '.html</loc>
                 <lastmod>' . date('Y-m-d') . '</lastmod>
                 <changefreq>monthly</changefreq>
                 <priority>0.8</priority>

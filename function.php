@@ -2,7 +2,7 @@
 /**
  * Системные функции общего назначения
  *
- * @package Function
+ * @package General.Function
  */
 
 /**

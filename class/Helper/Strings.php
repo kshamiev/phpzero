@@ -2,11 +2,11 @@
 /**
  * A helper class for working with the string.
  *
- * @package Helper
+ * @package General.Helper
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
-final class Zero_Helper_String
+final class Zero_Helper_Strings
 {
     public static $Transliteration = [
         0 => 0,

@@ -1,5 +1,6 @@
 <?php
 /**
- * @package Inventory
- * The basic configuration of the all application.
+ * Функции общего назначения конкретного проекта
+ *
+ * @package General.Function
  */

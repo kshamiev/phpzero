@@ -5,7 +5,7 @@
  * Realizuet centralizovannoe sokhranenie ob``ektov i drugikh tipov danny`kh v sessii.
  * Ispol`zuet pattern odinochka
  *
- * @package Component
+ * @package General.Component
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */

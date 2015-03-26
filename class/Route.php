@@ -4,7 +4,7 @@
  *
  * Definition and initialization of the input parameters of the request
  *
- * @package Component
+ * @package General.Component
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
