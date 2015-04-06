@@ -214,7 +214,7 @@ final class Zero_Helper_File
             return true;
         if ( !is_dir($path_output) )
             mkdir($path_output);
-        chmod($path_output, 0755);
+        chmod($path_output, 0777);
         $fp_folder = opendir($path_input);
         while ( false != $name_file = readdir($fp_folder) )
         {
@@ -226,14 +226,14 @@ final class Zero_Helper_File
                 {
                     if ( !is_dir($path_output . '/' . $name_file) )
                         mkdir($path_output . '/' . $name_file);
-                    chmod($path_output . '/' . $name_file, 0755);
+                    chmod($path_output . '/' . $name_file, 0777);
                     self::Folder_Copy($path_input . '/' . $name_file, $path_output . '/' . $name_file, $filter);
                 }
             }
             else
             {
                 copy($path_input . '/' . $name_file, $path_output . '/' . $name_file);
-                chmod($path_output . '/' . $name_file, 0644);
+                chmod($path_output . '/' . $name_file, 0666);
             }
         }
         closedir($fp_folder);
@@ -256,7 +256,7 @@ final class Zero_Helper_File
             return true;
         if ( !is_dir($path_output) )
             mkdir($path_output);
-        chmod($path_output, 0755);
+        chmod($path_output, 0777);
         $fp_folder = opendir($path_input);
         while ( false != $name_file = readdir($fp_folder) )
         {
@@ -267,7 +267,7 @@ final class Zero_Helper_File
                 if ( '' == $filter || preg_match('~' . $filter . '~si', $name_file) )
                 {
                     mkdir($path_output . '/' . $name_file);
-                    chmod($path_output . '/' . $name_file, 0755);
+                    chmod($path_output . '/' . $name_file, 0777);
                     self::Folder_Move($path_input . '/' . $name_file, $path_output . '/' . $name_file, $filter);
                     //rmdir($path_input . '/' . $name_file);
                 }
@@ -275,7 +275,7 @@ final class Zero_Helper_File
             else
             {
                 rename($path_input . '/' . $name_file, $path_output . '/' . $name_file);
-                chmod($path_output . '/' . $name_file, 0644);
+                chmod($path_output . '/' . $name_file, 0666);
             }
         }
         closedir($fp_folder);
