@@ -53,7 +53,7 @@ class Zero_AR
      *
      * @return string
      */
-    public function Sql_Where_Compilation()
+    protected function Sql_Where_Compilation()
     {
         if ( !isset($this->Params['Where']) )
             return '1';
@@ -358,40 +358,46 @@ class Zero_AR
                 $this->Sql_Where_IsNull($row['AliasDB']);
                 continue;
             }
-            else if ( 'NOTNULL' == $row['Value'] || 'IS NOT NULL' == $row['Value'] )
+            else if ( 'NOT NULL' == $row['Value'] || 'NOTNULL' == $row['Value'] || 'IS NOT NULL' == $row['Value'] )
             {
                 $this->Sql_Where_IsNotNull($row['AliasDB']);
                 continue;
             }
 
             // остальные значения
-            //  data i vremia
-            if ( 'DateTime' == $row['Form'] || 'Date' == $row['Form'] || 'Time' == $row['Form'] )
+            // Фильтр на значение NULL
+            if ( 'Null' == $row['Form'] )
+            {
+                if ( 'yes' == $row['Value'] )
+                    $this->Sql_Where_IsNotNull($row['AliasDB']);
+                else
+                    $this->Sql_Where_IsNull($row['AliasDB']);
+            }
+            // Фильтр флаг
+            else if ( 'Check' == $row['Form'] )
+            {
+                if ( 'yes' == $row['Value'] )
+                    $this->Sql_Where_Expression($row['AliasDB'] . ' = 1');
+                else
+                    $this->Sql_Where_Expression($row['AliasDB'] . ' = 0');
+            }
+            // Фильтр перечислений
+            else if ( 'Checkbox' == $row['Form'] && 0 < count($row['Value']) )
+            {
+                foreach ($row['Value'] as $val)
+                {
+                    $this->Sql_Where_Like($row['AliasDB'], $val);
+                }
+            }
+            // Фильтр даты и времени
+            else if ( 'DateTime' == $row['Form'] || 'Date' == $row['Form'] || 'Time' == $row['Form'] )
             {
                 if ( $row['Value'][0] )
                     $this->Sql_Where($row['AliasDB'], '>=', $row['Value'][0]);
                 if ( $row['Value'][1] )
                     $this->Sql_Where($row['AliasDB'], '<', $row['Value'][1]);
-            } //  mnozhestva
-            else if ( 'Checkbox' == $row['Form'] && 0 < count($row['Value']) )
-            {
-                //                $this->Sql_Where_Like($row['AliasDB'], $row['Value']);
-                //                $this->Sql_Where_And();
-                foreach ($row['Value'] as $val)
-                {
-                    $this->Sql_Where_Like($row['AliasDB'], $val);
-                }
-                //                $this->Sql_Where_And();
-                //                $this->Sql_Where_Like($row['AliasDB'], $row['Value'], 'OR');
             }
-            else if ( 'Null' == $row['Form'] )
-            {
-                if ( $row['Value'] )
-                    $this->Sql_Where_IsNotNull($row['AliasDB']);
-                else
-                    $this->Sql_Where_IsNull($row['AliasDB']);
-            }
-            //  fil`try` perechisleniia i sviazei` - ssy`lki
+            //  Фильтр списков
             else if ( 'Radio' == $row['Form'] || 'Select' == $row['Form'] || 'Link' == $row['Form'] || 'LinkMore' == $row['Form'] )
             {
                 $this->Sql_Where($row['AliasDB'], '=', $row['Value']);

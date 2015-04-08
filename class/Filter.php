@@ -189,7 +189,6 @@ class Zero_Filter
                 $this->Filter[$prop]['List'] = $row['List'];
             else
             {
-                $this->Filter[$prop]['List'] = [];
                 $data = Zero_I18n::Model(get_class($this->Model), $prop . ' options');
                 if ( $data != $prop . ' options' )
                     $this->Filter[$prop]['List'] = $data;
@@ -242,7 +241,6 @@ class Zero_Filter
                 $this->Filter[$prop]['List'] = $row['List'];
             else
             {
-                $this->Filter[$prop]['List'] = [];
                 $data = Zero_I18n::Model(get_class($this->Model), $prop . ' options');
                 if ( $data != $prop . ' options' )
                     $this->Filter[$prop]['List'] = $data;
@@ -257,6 +255,25 @@ class Zero_Filter
         $this->Filter[$prop]['Form'] = 'Null';
         $this->Filter[$prop]['Visible'] = $is_visible;
         $this->Filter[$prop]['Value'] = '';
+        $this->Filter[$prop]['List'] = Zero_I18n::Model('Zero_All', 'FlagOptions');
+        return true;
+    }
+
+    /**
+     * Dobavlenie fil`tra mnozhestva
+     *
+     * @param string $prop Svoi`stvo mnozhestva dlia kotorogo budet sozdan fil`tr.
+     * @param integer $is_visible Vidimost` fil`tra (1 - otobrazhaetsia, 0 - ne otobrazhaetsia po umolchaniiu)
+     * @param mixed $load 1 - avtonomnaia zagruzka fil`tra, 0 - bez zagruzki po umolchaniiu, array - peredanny`e varianty` (spisok ID => Name)
+     * @return bool
+     */
+    public function Add_Filter_Check($prop, $row, $is_visible = 0)
+    {
+        $this->Filter[$prop] = $row;
+        $this->Filter[$prop]['Form'] = 'Check';
+        $this->Filter[$prop]['Visible'] = $is_visible;
+        $this->Filter[$prop]['Value'] = '';
+        $this->Filter[$prop]['List'] = Zero_I18n::Model('Zero_All', 'FlagOptions');
         return true;
     }
 
@@ -287,7 +304,6 @@ class Zero_Filter
                 $this->Filter[$prop]['List'] = $row['List'];
             else
             {
-                $this->Filter[$prop]['List'] = [];
                 $data = Zero_I18n::Model(get_class($this->Model), $prop . ' options');
                 if ( $data != $prop . ' options' )
                     $this->Filter[$prop]['List'] = $data;

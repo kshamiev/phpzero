@@ -18,7 +18,7 @@ define('ZERO_PATH_LIBRARY', ZERO_PATH_SITE . '/library');
 /**
  * The location of the site log
  */
-define('ZERO_PATH_LOG', dirname(ZERO_PATH_SITE) . '/log');
+define('ZERO_PATH_LOG', ZERO_PATH_SITE . '/log');
 /**
  * The location of the site log
  */

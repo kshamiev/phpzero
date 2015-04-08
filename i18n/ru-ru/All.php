@@ -12,6 +12,7 @@ return [
         'Title' => 'Титул',
         'Keywords' => 'Ключи',
         'Description' => 'Описание',
+        'FlagOptions' => ['no' => 'нет','yes' => 'да'],
     ],
     'view' => [
         'Properties' => 'Свойства',

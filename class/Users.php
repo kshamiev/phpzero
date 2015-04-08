@@ -249,6 +249,7 @@ class Zero_Users extends Zero_Model
             if ( 1 != $this->Groups_ID )
                 $this->_Condition['Groups_ID'][$this->Groups_ID] = $this->Groups_ID('Name');
             //  dopolnitel`ny`e usloviia
+            /*
             foreach ($this->Get_Props(1) as $prop => $value)
             {
                 if ( 'Groups_ID' == $prop || 'Users_ID' == $prop )
@@ -258,6 +259,7 @@ class Zero_Users extends Zero_Model
                     $this->_Condition[$prop][$value] = Zero_DB::Select_Field("SELECT `Name` FROM `" . zero_relation($prop) . "` WHERE ID = {$value}");
                 }
             }
+            */
         }
         return $this->_Condition;
     }

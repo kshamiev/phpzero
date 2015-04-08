@@ -177,8 +177,6 @@ class Zero_DB
      */
     public static function EscT($str)
     {
-        //        if ( !isset(self::$DB['']) )
-        //            self::Init('');
         $str = trim(strval($str));
         if ( $str )
             //            return "'" . self::$DB['']->real_escape_string($str) . "'";
@@ -195,8 +193,6 @@ class Zero_DB
      */
     public static function EscD($str)
     {
-        //        if ( !isset(self::$DB['']) )
-        //            self::Init('');
         $str = trim(strval($str));
         if ( $str )
             //            return "'" . self::$DB['']->real_escape_string($str) . "'";
@@ -213,8 +209,6 @@ class Zero_DB
      */
     public static function EscE($enum)
     {
-        //        if ( !isset(self::$DB['']) )
-        //            self::Init('');
         $enum = trim(strval($enum));
         if ( $enum )
             //            return "'" . self::$DB['']->real_escape_string($enum) . "'";
@@ -232,8 +226,6 @@ class Zero_DB
      */
     public static function EscS($array, $separator = ',')
     {
-        //        if ( !isset(self::$DB['']) )
-        //            self::Init('');
         $str = trim(implode($separator, $array));
         if ( $str )
             //            return "'" . self::$DB['']->real_escape_string($str) . "'";

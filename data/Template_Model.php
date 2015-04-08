@@ -69,8 +69,8 @@ class Zero_Model_Pattern extends Zero_Model
      * - 'AliasDB'=> 'z.PropName'       - Реальное название свойства (поля) в БД
      * - 'AR'=> bool                    - Использовать ли в запросах к БД
      * - 'Visible'=> bool               - Видимость фильтра в виджите или вьюхе
-     * - 'Form'=> 'Select, Radio, Checkbox, DateTime, Link, Null' - Форма предстваления свйоства в виджетах и вьюхах (смотри Zero_Engine)
-     * - 'List'=> array                 - Варианты для свойств (полей) типа enum, set в БД (пользуйтесь системой перевода i18n)
+     * - 'Form'=> 'Select, Radio, Checkbox, Null, Check, DateTime, Link' - Форма предстваления свйоства в виджетах и вьюхах (смотри Zero_Engine)
+     * - 'List'=> array                 - Варианты значений (пользуйтесь системой перевода i18n)
      * - 'Comment' => string            - Комментарий свойства (пользуйтесь системой перевода i18n)
      *
      * @param Zero_Model_Pattern $Model The exact working model

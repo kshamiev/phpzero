@@ -2,7 +2,7 @@
   <input type="hidden" name="act">
   <table class="tbledit" width="600px" cellspacing="1" cellpadding="0" border="0">
     <tr>
-      <th>{translation "Www_All" "Filters"}</th>
+      <th width="200px">{translation "Www_All" "Filters"}</th>
       <th>-</th>
     </tr>
       <tr>
@@ -30,7 +30,7 @@
         </select>
       </td>
     </tr>
-    {else if ( 'Radio' == $row['Form'] )}
+    {else if ( 'Radio' == $row['Form'] || 'Null' == $row['Form'] || 'Check' == $row['Form'] )}
     <tr>
       <td width="200px">{$row['Comment']}</td>
       <td>
@@ -52,20 +52,6 @@
         </select>
       </td>
     </tr>
-    {else if ( 'Null' == $row['Form'] )}
-      <tr>
-          <td width="200px">{$row['Comment']}</td>
-          <td>
-              <div id="blockroot">
-                  <div id="blocklevel33">
-                      <div id="blocklevel2">
-                          <input type="hidden" name="Filter[{$prop}]" value="0">
-                          <input type="checkbox" name="Filter[{$prop}]" value="1"{if ( $row['Value'] )} checked{/if}>
-                      </div>
-                  </div>
-              </div>
-          </td>
-      </tr>
     {else if ( 'DateTime' == $row['Form'] )}
     <tr>
       <td width="200px">{$row['Comment']}</td>

@@ -95,7 +95,7 @@ class Zero_Controller_Grid extends Zero_Crud_Grid
         if ( !$_REQUEST['obj_id'] )
             return $this->Set_Message('Error_NotParam', 1, false);
         $prop = $this->Params['obj_parent_prop'];
-        $Object = Zero_Model::Make($this->Source, $_REQUEST['obj_id']);
+        $Object = Zero_Model::Make($this->ModelName, $_REQUEST['obj_id']);
         if ( 'NULL' == $this->Params['obj_parent_id'] )
             $Object->$prop = null;
         else

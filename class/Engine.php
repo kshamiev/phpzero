@@ -152,7 +152,7 @@ class Zero_Engine
         'mediumint' => 'Number',
         'int' => 'Number',
         'smallint' => 'Number',
-        'tinyint' => 'Number',
+        'tinyint' => 'Check',
         //  chisla s plavaiushchei` tochkoi`
         'float' => 'Number',
         'double' => 'Number',

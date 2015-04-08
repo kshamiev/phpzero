@@ -120,7 +120,6 @@
                 {else if ( 'Check' == $row['Form'] )}
                 <div id="blockroot">
                     <input type="hidden" name="Prop[{$Prop}]" value="0">
-
                     <div id="blocklevel12">
                         <div id="blocklevel2">
                             <input type="checkbox" name="Prop[{$Prop}]" value="1"{if ( $Object->$Prop )} checked{/if}>
@@ -129,20 +128,16 @@
                 </div>
 
                 {else if ( 'Textarea' == $row['Form'] )}
-                <textarea class="field" name="Prop[{$Prop}]"
-                          rows="7">{htmlspecialchars($Object->$Prop)}</textarea>
+                <textarea class="field" name="Prop[{$Prop}]" rows="7">{htmlspecialchars($Object->$Prop)}</textarea>
 
                 {else if ( 'DateTime' == $row['Form'] )}
-                <input class="field datetimepicker" type="text" id="{$Prop}" name="Prop[{$Prop}]"
-                       value="{htmlspecialchars($Object->$Prop)}">
+                <input class="field datetimepicker" type="text" id="{$Prop}" name="Prop[{$Prop}]" value="{htmlspecialchars($Object->$Prop)}">
 
                 {else if ( 'Date' == $row['Form'] )}
-                <input class="field datepicker" type="text" id="{$Prop}" name="Prop[{$Prop}]"
-                       value="{htmlspecialchars($Object->$Prop)}">
+                <input class="field datepicker" type="text" id="{$Prop}" name="Prop[{$Prop}]" value="{htmlspecialchars($Object->$Prop)}">
 
                 {else if ( 'Time' == $row['Form'] )}
-                <input class="field timepicker" type="text" id="{$Prop}" name="Prop[{$Prop}]"
-                       value="{htmlspecialchars($Object->$Prop)}">
+                <input class="field timepicker" type="text" id="{$Prop}" name="Prop[{$Prop}]" value="{htmlspecialchars($Object->$Prop)}">
 
                 {else if ( 'Img' == $row['Form'] )}
                 {if ( $Object->$Prop )}
