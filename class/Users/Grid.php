@@ -53,7 +53,7 @@ class Zero_Users_Grid extends Zero_Crud_Grid
             //  move down
             else
             {
-                $ObjectGo = Zero_Model::Make($this->ModelName, $_GET['pid']);
+                $ObjectGo = Zero_Model::Makes($this->ModelName, $_GET['pid']);
                 $ObjectGo->AR->Select('Name');
                 $this->Params['obj_parent_path'][$_GET['pid']] = $ObjectGo->Name;
                 unset($ObjectGo);
@@ -89,12 +89,12 @@ class Zero_Users_Grid extends Zero_Crud_Grid
     protected function Chunk_CatalogMove()
     {
         if ( !$_REQUEST['obj_id'] )
-            return $this->Set_Message('Error_NotParam', 1, false);
+            return $this->Set_Message('Error_NotParam', 1);
         $prop = $this->Params['obj_parent_prop'];
-        $Object = Zero_Model::Make($this->ModelName, $_REQUEST['obj_id']);
+        $Object = Zero_Model::Makes($this->ModelName, $_REQUEST['obj_id']);
         /* @var $Object Zero_Users */
         if ( 0 == count($Object->Get_AR()->Select('ID')) )
-            return $this->Set_Message('Error_NotFound', 1, false);
+            return $this->Set_Message('Error_NotFound', 1);
         if ( 'NULL' == $this->Params['obj_parent_id'] )
             $Object->$prop = null;
         else

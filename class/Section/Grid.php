@@ -54,7 +54,7 @@ class Zero_Section_Grid extends Zero_Crud_Grid
             //  move down
             else
             {
-                $ObjectGo = Zero_Model::Make($this->ModelName, $_GET['pid']);
+                $ObjectGo = Zero_Model::Makes($this->ModelName, $_GET['pid']);
                 $ObjectGo->AR->Select('Name');
                 $this->Params['obj_parent_path'][$_GET['pid']] = $ObjectGo->Name;
                 unset($ObjectGo);
@@ -90,12 +90,12 @@ class Zero_Section_Grid extends Zero_Crud_Grid
     protected function Chunk_CatalogMove()
     {
         if ( !$_REQUEST['obj_id'] )
-            return $this->Set_Message('Error_NotParam', 1, false);
+            return $this->Set_Message('Error_NotParam', 1);
         $prop = $this->Params['obj_parent_prop'];
-        $Object = Zero_Model::Make($this->ModelName, $_REQUEST['obj_id']);
+        $Object = Zero_Model::Makes($this->ModelName, $_REQUEST['obj_id']);
         /* @var $Object Zero_Section */
         if ( 0 == count($Object->Get_AR()->Select('ID')) )
-            return $this->Set_Message('Error_NotFound', 1, false);
+            return $this->Set_Message('Error_NotFound', 1);
         if ( 'NULL' == $this->Params['obj_parent_id'] )
             $Object->$prop = null;
         else
@@ -133,12 +133,12 @@ class Zero_Section_Grid extends Zero_Crud_Grid
         if ( !$section_id )
         {
             if ( !$this->Params['obj_parent_id'] )
-                return $this->Set_Message('Error_Update_Url', 1, false);
+                return $this->Set_Message('Error_Update_Url', 1);
             $section_id = $this->Params['obj_parent_id'];
         }
         if ( true == Zero_Section::DB_Update_Url($section_id) )
             return $this->Set_Message('Update_Url', 0);
         else
-            return $this->Set_Message('Error_Update_Url', 1, false);
+            return $this->Set_Message('Error_Update_Url', 1);
     }
 }

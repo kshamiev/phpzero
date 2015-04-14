@@ -97,7 +97,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
             $this->Params['id'] = 0;
         //
         $this->View = new Zero_View($this->Template);
-        $this->Model = Zero_Model::Make($this->ModelName);
+        $this->Model = Zero_Model::Makes($this->ModelName);
         //
         $Filter = Zero_Filter::Factory($this->Model);
         if ( isset($_REQUEST['pg']) && 0 < $_REQUEST['pg'] )
@@ -215,7 +215,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
      */
     protected function Chunk_Remove()
     {
-        $ObjectRem = Zero_Model::Make(get_class($this->Model), $_REQUEST['id']);
+        $ObjectRem = Zero_Model::Makes(get_class($this->Model), $_REQUEST['id']);
         //  Remove binary data object
         $path = ZERO_PATH_DATA . '/' . strtolower($ObjectRem->Source) . '/' . Zero_Helper_File::Get_Path_Cache($ObjectRem->ID) . '/' . $ObjectRem->ID;
         if ( is_dir($path) )
@@ -226,8 +226,14 @@ abstract class Zero_Crud_Grid extends Zero_Controller
         $ObjectRem->Cache->Reset();
         //  Remove
         if ( $ObjectRem->AR->Delete() )
-            return $this->Set_Message('Remove', 0);
+        {
+            $this->SetMessage(220, [$this->Model->Name, $this->Model->ID]);
+            return true;
+        }
         else
-            return $this->Set_Message('Error_Remove', 1);
+        {
+            $this->SetMessage(520, [$this->Model->Name, $this->Model->ID]);
+            return false;
+        }
     }
 }

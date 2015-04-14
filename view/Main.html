@@ -10,11 +10,13 @@
       <tr>
         <td width="220px" height="40px" align="center">{plugin "Zero_Content_Page" block="head_left"}</td>
         <td>
-            {translation "Www_All" "Project"}: {Zero_App::$Config->Site_Name}&nbsp;&nbsp;
-            {if ( $Message['Code'] > 0 )}
+            {translation "Www_General" "Project"}: {Zero_App::$Config->Site_Name}&nbsp;&nbsp;
+            {if ( $Message['Message'] )}
+            {if ( $Message['Code'] >= 500 )}
             <font color="red">{$Message['Message']}</font>
             {else}
             <font color="green">{$Message['Message']}</font>
+            {/if}
             {/if}
         </td>
         <td width="150px" align="center">

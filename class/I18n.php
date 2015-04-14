@@ -61,11 +61,11 @@ class Zero_I18n
         if ( isset(self::$_I18n[$file_name][$section][$key]) )
             return self::$_I18n[$file_name][$section][$key];
         // поиск в общем фалйе перевода
-        $file_name_all = $folder_list[0] . '_All';
+        $file_name_all = $folder_list[0] . '_General';
         if ( !isset(self::$_I18n[$file_name_all]) )
         {
 //            self::$_I18n[$file_name_all] = [];
-            self::Search_Path_I18n([$folder_list[0], 'All']);
+            self::Search_Path_I18n([$folder_list[0], 'General']);
             //            if ( $path = self::Search_Path_I18n([$folder_list[0], 'All']) )
             //                self::$_I18n[$file_name_all] = include $path;
         }
@@ -89,5 +89,34 @@ class Zero_I18n
     public static function Controller($file_name, $key)
     {
         return self::T($file_name, 'controller', $key);
+    }
+
+
+    public static function CodeMessage($file_name, $code, $params = [])
+    {
+        // инициализация файла перевода
+        $folder_list = explode('_', $file_name);
+        $folder_list[1] = 'MessageResponse';
+        $file_name = $folder_list[0] . '_' . $folder_list[1];
+        if ( !isset(self::$_I18n[$file_name]) )
+        {
+            self::Search_Path_I18n($folder_list);
+        }
+        // инициализация шаблона и глобального кода собщения
+        $codeGlobal = 0;
+        if ( isset(self::$_I18n[$file_name][$code]) )
+        {
+            array_unshift($params, self::$_I18n[$file_name][$code]);
+            //
+            $config = Zero_Config::Get_Config($folder_list[0], 'config');
+            settype($config['GlobalCodeMessage'], 'int');
+            $codeGlobal = $config['GlobalCodeMessage'] * 1000 + $code;
+        }
+        else if ( 0 < $code )
+        {
+            Zero_Logs::Set_Message_Warninng('I18N NOT FOUND CODE MESSAGE: ' . LANG . ' -> ' . $file_name . ' -> ' . $code);
+            $codeGlobal = $code;
+        }
+        return [$codeGlobal, zero_sprintf($params)];
     }
 }

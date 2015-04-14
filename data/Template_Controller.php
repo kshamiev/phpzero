@@ -19,7 +19,7 @@ class Zero_Controller_Sample extends Zero_Controller
     protected function Chunk_Init()
     {
         $this->View = new Zero_View(__CLASS__);
-        $this->Model = Zero_Model::Make('Zero_Users');
+        $this->Model = Zero_Model::Makes('Zero_Users');
         return true;
     }
 
@@ -67,27 +67,27 @@ class Zero_Controller_Sample extends Zero_Controller
             case 'OPTIONS':
                 break;
         }
-        Zero_App::ResponseJson($_SERVER['REQUEST_METHOD'] . ':' . ZERO_URL, 409, 409, "Запрос не реализован");
+        Zero_App::ResponseJson($_SERVER['REQUEST_METHOD'] . ':' . ZERO_URL, 409, 409, ["Запрос не реализован"]);
     }
 
     protected function Action_DefaultApiGet()
     {
-        Zero_App::ResponseJson('', 200, 200, '');
+        Zero_App::ResponseJson('', 200, 0, []);
     }
 
     protected function Action_DefaultApiPut()
     {
-        Zero_App::ResponseJson($_POST, 200, 200, '');
+        Zero_App::ResponseJson($_POST, 200, 0, []);
     }
 
     protected function Action_DefaultApiPost()
     {
-        Zero_App::ResponseJson($_POST, 200, 200, '');
+        Zero_App::ResponseJson($_POST, 200, 0, []);
     }
 
     protected function Action_DefaultApiDelete()
     {
-        Zero_App::ResponseJson('', 200, 200, '');
+        Zero_App::ResponseJson('', 200, 0, []);
     }
 
     //// Пример консольного контроллера

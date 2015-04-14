@@ -255,7 +255,7 @@ class Zero_Filter
         $this->Filter[$prop]['Form'] = 'Null';
         $this->Filter[$prop]['Visible'] = $is_visible;
         $this->Filter[$prop]['Value'] = '';
-        $this->Filter[$prop]['List'] = Zero_I18n::Model('Zero_All', 'FlagOptions');
+        $this->Filter[$prop]['List'] = Zero_I18n::Model('Zero_General', 'FlagOptions');
         return true;
     }
 
@@ -273,7 +273,7 @@ class Zero_Filter
         $this->Filter[$prop]['Form'] = 'Check';
         $this->Filter[$prop]['Visible'] = $is_visible;
         $this->Filter[$prop]['Value'] = '';
-        $this->Filter[$prop]['List'] = Zero_I18n::Model('Zero_All', 'FlagOptions');
+        $this->Filter[$prop]['List'] = Zero_I18n::Model('Zero_General', 'FlagOptions');
         return true;
     }
 
@@ -490,7 +490,7 @@ class Zero_Filter
         $this->Filter = [];
         //  поиск
         $this->Search = ['List' => [], 'Value' => []];
-        $this->Add_Search_Text('ALL_PROPS', ['Comment' => Zero_I18n::Model('Www_All', 'Property all')]);
+        $this->Add_Search_Text('ALL_PROPS', ['Comment' => Zero_I18n::Model('Www_General', 'Property all')]);
         //  сортировка
         $this->Sort = ['List' => [], 'Value' => []];
         //

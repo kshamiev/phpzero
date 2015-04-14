@@ -52,16 +52,9 @@ define('ZERO_PATH_ZERO', ZERO_PATH_SITE . '/zero');
  * @package General.Component
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
- * @todo получение любых данных из БД должно быть строго в моделях. Убрать из контроллеров (View)
  */
-class Zero_App {
-
-    /**
-     * An array of abstract and key additional application variables
-     *
-     * @var array
-     */
-    private static $_Variable = [];
+class Zero_App
+{
 
     /**
      * Режим работы приложения (api, web, console).
@@ -99,26 +92,6 @@ class Zero_App {
     public static $Section;
 
     /**
-     * Getting the application variables
-     *
-     * @param string $variable
-     * @return mixed value
-     */
-    public static function Get_Variable($variable) {
-        return isset(self::$_Variable[$variable]) ? self::$_Variable[$variable] : null;
-    }
-
-    /**
-     * Setting the application variables
-     *
-     * @param string $variable
-     * @param mixed $value
-     */
-    public static function Set_Variable($variable, $value) {
-        self::$_Variable[$variable] = $value;
-    }
-
-    /**
      * Connection classes
      *
      * Setting up automatic downloads of files with the required classes
@@ -126,23 +99,26 @@ class Zero_App {
      * @param string $class_name
      * @return bool
      */
-    public static function Autoload($class_name) {
-        if (class_exists($class_name))
+    public static function Autoload($class_name)
+    {
+        if ( class_exists($class_name) )
             return true;
         $arr = explode('_', $class_name);
         $module = strtolower(array_shift($arr));
         $class = implode('/', $arr);
         $path = ZERO_PATH_APPLICATION . '/' . $module . '/class/' . $class . '.php';
-        if (file_exists($path)) {
+        if ( file_exists($path) )
+        {
             require_once $path;
-            if (class_exists($class_name))
+            if ( class_exists($class_name) )
                 return true;
         }
         Zero_Logs::Set_Message_Warninng('Класс не найден: ' . $class_name);
         return false;
     }
 
-    public static function RequestJson($method, $url, $content = '') {
+    public static function RequestJson($method, $url, $content = '')
+    {
         $content = json_encode($content, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
         $opts = array(
             'http' => array(
@@ -156,12 +132,13 @@ class Zero_App {
         $response = stream_get_contents($fp);
         fclose($fp);
         $data = json_decode($response, true);
-        if (!$data)
+        if ( !$data )
             return $response;
         return $data;
     }
 
-    public static function RequestJsonHttps($method, $url, $content = '') {
+    public static function RequestJsonHttps($method, $url, $content = '')
+    {
         $content = json_encode($content, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
         $opts = array(
             'https' => array(
@@ -175,7 +152,7 @@ class Zero_App {
         $response = stream_get_contents($fp);
         fclose($fp);
         $data = json_decode($response, true);
-        if (!$data)
+        if ( !$data )
             return $response;
         return $data;
     }
@@ -188,27 +165,29 @@ class Zero_App {
      * @param string $message Сообщение
      * @return bool
      */
-    public static function ResponseJson($content, $status, $code = 0, $message = '') {
+    public static function ResponseJson($content, $status, $code = 0, $params = [])
+    {
         header('Pragma: no-cache');
         header('Last-Modified: ' . date('D, d M Y H:i:s') . 'GMT');
         header('Expires: Mon, 26 Jul 2007 05:00:00 GMT');
         header('Cache-Control: no-store, no-cache, must-revalidate');
         header("Content-Type: application/json; charset=utf-8");
         header('HTTP/1.1 ' . $status . ' ' . $status);
+        $message = Zero_I18n::CodeMessage(self::$Section->Controller, $code, $params);
         $data = [
-            'Code' => $code,
-            'Message' => $message,
+            'Code' => $message[0],
+            'Message' => $message[1],
         ];
-        if ($content)
+        if ( $content )
             $data['Content'] = $content;
         echo json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
         // закрываем соединение с браузером (работает только под нгинx)
-        if (function_exists('fastcgi_finish_request'))
+        if ( function_exists('fastcgi_finish_request') )
             fastcgi_finish_request();
 
         // Логирование в файлы
-        if (Zero_App::$Config->Log_Output_File)
+        if ( Zero_App::$Config->Log_Output_File )
             Zero_Logs::File();
         exit;
     }
@@ -218,30 +197,33 @@ class Zero_App {
      *
      * @return bool
      */
-    public static function ResponseConsole() {
+    public static function ResponseConsole()
+    {
         // закрываем соединение с браузером (работает только под нгинx)
-        if (function_exists('fastcgi_finish_request'))
+        if ( function_exists('fastcgi_finish_request') )
             fastcgi_finish_request();
 
         // Логирование в файлы
-        if (self::$Config->Log_Output_File)
+        if ( self::$Config->Log_Output_File )
             Zero_Logs::File();
         exit;
     }
 
-    public static function ResponseImg($path) {
+    public static function ResponseImg($path)
+    {
         header("Content-Type: " . Zero_Helper_File::File_Type($path));
         header("Content-Length: " . filesize($path));
-        if (file_exists($path))
+        if ( file_exists($path) )
             echo file_get_contents($path);
         exit;
     }
 
-    public static function ResponseFile($path) {
+    public static function ResponseFile($path)
+    {
         header("Content-Type: " . Zero_Helper_File::File_Type($path));
         header("Content-Length: " . filesize($path));
         header('Content-Disposition: attachment; filename = "' . basename($path) . '"');
-        if (file_exists($path))
+        if ( file_exists($path) )
             echo file_get_contents($path);
         exit;
     }
@@ -259,7 +241,8 @@ class Zero_App {
      * @param string $file_log the base name of the log file
      * @param string $mode the base name of the log file
      */
-    public static function Init($file_log = 'application', $mode = 'web') {
+    public static function Init($file_log = 'application', $mode = 'web')
+    {
         //  Include Components
         require_once ZERO_PATH_APPLICATION . '/function.php';
         require_once ZERO_PATH_ZERO . '/function.php';
@@ -279,11 +262,12 @@ class Zero_App {
         Zero_Logs::Init($file_log);
 
         //  Initialize cache subsystem (Zero_Cache)
-        if (class_exists('Memcache') && 0 < count(self::$Config->Memcache['Cache']))
+        if ( class_exists('Memcache') && 0 < count(self::$Config->Memcache['Cache']) )
             Zero_Cache::InitMemcache(self::$Config->Memcache['Cache']);
 
         // DB init config
-        foreach (self::$Config->Db as $name => $config) {
+        foreach (self::$Config->Db as $name => $config)
+        {
             Zero_DB::Add_Config($name, $config);
         }
 
@@ -298,10 +282,12 @@ class Zero_App {
         require_once ZERO_PATH_ZERO . '/class/View.php';
     }
 
-    public static function ExecuteSimple() {
+    public static function ExecuteSimple()
+    {
         // General Authorization Application
-        if (self::$Config->Site_AccessLogin)
-            if (!isset($_SERVER['PHP_AUTH_USER']) || $_SERVER['PHP_AUTH_USER'] != self::$Config->Site_AccessLogin || $_SERVER['PHP_AUTH_PW'] != self::$Config->Site_AccessPassword) {
+        if ( self::$Config->Site_AccessLogin )
+            if ( !isset($_SERVER['PHP_AUTH_USER']) || $_SERVER['PHP_AUTH_USER'] != self::$Config->Site_AccessLogin || $_SERVER['PHP_AUTH_PW'] != self::$Config->Site_AccessPassword )
+            {
                 header('WWW-Authenticate: Basic realm="Auth"');
                 header('HTTP/1.0 401 Unauthorized');
                 echo 'Auth Failed';
@@ -309,37 +295,41 @@ class Zero_App {
             }
 
         //  Инициализация запрошенного раздела (Www_Section)
-        if (isset($_SERVER['HTTP_X_ACCESS_TOKEN']))
+        if ( isset($_SERVER['HTTP_X_ACCESS_TOKEN']) )
             $_GET['access-token'] = $_SERVER['HTTP_X_ACCESS_TOKEN'];
-        else if (isset($_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il']))
+        else if ( isset($_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il']) )
             $_GET['access-token'] = $_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il'];
-        if (isset($_GET['access-token']))
+        if ( isset($_GET['access-token']) )
             setcookie('i09u9Maf6l6sr7Um0m8A3u0r9i55m3il', $_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il'], time() + 2592000, '/');
-        self::$Users = Zero_Model::Factory('Www_Users');
+        self::$Users = Zero_Model::Factories('Www_Users');
 
         // Роутинг. Поиск урла.
-        self::$Section = Zero_Model::Make('Www_Section');
+        self::$Section = Zero_Model::Makes('Www_Section');
         $route = [];
-        foreach (Zero_Config::Get_Modules() as $module) {
+        foreach (Zero_Config::Get_Modules() as $module)
+        {
             $config = Zero_Config::Get_Config($module, self::$Mode . 'Route');
-            if (isset($config[ZERO_URL])) {
+            if ( isset($config[ZERO_URL]) )
+            {
                 $route = $config[ZERO_URL];
                 break;
             }
         }
 
-        if (0 == count($route))
+        if ( 0 == count($route) )
             self::ResponseError(404);
 
         //  Execute controller
         $view = '';
-        if (isset($route['Controller']) && $route['Controller']) {
+        $messageResponse = ['Code' => 0, 'Message' => ''];
+        if ( isset($route['Controller']) && $route['Controller'] )
+        {
             self::$Section->Controller = $route['Controller'];
             $routeDetails = explode('-', $route['Controller']);
             //
-            if (isset($_REQUEST['act']) && $_REQUEST['act'])
+            if ( isset($_REQUEST['act']) && $_REQUEST['act'] )
                 $_REQUEST['act'] = trim($_REQUEST['act']);
-            else if (1 < count($routeDetails))
+            else if ( 1 < count($routeDetails) )
                 $_REQUEST['act'] = $routeDetails[1];
             else
                 $_REQUEST['act'] = 'Default';
@@ -347,25 +337,30 @@ class Zero_App {
             $_REQUEST['act'] = 'Action_' . $_REQUEST['act'];
             //
             Zero_Logs::Start('#{CONTROLLER.Action} ' . $routeDetails[0] . ' -> ' . $_REQUEST['act']);
-            $Controller = Zero_Controller::Factory($routeDetails[0]);
-            if (!method_exists($Controller, $_REQUEST['act']))
+            $Controller = Zero_Controller::Factories($routeDetails[0]);
+            if ( !method_exists($Controller, $_REQUEST['act']) )
                 throw new Exception('Контроллер не имеет метода: ' . $_REQUEST['act'], 500);
             $view = $Controller->$_REQUEST['act']();
-            if ($_REQUEST['act'] != 'Action_Default')
+            if ( $_REQUEST['act'] != 'Action_Default' )
                 Zero_Logs::Set_Message_Action($_REQUEST['act']);
             Zero_Logs::Stop('#{CONTROLLER.Action} ' . $routeDetails[0] . ' -> ' . $_REQUEST['act']);
+            $messageResponse = $Controller->GetMessage();
         }
+        /* @var $Controller Zero_Controller */
 
         // Основные данные
-        if (isset($route['View']) && $route['View']) {
+        if ( isset($route['View']) && $route['View'] )
+        {
             $viewLayout = new Zero_View($route['View']);
-            if (isset($Controller))
-                $viewLayout->Assign('Message', $Controller->Get_Message());
-            if (true == $view instanceof Zero_View) {
+            if ( isset($Controller) )
+                $viewLayout->Assign('Message', $messageResponse);
+            if ( true == $view instanceof Zero_View )
+            {
                 /* @var $view Zero_View */
-                $view->Assign('Message', $Controller->Get_Message());
+                $view->Assign('Message', $messageResponse);
                 $viewLayout->Assign('Content', $view->Fetch());
-            } else
+            }
+            else
                 $viewLayout->Assign('Content', $view);
             $view = $viewLayout->Fetch();
         }
@@ -388,10 +383,12 @@ class Zero_App {
      *
      * @throws Exception
      */
-    public static function Execute() {
+    public static function Execute()
+    {
         // General Authorization Application
-        if (self::$Config->Site_AccessLogin)
-            if (!isset($_SERVER['PHP_AUTH_USER']) || $_SERVER['PHP_AUTH_USER'] != self::$Config->Site_AccessLogin || $_SERVER['PHP_AUTH_PW'] != self::$Config->Site_AccessPassword) {
+        if ( self::$Config->Site_AccessLogin )
+            if ( !isset($_SERVER['PHP_AUTH_USER']) || $_SERVER['PHP_AUTH_USER'] != self::$Config->Site_AccessLogin || $_SERVER['PHP_AUTH_PW'] != self::$Config->Site_AccessPassword )
+            {
                 header('WWW-Authenticate: Basic realm="Auth"');
                 header('HTTP/1.0 401 Unauthorized');
                 echo 'Auth Failed';
@@ -399,65 +396,72 @@ class Zero_App {
             }
 
         //  Инициализация запрошенного раздела (Www_Section)
-        if (isset($_SERVER['HTTP_X_ACCESS_TOKEN']))
+        if ( isset($_SERVER['HTTP_X_ACCESS_TOKEN']) )
             $_GET['access-token'] = $_SERVER['HTTP_X_ACCESS_TOKEN'];
-        else if (isset($_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il']))
+        else if ( isset($_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il']) )
             $_GET['access-token'] = $_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il'];
-        if (isset($_GET['access-token']))
+        if ( isset($_GET['access-token']) )
             setcookie('i09u9Maf6l6sr7Um0m8A3u0r9i55m3il', $_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il'], time() + 2592000, '/');
-        self::$Users = Zero_Model::Factory('Www_Users');
+        self::$Users = Zero_Model::Factories('Www_Users');
 
-        self::$Section = Zero_Model::Instance('Www_Section');
+        self::$Section = Zero_Model::Instances('Www_Section');
         //  Checking for non-existent section
-        if (0 == self::$Section->ID || 'no' == self::$Section->IsEnable)
+        if ( 0 == self::$Section->ID || 'no' == self::$Section->IsEnable )
             self::ResponseError(404);
 
         //  Call forwarding
-        if (self::$Section->UrlRedirect)
+        if ( self::$Section->UrlRedirect )
             self::ResponseRedirect(self::$Section->UrlRedirect);
 
         //  Checking the rights to the current section
         $Action_List = self::$Section->Get_Action_List();
-        if (1 < self::$Users->Groups_ID && 'yes' == self::$Section->IsAuthorized && 0 == count($Action_List))
+        if ( 1 < self::$Users->Groups_ID && 'yes' == self::$Section->IsAuthorized && 0 == count($Action_List) )
             self::ResponseError(403);
 
         //  Execute controller
         $view = "";
-        if (self::$Section->Controller) {
+        $messageResponse = ['Code' => 0, 'Message' => ''];
+        if ( self::$Section->Controller )
+        {
             $routeDetails = explode('-', self::$Section->Controller);
             //
-            if (isset($_REQUEST['act']) && $_REQUEST['act'])
+            if ( isset($_REQUEST['act']) && $_REQUEST['act'] )
                 $_REQUEST['act'] = trim($_REQUEST['act']);
-            else if (1 < count($routeDetails))
+            else if ( 1 < count($routeDetails) )
                 $_REQUEST['act'] = $routeDetails[1];
             else
                 $_REQUEST['act'] = 'Default';
             //
-            if (!isset($Action_List[$_REQUEST['act']]))
+            if ( !isset($Action_List[$_REQUEST['act']]) )
                 self::ResponseError(403);
             //
             $_REQUEST['act'] = 'Action_' . $_REQUEST['act'];
             //
             Zero_Logs::Start('#{CONTROLLER.Action} ' . $routeDetails[0] . ' -> ' . $_REQUEST['act']);
-            $Controller = Zero_Controller::Factory($routeDetails[0]);
-            if (!method_exists($Controller, $_REQUEST['act']))
+            $Controller = Zero_Controller::Factories($routeDetails[0]);
+            if ( !method_exists($Controller, $_REQUEST['act']) )
                 throw new Exception('Контроллер не имеет метода: ' . $_REQUEST['act'], 500);
             $view = $Controller->$_REQUEST['act']();
-            if ($_REQUEST['act'] != 'Action_Default')
+            if ( $_REQUEST['act'] != 'Action_Default' )
                 Zero_Logs::Set_Message_Action($_REQUEST['act']);
             Zero_Logs::Stop('#{CONTROLLER.Action} ' . $routeDetails[0] . ' -> ' . $_REQUEST['act']);
+            $messageResponse = $Controller->GetMessage();
         }
+        /* @var $Controller Zero_Controller */
 
         // Основные данные
-        if (self::$Section->Layout) {
+        if ( self::$Section->Layout )
+        {
             $viewLayout = new Zero_View(self::$Section->Layout);
-            if (isset($Controller))
-                $viewLayout->Assign('Message', $Controller->Get_Message());
-            if (true == $view instanceof Zero_View) {
+            if ( isset($Controller) )
+                $viewLayout->Assign('Message', $messageResponse);
+            if ( true == $view instanceof Zero_View )
+            {
                 /* @var $view Zero_View */
-                $view->Assign('Message', $Controller->Get_Message());
+                $view->Assign('Message', $messageResponse);
                 $viewLayout->Assign('Content', $view->Fetch());
-            } else
+            }
+            else
                 $viewLayout->Assign('Content', $view);
 
             $view = $viewLayout->Fetch();
@@ -470,7 +474,8 @@ class Zero_App {
      *
      * @param string $url link to which page to produce redirect
      */
-    public static function ResponseRedirect($url) {
+    public static function ResponseRedirect($url)
+    {
         header('HTTP/1.1 301 Redirect');
         header('Location: ' . $url);
         exit;
@@ -510,16 +515,17 @@ class Zero_App {
      *
      * @param Exception $exception
      */
-    public static function Exception(Exception $exception) {
+    public static function Exception(Exception $exception)
+    {
         Zero_Logs::Exception($exception);
 
         $code = $exception->getCode();
 
-        if (Zero_App::$Mode == 'console' || !isset($_SERVER['REQUEST_URI']))
+        if ( Zero_App::$Mode == 'console' || !isset($_SERVER['REQUEST_URI']) )
             self::ResponseConsole();
-        else if (Zero_App::$Mode == 'api')
-            self::ResponseJson('', $code, $code, $exception->getMessage());
-        else if (Zero_App::$Mode == 'web')
+        else if ( Zero_App::$Mode == 'api' )
+            self::ResponseJson('', $code, $code, [$exception->getMessage()]);
+        else if ( Zero_App::$Mode == 'web' )
             self::ResponseError($code);
     }
 
@@ -530,25 +536,29 @@ class Zero_App {
      * - Zamer polnogo vremeni vy`polneniia prilozheniia
      * - Vy`vod vsei` profilirovannoi` informatcii v ukazanny`e istochniki
      */
-    public static function ResponseHtml($view, $code) {
+    public static function ResponseHtml($content, $status)
+    {
         header('Pragma: no-cache');
         header('Last-Modified: ' . date('D, d M Y H:i:s') . 'GMT');
         header('Expires: Mon, 26 Jul 2007 05:00:00 GMT');
         header('Cache-Control: no-store, no-cache, must-revalidate');
         header("Content-Type: text/html; charset=utf-8");
-        header('HTTP/1.1 ' . $code . ' ' . $code);
-        echo $view;
+        header('HTTP/1.1 ' . $status . ' ' . $status);
+//        $message = Zero_I18n::CodeMessage(self::$Section->Controller, $code, $params);
+//        $content = str_replace('<MESSAGE_RESPONSE>', $message[1], $content);
+        echo $content;
 
         // Логирование (в браузер)
-        if (self::$Config->Log_Output_Display)
+        if ( self::$Config->Log_Output_Display )
             echo Zero_Logs::Display();
 
         // закрываем соединение с браузером (работает только под нгинx)
-        if (function_exists('fastcgi_finish_request'))
+        if ( function_exists('fastcgi_finish_request') )
             fastcgi_finish_request();
 
         // Логирование в файлы
-        if (Zero_App::$Config->Log_Output_File) {
+        if ( Zero_App::$Config->Log_Output_File )
+        {
             Zero_Logs::File();
         }
         exit;
@@ -561,22 +571,11 @@ class Zero_App {
      * - Zamer polnogo vremeni vy`polneniia prilozheniia
      * - Vy`vod vsei` profilirovannoi` informatcii v ukazanny`e istochniki
      */
-    public static function ResponseError($code) {
+    public static function ResponseError($code)
+    {
         $View = new Zero_View(ucfirst(self::$Config->Site_DomainSub) . '_Error');
         $View->Template_Add('Zero_Error');
         $View->Assign('http_status', $code);
         self::ResponseHtml($View->Fetch(), $code);
     }
-
 }
-
-/*
-$opts_sample = array(
-    'http' => array(
-        'method' => 'POST',
-        'header' => "Content-Type: text/xml; charset=utf-8\r\n" . "Content-Type: tapplication/json; charset=utf-8\r\n" . "Content-Length: 10000\r\n" . "Referer: http://ya.ru\r\n" . "Host: hostkey.ru\r\n" . "Connection: close\r\n" . "Cookie: foo=bar\r\n" . "Accept-language: en\r\n" . "Authorization: Basic " . base64_encode("login:password") . "\r\n",
-        'content' => 'bla bla bla',
-        'timeout' => 60,
-    )
-);
-*/

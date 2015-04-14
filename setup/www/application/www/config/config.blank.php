@@ -10,4 +10,6 @@ return [
     'Version' => '1.0.0',
     //  Dependent modules
     'Modules' => [],
+    //  Prefix Code Messages
+    'GlobalCodeMessage' => 100,
 ];

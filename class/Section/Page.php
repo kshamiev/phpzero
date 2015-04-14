@@ -23,16 +23,13 @@ class Zero_Section_Page extends Zero_Controller
         {
             $this->View->Assign('Name', Zero_App::$Section->Name);
             $this->View->Assign('Content', Zero_App::$Section->Content);
-            Zero_App::Set_Variable("Title", Zero_App::$Section->Title);
-            Zero_App::Set_Variable("Keywords", Zero_App::$Section->Keywords);
-            Zero_App::Set_Variable("Description", Zero_App::$Section->Description);
         }
         else
         {
             $index = 'Content_' . ZERO_LANG;
             if ( false === $Content = Zero_App::$Section->Cache->Get($index) )
             {
-                $Content = Zero_Model::Make('Zero_Content');
+                $Content = Zero_Model::Makes('Zero_Content');
                 $Content->AR->Sql_Where('Lang', '=', ZERO_LANG);
                 $Content->AR->Sql_Where('Section_ID', '=', Zero_App::$Section->ID);
                 $Content->AR->Sql_Where_In('Block', ['content', 'Content']);
@@ -42,9 +39,9 @@ class Zero_Section_Page extends Zero_Controller
             }
             $this->View->Assign('Name', $Content->Name);
             $this->View->Assign('Content', $Content->Content);
-            Zero_App::Set_Variable("Title", $Content->Title);
-            Zero_App::Set_Variable("Keywords", $Content->Keywords);
-            Zero_App::Set_Variable("Description", $Content->Description);
+            Zero_App::$Section->Title = $Content->Title;
+            Zero_App::$Section->Keywords = $Content->Keywords;
+            Zero_App::$Section->Description = $Content->Description;
         }
         return $this->View;
     }

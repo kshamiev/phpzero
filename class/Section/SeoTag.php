@@ -21,9 +21,9 @@ class Zero_Section_SeoTag extends Zero_Controller
     public function Action_Default()
     {
         $seo_data = [
-            'Title' => Zero_App::Get_Variable('Title'),
-            'Description' => Zero_App::Get_Variable('Keywords'),
-            'Keywords' => Zero_App::Get_Variable('Description'),
+            'Title' => Zero_App::$Section->Title,
+            'Keywords' => Zero_App::$Section->Keywords,
+            'Description' => Zero_App::$Section->Description,
         ];
         if ( isset($this->Params['view']) )
             $this->View = new Zero_View($this->Params['view']);

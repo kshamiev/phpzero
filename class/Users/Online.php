@@ -30,7 +30,7 @@ class Zero_Users_Online extends Zero_Controller
             Zero_App::$Users->Timeout = $time;
             Zero_App::$Users->IsOnline = 'yes';
             Zero_App::$Users->DateOnline = date('Y-m-d H:i:s', Zero_App::$Users->Timeout);
-            $Model = Zero_Model::Make('Zero_Users', Zero_App::$Users->ID);
+            $Model = Zero_Model::Makes('Zero_Users', Zero_App::$Users->ID);
             $Model->IsOnline = Zero_App::$Users->IsOnline;
             $Model->DateOnline = Zero_App::$Users->DateOnline;
             $Model->AR->Update();

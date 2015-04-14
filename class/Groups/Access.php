@@ -75,7 +75,7 @@ class Zero_Groups_Access extends Zero_Controller
         else if ( empty($this->Params['obj_parent_id']) )
             $this->Params['obj_parent_id'] = 0;
         $this->View = new Zero_View($this->Template);
-        $this->Model = Zero_Model::Make($this->ModelName, $this->Params['obj_parent_id'], true);
+        $this->Model = Zero_Model::Makes($this->ModelName, $this->Params['obj_parent_id'], true);
     }
 
     /**
@@ -85,7 +85,7 @@ class Zero_Groups_Access extends Zero_Controller
      */
     protected function Chunk_View()
     {
-        $Section = Zero_Model::Make('Zero_Section');
+        $Section = Zero_Model::Makes('Zero_Section');
         $Section->AR->Sql_Where_IsNotNull('Controller');
         $section_list = $Section->AR->Select_Tree('ID, Name, Controller, Url, IsAuthorized');
         foreach ($section_list as $id => $row)
@@ -121,7 +121,7 @@ class Zero_Groups_Access extends Zero_Controller
             $section_list[$id]['action_list_all'] = $method_list;
             $section_list[$id]['action_list_all_count'] = count($method_list) + 1;
 
-            $Action = Zero_Model::Make('Zero_Action');
+            $Action = Zero_Model::Makes('Zero_Action');
             $Action->AR->Sql_Where('Section_ID', '=', $id);
             $Action->AR->Sql_Where('Groups_ID', '=', $this->Params['obj_parent_id']);
             $Action->AR->Sql_Order('Action', 'ASC');
@@ -153,7 +153,7 @@ class Zero_Groups_Access extends Zero_Controller
             //  Access to the section for the group
             if ( 'access' == $access )
             {
-                $Action = Zero_Model::Make('Zero_Action');
+                $Action = Zero_Model::Makes('Zero_Action');
                 $Action->Section_ID = $section_id;
                 $Action->Groups_ID = $this->Params['obj_parent_id'];
                 $Action->Action = 'Default';
@@ -168,7 +168,7 @@ class Zero_Groups_Access extends Zero_Controller
                 {
                     if ( 'access' == $panel )
                     {
-                        $Action = Zero_Model::Make('Zero_Action');
+                        $Action = Zero_Model::Makes('Zero_Action');
                         $Action->Section_ID = $section_id;
                         $Action->Groups_ID = $this->Params['obj_parent_id'];
                         $Action->Action = $action;
@@ -178,7 +178,7 @@ class Zero_Groups_Access extends Zero_Controller
             }
         }
         //  Reset Cache
-        $Model = Zero_Model::Make('Zero_Groups', $this->Params['obj_parent_id']);
+        $Model = Zero_Model::Makes('Zero_Groups', $this->Params['obj_parent_id']);
         $Model->Cache->Reset();
         return $this->Set_Message('Сохранено', 0);
     }

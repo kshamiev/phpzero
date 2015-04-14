@@ -18,7 +18,7 @@ class Zero_Section_Console extends Zero_Controller
         $str = '<' . '?xml version="1.0" encoding="UTF-8"?>' . "\n" . '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 
         // разделы
-        $Section = Zero_Model::Make('Zero_Section');
+        $Section = Zero_Model::Makes('Zero_Section');
         $Section->AR->Sql_Where('IsAuthorized', '=', 'no');
         $Section->AR->Sql_Where('IsIndex', '=', 'yes');
         $Section->AR->Sql_Where('IsEnable', '=', 'yes');

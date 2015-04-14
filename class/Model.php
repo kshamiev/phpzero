@@ -119,7 +119,7 @@ abstract class Zero_Model
      * @return Zero_Model
      * @throws Exception
      */
-    public static function Make($class_name, $id = 0, $flag_load = false)
+    public static function Makes($class_name, $id = 0, $flag_load = false)
     {
         if ( '' == $class_name )
             throw new Exception("Модель не указана", 500);
@@ -138,12 +138,12 @@ abstract class Zero_Model
      * @param bool $flag_load flag полной загрузки объекта
      * @return Zero_Model
      */
-    public static function Instance($class_name, $id = 0, $flag_load = false)
+    public static function Instances($class_name, $id = 0, $flag_load = false)
     {
         $index = $class_name . (0 < $id ? '_' . $id : '');
         if ( !isset(self::$Instance[$index]) )
         {
-            $result = self::Make($class_name, $id, $flag_load);
+            $result = self::Makes($class_name, $id, $flag_load);
             $result->Init();
             self::$Instance[$index] = $result;
         }
@@ -161,12 +161,12 @@ abstract class Zero_Model
      * @param bool $flag flag polnoi` zagruzki ob``ekta
      * @return Zero_Model
      */
-    public static function Factory($class_name, $id = 0, $flag = false)
+    public static function Factories($class_name, $id = 0, $flag = false)
     {
         // $index = 'Source' . substr($class, strpos($class, '_') + 1);
         if ( !$result = Zero_Session::Get($class_name) )
         {
-            $result = self::Make($class_name, $id, $flag);
+            $result = self::Makes($class_name, $id, $flag);
             $result->Init();
             Zero_Session::Set($class_name, $result);
         }

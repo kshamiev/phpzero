@@ -21,13 +21,13 @@ class Zero_Section_NavigationChild extends Zero_Controller
     public function Action_Default()
     {
         if ( isset($this->Params['section_id']) && 0 < $this->Params['section_id'] )
-            $Section = Zero_Model::Make('Zero_Section', $this->Params['section_id']);
+            $Section = Zero_Model::Makes('Zero_Section', $this->Params['section_id']);
         else
             $Section = Zero_App::$Section;
         $navigation = $Section->Get_Navigation_Child();
         if ( 0 == count($navigation) )
         {
-            $Section = Zero_Model::Make('Zero_Section', Zero_App::$Section->Section_ID);
+            $Section = Zero_Model::Makes('Zero_Section', Zero_App::$Section->Section_ID);
             /* @var $Section Www_Section */
             $navigation = $Section->Get_Navigation_Child();
         }

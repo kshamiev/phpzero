@@ -248,7 +248,7 @@ class Zero_Section extends Zero_Model
         $this->_Action_List = [];
         if ( 'yes' == $this->IsAuthorized && 1 < Zero_App::$Users->Groups_ID )
         {
-            $Model = Zero_Model::Make('Zero_Action');
+            $Model = Zero_Model::Makes('Zero_Action');
             $Model->AR->Sql_Where('Section_ID', '=', $this->ID);
             $Model->AR->Sql_Where('Groups_ID', '=', Zero_App::$Users->Groups_ID);
             $this->_Action_List = $Model->AR->Select_Array_Index('Action');
@@ -401,7 +401,7 @@ class Zero_Section extends Zero_Model
         $this->UrlThis = Zero_Helper_Strings::Transliteration_Url($value);
         if ( 0 < $this->Section_ID )
         {
-            $Object = Zero_Model::Make(__CLASS__, $this->Section_ID);
+            $Object = Zero_Model::Makes(__CLASS__, $this->Section_ID);
             $this->Url = rtrim($Object->Url, '/') . '/' . $this->UrlThis;
         }
         else

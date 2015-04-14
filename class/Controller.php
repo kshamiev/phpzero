@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Abstract base controller.
  *
@@ -13,6 +14,7 @@
  */
 abstract class Zero_Controller
 {
+
     /**
      * Massiv soobshchenii` sistemy`
      *
@@ -51,7 +53,7 @@ abstract class Zero_Controller
      * @return Zero_Controller
      * @throws Exception
      */
-    public static function Make($class_name, $properties = [])
+    public static function Makes($class_name, $properties = [])
     {
         if ( '' == $class_name )
             throw new Exception('Имя класса создаваемого контроллера не указано', 500);
@@ -74,14 +76,30 @@ abstract class Zero_Controller
      * @param array $properties vhodny`e parametry` plagina
      * @return Zero_Controller
      */
-    public static function Factory($class_name, $properties = [])
+    public static function Factories($class_name, $properties = [])
     {
         if ( !$result = Zero_Session::Get($class_name) )
         {
-            $result = self::Make($class_name, $properties);
+            $result = self::Makes($class_name, $properties);
             Zero_Session::Set($class_name, $result);
         }
         return $result;
+    }
+
+    public function SetMessage($code = 0, $params = [])
+    {
+        $arr = Zero_I18n::CodeMessage(get_class($this), $code, $params);
+        self::$_Message = [
+            'Code' => $arr[0],
+            'Message' => $arr[1],
+        ];
+    }
+
+    public function GetMessage()
+    {
+        if ( count(self::$_Message) == 0 )
+            $this->SetMessage();
+        return self::$_Message;
     }
 
     /**

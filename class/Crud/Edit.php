@@ -80,7 +80,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
             $this->Params['id'] = 0;
         //
         $this->View = new Zero_View($this->Template);
-        $this->Model = Zero_Model::Make($this->ModelName, $this->Params['id'], true);
+        $this->Model = Zero_Model::Makes($this->ModelName, $this->Params['id'], true);
         //
         Zero_Filter::Factory($this->Model);
     }
@@ -189,28 +189,37 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         if ( 0 < count($this->Model->VL->Get_Errors()) )
         {
             $this->View->Assign('Error_Validator', $this->Model->VL->Get_Errors());
-            return $this->Set_Message('Error_Validate', 1);
+            $this->SetMessage(510, [$this->Model->Name, $this->Model->ID]);
+            return false;
         }
 
         // Save
         if ( 0 < $this->Model->ID )
         {
             if ( false == $this->Model->AR->Update() )
-                return $this->Set_Message('Error_Save', 1);
+            {
+                $this->SetMessage(500, [$this->Model->Name, $this->Model->ID]);
+                return false;
+            }
         }
         else
         {
             if ( false == $this->Model->AR->Insert() )
-                return $this->Set_Message('Error_Save', 1);
-
+            {
+                $this->SetMessage(500, [$this->Model->Name, $this->Model->ID]);
+                return false;
+            }
             //  When you add an object having a cross (many to many) relationship with the parent object
             if ( isset($this->Params['obj_parent_table']) )
             {
                 //  target parent object
-                $Object = Zero_Model::Make($this->Params['obj_parent_table'], $this->Params['obj_parent_id']);
+                $Object = Zero_Model::Makes($this->Params['obj_parent_table'], $this->Params['obj_parent_id']);
                 //  creating a connection
                 if ( !$this->Model->AR->Insert_Cross($Object) )
-                    return $this->Set_Message('Error_Save', 1);
+                {
+                    $this->SetMessage(500, [$this->Model->Name, $this->Model->ID]);
+                    return false;
+                }
             }
         }
 
@@ -220,6 +229,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         //  Reset Cache
         $this->Model->Cache->Reset();
 
-        return $this->Set_Message('Save', 0);
+        $this->SetMessage(200, [$this->Model->Name, $this->Model->ID]);
+        return true;
     }
 }

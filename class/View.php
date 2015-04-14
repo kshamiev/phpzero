@@ -329,7 +329,7 @@ class Zero_View
     private function _Execute_Controller($plugin_name, $properties = [])
     {
         //        Zero_Logs::Start('#{APP.Controller} ' . $plugin_name);
-        $Controller = Zero_Controller::Make($plugin_name, $properties);
+        $Controller = Zero_Controller::Makes($plugin_name, $properties);
         /* @var $Controller Zero_Controller */
         Zero_Logs::Start('#{PLUGIN.Action} ' . $plugin_name . ' -> Action_Default');
         $View = $Controller->Action_Default();

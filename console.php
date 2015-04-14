@@ -68,7 +68,7 @@ if ( count($_SERVER['argv']) > 1 )
         throw new Exception('консольная задача определена не правильно: ' . $_SERVER['argv'][1], 409);
 
     $arr[1] = 'Action_' . $arr[1];
-    $Controller = Zero_Controller::Make($arr[0]);
+    $Controller = Zero_Controller::Makes($arr[0]);
     $Controller->$arr[1]();
 }
 //  Launch Manager console task
