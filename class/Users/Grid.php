@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Controller. Users list.
  *
@@ -33,8 +34,11 @@ class Zero_Users_Grid extends Zero_Crud_Grid
     {
         $this->Params['obj_parent_prop'] = 'Users_ID';
         $this->Params['obj_parent_name'] = '';
-        if ( !isset($this->Params['obj_parent_prop']) )
-            $this->Params['obj_parent_path'] = ['root'];
+        if ( !isset($this->Params['obj_parent_path']) )
+        {
+            $this->Params['obj_parent_path'] = [Zero_App::$Users->ID => 'root'];
+            $this->Params['obj_parent_id'] = Zero_App::$Users->ID;
+        }
         if ( isset($_GET['pid']) && $this->Params['obj_parent_id'] != $_GET['pid'] )
         {
             $this->Params['obj_parent_id'] = $_GET['pid'];

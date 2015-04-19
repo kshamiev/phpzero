@@ -107,6 +107,16 @@ abstract class Zero_Crud_Grid extends Zero_Controller
     }
 
     /**
+     *  Adding an object
+     *
+     * @return boolean flag stop execute of the next chunk
+     */
+    public function Action_Add()
+    {
+
+    }
+
+    /**
      * Create views.
      *
      * @return boolean flag stop execute of the next chunk

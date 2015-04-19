@@ -52,6 +52,9 @@ define('ZERO_PATH_ZERO', ZERO_PATH_SITE . '/zero');
  * @package General.Component
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
+ * @todo Исключить группу из условий пользователя по горизонтали. Это системный функционал организации прав
+ * @todo В пользователях сделать вывод от родительской иерархии. По родительской связи
+ * @todo Переработать чанки
  */
 class Zero_App
 {
