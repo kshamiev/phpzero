@@ -20,7 +20,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
      *
      * @var string
      */
-    protected $Template = __CLASS__;
+    protected $ViewName = __CLASS__;
 
     /**
      * Initialization of the stack chunks and input parameters
@@ -79,7 +79,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         else if ( empty($this->Params['id']) )
             $this->Params['id'] = 0;
         //
-        $this->View = new Zero_View($this->Template);
+        $this->View = new Zero_View($this->ViewName);
         $this->Model = Zero_Model::Makes($this->ModelName, $this->Params['id'], true);
         //
         Zero_Filter::Factory($this->Model);
@@ -106,7 +106,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
             if ( isset($users_condition[$prop]) )
             {
                 if ( 0 < $this->Model->ID && !isset($users_condition[$prop][$this->Model->$prop]) )
-                    Zero_App::ResponseError(403);
+                    throw new Exception('Page Forbidden', 403);
                 if ( 1 == count($users_condition[$prop]) )
                     unset($props_form[$prop]);
             }
@@ -189,7 +189,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         if ( 0 < count($this->Model->VL->Get_Errors()) )
         {
             $this->View->Assign('Error_Validator', $this->Model->VL->Get_Errors());
-            $this->SetMessage(510, [$this->Model->Name, $this->Model->ID]);
+            $this->SetMessage(5100, [$this->Model->Name, $this->Model->ID]);
             return false;
         }
 
@@ -198,7 +198,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         {
             if ( false == $this->Model->AR->Update() )
             {
-                $this->SetMessage(500, [$this->Model->Name, $this->Model->ID]);
+                $this->SetMessage(5000, [$this->Model->Name, $this->Model->ID]);
                 return false;
             }
         }
@@ -206,7 +206,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         {
             if ( false == $this->Model->AR->Insert() )
             {
-                $this->SetMessage(500, [$this->Model->Name, $this->Model->ID]);
+                $this->SetMessage(5000, [$this->Model->Name, $this->Model->ID]);
                 return false;
             }
             //  When you add an object having a cross (many to many) relationship with the parent object
@@ -217,7 +217,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
                 //  creating a connection
                 if ( !$this->Model->AR->Insert_Cross($Object) )
                 {
-                    $this->SetMessage(500, [$this->Model->Name, $this->Model->ID]);
+                    $this->SetMessage(5000, [$this->Model->Name, $this->Model->ID]);
                     return false;
                 }
             }
@@ -229,7 +229,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         //  Reset Cache
         $this->Model->Cache->Reset();
 
-        $this->SetMessage(200, [$this->Model->Name, $this->Model->ID]);
+        $this->SetMessage(2000, [$this->Model->Name, $this->Model->ID]);
         return true;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Inkapsuliruet v sebe vsiu rabotu s BD.
  *
@@ -24,6 +25,7 @@
  */
 class Zero_AR
 {
+
     /**
      * Массив параметров запроса к источнику.
      *
@@ -349,7 +351,7 @@ class Zero_AR
         foreach ($filter_list as $row)
         {
             // если фильтр не установлен
-            if ( empty($row['Value']) ||  !$row['Value'] || empty($row['AR']) || $row['AR'] == false )
+            if ( empty($row['Value']) || !$row['Value'] || empty($row['AR']) || $row['AR'] == false )
                 continue;
 
             // если нулевое или не нулевое значение
@@ -684,7 +686,7 @@ class Zero_AR
     public function Select_Count($flag_param_reset = true)
     {
         //  initcializatciia
-//        $sql_prop = "SELECT COUNT(DISTINCT z.ID)";
+        //        $sql_prop = "SELECT COUNT(DISTINCT z.ID)";
         $sql_prop = "SELECT COUNT(*)";
         /**
          * Usloviia Where
@@ -1221,6 +1223,5 @@ class Zero_AR
     public function Sql_From($sql_from)
     {
         $this->Params['From'] = $sql_from;
-//        $this->Params['From'] = $this->Model->DB_From($params);
     }
 }

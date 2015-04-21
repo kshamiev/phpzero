@@ -95,7 +95,7 @@ class Zero_View
      *
      * @param string $template imia shablona (kak pravilo imia kontrollera[ + suffiks])
      */
-    public function Template_Add($template)
+    public function Add($template)
     {
         $this->_Template[$template] = $template;
     }
@@ -107,7 +107,7 @@ class Zero_View
      *
      * @param string $template imia shablona (kak pravilo imia kontrollera[ + suffiks])
      */
-    public function Template_Rem($template = '')
+    public function Delete($template = '')
     {
         if ( '' != $template )
             unset($this->_Template[$template]);
@@ -135,13 +135,13 @@ class Zero_View
      *
      * @param string $variable peremennaia shablona
      */
-    public function Remove($variable = '')
-    {
-        if ( $variable )
-            unset($this->_Data[$variable]);
-        else
-            $this->_Data = [];
-    }
+//    public function Remove($variable = '')
+//    {
+//        if ( $variable )
+//            unset($this->_Data[$variable]);
+//        else
+//            $this->_Data = [];
+//    }
 
     /**
      * Poluchenie peremennoi` shablona

@@ -52,9 +52,6 @@ define('ZERO_PATH_ZERO', ZERO_PATH_SITE . '/zero');
  * @package General.Component
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
- * @todo Исключить группу из условий пользователя по горизонтали. Это системный функционал организации прав
- * @todo В пользователях сделать вывод от родительской иерархии. По родительской связи
- * @todo Переработать чанки
  */
 class Zero_App
 {
@@ -287,28 +284,12 @@ class Zero_App
 
     public static function ExecuteSimple()
     {
-        // General Authorization Application
-        if ( self::$Config->Site_AccessLogin )
-            if ( !isset($_SERVER['PHP_AUTH_USER']) || $_SERVER['PHP_AUTH_USER'] != self::$Config->Site_AccessLogin || $_SERVER['PHP_AUTH_PW'] != self::$Config->Site_AccessPassword )
-            {
-                header('WWW-Authenticate: Basic realm="Auth"');
-                header('HTTP/1.0 401 Unauthorized');
-                echo 'Auth Failed';
-                exit;
-            }
-
-        //  Инициализация запрошенного раздела (Www_Section)
-        if ( isset($_SERVER['HTTP_X_ACCESS_TOKEN']) )
-            $_GET['access-token'] = $_SERVER['HTTP_X_ACCESS_TOKEN'];
-        else if ( isset($_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il']) )
-            $_GET['access-token'] = $_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il'];
-        if ( isset($_GET['access-token']) )
-            setcookie('i09u9Maf6l6sr7Um0m8A3u0r9i55m3il', $_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il'], time() + 2592000, '/');
+        // Пользователь
         self::$Users = Zero_Model::Factories('Www_Users');
 
-        // Роутинг. Поиск урла.
-        self::$Section = Zero_Model::Makes('Www_Section');
+        // Раздел - страница
         $route = [];
+        self::$Section = Zero_Model::Makes('Www_Section');
         foreach (Zero_Config::Get_Modules() as $module)
         {
             $config = Zero_Config::Get_Config($module, self::$Mode . 'Route');
@@ -318,45 +299,44 @@ class Zero_App
                 break;
             }
         }
-
         if ( 0 == count($route) )
-            self::ResponseError(404);
+            throw new Exception('Page Not Found', 404);
 
-        //  Execute controller
+        //  Выполнение контроллера
         $view = '';
         $messageResponse = ['Code' => 0, 'Message' => ''];
         if ( isset($route['Controller']) && $route['Controller'] )
         {
             self::$Section->Controller = $route['Controller'];
-            $routeDetails = explode('-', $route['Controller']);
-            //
             if ( isset($_REQUEST['act']) && $_REQUEST['act'] )
                 $_REQUEST['act'] = trim($_REQUEST['act']);
-            else if ( 1 < count($routeDetails) )
-                $_REQUEST['act'] = $routeDetails[1];
+            else if ( 'api' == self::$Mode )
+                $_REQUEST['act'] = $_SERVER['REQUEST_METHOD'];
             else
                 $_REQUEST['act'] = 'Default';
-            //
             $_REQUEST['act'] = 'Action_' . $_REQUEST['act'];
-            //
-            Zero_Logs::Start('#{CONTROLLER.Action} ' . $routeDetails[0] . ' -> ' . $_REQUEST['act']);
-            $Controller = Zero_Controller::Factories($routeDetails[0]);
+
+            Zero_Logs::Start('#{CONTROLLER.Action} ' . self::$Section->Controller . ' -> ' . $_REQUEST['act']);
+            $Controller = Zero_Controller::Factories(self::$Section->Controller);
             if ( !method_exists($Controller, $_REQUEST['act']) )
+            {
                 throw new Exception('Контроллер не имеет метода: ' . $_REQUEST['act'], 500);
-            $view = $Controller->$_REQUEST['act']();
+            }
             if ( $_REQUEST['act'] != 'Action_Default' )
+            {
                 Zero_Logs::Set_Message_Action($_REQUEST['act']);
-            Zero_Logs::Stop('#{CONTROLLER.Action} ' . $routeDetails[0] . ' -> ' . $_REQUEST['act']);
+            }
+            $view = $Controller->$_REQUEST['act']();
+            Zero_Logs::Stop('#{CONTROLLER.Action} ' . self::$Section->Controller . ' -> ' . $_REQUEST['act']);
+
             $messageResponse = $Controller->GetMessage();
         }
-        /* @var $Controller Zero_Controller */
 
-        // Основные данные
+        // Сборка ст раницы на основании макета
         if ( isset($route['View']) && $route['View'] )
         {
             $viewLayout = new Zero_View($route['View']);
-            if ( isset($Controller) )
-                $viewLayout->Assign('Message', $messageResponse);
+            $viewLayout->Assign('Message', $messageResponse);
             if ( true == $view instanceof Zero_View )
             {
                 /* @var $view Zero_View */
@@ -364,10 +344,11 @@ class Zero_App
                 $viewLayout->Assign('Content', $view->Fetch());
             }
             else
+            {
                 $viewLayout->Assign('Content', $view);
+            }
             $view = $viewLayout->Fetch();
         }
-
         self::ResponseHtml($view, 200);
     }
 
@@ -388,76 +369,59 @@ class Zero_App
      */
     public static function Execute()
     {
-        // General Authorization Application
-        if ( self::$Config->Site_AccessLogin )
-            if ( !isset($_SERVER['PHP_AUTH_USER']) || $_SERVER['PHP_AUTH_USER'] != self::$Config->Site_AccessLogin || $_SERVER['PHP_AUTH_PW'] != self::$Config->Site_AccessPassword )
-            {
-                header('WWW-Authenticate: Basic realm="Auth"');
-                header('HTTP/1.0 401 Unauthorized');
-                echo 'Auth Failed';
-                exit;
-            }
-
-        //  Инициализация запрошенного раздела (Www_Section)
-        if ( isset($_SERVER['HTTP_X_ACCESS_TOKEN']) )
-            $_GET['access-token'] = $_SERVER['HTTP_X_ACCESS_TOKEN'];
-        else if ( isset($_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il']) )
-            $_GET['access-token'] = $_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il'];
-        if ( isset($_GET['access-token']) )
-            setcookie('i09u9Maf6l6sr7Um0m8A3u0r9i55m3il', $_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il'], time() + 2592000, '/');
+        //  Пользователь
         self::$Users = Zero_Model::Factories('Www_Users');
 
+        //  Раздел - страница
         self::$Section = Zero_Model::Instances('Www_Section');
-        //  Checking for non-existent section
         if ( 0 == self::$Section->ID || 'no' == self::$Section->IsEnable )
-            self::ResponseError(404);
-
-        //  Call forwarding
+            throw new Exception('Page Not Found', 404);
         if ( self::$Section->UrlRedirect )
             self::ResponseRedirect(self::$Section->UrlRedirect);
 
-        //  Checking the rights to the current section
+        //  Доступные операции контроллера раздела с учетом прав. Проверка прав на раздел
         $Action_List = self::$Section->Get_Action_List();
         if ( 1 < self::$Users->Groups_ID && 'yes' == self::$Section->IsAuthorized && 0 == count($Action_List) )
-            self::ResponseError(403);
+            throw new Exception('Page Forbidden', 403);
 
-        //  Execute controller
+        //  Выполнение контроллера
         $view = "";
         $messageResponse = ['Code' => 0, 'Message' => ''];
         if ( self::$Section->Controller )
         {
-            $routeDetails = explode('-', self::$Section->Controller);
-            //
             if ( isset($_REQUEST['act']) && $_REQUEST['act'] )
                 $_REQUEST['act'] = trim($_REQUEST['act']);
-            else if ( 1 < count($routeDetails) )
-                $_REQUEST['act'] = $routeDetails[1];
+            else if ( 'api' == self::$Mode )
+                $_REQUEST['act'] = $_SERVER['REQUEST_METHOD'];
             else
                 $_REQUEST['act'] = 'Default';
             //
             if ( !isset($Action_List[$_REQUEST['act']]) )
-                self::ResponseError(403);
+                throw new Exception('Page Forbidden', 403);
             //
             $_REQUEST['act'] = 'Action_' . $_REQUEST['act'];
-            //
-            Zero_Logs::Start('#{CONTROLLER.Action} ' . $routeDetails[0] . ' -> ' . $_REQUEST['act']);
-            $Controller = Zero_Controller::Factories($routeDetails[0]);
+
+            Zero_Logs::Start('#{CONTROLLER.Action} ' . self::$Section->Controller . ' -> ' . $_REQUEST['act']);
+            $Controller = Zero_Controller::Factories(self::$Section->Controller);
             if ( !method_exists($Controller, $_REQUEST['act']) )
+            {
                 throw new Exception('Контроллер не имеет метода: ' . $_REQUEST['act'], 500);
-            $view = $Controller->$_REQUEST['act']();
+            }
             if ( $_REQUEST['act'] != 'Action_Default' )
+            {
                 Zero_Logs::Set_Message_Action($_REQUEST['act']);
-            Zero_Logs::Stop('#{CONTROLLER.Action} ' . $routeDetails[0] . ' -> ' . $_REQUEST['act']);
+            }
+            $view = $Controller->$_REQUEST['act']();
+            Zero_Logs::Stop('#{CONTROLLER.Action} ' . self::$Section->Controller . ' -> ' . $_REQUEST['act']);
+
             $messageResponse = $Controller->GetMessage();
         }
-        /* @var $Controller Zero_Controller */
 
-        // Основные данные
+        // Сборка ст раницы на основании макета
         if ( self::$Section->Layout )
         {
             $viewLayout = new Zero_View(self::$Section->Layout);
-            if ( isset($Controller) )
-                $viewLayout->Assign('Message', $messageResponse);
+            $viewLayout->Assign('Message', $messageResponse);
             if ( true == $view instanceof Zero_View )
             {
                 /* @var $view Zero_View */
@@ -465,8 +429,9 @@ class Zero_App
                 $viewLayout->Assign('Content', $view->Fetch());
             }
             else
+            {
                 $viewLayout->Assign('Content', $view);
-
+            }
             $view = $viewLayout->Fetch();
         }
         self::ResponseHtml($view, 200);
@@ -520,16 +485,24 @@ class Zero_App
      */
     public static function Exception(Exception $exception)
     {
-        Zero_Logs::Exception($exception);
-
         $code = $exception->getCode();
+        if ( 403 != $code && 404 != $code && 500 != $code )
+        {
+            Zero_Logs::Exception($exception);
+        }
 
         if ( Zero_App::$Mode == 'console' || !isset($_SERVER['REQUEST_URI']) )
             self::ResponseConsole();
         else if ( Zero_App::$Mode == 'api' )
             self::ResponseJson('', $code, $code, [$exception->getMessage()]);
         else if ( Zero_App::$Mode == 'web' )
-            self::ResponseError($code);
+        {
+            $View = new Zero_View(ucfirst(self::$Config->Site_DomainSub) . '_Error');
+            $View->Add('Zero_Error');
+            $View->Assign('http_status', $code);
+            $View->Assign('message', $exception->getMessage());
+            self::ResponseHtml($View->Fetch(), $code);
+        }
     }
 
     /**
@@ -547,8 +520,6 @@ class Zero_App
         header('Cache-Control: no-store, no-cache, must-revalidate');
         header("Content-Type: text/html; charset=utf-8");
         header('HTTP/1.1 ' . $status . ' ' . $status);
-//        $message = Zero_I18n::CodeMessage(self::$Section->Controller, $code, $params);
-//        $content = str_replace('<MESSAGE_RESPONSE>', $message[1], $content);
         echo $content;
 
         // Логирование (в браузер)
@@ -574,11 +545,11 @@ class Zero_App
      * - Zamer polnogo vremeni vy`polneniia prilozheniia
      * - Vy`vod vsei` profilirovannoi` informatcii v ukazanny`e istochniki
      */
-    public static function ResponseError($code)
-    {
-        $View = new Zero_View(ucfirst(self::$Config->Site_DomainSub) . '_Error');
-        $View->Template_Add('Zero_Error');
-        $View->Assign('http_status', $code);
-        self::ResponseHtml($View->Fetch(), $code);
-    }
+    //    public static function ResponseError($code)
+    //    {
+    //        $View = new Zero_View(ucfirst(self::$Config->Site_DomainSub) . '_Error');
+    //        $View->Add('Zero_Error');
+    //        $View->Assign('http_status', $code);
+    //        self::ResponseHtml($View->Fetch(), $code);
+    //    }
 }

@@ -20,7 +20,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
      *
      * @var string
      */
-    protected $Template = __CLASS__;
+    protected $ViewName = __CLASS__;
 
     /**
      * Initialization of the stack chunks and input parameters
@@ -96,7 +96,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
         else if ( empty($this->Params['id']) )
             $this->Params['id'] = 0;
         //
-        $this->View = new Zero_View($this->Template);
+        $this->View = new Zero_View($this->ViewName);
         $this->Model = Zero_Model::Makes($this->ModelName);
         //
         $Filter = Zero_Filter::Factory($this->Model);
@@ -124,15 +124,15 @@ abstract class Zero_Crud_Grid extends Zero_Controller
     protected function Chunk_View()
     {
         $Filter = Zero_Filter::Factory($this->Model);
-        //  Move to one level up or down for catalogs
-
-        //  МНМЦИАЛИЗАЦИЯ ПОЛЕЙ ГРИДА
-        $props_grid = $this->Model->Get_Config_Grid(get_class($this));
-        //  Remove the coupling condition
-        if ( isset($this->Params['obj_parent_prop']) )
-            unset($props_grid[$this->Params['obj_parent_prop']]);
-        //  Remove the user conditions
         $users_condition = Zero_App::$Users->Get_Condition();
+
+        //  ИНИЦИАЛИЗАЦИЯ ПОЛЕЙ ГРИДА
+        $props_grid = $this->Model->Get_Config_Grid(get_class($this));
+        if ( isset($this->Params['obj_parent_prop']) )
+        {
+            unset($props_grid[$this->Params['obj_parent_prop']]);
+        }
+        //  Remove the user conditions
         foreach ($users_condition as $prop => $value)
         {
             if ( 1 == count($value) )
@@ -145,11 +145,12 @@ abstract class Zero_Crud_Grid extends Zero_Controller
         }
         unset($props_grid['ID']);
 
-        // УСЛОВИЯ ЗАПРОСА ДАННЫХ ДЛЯ ГРИДА
+        //  FROM
+        $this->Model->AR->Sql_From($this->Model->Get_Query_From($this->Params));
+
+        // WHERE
         $this->Model->AR->Sql_Where_Filter($Filter);
-        //  Condition of cross connection
-        $this->Model->DB_From($this->Params);
-        //  The coupling condition
+        // Прямая родительская связь
         if ( isset($this->Params['obj_parent_prop']) )
         {
             if ( 0 < $this->Params['obj_parent_id'] )
@@ -237,12 +238,12 @@ abstract class Zero_Crud_Grid extends Zero_Controller
         //  Remove
         if ( $ObjectRem->AR->Delete() )
         {
-            $this->SetMessage(220, [$this->Model->Name, $this->Model->ID]);
+            $this->SetMessage(2200, [$this->Model->Name, $this->Model->ID]);
             return true;
         }
         else
         {
-            $this->SetMessage(520, [$this->Model->Name, $this->Model->ID]);
+            $this->SetMessage(5200, [$this->Model->Name, $this->Model->ID]);
             return false;
         }
     }

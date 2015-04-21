@@ -21,7 +21,7 @@ class Zero_Groups_Access extends Zero_Controller
      *
      * @var string
      */
-    protected $Template = __CLASS__;
+    protected $ViewName = __CLASS__;
 
     /**
      * Vy`polnenie dei`stvii`
@@ -74,7 +74,7 @@ class Zero_Groups_Access extends Zero_Controller
             $this->Params['obj_parent_id'] = $_GET['pid'];
         else if ( empty($this->Params['obj_parent_id']) )
             $this->Params['obj_parent_id'] = 0;
-        $this->View = new Zero_View($this->Template);
+        $this->View = new Zero_View($this->ViewName);
         $this->Model = Zero_Model::Makes($this->ModelName, $this->Params['obj_parent_id'], true);
     }
 
@@ -86,11 +86,10 @@ class Zero_Groups_Access extends Zero_Controller
     protected function Chunk_View()
     {
         $Section = Zero_Model::Makes('Zero_Section');
-        $Section->AR->Sql_Where_IsNotNull('Controller');
         $section_list = $Section->AR->Select_Tree('ID, Name, Controller, Url, IsAuthorized');
         foreach ($section_list as $id => $row)
         {
-            if ( 'no' == $row['IsAuthorized'] )
+            if ( 'no' == $row['IsAuthorized'] || '' == $row['Controller'] )
             {
                 unset($section_list[$id]);
                 continue;

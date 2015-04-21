@@ -20,7 +20,7 @@ class Zero_Content_EditSection extends Zero_Crud_Edit
      *
      * @var string
      */
-    protected $Template = 'Zero_Crud_Edit';
+    protected $ViewName = 'Zero_Crud_Edit';
 
     /**
      * Initialization of the input parameters

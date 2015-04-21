@@ -241,7 +241,8 @@ class Zero_Section extends Zero_Model
         else if ( !is_null($this->_Action_List) )
             return $this->_Action_List;
 
-        $index_cache = 'ControllerList_' . Zero_App::$Users->Groups_ID . '_' . $this->Controller;
+        $controllerName = $this->Controller;
+        $index_cache = 'ControllerList_' . Zero_App::$Users->Groups_ID . '_' . $controllerName;
         if ( false !== $this->_Action_List = $this->Cache->Get($index_cache) )
             return $this->_Action_List;
 
@@ -254,15 +255,15 @@ class Zero_Section extends Zero_Model
             $this->_Action_List = $Model->AR->Select_Array_Index('Action');
             foreach ($this->_Action_List as $action => $row)
             {
-                $this->_Action_List[$action] = ['Name' => Zero_I18n::Controller($this->Controller, 'Action_' . $action)];
+                $this->_Action_List[$action] = ['Name' => Zero_I18n::Controller($controllerName, 'Action_' . $action)];
             }
         }
-        else if ( '' != $this->Controller )
+        else if ( '' != $controllerName )
         {
-            if ( false == Zero_App::Autoload($this->Controller) )
-                throw new Exception('Класс не найден: ' . $this->Controller, 500);
+            if ( false == Zero_App::Autoload($controllerName) )
+                throw new Exception('Класс не найден: ' . $controllerName, 500);
 
-            $reflection = new ReflectionClass($this->Controller);
+            $reflection = new ReflectionClass($controllerName);
             foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method)
             {
                 $name = $method->getName();
@@ -271,7 +272,7 @@ class Zero_Section extends Zero_Model
                 {
                     array_shift($arr);
                     $index = join('_', $arr);
-                    $this->_Action_List[$index] = ['Name' => Zero_I18n::Controller($this->Controller, $name)];
+                    $this->_Action_List[$index] = ['Name' => Zero_I18n::Controller($controllerName, $name)];
                 }
             }
         }
@@ -421,9 +422,8 @@ class Zero_Section extends Zero_Model
         if ( !$value )
             return $this->Controller = null;
         $arr = explode('_', $value);
-        $module = strtolower(array_shift($arr));
-        $class = implode('/', $arr);
-        if ( !file_exists($path = ZERO_PATH_APPLICATION . '/' . $module . '/class/' . $class . '.php') )
+        $path = ZERO_PATH_APPLICATION . '/' . strtolower(array_shift($arr)) . '/class/' . implode('/', $arr) . '.php';
+        if ( !file_exists($path) )
             return 'Error_Path_Class';
         if ( !preg_match("~\nclass {$value}~si", file_get_contents($path)) )
             return 'Error_Class_Exists';

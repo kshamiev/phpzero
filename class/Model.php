@@ -532,6 +532,18 @@ abstract class Zero_Model
     }
 
     /**
+     * Формирование from части запроса к БД
+     * May be removed
+     *
+     * @param array $params параметры контроллера
+     * @return string
+     */
+    public function Get_Query_From($params)
+    {
+        return "FROM {$this->Source} as z";
+    }
+
+    /**
      * Poluchenie znacheniia abstraktnogo svoi`stva
      *
      * Universal`ny`i` getter pozvoliaiushchii` obernut` vse priamy`e obrashcheniia

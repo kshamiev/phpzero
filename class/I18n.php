@@ -103,19 +103,18 @@ class Zero_I18n
             self::Search_Path_I18n($folder_list);
         }
         // инициализация шаблона и глобального кода собщения
-        $codeGlobal = 0;
+        $codeGlobal = $code;
         if ( isset(self::$_I18n[$file_name][$code]) )
         {
             array_unshift($params, self::$_I18n[$file_name][$code]);
             //
             $config = Zero_Config::Get_Config($folder_list[0], 'config');
             settype($config['GlobalCodeMessage'], 'int');
-            $codeGlobal = $config['GlobalCodeMessage'] * 1000 + $code;
+            $codeGlobal = $config['GlobalCodeMessage'] * 10000 + $code;
         }
         else if ( 0 < $code )
         {
             Zero_Logs::Set_Message_Warninng('I18N NOT FOUND CODE MESSAGE: ' . LANG . ' -> ' . $file_name . ' -> ' . $code);
-            $codeGlobal = $code;
         }
         return [$codeGlobal, zero_sprintf($params)];
     }

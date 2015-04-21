@@ -5,14 +5,14 @@
 return [
     // Синтаксис: 'Uri' => array('Description' => 'Description', 'Controller' => 'ClassName-Method', 'View' => 'layoutName',
     // Пример
-    '/api/v1.0/moduleName/controllersFolderName/Api-methodName' => [
+    '/api/v1.0/moduleName/controllersFolderName/controllerName' => [
         'Description' => 'Пример',
-        'Controller' => 'className-methodName',
+        'Controller' => 'className',
         'View' => '',
     ],
-    '/api/v1.0/zero/system/api-upload' => [
+    '/api/v1.0/zero/system/upload' => [
         'Description' => 'Пример',
-        'Controller' => 'Zero_System_Api-Upload',
+        'Controller' => 'Zero_System_Api_Upload',
         'View' => '',
     ],
 ];

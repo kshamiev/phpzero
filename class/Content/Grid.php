@@ -20,7 +20,7 @@ class Zero_Content_Grid extends Zero_Crud_Grid
      *
      * @var string
      */
-    protected $Template = 'Zero_Crud_Grid';
+    protected $ViewName = 'Zero_Crud_Grid';
 
     /**
      * Create views.

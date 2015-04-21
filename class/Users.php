@@ -216,6 +216,14 @@ class Zero_Users extends Zero_Model
         {
             $this->Groups_ID = 2;
             $this->Login = 'guest';
+
+            if ( isset($_SERVER['HTTP_X_ACCESS_TOKEN']) )
+                $_GET['access-token'] = $_SERVER['HTTP_X_ACCESS_TOKEN'];
+            else if ( isset($_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il']) )
+                $_GET['access-token'] = $_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il'];
+            if ( isset($_GET['access-token']) )
+                setcookie('i09u9Maf6l6sr7Um0m8A3u0r9i55m3il', $_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il'], time() + 2592000, '/');
+
             if ( isset($_GET['access-token']) )
             {
                 $sql = "SELECT * FROM Users WHERE Token = " . Zero_DB::EscT($_GET['access-token']);

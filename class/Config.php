@@ -9,6 +9,7 @@
  */
 class Zero_Config
 {
+
     /**
      * The path to the php Interpreter
      *
@@ -206,7 +207,7 @@ class Zero_Config
     public function __construct($file_log = 'application')
     {
         // Setting php
-        set_time_limit(300);
+        set_time_limit(3600);
         date_default_timezone_set('Europe/Moscow');
         setlocale(LC_CTYPE, 'ru_RU.UTF-8');
         setlocale(LC_COLLATE, 'ru_RU.UTF-8');
@@ -221,8 +222,6 @@ class Zero_Config
         ini_set('error_log', ZERO_PATH_LOG . '/php_errors_' . $file_log . '.log');
         ini_set('magic_quotes_gpc', 0);
         error_reporting(-1);
-        set_exception_handler(['Zero_App', 'Exception']);
-        // register_shutdown_function(['Zero_App', 'Exit_Application']);
 
         $Config = require ZERO_PATH_APPLICATION . '/config.php';
 
@@ -347,6 +346,9 @@ class Zero_Config
                     if ( !mkdir($path, 0777, true) )
                         die('session path: "' . $path . '" not exists');
             }
+
+        set_exception_handler(['Zero_App', 'Exception']);
+        // register_shutdown_function(['Zero_App', 'Exit_Application']);
     }
 
     /**

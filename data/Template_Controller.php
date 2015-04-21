@@ -77,12 +77,12 @@ class Zero_Controller_Sample extends Zero_Controller
 
     protected function Action_DefaultApiPut()
     {
-        Zero_App::ResponseJson($_POST, 200, 0, []);
+        Zero_App::ResponseJson($_REQUEST, 200, 0, []);
     }
 
     protected function Action_DefaultApiPost()
     {
-        Zero_App::ResponseJson($_POST, 200, 0, []);
+        Zero_App::ResponseJson($_REQUEST, 200, 0, []);
     }
 
     protected function Action_DefaultApiDelete()

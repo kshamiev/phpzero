@@ -12,7 +12,7 @@
         <td>
             {translation "Www_General" "Project"}: {Zero_App::$Config->Site_Name}&nbsp;&nbsp;
             {if ( $Message['Message'] )}
-            {if ( $Message['Code'] >= 500 )}
+            {if ( $Message['Code'] >= 5000 )}
             <font color="red">{$Message['Message']}</font>
             {else}
             <font color="green">{$Message['Message']}</font>

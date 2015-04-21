@@ -42,13 +42,18 @@ function zero_relation($prop)
  */
 function zero_sprintf()
 {
+    //
     $arr = func_get_args();
     if ( 0 == count($arr) )
         return '';
     if ( is_array($arr[0]) )
         $arr = $arr[0];
     //
-    $sql = array_shift($arr);
+    $str = array_shift($arr);
+    if ( 0 < count($arr) )
+        return vsprintf($str, $arr);
+    return $str;
+/*
     switch ( count($arr) )
     {
         default :
@@ -68,6 +73,7 @@ function zero_sprintf()
         case 7:
             return sprintf($sql, $arr[0], $arr[1], $arr[2], $arr[3], $arr[4], $arr[5], $arr[6]);
     }
+*/
     /*
     preg_match_all("~(%[d|s|f]{1})~si", $sql, $match);
     if ( count($arr) != count($match[1]) )

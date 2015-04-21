@@ -17,10 +17,10 @@ class Zero_Crud_Toolbar extends Zero_Controller
     {
         $this->View = new Zero_View();
         if ( isset($this->Params['Template']) )
-            $this->View->Template_Add($this->Params['Template']);
+            $this->View->Add($this->Params['Template']);
         else
-            $this->View->Template_Add(Zero_App::$Section->Controller . 'Toolbar');
-        $this->View->Template_Add('Zero_Crud_Toolbar');
+            $this->View->Add(Zero_App::$Section->Controller . 'Toolbar');
+        $this->View->Add('Zero_Crud_Toolbar');
         foreach ($this->Params as $prop => $value)
         {
             $this->View->Assign($prop, $value);

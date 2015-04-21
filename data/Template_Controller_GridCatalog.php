@@ -25,7 +25,7 @@ class Zero_Controller_Grid extends Zero_Crud_Grid
      *
      * @var string
      */
-    protected $Template = 'Zero_Crud_Grid';
+    protected $ViewName = 'Zero_Crud_Grid';
 
     /**
      * Initialization of the input parameters
@@ -92,10 +92,10 @@ class Zero_Controller_Grid extends Zero_Crud_Grid
      */
     protected function Chunk_CatalogMove()
     {
-        if ( !$_REQUEST['obj_id'] )
+        if ( !$_REQUEST['id'] )
             return $this->Set_Message('Error_NotParam', 1);
         $prop = $this->Params['obj_parent_prop'];
-        $Object = Zero_Model::Makes($this->ModelName, $_REQUEST['obj_id']);
+        $Object = Zero_Model::Makes($this->ModelName, $_REQUEST['id']);
         if ( 'NULL' == $this->Params['obj_parent_id'] )
             $Object->$prop = null;
         else

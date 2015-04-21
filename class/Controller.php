@@ -108,6 +108,7 @@ abstract class Zero_Controller
      * S uchetom perevoda
      *
      * @return array soobshcheniia
+     * @deprecated
      */
     public function Get_Message()
     {
@@ -122,6 +123,7 @@ abstract class Zero_Controller
      * @param string $message soobshchenie
      * @param int $code kod soobshcheniia
      * @return int
+     * @deprecated
      */
     public function Set_Message($message = '', $code = 0)
     {

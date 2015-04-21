@@ -22,7 +22,7 @@ class Zero_Section_Edit extends Zero_Crud_Edit
      *
      * @var string
      */
-    protected $Template = 'Zero_Crud_Edit';
+    protected $ViewName = 'Zero_Crud_Edit';
 
     protected function Chunk_Init()
     {

@@ -24,7 +24,7 @@ class Zero_Controller_Grid extends Zero_Crud_Grid
      *
      * @var string
      */
-    protected $Template = 'Zero_Crud_Grid';
+    protected $ViewName = 'Zero_Crud_Grid';
 
     /**
      * Initialization of the input parameters
@@ -48,12 +48,12 @@ class Zero_Controller_Grid extends Zero_Crud_Grid
      */
     public function Action_Link_Add()
     {
-        if ( !$_REQUEST['obj_id'] )
+        if ( !$_REQUEST['id'] )
             return $this->Set_Message('Error_ParamNot', 1);
         //  target parent object
         $Object1 = Zero_Model::Makes($this->Params['obj_parent_table'], $this->Params['obj_parent_id']);
         //  this object
-        $Object2 = Zero_Model::Makes($this->ModelName, $_REQUEST['obj_id']);
+        $Object2 = Zero_Model::Makes($this->ModelName, $_REQUEST['id']);
         //
         if ( !$Object1->AR->Insert_Cross($Object2) )
             return $this->Set_Message('Error_ParamNot', 1);
@@ -67,12 +67,12 @@ class Zero_Controller_Grid extends Zero_Crud_Grid
      */
     public function Action_Link_Rem()
     {
-        if ( !$_REQUEST['obj_id'] )
+        if ( !$_REQUEST['id'] )
             return $this->Set_Message('Error_Link_Rem', 1);
         //  target parent object
         $Object1 = Zero_Model::Makes($this->Params['obj_parent_table'], $this->Params['obj_parent_id']);
         //  this object
-        $Object2 = Zero_Model::Makes($this->ModelName, $_REQUEST['obj_id']);
+        $Object2 = Zero_Model::Makes($this->ModelName, $_REQUEST['id']);
         //
         if ( !$Object1->AR->Delete_Cross($Object2) )
             return $this->Set_Message('Error_Link_Rem', 1);
