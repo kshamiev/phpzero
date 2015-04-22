@@ -48,44 +48,27 @@ class Zero_Controller_Sample extends Zero_Controller
     }
 
     //// Пример контроллера для API
-    /**
-     * (API) Контроллер по умолчанию.
-     */
-    public function Action_DefaultApi()
-    {
-        $this->View = new Zero_View();
-        switch ( $_SERVER['REQUEST_METHOD'] )
-        {
-            case 'GET':
-                break;
-            case 'POST':
-                break;
-            case 'PUT':
-                break;
-            case 'DELETE':
-                break;
-            case 'OPTIONS':
-                break;
-        }
-        Zero_App::ResponseJson($_SERVER['REQUEST_METHOD'] . ':' . ZERO_URL, 409, 409, ["Запрос не реализован"]);
-    }
-
-    protected function Action_DefaultApiGet()
+    protected function Action_GET()
     {
         Zero_App::ResponseJson('', 200, 0, []);
     }
 
-    protected function Action_DefaultApiPut()
+    protected function Action_PUT()
     {
         Zero_App::ResponseJson($_REQUEST, 200, 0, []);
     }
 
-    protected function Action_DefaultApiPost()
+    protected function Action_POST()
     {
         Zero_App::ResponseJson($_REQUEST, 200, 0, []);
     }
 
-    protected function Action_DefaultApiDelete()
+    protected function Action_DELETE()
+    {
+        Zero_App::ResponseJson('', 200, 0, []);
+    }
+
+    protected function Action_OPTIONS()
     {
         Zero_App::ResponseJson('', 200, 0, []);
     }

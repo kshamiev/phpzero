@@ -261,7 +261,7 @@ class Zero_Section extends Zero_Model
         else if ( '' != $controllerName )
         {
             if ( false == Zero_App::Autoload($controllerName) )
-                throw new Exception('Класс не найден: ' . $controllerName, 500);
+                throw new Exception('Класс не найден: ' . $controllerName, -1);
 
             $reflection = new ReflectionClass($controllerName);
             foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method)

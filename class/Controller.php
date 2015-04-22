@@ -56,9 +56,9 @@ abstract class Zero_Controller
     public static function Makes($class_name, $properties = [])
     {
         if ( '' == $class_name )
-            throw new Exception('Имя класса создаваемого контроллера не указано', 500);
+            throw new Exception('Имя класса создаваемого контроллера не указано', -1);
         if ( false == Zero_App::Autoload($class_name) )
-            throw new Exception('Контроллер "' . $class_name . '" отсутсвует в приложении', 500);
+            throw new Exception('Контроллер "' . $class_name . '" отсутсвует в приложении', -1);
         $Controller = new $class_name();
         foreach ($properties as $property => $value)
         {

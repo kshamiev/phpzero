@@ -137,25 +137,25 @@ class Zero_App
         return $data;
     }
 
-    public static function RequestJsonHttps($method, $url, $content = '')
-    {
-        $content = json_encode($content, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-        $opts = array(
-            'https' => array(
-                'method' => $method,
-                'header' => "Content-Type: application/json; charset=utf-8\r\n" . "Content-Length: " . strlen($content) . "\r\n" . "",
-                'content' => $content,
-                'timeout' => 30,
-            )
-        );
-        $fp = fopen($url, 'rb', false, stream_context_create($opts));
-        $response = stream_get_contents($fp);
-        fclose($fp);
-        $data = json_decode($response, true);
-        if ( !$data )
-            return $response;
-        return $data;
-    }
+//    public static function RequestJsonHttps($method, $url, $content = '')
+//    {
+//        $content = json_encode($content, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+//        $opts = array(
+//            'https' => array(
+//                'method' => $method,
+//                'header' => "Content-Type: application/json; charset=utf-8\r\n" . "Content-Length: " . strlen($content) . "\r\n" . "",
+//                'content' => $content,
+//                'timeout' => 30,
+//            )
+//        );
+//        $fp = fopen($url, 'rb', false, stream_context_create($opts));
+//        $response = stream_get_contents($fp);
+//        fclose($fp);
+//        $data = json_decode($response, true);
+//        if ( !$data )
+//            return $response;
+//        return $data;
+//    }
 
     /**
      * Сборка ответа клиенту
@@ -188,7 +188,7 @@ class Zero_App
 
         // Логирование в файлы
         if ( Zero_App::$Config->Log_Output_File )
-            Zero_Logs::File();
+            Zero_Logs::Output();
         exit;
     }
 
@@ -205,7 +205,7 @@ class Zero_App
 
         // Логирование в файлы
         if ( self::$Config->Log_Output_File )
-            Zero_Logs::File();
+            Zero_Logs::Output();
         exit;
     }
 
@@ -320,7 +320,7 @@ class Zero_App
             $Controller = Zero_Controller::Factories(self::$Section->Controller);
             if ( !method_exists($Controller, $_REQUEST['act']) )
             {
-                throw new Exception('Контроллер не имеет метода: ' . $_REQUEST['act'], 500);
+                throw new Exception('Контроллер не имеет метода: ' . $_REQUEST['act'], -1);
             }
             if ( $_REQUEST['act'] != 'Action_Default' )
             {
@@ -405,7 +405,7 @@ class Zero_App
             $Controller = Zero_Controller::Factories(self::$Section->Controller);
             if ( !method_exists($Controller, $_REQUEST['act']) )
             {
-                throw new Exception('Контроллер не имеет метода: ' . $_REQUEST['act'], 500);
+                throw new Exception('Контроллер не имеет метода: ' . $_REQUEST['act'], -1);
             }
             if ( $_REQUEST['act'] != 'Action_Default' )
             {
@@ -486,15 +486,14 @@ class Zero_App
     public static function Exception(Exception $exception)
     {
         $code = $exception->getCode();
-        if ( 403 != $code && 404 != $code && 500 != $code )
+        if ( $code > 0 && 999 > $code )
         {
             Zero_Logs::Exception($exception);
         }
-
         if ( Zero_App::$Mode == 'console' || !isset($_SERVER['REQUEST_URI']) )
             self::ResponseConsole();
         else if ( Zero_App::$Mode == 'api' )
-            self::ResponseJson('', $code, $code, [$exception->getMessage()]);
+            self::ResponseJson('', 200, $code, [$exception->getMessage()]);
         else if ( Zero_App::$Mode == 'web' )
         {
             $View = new Zero_View(ucfirst(self::$Config->Site_DomainSub) . '_Error');
@@ -533,7 +532,7 @@ class Zero_App
         // Логирование в файлы
         if ( Zero_App::$Config->Log_Output_File )
         {
-            Zero_Logs::File();
+            Zero_Logs::Output();
         }
         exit;
     }

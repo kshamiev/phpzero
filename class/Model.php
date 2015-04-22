@@ -122,9 +122,9 @@ abstract class Zero_Model
     public static function Makes($class_name, $id = 0, $flag_load = false)
     {
         if ( '' == $class_name )
-            throw new Exception("Модель не указана", 500);
+            throw new Exception("Модель не указана", -1);
         if ( false == Zero_App::Autoload($class_name) )
-            throw new Exception("Модель '{$class_name}' отсутсвует в приложении", 500);
+            throw new Exception("Модель '{$class_name}' отсутсвует в приложении", -1);
         return new $class_name($id, $flag_load);
     }
 

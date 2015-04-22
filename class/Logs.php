@@ -14,6 +14,7 @@
  * @package General.Component
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
+ * @todo File -> Output   File_Custom -> File и поменять местами параметры
  */
 class Zero_Logs
 {
@@ -213,14 +214,14 @@ class Zero_Logs
      * Vy`vod vsei` profilirovannoi` informatcii v log fai`ly`
      *
      */
-    public static function File()
+    public static function Output()
     {
         self::$_FileLog = Zero_App::$Config->Site_DomainSub . '_' . self::$_FileLog;
         // Логируем работу приложения в целом
         if ( Zero_App::$Config->Log_Profile_Application )
         {
             $output = join("\n", self::Get_Usage_MemoryAndTime()) . "\n";
-            self::File_Custom($output, self::$_FileLog . '.log');
+            self::File(self::$_FileLog . '.log', $output);
         }
         //
         if ( 0 < count(self::$_Message) )
@@ -250,7 +251,7 @@ class Zero_Logs
                 array_unshift($errors, str_replace(["\r", "\t"], " ", $output));
                 $errors = preg_replace('![ ]{2,}!', ' ', join("\n", $errors));
                 $errors = date('[d.m.Y H:i:s]') . "\n" . $errors;
-                self::File_Custom($errors, self::$_FileLog . '_errors.log');
+                self::File(self::$_FileLog . '_errors.log', $errors);
             }
             // логирование предупреждений в файл
             if ( Zero_App::$Config->Log_Profile_Warning && 0 < count($warnings) )
@@ -258,7 +259,7 @@ class Zero_Logs
                 array_unshift($warnings, str_replace(["\r", "\t"], " ", $output));
                 $warnings = preg_replace('![ ]{2,}!', ' ', join("\n", $warnings));
                 $warnings = date('[d.m.Y H:i:s]') . "\n" . $warnings;
-                self::File_Custom($warnings, self::$_FileLog . '_warnings.log');
+                self::File(self::$_FileLog . '_warnings.log', $warnings);
             }
             // логирование предупреждений в файл
             if ( Zero_App::$Config->Log_Profile_Notice && 0 < count($notice) )
@@ -266,7 +267,7 @@ class Zero_Logs
                 array_unshift($notice, str_replace(["\r", "\t"], " ", $output));
                 $notice = preg_replace('![ ]{2,}!', ' ', join("\n", $notice));
                 $notice = date('[d.m.Y H:i:s]') . "\n" . $notice;
-                self::File_Custom($notice, self::$_FileLog . '_notice.log');
+                self::File(self::$_FileLog . '_notice.log', $notice);
             }
             // логирование операций пользователиа в файл
             if ( Zero_App::$Config->Log_Profile_Action && 0 < count($action) )
@@ -274,7 +275,7 @@ class Zero_Logs
                 $act = date('[d.m.Y H:i:s]') . "\t";
                 $act .= Zero_App::$Users->Login . "\t" . Zero_App::$Section->Controller . " -> " . join($action, ", ") . "\t";
                 $act .= ZERO_HTTP . $_SERVER['REQUEST_URI'];
-                self::File_Custom($act, self::$_FileLog . '_action.log');
+                self::File(self::$_FileLog . '_action.log', $act);
             }
         }
     }
@@ -356,6 +357,25 @@ class Zero_Logs
     public static function File_Custom($data, $file_log)
     {
         return Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . $file_log, $data);
+    }
+
+    /**
+     * Save v fai`l
+     *
+     * @param string $data statisticheskie danny`e
+     * @param string $file_log imia fai`l-loga ('zero_application_error')
+     * @return bool
+     */
+    public static function File($file_log)
+    {
+        $arr = func_get_args();
+        $file_log = array_shift($arr);
+        if ( 0 == count($arr) )
+            return true;
+        if ( is_array($arr[0]) )
+            $arr = $arr[0];
+        //
+        return Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . $file_log, $arr);
     }
 
     /**
