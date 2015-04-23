@@ -257,11 +257,7 @@ class Zero_View
         $template = preg_replace('~{(\$[^}]{1,255})}~si', '<' . '?php echo $1; ?' . '>', $template);
         //	функции и константы
         $template = preg_replace('~{([a-z]{1}[^}]{0,150})}~si', '<' . '?php echo $1; ?' . '>', $template);
-        //  Adjustment of links translation
-        /*
-        if ( Zero_App::$Route->Lang != Zero_App::$Config->Site_Language )
-            $template = preg_replace('~(<a.+?href=[\'"]+)([^"\']+)([\'"])+~si', '$1/' . Zero_App::$Route->Lang . '$2$3', $template);
-        */
+        //
         return $template;
     }
 

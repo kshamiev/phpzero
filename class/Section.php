@@ -334,7 +334,7 @@ class Zero_Section extends Zero_Model
             SELECT
               s.ID, l.Name, SUBSTRING(s.Url, POSITION('/' IN s.Url)) AS Url, s.UrlThis, l.Title
             FROM Section AS s
-                INNER JOIN Content AS l ON l.Section_ID = s.ID AND l.Lang = " . ZERO_LANG . " AND l.Block = 'Content'
+                INNER JOIN Content AS l ON l.Section_ID = s.ID AND l.Lang = '" . ZERO_LANG . "' AND l.Block = 'Content'
                 LEFT JOIN Action AS a ON a.`Section_ID` = s.`ID`
             WHERE
                 {$sql_where}
