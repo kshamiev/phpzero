@@ -339,16 +339,11 @@ class Zero_Config
             else
             {
                 ini_set('session.save_handler', 'files');
-                if ( !ini_get('session.save_path') )
-                    ini_set('session.save_path', ZERO_PATH_SESSION);
                 $path = ini_get('session.save_path');
                 if ( !is_dir($path) )
                     if ( !mkdir($path, 0777, true) )
                         die('session path: "' . $path . '" not exists');
             }
-
-        set_exception_handler(['Zero_App', 'Exception']);
-        // register_shutdown_function(['Zero_App', 'Exit_Application']);
     }
 
     /**

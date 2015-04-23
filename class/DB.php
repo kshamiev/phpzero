@@ -45,7 +45,7 @@ class Zero_DB
      * @param $name string название конфигурации (используется при запросах для идентификации коннекта)
      * @param $config array конфигурация ('Host', 'Login', 'Password', 'Name')
      */
-    public static function Add_Config($name, $config)
+    public static function Config_Add($name, $config)
     {
         self::$Config[$name] = $config;
     }

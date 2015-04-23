@@ -1,4 +1,5 @@
 <?php
+
 /**
  * A helper class for working with the file system.
  *

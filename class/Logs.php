@@ -14,7 +14,6 @@
  * @package General.Component
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
- * @todo File -> Output   File_Custom -> File и поменять местами параметры
  */
 class Zero_Logs
 {
@@ -354,18 +353,6 @@ class Zero_Logs
      * @param string $file_log imia fai`l-loga ('zero_application_error')
      * @return bool
      */
-    public static function File_Custom($data, $file_log)
-    {
-        return Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . $file_log, $data);
-    }
-
-    /**
-     * Save v fai`l
-     *
-     * @param string $data statisticheskie danny`e
-     * @param string $file_log imia fai`l-loga ('zero_application_error')
-     * @return bool
-     */
     public static function File($file_log)
     {
         $arr = func_get_args();
@@ -375,7 +362,11 @@ class Zero_Logs
         if ( is_array($arr[0]) )
             $arr = $arr[0];
         //
-        return Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . $file_log, $arr);
+        foreach ($arr as $val)
+        {
+            Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . $file_log, $val);
+        }
+        return true;
     }
 
     /**

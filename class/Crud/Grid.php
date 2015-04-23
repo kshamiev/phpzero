@@ -171,7 +171,6 @@ abstract class Zero_Crud_Grid extends Zero_Controller
         //  Count
         $pager_count = $this->Model->AR->Select_Count();
         //  Unrelated
-        //  TODO sample catalog move (for linked Add)
         $data_link = [];
         $this->Model->AR->Sql_Reset();
 

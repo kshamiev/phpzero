@@ -20,10 +20,6 @@ define('ZERO_PATH_LIBRARY', ZERO_PATH_SITE . '/library');
  */
 define('ZERO_PATH_LOG', ZERO_PATH_SITE . '/log');
 /**
- * The location of the site log
- */
-define('ZERO_PATH_SESSION', dirname(ZERO_PATH_SITE) . '/session');
-/**
  * Location cache
  */
 define('ZERO_PATH_CACHE', ZERO_PATH_SITE . '/cache');
@@ -55,7 +51,9 @@ define('ZERO_PATH_ZERO', ZERO_PATH_SITE . '/zero');
  */
 class Zero_App
 {
-
+    const MODE_WEB = 'web';
+    const MODE_API = 'web';
+    const MODE_CONSOLE = 'console';
     /**
      * Режим работы приложения (api, web, console).
      *
@@ -113,7 +111,7 @@ class Zero_App
             if ( class_exists($class_name) )
                 return true;
         }
-        Zero_Logs::Set_Message_Warninng('Класс не найден: ' . $class_name);
+        Zero_Logs::Set_Message_Error('Класс не найден: ' . $class_name);
         return false;
     }
 
@@ -241,19 +239,21 @@ class Zero_App
      * @param string $file_log the base name of the log file
      * @param string $mode the base name of the log file
      */
-    public static function Init($file_log = 'application', $mode = 'web')
+    public static function Init($file_log = 'application')
     {
         //  Include Components
-        require_once ZERO_PATH_APPLICATION . '/function.php';
-        require_once ZERO_PATH_ZERO . '/function.php';
         require_once ZERO_PATH_ZERO . '/class/Config.php';
+        require_once ZERO_PATH_ZERO . '/class/Logs.php';
+        require_once ZERO_PATH_ZERO . '/class/DB.php';
         require_once ZERO_PATH_ZERO . '/class/Session.php';
         require_once ZERO_PATH_ZERO . '/class/Cache.php';
-        require_once ZERO_PATH_ZERO . '/class/Logs.php';
-        require_once ZERO_PATH_ZERO . '/class/Route.php';
-        require_once ZERO_PATH_ZERO . '/class/DB.php';
+        require_once ZERO_PATH_ZERO . '/class/View.php';
+        require_once ZERO_PATH_ZERO . '/function.php';
+        require_once ZERO_PATH_APPLICATION . '/function.php';
 
-        self::$Mode = $mode;
+        spl_autoload_register(['Zero_App', 'Autoload']);
+        set_exception_handler(['Zero_App', 'Exception']);
+        // register_shutdown_function(['Zero_App', 'Exit_Application']);
 
         //  Configuration (Zero_Config)
         self::$Config = new Zero_Config($file_log);
@@ -261,25 +261,20 @@ class Zero_App
         //  Initializing monitoring system (Zero_Logs)
         Zero_Logs::Init($file_log);
 
-        //  Initialize cache subsystem (Zero_Cache)
-        if ( class_exists('Memcache') && 0 < count(self::$Config->Memcache['Cache']) )
-            Zero_Cache::InitMemcache(self::$Config->Memcache['Cache']);
-
         // DB init config
         foreach (self::$Config->Db as $name => $config)
         {
-            Zero_DB::Add_Config($name, $config);
+            Zero_DB::Config_Add($name, $config);
         }
-
-        //  Processing incoming request (Zero_Route)
-        self::$Route = new Zero_Route();
-
-        spl_autoload_register(['Zero_App', 'Autoload']);
 
         //  Session Initialization (Zero_Session)
         Zero_Session::Init(self::$Config->Site_Domain);
 
-        require_once ZERO_PATH_ZERO . '/class/View.php';
+        //  Initialize cache subsystem (Zero_Cache)
+        if ( class_exists('Memcache') && 0 < count(self::$Config->Memcache['Cache']) )
+            Zero_Cache::InitMemcache(self::$Config->Memcache['Cache']);
+
+        require_once ZERO_PATH_ZERO . '/constant.php';
     }
 
     public static function ExecuteSimple()
@@ -486,7 +481,7 @@ class Zero_App
     public static function Exception(Exception $exception)
     {
         $code = $exception->getCode();
-        if ( $code > 0 && 999 > $code )
+        if ( $code < 0 || 999 < $code )
         {
             Zero_Logs::Exception($exception);
         }

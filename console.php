@@ -57,7 +57,7 @@ function zero_crontab_check_datetime($date_this, $date_cron)
 
 //  Connecting application
 require __DIR__ . '/class/App.php';
-Zero_App::Init('console', 'console');
+Zero_App::Init('console');
 
 //  Work console task
 if ( count($_SERVER['argv']) > 1 )
