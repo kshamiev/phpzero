@@ -271,7 +271,7 @@ class Zero_App
         Zero_Session::Init(self::$Config->Site_Domain);
 
         //  Initialize cache subsystem (Zero_Cache)
-        if ( class_exists('Memcache') && 0 < count(self::$Config->Memcache['Cache']) )
+        if ( ( 0 < count(self::$Config->Memcache['Cache']) ) && class_exists('Memcache') )
             Zero_Cache::InitMemcache(self::$Config->Memcache['Cache']);
 
         require_once ZERO_PATH_ZERO . '/constant.php';

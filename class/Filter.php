@@ -69,7 +69,7 @@ class Zero_Filter
      *
      * @var integer
      */
-    public $Page = 1;
+    public $Page = 0;
 
     /**
      * Kolichetsvo elementov na stranitce
@@ -494,7 +494,7 @@ class Zero_Filter
         //  сортировка
         $this->Sort = ['List' => [], 'Value' => []];
         //
-        $this->Page = 1;
+        $this->Page = 0;
         $this->Page_Item = Zero_App::$Config->View_PageItem;
         $this->IsSet = false;
 
@@ -539,8 +539,8 @@ class Zero_Filter
                     $this->Add_Sort($prop, $row);
                 }
             }
-            if ( isset($row['Sort']) && $row['Sort'] )
-                $this->Set_Sort($prop, $row['Sort']);
+//            if ( isset($row['Sort']) && $row['Sort'] )
+//                $this->Set_Sort($prop, $row['Sort']);
         }
     }
 
