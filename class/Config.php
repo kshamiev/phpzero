@@ -219,7 +219,7 @@ class Zero_Config
             if ( !mkdir(ZERO_PATH_LOG, 0777, true) )
                 die('logs path: "' . ZERO_PATH_LOG . '" not exists');
         ini_set('log_errors', true);
-        ini_set('error_log', ZERO_PATH_LOG . '/php_errors_' . $file_log . '.log');
+        ini_set('error_log', ZERO_PATH_LOG . '/' . $file_log . '_php_error.log');
         ini_set('magic_quotes_gpc', 0);
         error_reporting(-1);
 
