@@ -26,14 +26,13 @@ define('HTTPD', ZERO_HTTPD);
 define('ZERO_HTTPH', isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : ZERO_HTTP);
 define('HTTPH', ZERO_HTTPH);
 
-$arr = app_route();
 /**
  * The relative url path to the project (site)
  */
-define('ZERO_URL', $arr[1]);
-define('URL', $arr[1]);
+define('ZERO_URL', Zero_App::Get_Url());
+define('URL', Zero_App::Get_Url());
 /**
  * The language suffix
  */
-define('ZERO_LANG', $arr[0]);
-define('LANG', $arr[0]);
+define('ZERO_LANG', Zero_App::Get_Lang());
+define('LANG', Zero_App::Get_Lang());

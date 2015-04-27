@@ -54,26 +54,14 @@ class Zero_App
     const MODE_WEB = 'web';
     const MODE_API = 'web';
     const MODE_CONSOLE = 'console';
-    /**
-     * Режим работы приложения (api, web, console).
-     *
-     * @var string
-     */
-    public static $Mode = '';
 
     /**
      * Configuration
      *
      * @var Zero_Config
      */
-    public static $Config;
 
-    /**
-     * Routing (по URL)
-     *
-     * @var Zero_Route
-     */
-    public static $Route;
+    public static $Config;
 
     /**
      * User
@@ -88,6 +76,42 @@ class Zero_App
      * @var Www_Section
      */
     public static $Section;
+
+    /**
+     * Routing (по URL)
+     *
+     * @var string
+     */
+    private static $lang;
+
+    /**
+     * Routing (по URL)
+     *
+     * @var string
+     */
+    private static $url;
+
+    /**
+     * Режим работы приложения (api, web, console).
+     *
+     * @var string
+     */
+    private static $mode;
+
+    public static function Get_Mode()
+    {
+        return self::$mode;
+    }
+
+    public static function Get_Lang()
+    {
+        return self::$lang;
+    }
+
+    public static function Get_Url()
+    {
+        return self::$url;
+    }
 
     /**
      * Connection classes
@@ -135,25 +159,25 @@ class Zero_App
         return $data;
     }
 
-//    public static function RequestJsonHttps($method, $url, $content = '')
-//    {
-//        $content = json_encode($content, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-//        $opts = array(
-//            'https' => array(
-//                'method' => $method,
-//                'header' => "Content-Type: application/json; charset=utf-8\r\n" . "Content-Length: " . strlen($content) . "\r\n" . "",
-//                'content' => $content,
-//                'timeout' => 30,
-//            )
-//        );
-//        $fp = fopen($url, 'rb', false, stream_context_create($opts));
-//        $response = stream_get_contents($fp);
-//        fclose($fp);
-//        $data = json_decode($response, true);
-//        if ( !$data )
-//            return $response;
-//        return $data;
-//    }
+    //    public static function RequestJsonHttps($method, $url, $content = '')
+    //    {
+    //        $content = json_encode($content, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+    //        $opts = array(
+    //            'https' => array(
+    //                'method' => $method,
+    //                'header' => "Content-Type: application/json; charset=utf-8\r\n" . "Content-Length: " . strlen($content) . "\r\n" . "",
+    //                'content' => $content,
+    //                'timeout' => 30,
+    //            )
+    //        );
+    //        $fp = fopen($url, 'rb', false, stream_context_create($opts));
+    //        $response = stream_get_contents($fp);
+    //        fclose($fp);
+    //        $data = json_decode($response, true);
+    //        if ( !$data )
+    //            return $response;
+    //        return $data;
+    //    }
 
     /**
      * Сборка ответа клиенту
@@ -261,6 +285,10 @@ class Zero_App
         //  Initializing monitoring system (Zero_Logs)
         Zero_Logs::Init($file_log);
 
+        //  Initialize cache subsystem (Zero_Cache)
+        if ( (0 < count(self::$Config->Memcache['Cache'])) && class_exists('Memcache') )
+            Zero_Cache::InitMemcache(self::$Config->Memcache['Cache']);
+
         // DB init config
         foreach (self::$Config->Db as $name => $config)
         {
@@ -270,9 +298,10 @@ class Zero_App
         //  Session Initialization (Zero_Session)
         Zero_Session::Init(self::$Config->Site_Domain);
 
-        //  Initialize cache subsystem (Zero_Cache)
-        if ( ( 0 < count(self::$Config->Memcache['Cache']) ) && class_exists('Memcache') )
-            Zero_Cache::InitMemcache(self::$Config->Memcache['Cache']);
+        $arr = app_route();
+        self::$mode = $arr[0];
+        self::$lang = $arr[1];
+        self::$url = $arr[2];
 
         require_once ZERO_PATH_ZERO . '/constant.php';
     }
@@ -485,11 +514,11 @@ class Zero_App
         {
             Zero_Logs::Exception($exception);
         }
-        if ( Zero_App::$Mode == 'console' || !isset($_SERVER['REQUEST_URI']) )
+        if ( self::$mode == 'console' || !isset($_SERVER['REQUEST_URI']) )
             self::ResponseConsole();
-        else if ( Zero_App::$Mode == 'api' )
+        else if ( self::$mode == 'api' )
             self::ResponseJson('', 200, $code, [$exception->getMessage()]);
-        else if ( Zero_App::$Mode == 'web' )
+        else if ( self::$mode == 'web' )
         {
             $View = new Zero_View(ucfirst(self::$Config->Site_DomainSub) . '_Error');
             $View->Add('Zero_Error');

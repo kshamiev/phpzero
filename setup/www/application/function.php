@@ -8,18 +8,18 @@ function app_route()
 {
     $Url = '/';
     $Lang = Zero_App::$Config->Site_Language;
-    Zero_App::$Mode = Zero_App::MODE_WEB;
+    $Mode = Zero_App::MODE_WEB;
 
     // если запрос консольный
     if ( !isset($_SERVER['REQUEST_URI']) )
     {
-        Zero_App::$Mode = Zero_App::MODE_CONSOLE;
-        return [$Lang, $Url];
+        $Mode = Zero_App::MODE_CONSOLE;
+        return [$Mode, $Lang, $Url];
     }
 
     // главная страница
     if ( $_SERVER['REQUEST_URI'] == '/' )
-        return [$Lang, $Url];
+        return [$Mode, $Lang, $Url];
 
     // инициализация
     $Url = '';
@@ -35,18 +35,18 @@ function app_route()
         $Lang = array_shift($row);
         $Url = '/' . $Lang;
         if ( count($row) == 0 )
-            return [$Lang, $Url];
+            return [$Mode, $Lang, $Url];
     }
 
     // api
     if ( 'api' == $row[0] )
     {
-        Zero_App::$Mode = Zero_App::MODE_API;
+        $Mode = Zero_App::MODE_API;
         app_request_data_api();
     }
 
     $Url .= '/' . implode('/', $row);
-    return [$Lang, $Url];
+    return [$Mode, $Lang, $Url];
 }
 
 function app_request_data_api()
