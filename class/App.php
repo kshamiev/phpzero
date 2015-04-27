@@ -316,7 +316,7 @@ class Zero_App
         self::$Section = Zero_Model::Makes('Www_Section');
         foreach (Zero_Config::Get_Modules() as $module)
         {
-            $config = Zero_Config::Get_Config($module, self::$Mode . 'Route');
+            $config = Zero_Config::Get_Config($module, self::$mode . 'Route');
             if ( isset($config[ZERO_URL]) )
             {
                 $route = $config[ZERO_URL];
@@ -334,7 +334,7 @@ class Zero_App
             self::$Section->Controller = $route['Controller'];
             if ( isset($_REQUEST['act']) && $_REQUEST['act'] )
                 $_REQUEST['act'] = trim($_REQUEST['act']);
-            else if ( 'api' == self::$Mode )
+            else if ( 'api' == self::$mode )
                 $_REQUEST['act'] = $_SERVER['REQUEST_METHOD'];
             else
                 $_REQUEST['act'] = 'Default';
@@ -415,7 +415,7 @@ class Zero_App
         {
             if ( isset($_REQUEST['act']) && $_REQUEST['act'] )
                 $_REQUEST['act'] = trim($_REQUEST['act']);
-            else if ( 'api' == self::$Mode )
+            else if ( 'api' == self::$mode )
                 $_REQUEST['act'] = $_SERVER['REQUEST_METHOD'];
             else
                 $_REQUEST['act'] = 'Default';
