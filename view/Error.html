@@ -5,18 +5,17 @@
 </head>
 <body>
 <br>
-{if ( $http_status == 403 )}
+{if ( $code == 403 )}
     <p align="center">Доступ запрещен</p>
     <p align="center"><a href="{HTTP}">На главную страницу</a></p>
     <p align="center"><a href="#" onclick="window.history.back();">Вернуться обратно</a></p>
     <p align="center"><a href="{HTTP}/user">Авторизация</a></p>
-{else if ( $http_status == 404 )}
+{else if ( $code == 404 )}
     <p align="center">Страница не найдена</p>
     <p align="center"><a href="{HTTP}">На главную страницу</a></p>
-{else if ( $http_status >= 400 )}
-    <p align="center">Ошибка клиента</p>
-{else if ( $http_status >= 500 )}
-    <p align="center">Ошибка в работе приложения либо сервера</p>
+{else}
+    <p align="center">Ошибка в работе приложения</p>
+    <p align="center">{$message}</p>
 {/if}
 </body>
 </html>

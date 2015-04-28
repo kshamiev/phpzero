@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Site Section.
  *
@@ -178,11 +179,15 @@ class Zero_Section extends Zero_Model
      */
     protected static function Config_Form($Model, $scenario = '')
     {
+        if ( 0 == $Model->Section_ID )
+            $UrlThis = 'ReadOnly';
+        else
+            $UrlThis = 'Text';
         return [
             'ID' => [],
             'Section_ID' => [],
             'Url' => [],
-            'UrlThis' => [],
+            'UrlThis' => ['Form' => $UrlThis],
             'UrlRedirect' => [],
             'Layout' => [],
             'Controller' => [],
@@ -206,7 +211,7 @@ class Zero_Section extends Zero_Model
     {
         if ( $this->ID == 0 )
         {
-            $this->Init_Url(Zero_App::$Config->Site_DomainSub . ZERO_URL);
+            $this->Init_Url(ZERO_URL);
         }
     }
 
@@ -406,9 +411,24 @@ class Zero_Section extends Zero_Model
             $this->Url = rtrim($Object->Url, '/') . '/' . $this->UrlThis;
         }
         else
-            $this->Url = $this->UrlThis . '/';
+            $this->Url = '/';
         return '';
     }
+
+    /**
+     * Sample. The total initial validation properties
+     *
+     * @param array $data verifiable data array
+     * @param string $scenario scenario validation
+     * @return array
+     */
+    public function Validate_Before($data, $scenario)
+    {
+        if ( $this->Section_ID == 0 )
+            $this->UrlThis = '/';
+        return $data;
+    }
+
 
     /**
      * Custom controller
@@ -420,13 +440,20 @@ class Zero_Section extends Zero_Model
     public function VL_Controller($value, $scenario)
     {
         if ( !$value )
-            return $this->Controller = null;
+        {
+            $this->Controller = null;
+            return '';
+        }
         $arr = explode('_', $value);
         $path = ZERO_PATH_APPLICATION . '/' . strtolower(array_shift($arr)) . '/class/' . implode('/', $arr) . '.php';
         if ( !file_exists($path) )
+        {
             return 'Error_Path_Class';
+        }
         if ( !preg_match("~\nclass {$value}~si", file_get_contents($path)) )
+        {
             return 'Error_Class_Exists';
+        }
         $this->Controller = $value;
         return '';
     }

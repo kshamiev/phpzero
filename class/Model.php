@@ -526,18 +526,6 @@ abstract class Zero_Model
      * @param array $params параметры контроллера
      * @return string
      */
-    public function DB_From($params)
-    {
-        $this->AR->Sql_From("FROM {$this->Source} as z");
-    }
-
-    /**
-     * Формирование from части запроса к БД
-     * May be removed
-     *
-     * @param array $params параметры контроллера
-     * @return string
-     */
     public function Get_Query_From($params)
     {
         return "FROM {$this->Source} as z";

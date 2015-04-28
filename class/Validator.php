@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Validatciia svoi`stv ob``ekta.
  *
@@ -190,8 +191,8 @@ class Zero_Validator
     {
         $this->Errors = [];
         //  Obshchaia nachal`naia validatciia
-//        if ( method_exists($this->Model, $method = 'Validate_Before') )
-//            $data = $this->Model->Validate_Before($data, $scenario);
+        if ( method_exists($this->Model, $method = 'Validate_Before') )
+            $data = $this->Model->Validate_Before($data, $scenario);
 
         $props = $this->Model->Get_Config_Form($scenario);
         foreach ($data as $prop => $value)
@@ -212,7 +213,7 @@ class Zero_Validator
                 $subj = 'Error_NotNull';
             else if ( method_exists($this->Model, $method = 'VL_' . $prop) )
                 $subj = $this->Model->$method($value, $scenario);
-             else if ( method_exists($this, $method = 'VL_' . $props[$prop]['Form']) )
+            else if ( method_exists($this, $method = 'VL_' . $props[$prop]['Form']) )
                 $subj = $this->$method($value, $prop);
             else
                 $this->Model->$prop = $value;
@@ -223,8 +224,8 @@ class Zero_Validator
         }
 
         //  Obshchaia zavershaiushchaia validatciia
-//        if ( method_exists($this->Model, $method = 'Validate_After') )
-//            $this->Model->Validate_After($data, $scenario);
+        //        if ( method_exists($this->Model, $method = 'Validate_After') )
+        //            $this->Model->Validate_After($data, $scenario);
 
         //    zavershenie
         if ( 0 < count($this->Errors) )

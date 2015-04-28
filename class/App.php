@@ -195,7 +195,7 @@ class Zero_App
         header('Cache-Control: no-store, no-cache, must-revalidate');
         header("Content-Type: application/json; charset=utf-8");
         header('HTTP/1.1 ' . $status . ' ' . $status);
-        $message = Zero_I18n::CodeMessage(self::$Section->Controller, $code, $params);
+        $message = Zero_I18n::Message(self::$Section->Controller, $code, $params);
         $data = [
             'Code' => $message[0],
             'Message' => $message[1],
@@ -436,8 +436,8 @@ class Zero_App
                 Zero_Logs::Set_Message_Action($_REQUEST['act']);
             }
             $view = $Controller->$_REQUEST['act']();
-            Zero_Logs::Stop('#{CONTROLLER.Action} ' . self::$Section->Controller . ' -> ' . $_REQUEST['act']);
 
+            Zero_Logs::Stop('#{CONTROLLER.Action} ' . self::$Section->Controller . ' -> ' . $_REQUEST['act']);
             $messageResponse = $Controller->GetMessage();
         }
 
@@ -509,9 +509,10 @@ class Zero_App
      */
     public static function Exception(Exception $exception)
     {
-        $code = $exception->getCode();
-        if ( $code < 0 || 999 < $code )
+        $status = $code = $exception->getCode();
+        if ( -1 == $code )
         {
+            $status = 500;
             Zero_Logs::Exception($exception);
         }
         if ( self::$mode == 'console' || !isset($_SERVER['REQUEST_URI']) )
@@ -522,9 +523,9 @@ class Zero_App
         {
             $View = new Zero_View(ucfirst(self::$Config->Site_DomainSub) . '_Error');
             $View->Add('Zero_Error');
-            $View->Assign('http_status', $code);
+            $View->Assign('code', $code);
             $View->Assign('message', $exception->getMessage());
-            self::ResponseHtml($View->Fetch(), $code);
+            self::ResponseHtml($View->Fetch(), $status);
         }
     }
 

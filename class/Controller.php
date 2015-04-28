@@ -88,7 +88,7 @@ abstract class Zero_Controller
 
     public function SetMessage($code = 0, $params = [])
     {
-        $arr = Zero_I18n::CodeMessage(get_class($this), $code, $params);
+        $arr = Zero_I18n::Message(get_class($this), $code, $params);
         self::$_Message = [
             'Code' => $arr[0],
             'Message' => $arr[1],

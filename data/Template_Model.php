@@ -125,6 +125,18 @@ class Zero_Model_Pattern extends Zero_Model
     }
 
     /**
+     * Sample. The total initial validation properties
+     *
+     * @param array $data verifiable data array
+     * @param string $scenario scenario validation
+     * @return array
+     */
+    public function Validate_Before($data, $scenario)
+    {
+        return $data;
+    }
+
+    /**
      * Sample. The validation property
      * May be removed
      *
@@ -146,20 +158,9 @@ class Zero_Model_Pattern extends Zero_Model
      */
     public function FL_PropNameSample()
     {
-        return [];
+        return [23 => 'Value'];
     }
 
-    /**
-     * Формирование from части запроса к БД
-     * May be removed
-     *
-     * @param array $params параметры контроллера
-     * @return string
-     */
-    public function DB_From($params)
-    {
-        $this->AR->Sql_From("FROM {$this->Source} as z");
-    }
 
     /**
      * Фабрика по созданию объектов.

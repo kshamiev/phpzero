@@ -926,7 +926,8 @@ class Zero_AR
         //  Save
         if ( 0 == count($sql_update) )
             $sql_update[] = 'ID = NULL';
-        $this->Model->ID = Zero_DB::Insert("INSERT " . $this->Model->Source . " SET " . implode(', ', $sql_update));
+        $sql = "INSERT " . $this->Model->Source . " SET " . implode(', ', $sql_update);
+        $this->Model->ID = Zero_DB::Insert($sql);
         if ( !$this->Model->ID )
             return false;
 

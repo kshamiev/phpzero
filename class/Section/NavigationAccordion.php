@@ -27,7 +27,7 @@ class Zero_Section_NavigationAccordion extends Zero_Controller
             $index .= $this->Params['section_id'];
         }
         else
-            $Section->Init_Url(Zero_App::$Config->Site_DomainSub . '/');
+            $Section->Init_Url('/');
 
         if ( false === $navigation = $Section->Cache->Get($index) )
         {

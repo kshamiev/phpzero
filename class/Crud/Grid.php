@@ -74,6 +74,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
 
         $Filter = Zero_Filter::Factory($this->Model);
         $Filter->Reset();
+        $Filter->Page = 1;
 
         $this->Chunk_View();
         return $this->View;
@@ -102,6 +103,8 @@ abstract class Zero_Crud_Grid extends Zero_Controller
         $Filter = Zero_Filter::Factory($this->Model);
         if ( isset($_REQUEST['pg']) && 0 < $_REQUEST['pg'] )
             $Filter->Page = $_REQUEST['pg'];
+        else if ( 0 == $Filter->Page )
+            $Filter->Page = 1;
         //
         return true;
     }
