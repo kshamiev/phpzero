@@ -52,7 +52,7 @@ define('ZERO_PATH_ZERO', ZERO_PATH_SITE . '/zero');
 class Zero_App
 {
     const MODE_WEB = 'web';
-    const MODE_API = 'web';
+    const MODE_API = 'api';
     const MODE_CONSOLE = 'console';
 
     /**
