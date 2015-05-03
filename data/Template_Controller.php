@@ -11,23 +11,23 @@
 class Zero_Controller_Sample extends Zero_Controller
 {
     /**
-     * Initialization of the stack chunks and input parameters
+     * Инициализация контроллера до его выполнения
      *
-     * @param string $action action
-     * @return boolean flag stop execute of the next chunk
+     * @param string $viewName имя шаблона вида
+     * @return bool
      */
-    protected function Chunk_Init()
+    protected function Chunk_Init($viewName = '')
     {
-        $this->View = new Zero_View(__CLASS__);
+        $viewName = ( '' != $viewName ) ? $viewName : __CLASS__;
+        $this->View = new Zero_View($viewName);
         $this->Model = Zero_Model::Makes('Zero_Users');
         return true;
     }
 
     /**
-     * Create views.
+     * Вывод данных операции контроллера в шаблон
      *
-     * @param string $action action
-     * @return boolean flag stop execute of the next chunk
+     * @return bool
      */
     protected function Chunk_View()
     {
@@ -88,7 +88,7 @@ class Zero_Controller_Sample extends Zero_Controller
             if ( 60 < $timeOutMinute )
                 unlink($file);
         }
-        return $this->View;
+        return true;
     }
 
     ////

@@ -407,6 +407,7 @@ class Zero_Section extends Zero_Model
         $this->UrlThis = Zero_Helper_Strings::Transliteration_Url($value);
         if ( 0 < $this->Section_ID )
         {
+            // TODO возможно ошибка (здесь ведь нет загрузки свойства ?)
             $Object = Zero_Model::Makes(__CLASS__, $this->Section_ID);
             $this->Url = rtrim($Object->Url, '/') . '/' . $this->UrlThis;
         }
