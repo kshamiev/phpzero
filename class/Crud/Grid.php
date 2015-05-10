@@ -57,6 +57,9 @@ abstract class Zero_Crud_Grid extends Zero_Controller
         $this->Chunk_Init();
 
         $Filter = Zero_Filter::Factory($this->Model);
+        $_REQUEST['Filter'] = isset($_REQUEST['Filter']) ? $_REQUEST['Filter'] : [] ;
+        $_REQUEST['Search'] = isset($_REQUEST['Search']) ? $_REQUEST['Search'] : [] ;
+        $_REQUEST['Sort'] = isset($_REQUEST['Sort']) ? $_REQUEST['Sort'] : [] ;
         $Filter->Set($_REQUEST['Filter'], $_REQUEST['Search'], $_REQUEST['Sort']);
 
         $this->Chunk_View();

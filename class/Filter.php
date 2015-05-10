@@ -109,12 +109,11 @@ class Zero_Filter
      * Работает через сессию (Zero_Session)
      *
      * @param Zero_Model $Model Делегированная модель для которой создается фильтр
-     * @param string $suffix суффикс для создания дополнительных фильтров в рамках одной модели
      * @return Zero_Filter
      */
-    public static function Factory($Model, $suffix = '')
+    public static function Factory($Model)
     {
-        $index = 'Filter' . '_' . get_class($Model) . $suffix;
+        $index = 'Filter' . '_' . get_class($Model);
         if ( !$result = Zero_Session::Get($index) )
         {
             $result = new self($Model);
@@ -483,6 +482,8 @@ class Zero_Filter
      * Сброс фильтра
      *
      * Если свойство не указано сбрасываетсиа весь фильтр
+     *
+     * @return Zero_Filter
      */
     public function Reset()
     {
@@ -542,6 +543,7 @@ class Zero_Filter
 //            if ( isset($row['Sort']) && $row['Sort'] )
 //                $this->Set_Sort($prop, $row['Sort']);
         }
+        return $this;
     }
 
     /**
