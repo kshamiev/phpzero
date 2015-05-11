@@ -266,13 +266,12 @@ class Zero_App
     public static function Init($file_log = 'application')
     {
         //  Include Components
+        require_once ZERO_PATH_ZERO . '/function.php';
         require_once ZERO_PATH_ZERO . '/class/Config.php';
         require_once ZERO_PATH_ZERO . '/class/Logs.php';
         require_once ZERO_PATH_ZERO . '/class/DB.php';
         require_once ZERO_PATH_ZERO . '/class/Session.php';
         require_once ZERO_PATH_ZERO . '/class/Cache.php';
-        require_once ZERO_PATH_ZERO . '/class/View.php';
-        require_once ZERO_PATH_ZERO . '/function.php';
         require_once ZERO_PATH_APPLICATION . '/function.php';
 
         spl_autoload_register(['Zero_App', 'Autoload']);
@@ -295,15 +294,15 @@ class Zero_App
             Zero_DB::Config_Add($name, $config);
         }
 
-        //  Session Initialization (Zero_Session)
-        Zero_Session::Init(self::$Config->Site_Domain);
-
         $arr = app_route();
         self::$mode = $arr[0];
         self::$lang = $arr[1];
         self::$url = $arr[2];
 
-        require_once ZERO_PATH_ZERO . '/constant.php';
+        require_once ZERO_PATH_ZERO . '/class/View.php';
+
+        //  Session Initialization (Zero_Session)
+        Zero_Session::Init(self::$Config->Site_Domain);
     }
 
     public static function ExecuteSimple()

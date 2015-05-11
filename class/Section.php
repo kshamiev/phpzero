@@ -179,15 +179,11 @@ class Zero_Section extends Zero_Model
      */
     protected static function Config_Form($Model, $scenario = '')
     {
-        if ( 0 == $Model->Section_ID )
-            $UrlThis = 'ReadOnly';
-        else
-            $UrlThis = 'Text';
         return [
             'ID' => [],
             'Section_ID' => [],
             'Url' => [],
-            'UrlThis' => ['Form' => $UrlThis],
+            'UrlThis' => ['Form' => 'Text'],
             'UrlRedirect' => [],
             'Layout' => [],
             'Controller' => [],
@@ -407,7 +403,6 @@ class Zero_Section extends Zero_Model
         $this->UrlThis = Zero_Helper_Strings::Transliteration_Url($value);
         if ( 0 < $this->Section_ID )
         {
-            // TODO возможно ошибка (здесь ведь нет загрузки свойства ?)
             $Object = Zero_Model::Makes(__CLASS__, $this->Section_ID);
             $this->Url = rtrim($Object->Url, '/') . '/' . $this->UrlThis;
         }

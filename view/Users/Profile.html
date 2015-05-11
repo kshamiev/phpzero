@@ -1,0 +1,32 @@
+{pre($Error_Validator)}
+<form action="{URL}" method="post">
+    <input type="hidden" name="act" value="Profile">
+    <table class="tbledit" width="300px" cellspacing="1" cellpadding="0" border="0" align="center">
+        <tr>
+            <th colspan="2">Профиль</th>
+        </tr>
+        <tr>
+            <td width="150px">Email:</td>
+            <td width="200px">
+                <input class="field" type="text" name="Users[Email]" value="{$Users->Email}">
+            </td>
+        </tr>
+        <tr>
+            <td>{translation "Zero_Users" "Password"}:</td>
+            <td>
+                <input class="field" type="password" name="Users[Password]">
+            </td>
+        </tr>
+        <tr>
+            <td>Пароль еще раз:</td>
+            <td>
+                <input class="field" type="password" name="Users[PasswordR]">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center">
+                <input class="btn" type="submit" value="изменить">
+            </td>
+        </tr>
+    </table>
+</form>

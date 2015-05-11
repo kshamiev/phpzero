@@ -108,7 +108,7 @@ final class Zero_Helper_Strings
     public static function Transliteration_Url($string)
     {
         $string = strtolower(strtr($string, self::$Transliteration));
-        return preg_replace('([^a-z0-9_-])si', '', $string);
+        return preg_replace('([^a-z0-9_/-])si', '', $string);
     }
 
     /**

@@ -63,4 +63,5 @@ return [
     'Address' => 'Адрес доставки по умолчанию',
     'Error_Path_Class' => 'Контроллер не найден',
     'Error_NotNull' => 'Поле не заполненно',
+    'Error_PasswordValid' => 'Пароли не совпадают',
 ];

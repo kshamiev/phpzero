@@ -20,7 +20,7 @@ ini_set('magic_quotes_gpc', 0);
 
 require dirname(__DIR__) . '/class/Config.php';
 require dirname(__DIR__) . '/class/App.php';
-require dirname(__DIR__) . '/class/Lib/File.php';
+require dirname(__DIR__) . '/class/Helper/File.php';
 
 if ( !isset($_REQUEST['site_name']) )
     $_REQUEST['site_name'] = '';
@@ -48,8 +48,8 @@ $message_install_list = [];
 
 //  Check the version of php
 $arr = explode('.', phpversion());
-if ( $arr[0] < 5 || $arr[1] < 4 || $arr[2] < 2 )
-    $error_init_list[] = 'Installed version of php (' . phpversion() . ') below the permissible (5.4.2)';
+if ( $arr[0] < 5 || $arr[1] < 4 )
+    $error_init_list[] = 'Installed version of php (' . phpversion() . ') below the permissible (5.4.0)';
 
 //  Checking the necessary system functions
 if ( !function_exists('spl_autoload_register') )
@@ -72,7 +72,7 @@ else
     unlink(ZERO_PATH_SITE . '/test.php');
 
 //  Checking  already installed system
-if ( file_exists(ZERO_PATH_SITE . '/config.php') )
+if ( file_exists(ZERO_PATH_APPLICATION . '/config.php') )
     $error_init_list[120] = 'system is already installed (remove /config.php)';
 
 /**
@@ -119,7 +119,7 @@ while ( isset($_REQUEST['act']) && 'Install_System' == $_REQUEST['act'] && 0 == 
     file_put_contents(ZERO_PATH_SITE . '/index.php', $index);
 
     //  Baseline configuration
-    $config = file_get_contents(ZERO_PATH_SITE . '/application/config.php');
+    $config = file_get_contents(ZERO_PATH_SITE . '/application/config.blank.php');
     $config = str_replace('<PATH_SESSION>', $arr['session.save_path']['local_value'], $config);
     $config = str_replace('<SITE_NAME>', $_REQUEST['site_name'], $config);
     $config = str_replace('<SITE_EMAIL>', $_REQUEST['site_email'], $config);
@@ -131,7 +131,7 @@ while ( isset($_REQUEST['act']) && 'Install_System' == $_REQUEST['act'] && 0 == 
     $config = str_replace('<SITE_LANGDEFAULT>', $_REQUEST['lang'], $config);
     file_put_contents(ZERO_PATH_SITE . '/application/config.php', $config);
 
-    if ( !symlink(ZERO_PATH_ZERO, ZERO_PATH_APPLICATION . '/zero') )
+    if ( !@symlink(ZERO_PATH_ZERO, ZERO_PATH_APPLICATION . '/zero') )
     {
         $message_install_list[] = "Error create symlink from module zero";
         break;
