@@ -63,10 +63,14 @@ Zero_App::Init('console');
 if ( count($_SERVER['argv']) > 1 )
 {
     $arr = explode('-', $_SERVER['argv'][1]);
-    if ( 2 != count($arr) )
-        throw new Exception('консольная задача определена не правильно: ' . $_SERVER['argv'][1], 409);
+    if ( 1 < count($arr) )
+        $arr[1] = 'Action_' . $arr[1];
+    else
+        $arr[1] = 'Action_Default';
+//    if ( 2 != count($arr) )
+//        throw new Exception('консольная задача определена не правильно: ' . $_SERVER['argv'][1], 409);
+//    $arr[1] = 'Action_' . $arr[1];
 
-    $arr[1] = 'Action_' . $arr[1];
     $Controller = Zero_Controller::Makes($arr[0]);
     $Controller->$arr[1]();
 }

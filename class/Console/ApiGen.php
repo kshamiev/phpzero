@@ -1,33 +1,17 @@
 <?php
 /**
- * Controller. Удаление старых ошибочных загруженных файлов.
+ * Формирование документации
  *
  * @package Console.Zero
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
-class Zero_System_Console extends Zero_Controller
+class Zero_Console_ApiGen extends Zero_Controller
 {
     /**
-     * Удаление устаревших загруженных бинарных файлов
-     *
-     */
-    public function Action_RemoveTempFileUpload()
-    {
-        $path = dirname(ZERO_PATH_DATA) . '/temp';
-        foreach (glob($path . '/.+') as $file)
-        {
-            $timeOutMinute = (time() - filemtime($file)) * 60;
-            if ( 60 < $timeOutMinute )
-                unlink($file);
-        }
-     }
-
-    /**
      * Формирование документации
-     *
      */
-    public function Action_ApiGen()
+    public function Action_Default()
     {
         Zero_Helper_File::Folder_Copy(ZERO_PATH_ZERO .'/data/doc', ZERO_PATH_SITE .'/doc');
         $tpl = file_get_contents(ZERO_PATH_SITE .'/doc/.htaccess');

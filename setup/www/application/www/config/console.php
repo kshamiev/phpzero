@@ -3,10 +3,14 @@
  * File Configure Console Controllers
  */
 return [
-    //  'ClassName-Method' => array('Description' => 'Description', 'Minute' => 'exp.', 'Hour' => 'exp.', 'Day' => 'exp.', 'Month' => 'exp.', 'Week' => 'exp.', 'IsActive' => 'exp.',
+    //  'ClassName' => array('Minute' => 'exp.', 'Hour' => 'exp.', 'Day' => 'exp.', 'Month' => 'exp.', 'Week' => 'exp.', 'IsActive' => 'exp.',
     //  expression "*", "20", "*/10", "3-8", "6/2", "5,6,7"
-    'Zero_Users_Console-Offline' => [
-        'Description' => 'Users Offline',
+    /**
+     * Формирование документации
+     *
+     * @see Zero_Console_ApiGen::Action_Default()
+     */
+    'Zero_Console_ApiGen' => [
         'Minute' => '*/10',
         'Hour' => '*',
         'Day' => '*',
@@ -14,7 +18,12 @@ return [
         'Week' => '*',
         'IsActive' => true
     ],
-    'Zero_System_Console-RemoveTempFileUpload' => [
+    /**
+     * Удаление устаревших загруженных бинарных файлов
+     *
+     * @see Zero_Console_RemTmpFileUpload::Action_Default()
+     */
+    'Zero_Console_RemTmpFileUpload' => [
         'Description' => 'Remove TempFileUpload',
         'Minute' => '0',
         'Hour' => '*',
@@ -23,7 +32,12 @@ return [
         'Week' => '*',
         'IsActive' => true
     ],
-    'Zero_Section_Console-SiteMap' => [
+    /**
+     * Формирование документации
+     *
+     * @see Zero_Section_Console_SiteMap::Action_Default()
+     */
+    'Zero_Section_Console_SiteMap' => [
         'Description' => 'Create SiteMap',
         'Minute' => '0',
         'Hour' => '0',
@@ -32,8 +46,13 @@ return [
         'Week' => '*',
         'IsActive' => true
     ],
-    'Zero_System_Console-ApiGen' => [
-        'Description' => 'Формирование документации',
+    /**
+     * Контроль активности пользователя.
+     *
+     * @see Zero_Users_Console_Offline::Action_Default()
+     *
+     */
+    'Zero_Users_Console_Offline' => [
         'Minute' => '*/10',
         'Hour' => '*',
         'Day' => '*',

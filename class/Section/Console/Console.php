@@ -1,19 +1,17 @@
 <?php
 /**
- * User authentication.
+ * Формирование карты сайта в формате xml.
  *
  * @package Console.Zero
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
-class Zero_Section_Console extends Zero_Controller
+class Zero_Section_Console_SiteMap extends Zero_Controller
 {
     /**
-     * Initialize the online status is not active users.
-     *
-     * @return boolean flag stop execute of the next chunk
+     * Формирование карты сайта в формате xml.
      */
-    public function Action_SiteMap()
+    public function Action_Default()
     {
         $str = '<' . '?xml version="1.0" encoding="UTF-8"?>' . "\n" . '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 

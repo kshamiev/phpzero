@@ -1,6 +1,6 @@
 <?php
 /**
- * Общие и системные функциональности.
+ * Загрузка бинарных данных
  *
  * @package Api.Zero
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
@@ -8,29 +8,6 @@
  */
 class Zero_System_Api_Upload extends Zero_Controller
 {
-    /**
-     * (API) Загрузка бинарных данных.
-     */
-//    public function Action_Upload()
-//    {
-//        $this->View = new Zero_View();
-//        switch ( $_SERVER['REQUEST_METHOD'] )
-//        {
-//            case 'GET':
-//                break;
-//            case 'POST':
-//                $this->Action_UploadPut();
-//                break;
-//            case 'PUT':
-//                break;
-//            case 'DELETE':
-//                break;
-//            case 'OPTIONS':
-//                break;
-//        }
-//        Zero_App::ResponseJson($_SERVER['REQUEST_METHOD'] . ':' . ZERO_URL, 409, 409, ["Запрос не реализован"]);
-//    }
-//
     /**
      * Загрузка бинарных данных
      */

@@ -3,10 +3,14 @@
  * File Configure Web Controllers
  */
 return [
-    // Синтаксис: 'Uri' => array('Description' => 'Description', 'Controller' => 'ClassName-Method', 'View' => 'layoutName',
+    // Синтаксис: 'Uri' => array('Controller' => 'ClassName', 'View' => 'layoutName',
     // Пример
+    /**
+     * Какой-то там контроллер
+     *
+     * @see controllerName::methodName()
+     */
     '/api/v1.0/moduleName/controllersFolderName/controllerName' => [
-        'Description' => 'Пример',
         'Controller' => 'className',
         'View' => 'layoutName',
     ],
