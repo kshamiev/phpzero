@@ -221,9 +221,16 @@ class Zero_DB
     {
         if ( !isset(self::$DB[$nameConnect]) )
             $nameConnect = self::Init($nameConnect);
-        Zero_Logs::Start('#{SQL} ' . $sql);
-        $res = self::$DB[$nameConnect]->query($sql);
-        Zero_Logs::Stop('#{SQL} ' . $sql);
+        if ( true == Zero_App::$Config->Log_Profile_Sql )
+        {
+            Zero_Logs::Start('#{SQL} ' . $sql);
+            $res = self::$DB[$nameConnect]->query($sql);
+            Zero_Logs::Stop('#{SQL} ' . $sql);
+        }
+        else
+        {
+            $res = self::$DB[$nameConnect]->query($sql);
+        }
         if ( !$res )
         {
             Zero_Logs::Set_Message_Error("#{SQL_ERROR} " . self::$DB[$nameConnect]->error);
@@ -249,9 +256,16 @@ class Zero_DB
     {
         if ( !isset(self::$DB[$nameConnect]) )
             $nameConnect = self::Init($nameConnect);
-        Zero_Logs::Start('#{SQL} ' . $sql);
-        $res = self::$DB[$nameConnect]->real_query($sql);
-        Zero_Logs::Stop('#{SQL} ' . $sql);
+        if ( true == Zero_App::$Config->Log_Profile_Sql )
+        {
+            Zero_Logs::Start('#{SQL} ' . $sql);
+            $res = self::$DB[$nameConnect]->query($sql);
+            Zero_Logs::Stop('#{SQL} ' . $sql);
+        }
+        else
+        {
+            $res = self::$DB[$nameConnect]->query($sql);
+        }
         if ( !$res )
         {
             Zero_Logs::Set_Message_Error("#{SQL_ERROR} " . self::$DB[$nameConnect]->error);

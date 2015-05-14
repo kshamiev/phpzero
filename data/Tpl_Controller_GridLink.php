@@ -1,14 +1,13 @@
 <?php
 
 /**
- * Controller. View a list of related objects by page.
+ * View a list of related objects by page.
  *
  * To work with the item. Relation one to many.
  *
- * @package <Package>.<Subpackage>.Controller
- * @author
- * @version $Id$
- * @ignore
+ * @package <Package>.<Subpackage>
+ * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
+ * @date <Date>
  */
 class Zero_Controller_Grid extends Zero_Crud_Grid
 {

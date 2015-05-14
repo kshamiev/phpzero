@@ -162,6 +162,13 @@ class Zero_Config
      *
      * @var bool
      */
+    public $Log_Profile_Sql = true;
+
+    /**
+     * Monitoring. Work the application as a whole
+     *
+     * @var bool
+     */
     public $Log_Profile_Application = true;
 
     /**
@@ -266,7 +273,7 @@ class Zero_Config
             $this->Site_DomainAlias = $Config['Site']['Domain'];
 
         //  Absolute system host a website.
-        $this->Site_DomainSub = 'www';
+        $this->Site_DomainSub = explode('.', $this->Site_Domain)[0];
         if ( isset($_SERVER['HTTP_HOST']) )
         {
             $arr = explode('.', strtolower($_SERVER['HTTP_HOST']));
@@ -298,6 +305,8 @@ class Zero_Config
         $this->Log_Profile_Notice = $Config['Log']['Profile']['Notice'];
         // Monitoring. User action
         $this->Log_Profile_Action = $Config['Log']['Profile']['Action'];
+        // Monitoring. User action
+        $this->Log_Profile_Sql = $Config['Log']['Profile']['Sql'];
         // Monitoring. Work the application as a whole
         $this->Log_Profile_Application = $Config['Log']['Profile']['Application'];
         // Output File

@@ -5,10 +5,9 @@
  *
  * To work with the item. Relation many to many (cross).
  *
- * @package <Package>.<Subpackage>.Controller
- * @author
- * @version $Id$
- * @ignore
+ * @package <Package>.<Subpackage>
+ * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
+ * @date <Date>
  */
 class Zero_Controller_Grid extends Zero_Crud_Grid
 {

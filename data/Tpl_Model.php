@@ -1,12 +1,11 @@
 <?php
 
 /**
- * Model. <Comment>.
+ * <Comment>.
  *
- * @package <Package>.<Subpackage>.Model
+ * @package <Package>.<Subpackage>
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
- * @version $Id$
- * @ignore
+ * @date <Date>
  *
  * <BEG_CONFIG_PROPERTY>
  * <END_CONFIG_PROPERTY>
@@ -42,12 +41,13 @@ class Zero_Model_Pattern extends Zero_Model
      * Базовая конфигурация свойств модели
      *
      * Настройки свойств наследуются остальными конфигурациоными методами
-     * Каждое свойство имеет следующие настройки:
+     * Каждое свойство имеет следующие базовые настройки:
      * - 'AliasDB'=> 'z.PropName'       - Реальное название свойства (поля) в БД
-     * - 'DB'=> 'T, I, F, E, S, D, B'   - Суффикс проверочного метода и косвенного типа хранения для прямой работы с БД
+     * - 'DB'=> 'T, I, F, E, S, D, B'   - Суффикс проверочного метода и косвенного типа хранения в БД
      * - 'IsNull'=> 'YES, NO'           - Разрешено ли значение NULL
      * - 'Default'=> mixed              - Значение по умолчанию
-     * - 'Form'=> string                - Форма предстваления свйоства в виджетах и вьюхах (смотри Zero_Engine)
+     * - 'Form'=> string                - Форма предстваления свйоства в виджетах и вьюхах
+     * @see Zero_Engine
      * - 'Comment' => string            - Комментарий свойства (пользуйтесь системой перевода i18n)
      *
      * @param Zero_Model_Pattern $Model The exact working model
@@ -67,9 +67,10 @@ class Zero_Model_Pattern extends Zero_Model
      *
      * Каждое свойство имеет следующие настройки:
      * - 'AliasDB'=> 'z.PropName'       - Реальное название свойства (поля) в БД
+     * - 'DB'=> 'T, I, F, E, S, D, B'   - Суффикс проверочного метода и косвенного типа хранения в БД
      * - 'AR'=> bool                    - Использовать ли в запросах к БД
      * - 'Visible'=> bool               - Видимость фильтра в виджите или вьюхе
-     * - 'Form'=> 'Select, Radio, Checkbox, Null, Check, DateTime, Link' - Форма предстваления свйоства в виджетах и вьюхах (смотри Zero_Engine)
+     * - 'Form'=> 'Select, Radio, Checkbox, Null, Check, DateTime, Link' - Форма предстваления свйоства в виджетах и вьюхах
      * - 'List'=> array                 - Варианты значений (пользуйтесь системой перевода i18n)
      * - 'Comment' => string            - Комментарий свойства (пользуйтесь системой перевода i18n)
      *

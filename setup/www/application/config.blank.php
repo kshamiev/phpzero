@@ -59,6 +59,8 @@ return [
             //  User action
             'Action' => true,
             //  Work the application as a whole
+            'Sql' => true,
+            //  Work the application as a whole
             'Application' => true,
         ],
         //  Output

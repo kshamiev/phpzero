@@ -1,17 +1,17 @@
 <?php
 /**
- * Контроль активности пользователя.
+ * Оперделение не  активных пользователей.
  *
  * Определение неактивных пользоватлей в системе
  *
- * @package Console.Zero
+ * @package Console.Zero.Users
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
 class Zero_Users_Console_Offline extends Zero_Controller
 {
     /**
-     * Контроль активности пользователя.
+     * Оперделение не  активных пользователей.
      */
     public function Action_Default()
     {

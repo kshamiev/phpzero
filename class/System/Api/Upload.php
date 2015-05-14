@@ -1,15 +1,15 @@
 <?php
 /**
- * Загрузка бинарных данных
+ * Загрузка бинарных данных через веб форму (ajax)
  *
- * @package Api.Zero
+ * @package Api.Zero.System
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
 class Zero_System_Api_Upload extends Zero_Controller
 {
     /**
-     * Загрузка бинарных данных
+     * Загрузка бинарных данных через веб форму (ajax)
      */
     public function Action_POST()
     {

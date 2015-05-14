@@ -1,6 +1,6 @@
 <?php
 /**
- * Удаление устаревших загруженных бинарных файлов
+ * Удаление старых бинарных данных загруженных через веб (ajax)
  *
  * @package Console.Zero
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
@@ -9,7 +9,7 @@
 class Zero_Console_RemTmpFileUpload extends Zero_Controller
 {
     /**
-     * Удаление устаревших загруженных бинарных файлов
+     * Удаление старых бинарных данных загруженных через веб (ajax)
      */
     public function Action_Default()
     {

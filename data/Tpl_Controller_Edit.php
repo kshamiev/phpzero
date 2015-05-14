@@ -1,12 +1,11 @@
 <?php
 
 /**
- * Controller. <Comment>
+ * <Comment>
  *
- * @package <Package>.<Subpackage>.Controller
- * @author
- * @version $Id$
- * @ignore
+ * @package <Package>.<Subpackage>
+ * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
+ * @date <Date>
  */
 class Zero_Controller_Edit extends Zero_Crud_Edit
 {

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Sozdanie moedelei` i modulia po BD.
  *
@@ -94,36 +95,36 @@ class Zero_Engine
      * @var array
      */
     protected static $PropValidatorName = [
-        //  stroki i teksty`
-        'char' => 'Stroka',
-        'varchar' => 'Stroka',
-        'tinytext' => 'Stroka',
-        'text' => 'Tekst',
-        'mediumtext' => 'Tekst',
-        'longtext' => 'Tekst',
-        //  perechislenie
+        //  строки и тексты
+        'char' => 'Строка',
+        'varchar' => 'Строка',
+        'tinytext' => 'Строка',
+        'text' => 'Текст',
+        'mediumtext' => 'Текст',
+        'longtext' => 'Текст',
+        //  перечисление
         'enum' => 'Selekt',
-        //  mnozhestva
+        //  множества
         'set' => 'Chekboks',
-        //  tcely`e chisla
-        'bigint' => 'TCeloe chislo',
-        'mediumint' => 'TCeloe chislo',
-        'int' => 'TCeloe chislo',
-        'smallint' => 'TCeloe chislo',
-        'tinyint' => 'TCeloe chislo',
-        //  chisla s plavaiushchei` tochkoi`
-        'float' => 'Drobnoe chislo',
-        'double' => 'Drobnoe chislo',
-        'decimal' => 'Drobnoe chislo',
-        'real' => 'Drobnoe chislo',
-        //  data i vremia
-        'timestamp' => 'Data i vremia',
-        'datetime' => 'Data i vremia',
-        'date' => 'Data',
-        'time' => 'Vremia',
-        //  binarny`e danny`e
-        'blob' => 'Binarny`e danny`e',
-        'longblob' => 'Binarny`e danny`e',
+        //  целые числа
+        'bigint' => 'Целое число',
+        'mediumint' => 'Целое число',
+        'int' => 'Целое число',
+        'smallint' => 'Целое число',
+        'tinyint' => 'Целое число',
+        //  числа с плавающей точкой
+        'float' => 'Дробное число',
+        'double' => 'Дробное число',
+        'decimal' => 'Дробное число',
+        'real' => 'Дробное число',
+        //  дата и времиа
+        'timestamp' => 'Дата и времиа',
+        'datetime' => 'Дата и времиа',
+        'date' => 'Дата',
+        'time' => 'Времиа',
+        //  бинарные данные
+        'blob' => 'Бинарные данные',
+        'longblob' => 'Бинарные данные',
         'mediumblob' => 'Бинарные данные',
         'tinyblob' => 'Бинарные данные'
     ];
@@ -207,21 +208,11 @@ class Zero_Engine
     ];
 
     /**
-     * Poluchenie modulei` na sonove BD
+     * Служебная переменная для формирования переводов
      *
-     * @return array
+     * @var array
      */
-    public static function Get_Modules_DB()
-    {
-        $result = [];
-        foreach (Zero_DB::Select_List("SHOW TABLES;") as $table)
-        {
-            $arr = explode('_', $table);
-            $result[] = array_shift($arr);
-        }
-        $result = array_flip($result);
-        return array_flip($result);
-    }
+    protected $I18n = [];
 
     /**
      * Pervichny`i` analiz istonchika i poluchenie ruzl`tata
@@ -239,31 +230,33 @@ class Zero_Engine
         $result = [];
         foreach (Zero_DB::Select_Array("SHOW FULL COLUMNS FROM `{$source_name}`") as $row)
         {
-            $arr = explode('(', $row['Type']);
-            $type = array_shift($arr);
+            $type = explode('(', $row['Type']);
+            $type = array_shift($type);
+            $type = explode(' ', $type);
+            $type = array_shift($type);
             if ( !isset(self::$PropValidatorDB[$type]) || !isset(self::$PropValidatorForm[$type]) )
             {
                 Zero_Logs::Set_Message_Error('не определенный тип ' . $row['Type'] . ' поля ' . $row['Field'] . ' в таблице ' . $source_name);
                 continue;
             }
-            //  Opredelenie bazovy`kh nastroek polei`
+            //  Определение базовых настроек полей
             $result[$row['Field']]['TypeFull'] = $row['Type'];
             $result[$row['Field']]['Type'] = $type;
             $result[$row['Field']]['DB'] = self::$PropValidatorDB[$type];
             $result[$row['Field']]['IsNull'] = $row['Null'];
             $result[$row['Field']]['Comment'] = $row['Comment'];
             $result[$row['Field']]['CommentType'] = self::$PropValidatorName[$type];
-            //  Opredeleine znacheniia po umolchaniiu
+            //  Определеине значения по умолчанию
             $result[$row['Field']]['Default'] = $row['Default'];
             if ( 'D' == $result[$row['Field']]['DB'] && 'NO' == $row['Null'] )
                 $result[$row['Field']]['Default'] = 'NOW';
-            //  Opredeleine formy`
+            //  Определеине формы
             $result[$row['Field']]['Form'] = self::$PropValidatorForm[$type];
             if ( 'enum' == $type && 'NO' == $row['Null'] )
                 $result[$row['Field']]['Form'] = 'Radio';
             else if ( 'ID' == $row['Field'] )
                 $result[$row['Field']]['Form'] = '';
-            //  Py`taemsia opredelit` formu svoi`stva po ego imeni
+            //  Пытаемся определить форму свойства по его имени
             if ( substr($row['Field'], 0, strlen('_ID')) == '_ID' || substr($row['Field'], -strlen('_ID')) == '_ID' )
                 $result[$row['Field']]['Form'] = 'Link';
             if ( substr($row['Field'], 0, strlen('Content')) == 'Content' || substr($row['Field'], -strlen('Content')) == 'Content' )
@@ -271,14 +264,14 @@ class Zero_Engine
             if ( substr($row['Field'], 0, strlen('File')) == 'File' || substr($row['Field'], -strlen('File')) == 'File' )
             {
                 if ( 'B' == $result[$row['Field']]['DB'] )
-                    $result[$row['Field']]['Form'] = 'FileData';
+                    $result[$row['Field']]['Form'] = 'FileB';
                 else
                     $result[$row['Field']]['Form'] = 'File';
             }
             if ( substr($row['Field'], 0, strlen('Img')) == 'Img' || substr($row['Field'], -strlen('Img')) == 'Img' )
             {
                 if ( 'B' == $result[$row['Field']]['DB'] )
-                    $result[$row['Field']]['Form'] = 'ImgData';
+                    $result[$row['Field']]['Form'] = 'ImgB';
                 else
                     $result[$row['Field']]['Form'] = 'Img';
             }
@@ -313,29 +306,30 @@ class Zero_Engine
         /**
          * Струтура папок
          */
-        self::$path = ZERO_PATH_SITE . '/engineModule';
+        self::$path = ZERO_PATH_SITE . '/engine/' . $connectDb;
         $dir = self::$path;
         if ( !is_dir($dir) )
-            mkdir($dir);
-//        $dir1 = $dir . '/assets';
-//        if ( !is_dir($dir1) )
-//            mkdir($dir1);
+            mkdir($dir, 0777, true);
+        //        $dir1 = $dir . '/assets';
+        //        if ( !is_dir($dir1) )
+        //            mkdir($dir1);
         $dir1 = $dir . '/class';
         if ( !is_dir($dir1) )
             mkdir($dir1);
-//        $dir1 = $dir . '/config';
-//        if ( !is_dir($dir1) )
-//            mkdir($dir1);
+        //        $dir1 = $dir . '/config';
+        //        if ( !is_dir($dir1) )
+        //            mkdir($dir1);
         $dir1 = $dir . '/i18n';
         if ( !is_dir($dir1) )
             mkdir($dir1);
-//        $dir1 = $dir . '/view';
-//        if ( !is_dir($dir1) )
-//            mkdir($dir1);
-        // Модель
+        //        $dir1 = $dir . '/view';
+        //        if ( !is_dir($dir1) )
+        //            mkdir($dir1);
+        // Модель и контроллеры
+        $this->I18n = [];
         foreach ($table_list as $row)
         {
-            $path_pattern = ZERO_PATH_ZERO . '/data/Template_Model.php';
+            $path_pattern = ZERO_PATH_ZERO . '/data/Tpl_Model.php';
             $path_model = $dir . '/class/' . $row['Name'] . '.php';
             $class = file_get_contents($path_pattern);
             $class = str_replace('<Comment>', $row['Name'], $class);
@@ -344,17 +338,19 @@ class Zero_Engine
             $class = str_replace('Zero_Model_Pattern', $row['Name'], $class);
             Zero_Helper_File::File_Save($path_model, $class);
             //  Konfiguratciia modeli v tcelom
-            $this->Config_Model($path_model, $row['Name']);
+            //            $this->Config_Model($path_model, $row['Name']);
             //  Konfiguratciia svoi`stv motceli
             $this->Config_Model_Prop($path_model, $row['Name']);
             //  Konfiguratciia sviazei` motceli (mnogie ko mnogim)
             $this->Config_Model_Link($path_model, $row['Name']);
+            //  Internatcionalizatciia
+            $this->Config_Model_I18n($path_model, $row['Name']);
             //  Kontroller spiska
             $path_target = substr($path_model, 0, -4) . '/Grid.php';
             if ( $flag_grid )
             {
                 //          echo 'CREATE CONTROLLER ' . $path_target . '<br>';
-                $path_pattern = ZERO_PATH_ZERO . '/data/Template_Controller_Grid.php';
+                $path_pattern = ZERO_PATH_ZERO . '/data/Tpl_Controller_Grid.php';
                 $class = file_get_contents($path_pattern);
                 $class = str_replace('<Comment>', 'Контроллер просмотра списка объектов', $class);
                 $class = str_replace('<Subpackage>', $row['Name'], $class);
@@ -367,7 +363,7 @@ class Zero_Engine
             $path_target = substr($path_model, 0, -4) . '/Edit.php';
             if ( $flag_edit )
             {
-                $path_pattern = ZERO_PATH_ZERO . '/data/Template_Controller_Edit.php';
+                $path_pattern = ZERO_PATH_ZERO . '/data/Tpl_Controller_Edit.php';
                 $class = file_get_contents($path_pattern);
                 $class = str_replace('<Comment>', 'Контроллер изменения объекта', $class);
                 $class = str_replace('<Subpackage>', $row['Name'], $class);
@@ -376,8 +372,23 @@ class Zero_Engine
                 $class = str_replace('Zero_Model_Pattern', $row['Name'], $class);
                 Zero_Helper_File::File_Save($path_target, $class);
             }
-            //  Internatcionalizatciia
-            $this->Config_I18n($path_model, $row['Name']);
+        }
+        // Переводы
+        $str = '';
+        ksort($this->I18n);
+        foreach ($this->I18n as $key => $val)
+        {
+            $str .= "'{$key}' => {$val},\n";
+        }
+        $str = substr(trim($str), 0, -1);
+        $path1 = ZERO_PATH_ZERO . '/data/Tpl_I18n.php';
+        foreach (array_keys(Zero_App::$Config->Language) as $lang)
+        {
+            $path2 = self::$path . '/i18n/' . $lang . '/Model.php';
+            //        echo 'CONFIG I18N MODEL ' . $path2 . '<br>';
+            $file_data = file_get_contents($path1);
+            $file_data = str_replace("'<PROPERTY>'", $str, $file_data);
+            Zero_Helper_File::File_Save($path2, $file_data);
         }
         return true;
     }
@@ -608,17 +619,13 @@ class Zero_Engine
      *
      * @param string $Table tablitca v BD kotoruiu dolzhna obsluzhivat` model`
      */
-    protected function Config_I18n($path_model, $Table)
+    protected function Config_Model_I18n($path_model, $Table)
     {
-        $config = [];
-        /*
-         * Model`
-         */
         foreach (Zero_DB::Select_Array("SHOW FULL COLUMNS FROM {$Table};") as $row)
         {
             $Type = explode('(', $row['Type']);
             $Type = array_shift($Type);
-            $config["{$row['Field']}"] = "'" . $row['Comment'] . "'";
+            $this->I18n["{$row['Field']}"] = "'" . $row['Comment'] . "'";
             //  Перечисления и множества
             if ( 'enum' == $Type || 'set' == $Type )
             {
@@ -629,25 +636,8 @@ class Zero_Engine
                     $str .= "'" . $val . "' => '" . $val . "',";
                     //$config["model prop {$row['Field']} option {$val}"] = $val;
                 }
-                $config["{$row['Field']} options"] = substr($str, 0, -1) . "]";
+                $this->I18n["{$row['Field']} options"] = substr($str, 0, -1) . "]";
             }
-        }
-
-        $str = '';
-        ksort($config);
-        foreach ($config as $key => $val)
-        {
-            $str .= "'{$key}' => {$val},\n\t\t";
-        }
-        $str = substr(trim($str), 0, -1);
-        $path1 = ZERO_PATH_ZERO . '/data/Template_I18n.php';
-        foreach (array_keys(Zero_App::$Config->Language) as $lang)
-        {
-            $path2 = self::$path . '/i18n/' . $lang . '/' . $Table . '.php';
-            //        echo 'CONFIG I18N MODEL ' . $path2 . '<br>';
-            $file_data = file_get_contents($path1);
-            $file_data = str_replace("'<PROPERTY?'", $str, $file_data);
-            Zero_Helper_File::File_Save($path2, $file_data);
         }
     }
 }

@@ -16,10 +16,10 @@ return [
         'Day' => '*',
         'Month' => '*',
         'Week' => '*',
-        'IsActive' => true
+        'IsActive' => false
     ],
     /**
-     * Удаление устаревших загруженных бинарных файлов
+     * Удаление старых бинарных данных загруженных через веб (ajax)
      *
      * @see Zero_Console_RemTmpFileUpload::Action_Default()
      */
@@ -30,7 +30,7 @@ return [
         'Day' => '*',
         'Month' => '*',
         'Week' => '*',
-        'IsActive' => true
+        'IsActive' => false
     ],
     /**
      * Формирование документации
@@ -44,10 +44,10 @@ return [
         'Day' => '*',
         'Month' => '*',
         'Week' => '*',
-        'IsActive' => true
+        'IsActive' => false
     ],
     /**
-     * Контроль активности пользователя.
+     * Оперделение не  активных пользователей.
      *
      * @see Zero_Users_Console_Offline::Action_Default()
      *
@@ -58,6 +58,20 @@ return [
         'Day' => '*',
         'Month' => '*',
         'Week' => '*',
-        'IsActive' => true
+        'IsActive' => false
+    ],
+    /**
+     * Инженеринг моделей и контроллеров CRUD по БД (первой по умолчанию)
+     *
+     * @see Zero_System_Console_Engine::Action_Default()
+     *
+     */
+    'Zero_System_Console_Engine' => [
+        'Minute' => '*/10',
+        'Hour' => '*',
+        'Day' => '*',
+        'Month' => '*',
+        'Week' => '*',
+        'IsActive' => false
     ],
 ];

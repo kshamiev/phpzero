@@ -1,6 +1,6 @@
 <?php
 /**
- * Формирование документации
+ * Формирование этой документации
  *
  * @package Console.Zero
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
@@ -9,7 +9,7 @@
 class Zero_Console_ApiGen extends Zero_Controller
 {
     /**
-     * Формирование документации
+     * Формирование этой документации
      */
     public function Action_Default()
     {

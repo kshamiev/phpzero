@@ -560,19 +560,4 @@ class Zero_App
         }
         exit;
     }
-
-    /**
-     * Profilirovanie raboty` prilozheniia pri ego zavershenii
-     *
-     * - Sbor vsekh tai`merov i zatrachennoi` pamiati
-     * - Zamer polnogo vremeni vy`polneniia prilozheniia
-     * - Vy`vod vsei` profilirovannoi` informatcii v ukazanny`e istochniki
-     */
-    //    public static function ResponseError($code)
-    //    {
-    //        $View = new Zero_View(ucfirst(self::$Config->Site_DomainSub) . '_Error');
-    //        $View->Add('Zero_Error');
-    //        $View->Assign('http_status', $code);
-    //        self::ResponseHtml($View->Fetch(), $code);
-    //    }
 }
