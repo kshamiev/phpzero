@@ -345,10 +345,6 @@ class Zero_App
             {
                 throw new Exception('Контроллер не имеет метода: ' . $_REQUEST['act'], -1);
             }
-            if ( $_REQUEST['act'] != 'Action_Default' )
-            {
-                Zero_Logs::Set_Message_Action($_REQUEST['act']);
-            }
             $view = $Controller->$_REQUEST['act']();
             Zero_Logs::Stop('#{CONTROLLER.Action} ' . self::$Section->Controller . ' -> ' . $_REQUEST['act']);
 
@@ -429,10 +425,6 @@ class Zero_App
             if ( !method_exists($Controller, $_REQUEST['act']) )
             {
                 throw new Exception('Контроллер не имеет метода: ' . $_REQUEST['act'], -1);
-            }
-            if ( $_REQUEST['act'] != 'Action_Default' )
-            {
-                Zero_Logs::Set_Message_Action($_REQUEST['act']);
             }
             $view = $Controller->$_REQUEST['act']();
 

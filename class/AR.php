@@ -370,7 +370,7 @@ class Zero_AR
             // Фильтр на значение NULL
             if ( 'Null' == $row['Form'] )
             {
-                if ( 'yes' == $row['Value'] )
+                if ( false == $row['Value'] )
                     $this->Sql_Where_IsNotNull($row['AliasDB']);
                 else
                     $this->Sql_Where_IsNull($row['AliasDB']);
@@ -600,8 +600,17 @@ class Zero_AR
         //  initcializatciia
         if ( is_array($props) )
             $sql_prop = "SELECT " . implode(', ', $props);
-        else if ( '*' == $props )
-            $sql_prop = "SELECT " . implode(', ', array_keys($this->Model->Get_Config_Prop()));
+        //        else if ( '*' == $props )
+        //        {
+        //            $listProp = [];
+        //            foreach ($this->Model->Get_Config_Prop() as $prop => $cfg)
+        //            {
+        //                if ( isset($cfg['AR']) && false == $cfg['AR'] )
+        //                    continue;
+        //                $listProp[] = $cfg['AliasDB'];
+        //            }
+        //            $sql_prop = "SELECT " . implode(', ', $listProp);
+        //        }
         else
             $sql_prop = "SELECT " . $props;
         /**
@@ -717,7 +726,7 @@ class Zero_AR
     }
 
     /**
-     * Poisk ob``ektov s signaturoi` ravnoi` delegirovannomu ob``ektu rekursivno po derevu.
+     * Поиск объектов с сигнатурой равной делегированному объекту рекурсивно по дереву.
      *
      * Poriadok formirovanie zaprosa:
      * - Sortirovka (mozhet ne by`t`).
@@ -732,14 +741,13 @@ class Zero_AR
             return [];
         //  initcializatciia
         $source = $this->Model->Get_Source();
-        $prop_list = $this->Model->Get_Config_Prop();
         if ( is_array($props) )
+        {
             $sql_prop = implode(', ', $props);
-        else if ( '*' == $props )
-            $sql_prop = implode(', ', array_keys($prop_list));
+            $sql_prop .= ", {$source}_ID";
+        }
         else
             $sql_prop = $props;
-        $sql_prop .= ", {$source}_ID";
 
         /**
          * Usloviia Where
@@ -792,14 +800,13 @@ class Zero_AR
     {
         //  initcializatciia
         $source = $this->Model->Get_Source();
-        $prop_list = $this->Model->Get_Config_Prop();
         if ( is_array($props) )
+        {
             $sql_prop = implode(', ', $props);
-        else if ( '*' == $props )
-            $sql_prop = implode(', ', array_keys($prop_list));
+            $sql_prop .= ", {$source}_ID";
+        }
         else
             $sql_prop = $props;
-        $sql_prop .= ", {$source}_ID";
 
         /**
          * Usloviia Where
@@ -910,14 +917,19 @@ class Zero_AR
     public function Insert($scenario = '')
     {
         $prop_list = $this->Model->Get_Config_Prop($scenario);
-        unset($prop_list['ID']);
+//        foreach ($prop_list as $prop => $cfg)
+//        {
+//            if ( isset($cfg['AR']) && false == $cfg['AR'] )
+//                unset($prop_list[$prop]);
+//        }
+//        unset($prop_list['ID']);
 
         //  sborka svoi`stv dlia sokhraneniia v BD
         $sql_update = [];
         $props = $this->Model->Get_Props(-1);
         foreach ($props as $prop => $value)
         {
-            if ( !isset($prop_list[$prop]) )
+            if ( !isset($prop_list[$prop]) || ( isset($prop_list['AR']) && false == $prop_list['AR'] ) )
                 continue;
             $method = "Esc" . $prop_list[$prop]['DB'];
             $sql_update[] = '`' . $prop . '` = ' . Zero_DB::$method($value);
@@ -1014,7 +1026,7 @@ class Zero_AR
         $sql_update = [];
         foreach ($this->Model->Get_Props(-1) as $prop => $value)
         {
-            if ( !isset($prop_list[$prop]) )
+            if ( !isset($prop_list[$prop]) || ( isset($prop_list['AR']) && false == $prop_list['AR'] ) )
                 continue;
             $method = "Esc" . $prop_list[$prop]['DB'];
             if ( isset($_FILES[$prop]) )
@@ -1186,7 +1198,7 @@ class Zero_AR
             $sql_where .= ' AND `ID` = ' . $this->Model->ID;
 
         if ( '' == $source )
-            $source = $this->Model->Source;
+            $source = $this->Model->Get_Source();
         Zero_DB::Update("DELETE FROM {$source} " . $sql_where);
         return true;
     }

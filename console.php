@@ -64,15 +64,15 @@ if ( count($_SERVER['argv']) > 1 )
 {
     $arr = explode('-', $_SERVER['argv'][1]);
     if ( 1 < count($arr) )
-        $arr[1] = 'Action_' . $arr[1];
+        $_REQUEST['act'] = 'Action_' . $arr[1];
     else
-        $arr[1] = 'Action_Default';
+        $_REQUEST['act'] = 'Action_Default';
 //    if ( 2 != count($arr) )
 //        throw new Exception('консольная задача определена не правильно: ' . $_SERVER['argv'][1], 409);
 //    $arr[1] = 'Action_' . $arr[1];
 
     $Controller = Zero_Controller::Makes($arr[0]);
-    $Controller->$arr[1]();
+    $Controller->$_REQUEST['act']();
 }
 //  Launch Manager console task
 else
