@@ -359,8 +359,8 @@ class Zero_Logs
         $file_log = array_shift($arr);
         if ( 0 == count($arr) )
             return true;
-        if ( is_array($arr[0]) )
-            $arr = $arr[0];
+        //if ( is_array($arr[0]) )
+//            $arr = $arr[0];
         //
         foreach ($arr as $val)
         {
