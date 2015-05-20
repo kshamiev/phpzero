@@ -87,23 +87,6 @@ class Zero_Logs
      * @param mixed $value Сообщение об ошибке
      * @return mixed
      */
-    public static function Set_Message_Action($value)
-    {
-        self::$_Message[] = [print_r($value, true), 'action'];
-        if ( Zero_App::$Config->Log_Profile_Action )
-        {
-            self::Start(print_r($value, true));
-            self::Stop(print_r($value, true));
-        }
-        return $value;
-    }
-
-    /**
-     * Инициализация входиащего системного сообщения.
-     *
-     * @param mixed $value Сообщение об ошибке
-     * @return mixed
-     */
     public static function Set_Message_Error($value)
     {
         self::$_Message[] = [print_r($value, true), 'error'];
@@ -229,7 +212,6 @@ class Zero_Logs
             $errors = [];
             $warnings = [];
             $notice = [];
-            $action = [];
             foreach (self::$_Message as $row)
             {
                 if ( 'error' == $row[1] )
@@ -241,8 +223,6 @@ class Zero_Logs
                 else if ( 'notice' == $row[1] )
                     //                    $warnings[] = str_replace(["\r", "\t"], " ", var_export($row[0], true));
                     $notice[] = str_replace(["\r", "\t"], " ", $row[0]);
-                else if ( 'action' == $row[1] )
-                    $action[] = $row[0];
             }
             // логирование ошибки в файл
             if ( Zero_App::$Config->Log_Profile_Error && 0 < count($errors) )
@@ -269,10 +249,10 @@ class Zero_Logs
                 self::File(self::$_FileLog . '_notice.log', $notice);
             }
             // логирование операций пользователиа в файл
-            if ( Zero_App::$Config->Log_Profile_Action && 0 < count($action) )
+            if ( Zero_App::$Config->Log_Profile_Action && isset($_REQUEST['act']) )
             {
                 $act = date('[d.m.Y H:i:s]') . "\t";
-                $act .= Zero_App::$Users->Login . "\t" . Zero_App::$Section->Controller . " -> " . join($action, ", ") . "\t";
+                $act .= Zero_App::$Users->Login . "\t" . Zero_App::$Section->Controller . " -> " . $_REQUEST['act'] . "\t";
                 $act .= ZERO_HTTP . $_SERVER['REQUEST_URI'];
                 self::File(self::$_FileLog . '_action.log', $act);
             }
