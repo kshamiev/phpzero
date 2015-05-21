@@ -68,6 +68,7 @@ class Zero_Users_Profile extends Zero_Controller
         }
         $this->Model = Zero_Model::Makes('Www_Users', Zero_App::$Users->ID, true);
         $this->View = new Zero_View(get_class($this));
+        $this->View->Assign('Error_Validator', []);
         return true;
     }
 

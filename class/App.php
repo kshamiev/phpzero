@@ -197,7 +197,7 @@ class Zero_App
         header('HTTP/1.1 ' . $status . ' ' . $status);
 
         $message = Zero_I18n::Message(self::$Section->Controller, $code, $params);
-        if ( 5000 <= $code )
+        if ( -1 == $code || 5000 <= $code )
             $errorStatus = true;
         else
             $errorStatus = false;

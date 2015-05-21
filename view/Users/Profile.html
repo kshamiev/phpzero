@@ -1,4 +1,3 @@
-{pre($Error_Validator)}
 <form action="{URL}" method="post">
     <input type="hidden" name="act" value="Profile">
     <table class="tbledit" width="300px" cellspacing="1" cellpadding="0" border="0" align="center">
@@ -6,13 +5,37 @@
             <th colspan="2">Профиль</th>
         </tr>
         <tr>
-            <td width="150px">Email:</td>
+            <td width="150px">
+                Фио:<br>
+                {if ( isset($Error_Validator['Name']) )} <font color="red">{$Error_Validator['Name'][1]}</font> {/if}
+            </td>
+            <td width="200px">
+                <input class="field" type="text" name="Users[Name]" value="{$Users->Name}">
+            </td>
+        </tr>
+        <tr>
+            <td width="150px">
+                Email:<br>
+                {if ( isset($Error_Validator['Email']) )} <font color="red">{$Error_Validator['Email'][1]}</font> {/if}
+            </td>
             <td width="200px">
                 <input class="field" type="text" name="Users[Email]" value="{$Users->Email}">
             </td>
         </tr>
         <tr>
-            <td>{translation "Zero_Users" "Password"}:</td>
+            <td width="150px">
+                Телефон:<br>
+                {if ( isset($Error_Validator['Phone']) )} <font color="red">{$Error_Validator['Phone'][1]}</font> {/if}
+            </td>
+            <td width="200px">
+                <input class="field" type="text" name="Users[Phone]" value="{$Users->Phone}">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {translation "Zero_Users" "Password"}:<br>
+                {if ( isset($Error_Validator['Password']) )} <font color="red">{$Error_Validator['Password'][1]}</font> {/if}
+            </td>
             <td>
                 <input class="field" type="password" name="Users[Password]">
             </td>
