@@ -89,9 +89,15 @@ abstract class Zero_Controller
     public function SetMessage($code = 0, $params = [])
     {
         $arr = Zero_I18n::Message(get_class($this), $code, $params);
+        if ( 5000 <= $code )
+            $errorStatus = true;
+        else
+            $errorStatus = false;
+
         self::$_Message = [
             'Code' => $arr[0],
             'Message' => $arr[1],
+            'ErrorStatus' => $errorStatus,
         ];
     }
 

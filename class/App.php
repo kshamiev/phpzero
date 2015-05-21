@@ -195,13 +195,21 @@ class Zero_App
         header('Cache-Control: no-store, no-cache, must-revalidate');
         header("Content-Type: application/json; charset=utf-8");
         header('HTTP/1.1 ' . $status . ' ' . $status);
+
         $message = Zero_I18n::Message(self::$Section->Controller, $code, $params);
+        if ( 5000 <= $code )
+            $errorStatus = true;
+        else
+            $errorStatus = false;
+
         $data = [
             'Code' => $message[0],
             'Message' => $message[1],
+            'ErrorStatus' => $errorStatus,
         ];
         if ( $content )
             $data['Content'] = $content;
+
         echo json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
         // закрываем соединение с браузером (работает только под нгинx)
@@ -501,9 +509,13 @@ class Zero_App
     public static function Exception(Exception $exception)
     {
         $status = $code = $exception->getCode();
-        if ( -1 == $code )
+        if ( -1 == $status )
         {
             $status = 500;
+            Zero_Logs::Exception($exception);
+        }
+        else if ( 999 < $status )
+        {
             Zero_Logs::Exception($exception);
         }
         if ( self::$mode == 'console' || !isset($_SERVER['REQUEST_URI']) )

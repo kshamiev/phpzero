@@ -370,7 +370,7 @@ class Zero_AR
             // Фильтр на значение NULL
             if ( 'Null' == $row['Form'] )
             {
-                if ( false == $row['Value'] )
+                if ( 'yes' == $row['Value'] )
                     $this->Sql_Where_IsNotNull($row['AliasDB']);
                 else
                     $this->Sql_Where_IsNull($row['AliasDB']);

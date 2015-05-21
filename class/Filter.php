@@ -136,7 +136,7 @@ class Zero_Filter
         $this->Filter[$prop] = $row;
         $this->Filter[$prop]['Form'] = 'Link';
         $this->Filter[$prop]['Visible'] = $is_visible;
-        $this->Filter[$prop]['Value'] = 0;
+        $this->Filter[$prop]['Value'] = '';
         $this->Filter[$prop]['List'] = [];
         if ( is_array($load) )
         {
@@ -253,7 +253,7 @@ class Zero_Filter
         $this->Filter[$prop] = $row;
         $this->Filter[$prop]['Form'] = 'Null';
         $this->Filter[$prop]['Visible'] = $is_visible;
-        $this->Filter[$prop]['Value'] = true;
+        $this->Filter[$prop]['Value'] = '';
         $this->Filter[$prop]['List'] = Zero_I18n::Model('Zero_General', 'FlagOptions');
         return true;
     }
@@ -271,7 +271,7 @@ class Zero_Filter
         $this->Filter[$prop] = $row;
         $this->Filter[$prop]['Form'] = 'Check';
         $this->Filter[$prop]['Visible'] = $is_visible;
-        $this->Filter[$prop]['Value'] = 0;
+        $this->Filter[$prop]['Value'] = '';
         $this->Filter[$prop]['List'] = Zero_I18n::Model('Zero_General', 'FlagOptions');
         return true;
     }

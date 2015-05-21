@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Базовая абстрактная модель (Компонент).
  *
@@ -362,7 +363,9 @@ abstract class Zero_Model
         {
             foreach (static::Config_Prop($this, $scenario) as $prop => $row)
             {
-                $row['Comment'] = Zero_I18n::Model($index, $prop);
+                $row['Comment'] = Zero_I18n::Model($index, $this->Source . ' ' . $prop);
+                if ( $row['Comment'] == $this->Source . ' ' . $prop )
+                    $row['Comment'] = Zero_I18n::Model($index, $prop);
                 self::$_Config[$index]['props'][$prop] = $row;
             }
         }
@@ -603,7 +606,7 @@ abstract class Zero_Model
         if ( isset($this->Get_Config_Prop()[$method]) )
         {
             return Zero_DB::Select_Field("SELECT `{$params[0]}` FROM " . zero_relation($method) . " WHERE ID = " . intval($this->$method));
-//            return self::Make(zero_relation($method), $this->$method, !empty($params[0]));
+            //            return self::Make(zero_relation($method), $this->$method, !empty($params[0]));
         }
         throw new Exception('metod not found: ' . get_class($this) . ' -> ' . $method, 409);
     }

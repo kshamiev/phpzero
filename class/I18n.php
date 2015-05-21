@@ -84,7 +84,7 @@ class Zero_I18n
         {
             return self::$_I18n[$file_name][$key];
         }
-        Zero_Logs::Set_Message_Warninng('I18N NOT FOUND KEY: ' . LANG . ' -> ' . $file_name . ' -> ' . $key);
+//        Zero_Logs::Set_Message_Warninng('I18N NOT FOUND KEY: ' . LANG . ' -> ' . $file_name . ' -> ' . $key);
         return $key;
     }
 
