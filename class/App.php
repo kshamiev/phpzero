@@ -508,13 +508,18 @@ class Zero_App
      */
     public static function Exception(Exception $exception)
     {
-        $status = $code = $exception->getCode();
-        if ( -1 == $status )
+        $status = 200;
+        $code = $exception->getCode();
+        if ( $code < 0 )
         {
             $status = 500;
             Zero_Logs::Exception($exception);
         }
-        else if ( 999 < $status )
+        else if ( 0 < $code && $code < 999 )
+        {
+            $status = $code;
+        }
+        else
         {
             Zero_Logs::Exception($exception);
         }

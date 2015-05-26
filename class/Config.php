@@ -211,7 +211,7 @@ class Zero_Config
      *
      * @param string $file_log the base name of the log file
      */
-    public function __construct($file_log = 'application')
+    public function __construct($file_log)
     {
         // Setting php
         set_time_limit(3600);
@@ -230,7 +230,10 @@ class Zero_Config
         ini_set('magic_quotes_gpc', 0);
         error_reporting(-1);
 
-        $Config = require ZERO_PATH_APPLICATION . '/config.php';
+        if ( file_exists($path = ZERO_PATH_APPLICATION . '/config_' . $file_log . '.php') )
+            $Config = require $path;
+        else
+            $Config = require ZERO_PATH_APPLICATION . '/config.php';
 
         // The path to the php Interpreter
         $this->Site_PathPhp = $Config['Site']['PathPhp'];
