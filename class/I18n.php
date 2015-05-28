@@ -58,7 +58,7 @@ class Zero_I18n
             Zero_Logs::Set_Message_Warninng('I18N NOT FOUND MESSAGE: ' . LANG . ' -> ' . $file_name . ' -> ' . $code);
         }
         // перевод
-        return [$codeGlobal, zero_sprintf($params)];
+        return [$codeGlobal, strval(zero_sprintf($params))];
     }
 
     /**
