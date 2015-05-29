@@ -89,7 +89,7 @@ abstract class Zero_Controller
     public function SetMessage($code = 0, $params = [])
     {
         $arr = Zero_I18n::Message(get_class($this), $code, $params);
-        if ( -1 == $code || 5000 <= $code )
+        if ( -1 == $code || 403 == $code || 404 == $code || 5000 <= $code )
             $errorStatus = true;
         else
             $errorStatus = false;

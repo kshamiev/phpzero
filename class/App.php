@@ -196,8 +196,12 @@ class Zero_App
         header("Content-Type: application/json; charset=utf-8");
         header('HTTP/1.1 ' . $status . ' ' . $status);
 
-        $message = Zero_I18n::Message(self::$Section->Controller, $code, $params);
-        if ( -1 == $code || 5000 <= $code )
+        $message = [];
+        if ( self::$Section->Controller )
+            $message = Zero_I18n::Message(self::$Section->Controller, $code, $params);
+        else
+            $message = Zero_I18n::Message('Zero', $code, $params);
+        if ( -1 == $code || 403 == $code || 404 == $code || 5000 <= $code )
             $errorStatus = true;
         else
             $errorStatus = false;

@@ -107,7 +107,7 @@ class Zero_I18n
             self::$_I18n[$folder_list[0] . '_' . $folder_list[1]] = include $path;
             return $path;
         }
-        Zero_Logs::Set_Message_Warninng('I18N NOT FOUND FILE: ' . strtolower($folder_list[0]) . '/i18n/' . $lang . '/' . $folder_list[1]);
+        Zero_Logs::Set_Message_Warninng('I18N NOT FOUND FILE: ' . $path);
         return '';
     }
 }
