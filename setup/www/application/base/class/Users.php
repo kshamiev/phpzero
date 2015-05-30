@@ -3,11 +3,11 @@
 /**
  * Model. Users.
  *
- * @package Www.Users
+ * @package Base.Users
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
-class Www_Users extends Zero_Users
+class Base_Users extends Zero_Users
 {
     /**
      * Базовая конфигурация свойств модели

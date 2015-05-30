@@ -66,14 +66,14 @@ class Zero_App
     /**
      * User
      *
-     * @var Www_Users
+     * @var Base_Users
      */
     public static $Users;
 
     /**
      * Section (page)
      *
-     * @var Www_Section
+     * @var Base_Section
      */
     public static $Section;
 
@@ -320,11 +320,11 @@ class Zero_App
     public static function ExecuteSimple()
     {
         // Пользователь
-        self::$Users = Zero_Model::Factories('Www_Users');
+        self::$Users = Zero_Model::Factories('Base_Users');
 
         // Раздел - страница
         $route = [];
-        self::$Section = Zero_Model::Makes('Www_Section');
+        self::$Section = Zero_Model::Makes('Base_Section');
         foreach (Zero_Config::Get_Modules() as $module)
         {
             $config = Zero_Config::Get_Config($module, self::$mode . 'Route');
@@ -401,10 +401,10 @@ class Zero_App
     public static function Execute()
     {
         //  Пользователь
-        self::$Users = Zero_Model::Factories('Www_Users');
+        self::$Users = Zero_Model::Factories('Base_Users');
 
         //  Раздел - страница
-        self::$Section = Zero_Model::Instances('Www_Section');
+        self::$Section = Zero_Model::Instances('Base_Section');
         if ( 0 == self::$Section->ID || 'no' == self::$Section->IsEnable )
             throw new Exception('Page Not Found', 404);
         if ( self::$Section->UrlRedirect )

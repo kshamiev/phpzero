@@ -16,7 +16,7 @@ class Zero_Section_Grid extends Zero_Crud_Grid
      *
      * @var string
      */
-    protected $ModelName = 'Www_Section';
+    protected $ModelName = 'Base_Section';
 
     /**
      * Template view

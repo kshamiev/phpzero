@@ -19,8 +19,8 @@ class Zero_Section_NavigationAccordion extends Zero_Controller
     public function Action_Default()
     {
         $index = __CLASS__ . Zero_App::$Users->Groups_ID . Zero_App::$Config->Site_DomainSub;
-        $Section = Zero_Model::Makes('Zero_Section');
-        /* @var $Section Www_Section */
+        $Section = Zero_Model::Makes('Base_Section');
+        /* @var $Section Base_Section */
         if ( isset($this->Params['section_id']) && 0 < $this->Params['section_id'] )
         {
             $Section = Zero_Model::Makes('Zero_Section', $this->Params['section_id']);

@@ -3,11 +3,11 @@
 /**
  * Model. Section.
  *
- * @package Www.Section
+ * @package Base.Section
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
-class Www_Section extends Zero_Section
+class Base_Section extends Zero_Section
 {
     /**
      * Базовая конфигурация свойств модели

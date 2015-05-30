@@ -46,7 +46,7 @@
     });
 </script>
 <ul>
-    <li><a href="#tabs-1">{translation "Www_General" "Properties"}</a></li>
+    <li><a href="#tabs-1">{translation "Base" "Properties"}</a></li>
     {foreach ($props_content as $Prop => $row)}
     <li><a href="#tabs-{$Prop}">{$row['Comment']}</a></li>
     {/foreach}
@@ -56,8 +56,8 @@
 <div id="tabs-1">
     <table class="tbledit" width="100%" cellspacing="1" cellpadding="0" border="0">
         <tr>
-            <th>{translation "Www_General" "Properties"}</th>
-            <th>{translation "Www_General" "Data"}</th>
+            <th>{translation "Base" "Properties"}</th>
+            <th>{translation "Base" "Data"}</th>
         </tr>
         {foreach ($Props as $Prop => $row)}
         {if ( 'Hidden' == $row['Form'] )}
@@ -82,7 +82,7 @@
 
                 {else if ( 'Link' == $row['Form'] )}
                 <select class="field" name="Prop[{$Prop}]" data-link-prop="{$Prop}">
-                    <option value="">{translation "Www_General" "Not selected"}</option>
+                    <option value="">{translation "Base" "Not selected"}</option>
                     {foreach ($Filter[$Prop]['List'] as $id => $name)}
                     <option value="{$id}"{if ( $id == $Object->$Prop )} selected{/if}>{$name}</option>
                     {/foreach}
@@ -101,7 +101,7 @@
 
                 {else if ( 'Select' == $row['Form'] )}
                 <select class="field" name="Prop[{$Prop}]" data-select-prop="{$Prop}">
-                    <option value="">{translation "Www_General" "Not selected"}</option>
+                    <option value="">{translation "Base" "Not selected"}</option>
                     {foreach ($Filter[$Prop]['List'] as $key => $name)}
                     <option value="{$key}"{if ( $key == $Object->$Prop )} selected{/if}>{$name}</option>
                     {/foreach}

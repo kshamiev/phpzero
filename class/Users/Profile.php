@@ -66,7 +66,7 @@ class Zero_Users_Profile extends Zero_Controller
         if ( 0 == Zero_App::$Users->ID ) {
             Zero_App::ResponseRedirect('/');
         }
-        $this->Model = Zero_Model::Makes('Www_Users', Zero_App::$Users->ID, true);
+        $this->Model = Zero_Model::Makes('Base_Users', Zero_App::$Users->ID, true);
         $this->View = new Zero_View(get_class($this));
         $this->View->Assign('Error_Validator', []);
         return true;

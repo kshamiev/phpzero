@@ -70,7 +70,7 @@ class Zero_Users_Login extends Zero_Controller
         {
             Zero_App::ResponseRedirect('/admin');
         }
-        $this->Model = Zero_Model::Makes('Www_Users');
+        $this->Model = Zero_Model::Makes('Base_Users');
         $this->View = new Zero_View(get_class($this));
         if ( !Zero_App::$Users->UrlRedirect )
         {
@@ -93,7 +93,7 @@ class Zero_Users_Login extends Zero_Controller
         if ( !$_REQUEST['Login'] || !$_REQUEST['Password'] )
             return true;
 
-        $Users = Zero_Model::Makes('Www_Users');
+        $Users = Zero_Model::Makes('Base_Users');
         /* @var $Users Zero_Users */
         $Users->AR->Sql_Where('Login', '=', $_REQUEST['Login']);
         $Users->AR->Select('*');
@@ -160,7 +160,7 @@ class Zero_Users_Login extends Zero_Controller
         $reply = $from;
         Mail_Queue::SendMessage($reply, $from, $to, $subject, $message);
 
-        $this->Model = Zero_Model::Makes('Www_Users');
+        $this->Model = Zero_Model::Makes('Base_Users');
         return $this->Set_Message("Reminder", 0);
     }
 }
