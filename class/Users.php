@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Пользователи.
  *
@@ -254,8 +255,8 @@ class Zero_Users extends Zero_Model
                 $this->_Condition[$prop][$this->ID] = $this->Name;
             }
             //  uslovie gruppy`
-//            if ( 1 != $this->Groups_ID )
-//                $this->_Condition['Groups_ID'][$this->Groups_ID] = $this->Groups_ID('Name');
+            //            if ( 1 != $this->Groups_ID )
+            //                $this->_Condition['Groups_ID'][$this->Groups_ID] = $this->Groups_ID('Name');
             //  dopolnitel`ny`e usloviia
             /*
             foreach ($this->Get_Props(1) as $prop => $value)
@@ -385,5 +386,18 @@ class Zero_Users extends Zero_Model
         if ( Zero_App::$Users->Keystring != $value )
             return 'Error_Keystring';
         return '';
+    }
+
+    public function FL_Groups_ID()
+    {
+        if ( Zero_App::$Users->Groups_ID == 1 )
+        {
+            $sql = "SELECT ID, Name FROM Groups ORDER BY 2";
+        }
+        else
+        {
+            $sql = "SELECT ID, Name FROM Groups WHERE ID != 1 ORDER BY 2";
+        }
+        return Zero_DB::Select_List_Index($sql);
     }
 }
