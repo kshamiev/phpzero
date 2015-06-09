@@ -54,7 +54,7 @@ class Zero_View
     /**
      * Reguliarnoe vy`razhenie dlia obrabotki direktiv include (html shablonov)
      */
-    const PATTERN_INCLUDE = '~\{inc(?:lude)?[ ]+[\'"]+([\w\d\/_]+)[\'"]+\}~si';
+    const PATTERN_INCLUDE = '~\{inc(?:lude)?[ ]+[\'"]+([.\w\d\/_]+)[\'"]+\}~si';
 
     /**
      * Reguliarnoe vy`razhenie dlia obrabotki direktiv plugin

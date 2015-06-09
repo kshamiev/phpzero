@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Content Page.
  *
@@ -15,10 +16,11 @@ class Zero_Section_Page extends Zero_Controller
      */
     public function Action_Default()
     {
-        if ( isset($this->Params['view']) )
-            $this->View = new Zero_View($this->Params['view']);
-        else
-            $this->View = new Zero_View(get_class($this));
+        //        if ( isset($this->Params['view']) )
+        //            $this->View = new Zero_View($this->Params['view']);
+        //        else
+        //            $this->View = new Zero_View(get_class($this));
+        $this->View = new Zero_View(get_class($this));
         if ( ZERO_LANG == Zero_App::$Config->Site_Language )
         {
             $this->View->Assign('Name', Zero_App::$Section->Name);

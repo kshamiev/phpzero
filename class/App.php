@@ -556,7 +556,15 @@ class Zero_App
         header('Cache-Control: no-store, no-cache, must-revalidate');
         header("Content-Type: text/html; charset=utf-8");
         header('HTTP/1.1 ' . $status . ' ' . $status);
-        echo $content;
+        if ( true == $content instanceof Zero_View )
+        {
+            /* @var $content Zero_View */
+            echo $content->Fetch();
+        }
+        else
+        {
+            echo $content;
+        }
 
         // Логирование (в браузер)
         if ( self::$Config->Log_Output_Display )

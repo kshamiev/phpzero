@@ -17,6 +17,11 @@ setlocale(LC_COLLATE, 'ru_RU.UTF-8');
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 ini_set('magic_quotes_gpc', 0);
+header('Pragma: no-cache');
+header('Last-Modified: ' . date('D, d M Y H:i:s') . 'GMT');
+header('Expires: Mon, 26 Jul 2007 05:00:00 GMT');
+header('Cache-Control: no-store, no-cache, must-revalidate');
+header("Content-Type: text/html; charset=utf-8");
 
 require dirname(__DIR__) . '/class/Config.php';
 require dirname(__DIR__) . '/class/App.php';

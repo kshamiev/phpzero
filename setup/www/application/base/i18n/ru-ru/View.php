@@ -1,13 +1,10 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Константин
- * Date: 12.05.14
- * Time: 0:34
+ * File Language
+ *
+ * 'translation Key' => 'Translation Value'
  */
 return [
-    'Login' => 'Логин',
-    'Password' => 'Пароль',
     'Properties' => 'Свойства',
     'Data' => 'Данные',
     'Add' => 'добавить',
@@ -23,7 +20,10 @@ return [
     'Count' => 'количество',
     'Action' => 'действия',
     'Project' => 'Проект',
-    'Title' => 'Титул',
-    'Keywords' => 'Ключи',
-    'Description' => 'Описание',
+    'engine' => 'Инженеринг',
+    'model factory' => 'Создание моделей',
+    'controller Zero_System_GridService action Cache_Reset' => 'Сброс всего кеша',
+    'controller Zero_System_GridService action Session_Reset' => 'Сброс всех сессий',
+    'Login' => 'Логин',
+    'Password' => 'Пароль',
 ];
