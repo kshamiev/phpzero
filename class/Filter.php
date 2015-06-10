@@ -298,7 +298,9 @@ class Zero_Filter
         else if ( 0 < $load )
         {
             if ( method_exists($this->Model, $method = 'FL_' . $prop) )
+            {
                 $this->Filter[$prop]['List'] = $this->Model->$method();
+            }
             else if ( isset($row['List']) )
                 $this->Filter[$prop]['List'] = $row['List'];
             else

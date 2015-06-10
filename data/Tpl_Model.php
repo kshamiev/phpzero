@@ -47,6 +47,7 @@ class Zero_Model_Pattern extends Zero_Model
      * - 'IsNull'=> 'YES, NO'           - Разрешено ли значение NULL
      * - 'Default'=> mixed              - Значение по умолчанию
      * - 'Form'=> string                - Форма предстваления свйоства в виджетах и вьюхах
+     *
      * @see Zero_Engine
      * - 'Comment' => string            - Комментарий свойства (пользуйтесь системой перевода i18n)
      *
@@ -161,7 +162,6 @@ class Zero_Model_Pattern extends Zero_Model
     {
         return [23 => 'Value'];
     }
-
 
     /**
      * Фабрика по созданию объектов.

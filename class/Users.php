@@ -115,6 +115,8 @@ class Zero_Users extends Zero_Model
             'IsOnline' => ['AliasDB' => 'z.IsOnline', 'DB' => 'E', 'IsNull' => 'NO', 'Default' => 'no', 'Form' => 'ReadOnly'],
             'DateOnline' => ['AliasDB' => 'z.DateOnline', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'ReadOnly'],
             'Date' => ['AliasDB' => 'z.Date', 'DB' => 'T', 'IsNull' => 'NO', 'Default' => 'NOW', 'Form' => 'DateTime'],
+            'Address' => ['AliasDB' => 'z.Address', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Textarea'],
+            'Token' => ['AliasDB' => 'z.Token', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Readonly'],
             /*END_CONFIG_PROP*/
         ];
     }
@@ -135,18 +137,13 @@ class Zero_Users extends Zero_Model
     {
         return [
             /*BEG_CONFIG_FILTER_PROP*/
-            'ID' => ['Visible' => true],
-            'Groups_ID' => ['Visible' => true],
-            'Users_ID' => ['Visible' => true],
-            'Name' => ['Visible' => true],
-            'Login' => ['Visible' => true],
-            'IsAccess' => ['Visible' => true],
-            'Email' => ['Visible' => true],
-            'Phone' => ['Visible' => true],
-            'Skype' => ['Visible' => true],
-            'IsCondition' => ['Visible' => true],
-            'IsOnline' => ['Visible' => true],
-            'Date' => ['Visible' => true],
+            'ID' => [],
+            'Groups_ID' => [],
+            'Users_ID' => [],
+            'IsAccess' => [],
+            'IsCondition' => [],
+            'IsOnline' => [],
+            'Date' => [],
             /*END_CONFIG_FILTER_PROP*/
         ];
     }
