@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Model. Users.
+ * Пользователь.
  *
  * @package Base.Users
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
@@ -21,15 +21,67 @@ class Base_Users extends Zero_Users
      * - 'Form'=> string                - Форма предстваления свйоства в виджетах и вьюхах (смотри Zero_Engine)
      * - 'Comment' => string            - Комментарий свойства (пользуйтесь системой перевода i18n)
      *
-     * @param Zero_Model_Pattern $Model The exact working model
+     * @param Base_Users $Model The exact working model
      * @param string $scenario Сценарий свойств
      * @return array
      */
     protected static function Config_Prop($Model, $scenario = '')
     {
-        return array_replace_recursive(parent::Config_Prop($Model),
-            [
-            ]
-        );
+        return array_replace_recursive(parent::Config_Prop($Model), [
+        ]);
+    }
+
+    /**
+     * Фабрика по созданию объектов.
+     *
+     * @param integer $id идентификатор объекта
+     * @param bool $flagLoad флаг полной загрузки объекта
+     * @return Base_Users
+     */
+    public static function Make($id = 0, $flagLoad = false)
+    {
+        return new self($id, $flagLoad);
+    }
+
+    /**
+     * Фабрика по созданию объектов.
+     *
+     * Сохраниаетсиа в {$тис->_Инстанcе}
+     *
+     * @param integer $id идентификатор объекта
+     * @param bool $flagLoad флаг полной загрузки объекта
+     * @return Base_Users
+     */
+    public static function Instance($id = 0, $flagLoad = false)
+    {
+        $index = __CLASS__ . (0 < $id ? '_' . $id : '');
+        if ( !isset(self::$Instance[$index]) )
+        {
+            $result = self::Make($id, $flagLoad);
+            $result->Init();
+            self::$Instance[$index] = $result;
+        }
+        return self::$Instance[$index];
+    }
+
+    /**
+     * Фабрика по созданию объектов.
+     *
+     * Работает через сессию (Zero_Session).
+     * Индекс имя класса
+     *
+     * @param integer $id идентификатор объекта
+     * @param bool $flagLoad флаг полной загрузки объекта
+     * @return Base_Users
+     */
+    public static function Factory($id = 0, $flagLoad = false)
+    {
+        if ( !$result = Zero_Session::Get(__CLASS__) )
+        {
+            $result = self::Make($id, $flagLoad);
+            $result->Init();
+            Zero_Session::Set(__CLASS__, $result);
+        }
+        return $result;
     }
 }

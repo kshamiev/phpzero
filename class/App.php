@@ -320,11 +320,11 @@ class Zero_App
     public static function ExecuteSimple()
     {
         // Пользователь
-        self::$Users = Zero_Model::Factories('Base_Users');
+        self::$Users = Base_Users::Factory();
 
         // Раздел - страница
         $route = [];
-        self::$Section = Zero_Model::Makes('Base_Section');
+        self::$Section = Base_Section::Instance();
         foreach (Zero_Config::Get_Modules() as $module)
         {
             $config = Zero_Config::Get_Config($module, self::$mode . 'Route');
@@ -352,7 +352,7 @@ class Zero_App
             $_REQUEST['act'] = 'Action_' . $_REQUEST['act'];
 
             Zero_Logs::Start('#{CONTROLLER.Action} ' . self::$Section->Controller . ' -> ' . $_REQUEST['act']);
-            $Controller = Zero_Controller::Factories(self::$Section->Controller);
+            $Controller = Zero_Controller::Factory(self::$Section->Controller);
             if ( !method_exists($Controller, $_REQUEST['act']) )
             {
                 throw new Exception('Контроллер не имеет метода: ' . $_REQUEST['act'], -1);
@@ -401,10 +401,10 @@ class Zero_App
     public static function Execute()
     {
         //  Пользователь
-        self::$Users = Zero_Model::Factories('Base_Users');
+        self::$Users = Base_Users::Factory();
 
         //  Раздел - страница
-        self::$Section = Zero_Model::Instances('Base_Section');
+        self::$Section = Base_Section::Instance();
         if ( 0 == self::$Section->ID || 'no' == self::$Section->IsEnable )
             throw new Exception('Page Not Found', 404);
         if ( self::$Section->UrlRedirect )
@@ -433,7 +433,7 @@ class Zero_App
             $_REQUEST['act'] = 'Action_' . $_REQUEST['act'];
 
             Zero_Logs::Start('#{CONTROLLER.Action} ' . self::$Section->Controller . ' -> ' . $_REQUEST['act']);
-            $Controller = Zero_Controller::Factories(self::$Section->Controller);
+            $Controller = Zero_Controller::Factory(self::$Section->Controller);
             if ( !method_exists($Controller, $_REQUEST['act']) )
             {
                 throw new Exception('Контроллер не имеет метода: ' . $_REQUEST['act'], -1);

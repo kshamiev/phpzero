@@ -32,7 +32,4 @@ class Zero_Content_Grid extends Zero_Crud_Grid
         $this->Model->AR->Sql_Where_IsNull("Section_ID");
         parent::Chunk_View();
     }
-
-
-
 }

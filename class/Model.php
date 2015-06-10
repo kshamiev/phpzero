@@ -130,51 +130,6 @@ abstract class Zero_Model
     }
 
     /**
-     * Фабрика по созданию объектов.
-     *
-     * Сохраниаетсиа в {$тис->_Инстанcе}
-     *
-     * @param string $class_name имя источника модель которой создаетсиа
-     * @param integer $id идентификатор объекта
-     * @param bool $flag_load flag полной загрузки объекта
-     * @return Zero_Model
-     */
-    public static function Instances($class_name, $id = 0, $flag_load = false)
-    {
-        $index = $class_name . (0 < $id ? '_' . $id : '');
-        if ( !isset(self::$Instance[$index]) )
-        {
-            $result = self::Makes($class_name, $id, $flag_load);
-            $result->Init();
-            self::$Instance[$index] = $result;
-        }
-        return self::$Instance[$index];
-    }
-
-    /**
-     * Fabrika po sozdaniiu ob``ektov.
-     *
-     * Rabotaet cherez sessiiu (Zero_Session).
-     * Indeks source + [_{$id} - esli 0 < $flag]
-     *
-     * @param string $class_name imia istochnika model` kotoroi` sozdaetsia
-     * @param integer $id identifikator ob``ekta
-     * @param bool $flag flag polnoi` zagruzki ob``ekta
-     * @return Zero_Model
-     */
-    public static function Factories($class_name, $id = 0, $flag = false)
-    {
-        // $index = 'Source' . substr($class, strpos($class, '_') + 1);
-        if ( !$result = Zero_Session::Get($class_name) )
-        {
-            $result = self::Makes($class_name, $id, $flag);
-            $result->Init();
-            Zero_Session::Set($class_name, $result);
-        }
-        return $result;
-    }
-
-    /**
      * Save ob``ekta v reestr.
      *
      * Indeks source + [_{$id} - esli 0 < $flag]
@@ -183,8 +138,7 @@ abstract class Zero_Model
      */
     public function Factory_Set($flag = false)
     {
-        // $index = 'Source' . substr($class, strpos($class, '_') + 1);
-        $index = get_class($this);
+        $index = 'Model_' . get_class($this);
         if ( $flag )
             $index .= '_' . $this->ID;
         Zero_Session::Set($index, $this);
@@ -199,8 +153,7 @@ abstract class Zero_Model
      */
     public function Factory_Unset($flag = false)
     {
-        // $index = 'Source' . substr($class, strpos($class, '_') + 1);
-        $index = get_class($this);
+        $index = 'Model_' . get_class($this);
         if ( $flag )
             $index .= '_' . $this->ID;
         Zero_Session::Rem($index);

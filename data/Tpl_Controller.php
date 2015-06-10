@@ -107,23 +107,4 @@ class Zero_Controller_Sample extends Zero_Controller
         }
         return $Controller;
     }
-
-    /**
-     * Фабричный метод по созданию контроллера.
-     *
-     * Работает через сессию.
-     * Индекс: $class_name
-     *
-     * @param array $properties входные параметры контроллера
-     * @return Zero_Controller
-     */
-    public static function Factory($properties = [])
-    {
-        if ( !$result = Zero_Session::Get(__CLASS__) )
-        {
-            $result = self::Make($properties);
-            Zero_Session::Set(__CLASS__, $result);
-        }
-        return $result;
-    }
 }

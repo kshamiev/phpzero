@@ -76,7 +76,7 @@ abstract class Zero_Controller
      * @param array $properties vhodny`e parametry` plagina
      * @return Zero_Controller
      */
-    public static function Factories($class_name, $properties = [])
+    public static function Factory($class_name, $properties = [])
     {
         if ( !$result = Zero_Session::Get($class_name) )
         {
@@ -84,6 +84,41 @@ abstract class Zero_Controller
             Zero_Session::Set($class_name, $result);
         }
         return $result;
+    }
+
+    /**
+     * Save ob``ekta v reestr.
+     *
+     * Indeks source + [_{$id} - esli 0 < $flag]
+     */
+    public function Factory_Set()
+    {
+        $index = 'Controller_' . get_class($this);
+        Zero_Session::Set($index, $this);
+    }
+
+    /**
+     * Save ob``ekta v reestr.
+     *
+     * Indeks source + [_{$id} - esli 0 < $flag]
+     *
+     * @return mixed
+     */
+    public function Factory_Get()
+    {
+        $index = 'Controller_' . get_class($this);
+        return Zero_Session::Get($index);
+    }
+
+    /**
+     * Udalenie ob``ekta iz reestra.
+     *
+     * Indeks source + [_{$id} - esli 0 < $flag]
+     */
+    public function Factory_Unset()
+    {
+        $index = 'Controller_' . get_class($this);
+        Zero_Session::Rem($index);
     }
 
     public function SetMessage($code = 0, $params = [])
