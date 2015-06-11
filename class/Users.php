@@ -138,6 +138,7 @@ class Zero_Users extends Zero_Model
         return [
             /*BEG_CONFIG_FILTER_PROP*/
             'ID' => [],
+            'Name' => [],
             'Groups_ID' => [],
             'Users_ID' => [],
             'IsAccess' => [],

@@ -72,7 +72,7 @@ class Zero_Users_Login extends Zero_Controller
         }
         $Users->IsOnline = 'yes';
         $Users->DateOnline = date('Y-m-d H:i:s');
-        $Users->AR->Update();
+        $Users->AR->Save();
 
         Zero_App::$Users = $Users;
         Zero_App::$Users->Factory_Set();
@@ -108,7 +108,7 @@ class Zero_Users_Login extends Zero_Controller
 
         $password = substr(md5(uniqid(mt_rand())), 0, 10);
         $this->Model->Password = md5($password);
-        $this->Model->AR->Update();
+        $this->Model->AR->Save();
 
         $subject = "Reminder access details " . HTTP;
         $View = new Zero_View('Zero_Users_ReminderMail');

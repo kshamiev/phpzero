@@ -103,7 +103,7 @@ class Zero_Users_Grid extends Zero_Crud_Grid
             $Object->$prop = null;
         else
             $Object->$prop = $this->Params['obj_parent_id'];
-        $Object->AR->Update();
+        $Object->AR->Save();
         return $this->Set_Message('Move', 0);
     }
 }

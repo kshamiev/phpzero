@@ -50,7 +50,7 @@ class Zero_Users_Profile extends Zero_Controller
             $this->View->Assign('Error_Validator', $this->Model->VL->Get_Errors());
             return $this->SetMessage(5300);
         }
-        $this->Model->AR->Update();
+        $this->Model->AR->Save();
         Zero_App::$Users = $this->Model;
         Zero_App::$Users->Factory_Set();
         return $this->SetMessage(2300);

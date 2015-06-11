@@ -458,7 +458,6 @@ class Zero_AR
                     Zero_Logs::Set_Message_Error("Ошибка в сортирующем фильтре (свойство {$prop} в источнике {$source})");
                 }
         }
-
         //    postranichnost`
         $this->Sql_Limit($Filter->Page, $Filter->Page_Item);
     }
@@ -935,9 +934,9 @@ class Zero_AR
     public function Save($scenario = '')
     {
         if ( 0 < $this->Model->ID )
-            return $this->Insert($scenario);
-        else
             return $this->Update($scenario);
+        else
+            return $this->Insert($scenario);
     }
 
     /**

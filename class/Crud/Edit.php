@@ -196,7 +196,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         // Save
         if ( 0 < $this->Model->ID )
         {
-            if ( false == $this->Model->AR->Update() )
+            if ( false == $this->Model->AR->Save() )
             {
                 $this->SetMessage(5000, [$this->Model->Name, $this->Model->ID]);
                 return false;
@@ -204,7 +204,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         }
         else
         {
-            if ( false == $this->Model->AR->Insert() )
+            if ( false == $this->Model->AR->Save() )
             {
                 $this->SetMessage(5000, [$this->Model->Name, $this->Model->ID]);
                 return false;
