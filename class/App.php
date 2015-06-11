@@ -201,7 +201,7 @@ class Zero_App
             $message = Zero_I18n::Message(self::$Section->Controller, $code, $params);
         else
             $message = Zero_I18n::Message('Zero', $code, $params);
-        if ( -1 == $code || 403 == $code || 404 == $code || 5000 <= $code )
+        if ( -1 == $code || 403 == $code || 404 == $code || 409 == $code || 5000 <= $code )
             $errorStatus = true;
         else
             $errorStatus = false;

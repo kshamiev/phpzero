@@ -61,6 +61,7 @@ class Zero_System_FileEdit extends Zero_Controller
     {
         $_REQUEST['Prop']['Content'] = str_replace("\r\n", "\n", $_REQUEST['Prop']['Content']);
         file_put_contents($this->Params['obj_parent_path'] . '/' . $this->Params['file_name'], $_REQUEST['Prop']['Content']);
-        return $this->Set_Message('FileSave', 0);
+        $this->SetMessage(0, ['FileSave']);
+        return true;
     }
 }

@@ -158,7 +158,7 @@ class Zero_Model_Pattern extends Zero_Model
      *
      * @return array
      */
-    public function FL_PropNameSample()
+    public function FL_PropertyName()
     {
         return [23 => 'Value'];
     }

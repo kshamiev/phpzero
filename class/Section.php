@@ -292,7 +292,7 @@ class Zero_Section extends Zero_Model
     {
         if ( 0 == $this->ID )
         {
-            throw new Exception('#{MODEL.Zero_Section} parent section not defined', 409);
+            throw new Exception('#{MODEL.Zero_Section} parent section not defined', -1);
         }
         if ( is_null($this->_Navigation_Child) )
         {

@@ -93,7 +93,7 @@ abstract class Zero_Controller
      */
     public function Factory_Set()
     {
-        $index = 'Controller_' . get_class($this);
+        $index = get_class($this);
         Zero_Session::Set($index, $this);
     }
 
@@ -106,7 +106,7 @@ abstract class Zero_Controller
      */
     public function Factory_Get()
     {
-        $index = 'Controller_' . get_class($this);
+        $index = get_class($this);
         return Zero_Session::Get($index);
     }
 
@@ -117,18 +117,17 @@ abstract class Zero_Controller
      */
     public function Factory_Unset()
     {
-        $index = 'Controller_' . get_class($this);
+        $index = get_class($this);
         Zero_Session::Rem($index);
     }
 
     public function SetMessage($code = 0, $params = [])
     {
         $arr = Zero_I18n::Message(get_class($this), $code, $params);
-        if ( -1 == $code || 403 == $code || 404 == $code || 5000 <= $code )
+        if ( -1 == $code || 403 == $code || 404 == $code || 409 == $code || 5000 <= $code )
             $errorStatus = true;
         else
             $errorStatus = false;
-
         self::$_Message = [
             'Code' => $arr[0],
             'Message' => $arr[1],
@@ -149,7 +148,7 @@ abstract class Zero_Controller
      * S uchetom perevoda
      *
      * @return array soobshcheniia
-     * @deprecated
+     * @deprecated GetMessage
      */
     public function Get_Message()
     {
@@ -164,7 +163,7 @@ abstract class Zero_Controller
      * @param string $message soobshchenie
      * @param int $code kod soobshcheniia
      * @return int
-     * @deprecated
+     * @deprecated SetMessage()
      */
     public function Set_Message($message = '', $code = 0)
     {

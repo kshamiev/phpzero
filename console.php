@@ -67,10 +67,6 @@ if ( count($_SERVER['argv']) > 1 )
         $_REQUEST['act'] = 'Action_' . $arr[1];
     else
         $_REQUEST['act'] = 'Action_Default';
-//    if ( 2 != count($arr) )
-//        throw new Exception('консольная задача определена не правильно: ' . $_SERVER['argv'][1], 409);
-//    $arr[1] = 'Action_' . $arr[1];
-
     $Controller = Zero_Controller::Makes($arr[0]);
     $Controller->$_REQUEST['act']();
 }

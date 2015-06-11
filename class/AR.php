@@ -450,7 +450,13 @@ class Zero_AR
         foreach ($sort['Value'] as $prop => $value)
         {
             if ( $value )
-                $this->Sql_Order($sort['List'][$prop]['AliasDB'], $value);
+                if ( isset($sort['List'][$prop]) )
+                    $this->Sql_Order($sort['List'][$prop]['AliasDB'], $value);
+                else
+                {
+                    $source = $this->Model->Get_Source();
+                    Zero_Logs::Set_Message_Error("Ошибка в сортирующем фильтре (свойство {$prop} в источнике {$source})");
+                }
         }
 
         //    postranichnost`
@@ -864,12 +870,24 @@ class Zero_AR
     }
 
     /**
+     * Загрузка модели
+     *
+     * @param array|string $props Загружаемые свойства модели
+     * @return array|bool
+     */
+    public function Load($props)
+    {
+        return $this->Select($props);
+    }
+
+    /**
      * Zagruzka vy`borochny`kh svoi`stv ob``ekta, libo tcelikom iz BD.
      *
      * Esli ob``ekt v BD ne by`l nai`den $this->ID stanovitsia ravny`m 0
      *
      * @param string $props stroka zagruzhaemy`kh svoi`stv cherez zaiapiatuiu ('Name, Price, Description')
      * @return bool|array
+     * @deprecated Load($props)
      */
     public function Select($props)
     {
@@ -909,27 +927,42 @@ class Zero_AR
     }
 
     /**
+     * Сохранение модели
+     *
+     * @param string $scenario Сценарий
+     * @return bool
+     */
+    public function Save($scenario = '')
+    {
+        if ( 0 < $this->Model->ID )
+            return $this->Insert($scenario);
+        else
+            return $this->Update($scenario);
+    }
+
+    /**
      * Save danny`kh v BD.
      *
      * @param string $scenario Сценарий сохраняем свойств
      * @return bool
+     * @deprecated Save($scenario)
      */
     public function Insert($scenario = '')
     {
         $prop_list = $this->Model->Get_Config_Prop($scenario);
-//        foreach ($prop_list as $prop => $cfg)
-//        {
-//            if ( isset($cfg['AR']) && false == $cfg['AR'] )
-//                unset($prop_list[$prop]);
-//        }
-//        unset($prop_list['ID']);
+        //        foreach ($prop_list as $prop => $cfg)
+        //        {
+        //            if ( isset($cfg['AR']) && false == $cfg['AR'] )
+        //                unset($prop_list[$prop]);
+        //        }
+        //        unset($prop_list['ID']);
 
         //  sborka svoi`stv dlia sokhraneniia v BD
         $sql_update = [];
         $props = $this->Model->Get_Props(-1);
         foreach ($props as $prop => $value)
         {
-            if ( !isset($prop_list[$prop]) || ( isset($prop_list['AR']) && false == $prop_list['AR'] ) )
+            if ( !isset($prop_list[$prop]) || (isset($prop_list['AR']) && false == $prop_list['AR']) )
                 continue;
             $method = "Esc" . $prop_list[$prop]['DB'];
             $sql_update[] = '`' . $prop . '` = ' . Zero_DB::$method($value);
@@ -1017,6 +1050,7 @@ class Zero_AR
      *
      * @param string $scenario Сценарий сохраняем свойств
      * @return bool
+     * @deprecated Save($scenario)
      */
     public function Update($scenario = '')
     {
@@ -1026,7 +1060,7 @@ class Zero_AR
         $sql_update = [];
         foreach ($this->Model->Get_Props(-1) as $prop => $value)
         {
-            if ( !isset($prop_list[$prop]) || ( isset($prop_list['AR']) && false == $prop_list['AR'] ) )
+            if ( !isset($prop_list[$prop]) || (isset($prop_list['AR']) && false == $prop_list['AR']) )
                 continue;
             $method = "Esc" . $prop_list[$prop]['DB'];
             if ( isset($_FILES[$prop]) )
