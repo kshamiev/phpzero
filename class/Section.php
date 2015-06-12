@@ -224,7 +224,7 @@ class Zero_Section extends Zero_Model
             if ( Zero_App::$Config->Site_UseDB )
             {
                 $this->AR->Sql_Where('Url', '=', $url);
-                $row = $this->AR->Select('*');
+                $row = $this->AR->Load('*');
                 Zero_Cache::Set_Link('Zero_Section', $this->ID);
                 Zero_Cache::Set_Data($index, $row);
             }

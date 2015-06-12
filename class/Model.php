@@ -108,7 +108,7 @@ abstract class Zero_Model
         if ( '' == $this->Source )
             $this->Source = get_class($this);
         if ( 0 < $this->ID && $flag_load )
-            $this->AR->Select('*');
+            $this->AR->Load('*');
     }
 
     /**

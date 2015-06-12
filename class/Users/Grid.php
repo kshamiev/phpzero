@@ -58,7 +58,7 @@ class Zero_Users_Grid extends Zero_Crud_Grid
             else
             {
                 $ObjectGo = Zero_Model::Makes($this->ModelName, $_GET['pid']);
-                $ObjectGo->AR->Select('Name');
+                $ObjectGo->AR->Load('Name');
                 $this->Params['obj_parent_path'][$_GET['pid']] = $ObjectGo->Name;
                 unset($ObjectGo);
             }
@@ -97,7 +97,7 @@ class Zero_Users_Grid extends Zero_Crud_Grid
         $prop = $this->Params['obj_parent_prop'];
         $Object = Zero_Model::Makes($this->ModelName, $_REQUEST['id']);
         /* @var $Object Zero_Users */
-        if ( 0 == count($Object->Get_AR()->Select('ID')) )
+        if ( 0 == count($Object->Get_AR()->Load('ID')) )
             return $this->Set_Message('Error_NotFound', 1);
         if ( 'NULL' == $this->Params['obj_parent_id'] )
             $Object->$prop = null;

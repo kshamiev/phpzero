@@ -875,20 +875,6 @@ class Zero_AR
      */
     public function Load($props)
     {
-        return $this->Select($props);
-    }
-
-    /**
-     * Zagruzka vy`borochny`kh svoi`stv ob``ekta, libo tcelikom iz BD.
-     *
-     * Esli ob``ekt v BD ne by`l nai`den $this->ID stanovitsia ravny`m 0
-     *
-     * @param string $props stroka zagruzhaemy`kh svoi`stv cherez zaiapiatuiu ('Name, Price, Description')
-     * @return bool|array
-     * @deprecated Load($props)
-     */
-    public function Select($props)
-    {
         if ( 0 < $this->Model->ID )
             $this->Sql_Where('ID', '=', $this->Model->ID);
         else if ( empty($this->Params['Where']) )
@@ -943,9 +929,8 @@ class Zero_AR
      *
      * @param string $scenario Сценарий сохраняем свойств
      * @return bool
-     * @deprecated Save($scenario)
      */
-    public function Insert($scenario = '')
+    protected  function Insert($scenario = '')
     {
         $prop_list = $this->Model->Get_Config_Prop($scenario);
         //        foreach ($prop_list as $prop => $cfg)
@@ -1048,9 +1033,8 @@ class Zero_AR
      *
      * @param string $scenario Сценарий сохраняем свойств
      * @return bool
-     * @deprecated Save($scenario)
      */
-    public function Update($scenario = '')
+    protected function Update($scenario = '')
     {
         $prop_list = $this->Model->Get_Config_Prop($scenario);
         unset($prop_list['ID']);

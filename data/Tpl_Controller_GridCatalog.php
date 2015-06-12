@@ -57,7 +57,7 @@ class Zero_Controller_Grid extends Zero_Crud_Grid
             else
             {
                 $ObjectGo = Zero_Model::Makes($this->ModelName, $_GET['pid']);
-                $ObjectGo->AR->Select('Name');
+                $ObjectGo->AR->Load('Name');
                 $this->Params['obj_parent_path'][$_GET['pid']] = $ObjectGo->Name;
                 unset($ObjectGo);
             }

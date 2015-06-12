@@ -40,7 +40,7 @@ class Zero_Users_Login extends Zero_Controller
 
         $Users = Base_Users::Make();
         $Users->AR->Sql_Where('Login', '=', $_REQUEST['Login']);
-        $Users->AR->Select('*');
+        $Users->AR->Load('*');
 
         //  Проверки
         if ( 0 == $Users->ID )
@@ -98,7 +98,7 @@ class Zero_Users_Login extends Zero_Controller
         }
 
         $this->Model->AR->Sql_Where('Email', '=', $_REQUEST['Users']['Email']);
-        $this->Model->AR->Select('ID, Name, Login');
+        $this->Model->AR->Load('ID, Name, Login');
 
         if ( 0 == $this->Model->ID )
         {
