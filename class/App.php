@@ -320,7 +320,7 @@ class Zero_App
     public static function ExecuteSimple()
     {
         // Пользователь
-        self::$Users = Base_Users::Factory();
+        self::$Users = Base_Users::Factor();
 
         // Раздел - страница
         $route = [];
@@ -401,7 +401,7 @@ class Zero_App
     public static function Execute()
     {
         //  Пользователь
-        self::$Users = Base_Users::Factory();
+        self::$Users = Base_Users::Factor();
 
         //  Раздел - страница
         self::$Section = Base_Section::Instance();

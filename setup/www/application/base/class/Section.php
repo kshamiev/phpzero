@@ -74,7 +74,7 @@ class Base_Section extends Zero_Section
      * @param bool $flagLoad флаг полной загрузки объекта
      * @return Base_Section
      */
-    public static function Factory($id = 0, $flagLoad = false)
+    public static function Factor($id = 0, $flagLoad = false)
     {
         if ( !$result = Zero_Session::Get(__CLASS__) )
         {
