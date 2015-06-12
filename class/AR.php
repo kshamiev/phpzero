@@ -25,7 +25,6 @@
  */
 class Zero_AR
 {
-
     /**
      * Массив параметров запроса к источнику.
      *
@@ -694,14 +693,14 @@ class Zero_AR
      * Poluchenie kolichestva danny`kh udovletriaiushchikh zaprosu
      *
      * @return integer
+     * @param string $props агрегирующая функция значение которой нужно получить
      * @param bool $flag_param_reset flag sbrosa parametrov posle zaprosa
      * @see Select
      */
-    public function Select_Count($flag_param_reset = true)
+    public function Select_Count($props = 'COUNT(*)', $flag_param_reset = true)
     {
         //  initcializatciia
-        //        $sql_prop = "SELECT COUNT(DISTINCT z.ID)";
-        $sql_prop = "SELECT COUNT(*)";
+        $sql_prop = "SELECT " . $props;
         /**
          * Usloviia Where
          */
