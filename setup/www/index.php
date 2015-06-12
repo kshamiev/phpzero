@@ -21,10 +21,9 @@ if ( Zero_App::$Config->Site_AccessLogin )
     }
 }
 
-//`Full (use Mysql)
-//--USE--//Zero_App::Execute();
-
-// Native (no sql mode)
-//--NOT--//Zero_App::ExecuteSimple();
+if ( Zero_App::$Config->Site_UseDB )
+    Zero_App::Execute();
+else
+    Zero_App::ExecuteSimple();
 
 exit;

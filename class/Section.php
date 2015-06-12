@@ -221,10 +221,13 @@ class Zero_Section extends Zero_Model
         $index = $this->Source . '/' . $url . '/' . LANG . '/url';
         if ( false === $row = Zero_Cache::Get_Data($index) )
         {
-            $this->AR->Sql_Where('Url', '=', $url);
-            $row = $this->AR->Select('*');
-            Zero_Cache::Set_Link('Zero_Section', $this->ID);
-            Zero_Cache::Set_Data($index, $row);
+            if ( Zero_App::$Config->Site_UseDB )
+            {
+                $this->AR->Sql_Where('Url', '=', $url);
+                $row = $this->AR->Select('*');
+                Zero_Cache::Set_Link('Zero_Section', $this->ID);
+                Zero_Cache::Set_Data($index, $row);
+            }
         }
         else
             $this->Set_Props($row);

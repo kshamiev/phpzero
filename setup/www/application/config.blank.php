@@ -28,6 +28,8 @@ return [
         'DomainAssets' => '',
         //  Domain binary data (uploaded by users)
         'DomainUpload' => '',
+        // Use DB
+        'UseDB' => ISUSEDB,
     ],
     //  Access for DB (Mysql)
     'Db' => [

@@ -109,6 +109,13 @@ class Zero_Config
     public $Site_DomainSub = '';
 
     /**
+     * Использование БД
+     *
+     * @var bool
+     */
+    public $Site_UseDB = false;
+
+    /**
      * Access for DB (Mysql)
      *
      * @var array
@@ -285,6 +292,8 @@ class Zero_Config
                 $this->Site_DomainSub = $arr[0];
             }
         }
+
+        $this->Site_UseDB= $Config['Site']['UseDB'];
 
         //        $this->Site_ClassRoute = $Config['Site']['ClassRoute'];
         //        if ( !$this->Site_ClassRoute )

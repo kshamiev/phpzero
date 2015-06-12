@@ -25,7 +25,6 @@
  */
 class Zero_Users extends Zero_Model
 {
-
     /**
      * The table stores the objects this model
      *
@@ -223,7 +222,7 @@ class Zero_Users extends Zero_Model
             if ( isset($_GET['access-token']) )
                 setcookie('i09u9Maf6l6sr7Um0m8A3u0r9i55m3il', $_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il'], time() + 2592000, '/');
 
-            if ( isset($_GET['access-token']) )
+            if ( isset($_GET['access-token']) && Zero_App::$Config->Site_UseDB )
             {
                 $sql = "SELECT * FROM Users WHERE Token = " . Zero_DB::EscT($_GET['access-token']);
                 $row = Zero_DB::Select_Row($sql);

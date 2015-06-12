@@ -111,19 +111,13 @@ while ( isset($_REQUEST['act']) && 'Install_System' == $_REQUEST['act'] && 0 == 
     //  Creating a filesystem structure. Copy the system and base  module
     Zero_Helper_File::Folder_Copy(__DIR__ . "/www", ZERO_PATH_SITE);
     $index = file_get_contents(ZERO_PATH_SITE . '/index.php');
-    if ( $_REQUEST['db_use'] )
-    {
-        $index = str_replace('//--USE--//', '', $index);
-        $index = str_replace('//--NOT--//', '// ', $index);
-    }
-    else
-    {
-        $index = str_replace('//--USE--//', '// ', $index);
-        $index = str_replace('//--NOT--//', '', $index);
-    }
     file_put_contents(ZERO_PATH_SITE . '/index.php', $index);
 
     //  Baseline configuration
+    if ( $_REQUEST['db_use'] )
+        $isUseDb = 'true';
+    else
+        $isUseDb = 'false';
     $config = file_get_contents(ZERO_PATH_SITE . '/application/config.blank.php');
     $config = str_replace('<PATH_SESSION>', $arr['session.save_path']['local_value'], $config);
     $config = str_replace('<SITE_NAME>', $_REQUEST['site_name'], $config);
@@ -134,6 +128,7 @@ while ( isset($_REQUEST['act']) && 'Install_System' == $_REQUEST['act'] && 0 == 
     $config = str_replace('<DB_PASSWORD>', $_REQUEST['db_password'], $config);
     $config = str_replace('<DB_NAME>', $_REQUEST['db_name'], $config);
     $config = str_replace('<SITE_LANGDEFAULT>', $_REQUEST['lang'], $config);
+    $config = str_replace('ISUSEDB', $isUseDb, $config);
     file_put_contents(ZERO_PATH_SITE . '/application/config.php', $config);
 
     if ( !@symlink(ZERO_PATH_ZERO, ZERO_PATH_APPLICATION . '/zero') )
