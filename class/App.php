@@ -125,6 +125,14 @@ class Zero_App
     {
         if ( class_exists($class_name) )
             return true;
+        // новая архитектура FS
+        if ( file_exists($path = str_replace('_', '/', $class_name) . '.php') )
+        {
+            require_once $path;
+            if ( class_exists($class_name) )
+                return true;
+        }
+        // старая архитектура FS
         $arr = explode('_', $class_name);
         $module = strtolower(array_shift($arr));
         $class = implode('/', $arr);

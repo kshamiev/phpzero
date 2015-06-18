@@ -167,9 +167,14 @@ abstract class Zero_Controller
      */
     public function Set_Message($message = '', $code = 0)
     {
+        if ( 0 != $code )
+            $errorStatus = true;
+        else
+            $errorStatus = false;
         self::$_Message = [
             'Code' => $code,
             'Message' => Zero_I18n::Controller(get_class($this), $message),
+            'ErrorStatus' => $errorStatus,
         ];
 
         $arr = func_get_args();
