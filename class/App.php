@@ -209,7 +209,7 @@ class Zero_App
             $message = Zero_I18n::Message(self::$Section->Controller, $code, $params);
         else
             $message = Zero_I18n::Message('Zero', $code, $params);
-        if ( -1 == $code || 403 == $code || 404 == $code || 409 == $code || 5000 <= $code )
+        if ( -1 == $code || 403 == $code || 404 == $code || 5000 <= $code )
             $errorStatus = true;
         else
             $errorStatus = false;
@@ -520,19 +520,14 @@ class Zero_App
      */
     public static function Exception(Exception $exception)
     {
-        $status = 200;
         $code = $exception->getCode();
-        if ( $code < 0 )
-        {
-            $status = 500;
-            Zero_Logs::Exception($exception);
-        }
-        else if ( 0 < $code && $code < 999 )
+        if ( 403 == $code || 404 == $code )
         {
             $status = $code;
         }
         else
         {
+            $status = 500;
             Zero_Logs::Exception($exception);
         }
         if ( self::$mode == 'console' || !isset($_SERVER['REQUEST_URI']) )
