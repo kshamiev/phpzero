@@ -70,7 +70,7 @@
                     class="subj_prop_error">{$Error_Validator[$Prop][1]}</span>{/if}
             </td>
             <td>
-                {if ( 'ReadOnly' == $row['Form'] )}
+                {if ( 'Readonly' == $row['Form'] )}
 
                 {if ( $Object->$Prop && isset($Filter[$Prop]['List'][$Object->$Prop]) )}
                     {$Filter[$Prop]['List'][$Object->$Prop]}
@@ -130,7 +130,7 @@
                 {else if ( 'Textarea' == $row['Form'] )}
                 <textarea class="field" name="Prop[{$Prop}]" rows="7">{htmlspecialchars($Object->$Prop)}</textarea>
 
-                {else if ( 'DateTime' == $row['Form'] )}
+                {else if ( 'Datetime' == $row['Form'] )}
                 <input class="field datetimepicker" type="text" id="{$Prop}" name="Prop[{$Prop}]" value="{htmlspecialchars($Object->$Prop)}">
 
                 {else if ( 'Date' == $row['Form'] )}

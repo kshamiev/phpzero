@@ -91,7 +91,7 @@ class Zero_Section extends Zero_Model
             /*BEG_CONFIG_PROP*/
             'ID' => ['AliasDB' => 'z.ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => '', 'Form' => ''],
             'Section_ID' => ['AliasDB' => 'z.Section_ID', 'DB' => 'I', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Link'],
-            'Url' => ['AliasDB' => 'z.Url', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'ReadOnly'],
+            'Url' => ['AliasDB' => 'z.Url', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Readonly'],
             'UrlThis' => ['AliasDB' => 'z.UrlThis', 'DB' => 'T', 'IsNull' => 'NO', 'Default' => '', 'Form' => 'Text'],
             'UrlRedirect' => ['AliasDB' => 'z.UrlRedirect', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'],
             'Layout' => ['AliasDB' => 'z.Layout', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Select'],
@@ -113,7 +113,7 @@ class Zero_Section extends Zero_Model
     /**
      * Dynamic configuration properties for the filter
      *
-     * - 'Filter'=> 'Select, Radio, Checkbox, DateTime, Link, LinkMore, Number, Text, Textarea, Content
+     * - 'Filter'=> 'Select, Radio, Checkbox, Datetime, Link, Linkmore, Number, Text, Textarea, Content
      * - 'Search'=> 'Number, Text'
      * - 'Sort'=> false, true
      * - 'Comment' = 'PropComment'
@@ -168,8 +168,8 @@ class Zero_Section extends Zero_Model
      * Dynamic configuration properties for the form
      *
      * - 'Form'=> [
-     *      Number, Text, Select, Radio, Checkbox, Textarea, Date, Time, DateTime, Link,
-     *      Hidden, ReadOnly, Password, File, FileData, Img, ImgData, Content', LinkMore
+     *      Number, Text, Select, Radio, Checkbox, Textarea, Date, Time, Datetime, Link,
+     *      Hidden, Readonly, Password, File, Filedata, Img, ImgData, Content', Linkmore
      *      ]
      * - 'Comment' = 'PropComment'
      *

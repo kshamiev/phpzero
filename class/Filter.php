@@ -319,10 +319,10 @@ class Zero_Filter
      * @param int $is_visible Видимость фильтра (1 - отображаетсиа, 0 - не отображаетсиа по умолчанию)
      * @return bool
      */
-    public function Add_Filter_DateTime($prop, $row, $is_visible = 0)
+    public function Add_Filter_Datetime($prop, $row, $is_visible = 0)
     {
         $this->Filter[$prop] = $row;
-        $this->Filter[$prop]['Form'] = 'DateTime';
+        $this->Filter[$prop]['Form'] = 'Datetime';
         $this->Filter[$prop]['Visible'] = $is_visible;
         $this->Filter[$prop]['Value'] = ['', ''];
         return true;

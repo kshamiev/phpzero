@@ -62,7 +62,7 @@ class Zero_Action extends Zero_Model
     /**
      * Dynamic configuration properties for the filter
      *
-     * - 'Filter'=> 'Select, Radio, Checkbox, DateTime, Link, LinkMore, Number, Text, Textarea, Content
+     * - 'Filter'=> 'Select, Radio, Checkbox, Datetime, Link, Linkmore, Number, Text, Textarea, Content
      * - 'Search'=> 'Number, Text'
      * - 'Sort'=> false, true
      * - 'Comment' = 'PropComment'
@@ -107,8 +107,8 @@ class Zero_Action extends Zero_Model
      * Dynamic configuration properties for the form
      *
      * - 'Form'=> [
-     *      Number, Text, Select, Radio, Checkbox, Textarea, Date, Time, DateTime, Link,
-     *      Hidden, ReadOnly, Password, File, FileData, Img, ImgData, Content', LinkMore
+     *      Number, Text, Select, Radio, Checkbox, Textarea, Date, Time, Datetime, Link,
+     *      Hidden, Readonly, Password, File, Filedata, Img, ImgData, Content', Linkmore
      *      ]
      * - 'Comment' = 'PropComment'
      *

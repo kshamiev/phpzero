@@ -50,6 +50,18 @@ class Zero_AR
     }
 
     /**
+     * Фабрика создания инструмента для работы с моделью в парадигме ОРМ
+     *
+     * @param string $modelName Имя модели
+     * @return Zero_AR Инструмент Инструмент для работы с моделью в парадигме ОРМ
+     * @throws Exception
+     */
+    public static function Factory($modelName)
+    {
+        return new Zero_AR(Zero_Model::Makes($modelName));
+    }
+
+    /**
      * Kompiliatciia uslovii` zaprosa
      *
      * @return string
@@ -391,7 +403,7 @@ class Zero_AR
                 }
             }
             // Фильтр даты и времени
-            else if ( 'DateTime' == $row['Form'] || 'Date' == $row['Form'] || 'Time' == $row['Form'] )
+            else if ( 'Datetime' == $row['Form'] || 'Date' == $row['Form'] || 'Time' == $row['Form'] )
             {
                 if ( $row['Value'][0] )
                     $this->Sql_Where($row['AliasDB'], '>=', $row['Value'][0]);
@@ -399,7 +411,7 @@ class Zero_AR
                     $this->Sql_Where($row['AliasDB'], '<', $row['Value'][1]);
             }
             //  Фильтр списков
-            else if ( 'Radio' == $row['Form'] || 'Select' == $row['Form'] || 'Link' == $row['Form'] || 'LinkMore' == $row['Form'] )
+            else if ( 'Radio' == $row['Form'] || 'Select' == $row['Form'] || 'Link' == $row['Form'] || 'Linkmore' == $row['Form'] )
             {
                 $this->Sql_Where($row['AliasDB'], '=', $row['Value']);
             }

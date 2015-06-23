@@ -71,7 +71,7 @@ class Zero_Model_Pattern extends Zero_Model
      * - 'DB'=> 'T, I, F, E, S, D, B'   - Суффикс проверочного метода и косвенного типа хранения в БД
      * - 'AR'=> bool                    - Использовать ли в запросах к БД
      * - 'Visible'=> bool               - Видимость фильтра в виджите или вьюхе
-     * - 'Form'=> 'Select, Radio, Checkbox, Null, Check, DateTime, Link' - Форма предстваления свйоства в виджетах и вьюхах
+     * - 'Form'=> 'Select, Radio, Checkbox, Null, Check, Datetime, Link' - Форма предстваления свйоства в виджетах и вьюхах
      * - 'List'=> array                 - Варианты значений (пользуйтесь системой перевода i18n)
      * - 'Comment' => string            - Комментарий свойства (пользуйтесь системой перевода i18n)
      *

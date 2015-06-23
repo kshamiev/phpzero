@@ -111,9 +111,9 @@ class Zero_Users extends Zero_Model
             'Skype' => ['AliasDB' => 'z.Skype', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'],
             'IsCondition' => ['AliasDB' => 'z.IsCondition', 'DB' => 'E', 'IsNull' => 'NO', 'Default' => 'yes', 'Form' => 'Radio'],
             'ImgAvatar' => ['AliasDB' => 'z.ImgAvatar', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Img'],
-            'IsOnline' => ['AliasDB' => 'z.IsOnline', 'DB' => 'E', 'IsNull' => 'NO', 'Default' => 'no', 'Form' => 'ReadOnly'],
-            'DateOnline' => ['AliasDB' => 'z.DateOnline', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'ReadOnly'],
-            'Date' => ['AliasDB' => 'z.Date', 'DB' => 'T', 'IsNull' => 'NO', 'Default' => 'NOW', 'Form' => 'DateTime'],
+            'IsOnline' => ['AliasDB' => 'z.IsOnline', 'DB' => 'E', 'IsNull' => 'NO', 'Default' => 'no', 'Form' => 'Readonly'],
+            'DateOnline' => ['AliasDB' => 'z.DateOnline', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Readonly'],
+            'Date' => ['AliasDB' => 'z.Date', 'DB' => 'D', 'IsNull' => 'NO', 'Default' => '', 'Form' => 'Readonly'],
             'Address' => ['AliasDB' => 'z.Address', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Textarea'],
             'Token' => ['AliasDB' => 'z.Token', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Readonly'],
             /*END_CONFIG_PROP*/
@@ -123,7 +123,7 @@ class Zero_Users extends Zero_Model
     /**
      * Dynamic configuration properties for the filter
      *
-     * - 'Filter'=> 'Select, Radio, Checkbox, DateTime, Link, LinkMore, Number, Text, Textarea, Content
+     * - 'Filter'=> 'Select, Radio, Checkbox, Datetime, Link, Linkmore, Number, Text, Textarea, Content
      * - 'Search'=> 'Number, Text'
      * - 'Sort'=> false, true
      * - 'Comment' = 'PropComment'
@@ -173,8 +173,8 @@ class Zero_Users extends Zero_Model
      * Dynamic configuration properties for the form
      *
      * - 'Form'=> [
-     *      Number, Text, Select, Radio, Checkbox, Textarea, Date, Time, DateTime, Link,
-     *      Hidden, ReadOnly, Password, File, FileData, Img, ImgData, Content', LinkMore
+     *      Number, Text, Select, Radio, Checkbox, Textarea, Date, Time, Datetime, Link,
+     *      Hidden, Readonly, Password, File, Filedata, Img, ImgData, Content', Linkmore
      *      ]
      * - 'Comment' = 'PropComment'
      *
@@ -188,7 +188,6 @@ class Zero_Users extends Zero_Model
             /*BEG_CONFIG_FORM_PROP*/
             'ID' => [],
             'Groups_ID' => [],
-            'Users_ID' => [],
             'Name' => [],
             'Login' => [],
             'Password' => [],

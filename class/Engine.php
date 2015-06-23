@@ -14,20 +14,20 @@
  * <li> Textarea  - (textarea) Tekst
  * <li> Date      - (text) Data
  * <li> Time      - (text) Vremia
- * <li> DateTime  - (text) Data i vremia
+ * <li> Datetime  - (text) Data i vremia
  * <li> Link      - (select) Svoi`stvo sviazi s drugim ob``ektom
  * </ol>
  * Формы и типы свойств (не определиаемые при анализе):
  * <ol>
  * <li> Hidden    - (hidden) Skry`toe pole
- * <li> ReadOnly  - (-) Tol`ko dlia chteniia
+ * <li> Readonly  - (-) Tol`ko dlia chteniia
  * <li> Password  - (password) Stroka parol`
  * <li> File      - (file) Ssy`lka na fai`l (py`taetsia opredelit` po imeni polia)
  * <li> FileB    - (file) Binarny`e danny`e fai`la (py`taetsia opredelit` po imeni polia i tipu)
  * <li> Img       - (file) Ssy`lka na kartinku (py`taetsia opredelit` po imeni polia)
  * <li> ImgB     - (file) Binarny`e danny`e kartinki (py`taetsia opredelit` po imeni polia i tipu)
  * <li> Content   - (textarea) Bol`shei` tekst (vizevik) (py`taetsia opredelit` po imeni polia)
- * <li> LinkMore  - (select) Svoi`stvo sviazi s drugim ob``ektom (mnogochislenny`m - ajax)
+ * <li> Linkmore  - (select) Svoi`stvo sviazi s drugim ob``ektom (mnogochislenny`m - ajax)
  * </ol>
  *
  * @package Zero.Developer
@@ -103,9 +103,9 @@ class Zero_Engine
         'mediumtext' => 'Текст',
         'longtext' => 'Текст',
         //  перечисление
-        'enum' => 'Selekt',
+        'enum' => 'Перечисление',
         //  множества
-        'set' => 'Chekboks',
+        'set' => 'Множества',
         //  целые числа
         'bigint' => 'Целое число',
         'mediumint' => 'Целое число',
@@ -160,15 +160,15 @@ class Zero_Engine
         'decimal' => 'Number',
         'real' => 'Number',
         //  data i vremia
-        'timestamp' => 'DateTime',
-        'datetime' => 'DateTime',
+        'timestamp' => 'Datetime',
+        'datetime' => 'Datetime',
         'date' => 'Date',
         'time' => 'Time',
         //  binarny`e danny`e
-        'blob' => 'FileDB',
-        'longblob' => 'FileDB',
-        'mediumblob' => 'FileDB',
-        'tinyblob' => 'FileDB'
+        'blob' => 'Filedata',
+        'longblob' => 'Filedata',
+        'mediumblob' => 'Filedata',
+        'tinyblob' => 'Filedata'
     ];
 
     /**
@@ -178,10 +178,10 @@ class Zero_Engine
      */
     protected static $PropValidatorFilter = [
         'Link',
-        'LinkMore',
+        'Linkmore',
         'Select',
         'Radio',
-        'DateTime',
+        'Datetime',
         'Checkbox',
     ];
 
@@ -380,7 +380,8 @@ class Zero_Engine
         {
             $str .= "'{$key}' => {$val},\n";
         }
-        $str = substr(trim($str), 0, -1);
+//        $str = substr(trim($str), 0, -1);
+        $str = trim($str);
         $path1 = ZERO_PATH_ZERO . '/data/Tpl_I18n.php';
         foreach (array_keys(Zero_App::$Config->Language) as $lang)
         {
@@ -492,7 +493,8 @@ class Zero_Engine
                 $str_property .= " * @property string \${$prop}\n";
             }
         }
-        $str_props = substr(trim($str_props), 0, -1);
+//        $str_props = substr(trim($str_props), 0, -1);
+        $str_props = trim($str_props);
         $str_property = substr(trim($str_property), 0, -1);
 
         /**
@@ -505,7 +507,7 @@ class Zero_Engine
         {
             //      echo 'CONFIG PROP ' . $path . '<br>';
             $class = preg_replace('~[*] <BEG_CONFIG_PROPERTY>(.*?)<END_CONFIG_PROPERTY>~si', "{$str_property}", $class);
-            $class = preg_replace('~/\*BEG_CONFIG_PROP\*/(.*?)/\*END_CONFIG_PROP\*/~si', "{$str_props}\n", $class);
+            $class = preg_replace('~/\*BEG_CONFIG_PROP\*/(.*?)/\*END_CONFIG_PROP\*/~si', "{$str_props}", $class);
         }
         //  Konfiguratciia fil`tra
         preg_match('~/\*BEG_CONFIG_FILTER_PROP\*/(.*?)/\*END_CONFIG_FILTER_PROP\*/~si', $class, $arr);
@@ -523,8 +525,9 @@ class Zero_Engine
                 $str_props = substr($str_props, 0, -2);
                 $str_props .= "],\n";
             }
-            $str_props = substr(trim($str_props), 0, -1);
-            $class = preg_replace('~/\*BEG_CONFIG_FILTER_PROP\*/(.*?)/\*END_CONFIG_FILTER_PROP\*/~si', "{$str_props}\n", $class);
+//            $str_props = substr(trim($str_props), 0, -1);
+            $str_props = trim($str_props);
+            $class = preg_replace('~/\*BEG_CONFIG_FILTER_PROP\*/(.*?)/\*END_CONFIG_FILTER_PROP\*/~si', "{$str_props}", $class);
         }
         //  Konfiguratciia grida
         preg_match('~/\*BEG_CONFIG_GRID_PROP\*/(.*?)/\*END_CONFIG_GRID_PROP\*/~si', $class, $arr);
@@ -536,8 +539,9 @@ class Zero_Engine
             {
                 $str_props .= "\t\t\t'" . $prop . "' => [],\n";
             }
-            $str_props = substr(trim($str_props), 0, -1);
-            $class = preg_replace('~/\*BEG_CONFIG_GRID_PROP\*/(.*?)/\*END_CONFIG_GRID_PROP\*/~si', "{$str_props}\n", $class);
+//            $str_props = substr(trim($str_props), 0, -1);
+            $str_props = trim($str_props);
+            $class = preg_replace('~/\*BEG_CONFIG_GRID_PROP\*/(.*?)/\*END_CONFIG_GRID_PROP\*/~si', "{$str_props}", $class);
         }
         //  Konfiguratciia formy`
         preg_match('~/\*BEG_CONFIG_FORM_PROP\*/(.*?)/\*END_CONFIG_FORM_PROP\*/~si', $class, $arr);
@@ -554,8 +558,9 @@ class Zero_Engine
                 //                $str_props = substr($str_props, 0, -2);
                 //                $str_props .= "),\n";
             }
-            $str_props = substr(trim($str_props), 0, -1);
-            $class = preg_replace('~/\*BEG_CONFIG_FORM_PROP\*/(.*?)/\*END_CONFIG_FORM_PROP\*/~si', "{$str_props}\n", $class);
+//            $str_props = substr(trim($str_props), 0, -1);
+            $str_props = trim($str_props);
+            $class = preg_replace('~/\*BEG_CONFIG_FORM_PROP\*/(.*?)/\*END_CONFIG_FORM_PROP\*/~si', "{$str_props}", $class);
         }
         file_put_contents($path_model, $class);
     }
@@ -623,9 +628,10 @@ class Zero_Engine
     {
         foreach (Zero_DB::Select_Array("SHOW FULL COLUMNS FROM {$Table};") as $row)
         {
+            $index = $Table . ' ' . trim($row['Field']);
             $Type = explode('(', $row['Type']);
             $Type = array_shift($Type);
-            $this->I18n["{$row['Field']}"] = "'" . $row['Comment'] . "'";
+            $this->I18n[$index] = "'" . $row['Comment'] . "'";
             //  Перечисления и множества
             if ( 'enum' == $Type || 'set' == $Type )
             {
@@ -636,7 +642,7 @@ class Zero_Engine
                     $str .= "'" . $val . "' => '" . $val . "',";
                     //$config["model prop {$row['Field']} option {$val}"] = $val;
                 }
-                $this->I18n["{$row['Field']} options"] = substr($str, 0, -1) . "]";
+                $this->I18n[$index . " options"] = substr($str, 0, -1) . "]";
             }
         }
     }

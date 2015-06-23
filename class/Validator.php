@@ -195,9 +195,52 @@ class Zero_Validator
             $data = $this->Model->Validate_Before($data, $scenario);
 
         $props = $this->Model->Get_Config_Form($scenario);
+        foreach ($props as $prop => $row)
+        {
+            if ( 'Readonly' == $row['Form'] || 'ID' == $prop )
+                continue;
+
+            //  инициализация значения или первичнач обработка
+            if ( isset($data[$prop]) && $data[$prop] )
+                $value = $data[$prop];
+            else
+                $value = null;
+
+            // проверка
+            $subj = '';
+            if ( 'NO' == $row['IsNull'] && !$value )
+                $subj = 'Error_NotNull';
+            else if ( method_exists($this->Model, $method = 'VL_' . $prop) )
+                $subj = $this->Model->$method($value, $scenario);
+            else if ( method_exists($this, $method = 'VL_' . $row['Form']) )
+                $subj = $this->$method($value, $prop);
+            else
+                $this->Model->$prop = $value;
+
+            // oshibki validatcii
+            if ( $subj )
+                $this->Set_Errors($prop, $subj);
+        }
+
+        //    zavershenie
+        if ( 0 < count($this->Errors) )
+            return false;
+        else
+            return true;
+    }
+
+    public function Validate_Old($data, $scenario = '')
+    {
+        $this->Errors = [];
+        //  Obshchaia nachal`naia validatciia
+        if ( method_exists($this->Model, $method = 'Validate_Before') )
+            $data = $this->Model->Validate_Before($data, $scenario);
+
+        $props = $this->Model->Get_Config_Form($scenario);
         foreach ($data as $prop => $value)
         {
-            if ( !isset($props[$prop]) || 'ReadOnly' == $props[$prop]['Form'] )
+            pre($prop);
+            if ( !isset($props[$prop]) || 'Readonly' == $props[$prop]['Form'] )
                 continue;
 
             //  инициализация значения или первичнач обработка

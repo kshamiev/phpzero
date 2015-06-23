@@ -144,7 +144,9 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         foreach ($this->Model->Get_Config_Prop(get_class($this)) as $prop => $row)
         {
             if ( 'D' == $row['DB'] && 'NO' == $row['IsNull'] )
+            {
                 $this->Model->$prop = date('Y-m-d H:i:s');
+            }
             else if ( 0 < strlen($row['Default']) )
                 $this->Model->$prop = $row['Default'];
             else if ( 'S' == $row['DB'] )
