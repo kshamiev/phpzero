@@ -198,7 +198,7 @@ class Zero_Logs
      */
     public static function Output()
     {
-        self::$_FileLog = Zero_App::$Config->Site_DomainSub . '_' . self::$_FileLog;
+//        self::$_FileLog = Zero_App::$Config->Site_DomainSub . '_' . self::$_FileLog;
         // Логируем работу приложения в целом
         if ( Zero_App::$Config->Log_Profile_Application )
         {
@@ -251,10 +251,20 @@ class Zero_Logs
             // логирование операций пользователиа в файл
             if ( Zero_App::$Config->Log_Profile_Action && isset($_REQUEST['act']) )
             {
-                $act = date('[d.m.Y H:i:s]') . "\t";
-                $act .= Zero_App::$Users->Login . "\t" . Zero_App::$Section->Controller . " -> " . $_REQUEST['act'] . "\t";
-                $act .= ZERO_HTTP . $_SERVER['REQUEST_URI'];
-                self::File(self::$_FileLog . '_action.log', $act);
+                if ( Zero_App::MODE_CONSOLE == Zero_App::Get_Mode() )
+                {
+                    $act = date('[d.m.Y H:i:s]') . "\t";
+                    $act .= "console\t" . explode('-', $_SERVER['argv'][1])[0] . " -> " . $_REQUEST['act'] . "\t";
+                    $act .= ZERO_HTTP;
+                    self::File(self::$_FileLog . '_action.log', $act);
+                }
+                else if ( 'Action_Default' != $_REQUEST['act'] )
+                {
+                    $act = date('[d.m.Y H:i:s]') . "\t";
+                    $act .= Zero_App::$Users->Login . "\t" . Zero_App::$Section->Controller . " -> " . $_REQUEST['act'] . "\t";
+                    $act .= ZERO_HTTP . $_SERVER['REQUEST_URI'];
+                    self::File(self::$_FileLog . '_action.log', $act);
+                }
             }
         }
     }
