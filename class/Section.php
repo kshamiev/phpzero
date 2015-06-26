@@ -181,7 +181,6 @@ class Zero_Section extends Zero_Model
     {
         return [
             'ID' => [],
-            'Section_ID' => [],
             'Url' => [],
             'UrlThis' => ['Form' => 'Text'],
             'UrlRedirect' => [],
