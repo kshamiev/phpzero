@@ -216,9 +216,9 @@ class Zero_Config
     /**
      * Configuration
      *
-     * @param string $file_log the base name of the log file
+     * @param string $file_config суффикс конфигурационного файла
      */
-    public function __construct($file_log)
+    public function __construct($file_config)
     {
         // Setting php
         set_time_limit(3600);
@@ -233,11 +233,11 @@ class Zero_Config
             if ( !mkdir(ZERO_PATH_LOG, 0777, true) )
                 die('logs path: "' . ZERO_PATH_LOG . '" not exists');
         ini_set('log_errors', true);
-        ini_set('error_log', ZERO_PATH_LOG . '/' . $file_log . '_fatal.log');
+        ini_set('error_log', ZERO_PATH_LOG . '/fatal.log');
         ini_set('magic_quotes_gpc', 0);
         error_reporting(-1);
 
-        if ( file_exists($path = ZERO_PATH_APPLICATION . '/config_' . $file_log . '.php') )
+        if ( file_exists($path = ZERO_PATH_APPLICATION . '/config_' . $file_config . '.php') )
             $Config = require $path;
         else
             $Config = require ZERO_PATH_APPLICATION . '/config.php';

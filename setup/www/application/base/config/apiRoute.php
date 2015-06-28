@@ -8,7 +8,7 @@ return [
     /**
      * Какой-то там контроллер
      *
-     * @see Zero_System_Api_Upload
+     * @see Zero_Api_Base_Upload
      */
     '/api/v1.0/zero/system/upload' => [
         'Controller' => 'Zero_System_Api_Upload',

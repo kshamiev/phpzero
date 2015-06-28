@@ -56,26 +56,33 @@ class Zero_App
     const MODE_CONSOLE = 'console';
 
     /**
+     * Параметры uri
+     *
+     * @var array
+     */
+    public static $RequestParams = [];
+
+    /**
      * Configuration
      *
      * @var Zero_Config
      */
 
-    public static $Config;
+    public static $Config = null;
 
     /**
      * User
      *
      * @var Base_Users
      */
-    public static $Users;
+    public static $Users = null;
 
     /**
      * Section (page)
      *
      * @var Base_Section
      */
-    public static $Section;
+    public static $Section = null;
 
     /**
      * Routing (по URL)
@@ -122,6 +129,39 @@ class Zero_App
      * @return bool
      */
     public static function Autoload($class_name)
+    {
+        if ( class_exists($class_name) )
+            return true;
+        $arr = explode('_', $class_name);
+        $module = strtolower(array_shift($arr));
+        $class = implode('/', $arr);
+        $path = ZERO_PATH_APPLICATION . '/' . $module . '/class/' . $class . '.php';
+        if ( file_exists($path) )
+        {
+            require_once $path;
+            if ( class_exists($class_name) )
+                return true;
+        }
+        $path = ZERO_PATH_APPLICATION . '/' . $module . '/class' . $class . '.php';
+        if ( file_exists($path) )
+        {
+            require_once $path;
+            if ( class_exists($class_name) )
+                return true;
+        }
+        Zero_Logs::Set_Message_Error('Класс не найден: ' . $class_name);
+        return false;
+    }
+
+    /**
+     * Connection classes
+     *
+     * Setting up automatic downloads of files with the required classes
+     *
+     * @param string $class_name
+     * @return bool
+     */
+    public static function Autoload_Old($class_name)
     {
         if ( class_exists($class_name) )
             return true;
@@ -280,11 +320,14 @@ class Zero_App
      * - Processing incoming request (GET). Component Zero_Route
      * - Session Initialization. Component Zero_Session
      *
-     * @param string $file_log the base name of the log file
-     * @param string $mode the base name of the log file
+     * @param string $file_config суффикс конфигурационного файла
      */
-    public static function Init($file_log = 'application')
+    public static function Init($file_config = 'application')
     {
+        // Если инициализация уже произведена
+        if ( !is_null(self::$Config) )
+            return;
+
         //  Include Components
         require_once ZERO_PATH_ZERO . '/function.php';
         require_once ZERO_PATH_ZERO . '/class/Config.php';
@@ -299,10 +342,15 @@ class Zero_App
         // register_shutdown_function(['Zero_App', 'Exit_Application']);
 
         //  Configuration (Zero_Config)
-        self::$Config = new Zero_Config($file_log);
+        self::$Config = new Zero_Config($file_config);
+
+        $arr = app_route();
+        self::$mode = $arr[0];
+        self::$lang = $arr[1];
+        self::$url = $arr[2];
 
         //  Initializing monitoring system (Zero_Logs)
-        Zero_Logs::Init($file_log);
+        Zero_Logs::Init(self::$mode);
 
         //  Initialize cache subsystem (Zero_Cache)
         if ( (0 < count(self::$Config->Memcache['Cache'])) && class_exists('Memcache') )
@@ -313,11 +361,6 @@ class Zero_App
         {
             Zero_DB::Config_Add($name, $config);
         }
-
-        $arr = app_route();
-        self::$mode = $arr[0];
-        self::$lang = $arr[1];
-        self::$url = $arr[2];
 
         require_once ZERO_PATH_ZERO . '/class/View.php';
 

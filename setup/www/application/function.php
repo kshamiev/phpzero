@@ -39,12 +39,20 @@ function app_route()
     }
 
     // api
-    if ( 'api' == $row[0] )
+    if ( 'api' == $row[0] || 'api' == Zero_App::$Config->Site_DomainSub )
     {
         $Mode = Zero_App::MODE_API;
         app_request_data_api();
     }
 
+    // чпу параметры
+    $p = array_pop($row);
+    $p = explode('.', $p)[0];
+    $p = explode('-', $p);
+    Zero_App::$RequestParams = $p;
+    $row[] = $p[0];
+
+    // uri
     $Url .= '/' . implode('/', $row);
     return [$Mode, $Lang, $Url];
 }

@@ -8,9 +8,9 @@ return [
     /**
      * Формирование документации
      *
-     * @see Zero_Console_ApiGen::Action_Default()
+     * @see Zero_Console_Base_ApiGen::Action_Default()
      */
-    'Zero_Console_ApiGen' => [
+    'Zero_Console_Base_ApiGen' => [
         'Minute' => '*/10',
         'Hour' => '*',
         'Day' => '*',
@@ -21,9 +21,9 @@ return [
     /**
      * Удаление старых бинарных данных загруженных через веб (ajax)
      *
-     * @see Zero_Console_RemTmpFileUpload::Action_Default()
+     * @see Zero_Console_Base_RemTmpFileUpload::Action_Default()
      */
-    'Zero_Console_RemTmpFileUpload' => [
+    'Zero_Console_Base_RemTmpFileUpload' => [
         'Description' => 'Remove TempFileUpload',
         'Minute' => '0',
         'Hour' => '*',
@@ -35,9 +35,9 @@ return [
     /**
      * Формирование документации
      *
-     * @see Zero_Section_Console_SiteMap::Action_Default()
+     * @see Zero_Console_Section_SiteMap::Action_Default()
      */
-    'Zero_Section_Console_SiteMap' => [
+    'Zero_Console_Section_SiteMap' => [
         'Description' => 'Create SiteMap',
         'Minute' => '0',
         'Hour' => '0',
@@ -49,10 +49,10 @@ return [
     /**
      * Оперделение не  активных пользователей.
      *
-     * @see Zero_Users_Console_Offline::Action_Default()
+     * @see Zero_Console_Users_Offline::Action_Default()
      *
      */
-    'Zero_Users_Console_Offline' => [
+    'Zero_Console_Users_Offline' => [
         'Minute' => '*/10',
         'Hour' => '*',
         'Day' => '*',
@@ -63,10 +63,10 @@ return [
     /**
      * Инженеринг моделей и контроллеров CRUD по БД (первой по умолчанию)
      *
-     * @see Zero_System_Console_Engine::Action_Default()
+     * @see Zero_Console_Base_Engine::Action_Default()
      *
      */
-    'Zero_System_Console_Engine' => [
+    'Zero_Console_Base_Engine' => [
         'Minute' => '*/10',
         'Hour' => '*',
         'Day' => '*',
