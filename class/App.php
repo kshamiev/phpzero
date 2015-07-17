@@ -39,6 +39,10 @@ define('ZERO_PATH_VIEW', ZERO_PATH_SITE . '/view');
  * Location System
  */
 define('ZERO_PATH_ZERO', ZERO_PATH_SITE . '/zero');
+/**
+ * Location System
+ */
+define('ZERO_PATH_LAYOUT', ZERO_PATH_SITE . '/layout');
 
 /**
  * Application.

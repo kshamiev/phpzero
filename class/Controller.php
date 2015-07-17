@@ -206,6 +206,8 @@ abstract class Zero_Controller
      */
     public function Action_Default()
     {
+        $this->View = new Zero_View(get_class($this));
+        $this->View->Assign('variable', 'value');
         return $this->View;
     }
 }

@@ -46,6 +46,22 @@ class Zero_Controller_Sample extends Zero_Controller
         return $this->View;
     }
 
+    /**
+     * Фабричный метод по созданию контроллера.
+     *
+     * @param array $properties входные параметры плагина
+     * @return Zero_Controller
+     */
+    public static function Make($properties = [])
+    {
+        $Controller = new self();
+        foreach ($properties as $property => $value)
+        {
+            $Controller->Params[$property] = $value;
+        }
+        return $Controller;
+    }
+
     //// Пример контроллера для API
     protected function Action_GET()
     {
@@ -91,20 +107,4 @@ class Zero_Controller_Sample extends Zero_Controller
     }
 
     ////
-
-    /**
-     * Фабричный метод по созданию контроллера.
-     *
-     * @param array $properties входные параметры плагина
-     * @return Zero_Controller
-     */
-    public static function Make($properties = [])
-    {
-        $Controller = new self();
-        foreach ($properties as $property => $value)
-        {
-            $Controller->Params[$property] = $value;
-        }
-        return $Controller;
-    }
 }
