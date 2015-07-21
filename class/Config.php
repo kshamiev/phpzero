@@ -361,7 +361,7 @@ class Zero_Config
             {
                 ini_set('session.save_handler', 'files');
                 $path = ini_get('session.save_path');
-                if ( !is_dir($path) )
+                if ( $path && !is_dir($path) )
                     if ( !mkdir($path, 0777, true) )
                         die('session path: "' . $path . '" not exists');
             }
