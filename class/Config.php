@@ -216,9 +216,9 @@ class Zero_Config
     /**
      * Configuration
      *
-     * @param string $file_config суффикс конфигурационного файла
+     * @param string $fileConfig суффикс конфигурационного файла
      */
-    public function __construct($file_config)
+    public function __construct($fileConfig)
     {
         // Setting php
         set_time_limit(3600);
@@ -237,7 +237,7 @@ class Zero_Config
         ini_set('magic_quotes_gpc', 0);
         error_reporting(-1);
 
-        if ( file_exists($path = ZERO_PATH_APPLICATION . '/config_' . $file_config . '.php') )
+        if ( file_exists($path = ZERO_PATH_APPLICATION . '/config_' . $fileConfig . '.php') )
             $Config = require $path;
         else
             $Config = require ZERO_PATH_APPLICATION . '/config.php';

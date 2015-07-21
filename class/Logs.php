@@ -73,12 +73,12 @@ class Zero_Logs
      * Initcializatciia soobshchenii`, log fai`la, tai`merov
      *
      */
-    public static function Init($file_log = 'application')
+    public static function Init($fileLog)
     {
         self::$_Message = [];
         self::$_StartTime = microtime(1);
         self::$_CurrentTime = [];
-        self::$_FileLog = $file_log;
+        self::$_FileLog = $fileLog;
     }
 
     /**

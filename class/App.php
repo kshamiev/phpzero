@@ -324,9 +324,9 @@ class Zero_App
      * - Processing incoming request (GET). Component Zero_Route
      * - Session Initialization. Component Zero_Session
      *
-     * @param string $file_config суффикс конфигурационного файла
+     * @param string $fileApp суффикс конфигурационного файла
      */
-    public static function Init($file_config = 'application')
+    public static function Init($fileApp = 'application')
     {
         // Если инициализация уже произведена
         if ( !is_null(self::$Config) )
@@ -346,7 +346,7 @@ class Zero_App
         // register_shutdown_function(['Zero_App', 'Exit_Application']);
 
         //  Configuration (Zero_Config)
-        self::$Config = new Zero_Config($file_config);
+        self::$Config = new Zero_Config($fileApp);
 
         $arr = app_route();
         self::$mode = $arr[0];
@@ -354,7 +354,7 @@ class Zero_App
         self::$url = $arr[2];
 
         //  Initializing monitoring system (Zero_Logs)
-        Zero_Logs::Init(self::$mode);
+        Zero_Logs::Init($fileApp);
 
         //  Initialize cache subsystem (Zero_Cache)
         if ( (0 < count(self::$Config->Memcache['Cache'])) && class_exists('Memcache') )
