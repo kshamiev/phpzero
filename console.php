@@ -69,6 +69,8 @@ if ( count($_SERVER['argv']) > 1 )
         $_REQUEST['act'] = 'Action_Default';
     $Controller = Zero_Controller::Makes($arr[0]);
     $Controller->$_REQUEST['act']();
+
+    Zero_App::ResponseConsole();
 }
 //  Launch Manager console task
 else
@@ -106,7 +108,4 @@ else
         }
     }
 }
-
-Zero_App::ResponseConsole();
-
 exit;

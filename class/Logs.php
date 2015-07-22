@@ -248,33 +248,23 @@ class Zero_Logs
                 $notice = date('[d.m.Y H:i:s]') . "\n" . $notice;
                 self::File(self::$_FileLog . '_notice.log', $notice);
             }
-            // логирование операций пользователиа в файл
-            if ( Zero_App::$Config->Log_Profile_Action && isset($_REQUEST['act']) )
-            {
-                if ( Zero_App::MODE_CONSOLE == Zero_App::Get_Mode() )
-                {
-                    $act = date('[d.m.Y H:i:s]') . "\t";
-                    $act .= "console\t" . explode('-', $_SERVER['argv'][1])[0] . " -> " . $_REQUEST['act'] . "\t";
-                    $act .= ZERO_HTTP;
-                    self::File(self::$_FileLog . '_action.log', $act);
-                }
-                else if ( 'Action_Default' != $_REQUEST['act'] )
-                {
-                    $act = date('[d.m.Y H:i:s]') . "\t";
-                    $act .= Zero_App::$Users->Login . "\t" . Zero_App::$Section->Controller . " -> " . $_REQUEST['act'] . "\t";
-                    $act .= ZERO_HTTP . $_SERVER['REQUEST_URI'];
-                    self::File(self::$_FileLog . '_action.log', $act);
-                }
-            }
+        }
+        // логирование операций пользователиа в файл
+        if ( Zero_App::$Config->Log_Profile_Action && Zero_App::MODE_CONSOLE != Zero_App::Get_Mode() && isset($_REQUEST['act']) && 'Action_Default' != $_REQUEST['act'])
+        {
+            $act = date('[d.m.Y H:i:s]') . "\t";
+            $act .= Zero_App::$Users->Login . "\t" . Zero_App::$Section->Controller . " -> " . $_REQUEST['act'] . "\t";
+            $act .= ZERO_HTTP . $_SERVER['REQUEST_URI'];
+            self::File(self::$_FileLog . '_action.log', $act);
         }
     }
 
     /**
      * Poluchenie ishodnogo kuska koda v oblasti oshibki fai`la
      *
-     * @param $file put` do fai`la
-     * @param $line stroka s oshibkoi`
-     * @param $range_file_error diapazon vy`vodimy`kh strok fai`la vokrug oshibochneoi` stroki
+     * @param string $file put` do fai`la
+     * @param int $line stroka s oshibkoi`
+     * @param int $range_file_error diapazon vy`vodimy`kh strok fai`la vokrug oshibochneoi` stroki
      * @return string
      */
     protected static function Get_SourceCode($file, $line, $range_file_error)
@@ -290,7 +280,7 @@ class Zero_Logs
         $View->Assign('offset', $offset < 0 ? 0 : $offset);
         $View->Assign('length', $length);
         $View->Assign('line', $line);
-        return $View->Fetch(true);
+        return $View->Fetch();
     }
 
     /**
@@ -305,8 +295,8 @@ class Zero_Logs
             // initcializatciia logov
             if ( isset($_SERVER['REQUEST_URI']) )
                 self::$_OutputApplication = [date('[d.m.Y H:i:s]') . ' [' . $_SERVER['REQUEST_METHOD'] . '] ' . ZERO_HTTP . $_SERVER['REQUEST_URI']];
-            else if ( isset($_SERVER['argv'][1]) )
-                self::$_OutputApplication = [date('[d.m.Y H:i:s]') . ' {DEMON} ' . $_SERVER['argv'][1] . ' ' . ZERO_HTTP];
+            else if ( Zero_App::Get_Mode() == Zero_App::MODE_CONSOLE && isset($_SERVER['argv'][1]) )
+                self::$_OutputApplication = [date('[d.m.Y H:i:s]') . ' ' . $_SERVER['argv'][1]];
             // Sobiraem tai`mery` v kuchu
             foreach (self::$_CurrentTime as $description => $time)
             {

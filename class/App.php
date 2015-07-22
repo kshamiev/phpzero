@@ -55,9 +55,9 @@ define('ZERO_PATH_LAYOUT', ZERO_PATH_SITE . '/layout');
  */
 class Zero_App
 {
-    const MODE_WEB = 'web';
-    const MODE_API = 'api';
-    const MODE_CONSOLE = 'console';
+    const MODE_WEB = 'Web';
+    const MODE_API = 'Api';
+    const MODE_CONSOLE = 'Console';
 
     /**
      * Параметры uri
@@ -248,7 +248,6 @@ class Zero_App
         header("Content-Type: application/json; charset=utf-8");
         header('HTTP/1.1 ' . $status . ' ' . $status);
 
-        $message = [];
         if ( self::$Section->Controller )
             $message = Zero_I18n::Message(self::$Section->Controller, $code, $params);
         else
@@ -382,7 +381,7 @@ class Zero_App
         self::$Section = Base_Section::Instance();
         foreach (Zero_Config::Get_Modules() as $module)
         {
-            $config = Zero_Config::Get_Config($module, self::$mode . 'Route');
+            $config = Zero_Config::Get_Config($module, 'route' . self::$mode);
             if ( isset($config[ZERO_URL]) )
             {
                 $route = $config[ZERO_URL];
@@ -400,7 +399,7 @@ class Zero_App
             self::$Section->Controller = $route['Controller'];
             if ( isset($_REQUEST['act']) && $_REQUEST['act'] )
                 $_REQUEST['act'] = trim($_REQUEST['act']);
-            else if ( 'api' == self::$mode )
+            else if ( self::MODE_API == self::$mode )
                 $_REQUEST['act'] = $_SERVER['REQUEST_METHOD'];
             else
                 $_REQUEST['act'] = 'Default';
@@ -477,7 +476,7 @@ class Zero_App
         {
             if ( isset($_REQUEST['act']) && $_REQUEST['act'] )
                 $_REQUEST['act'] = trim($_REQUEST['act']);
-            else if ( 'api' == self::$mode )
+            else if ( self::MODE_API == self::$mode )
                 $_REQUEST['act'] = $_SERVER['REQUEST_METHOD'];
             else
                 $_REQUEST['act'] = 'Default';
@@ -568,6 +567,26 @@ class Zero_App
     public static function Exception(Exception $exception)
     {
         $code = $exception->getCode();
+        if ( 500 == $code )
+        {
+            Zero_Logs::Exception($exception);
+        }
+        if ( self::MODE_CONSOLE == self::$mode || !isset($_SERVER['REQUEST_URI']) )
+            self::ResponseConsole();
+        else if ( self::MODE_API == self::$mode )
+            self::ResponseJson('', $code, -1, [$exception->getMessage()]);
+        else if ( self::MODE_WEB == self::$mode )
+        {
+            $View = new Zero_View(ucfirst(self::$Config->Site_DomainSub) . '_Error');
+            $View->Add('Zero_Error');
+            $View->Assign('code', $code);
+            $View->Assign('message', $exception->getMessage());
+            self::ResponseHtml($View->Fetch(), $code);
+        }
+    }
+    public static function Exception_Old(Exception $exception)
+    {
+        $code = $exception->getCode();
         if ( 403 == $code || 404 == $code )
         {
             $status = $code;
@@ -577,11 +596,11 @@ class Zero_App
             $status = 500;
             Zero_Logs::Exception($exception);
         }
-        if ( self::$mode == 'console' || !isset($_SERVER['REQUEST_URI']) )
+        if ( self::MODE_CONSOLE == self::$mode || !isset($_SERVER['REQUEST_URI']) )
             self::ResponseConsole();
-        else if ( self::$mode == 'api' )
+        else if ( self::MODE_API == self::$mode )
             self::ResponseJson('', 200, $code, [$exception->getMessage()]);
-        else if ( self::$mode == 'web' )
+        else if ( self::MODE_WEB == self::$mode )
         {
             $View = new Zero_View(ucfirst(self::$Config->Site_DomainSub) . '_Error');
             $View->Add('Zero_Error');
