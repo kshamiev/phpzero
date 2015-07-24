@@ -206,7 +206,7 @@ class Zero_Model_Pattern extends Zero_Model
      * @param bool $flagLoad флаг полной загрузки объекта
      * @return Zero_Model_Pattern
      */
-    public static function Factory($id = 0, $flagLoad = false)
+    public static function Factor($id = 0, $flagLoad = false)
     {
         if ( !$result = Zero_Session::Get(__CLASS__) )
         {

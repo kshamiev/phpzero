@@ -90,10 +90,10 @@ class Zero_Users_Login extends Zero_Controller
         $this->Chunk_Init();
 
         $this->Model->VL->Validate($_REQUEST['Users'], 'reminder');
-        if ( 0 < count($this->Model->VL->Get_Errors()) )
+
+        if ( $_REQUEST['Users']['Keystring'] != Zero_App::$Users->Keystring )
         {
-            $this->View->Assign('Error_Validator', $this->Model->VL->Get_Errors());
-            $this->SetMessage(-1, ['Ощибка проверки данных']);
+            $this->SetMessage(-1, ['Контрольная строка не верна']);
             return $this->Chunk_View();
         }
 
@@ -106,6 +106,7 @@ class Zero_Users_Login extends Zero_Controller
             return $this->Chunk_View();
         }
 
+        $this->Model->AR->Load('*');
         $password = substr(md5(uniqid(mt_rand())), 0, 10);
         $this->Model->Password = md5($password);
         $this->Model->AR->Save();
