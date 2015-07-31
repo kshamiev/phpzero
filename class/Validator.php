@@ -120,14 +120,6 @@ class Zero_Validator
      */
     protected function VL_File($value, $prop)
     {
-        //  udalenie starogo fai`la
-        if ( isset($value['Rem']) && $value['Rem'] && $this->Model->$prop )
-        {
-            if ( file_exists($filename = ZERO_PATH_DATA . '/' . $this->Model->$prop) )
-                unlink($filename);
-            $this->Model->$prop = '';
-        }
-
         if ( isset($value['Hash']) && $value['Hash'] )
         {
             $pathInfo = dirname(ZERO_PATH_DATA) . '/temp/' . $value['Hash'] . '.txt';
@@ -139,9 +131,19 @@ class Zero_Validator
                 return 'Ошибка загрузки файла (данные)';
         }
 
+        //  udalenie starogo fai`la
+        if ( isset($value['Rem']) && $value['Rem'] )
+        {
+            $_FILES[$prop]['rem'] = true;
+            //            if ( file_exists($filename = ZERO_PATH_DATA . '/' . $this->Model->$prop) )
+            //                unlink($filename);
+            //            $this->Model->$prop = '';
+        }
+
         //  Validatciia
         if ( isset($_FILES[$prop]) && 4 != $_FILES[$prop]['error'] )
         {
+            $_FILES[$prop]['rem'] = true;
             //  fai`l ne zagruzhen ili zagruzhen s oshibkami
             //            if ( !is_uploaded_file($_FILES[$prop]['tmp_name']) || 0 != $_FILES[$prop]['error'] )
             if ( 0 != $_FILES[$prop]['error'] )
@@ -167,7 +169,7 @@ class Zero_Validator
                 }
             }
             $_FILES[$prop]['name'] = Zero_Helper_Strings::Transliteration_FileName($_FILES[$prop]['name']);
-            $this->Model->$prop = 'File Upload Ok';
+            //            $this->Model->$prop = 'File Upload Ok';
         }
         return '';
     }

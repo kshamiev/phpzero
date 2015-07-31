@@ -616,17 +616,6 @@ class Zero_AR
         //  initcializatciia
         if ( is_array($props) )
             $sql_prop = "SELECT " . implode(', ', $props);
-        //        else if ( '*' == $props )
-        //        {
-        //            $listProp = [];
-        //            foreach ($this->Model->Get_Config_Prop() as $prop => $cfg)
-        //            {
-        //                if ( isset($cfg['AR']) && false == $cfg['AR'] )
-        //                    continue;
-        //                $listProp[] = $cfg['AliasDB'];
-        //            }
-        //            $sql_prop = "SELECT " . implode(', ', $listProp);
-        //        }
         else
             $sql_prop = "SELECT " . $props;
         /**
@@ -942,16 +931,9 @@ class Zero_AR
      * @param string $scenario Сценарий сохраняем свойств
      * @return bool
      */
-    protected  function Insert($scenario = '')
+    protected function Insert($scenario = '')
     {
         $prop_list = $this->Model->Get_Config_Prop($scenario);
-        //        foreach ($prop_list as $prop => $cfg)
-        //        {
-        //            if ( isset($cfg['AR']) && false == $cfg['AR'] )
-        //                unset($prop_list[$prop]);
-        //        }
-        //        unset($prop_list['ID']);
-
         //  sborka svoi`stv dlia sokhraneniia v BD
         $sql_update = [];
         $props = $this->Model->Get_Props(-1);
@@ -977,7 +959,7 @@ class Zero_AR
         {
             if ( isset($_FILES[$prop]) )
             {
-                if ( 'File Upload Ok' == $value )
+                if ( 0 === $_FILES[$prop]['error'] )
                 {
                     // V fai`lovoi` sisteme
                     $file = strtolower($this->Model->Source) . '/' . Zero_Helper_File::Get_Path_Cache($this->Model->ID) . '/' . $this->Model->ID . '/' . $_FILES[$prop]['name'];
@@ -996,17 +978,11 @@ class Zero_AR
                         Zero_Logs::Set_Message_Error('Error Copy File');
                         continue;
                     }
-                    $sql_update[] = "`" . $prop . "` = '{$file}'";
+                    $sql_update[$prop] = "`" . $prop . "` = '{$file}'";
                     $this->Model->$prop = $file;
                     //  V BD
                     if ( isset($prop_list[$prop . 'B']) )
-                        $sql_update[] = "`" . $prop . "B` = '" . Zero_DB::EscB(file_get_contents($path)) . "'";
-                }
-                else if ( !$value )
-                {
-                    $sql_update[] = "`" . $prop . "` = NULL";
-                    if ( isset($prop_list[$prop . 'B']) )
-                        $sql_update[] = "`" . $prop . "B` = NULL";
+                        $sql_update[$prop] = "`" . $prop . "B` = '" . Zero_DB::EscB(file_get_contents($path)) . "'";
                 }
             }
         }
@@ -1059,7 +1035,16 @@ class Zero_AR
             $method = "Esc" . $prop_list[$prop]['DB'];
             if ( isset($_FILES[$prop]) )
             {
-                if ( 'File Upload Ok' == $value )
+                if ( isset($_FILES[$prop]['rem']) && $this->Model->$prop )
+                {
+                    if ( file_exists($filename = ZERO_PATH_DATA . '/' . $this->Model->$prop) )
+                        unlink($filename);
+                    $sql_update[$prop] = "`" . $prop . "` = NULL";
+                    if ( isset($prop_list[$prop . 'B']) )
+                        $sql_update[$prop] = "`" . $prop . "B` = NULL";
+                    $this->Model->$prop = '';
+                }
+                if ( 0 === $_FILES[$prop]['error'] )
                 {
                     // V fai`lovoi` sisteme
                     $file = strtolower($this->Model->Source) . '/' . Zero_Helper_File::Get_Path_Cache($this->Model->ID) . '/' . $this->Model->ID . '/' . $_FILES[$prop]['name'];
@@ -1078,21 +1063,14 @@ class Zero_AR
                         Zero_Logs::Set_Message_Error('Error Copy File');
                         continue;
                     }
-                    $sql_update[] = "`" . $prop . "` = '{$file}'";
+                    $sql_update[$prop] = "`" . $prop . "` = '{$file}'";
+                    if ( isset($prop_list[$prop . 'B']) )
+                        $sql_update[$prop] = "`" . $prop . "B` = '" . Zero_DB::EscB(file_get_contents($path)) . "'";
                     $this->Model->$prop = $file;
-                    //  V BD
-                    if ( isset($prop_list[$prop . 'B']) )
-                        $sql_update[] = "`" . $prop . "B` = '" . Zero_DB::EscB(file_get_contents($path)) . "'";
-                }
-                else if ( !$value )
-                {
-                    $sql_update[] = "`" . $prop . "` = NULL";
-                    if ( isset($prop_list[$prop . 'B']) )
-                        $sql_update[] = "`" . $prop . "B` = NULL";
                 }
             }
             else
-                $sql_update[] = '`' . $prop . '` = ' . Zero_DB::$method($value);
+                $sql_update[$prop] = '`' . $prop . '` = ' . Zero_DB::$method($value);
         }
 
         $flag = 0;

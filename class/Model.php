@@ -24,7 +24,6 @@
  */
 abstract class Zero_Model
 {
-
     /**
      * Identifikator ob``ekta
      *
@@ -485,6 +484,142 @@ abstract class Zero_Model
     public function Get_Query_From($params)
     {
         return "FROM {$this->Source} as z";
+    }
+
+    /**
+     * Загрузка модели
+     *
+     * @param string $properties Загружаемые свойства (по умолчанию все).
+     * @return array загруженные свойства и их значения
+     */
+    public function Load($properties = '*')
+    {
+        if ( 0 >= $this->ID )
+        {
+            Zero_Logs::Set_Message_Error("Error Load: {$this->Source} SqlWhere is empty");
+            return [];
+        }
+        if ( is_array($properties) )
+            $sql_select = implode(', ', $properties);
+        else
+            $sql_select = $properties;
+        $sql = "SELECT {$sql_select} FROM {$this->Source} WHERE ID = {$this->ID}";
+        $row = Zero_DB::Select_Row($sql);
+        if ( 0 < count($row) )
+            $this->Set_Props($row);
+        return $row;
+    }
+
+    /**
+     * Сохранение модели
+     *
+     * @return bool
+     */
+    public function Save()
+    {
+        //  sborka svoi`stv dlia sokhraneniia v BD
+        $sql_update = [];
+        $prop_list = $this->Get_Config_Prop();
+        unset($prop_list['ID']);
+        foreach ($this->Get_Props(-1) as $prop => $value)
+        {
+            if ( !isset($prop_list[$prop]) || (isset($prop_list['AR']) && false == $prop_list['AR']) )
+                continue;
+            $method = "Esc" . $prop_list[$prop]['DB'];
+            $sql_update[] = '`' . $prop . '` = ' . Zero_DB::$method($value);
+        }
+        // INSERT
+        if ( 0 == $this->ID )
+        {
+            if ( 0 == count($sql_update) )
+                $sql_update[] = 'ID = NULL';
+            $sql = "INSERT " . $this->Source . " SET " . implode(', ', $sql_update);
+            $this->ID = Zero_DB::Insert($sql);
+            if ( !$this->ID )
+                return false;
+        }
+        // UPDATE
+        else if ( 0 < count($sql_update) )
+        {
+            $sql = "UPDATE " . $this->Source . " SET " . implode(', ', $sql_update) . " WHERE ID = {$this->ID}";
+            if ( false == Zero_DB::Update($sql) )
+                return false;
+        }
+        // BINARY DATA
+        $sql_update = [];
+        foreach ($this->Get_Props(-1) as $prop => $value)
+        {
+            if ( !isset($prop_list[$prop]) || (isset($prop_list['AR']) && false == $prop_list['AR']) )
+                continue;
+            if ( !isset($_FILES[$prop]) )
+                continue;
+            if ( isset($_FILES[$prop]['rem']) && $this->$prop )
+            {
+                if ( file_exists($filename = ZERO_PATH_DATA . '/' . $this->$prop) )
+                    unlink($filename);
+                $sql_update[$prop] = "`" . $prop . "` = NULL";
+                if ( isset($prop_list[$prop . 'B']) )
+                    $sql_update[$prop] = "`" . $prop . "B` = NULL";
+                $this->$prop = '';
+            }
+            if ( 0 === $_FILES[$prop]['error'] )
+            {
+                // V fai`lovoi` sisteme
+                $file = strtolower($this->Source) . '/' . Zero_Helper_File::Get_Path_Cache($this->ID) . '/' . $this->ID . '/' . $_FILES[$prop]['name'];
+                $path = ZERO_PATH_DATA . '/' . $file;
+                if ( file_exists($path) )
+                {
+                    $pos = strrpos($_FILES[$prop]['name'], ".", -1);
+                    $_FILES[$prop]['name'] = substr($_FILES[$prop]['name'], 0, $pos) . '_' . $prop . substr($_FILES[$prop]['name'], $pos);
+                    $file = strtolower($this->Source) . '/' . Zero_Helper_File::Get_Path_Cache($this->ID) . '/' . $this->ID . '/' . $_FILES[$prop]['name'];
+                    $path = ZERO_PATH_DATA . '/' . $file;
+                }
+                if ( !is_dir(dirname($path)) )
+                    mkdir(dirname($path), 0777, true);
+                if ( !rename($_FILES[$prop]['tmp_name'], $path) )
+                {
+                    Zero_Logs::Set_Message_Error('Error Copy File');
+                    continue;
+                }
+                $sql_update[$prop] = "`" . $prop . "` = '{$file}'";
+                if ( isset($prop_list[$prop . 'B']) )
+                    $sql_update[$prop] = "`" . $prop . "B` = '" . Zero_DB::EscB(file_get_contents($path)) . "'";
+                $this->$prop = $file;
+            }
+        }
+        $flag = true;
+        if ( 0 < count($sql_update) )
+        {
+            $sql = "UPDATE " . $this->Source . " SET " . implode(', ', $sql_update) . " WHERE ID = {$this->ID}";
+            $flag = Zero_DB::Update($sql);
+        }
+        //
+        $this->Set_Props();
+        return false !== $flag;
+    }
+
+    /**
+     * Удаление модели
+     *
+     * @return bool
+     */
+    public function Remove()
+    {
+        if ( 0 == $this->ID )
+            return true;
+        //  Удаляем кеш
+        $this->Get_Cache()->Reset();
+        // Удаляем бинарные данные
+        $path = ZERO_PATH_DATA . '/' . strtolower($this->Source) . '/' . Zero_Helper_File::Get_Path_Cache($this->ID) . '/' . $this->ID;
+        if ( is_dir($path) )
+        {
+            Zero_Helper_File::Folder_Remove($path);
+        }
+        // Удаляем из сессии
+        $this->Factory_Unset(1);
+        // Удаляем из БД
+        Zero_DB::Update("DELETE FROM {$this->Source} WHERE ID = {$this->ID}");
+        return true;
     }
 
     /**
