@@ -57,7 +57,7 @@ class Zero_Controller_Grid extends Zero_Crud_Grid
             else
             {
                 $ObjectGo = Zero_Model::Makes($this->ModelName, $_GET['pid']);
-                $ObjectGo->AR->Load('Name');
+                $ObjectGo->Load('Name');
                 $this->Params['obj_parent_path'][$_GET['pid']] = $ObjectGo->Name;
                 unset($ObjectGo);
             }
@@ -102,7 +102,7 @@ class Zero_Controller_Grid extends Zero_Crud_Grid
             $Object->$prop = null;
         else
             $Object->$prop = $this->Params['obj_parent_id'];
-        $Object->AR->Save();
+        $Object->Save();
         $this->SetMessage(0, ['перемещено']);
         return true;
     }

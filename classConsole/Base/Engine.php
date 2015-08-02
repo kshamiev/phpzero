@@ -13,9 +13,9 @@ class Zero_Console_Base_Engine extends Zero_Controller
      */
     public function Action_Default()
     {
-        $Controller_Factory = new Zero_Engine;
         reset(Zero_App::$Config->Db);
         $nameConnect = key(Zero_App::$Config->Db);
+        $Controller_Factory = new Zero_Engine;
         $Controller_Factory->Factory_Modules_DB($nameConnect);
     }
 }

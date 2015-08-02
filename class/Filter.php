@@ -493,7 +493,7 @@ class Zero_Filter
         $this->Filter = [];
         //  поиск
         $this->Search = ['List' => [], 'Value' => []];
-        $this->Add_Search_Text('ALL_PROPS', ['Comment' => Zero_I18n::Model('Base_General', 'Property all')]);
+        $this->Add_Search_Text('ALL_PROPS', ['Comment' => Zero_I18n::Model('Zero_Model', 'Property all')]);
         //  сортировка
         $this->Sort = ['List' => [], 'Value' => []];
         //

@@ -28,18 +28,11 @@ class Zero_Content_Page extends Zero_Controller
         $index = 'Content_' . $this->Params['block'] . '_' . ZERO_LANG;
         if ( false === $Content = Zero_App::$Section->Cache->Get($index) )
         {
-            $Content = Zero_Model::Makes('Zero_Content');
-            $Content->AR->Sql_Where('Lang', '=', ZERO_LANG);
-            $Content->AR->Sql_Where('Section_ID', '=', Zero_App::$Section->ID);
-            $Content->AR->Sql_Where('Block', '=', $this->Params['block']);
-            $Content->AR->Load('*');
+            $Content = Zero_Content::Make();
+            $Content->Load_Page($this->Params['block'], Zero_App::$Section->ID);
             if ( 0 == $Content->ID )
             {
-                $Content = Zero_Model::Makes('Zero_Content');
-                $Content->AR->Sql_Where('Lang', '=', ZERO_LANG);
-                $Content->AR->Sql_Where_IsNull('Section_ID');
-                $Content->AR->Sql_Where('Block', '=', $this->Params['block']);
-                $Content->AR->Load('*');
+                $Content->Load_Page($this->Params['block']);
             }
             Zero_Cache::Set_Link('Zero_Content', $Content->ID);
             Zero_App::$Section->Cache->Set($index, $Content);

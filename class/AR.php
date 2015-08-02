@@ -465,7 +465,7 @@ class Zero_AR
                     $this->Sql_Order($sort['List'][$prop]['AliasDB'], $value);
                 else
                 {
-                    $source = $this->Model->Get_Source();
+                    $source = $this->Model->Source;
                     Zero_Logs::Set_Message_Error("Ошибка в сортирующем фильтре (свойство {$prop} в источнике {$source})");
                 }
         }
@@ -660,7 +660,7 @@ class Zero_AR
         /**
          * From
          */
-        $source = $this->Model->Get_Source();
+        $source = $this->Model->Source;
         if ( isset($this->Params['From']) )
             $sql_from = $this->Params['From'];
         else
@@ -712,7 +712,7 @@ class Zero_AR
         /**
          * From
          */
-        $source = $this->Model->Get_Source();
+        $source = $this->Model->Source;
         if ( isset($this->Params['From']) )
             $sql_from = $this->Params['From'];
         else
@@ -745,7 +745,7 @@ class Zero_AR
         if ( 0 == $this->Model->ID )
             return [];
         //  initcializatciia
-        $source = $this->Model->Get_Source();
+        $source = $this->Model->Source;
         if ( is_array($props) )
         {
             $sql_prop = implode(', ', $props);
@@ -786,7 +786,7 @@ class Zero_AR
             foreach (Zero_DB::Select_Array_Index($sql) as $id => $row)
             {
                 $this->Params['__CATALOG__'][$id] = $row;
-                $this->_Select_Line($sql_tpl, $row[$this->Model->Get_Source() . '_ID']);
+                $this->_Select_Line($sql_tpl, $row[$this->Model->Source . '_ID']);
             }
         }
     }
@@ -804,7 +804,7 @@ class Zero_AR
     public function Select_Tree($props)
     {
         //  initcializatciia
-        $source = $this->Model->Get_Source();
+        $source = $this->Model->Source;
         if ( is_array($props) )
         {
             $sql_prop = implode(', ', $props);
@@ -869,133 +869,6 @@ class Zero_AR
     }
 
     /**
-     * Загрузка модели
-     *
-     * @param array|string $props Загружаемые свойства модели
-     * @return array|bool
-     */
-    public function Load($props)
-    {
-        if ( 0 < $this->Model->ID )
-            $this->Sql_Where('ID', '=', $this->Model->ID);
-        else if ( empty($this->Params['Where']) )
-        {
-            Zero_Logs::Set_Message_Error("Error Load: {$this->Model->Source} SqlWhere is empty");
-            return false;
-        }
-        $row = $this->_Select($props, 'row');
-        if ( 0 < count($row) )
-            $this->Model->Set_Props($row);
-        return $row;
-    }
-
-    /**
-     * Zagruzka vy`borochny`kh svoi`stv ob``ekta, libo tcelikom iz BD.
-     *
-     * Esli ob``ekt v BD ne by`l nai`den $this->ID stanovitsia ravny`m 0
-     *
-     * @param string $props stroka zagruzhaemy`kh svoi`stv cherez zaiapiatuiu ('Name, Price, Description')
-     * @return bool|array
-     */
-    public function Select_Language($props)
-    {
-        if ( 0 == $this->Model->ID )
-            return [];
-        $source = $this->Model->Get_Source();
-        $sql = "SELECT {$props} FROM {$source}Language WHERE {$source}_ID = {$this->Model->ID} AND Lang = '" . ZERO_LANG . "'";
-        $row = Zero_DB::Select_Row($sql);
-        unset($row['Lang']);
-        unset($row[$source . '_ID']);
-        unset($row['ID']);
-        $this->Model->Set_Props($row);
-        return $row;
-    }
-
-    /**
-     * Сохранение модели
-     *
-     * @param string $scenario Сценарий
-     * @return bool
-     */
-    public function Save($scenario = '')
-    {
-        if ( 0 < $this->Model->ID )
-            return $this->Update($scenario);
-        else
-            return $this->Insert($scenario);
-    }
-
-    /**
-     * Save danny`kh v BD.
-     *
-     * @param string $scenario Сценарий сохраняем свойств
-     * @return bool
-     */
-    protected function Insert($scenario = '')
-    {
-        $prop_list = $this->Model->Get_Config_Prop($scenario);
-        //  sborka svoi`stv dlia sokhraneniia v BD
-        $sql_update = [];
-        $props = $this->Model->Get_Props(-1);
-        foreach ($props as $prop => $value)
-        {
-            if ( !isset($prop_list[$prop]) || (isset($prop_list['AR']) && false == $prop_list['AR']) )
-                continue;
-            $method = "Esc" . $prop_list[$prop]['DB'];
-            $sql_update[] = '`' . $prop . '` = ' . Zero_DB::$method($value);
-        }
-
-        //  Save
-        if ( 0 == count($sql_update) )
-            $sql_update[] = 'ID = NULL';
-        $sql = "INSERT " . $this->Model->Source . " SET " . implode(', ', $sql_update);
-        $this->Model->ID = Zero_DB::Insert($sql);
-        if ( !$this->Model->ID )
-            return false;
-
-        //  Binarny`e danny`e
-        $sql_update = [];
-        foreach ($props as $prop => $value)
-        {
-            if ( isset($_FILES[$prop]) )
-            {
-                if ( 0 === $_FILES[$prop]['error'] )
-                {
-                    // V fai`lovoi` sisteme
-                    $file = strtolower($this->Model->Source) . '/' . Zero_Helper_File::Get_Path_Cache($this->Model->ID) . '/' . $this->Model->ID . '/' . $_FILES[$prop]['name'];
-                    $path = ZERO_PATH_DATA . '/' . $file;
-                    if ( file_exists($path) )
-                    {
-                        $pos = strrpos($_FILES[$prop]['name'], ".", -1);
-                        $_FILES[$prop]['name'] = substr($_FILES[$prop]['name'], 0, $pos) . '_' . $prop . substr($_FILES[$prop]['name'], $pos);
-                        $file = strtolower($this->Model->Source) . '/' . Zero_Helper_File::Get_Path_Cache($this->Model->ID) . '/' . $this->Model->ID . '/' . $_FILES[$prop]['name'];
-                        $path = ZERO_PATH_DATA . '/' . $file;
-                    }
-                    if ( !is_dir(dirname($path)) )
-                        mkdir(dirname($path), 0777, true);
-                    if ( !rename($_FILES[$prop]['tmp_name'], $path) )
-                    {
-                        Zero_Logs::Set_Message_Error('Error Copy File');
-                        continue;
-                    }
-                    $sql_update[$prop] = "`" . $prop . "` = '{$file}'";
-                    $this->Model->$prop = $file;
-                    //  V BD
-                    if ( isset($prop_list[$prop . 'B']) )
-                        $sql_update[$prop] = "`" . $prop . "B` = '" . Zero_DB::EscB(file_get_contents($path)) . "'";
-                }
-            }
-        }
-        if ( 0 < count($sql_update) )
-            Zero_DB::Update("UPDATE " . $this->Model->Get_Source() . " SET " . implode(', ', $sql_update) . " WHERE ID = " . $this->Model->ID);
-
-        //  Ustanovka statusov
-        $this->Model->Set_Props();
-
-        return $this->Model->ID;
-    }
-
-    /**
      * Sozdanie sviazei` mezhdu ob``ektami.
      *
      * @param Zero_Model $ObjectParent Roditel`skii` ob``ekt s kotory`m sozdaem sviaz`
@@ -1014,86 +887,6 @@ class Zero_AR
         ";
         Zero_DB::Update($sql);
         return true;
-    }
-
-    /**
-     * Изменение данных в БД.
-     *
-     * @param string $scenario Сценарий сохраняем свойств
-     * @return bool
-     */
-    protected function Update($scenario = '')
-    {
-        $prop_list = $this->Model->Get_Config_Prop($scenario);
-        unset($prop_list['ID']);
-        //  sborka svoi`stv dlia sokhraneniia v BD
-        $sql_update = [];
-        foreach ($this->Model->Get_Props(-1) as $prop => $value)
-        {
-            if ( !isset($prop_list[$prop]) || (isset($prop_list['AR']) && false == $prop_list['AR']) )
-                continue;
-            $method = "Esc" . $prop_list[$prop]['DB'];
-            if ( isset($_FILES[$prop]) )
-            {
-                if ( isset($_FILES[$prop]['rem']) && $this->Model->$prop )
-                {
-                    if ( file_exists($filename = ZERO_PATH_DATA . '/' . $this->Model->$prop) )
-                        unlink($filename);
-                    $sql_update[$prop] = "`" . $prop . "` = NULL";
-                    if ( isset($prop_list[$prop . 'B']) )
-                        $sql_update[$prop] = "`" . $prop . "B` = NULL";
-                    $this->Model->$prop = '';
-                }
-                if ( 0 === $_FILES[$prop]['error'] )
-                {
-                    // V fai`lovoi` sisteme
-                    $file = strtolower($this->Model->Source) . '/' . Zero_Helper_File::Get_Path_Cache($this->Model->ID) . '/' . $this->Model->ID . '/' . $_FILES[$prop]['name'];
-                    $path = ZERO_PATH_DATA . '/' . $file;
-                    if ( file_exists($path) )
-                    {
-                        $pos = strrpos($_FILES[$prop]['name'], ".", -1);
-                        $_FILES[$prop]['name'] = substr($_FILES[$prop]['name'], 0, $pos) . '_' . $prop . substr($_FILES[$prop]['name'], $pos);
-                        $file = strtolower($this->Model->Source) . '/' . Zero_Helper_File::Get_Path_Cache($this->Model->ID) . '/' . $this->Model->ID . '/' . $_FILES[$prop]['name'];
-                        $path = ZERO_PATH_DATA . '/' . $file;
-                    }
-                    if ( !is_dir(dirname($path)) )
-                        mkdir(dirname($path), 0777, true);
-                    if ( !rename($_FILES[$prop]['tmp_name'], $path) )
-                    {
-                        Zero_Logs::Set_Message_Error('Error Copy File');
-                        continue;
-                    }
-                    $sql_update[$prop] = "`" . $prop . "` = '{$file}'";
-                    if ( isset($prop_list[$prop . 'B']) )
-                        $sql_update[$prop] = "`" . $prop . "B` = '" . Zero_DB::EscB(file_get_contents($path)) . "'";
-                    $this->Model->$prop = $file;
-                }
-            }
-            else
-                $sql_update[$prop] = '`' . $prop . '` = ' . Zero_DB::$method($value);
-        }
-
-        $flag = 0;
-        if ( 0 < count($sql_update) )
-        {
-            //  Usloviia Where
-            if ( isset($this->Params['Where']) )
-                $sql_where = 'WHERE ' . $this->Sql_Where_Compilation();
-            else
-                $sql_where = 'WHERE 1';
-
-            //  Identifikator
-            if ( 0 < $this->Model->ID )
-                $sql_where .= ' AND `ID` = ' . $this->Model->ID;
-
-            $sql = "UPDATE " . $this->Model->Get_Source() . " SET " . implode(', ', $sql_update) . " " . $sql_where;
-            $flag = Zero_DB::Update($sql);
-        }
-
-        //  Ustanovka statusov
-        $this->Model->Set_Props();
-
-        return false !== $flag;
     }
 
     /**
@@ -1179,33 +972,6 @@ class Zero_AR
         Zero_DB::Update($sql);
         //
         $this->Model->Direction = $sort;
-        return true;
-    }
-
-    /**
-     * Udalenie ob``ekta iz BD.
-     *
-     * @param string $source
-     * @return bool
-     */
-    public function Delete($source = '')
-    {
-        if ( 0 == $this->Model->ID )
-            return true;
-
-        //  Usloviia Where
-        if ( isset($this->Params['Where']) )
-            $sql_where = 'WHERE ' . $this->Sql_Where_Compilation();
-        else
-            $sql_where = 'WHERE 1';
-
-        //  Identifikator
-        if ( 0 < $this->Model->ID )
-            $sql_where .= ' AND `ID` = ' . $this->Model->ID;
-
-        if ( '' == $source )
-            $source = $this->Model->Get_Source();
-        Zero_DB::Update("DELETE FROM {$source} " . $sql_where);
         return true;
     }
 

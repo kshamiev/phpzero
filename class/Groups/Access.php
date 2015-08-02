@@ -156,7 +156,7 @@ class Zero_Groups_Access extends Zero_Controller
                 $Action->Section_ID = $section_id;
                 $Action->Groups_ID = $this->Params['obj_parent_id'];
                 $Action->Action = 'Default';
-                $Action->AR->Save();
+                $Action->Save();
             }
             else
                 continue;
@@ -171,7 +171,7 @@ class Zero_Groups_Access extends Zero_Controller
                         $Action->Section_ID = $section_id;
                         $Action->Groups_ID = $this->Params['obj_parent_id'];
                         $Action->Action = $action;
-                        $Action->AR->Save();
+                        $Action->Save();
                     }
                 }
             }

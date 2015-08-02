@@ -233,15 +233,15 @@ abstract class Zero_Crud_Grid extends Zero_Controller
     {
         $ObjectRem = Zero_Model::Makes(get_class($this->Model), $_REQUEST['id']);
         //  Remove binary data object
-        $path = ZERO_PATH_DATA . '/' . strtolower($ObjectRem->Source) . '/' . Zero_Helper_File::Get_Path_Cache($ObjectRem->ID) . '/' . $ObjectRem->ID;
-        if ( is_dir($path) )
-            Zero_Helper_File::Folder_Remove($path);
+//        $path = ZERO_PATH_DATA . '/' . strtolower($ObjectRem->Source) . '/' . Zero_Helper_File::Get_Path_Cache($ObjectRem->ID) . '/' . $ObjectRem->ID;
+//        if ( is_dir($path) )
+//            Zero_Helper_File::Folder_Remove($path);
         // Remove from session
-        $ObjectRem->Factory_Unset(1);
+//        $ObjectRem->Factory_Unset(1);
         //  Reset Cache
-        $ObjectRem->Cache->Reset();
+//        $ObjectRem->Cache->Reset();
         //  Remove
-        if ( $ObjectRem->AR->Delete() )
+        if ( $ObjectRem->Remove() )
         {
             $this->SetMessage(2200, [$this->Model->Name, $this->Model->ID]);
             return true;

@@ -32,7 +32,7 @@ class Zero_Section_NavigationLine extends Zero_Controller
             while ( 0 < $id )
             {
                 $Zero_Section = Zero_Model::Makes('Zero_Section', $id);
-                $Zero_Section->AR->Load("Name, Title, SUBSTRING(Url, POSITION('/' IN Url)) as Url, Section_ID");
+                $Zero_Section->Load("Name, Title, SUBSTRING(Url, POSITION('/' IN Url)) as Url, Section_ID");
                 $id = $Zero_Section->Section_ID;
                 $navigation[] = ['Url' => $Zero_Section->Url, 'Name' => $Zero_Section->Name, 'Title' => $Zero_Section->Title];
             }

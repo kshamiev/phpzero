@@ -16,6 +16,7 @@
  * @package General.Component Базовая абстрактная модель
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
+ *
  * @property int ID
  * @property string Source
  * @property Zero_AR AR
@@ -107,7 +108,7 @@ abstract class Zero_Model
         if ( '' == $this->Source )
             $this->Source = get_class($this);
         if ( 0 < $this->ID && $flag_load )
-            $this->AR->Load('*');
+            $this->Load();
     }
 
     /**
@@ -161,16 +162,16 @@ abstract class Zero_Model
     /**
      * Динамический фабричный метод длиа создании объекта через фабрику и инстанс.
      */
-    protected function Init()
-    {
-    }
+    //    protected function Init()
+    //    {
+    //    }
 
     /**
      * Poluchenie identifikatora ob``ekta
      *
      * @return integer identifikator ob``ekta
      */
-    public function Get_ID()
+    protected function Get_ID()
     {
         return $this->ID;
     }
@@ -180,7 +181,7 @@ abstract class Zero_Model
      *
      * @param integer $id identifikator ob``ekta
      */
-    public function Set_ID($id)
+    protected function Set_ID($id)
     {
         $this->ID = intval($id);
     }
@@ -190,7 +191,7 @@ abstract class Zero_Model
      *
      * @return string imia istochnika
      */
-    public function Get_Source()
+    protected function Get_Source()
     {
         return $this->Source;
     }
@@ -228,7 +229,7 @@ abstract class Zero_Model
      * @param array $row massiv svoi`stv i ikh znachenii`
      * @return bool
      */
-    public function Set_Props($row = [])
+    protected function Set_Props($row = [])
     {
         if ( 0 == count($row) )
         {
@@ -269,7 +270,7 @@ abstract class Zero_Model
      * @param Zero_Model $Model The exact working model
      * @return array
      */
-    protected static function Config_Link($Model)
+    protected static function Config_Link($Model, $scenario = '')
     {
         return [];
     }
@@ -277,11 +278,12 @@ abstract class Zero_Model
     /**
      * Poluchenie konfiguratcii sviazei` modeli
      *
+     * @param string $scenario scenario
      * @return array dvumerny`i` assotciativny`i` massiv konfiguratcii
      */
-    public function Get_Config_Link()
+    public function Get_Config_Link($scenario = '')
     {
-        return static::Config_Link($this);
+        return static::Config_Link($this, $scenario);
     }
 
     /**
@@ -443,7 +445,7 @@ abstract class Zero_Model
      *
      * @return Zero_AR
      */
-    public function Get_AR()
+    protected function Get_AR()
     {
         if ( !is_object($this->_AR) )
             $this->_AR = new Zero_AR($this);
@@ -455,7 +457,7 @@ abstract class Zero_Model
      *
      * @return Zero_Validator
      */
-    public function Get_VL()
+    protected function Get_VL()
     {
         if ( !is_object($this->_VL) )
             $this->_VL = new Zero_Validator($this);
@@ -467,7 +469,7 @@ abstract class Zero_Model
      *
      * @return Zero_Cache
      */
-    public function Get_Cache()
+    protected function Get_Cache()
     {
         if ( !is_object($this->_Cache) )
             $this->_Cache = new Zero_Cache($this);
@@ -509,6 +511,28 @@ abstract class Zero_Model
             $this->Set_Props($row);
         return $row;
     }
+
+    /**
+     * Zagruzka vy`borochny`kh svoi`stv ob``ekta, libo tcelikom iz BD.
+     *
+     * Esli ob``ekt v BD ne by`l nai`den $this->ID stanovitsia ravny`m 0
+     *
+     * @param string $properties stroka zagruzhaemy`kh svoi`stv cherez zaiapiatuiu ('Name, Price, Description')
+     * @return bool|array
+     */
+    public function Load_Language($properties = '*')
+    {
+        if ( 0 == $this->ID )
+            return [];
+        $sql = "SELECT {$properties} FROM {$this->Source}Language WHERE {$this->Source}_ID = {$this->ID} AND Lang = '" . ZERO_LANG . "'";
+        $row = Zero_DB::Select_Row($sql);
+        unset($row['Lang']);
+        unset($row[$this->Source . '_ID']);
+        unset($row['ID']);
+        $this->Set_Props($row);
+        return $row;
+    }
+
 
     /**
      * Сохранение модели

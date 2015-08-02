@@ -16,7 +16,7 @@ class Zero_Section_Grid extends Zero_Crud_Grid
      *
      * @var string
      */
-    protected $ModelName = 'Base_Section';
+    protected $ModelName = 'Zero_Section';
 
     /**
      * Template view
@@ -57,7 +57,7 @@ class Zero_Section_Grid extends Zero_Crud_Grid
             else
             {
                 $ObjectGo = Zero_Model::Makes($this->ModelName, $_GET['pid']);
-                $ObjectGo->AR->Load('Name');
+                $ObjectGo->Load('Name');
                 $this->Params['obj_parent_path'][$_GET['pid']] = $ObjectGo->Name;
                 unset($ObjectGo);
             }
@@ -96,13 +96,13 @@ class Zero_Section_Grid extends Zero_Crud_Grid
         $prop = $this->Params['obj_parent_prop'];
         $Object = Zero_Model::Makes($this->ModelName, $_REQUEST['id']);
         /* @var $Object Zero_Section */
-        if ( 0 == count($Object->Get_AR()->Load('ID')) )
+        if ( 0 == count($Object->AR->Load('ID')) )
             return $this->Set_Message('Error_NotFound', 1);
         if ( 'NULL' == $this->Params['obj_parent_id'] )
             $Object->$prop = null;
         else
             $Object->$prop = $this->Params['obj_parent_id'];
-        $Object->AR->Save();
+        $Object->Save();
         return $this->Set_Message('Move', 0);
     }
 

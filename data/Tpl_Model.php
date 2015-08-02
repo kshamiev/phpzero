@@ -12,7 +12,6 @@
  */
 class Zero_Model_Pattern extends Zero_Model
 {
-
     /**
      * The table stores the objects this model
      *
@@ -161,6 +160,13 @@ class Zero_Model_Pattern extends Zero_Model
     public function FL_PropertyName()
     {
         return [23 => 'Value'];
+    }
+
+    /**
+     * Динамический фабричный метод длиа создании объекта через фабрику и инстанс.
+     */
+    protected function Init()
+    {
     }
 
     /**

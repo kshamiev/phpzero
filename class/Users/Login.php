@@ -13,6 +13,13 @@
 class Zero_Users_Login extends Zero_Controller
 {
     /**
+     * Пользователь
+     *
+     * @var Base_Users
+     */
+    protected $Model = null;
+
+    /**
      * Контроллер по умолчанию
      *
      * @return string собранный шаблон
@@ -38,22 +45,20 @@ class Zero_Users_Login extends Zero_Controller
         if ( !$_REQUEST['Login'] || !$_REQUEST['Password'] )
             return $this->Chunk_View();
 
-        $Users = Base_Users::Make();
-        $Users->AR->Sql_Where('Login', '=', $_REQUEST['Login']);
-        $Users->AR->Load('*');
+        $this->Model->Load_Login($_REQUEST['Login']);
 
         //  Проверки
-        if ( 0 == $Users->ID )
+        if ( 0 == $this->Model->ID )
         {
             $this->SetMessage(-1, ["Пользователь не зарегистрирован"]);
             return $this->Chunk_View();
         }
-        else if ( $Users->Password != md5($_REQUEST['Password']) )
+        else if ( $this->Model->Password != md5($_REQUEST['Password']) )
         {
             $this->SetMessage(-1, ["Пароль не верный"]);
             return $this->Chunk_View();
         }
-        else if ( !$Users->Groups_ID )
+        else if ( !$this->Model->Groups_ID )
         {
             $this->SetMessage(-1, ["Пользователь не входит ни в одну группу"]);
             return $this->Chunk_View();
@@ -62,19 +67,19 @@ class Zero_Users_Login extends Zero_Controller
         // Авторизация
         if ( isset($_REQUEST['Memory']) && $_REQUEST['Memory'] )
         {
-            $Users->Token = crypt($_REQUEST['Password'], crypt($_REQUEST['Password']));
-            setcookie('i09u9Maf6l6sr7Um0m8A3u0r9i55m3il', $Users->Token, time() + 2592000, '/');
+            $this->Model->Token = crypt($_REQUEST['Password'], crypt($_REQUEST['Password']));
+            setcookie('i09u9Maf6l6sr7Um0m8A3u0r9i55m3il', $this->Model->Token, time() + 2592000, '/');
         }
         else
         {
-            $Users->Token = '';
+            $this->Model->Token = '';
             setcookie('i09u9Maf6l6sr7Um0m8A3u0r9i55m3il', null, 0, '/');
         }
-        $Users->IsOnline = 'yes';
-        $Users->DateOnline = date('Y-m-d H:i:s');
-        $Users->AR->Save();
+        $this->Model->IsOnline = 'yes';
+        $this->Model->DateOnline = date('Y-m-d H:i:s');
+        $this->Model->Save();
 
-        Zero_App::$Users = $Users;
+        Zero_App::$Users = $this->Model;
         Zero_App::$Users->Factory_Set();
         Zero_App::ResponseRedirect(Zero_App::$Users->UrlRedirect);
         return '';
@@ -89,27 +94,22 @@ class Zero_Users_Login extends Zero_Controller
     {
         $this->Chunk_Init();
 
-        $this->Model->VL->Validate($_REQUEST['Users'], 'reminder');
-
         if ( $_REQUEST['Users']['Keystring'] != Zero_App::$Users->Keystring )
         {
             $this->SetMessage(-1, ['Контрольная строка не верна']);
             return $this->Chunk_View();
         }
 
-        $this->Model->AR->Sql_Where('Email', '=', $_REQUEST['Users']['Email']);
-        $this->Model->AR->Load('ID, Name, Login');
-
+        $this->Model->Load_Email($_REQUEST['Users']['Email']);
         if ( 0 == $this->Model->ID )
         {
             $this->SetMessage(-1, ['Пользователь не найден']);
             return $this->Chunk_View();
         }
 
-        $this->Model->AR->Load('*');
         $password = substr(md5(uniqid(mt_rand())), 0, 10);
         $this->Model->Password = md5($password);
-        $this->Model->AR->Save();
+        $this->Model->Save();
 
         $subject = "Reminder access details " . HTTP;
         $View = new Zero_View('Zero_Users_ReminderMail');
@@ -122,8 +122,8 @@ class Zero_Users_Login extends Zero_Controller
         $reply = $from;
         Mail_Queue::SendMessage($reply, $from, $to, $subject, $message);
 
-        $this->Model = Base_Users::Make();
         $this->SetMessage(0, ["Реквизиты отправлены на почту"]);
+
         return $this->Chunk_View();
     }
 
@@ -157,7 +157,7 @@ class Zero_Users_Login extends Zero_Controller
             else
                 Zero_App::$Users->UrlRedirect = '/';
         }
-        Zero_App::$Users->Factory_Set();
+        //        Zero_App::$Users->Factory_Set();
     }
 
     /**
@@ -167,7 +167,6 @@ class Zero_Users_Login extends Zero_Controller
      */
     protected function Chunk_View()
     {
-        $this->View->Assign('Users', Zero_App::$Users);
         $this->View->Assign('Message', $this->GetMessage());
         return $this->View->Fetch();
     }

@@ -123,7 +123,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         //  Filter
         $this->View->Assign('Filter', $Filter->Get_Filter());
         // CKEDITOR - this -> Object
-        $pathObject = '/' . strtolower($this->Model->Get_Source()) . '/' . Zero_Helper_File::Get_Path_Cache($this->Model->ID) . '/' . $this->Model->ID;
+        $pathObject = '/' . strtolower($this->Model->Source) . '/' . Zero_Helper_File::Get_Path_Cache($this->Model->ID) . '/' . $this->Model->ID;
         //$pathObject = '/ssss';
         if ( !is_dir(ZERO_PATH_DATA . $pathObject) )
             mkdir(ZERO_PATH_DATA . $pathObject, 0777, true);
@@ -140,7 +140,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
     protected function Chunk_Add()
     {
         $this->Params['id'] = 0;
-        $this->Model->Set_ID(0);
+        $this->Model->ID = 0;
         foreach ($this->Model->Get_Config_Prop(get_class($this)) as $prop => $row)
         {
             if ( 'D' == $row['DB'] && 'NO' == $row['IsNull'] )
@@ -198,7 +198,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         // Save
         if ( 0 < $this->Model->ID )
         {
-            if ( false == $this->Model->AR->Save() )
+            if ( false == $this->Model->Save() )
             {
                 $this->SetMessage(5000, [$this->Model->Name, $this->Model->ID]);
                 return false;
@@ -206,7 +206,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         }
         else
         {
-            if ( false == $this->Model->AR->Save() )
+            if ( false == $this->Model->Save() )
             {
                 $this->SetMessage(5000, [$this->Model->Name, $this->Model->ID]);
                 return false;

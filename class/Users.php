@@ -396,4 +396,28 @@ class Zero_Users extends Zero_Model
         }
         return Zero_DB::Select_List_Index($sql);
     }
+
+    /**
+     * Загрузка пользователя по его email
+     *
+     * @param string $email
+     */
+    public function Load_Email($email)
+    {
+        $sql = "SELECT * FROM {$this->Source} WHERE Email = " . Zero_DB::EscT($email);
+        $row = Zero_DB::Select_Row($sql);
+        $this->Set_Props($row);
+    }
+
+    /**
+     * Загрузка пользователя по его логину
+     *
+     * @param string $login
+     */
+    public function Load_Login($login)
+    {
+        $sql = "SELECT * FROM {$this->Source} WHERE Login = " . Zero_DB::EscT($login);
+        $row = Zero_DB::Select_Row($sql);
+        $this->Set_Props($row);
+    }
 }

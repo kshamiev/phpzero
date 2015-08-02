@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Page content.
  *
@@ -143,5 +144,75 @@ class Zero_Content extends Zero_Model
             'Block' => [],
             /*END_CONFIG_FORM_PROP*/
         ];
+    }
+
+    /**
+     * Загрузка контент-блока
+     *
+     * @param string $blockName имя блока
+     * @param int $sectionId раздел - страница
+     */
+    public function Load_Page($blockName, $sectionId = 0)
+    {
+        if ( 0 < $sectionId )
+            $sql = "SELECT * FROM {$this->Source} WHERE Block = '{$blockName}' AND Section_ID = {$sectionId}";
+        else
+            $sql = "SELECT * FROM {$this->Source} WHERE Block = '{$blockName}' AND Lang = '" . ZERO_LANG . "'";
+        $row = Zero_DB::Select_Row($sql);
+        $this->Set_Props($row);
+    }
+
+    /**
+     * Фабрика по созданию объектов.
+     *
+     * @param integer $id идентификатор объекта
+     * @param bool $flagLoad флаг полной загрузки объекта
+     * @return Zero_Content
+     */
+    public static function Make($id = 0, $flagLoad = false)
+    {
+        return new self($id, $flagLoad);
+    }
+
+    /**
+     * Фабрика по созданию объектов.
+     *
+     * Сохраниаетсиа в {$тис->_Инстанcе}
+     *
+     * @param integer $id идентификатор объекта
+     * @param bool $flagLoad флаг полной загрузки объекта
+     * @return Zero_Content
+     */
+    public static function Instance($id = 0, $flagLoad = false)
+    {
+        $index = __CLASS__ . (0 < $id ? '_' . $id : '');
+        if ( !isset(self::$Instance[$index]) )
+        {
+            $result = self::Make($id, $flagLoad);
+            $result->Init();
+            self::$Instance[$index] = $result;
+        }
+        return self::$Instance[$index];
+    }
+
+    /**
+     * Фабрика по созданию объектов.
+     *
+     * Работает через сессию (Zero_Session).
+     * Индекс имя класса
+     *
+     * @param integer $id идентификатор объекта
+     * @param bool $flagLoad флаг полной загрузки объекта
+     * @return Zero_Content
+     */
+    public static function Factor($id = 0, $flagLoad = false)
+    {
+        if ( !$result = Zero_Session::Get(__CLASS__) )
+        {
+            $result = self::Make($id, $flagLoad);
+            $result->Init();
+            Zero_Session::Set(__CLASS__, $result);
+        }
+        return $result;
     }
 }

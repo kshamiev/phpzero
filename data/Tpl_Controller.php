@@ -3,6 +3,8 @@
 /**
  * <Comment>
  *
+ * {plugin "Zero_Section_SeoTag" view="Zero_Section_SeoTag"}
+ *
  * @package <Package>.<Subpackage>
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date <Date>
@@ -17,8 +19,16 @@ class Zero_Controller_Sample extends Zero_Controller
      */
     protected function Chunk_Init($viewName = '')
     {
-        $viewName = ( '' != $viewName ) ? $viewName : __CLASS__;
-        $this->View = new Zero_View($viewName);
+        // Шаблон
+        if ( isset($this->Params['view']) )
+            $this->View = new Zero_View($this->Params['view']);
+        else if ( isset($this->Params['tpl']) )
+            $this->View = new Zero_View($this->Params['tpl']);
+        else if ( isset($this->Params['template']) )
+            $this->View = new Zero_View($this->Params['template']);
+        else
+            $this->View = new Zero_View(get_class($this));
+        // Модель
         $this->Model = Zero_Model::Makes('Zero_Users');
         return true;
     }
