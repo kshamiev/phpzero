@@ -533,7 +533,6 @@ abstract class Zero_Model
         return $row;
     }
 
-
     /**
      * Сохранение модели
      *
@@ -566,9 +565,10 @@ abstract class Zero_Model
         else if ( 0 < count($sql_update) )
         {
             $sql = "UPDATE " . $this->Source . " SET " . implode(', ', $sql_update) . " WHERE ID = {$this->ID}";
-            if ( false == Zero_DB::Update($sql) )
+            if ( false === Zero_DB::Update($sql) )
                 return false;
         }
+
         // BINARY DATA
         $sql_update = [];
         foreach ($this->Get_Props(-1) as $prop => $value)
@@ -691,8 +691,11 @@ abstract class Zero_Model
         //  Svoi`stva modeli
         if ( !isset($this->_Props[$prop]) || $this->_Props[$prop] != $value )
         {
-            $this->_Props[$prop] = $value;
-            $this->_Props_Change[$prop] = -1;
+            if ( isset($this->_Props[$prop]) && ( $this->_Props[$prop] || $value ) )
+            {
+                $this->_Props[$prop] = $value;
+                $this->_Props_Change[$prop] = -1;
+            }
         }
         return true;
     }
