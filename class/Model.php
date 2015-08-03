@@ -560,8 +560,7 @@ abstract class Zero_Model
             $this->ID = Zero_DB::Insert($sql);
             if ( !$this->ID )
                 return false;
-        }
-        // UPDATE
+        } // UPDATE
         else if ( 0 < count($sql_update) )
         {
             $sql = "UPDATE " . $this->Source . " SET " . implode(', ', $sql_update) . " WHERE ID = {$this->ID}";
@@ -689,9 +688,17 @@ abstract class Zero_Model
         if ( method_exists($this, $method = 'Set_' . $prop) )
             return $this->$method($value);
         //  Svoi`stva modeli
-        if ( !isset($this->_Props[$prop]) || $this->_Props[$prop] != $value )
+        if ( !isset($this->_Props[$prop]) )
         {
-            if ( isset($this->_Props[$prop]) && ( $this->_Props[$prop] || $value ) )
+            if ( $value )
+            {
+                $this->_Props[$prop] = $value;
+                $this->_Props_Change[$prop] = -1;
+            }
+        }
+        else if ( $this->_Props[$prop] != $value )
+        {
+            if ( $this->_Props[$prop] || $value )
             {
                 $this->_Props[$prop] = $value;
                 $this->_Props_Change[$prop] = -1;
