@@ -14,14 +14,6 @@
  */
 abstract class Zero_Controller
 {
-
-    /**
-     * Massiv soobshchenii` sistemy`
-     *
-     * @var array
-     */
-    private static $_Message = [];
-
     /**
      * Obrabaty`vaemaia model` (ob``ekt)
      *
@@ -44,6 +36,146 @@ abstract class Zero_Controller
      * @var array
      */
     protected $Params = [];
+
+    /**
+     * Massiv soobshchenii` sistemy`
+     *
+     * @var array
+     */
+    private static $_Message = [];
+
+    /**
+     * Получение сообщения
+     *
+     * @return array ['Code' => int, 'Message' => string, 'ErrorStatus' => bool]
+     */
+    public function GetMessage()
+    {
+        if ( count(self::$_Message) == 0 )
+            $this->SetMessage();
+        return self::$_Message;
+    }
+
+    /**
+     * Установка сообщения
+     *
+     * @param int $code код сообщения
+     * @param array $params параметры сообщения (sprintf)
+     */
+    public function SetMessage($code = 0, $params = [])
+    {
+        $arr = Zero_I18n::Message(get_class($this), $code, $params);
+        if ( -1 == $code || 403 == $code || 404 == $code || 5000 <= $code )
+            $errorStatus = true;
+        else
+            $errorStatus = false;
+        self::$_Message = [
+            'Code' => $arr[0],
+            'Message' => $arr[1],
+            'ErrorStatus' => $errorStatus,
+        ];
+    }
+
+    /**
+     * Poluchenie massiva soobshchenii` o rezul`tate dei`stvii` pol`zovatelia.
+     *
+     * S uchetom perevoda
+     *
+     * @return array soobshcheniia
+     * @deprecated GetMessage
+     */
+    public function Get_Message()
+    {
+        if ( count(self::$_Message) == 0 )
+            $this->Set_Message();
+        return self::$_Message;
+    }
+
+    /**
+     * Dobavlenie soobshchenii` o rezul`tate dei`stvii` pol`zovatelia.
+     *
+     * @param string $message soobshchenie
+     * @param int $code kod soobshcheniia
+     * @return int
+     * @deprecated SetMessage()
+     */
+    public function Set_Message($message = '', $code = 0)
+    {
+        if ( 0 != $code )
+            $errorStatus = true;
+        else
+            $errorStatus = false;
+        self::$_Message = [
+            'Code' => $code,
+            'Message' => Zero_I18n::Controller(get_class($this), $message),
+            'ErrorStatus' => $errorStatus,
+        ];
+
+        $arr = func_get_args();
+        switch ( count($arr) )
+        {
+            case 3:
+                self::$_Message['Message'] = sprintf(self::$_Message['Message'], $arr[2]);
+                break;
+            case 4:
+                self::$_Message['Message'] = sprintf(self::$_Message['Message'], $arr[2], $arr[3]);
+                break;
+            case 5:
+                self::$_Message['Message'] = sprintf(self::$_Message['Message'], $arr[2], $arr[3], $arr[4]);
+                break;
+            case 6:
+                self::$_Message['Message'] = sprintf(self::$_Message['Message'], $arr[2], $arr[3], $arr[4], $arr[5]);
+                break;
+            case 7:
+                self::$_Message['Message'] = sprintf(self::$_Message['Message'], $arr[2], $arr[3], $arr[4], $arr[5], $arr[6]);
+                break;
+        }
+        return $code ? false : true;
+    }
+
+    /**
+     * Контроллер по умолчанию.
+     *
+     * @return Zero_View
+     */
+    public function Action_Default()
+    {
+        $this->Chunk_Init();
+        $this->Chunk_View();
+        return $this->View;
+    }
+
+    /**
+     * Инициализация контроллера до его выполнения
+     *
+     * @return bool
+     */
+    protected function Chunk_Init()
+    {
+        // Шаблон
+        if ( isset($this->Params['view']) )
+            $this->View = new Zero_View($this->Params['view']);
+        else if ( isset($this->Params['tpl']) )
+            $this->View = new Zero_View($this->Params['tpl']);
+        else if ( isset($this->Params['template']) )
+            $this->View = new Zero_View($this->Params['template']);
+        else
+            $this->View = new Zero_View(get_class($this));
+        // Модель (пример)
+        // $this->Model = Zero_Model::Makes('Zero_Users');
+        return true;
+    }
+
+    /**
+     * Вывод данных операции контроллера в шаблон
+     *
+     * @return bool
+     */
+    protected function Chunk_View()
+    {
+        $this->View->Assign('variable', 'value');
+        return true;
+    }
 
     /**
      * Фабрика по созданию контроллеров.
@@ -119,95 +251,5 @@ abstract class Zero_Controller
     {
         $index = get_class($this);
         Zero_Session::Rem($index);
-    }
-
-    public function SetMessage($code = 0, $params = [])
-    {
-        $arr = Zero_I18n::Message(get_class($this), $code, $params);
-        if ( -1 == $code || 403 == $code || 404 == $code || 5000 <= $code )
-            $errorStatus = true;
-        else
-            $errorStatus = false;
-        self::$_Message = [
-            'Code' => $arr[0],
-            'Message' => $arr[1],
-            'ErrorStatus' => $errorStatus,
-        ];
-    }
-
-    public function GetMessage()
-    {
-        if ( count(self::$_Message) == 0 )
-            $this->SetMessage();
-        return self::$_Message;
-    }
-
-    /**
-     * Poluchenie massiva soobshchenii` o rezul`tate dei`stvii` pol`zovatelia.
-     *
-     * S uchetom perevoda
-     *
-     * @return array soobshcheniia
-     * @deprecated GetMessage
-     */
-    public function Get_Message()
-    {
-        if ( count(self::$_Message) == 0 )
-            $this->Set_Message();
-        return self::$_Message;
-    }
-
-    /**
-     * Dobavlenie soobshchenii` o rezul`tate dei`stvii` pol`zovatelia.
-     *
-     * @param string $message soobshchenie
-     * @param int $code kod soobshcheniia
-     * @return int
-     * @deprecated SetMessage()
-     */
-    public function Set_Message($message = '', $code = 0)
-    {
-        if ( 0 != $code )
-            $errorStatus = true;
-        else
-            $errorStatus = false;
-        self::$_Message = [
-            'Code' => $code,
-            'Message' => Zero_I18n::Controller(get_class($this), $message),
-            'ErrorStatus' => $errorStatus,
-        ];
-
-        $arr = func_get_args();
-        switch ( count($arr) )
-        {
-            case 3:
-                self::$_Message['Message'] = sprintf(self::$_Message['Message'], $arr[2]);
-                break;
-            case 4:
-                self::$_Message['Message'] = sprintf(self::$_Message['Message'], $arr[2], $arr[3]);
-                break;
-            case 5:
-                self::$_Message['Message'] = sprintf(self::$_Message['Message'], $arr[2], $arr[3], $arr[4]);
-                break;
-            case 6:
-                self::$_Message['Message'] = sprintf(self::$_Message['Message'], $arr[2], $arr[3], $arr[4], $arr[5]);
-                break;
-            case 7:
-                self::$_Message['Message'] = sprintf(self::$_Message['Message'], $arr[2], $arr[3], $arr[4], $arr[5], $arr[6]);
-                break;
-        }
-        return $code ? false : true;
-    }
-
-    /**
-     * Контроллер по умолчанию
-     *
-     * @return Zero_View
-     */
-    public function Action_Default()
-    {
-        $this->View = new Zero_View(get_class($this));
-        $this->View->Assign('variable', 'value');
-        return $this->View;
     }
 }

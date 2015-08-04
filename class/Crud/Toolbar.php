@@ -16,10 +16,7 @@ class Zero_Crud_Toolbar extends Zero_Controller
     public function Action_Default()
     {
         $this->View = new Zero_View();
-        if ( isset($this->Params['Template']) )
-            $this->View->Add($this->Params['Template']);
-        else
-            $this->View->Add(Zero_App::$Section->Controller . 'Toolbar');
+        $this->View->Add(Zero_App::$Section->Controller . 'Toolbar');
         $this->View->Add('Zero_Crud_Toolbar');
         foreach ($this->Params as $prop => $value)
         {

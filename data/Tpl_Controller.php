@@ -12,51 +12,6 @@
 class Zero_Controller_Sample extends Zero_Controller
 {
     /**
-     * Инициализация контроллера до его выполнения
-     *
-     * @param string $viewName имя шаблона вида
-     * @return bool
-     */
-    protected function Chunk_Init($viewName = '')
-    {
-        // Шаблон
-        if ( isset($this->Params['view']) )
-            $this->View = new Zero_View($this->Params['view']);
-        else if ( isset($this->Params['tpl']) )
-            $this->View = new Zero_View($this->Params['tpl']);
-        else if ( isset($this->Params['template']) )
-            $this->View = new Zero_View($this->Params['template']);
-        else
-            $this->View = new Zero_View(get_class($this));
-        // Модель
-        $this->Model = Zero_Model::Makes('Zero_Users');
-        return true;
-    }
-
-    /**
-     * Вывод данных операции контроллера в шаблон
-     *
-     * @return bool
-     */
-    protected function Chunk_View()
-    {
-        $this->View->Assign('variable', 'value');
-        return true;
-    }
-
-    /**
-     * Контроллер по умолчанию.
-     *
-     * @return Zero_View
-     */
-    public function Action_Default()
-    {
-        $this->Chunk_Init();
-        $this->Chunk_View();
-        return $this->View;
-    }
-
-    /**
      * Фабричный метод по созданию контроллера.
      *
      * @param array $properties входные параметры плагина

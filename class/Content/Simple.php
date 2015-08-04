@@ -20,9 +20,8 @@ class Zero_Content_Simple extends Zero_Controller
      */
     public function Action_Default()
     {
-        $view = new Zero_View(__CLASS__);
-        $view->Assign('Name', 'Заголовок');
-        $view->Assign('Content', 'Контент');
-        return $view;
+        $this->Chunk_Init();
+        $this->Chunk_View();
+        return $this->View;
     }
 }

@@ -20,15 +20,12 @@ class Zero_Section_SeoTag extends Zero_Controller
      */
     public function Action_Default()
     {
+        $this->Chunk_Init();
         $seo_data = [
             'Title' => Zero_App::$Section->Title,
             'Keywords' => Zero_App::$Section->Keywords,
             'Description' => Zero_App::$Section->Description,
         ];
-        if ( isset($this->Params['view']) )
-            $this->View = new Zero_View($this->Params['view']);
-        else
-            $this->View = new Zero_View(get_class($this));
         $this->View->Assign('seo_data', $seo_data);
         if ( Zero_App::$Section->IsIndex == 'no' ) {
             $this->View->Assign('seo_index', '<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">' . "\n");
