@@ -106,12 +106,9 @@ while ( isset($_REQUEST['act']) && 'Install_System' == $_REQUEST['act'] && 0 == 
             break;
         }
     }
-    $arr = ini_get_all();
 
     //  Creating a filesystem structure. Copy the system and base  module
     Zero_Helper_File::Folder_Copy(__DIR__ . "/www", ZERO_PATH_SITE);
-    $index = file_get_contents(ZERO_PATH_SITE . '/index.php');
-    file_put_contents(ZERO_PATH_SITE . '/index.php', $index);
 
     //  Baseline configuration
     if ( $_REQUEST['db_use'] )
@@ -119,7 +116,6 @@ while ( isset($_REQUEST['act']) && 'Install_System' == $_REQUEST['act'] && 0 == 
     else
         $isUseDb = 'false';
     $config = file_get_contents(ZERO_PATH_SITE . '/application/config.blank.php');
-    $config = str_replace('<PATH_SESSION>', $arr['session.save_path']['local_value'], $config);
     $config = str_replace('<SITE_NAME>', $_REQUEST['site_name'], $config);
     $config = str_replace('<SITE_EMAIL>', $_REQUEST['site_email'], $config);
     $config = str_replace('<DOMAIN>', $_REQUEST['domain_www'], $config);

@@ -10,8 +10,8 @@ return [
      *
      * @see controllerName::methodName()
      */
-    '/api/v1.0/moduleName/controllersFolderName/controllerName' => [
-        'Controller' => 'className',
-        'View' => 'layoutName',
+    '/' => [
+        'Controller' => '',
+        'View' => 'Zero_Content',
     ],
 ];
