@@ -28,27 +28,27 @@ class Zero_Controller_Sample extends Zero_Controller
     }
 
     //// Пример контроллера для API
-    protected function Action_GET()
+    public function Action_GET()
     {
         Zero_App::ResponseJson('', 200, 0, []);
     }
 
-    protected function Action_PUT()
+    public function Action_PUT()
     {
         Zero_App::ResponseJson($_REQUEST, 200, 0, []);
     }
 
-    protected function Action_POST()
+    public function Action_POST()
     {
         Zero_App::ResponseJson($_REQUEST, 200, 0, []);
     }
 
-    protected function Action_DELETE()
+    public function Action_DELETE()
     {
         Zero_App::ResponseJson('', 200, 0, []);
     }
 
-    protected function Action_OPTIONS()
+    public function Action_OPTIONS()
     {
         Zero_App::ResponseJson('', 200, 0, []);
     }

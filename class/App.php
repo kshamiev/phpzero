@@ -158,39 +158,13 @@ class Zero_App
     }
 
     /**
-     * Connection classes
+     * API Запрос к стороннему сервису (серверу)
      *
-     * Setting up automatic downloads of files with the required classes
-     *
-     * @param string $class_name
-     * @return bool
+     * @param $method
+     * @param $url
+     * @param string $content
+     * @return mixed|string
      */
-    public static function Autoload_Old($class_name)
-    {
-        if ( class_exists($class_name) )
-            return true;
-        // новая архитектура FS
-        if ( file_exists($path = str_replace('_', '/', $class_name) . '.php') )
-        {
-            require_once $path;
-            if ( class_exists($class_name) )
-                return true;
-        }
-        // старая архитектура FS
-        $arr = explode('_', $class_name);
-        $module = strtolower(array_shift($arr));
-        $class = implode('/', $arr);
-        $path = ZERO_PATH_APPLICATION . '/' . $module . '/class/' . $class . '.php';
-        if ( file_exists($path) )
-        {
-            require_once $path;
-            if ( class_exists($class_name) )
-                return true;
-        }
-        Zero_Logs::Set_Message_Error('Класс не найден: ' . $class_name);
-        return false;
-    }
-
     public static function RequestJson($method, $url, $content = '')
     {
         $content = json_encode($content, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
@@ -211,35 +185,17 @@ class Zero_App
         return $data;
     }
 
-    //    public static function RequestJsonHttps($method, $url, $content = '')
-    //    {
-    //        $content = json_encode($content, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-    //        $opts = array(
-    //            'https' => array(
-    //                'method' => $method,
-    //                'header' => "Content-Type: application/json; charset=utf-8\r\n" . "Content-Length: " . strlen($content) . "\r\n" . "",
-    //                'content' => $content,
-    //                'timeout' => 30,
-    //            )
-    //        );
-    //        $fp = fopen($url, 'rb', false, stream_context_create($opts));
-    //        $response = stream_get_contents($fp);
-    //        fclose($fp);
-    //        $data = json_decode($response, true);
-    //        if ( !$data )
-    //            return $response;
-    //        return $data;
-    //    }
-
     /**
-     * Сборка ответа клиенту
+     * Отдача результата работы в формате json
      *
-     * @param mixed $content Отдаваемые данные
-     * @param int $code Код ошибки
-     * @param string $message Сообщение
-     * @return bool
+     * Для ответов на API запросы
+     *
+     * @param $content
+     * @param int $status
+     * @param int $code
+     * @param array $params
      */
-    public static function ResponseJson($content, $status, $code = 0, $params = [])
+    public static function ResponseJson($content, $status = 200, $code = 0, $params = [])
     {
         header('Pragma: no-cache');
         header('Last-Modified: ' . date('D, d M Y H:i:s') . 'GMT');
