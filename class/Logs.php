@@ -17,7 +17,6 @@
  */
 class Zero_Logs
 {
-
     /**
      * Massiv soobshchenii` sistemy`
      *
@@ -79,6 +78,16 @@ class Zero_Logs
         self::$_StartTime = microtime(1);
         self::$_CurrentTime = [];
         self::$_FileLog = $fileLog;
+    }
+
+    /**
+     * Получение полного времени выполнения на момент запроса этого метода
+     *
+     * @return string
+     */
+    public static function Get_FullTime()
+    {
+        return sprintf("%01.3f", microtime(1) - self::$_StartTime);
     }
 
     /**
@@ -175,7 +184,7 @@ class Zero_Logs
      *
      * @return string
      */
-    public static function Display()
+    public static function Output_Display()
     {
         $iterator_list = [];
         $iterator = Zero_Session::Get_Instance()->getIterator();
@@ -196,9 +205,9 @@ class Zero_Logs
      * Vy`vod vsei` profilirovannoi` informatcii v log fai`ly`
      *
      */
-    public static function Output()
+    public static function Output_File()
     {
-//        self::$_FileLog = Zero_App::$Config->Site_DomainSub . '_' . self::$_FileLog;
+        //        self::$_FileLog = Zero_App::$Config->Site_DomainSub . '_' . self::$_FileLog;
         // Логируем работу приложения в целом
         if ( Zero_App::$Config->Log_Profile_Application )
         {
@@ -215,13 +224,10 @@ class Zero_Logs
             foreach (self::$_Message as $row)
             {
                 if ( 'error' == $row[1] )
-                    //                    $errors[] = str_replace(["\r", "\t"], " ", var_export($row[0], true));
                     $errors[] = str_replace(["\r", "\t"], " ", $row[0]);
                 else if ( 'warning' == $row[1] )
-                    //                    $warnings[] = str_replace(["\r", "\t"], " ", var_export($row[0], true));
                     $warnings[] = str_replace(["\r", "\t"], " ", $row[0]);
                 else if ( 'notice' == $row[1] )
-                    //                    $warnings[] = str_replace(["\r", "\t"], " ", var_export($row[0], true));
                     $notice[] = str_replace(["\r", "\t"], " ", $row[0]);
             }
             // логирование ошибки в файл
@@ -250,7 +256,7 @@ class Zero_Logs
             }
         }
         // логирование операций пользователиа в файл
-        if ( Zero_App::$Config->Log_Profile_Action && Zero_App::MODE_CONSOLE != Zero_App::Get_Mode() && isset($_REQUEST['act']) && 'Action_Default' != $_REQUEST['act'])
+        if ( Zero_App::$Config->Log_Profile_Action && Zero_App::MODE_CONSOLE != Zero_App::Get_Mode() && isset($_REQUEST['act']) && 'Action_Default' != $_REQUEST['act'] )
         {
             $act = date('[d.m.Y H:i:s]') . "\t";
             $act .= Zero_App::$Users->Login . "\t" . Zero_App::$Section->Controller . " -> " . $_REQUEST['act'] . "\t";
@@ -320,17 +326,18 @@ class Zero_Logs
                 self::$_OutputApplication[] = $indent . '{' . $limit . '} ' . trim($description);
             }
             self::$_CurrentTime = [];
-            self::$_OutputApplication[] = "#{System.Full} " . sprintf("%01.3f", microtime(1) - self::$_StartTime);
+            self::$_OutputApplication[] = "#{System.Full} " . self::Get_FullTime();
             self::$_OutputApplication[] = "#{MEMORY} " . memory_get_usage();
         }
         return self::$_OutputApplication;
     }
 
     /**
-     * Save v fai`l
+     * Логирование в файл.
      *
-     * @param string $data statisticheskie danny`e
-     * @param string $file_log imia fai`l-loga ('zero_application_error')
+     * Обциональное количество параметров после имени файла
+     *
+     * @param string $file_log имиа файл-лога
      * @return bool
      */
     public static function File($file_log)
@@ -339,9 +346,6 @@ class Zero_Logs
         $file_log = array_shift($arr);
         if ( 0 == count($arr) )
             return true;
-        //if ( is_array($arr[0]) )
-//            $arr = $arr[0];
-        //
         foreach ($arr as $val)
         {
             Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . $file_log, $val);
@@ -350,15 +354,11 @@ class Zero_Logs
     }
 
     /**
-     * Obrabotchik iscliuchenii` dlia funktcii set_exception_handler()
-     *
-     * - '403' standartny`i` otvet na zakry`ty`i` razdel (stranitcu sai`ta)
-     * - '404' standartny`i` otvet ne nai`dennogo dokumenta
-     * - '500' vse ostal`ny`e kriticheskie oshibki prilozheniia libo servera
+     * Трассировка данных исключения. (trace)
      *
      * @param Exception $exception
      */
-    public static function Exception(Exception $exception)
+    public static function Exception_Trace(Exception $exception)
     {
         $range_file_error = 10;
         $error = "#{ERROR_EXCEPTION} " . $exception->getMessage() . ' ' . $exception->getFile() . '(' . $exception->getLine() . ')';

@@ -229,7 +229,7 @@ class Zero_App
 
         // Логирование в файлы
         if ( Zero_App::$Config->Log_Output_File )
-            Zero_Logs::Output();
+            Zero_Logs::Output_File();
         exit;
     }
 
@@ -246,7 +246,7 @@ class Zero_App
 
         // Логирование в файлы
         if ( self::$Config->Log_Output_File )
-            Zero_Logs::Output();
+            Zero_Logs::Output_File();
         exit;
     }
 
@@ -525,7 +525,7 @@ class Zero_App
         $code = $exception->getCode();
         if ( 500 == $code )
         {
-            Zero_Logs::Exception($exception);
+            Zero_Logs::Exception_Trace($exception);
         }
         if ( self::MODE_CONSOLE == self::$mode || !isset($_SERVER['REQUEST_URI']) )
             self::ResponseConsole();
@@ -538,31 +538,6 @@ class Zero_App
             $View->Assign('code', $code);
             $View->Assign('message', $exception->getMessage());
             self::ResponseHtml($View->Fetch(), $code);
-        }
-    }
-    public static function Exception_Old(Exception $exception)
-    {
-        $code = $exception->getCode();
-        if ( 403 == $code || 404 == $code )
-        {
-            $status = $code;
-        }
-        else
-        {
-            $status = 500;
-            Zero_Logs::Exception($exception);
-        }
-        if ( self::MODE_CONSOLE == self::$mode || !isset($_SERVER['REQUEST_URI']) )
-            self::ResponseConsole();
-        else if ( self::MODE_API == self::$mode )
-            self::ResponseJson('', 200, $code, [$exception->getMessage()]);
-        else if ( self::MODE_WEB == self::$mode )
-        {
-            $View = new Zero_View(ucfirst(self::$Config->Site_DomainSub) . '_Error');
-            $View->Add('Zero_Error');
-            $View->Assign('code', $code);
-            $View->Assign('message', $exception->getMessage());
-            self::ResponseHtml($View->Fetch(), $status);
         }
     }
 
@@ -593,7 +568,7 @@ class Zero_App
 
         // Логирование (в браузер)
         if ( self::$Config->Log_Output_Display )
-            echo Zero_Logs::Display();
+            echo Zero_Logs::Output_Display();
 
         // закрываем соединение с браузером (работает только под нгинx)
         if ( function_exists('fastcgi_finish_request') )
@@ -602,7 +577,7 @@ class Zero_App
         // Логирование в файлы
         if ( Zero_App::$Config->Log_Output_File )
         {
-            Zero_Logs::Output();
+            Zero_Logs::Output_File();
         }
         exit;
     }
