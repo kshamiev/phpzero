@@ -268,7 +268,7 @@ final class Zero_Helper_File
                 if ( '' == $filter || preg_match('~' . $filter . '~si', $name_file) )
                 {
                     mkdir($path_output . '/' . $name_file);
-                    chmod($path_output . '/' . $name_file, 0777);
+//                    chmod($path_output . '/' . $name_file, 0777);
                     self::Folder_Move($path_input . '/' . $name_file, $path_output . '/' . $name_file, $filter);
                     //rmdir($path_input . '/' . $name_file);
                 }
@@ -276,7 +276,7 @@ final class Zero_Helper_File
             else
             {
                 rename($path_input . '/' . $name_file, $path_output . '/' . $name_file);
-                chmod($path_output . '/' . $name_file, 0666);
+//                chmod($path_output . '/' . $name_file, 0666);
             }
         }
         closedir($fp_folder);
