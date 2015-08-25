@@ -50,17 +50,14 @@ class Zero_View
      * Rasshirenie fai`lov predstavleniia (shablonov)
      */
     const EXT_VIEW = '.html';
-
     /**
      * Reguliarnoe vy`razhenie dlia obrabotki direktiv include (html shablonov)
      */
     const PATTERN_INCLUDE = '~\{inc(?:lude)?[ ]+[\'"]+([.\w\d\/_]+)[\'"]+\}~si';
-
     /**
      * Reguliarnoe vy`razhenie dlia obrabotki direktiv plugin
      */
     const PATTERN_PLUGIN = '~\{plugin[ ]+[\'"]+([\w\d_]+)[\'"]+(\s+[^\{\}]+)?\}~si';
-
     /**
      * Reguliarnoe vy`razhenie dlia obrabotki direktiv translation
      */
@@ -136,13 +133,13 @@ class Zero_View
      *
      * @param string $variable peremennaia shablona
      */
-//    public function Remove($variable = '')
-//    {
-//        if ( $variable )
-//            unset($this->_Data[$variable]);
-//        else
-//            $this->_Data = [];
-//    }
+    //    public function Remove($variable = '')
+    //    {
+    //        if ( $variable )
+    //            unset($this->_Data[$variable]);
+    //        else
+    //            $this->_Data = [];
+    //    }
 
     /**
      * Poluchenie peremennoi` shablona
@@ -180,12 +177,12 @@ class Zero_View
         $html = $tpl = '';
         foreach ($this->_Template as $template)
         {
-            $html = $this->Search_Template($template);
+            $html = self::Search_Template($template);
             if ( '' != $html )
             {
-                $tpl = ZERO_PATH_CACHE . '/' . $html . '_' . ZERO_LANG . '.tpl';
+                $tpl = str_replace(ZERO_PATH_SITE, ZERO_PATH_CACHE, $html) . '_' . ZERO_LANG . '.tpl';
                 if ( true == Zero_App::$Config->Site_TemplateParsing || !file_exists($tpl) )
-                    Zero_Helper_File::File_Save($tpl, $this->_Parsing(file_get_contents(ZERO_PATH_APPLICATION . '/' . $html)));
+                    Zero_Helper_File::File_Save($tpl, $this->_Parsing(file_get_contents($html)));
                 break;
             }
         }
@@ -218,13 +215,22 @@ class Zero_View
      * @param string $template imia shablona
      * @return string nai`denny`i` shablon ( put` ot kornia sai`ta )
      */
-    public static function Search_Template($template)
+    protected static function Search_Template($template)
     {
         $arr = explode('_', $template);
         $module = strtolower(array_shift($arr));
-        $path = $module . '/view/' . implode('/', $arr) . self::EXT_VIEW;
-        if ( file_exists(ZERO_PATH_APPLICATION . '/' .  $path) )
+        //
+        $path = ZERO_PATH_APPLICATION . '/' . $module . '/view/' . implode('/', $arr) . self::EXT_VIEW;
+        if ( file_exists($path) )
+        {
             return $path;
+        }
+        //
+        $path = ZERO_PATH_SITE . '/' . $module . '/view/' . implode('/', $arr) . self::EXT_VIEW;
+        if ( file_exists($path) )
+        {
+            return $path;
+        }
         return '';
     }
 
@@ -270,8 +276,8 @@ class Zero_View
      */
     private function _Parsing_Include($matches)
     {
-        if ( '' != $template = $this->Search_Template($matches[1]) )
-            $matches = file_get_contents(ZERO_PATH_APPLICATION . '/' .  $template);
+        if ( '' != $pathTemplate = self::Search_Template($matches[1]) )
+            $matches = file_get_contents($pathTemplate);
         else
         {
             $matches = '';
@@ -309,7 +315,7 @@ class Zero_View
         $properties = isset($matches[2]) ? trim($matches[2]) : '';
         if ( $properties )
         {
-//            $properties = preg_replace('!([\w\d_]+)\s*=\s*!si', ',' . "\n" . '"\\1" => ', $properties);
+            //            $properties = preg_replace('!([\w\d_]+)\s*=\s*!si', ',' . "\n" . '"\\1" => ', $properties);
             $properties = preg_replace('!([\w\d_]+)\s*=\s*!si', ',' . '"\\1" => ', $properties);
             $properties = trim($properties, ',');
         }

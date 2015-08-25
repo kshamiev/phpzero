@@ -193,8 +193,7 @@ class Zero_Logs
             $iterator_list[$iterator->key()] = get_class($iterator->current());
             $iterator->next();
         }
-        $View = new Zero_View(ucfirst(Zero_App::$Config->Site_DomainSub) . '_Debug_Info');
-        $View->Add('Zero_Debug_Info');
+        $View = new Zero_View('Zero_Debug_Info');
         $View->Assign('output', self::Get_Usage_MemoryAndTime());
         $View->Assign('message', self::$_Message);
         $View->Assign('iterator_list', $iterator_list);

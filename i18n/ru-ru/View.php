@@ -26,4 +26,7 @@ return [
     'controller Zero_System_GridService action Session_Reset' => 'Сброс всех сессий',
     'Login' => 'Логин',
     'Password' => 'Пароль',
+    'Title' => 'Титул',
+    'Keywords' => 'Ключи',
+    'Description' => 'Описание',
 ];

@@ -35,7 +35,6 @@
  */
 class Zero_Section extends Zero_Model
 {
-
     /**
      * The table stores the objects this model
      *
@@ -428,7 +427,6 @@ class Zero_Section extends Zero_Model
         return $data;
     }
 
-
     /**
      * Custom controller
      *
@@ -447,7 +445,12 @@ class Zero_Section extends Zero_Model
         $path = ZERO_PATH_APPLICATION . '/' . strtolower(array_shift($arr)) . '/class/' . implode('/', $arr) . '.php';
         if ( !file_exists($path) )
         {
-            return 'Error_Path_Class';
+            $path = ZERO_PATH_ZERO . '/class/' . implode('/', $arr) . '.php';
+            pre($path);
+            if ( !file_exists($path) )
+            {
+                return 'Error_Path_Class';
+            }
         }
         if ( !preg_match("~\nclass {$value}~si", file_get_contents($path)) )
         {
@@ -475,6 +478,67 @@ class Zero_Section extends Zero_Model
                 $arr[$index] = $index;
             }
         }
+        $mod = ucfirst(basename(ZERO_PATH_ZERO));
+        $row = glob(ZERO_PATH_ZERO . "/view/*.html");
+        foreach ($row as $r)
+        {
+            $index = $mod . '_' . substr(basename($r), 0, -5);
+            $arr[$index] = $index;
+        }
         return $arr;
+    }
+
+    /**
+     * Фабрика по созданию объектов.
+     *
+     * @param integer $id идентификатор объекта
+     * @param bool $flagLoad флаг полной загрузки объекта
+     * @return Zero_Section
+     */
+    public static function Make($id = 0, $flagLoad = false)
+    {
+        return new self($id, $flagLoad);
+    }
+
+    /**
+     * Фабрика по созданию объектов.
+     *
+     * Сохраниаетсиа в {$тис->_Инстанcе}
+     *
+     * @param integer $id идентификатор объекта
+     * @param bool $flagLoad флаг полной загрузки объекта
+     * @return Zero_Section
+     */
+    public static function Instance($id = 0, $flagLoad = false)
+    {
+        $index = __CLASS__ . (0 < $id ? '_' . $id : '');
+        if ( !isset(self::$Instance[$index]) )
+        {
+            $result = self::Make($id, $flagLoad);
+            $result->Init();
+            self::$Instance[$index] = $result;
+        }
+        return self::$Instance[$index];
+    }
+
+    /**
+     * Фабрика по созданию объектов.
+     *
+     * Работает через сессию (Zero_Session).
+     * Индекс имя класса
+     *
+     * @param integer $id идентификатор объекта
+     * @param bool $flagLoad флаг полной загрузки объекта
+     * @return Zero_Section
+     */
+    public static function Factor($id = 0, $flagLoad = false)
+    {
+        if ( !$result = Zero_Session::Get(__CLASS__) )
+        {
+            $result = self::Make($id, $flagLoad);
+            $result->Init();
+            Zero_Session::Set(__CLASS__, $result);
+        }
+        return $result;
     }
 }

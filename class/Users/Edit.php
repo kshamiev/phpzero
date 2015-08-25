@@ -15,7 +15,7 @@ class Zero_Users_Edit extends Zero_Crud_Edit
      *
      * @var string
      */
-    protected $ModelName = 'Base_Users';
+    protected $ModelName = 'Zero_Users';
 
     /**
      * Template view

@@ -8,10 +8,10 @@ return [
     /**
      * Какой-то там контроллер
      *
-     * @see controllerName::methodName()
+     * @see controllerName
      */
     '/' => [
-        'Controller' => '',
+        'Controller' => 'controllerName',
         'View' => 'Zero_Content',
     ],
 ];

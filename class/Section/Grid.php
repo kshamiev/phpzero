@@ -96,7 +96,7 @@ class Zero_Section_Grid extends Zero_Crud_Grid
         $prop = $this->Params['obj_parent_prop'];
         $Object = Zero_Model::Makes($this->ModelName, $_REQUEST['id']);
         /* @var $Object Zero_Section */
-        if ( 0 == count($Object->AR->Load('ID')) )
+        if ( 0 == count($Object->Load('ID')) )
             return $this->Set_Message('Error_NotFound', 1);
         if ( 'NULL' == $this->Params['obj_parent_id'] )
             $Object->$prop = null;

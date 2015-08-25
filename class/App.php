@@ -77,14 +77,14 @@ class Zero_App
     /**
      * User
      *
-     * @var Base_Users
+     * @var Zero_Users
      */
     public static $Users = null;
 
     /**
      * Section (page)
      *
-     * @var Base_Section
+     * @var Zero_Section
      */
     public static $Section = null;
 
@@ -146,7 +146,24 @@ class Zero_App
             if ( class_exists($class_name) )
                 return true;
         }
+        $path = ZERO_PATH_SITE . '/' . $module . '/class/' . $class . '.php';
+        if ( file_exists($path) )
+        {
+            require_once $path;
+            if ( class_exists($class_name) )
+                return true;
+        }
+        /**
+         * @deprecated
+         */
         $path = ZERO_PATH_APPLICATION . '/' . $module . '/class' . $class . '.php';
+        if ( file_exists($path) )
+        {
+            require_once $path;
+            if ( class_exists($class_name) )
+                return true;
+        }
+        $path = ZERO_PATH_SITE . '/' . $module . '/class' . $class . '.php';
         if ( file_exists($path) )
         {
             require_once $path;
@@ -330,17 +347,21 @@ class Zero_App
     public static function ExecuteSimple()
     {
         // Пользователь
-        self::$Users = Base_Users::Factor();
+        self::$Users = Zero_Users::Factor();
 
         // Раздел - страница
         $route = [];
-        self::$Section = Base_Section::Instance();
+        self::$Section = Zero_Section::Instance();
         foreach (Zero_Config::Get_Modules() as $module)
         {
             $config = Zero_Config::Get_Config($module, 'route' . self::$mode);
             if ( isset($config[ZERO_URL]) )
             {
                 $route = $config[ZERO_URL];
+                if ( is_array($route) )
+                {
+                    $route['Controller'] = $route;
+                }
                 break;
             }
         }
@@ -411,10 +432,10 @@ class Zero_App
     public static function Execute()
     {
         //  Пользователь
-        self::$Users = Base_Users::Factor();
+        self::$Users = Zero_Users::Factor();
 
         //  Раздел - страница
-        self::$Section = Base_Section::Instance();
+        self::$Section = Zero_Section::Instance();
         if ( 0 == self::$Section->ID || 'no' == self::$Section->IsEnable )
             throw new Exception('Page Not Found', 404);
         if ( self::$Section->UrlRedirect )

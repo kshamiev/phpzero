@@ -15,7 +15,7 @@ class Zero_Users_Login extends Zero_Controller
     /**
      * Пользователь
      *
-     * @var Base_Users
+     * @var Zero_Users
      */
     protected $Model = null;
 
@@ -148,7 +148,7 @@ class Zero_Users_Login extends Zero_Controller
         {
             Zero_App::ResponseRedirect('/admin');
         }
-        $this->Model = Base_Users::Make();
+        $this->Model = Zero_Users::Make();
         $this->View = new Zero_View(get_class($this));
         if ( !Zero_App::$Users->UrlRedirect )
         {

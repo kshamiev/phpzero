@@ -15,7 +15,7 @@ class Zero_Users_Profile extends Zero_Controller
     /**
      * Пользователь
      *
-     * @var Base_Users
+     * @var Zero_Users
      */
     protected $Model = null;
 
@@ -78,7 +78,7 @@ class Zero_Users_Profile extends Zero_Controller
         }
         $this->View = new Zero_View(get_class($this));
         $this->View->Assign('Error_Validator', []);
-        $this->Model = Base_Users::Make(Zero_App::$Users->ID, true);
+        $this->Model = Zero_Users::Make(Zero_App::$Users->ID, true);
         return true;
     }
 
