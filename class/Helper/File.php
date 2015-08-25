@@ -432,7 +432,7 @@ final class Zero_Helper_File
             mkdir(dirname($path_file), 0777, true);
         $fp = fopen($path_file, 'a');
         if ( 'array' == gettype($value) || 'object' == gettype($value) )
-            fputs($fp, date("[Y-m-d H:i:s] ") . print_r($value, true) . "\n");
+            fputs($fp, print_r($value, true) . "\n");
         else
             fputs($fp, trim($value) . "\n");
         fclose($fp);

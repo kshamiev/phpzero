@@ -358,7 +358,7 @@ class Zero_App
             if ( isset($config[ZERO_URL]) )
             {
                 $route = $config[ZERO_URL];
-                if ( is_array($route) )
+                if ( !is_array($route) )
                 {
                     $route['Controller'] = $route;
                 }

@@ -342,9 +342,10 @@ class Zero_Logs
     public static function File($file_log)
     {
         $arr = func_get_args();
-        $file_log = array_shift($arr);
+        $file_log = array_shift($arr) . '.log';
         if ( 0 == count($arr) )
             return true;
+        Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . $file_log, date("[Y-m-d H:i:s]"));
         foreach ($arr as $val)
         {
             Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . $file_log, $val);
