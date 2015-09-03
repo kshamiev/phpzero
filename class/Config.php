@@ -9,7 +9,6 @@
  */
 class Zero_Config
 {
-
     /**
      * The path to the php Interpreter
      *
@@ -135,6 +134,13 @@ class Zero_Config
      * @var string
      */
     public $View_PageStep = '';
+
+    /**
+     * The compile tpl in string and out
+     *
+     * @var bool
+     */
+    public $View_TplOutString = false;
 
     /**
      * Monitoring. Fatal errors
@@ -293,7 +299,7 @@ class Zero_Config
             }
         }
 
-        $this->Site_UseDB= $Config['Site']['UseDB'];
+        $this->Site_UseDB = $Config['Site']['UseDB'];
 
         //        $this->Site_ClassRoute = $Config['Site']['ClassRoute'];
         //        if ( !$this->Site_ClassRoute )
@@ -308,6 +314,9 @@ class Zero_Config
         $this->View_PageItem = $Config['View']['PageItem'];
         //  The range of visible pages
         $this->View_PageStep = $Config['View']['PageStep'];
+        //  The compile tpl in string and out
+        if ( isset($Config['View']['TplOutString']) )
+            $this->View_TplOutString = $Config['View']['TplOutString'];
 
         // Monitoring. Fatal errors
         $this->Log_Profile_Error = $Config['Log']['Profile']['Error'];

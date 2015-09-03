@@ -47,6 +47,8 @@ return [
         'PageItem' => "20",
         //  The range of visible pages
         'PageStep' => "11",
+        //  The compile tpl in string and out
+        'TplOutString' => false,
     ],
     //  Monitoring
     'Log' => [

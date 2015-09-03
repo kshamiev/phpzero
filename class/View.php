@@ -200,7 +200,19 @@ class Zero_View
         extract($this->_Data);
         $this->_Data = [];
         include $tpl;
-        return ob_get_clean();
+        if ( Zero_App::$Config->View_TplOutString )
+        {
+            $result = '';
+            foreach (explode("\n", ob_get_clean()) as $val)
+            {
+                $result .= trim($val);
+            }
+            return $result;
+        }
+        else
+        {
+            return ob_get_clean();
+        }
     }
 
     /**

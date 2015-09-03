@@ -211,7 +211,7 @@ class Zero_Logs
         if ( Zero_App::$Config->Log_Profile_Application )
         {
             $output = join("\n", self::Get_Usage_MemoryAndTime()) . "\n";
-            self::File(self::$_FileLog . '.log', $output);
+            self::File(self::$_FileLog, $output);
         }
         //
         if ( 0 < count(self::$_Message) )
@@ -234,33 +234,29 @@ class Zero_Logs
             {
                 array_unshift($errors, str_replace(["\r", "\t"], " ", $output));
                 $errors = preg_replace('![ ]{2,}!', ' ', join("\n", $errors));
-                $errors = date('[d.m.Y H:i:s]') . "\n" . $errors;
-                self::File(self::$_FileLog . '_errors.log', $errors);
+                self::File(self::$_FileLog . '_errors', $errors);
             }
             // логирование предупреждений в файл
             if ( Zero_App::$Config->Log_Profile_Warning && 0 < count($warnings) )
             {
                 array_unshift($warnings, str_replace(["\r", "\t"], " ", $output));
                 $warnings = preg_replace('![ ]{2,}!', ' ', join("\n", $warnings));
-                $warnings = date('[d.m.Y H:i:s]') . "\n" . $warnings;
-                self::File(self::$_FileLog . '_warnings.log', $warnings);
+                self::File(self::$_FileLog . '_warnings', $warnings);
             }
             // логирование предупреждений в файл
             if ( Zero_App::$Config->Log_Profile_Notice && 0 < count($notice) )
             {
                 array_unshift($notice, str_replace(["\r", "\t"], " ", $output));
                 $notice = preg_replace('![ ]{2,}!', ' ', join("\n", $notice));
-                $notice = date('[d.m.Y H:i:s]') . "\n" . $notice;
-                self::File(self::$_FileLog . '_notice.log', $notice);
+                self::File(self::$_FileLog . '_notice', $notice);
             }
         }
         // логирование операций пользователиа в файл
         if ( Zero_App::$Config->Log_Profile_Action && Zero_App::MODE_CONSOLE != Zero_App::Get_Mode() && isset($_REQUEST['act']) && 'Action_Default' != $_REQUEST['act'] )
         {
-            $act = date('[d.m.Y H:i:s]') . "\t";
-            $act .= Zero_App::$Users->Login . "\t" . Zero_App::$Section->Controller . " -> " . $_REQUEST['act'] . "\t";
-            $act .= ZERO_HTTP . $_SERVER['REQUEST_URI'];
-            self::File(self::$_FileLog . '_action.log', $act);
+            $act = date('[d.m.Y H:i:s]') . "\t" . Zero_App::$Users->Login . "\t";
+            $act .= Zero_App::$Section->Controller . " -> " . $_REQUEST['act'] . "\t" . ZERO_HTTP . $_SERVER['REQUEST_URI'];
+            self::File(self::$_FileLog . '_action', $act);
         }
     }
 
@@ -324,9 +320,9 @@ class Zero_Logs
                 }
                 self::$_OutputApplication[] = $indent . '{' . $limit . '} ' . trim($description);
             }
-            self::$_CurrentTime = [];
             self::$_OutputApplication[] = "#{System.Full} " . self::Get_FullTime();
             self::$_OutputApplication[] = "#{MEMORY} " . memory_get_usage();
+            self::$_CurrentTime = [];
         }
         return self::$_OutputApplication;
     }
@@ -345,10 +341,30 @@ class Zero_Logs
         $file_log = array_shift($arr) . '.log';
         if ( 0 == count($arr) )
             return true;
-        Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . $file_log, date("[Y-m-d H:i:s]"));
         foreach ($arr as $val)
         {
             Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . $file_log, $val);
+        }
+        return true;
+    }
+
+    /**
+     * Логирование в файл.
+     *
+     * Обциональное количество параметров после имени файла
+     *
+     * @param string $file_log имиа файл-лога
+     * @return bool
+     */
+    public static function File_DateTime($file_log)
+    {
+        $arr = func_get_args();
+        $file_log = array_shift($arr) . '.log';
+        if ( 0 == count($arr) )
+            return true;
+        foreach ($arr as $val)
+        {
+            Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . $file_log, date('[d.m.Y H:i:s]') . "\t" . $val);
         }
         return true;
     }

@@ -101,7 +101,7 @@ class Zero_Validator
     protected function VL_Content($value, $prop)
     {
         $this->Model->$prop = '';
-        foreach(explode("\n", $value) as $val)
+        foreach (explode("\n", $value) as $val)
         {
             $this->Model->$prop .= trim($val);
         }
@@ -153,9 +153,9 @@ class Zero_Validator
         if ( isset($value['Rem']) && $value['Rem'] )
         {
             $_FILES[$prop]['rem'] = true;
-            //            if ( file_exists($filename = ZERO_PATH_DATA . '/' . $this->Model->$prop) )
-            //                unlink($filename);
-            //            $this->Model->$prop = '';
+            if ( file_exists($filename = ZERO_PATH_DATA . '/' . $this->Model->$prop) )
+                unlink($filename);
+            $this->Model->$prop = '';
         }
 
         //  Validatciia
@@ -187,7 +187,9 @@ class Zero_Validator
                 }
             }
             $_FILES[$prop]['name'] = Zero_Helper_Strings::Transliteration_FileName($_FILES[$prop]['name']);
-            //            $this->Model->$prop = 'File Upload Ok';
+            if ( file_exists($filename = ZERO_PATH_DATA . '/' . $this->Model->$prop) )
+                unlink($filename);
+            $this->Model->$prop = $_FILES[$prop]['name'];
         }
         return '';
     }

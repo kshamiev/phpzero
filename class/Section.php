@@ -446,7 +446,6 @@ class Zero_Section extends Zero_Model
         if ( !file_exists($path) )
         {
             $path = ZERO_PATH_ZERO . '/class/' . implode('/', $arr) . '.php';
-            pre($path);
             if ( !file_exists($path) )
             {
                 return 'Error_Path_Class';
