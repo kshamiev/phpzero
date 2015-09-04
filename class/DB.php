@@ -101,8 +101,8 @@ class Zero_DB
      */
     public static function EscI($int)
     {
-        if ( 0 == strlen($int) )
-            return 'NULL';
+//        if ( 0 == strlen($int) )
+//            return 'NULL';
         return intval($int);
     }
 
@@ -114,8 +114,8 @@ class Zero_DB
      */
     public static function EscF($float)
     {
-        if ( 0 == strlen($float) )
-            return 'NULL';
+//        if ( 0 == strlen($float) )
+//            return 'NULL';
         return floatval(str_replace(',', '.', $float));
     }
 

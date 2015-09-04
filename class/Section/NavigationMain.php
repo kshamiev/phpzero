@@ -31,6 +31,6 @@ class Zero_Section_NavigationMain extends Zero_Controller
             $this->View = new Zero_View(get_class($this));
         $this->View->Assign('Section', Zero_App::$Section);
         $this->View->Assign('navigation', $Section->Get_Navigation_Child());
-        return $this->View;
+        return $this->View->Fetch($this->ViewTplOutString);
     }
 }

@@ -13,7 +13,7 @@
 class Zero_Users_Profile extends Zero_Controller
 {
     /**
-     * Пользователь
+     * пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
      *
      * @var Zero_Users
      */
@@ -28,7 +28,7 @@ class Zero_Users_Profile extends Zero_Controller
     {
         $this->Chunk_Init();
         $this->Chunk_View();
-        return $this->View;
+        return $this->View->Fetch($this->ViewTplOutString);
     }
 
     /**
@@ -41,7 +41,7 @@ class Zero_Users_Profile extends Zero_Controller
         $this->Chunk_Init();
         $this->Chunk_Profile();
         $this->Chunk_View();
-        return $this->View;
+        return $this->View->Fetch($this->ViewTplOutString);
     }
 
     /**
@@ -51,7 +51,7 @@ class Zero_Users_Profile extends Zero_Controller
      */
     protected function Chunk_Profile()
     {
-        $this->Model->VL->Validate($_REQUEST['Users']);
+        $this->Model->VL->Validate($_REQUEST['Users'], get_class($this));
         if ( 0 < count($this->Model->VL->Get_Errors()) )
         {
             $this->View->Assign('Error_Validator', $this->Model->VL->Get_Errors());

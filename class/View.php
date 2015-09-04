@@ -167,9 +167,10 @@ class Zero_View
      * - E`ksport daneny`kh
      * - Vy`polnenie shablona i vozvrat rezul`tata
      *
+     * @param bool|false $TplOutString выдача шаблона в виде одной строки
      * @return string sobranny`i` shablon so vstavlenny`mi danny`mi
      */
-    public function Fetch()
+    public function Fetch($__TplOutString__ = false)
     {
         if ( 0 == count($this->_Template) )
             return '';
@@ -200,7 +201,7 @@ class Zero_View
         extract($this->_Data);
         $this->_Data = [];
         include $tpl;
-        if ( Zero_App::$Config->View_TplOutString )
+        if ( $__TplOutString__ )
         {
             $result = '';
             foreach (explode("\n", ob_get_clean()) as $val)

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Abstract controller for editing objects.
  *
@@ -30,10 +31,10 @@ abstract class Zero_Crud_Edit extends Zero_Controller
     public function Action_Default()
     {
         $this->Chunk_Init();
-//        if ( $this->Params['id'] == 0 )
-//            $this->Chunk_Add();
+        //        if ( $this->Params['id'] == 0 )
+        //            $this->Chunk_Add();
         $this->Chunk_View();
-        return $this->View;
+        return $this->View->Fetch($this->ViewTplOutString);
     }
 
     /**
@@ -46,7 +47,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         $this->Chunk_Init();
         $this->Chunk_Add();
         $this->Chunk_View();
-        return $this->View;
+        return $this->View->Fetch($this->ViewTplOutString);
     }
 
     /**
@@ -59,7 +60,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         $this->Chunk_Init();
         $this->Chunk_Save();
         $this->Chunk_View();
-        return $this->View;
+        return $this->View->Fetch($this->ViewTplOutString);
     }
 
     /**
@@ -187,7 +188,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
                 $this->Model->$prop = key($users_condition[$prop]);
         }
 
-        $this->Model->VL->Validate($_REQUEST['Prop']);
+        $this->Model->VL->Validate($_REQUEST['Prop'], get_class($this));
         if ( 0 < count($this->Model->VL->Get_Errors()) )
         {
             $this->View->Assign('Error_Validator', $this->Model->VL->Get_Errors());

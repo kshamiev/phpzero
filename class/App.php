@@ -474,7 +474,6 @@ class Zero_App
             Zero_Logs::Stop('#{CONTROLLER.Action} ' . self::$Section->Controller . ' -> ' . $_REQUEST['act']);
             $messageResponse = $Controller->GetMessage();
         }
-
         // Сборка ст раницы на основании макета
         if ( self::$Section->Layout )
         {
@@ -577,15 +576,7 @@ class Zero_App
         header('Cache-Control: no-store, no-cache, must-revalidate');
         header("Content-Type: text/html; charset=utf-8");
         header('HTTP/1.1 ' . $status . ' ' . $status);
-        if ( true == $content instanceof Zero_View )
-        {
-            /* @var $content Zero_View */
-            echo $content->Fetch();
-        }
-        else
-        {
-            echo $content;
-        }
+        echo $content;
 
         // Логирование (в браузер)
         if ( self::$Config->Log_Output_Display )

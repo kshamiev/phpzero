@@ -66,8 +66,7 @@
         <tr>
             <td width="220px">
                 {$row['Comment']} {if ( 'NO' == $row['IsNull'] )}<span class="subj_error">*</span>{/if}<br>
-                {if ( isset($Error_Validator[$Prop]) )}<span
-                    class="subj_prop_error">{$Error_Validator[$Prop][1]}</span>{/if}
+                {if ( isset($Error_Validator[$Prop]) )}<span class="subj_prop_error">{$Error_Validator[$Prop][1]}</span>{/if}
             </td>
             <td>
                 {if ( 'Readonly' == $row['Form'] )}

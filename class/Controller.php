@@ -29,6 +29,13 @@ abstract class Zero_Controller
     protected $View = null;
 
     /**
+     * The compile tpl in string and out
+     *
+     * @var bool
+     */
+    protected $ViewTplOutString = false;
+
+    /**
      * Sluzhebny`i` massiv dlia khraneniia i dostupa k razlichnoi` sluzhebnoi` informatcii.
      *
      * Osobenno udobno pri khranenii kontrollera v sessii
@@ -142,7 +149,7 @@ abstract class Zero_Controller
     {
         $this->Chunk_Init();
         $this->Chunk_View();
-        return $this->View;
+        return $this->View->Fetch($this->ViewTplOutString);
     }
 
     /**

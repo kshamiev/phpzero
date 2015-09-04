@@ -32,6 +32,6 @@ class Zero_Section_SeoTag extends Zero_Controller
         } else {
             $this->View->Assign('seo_index', '');
         }
-        return $this->View;
+        return $this->View->Fetch($this->ViewTplOutString);
     }
 }

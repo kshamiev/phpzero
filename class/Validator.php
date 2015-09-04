@@ -92,23 +92,6 @@ class Zero_Validator
     }
 
     /**
-     * Контент через визевик
-     *
-     * @param mixed $value value to check
-     * @param string $prop validiruemoe svoi`stvo
-     * @return string
-     */
-    protected function VL_Content($value, $prop)
-    {
-        $this->Model->$prop = '';
-        foreach (explode("\n", $value) as $val)
-        {
-            $this->Model->$prop .= trim($val);
-        }
-        return '';
-    }
-
-    /**
      * Validatciia binarny`kh danny`kh (kartinki) v ramkakh fai`lovoi` sistemy`.
      *
      * S realizatciei` obrabotki kartinki v protcesse sokhraneniia (povorot i resai`z)
@@ -219,6 +202,7 @@ class Zero_Validator
         $props = $this->Model->Get_Config_Form($scenario);
         foreach ($props as $prop => $row)
         {
+
             if ( 'Readonly' == $row['Form'] || 'ID' == $prop )
                 continue;
 

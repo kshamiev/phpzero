@@ -82,6 +82,6 @@ class Zero_Crud_Pager extends Zero_Controller
         $this->View->Assign('Right', $right);
         $this->View->Assign('StepRight', $StepRight);
         $this->View->Assign('PageEnd', $page_count);
-        return $this->View;
+        return $this->View->Fetch($this->ViewTplOutString);
     }
 }
