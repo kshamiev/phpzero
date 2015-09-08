@@ -22,6 +22,6 @@ class Zero_Crud_Toolbar extends Zero_Controller
         {
             $this->View->Assign($prop, $value);
         }
-        return $this->View;
+        return $this->View->Fetch($this->ViewTplOutString);
     }
 }

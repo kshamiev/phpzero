@@ -79,7 +79,7 @@ class Zero_Controller_Grid extends Zero_Crud_Grid
         $this->Chunk_Init();
         $this->Chunk_CatalogMove();
         $this->Chunk_View();
-        return $this->View;
+        return $this->View->Fetch($this->ViewTplOutString);
     }
 
     /**

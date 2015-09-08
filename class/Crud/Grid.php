@@ -31,7 +31,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
     {
         $this->Chunk_Init();
         $this->Chunk_View();
-        return $this->View;
+        return $this->View->Fetch($this->ViewTplOutString);
     }
 
     /**
@@ -44,7 +44,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
         $this->Chunk_Init();
         $this->Chunk_Remove();
         $this->Chunk_View();
-        return $this->View;
+        return $this->View->Fetch($this->ViewTplOutString);
     }
 
     /**
@@ -63,7 +63,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
         $Filter->Set($_REQUEST['Filter'], $_REQUEST['Search'], $_REQUEST['Sort']);
 
         $this->Chunk_View();
-        return $this->View;
+        return $this->View->Fetch($this->ViewTplOutString);
     }
 
     /**
@@ -80,7 +80,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
         $Filter->Page = 1;
 
         $this->Chunk_View();
-        return $this->View;
+        return $this->View->Fetch($this->ViewTplOutString);
     }
 
     /**

@@ -77,7 +77,7 @@ class Zero_Validator
     }
 
     /**
-     * Chisla
+     * Перечисления
      *
      * @param mixed $value value to check
      * @param string $prop validiruemoe svoi`stvo
@@ -88,6 +88,7 @@ class Zero_Validator
         if ( !is_array($value) )
             $value = [];
         $this->Model->$prop = $value;
+        return '';
     }
 
     /**
@@ -135,9 +136,9 @@ class Zero_Validator
         if ( isset($value['Rem']) && $value['Rem'] )
         {
             $_FILES[$prop]['rem'] = true;
-            //            if ( file_exists($filename = ZERO_PATH_DATA . '/' . $this->Model->$prop) )
-            //                unlink($filename);
-            //            $this->Model->$prop = '';
+            if ( file_exists($filename = ZERO_PATH_DATA . '/' . $this->Model->$prop) )
+                unlink($filename);
+            $this->Model->$prop = '';
         }
 
         //  Validatciia
@@ -169,7 +170,9 @@ class Zero_Validator
                 }
             }
             $_FILES[$prop]['name'] = Zero_Helper_Strings::Transliteration_FileName($_FILES[$prop]['name']);
-            //            $this->Model->$prop = 'File Upload Ok';
+            if ( file_exists($filename = ZERO_PATH_DATA . '/' . $this->Model->$prop) )
+                unlink($filename);
+            $this->Model->$prop = $_FILES[$prop]['name'];
         }
         return '';
     }
@@ -199,6 +202,7 @@ class Zero_Validator
         $props = $this->Model->Get_Config_Form($scenario);
         foreach ($props as $prop => $row)
         {
+
             if ( 'Readonly' == $row['Form'] || 'ID' == $prop )
                 continue;
 
@@ -223,54 +227,6 @@ class Zero_Validator
             if ( $subj )
                 $this->Set_Errors($prop, $subj);
         }
-
-        //    zavershenie
-        if ( 0 < count($this->Errors) )
-            return false;
-        else
-            return true;
-    }
-
-    public function Validate_Old($data, $scenario = '')
-    {
-        $this->Errors = [];
-        //  Obshchaia nachal`naia validatciia
-        if ( method_exists($this->Model, $method = 'Validate_Before') )
-            $data = $this->Model->Validate_Before($data, $scenario);
-
-        $props = $this->Model->Get_Config_Form($scenario);
-        foreach ($data as $prop => $value)
-        {
-            pre($prop);
-            if ( !isset($props[$prop]) || 'Readonly' == $props[$prop]['Form'] )
-                continue;
-
-            //  инициализация значения или первичнач обработка
-            if ( is_scalar($value) )
-            {
-                $value = trim($value);
-                if ( 0 == strlen($value) )
-                    $value = null;
-            }
-            // валидация
-            $subj = '';
-            if ( isset($props[$prop]) && 'NO' == $props[$prop]['IsNull'] && !$value )
-                $subj = 'Error_NotNull';
-            else if ( method_exists($this->Model, $method = 'VL_' . $prop) )
-                $subj = $this->Model->$method($value, $scenario);
-            else if ( method_exists($this, $method = 'VL_' . $props[$prop]['Form']) )
-                $subj = $this->$method($value, $prop);
-            else
-                $this->Model->$prop = $value;
-
-            // oshibki validatcii
-            if ( $subj )
-                $this->Set_Errors($prop, $subj);
-        }
-
-        //  Obshchaia zavershaiushchaia validatciia
-        //        if ( method_exists($this->Model, $method = 'Validate_After') )
-        //            $this->Model->Validate_After($data, $scenario);
 
         //    zavershenie
         if ( 0 < count($this->Errors) )

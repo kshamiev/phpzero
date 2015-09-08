@@ -56,17 +56,12 @@ class Zero_Content extends Zero_Model
     protected static function Config_Prop($Model, $scenario = '')
     {
         return [
-            /*BEG_CONFIG_PROP*/
             'ID' => ['AliasDB' => 'z.ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => '', 'Form' => ''],
             'Section_ID' => ['AliasDB' => 'z.Section_ID', 'DB' => 'I', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Hidden'],
             'Lang' => ['AliasDB' => 'z.Lang', 'DB' => 'T', 'IsNull' => 'NO', 'Default' => '', 'Form' => 'Select'],
             'Name' => ['AliasDB' => 'z.Name', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'],
-            'Title' => array('AliasDB' => 'z.Name', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'),
-            'Keywords' => array('AliasDB' => 'z.Keywords', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'),
-            'Description' => array('AliasDB' => 'z.Description', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Textarea'),
-            'Content' => ['AliasDB' => 'z.Content', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Content'],
-            'Block' => ['AliasDB' => 'z.Block', 'DB' => 'T', 'IsNull' => 'NO', 'Default' => 'content', 'Form' => 'Text'],
-            /*END_CONFIG_PROP*/
+            'Content' => ['AliasDB' => 'z.Content', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Textarea'],
+            'Block' => ['AliasDB' => 'z.Block', 'DB' => 'T', 'IsNull' => 'NO', 'Default' => 'content', 'Form' => 'Select'],
         ];
     }
 
@@ -85,13 +80,12 @@ class Zero_Content extends Zero_Model
     protected static function Config_Filter($Model, $scenario = '')
     {
         return [
-            /*BEG_CONFIG_FILTER_PROP*/
             'ID' => ['Visible' => true],
             'Section_ID' => ['Visible' => true],
             'Lang' => ['Visible' => true],
             'Name' => ['Visible' => true],
             'Content' => ['Visible' => true],
-            /*END_CONFIG_FILTER_PROP*/
+            'Block' => ['Visible' => false],
         ];
     }
 
@@ -108,11 +102,9 @@ class Zero_Content extends Zero_Model
     protected static function Config_Grid($Model, $scenario = '')
     {
         return [
-            /*BEG_CONFIG_GRID_PROP*/
             'ID' => [],
             'Name' => [],
             'Block' => [],
-            /*END_CONFIG_GRID_PROP*/
         ];
     }
 
@@ -131,19 +123,25 @@ class Zero_Content extends Zero_Model
      */
     protected static function Config_Form($Model, $scenario = '')
     {
-        return [
-            /*BEG_CONFIG_FORM_PROP*/
-            'ID' => [],
-            'Section_ID' => [],
-            'Lang' => [],
-            'Name' => [],
-            'Title' => [],
-            'Keywords' => [],
-            'Description' => [],
-            'Content' => [],
-            'Block' => [],
-            /*END_CONFIG_FORM_PROP*/
-        ];
+        if ( 'Zero_Content_Edit' == $scenario )
+        {
+            return [
+                'ID' => [],
+                'Lang' => [],
+                'Name' => [],
+                'Content' => [],
+                'Block' => [],
+            ];
+        }
+        else
+        {
+            return [
+                'ID' => [],
+                'Name' => [],
+                'Content' => [],
+                'Block' => [],
+            ];
+        }
     }
 
     /**
@@ -160,6 +158,33 @@ class Zero_Content extends Zero_Model
             $sql = "SELECT * FROM {$this->Source} WHERE Block = '{$blockName}' AND Lang = '" . ZERO_LANG . "'";
         $row = Zero_DB::Select_Row($sql);
         $this->Set_Props($row);
+    }
+
+    /**
+     * Фильтр для блока и его значения
+     *
+     * @return array
+     */
+    public function FL_Block()
+    {
+        return [
+            'header_Left' => 'header_Left',
+            'header_Center' => 'header_Center',
+            'header_Right' => 'header_Right',
+            'content_Left' => 'content_Left',
+            'content_Center' => 'content_Center',
+            'content_Right' => 'content_Right',
+            'footer_Left' => 'footer_Left',
+            'footer_Center' => 'footer_Center',
+            'footer_Right' => 'footer_Right',
+        ];
+    }
+
+    /**
+     * Динамический фабричный метод длиа создании объекта через фабрику и инстанс.
+     */
+    protected function Init()
+    {
     }
 
     /**

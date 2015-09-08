@@ -168,6 +168,6 @@ class Zero_Users_Login extends Zero_Controller
     protected function Chunk_View()
     {
         $this->View->Assign('Message', $this->GetMessage());
-        return $this->View->Fetch();
+        return $this->View->Fetch($this->ViewTplOutString);
     }
 }

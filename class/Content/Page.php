@@ -1,13 +1,10 @@
 <?php
 /**
- * Контент страницы.
- *
  * Контент-блоки страницы.
- * Главный контент страницы.
  *
  * {plugin "Zero_Content_Page" block="footer"}
  *
- * @package Zero.Content.Page
+ * @package Zero.Content.Plugin
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */

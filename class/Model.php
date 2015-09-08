@@ -540,13 +540,15 @@ abstract class Zero_Model
      */
     public function Save()
     {
-        //  sborka svoi`stv dlia sokhraneniia v BD
+        //  Подготовка не бинарных данных  для сохранения в БД
         $sql_update = [];
         $prop_list = $this->Get_Config_Prop();
         unset($prop_list['ID']);
         foreach ($this->Get_Props(-1) as $prop => $value)
         {
             if ( !isset($prop_list[$prop]) || (isset($prop_list['AR']) && false == $prop_list['AR']) )
+                continue;
+            if ( $prop_list[$prop]['Form'] == 'Img' || $prop_list[$prop]['Form'] == 'File' )
                 continue;
             $method = "Esc" . $prop_list[$prop]['DB'];
             $sql_update[] = '`' . $prop . '` = ' . Zero_DB::$method($value);
@@ -574,16 +576,13 @@ abstract class Zero_Model
         {
             if ( !isset($prop_list[$prop]) || (isset($prop_list['AR']) && false == $prop_list['AR']) )
                 continue;
-            if ( !isset($_FILES[$prop]) )
+            if ( $prop_list[$prop]['Form'] != 'Img' && $prop_list[$prop]['Form'] != 'File' )
                 continue;
-            if ( isset($_FILES[$prop]['rem']) && $this->$prop )
+            if ( !$this->$prop )
             {
-                if ( file_exists($filename = ZERO_PATH_DATA . '/' . $this->$prop) )
-                    unlink($filename);
                 $sql_update[$prop] = "`" . $prop . "` = NULL";
                 if ( isset($prop_list[$prop . 'B']) )
                     $sql_update[$prop] = "`" . $prop . "B` = NULL";
-                $this->$prop = '';
             }
             if ( 0 === $_FILES[$prop]['error'] )
             {

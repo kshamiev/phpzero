@@ -45,6 +45,6 @@ class Zero_Section_NavigationLine extends Zero_Controller
         else
             $this->View = new Zero_View(get_class($this));
         $this->View->Assign('navigation', $navigation);
-        return $this->View;
+        return $this->View->Fetch($this->ViewTplOutString);
     }
 }
