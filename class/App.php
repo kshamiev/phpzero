@@ -212,7 +212,7 @@ class Zero_App
      * @param int $code
      * @param array $params
      */
-    public static function ResponseJson($content, $status = 200, $code = 0, $params = [])
+    public static function ResponseJson($content = null, $status = 200, $code = 0, $params = [])
     {
         header('Pragma: no-cache');
         header('Last-Modified: ' . date('D, d M Y H:i:s') . 'GMT');
