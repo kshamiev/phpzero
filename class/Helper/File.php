@@ -436,7 +436,6 @@ final class Zero_Helper_File
         else
             fputs($fp, trim($value) . "\n");
         fclose($fp);
-        chmod($path_file, 0666);
         return true;
     }
 

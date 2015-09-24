@@ -9,7 +9,6 @@
  */
 class Zero_I18n
 {
-
     /**
      * Massiv soderzhashchii` danny`e iazy`kovy`kh fai`lov perevoda
      *
@@ -31,7 +30,6 @@ class Zero_I18n
     {
         return self::T($file_name, 'Controller', $key);
     }
-
 
     public static function Message($file_name, $code, $params = [])
     {
@@ -64,10 +62,10 @@ class Zero_I18n
     /**
      * Perevod po cliuchevoi` stroke
      *
-     * @param $file_name Imia iazy`kovogo fai`la (imia modeli, kontrollera)
+     * @param $file_name string Имиа языкового файла (имиа модели, контроллера)
      * @param $section string
      * @param $key string
-     * @return string nai`denny`i` perevod
+     * @return string|array найденный перевод
      */
     protected static function T($file_name, $section, $key)
     {
@@ -84,7 +82,7 @@ class Zero_I18n
         {
             return self::$_I18n[$file_name][$key];
         }
-//        Zero_Logs::Set_Message_Warninng('I18N NOT FOUND KEY: ' . LANG . ' -> ' . $file_name . ' -> ' . $key);
+        //        Zero_Logs::Set_Message_Warninng('I18N NOT FOUND KEY: ' . LANG . ' -> ' . $file_name . ' -> ' . $key);
         return $key;
     }
 
@@ -102,12 +100,14 @@ class Zero_I18n
         self::$_I18n[$folder_list[0] . '_' . $folder_list[1]] = [];
         //
         $path = ZERO_PATH_APPLICATION . '/' . strtolower($folder_list[0]) . '/i18n/' . $lang . '/' . $folder_list[1] . '.php';
+
         if ( file_exists($path) )
         {
             self::$_I18n[$folder_list[0] . '_' . $folder_list[1]] = include $path;
             return $path;
         }
         $path = ZERO_PATH_SITE . '/' . strtolower($folder_list[0]) . '/i18n/' . $lang . '/' . $folder_list[1] . '.php';
+
         if ( file_exists($path) )
         {
             self::$_I18n[$folder_list[0] . '_' . $folder_list[1]] = include $path;

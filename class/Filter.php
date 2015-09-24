@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Фильтр.
  *
@@ -188,8 +189,11 @@ class Zero_Filter
                 $this->Filter[$prop]['List'] = $row['List'];
             else
             {
-                $data = Zero_I18n::Model(get_class($this->Model), $prop . ' options');
-                if ( $data != $prop . ' options' )
+                $data = Zero_I18n::Model(get_class($this->Model), $this->Model->Source . ' ' . $prop . ' options');
+                if ( !is_array($data) )
+                    $data = Zero_I18n::Model(get_class($this->Model), $prop . ' options');
+                //
+                if ( is_array($data) )
                     $this->Filter[$prop]['List'] = $data;
             }
         }
@@ -240,8 +244,11 @@ class Zero_Filter
                 $this->Filter[$prop]['List'] = $row['List'];
             else
             {
-                $data = Zero_I18n::Model(get_class($this->Model), $prop . ' options');
-                if ( $data != $prop . ' options' )
+                $data = Zero_I18n::Model(get_class($this->Model), $this->Model->Source . ' ' . $prop . ' options');
+                if ( !is_array($data) )
+                    $data = Zero_I18n::Model(get_class($this->Model), $prop . ' options');
+                //
+                if ( is_array($data) )
                     $this->Filter[$prop]['List'] = $data;
             }
         }
@@ -305,8 +312,11 @@ class Zero_Filter
                 $this->Filter[$prop]['List'] = $row['List'];
             else
             {
-                $data = Zero_I18n::Model(get_class($this->Model), $prop . ' options');
-                if ( $data != $prop . ' options' )
+                $data = Zero_I18n::Model(get_class($this->Model), $this->Model->Source . ' ' . $prop . ' options');
+                if ( !is_array($data) )
+                    $data = Zero_I18n::Model(get_class($this->Model), $prop . ' options');
+                //
+                if ( is_array($data) )
                     $this->Filter[$prop]['List'] = $data;
             }
         }
@@ -374,11 +384,15 @@ class Zero_Filter
     /**
      * Getter. Poluchenie fil`trov.
      *
+     * @param string $propNaqme получить фильтр по конкретному свойству
      * @return array
      */
-    public function Get_Filter()
+    public function Get_Filter($propNaqme = '')
     {
-        return $this->Filter;
+        if ( $propNaqme )
+            return $this->Filter[$propNaqme];
+        else
+            return $this->Filter;
     }
 
     /**
@@ -542,8 +556,8 @@ class Zero_Filter
                     $this->Add_Sort($prop, $row);
                 }
             }
-//            if ( isset($row['Sort']) && $row['Sort'] )
-//                $this->Set_Sort($prop, $row['Sort']);
+            //            if ( isset($row['Sort']) && $row['Sort'] )
+            //                $this->Set_Sort($prop, $row['Sort']);
         }
         return $this;
     }

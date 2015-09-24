@@ -10,9 +10,9 @@
 abstract class Zero_Crud_Edit extends Zero_Controller
 {
     /**
-     * The table stores the objects handled by this controller.
+     * The table stores the objects handled by this cont
+     * @var stringroller.
      *
-     * @var string
      */
     protected $ModelName = '';
 
