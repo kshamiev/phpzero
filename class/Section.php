@@ -216,7 +216,7 @@ class Zero_Section extends Zero_Model
      */
     public function Init_Url($url)
     {
-        $index = $this->Source . '/' . $url . '/' . LANG . '/url';
+        $index = 'route' . $url . '/' . LANG . '/url';
         if ( false === $row = Zero_Cache::Get_Data($index) )
         {
             if ( Zero_App::$Config->Site_UseDB )
@@ -224,7 +224,7 @@ class Zero_Section extends Zero_Model
                 $sql = "SELECT * FROM {$this->Source} WHERE Url = " . Zero_DB::EscT($url);
                 $row = Zero_DB::Select_Row($sql);
                 $this->Set_Props($row);
-                Zero_Cache::Set_Link('Zero_Section', $this->ID);
+                Zero_Cache::Set_Link('Section', $this->ID);
                 Zero_Cache::Set_Data($index, $row);
             }
         }
@@ -236,6 +236,7 @@ class Zero_Section extends Zero_Model
      * Getting a controller actions with regard to the rights section.
      *
      * @return array ist of actions controllers section
+     * @throws Exception
      */
     public function Get_Action_List()
     {
@@ -279,7 +280,7 @@ class Zero_Section extends Zero_Model
                 }
             }
         }
-        Zero_Cache::Set_Link('Zero_Groups', Zero_App::$Users->Groups_ID);
+        Zero_Cache::Set_Link('Groups', Zero_App::$Users->Groups_ID);
         $this->Cache->Set($index_cache, $this->_Action_List);
         return $this->_Action_List;
     }

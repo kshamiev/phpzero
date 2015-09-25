@@ -225,7 +225,7 @@ class Zero_App
             $message = Zero_I18n::Message(self::$Section->Controller, $code, $params);
         else
             $message = Zero_I18n::Message('Zero', $code, $params);
-        if ( -1 == $code || 403 == $code || 404 == $code || 5000 <= $code )
+        if ( -1 == $code || 500 == $code || 403 == $code || 404 == $code || 5000 <= $code )
             $errorStatus = true;
         else
             $errorStatus = false;
@@ -344,14 +344,15 @@ class Zero_App
         Zero_Session::Init(self::$Config->Site_Domain);
     }
 
-    public static function ExecuteSimple()
+    /**
+     * Поиск роутинга в конфигурационных файлах
+     *
+     * @return array
+     * @throws Exception
+     */
+    private static function _SearchRouteApi()
     {
-        // Пользователь
-        self::$Users = Zero_Users::Factor();
-
-        // Раздел - страница
         $route = [];
-        self::$Section = Zero_Section::Instance();
         foreach (Zero_Config::Get_Modules() as $module)
         {
             $config = Zero_Config::Get_Config($module, 'route' . self::$mode);
@@ -368,12 +369,54 @@ class Zero_App
         if ( 0 == count($route) )
             throw new Exception('Page Not Found', 404);
 
+        if ( isset($route['Controller']) )
+            self::$Section->Controller = $route['Controller'];
+        if ( isset($route['View']) )
+            self::$Section->Layout = $route['View'];
+        if ( isset($route['UrlRedirect']) )
+            self::$Section->UrlRedirect = $route['UrlRedirect'];
+
+        return $route;
+    }
+
+    public static function ExecuteSimple()
+    {
+        // Пользователь
+        self::$Users = Zero_Users::Factor();
+
+        //  Раздел - страница
+        self::$Section = Zero_Section::Instance();
+
+        // Поиск роутинга в конфигурационных файлах
+        $route = [];
+        foreach (Zero_Config::Get_Modules() as $module)
+        {
+            $config = Zero_Config::Get_Config($module, 'route' . self::$mode);
+            if ( isset($config[ZERO_URL]) )
+            {
+                $route = $config[ZERO_URL];
+                if ( !is_array($route) )
+                {
+                    $route['Controller'] = $route;
+                }
+                break;
+            }
+        }
+        if ( 0 == count($route) )
+            throw new Exception('Page Not Found', 404);
+
+        if ( isset($route['Controller']) )
+            self::$Section->Controller = $route['Controller'];
+        if ( isset($route['View']) )
+            self::$Section->Layout = $route['View'];
+        if ( isset($route['UrlRedirect']) )
+            self::$Section->UrlRedirect = $route['UrlRedirect'];
+
         //  Выполнение контроллера
         $view = '';
         $messageResponse = ['Code' => 0, 'Message' => ''];
-        if ( isset($route['Controller']) && $route['Controller'] )
+        if ( self::$Section->Controller )
         {
-            self::$Section->Controller = $route['Controller'];
             if ( isset($_REQUEST['act']) && $_REQUEST['act'] )
                 $_REQUEST['act'] = trim($_REQUEST['act']);
             else if ( self::MODE_API == self::$mode )
@@ -395,9 +438,9 @@ class Zero_App
         }
 
         // Сборка ст раницы на основании макета
-        if ( isset($route['View']) && $route['View'] )
+        if ( self::$Section->Controller )
         {
-            $viewLayout = new Zero_View($route['View']);
+            $viewLayout = new Zero_View(self::$Section->Controller);
             $viewLayout->Assign('Message', $messageResponse);
             if ( true == $view instanceof Zero_View )
             {
@@ -436,6 +479,7 @@ class Zero_App
 
         //  Раздел - страница
         self::$Section = Zero_Section::Instance();
+
         if ( 0 == self::$Section->ID || 'no' == self::$Section->IsEnable )
             throw new Exception('Page Not Found', 404);
         if ( self::$Section->UrlRedirect )

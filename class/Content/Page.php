@@ -31,7 +31,7 @@ class Zero_Content_Page extends Zero_Controller
             {
                 $Content->Load_Page($this->Params['block']);
             }
-            Zero_Cache::Set_Link('Zero_Content', $Content->ID);
+            Zero_Cache::Set_Link('Content', $Content->ID);
             Zero_App::$Section->Cache->Set($index, $Content);
         }
         return $Content->Content;

@@ -28,36 +28,76 @@ class Zero_Controller_Sample extends Zero_Controller
     }
 
     //// Пример контроллера для API
+    /**
+     * Какой-то контроллер
+     *
+     * @sample /api/v1/sample?param=value...
+     *
+     * @return boolean flag статус выполнения
+     */
     public function Action_GET()
     {
         Zero_App::ResponseJson('', 200, 0, []);
+        return true;
     }
 
+    /**
+     * Какой-то контроллер
+     *
+     * @sample /api/v1/sample?param=value...
+     *
+     * @return boolean flag статус выполнения
+     */
     public function Action_PUT()
     {
         Zero_App::ResponseJson($_REQUEST, 200, 0, []);
+        return true;
     }
 
+    /**
+     * Какой-то контроллер
+     *
+     * @sample /api/v1/sample?param=value...
+     *
+     * @return boolean flag статус выполнения
+     */
     public function Action_POST()
     {
         Zero_App::ResponseJson($_REQUEST, 200, 0, []);
+        return true;
     }
 
+    /**
+     * Какой-то контроллер
+     *
+     * @sample /api/v1/sample?param=value...
+     *
+     * @return boolean flag статус выполнения
+     */
     public function Action_DELETE()
     {
         Zero_App::ResponseJson('', 200, 0, []);
+        return true;
     }
 
+    /**
+     * Какой-то контроллер
+     *
+     * @sample /api/v1/sample?param=value...
+     *
+     * @return boolean flag статус выполнения
+     */
     public function Action_OPTIONS()
     {
         Zero_App::ResponseJson('', 200, 0, []);
+        return true;
     }
 
     //// Пример консольного контроллера
     /**
-     * Initialize the online status is not active users.
+     * Контроллер по умолчанию
      *
-     * @return boolean flag stop execute of the next chunk
+     * @return boolean flag статус выполнения
      */
     public function Action_Default()
     {

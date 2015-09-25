@@ -175,19 +175,18 @@ class Zero_View
         if ( 0 == count($this->_Template) )
             return '';
 
-        $html = $tpl = '';
+        $arr = [];
         foreach ($this->_Template as $template)
         {
-            $html = self::Search_Template($template);
-            if ( '' != $html )
+            $arr = self::Search_Template($template);
+            if ( 0 < count($arr) )
             {
-                $tpl = str_replace(ZERO_PATH_SITE, ZERO_PATH_CACHE, $html) . '_' . ZERO_LANG . '.tpl';
-                if ( true == Zero_App::$Config->Site_TemplateParsing || !file_exists($tpl) )
-                    Zero_Helper_File::File_Save($tpl, $this->_Parsing(file_get_contents($html)));
+                if ( true == Zero_App::$Config->Site_TemplateParsing || !file_exists($arr[1]) )
+                    Zero_Helper_File::File_Save($arr[1], $this->_Parsing(file_get_contents($arr[0])));
                 break;
             }
         }
-        if ( '' == $html )
+        if ( 0 == count($arr) )
         {
             Zero_Logs::Set_Message_Error('NOT FOUND view [' . implode(', ', $this->_Template) . ']');
             return '';
@@ -200,7 +199,7 @@ class Zero_View
         ob_start();
         extract($this->_Data);
         $this->_Data = [];
-        include $tpl;
+        include $arr[1];
         if ( $__TplOutString__ )
         {
             $result = '';
@@ -226,7 +225,7 @@ class Zero_View
      * - /zero/view/Users/Login.html
      *
      * @param string $template imia shablona
-     * @return string nai`denny`i` shablon ( put` ot kornia sai`ta )
+     * @return array найденный шаблон [0], путь до скомпилированного tpl [1] ( путь от корниа сайта )
      */
     protected static function Search_Template($template)
     {
@@ -236,15 +235,15 @@ class Zero_View
         $path = ZERO_PATH_APPLICATION . '/' . $module . '/view/' . implode('/', $arr) . self::EXT_VIEW;
         if ( file_exists($path) )
         {
-            return $path;
+            return [$path, ZERO_PATH_CACHE . '/view/' . $module . '/' . implode('/', $arr) . '_' . ZERO_LANG . '.tpl'];
         }
         //
         $path = ZERO_PATH_SITE . '/' . $module . '/view/' . implode('/', $arr) . self::EXT_VIEW;
         if ( file_exists($path) )
         {
-            return $path;
+            return [$path, ZERO_PATH_CACHE . '/view/' . $module . '/' . implode('/', $arr) . '_' . ZERO_LANG . '.tpl'];
         }
-        return '';
+        return [];
     }
 
     /**
@@ -289,8 +288,9 @@ class Zero_View
      */
     private function _Parsing_Include($matches)
     {
-        if ( '' != $pathTemplate = self::Search_Template($matches[1]) )
-            $matches = file_get_contents($pathTemplate);
+        $arr = self::Search_Template($matches[1]);
+        if ( 0 < count($arr) )
+            $matches = file_get_contents($arr[0]);
         else
         {
             $matches = '';

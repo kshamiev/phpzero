@@ -39,7 +39,7 @@ function app_route()
     }
 
     // api
-    if ( Zero_App::MODE_API == $row[0] || Zero_App::MODE_API == Zero_App::$Config->Site_DomainSub )
+    if ( strtolower(Zero_App::MODE_API) == $row[0] || strtolower(Zero_App::MODE_API) == Zero_App::$Config->Site_DomainSub )
     {
         $Mode = Zero_App::MODE_API;
         app_request_data_api();

@@ -10,14 +10,14 @@
 abstract class Zero_Crud_Edit extends Zero_Controller
 {
     /**
-     * The table stores the objects handled by this cont
-     * @var stringroller.
+     * Имя обрабатываемой модели
      *
+     * @var string
      */
     protected $ModelName = '';
 
     /**
-     * Template view
+     * Имя шаблона представления
      *
      * @var string
      */
@@ -31,8 +31,6 @@ abstract class Zero_Crud_Edit extends Zero_Controller
     public function Action_Default()
     {
         $this->Chunk_Init();
-        //        if ( $this->Params['id'] == 0 )
-        //            $this->Chunk_Add();
         $this->Chunk_View();
         return $this->View->Fetch($this->ViewTplOutString);
     }
