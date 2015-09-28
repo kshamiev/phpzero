@@ -95,7 +95,7 @@ class Zero_Users extends Zero_Model
             /*BEG_CONFIG_PROP*/
             'ID' => [
                 'AliasDB' => 'z.ID',
-                'DB' => 'I',
+                'DB' => 'ID',
                 'IsNull' => 'NO',
                 'Default' => '',
                 'Form' => ''
@@ -184,24 +184,39 @@ class Zero_Users extends Zero_Model
      */
     protected static function Config_Form($Model, $scenario = '')
     {
-        return [
-            /*BEG_CONFIG_FORM_PROP*/
-            'ID' => [],
-            'Groups_ID' => [],
-            'Name' => [],
-            'Login' => [],
-            'Password' => [],
-            'IsAccess' => [],
-            'Email' => [],
-            'Phone' => [],
-            'Skype' => [],
-            'IsCondition' => [],
-            'ImgAvatar' => [],
-            'IsOnline' => [],
-            'DateOnline' => [],
-            'Date' => [],
-            /*END_CONFIG_FORM_PROP*/
-        ];
+        if ( 'Zero_Users_Profile' == $scenario )
+        {
+            return [
+                'ID' => [],
+                'Name' => [],
+                'Password' => [],
+                'Email' => [],
+                'Phone' => [],
+                'Skype' => [],
+                'ImgAvatar' => [],
+                'Sector_ID' => [],
+            ];
+        }
+        else
+        {
+            return [
+                'ID' => [],
+                'Groups_ID' => [],
+                'Name' => [],
+                'Login' => [],
+                'Password' => [],
+                'IsAccess' => [],
+                'Email' => [],
+                'Phone' => [],
+                'Skype' => [],
+                'IsCondition' => [],
+                'ImgAvatar' => [],
+                'IsOnline' => [],
+                'DateOnline' => [],
+                'Date' => [],
+                'Sector_ID' => [],
+            ];
+        }
     }
 
     /**

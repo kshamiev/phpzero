@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Inkapsuliruet v sebe vsiu rabotu s BD.
  *
@@ -24,7 +25,6 @@
  */
 class Zero_DB
 {
-
     /**
      * Массив коннектов к БД
      *
@@ -94,15 +94,32 @@ class Zero_DB
     }
 
     /**
-     * Proverka tcely`kh chisel
+     * Проверка целых чисел (FK, PK)
+     *
+     * Для полей идентификаторов и связей
+     *
+     * @param int $int
+     * @return int or NULL
+     */
+    public static function EscID($int)
+    {
+        $int = intval($int);
+        if ( !$int )
+            return 'NULL';
+        return $int;
+    }
+
+    /**
+     * Проверка целых чисел (FK, PK)
      *
      * @param int $int
      * @return int or NULL
      */
     public static function EscI($int)
     {
-//        if ( 0 == strlen($int) )
-//            return 'NULL';
+        $int = intval($int);
+        if ( 0 == strlen($int) )
+            return 'NULL';
         return intval($int);
     }
 
@@ -114,8 +131,8 @@ class Zero_DB
      */
     public static function EscF($float)
     {
-//        if ( 0 == strlen($float) )
-//            return 'NULL';
+        //        if ( 0 == strlen($float) )
+        //            return 'NULL';
         return floatval(str_replace(',', '.', $float));
     }
 

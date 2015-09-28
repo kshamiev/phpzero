@@ -30,8 +30,6 @@ class Zero_Groups extends Zero_Model
     protected static function Config_Link($Model, $scenario = '')
     {
         return [
-            /*BEG_CONFIG_LINK*/
-            /*END_CONFIG_LINK*/
         ];
     }
 
@@ -50,12 +48,10 @@ class Zero_Groups extends Zero_Model
     protected static function Config_Prop($Model, $scenario = '')
     {
         return [
-            /*BEG_CONFIG_PROP*/
-            'ID' => ['AliasDB' => 'z.ID', 'DB' => 'I', 'IsNull' => 'NO', 'Default' => '', 'Form' => ''],
+            'ID' => ['AliasDB' => 'z.ID', 'DB' => 'ID', 'IsNull' => 'NO', 'Default' => '', 'Form' => ''],
             'Name' => ['AliasDB' => 'z.Name', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'],
             'Status' => ['AliasDB' => 'z.Status', 'DB' => 'E', 'IsNull' => 'NO', 'Default' => 'open', 'Form' => 'Radio'],
             'Description' => ['AliasDB' => 'z.Description', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Textarea'],
-            /*END_CONFIG_PROP*/
         ];
     }
 
@@ -74,12 +70,10 @@ class Zero_Groups extends Zero_Model
     protected static function Config_Filter($Model, $scenario = '')
     {
         return [
-            /*BEG_CONFIG_FILTER_PROP*/
             'ID' => ['Visible' => true],
             'Name' => ['Visible' => true],
             'Status' => ['Visible' => true],
             'Description' => ['Visible' => true],
-            /*END_CONFIG_FILTER_PROP*/
         ];
     }
 
@@ -96,10 +90,8 @@ class Zero_Groups extends Zero_Model
     protected static function Config_Grid($Model, $scenario = '')
     {
         return [
-            /*BEG_CONFIG_GRID_PROP*/
             'ID' => [],
             'Name' => [],
-            /*END_CONFIG_GRID_PROP*/
         ];
     }
 
@@ -119,12 +111,10 @@ class Zero_Groups extends Zero_Model
     protected static function Config_Form($Model, $scenario = '')
     {
         return [
-            /*BEG_CONFIG_FORM_PROP*/
             'ID' => [],
             'Name' => [],
             'Status' => [],
             'Description' => [],
-            /*END_CONFIG_FORM_PROP*/
         ];
     }
 }

@@ -65,7 +65,7 @@ class Zero_Engine
         //  mnozhestva
         'set' => 'S',
         //  tcely`e chisla
-        'bigint' => 'I',
+        'bigint' => 'ID',
         'mediumint' => 'I',
         'int' => 'I',
         'smallint' => 'I',
