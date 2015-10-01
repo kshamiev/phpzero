@@ -226,7 +226,10 @@ class Zero_App
         else
             $message = Zero_I18n::Message('Zero', $code, $params);
         if ( -1 == $code || 500 == $code || 403 == $code || 404 == $code || 5000 <= $code )
+        {
             $errorStatus = true;
+            Zero_Logs::Set_Message_Error($message[1]);
+        }
         else
             $errorStatus = false;
 
@@ -320,11 +323,6 @@ class Zero_App
         //  Configuration (Zero_Config)
         self::$Config = new Zero_Config($fileApp);
 
-        $arr = app_route();
-        self::$mode = $arr[0];
-        self::$lang = $arr[1];
-        self::$url = $arr[2];
-
         //  Initializing monitoring system (Zero_Logs)
         Zero_Logs::Init($fileApp);
 
@@ -338,10 +336,17 @@ class Zero_App
             Zero_DB::Config_Add($name, $config);
         }
 
-        require_once ZERO_PATH_ZERO . '/class/View.php';
-
         //  Session Initialization (Zero_Session)
         Zero_Session::Init(self::$Config->Site_Domain);
+
+        // Роутинг
+        $arr = app_route();
+        self::$mode = $arr[0];
+        self::$lang = $arr[1];
+        self::$url = $arr[2];
+
+        // Шаблонизатор
+        require_once ZERO_PATH_ZERO . '/class/View.php';
     }
 
     /**
