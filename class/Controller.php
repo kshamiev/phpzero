@@ -68,6 +68,7 @@ abstract class Zero_Controller
      *
      * @param int $code код сообщения
      * @param array $params параметры сообщения (sprintf)
+     * @return bool флаг ошибки
      */
     public function SetMessage($code = 0, $params = [])
     {
@@ -81,6 +82,7 @@ abstract class Zero_Controller
             'Message' => $arr[1],
             'ErrorStatus' => $errorStatus,
         ];
+        return $errorStatus;
     }
 
     /**
