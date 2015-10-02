@@ -336,9 +336,6 @@ class Zero_App
             Zero_DB::Config_Add($name, $config);
         }
 
-        //  Session Initialization (Zero_Session)
-        Zero_Session::Init(self::$Config->Site_Domain);
-
         // Роутинг
         $arr = app_route();
         self::$mode = $arr[0];
@@ -347,6 +344,9 @@ class Zero_App
 
         // Шаблонизатор
         require_once ZERO_PATH_ZERO . '/class/View.php';
+
+        //  Session Initialization (Zero_Session)
+        Zero_Session::Init(self::$Config->Site_Domain);
     }
 
     /**
@@ -443,9 +443,9 @@ class Zero_App
         }
 
         // Сборка ст раницы на основании макета
-        if ( self::$Section->Controller )
+        if ( self::$Section->Layout )
         {
-            $viewLayout = new Zero_View(self::$Section->Controller);
+            $viewLayout = new Zero_View(self::$Section->Layout);
             $viewLayout->Assign('Message', $messageResponse);
             if ( true == $view instanceof Zero_View )
             {
