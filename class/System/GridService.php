@@ -57,14 +57,14 @@ class Zero_System_GridService extends Zero_Controller
     {
         $_REQUEST['connectDb'] = trim($_REQUEST['connectDb']);
         if ( !$_REQUEST['connectDb'] )
-            return $this->Set_Message('Error_NotParam', 1);
+            return $this->SetMessage(5301);
         $_REQUEST['flag_gird'] = isset($_REQUEST['flag_gird']) ? true : false;
         $_REQUEST['flag_edit'] = isset($_REQUEST['flag_edit']) ? true : false;
         $Controller_Factory = new Zero_Engine;
         if ( $Controller_Factory->Factory_Modules_DB($_REQUEST['connectDb'], $_REQUEST['flag_gird'], $_REQUEST['flag_edit']) )
-            return $this->Set_Message("Engine_Modules_DB", 0);
+            return $this->SetMessage(-1, "Engine_Modules_DB");
         else
-            return $this->Set_Message("Error_Engine_Modules_DB", 1);
+            return $this->SetMessage(-1, "Error_Engine_Modules_DB");
     }
 
     public function Action_CacheReset()
@@ -83,7 +83,7 @@ class Zero_System_GridService extends Zero_Controller
     protected function Chunk_CacheReset()
     {
         Zero_Cache::Reset_All();
-        return $this->Set_Message("Cache_Reset", 0);
+        return $this->SetMessage(2302);
     }
 
     public function Action_SessionReset()
@@ -102,6 +102,6 @@ class Zero_System_GridService extends Zero_Controller
     protected function Chunk_SessionReset()
     {
         Zero_Helper_File::File_Remove(ini_get('session.save_path'));
-        return $this->Set_Message("Session_Reset", 0);
+        return $this->SetMessage(2301);
     }
 }

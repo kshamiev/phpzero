@@ -194,6 +194,11 @@ class Zero_App
             )
         );
         $fp = fopen($url, 'rb', false, stream_context_create($opts));
+        if ( $fp == false )
+        {
+            Zero_Logs::Set_Message_Error('Обращение к не корректному ресурсу: ' . $url);
+            return null;
+        }
         $response = stream_get_contents($fp);
         fclose($fp);
         $data = json_decode($response, true);
@@ -208,24 +213,23 @@ class Zero_App
      * Для ответов на API запросы
      *
      * @param $content
-     * @param int $status
      * @param int $code
      * @param array $params
      */
-    public static function ResponseJson($content = null, $status = 200, $code = 0, $params = [])
+    public static function ResponseJson200($content = null, $code = 0, $params = [])
     {
         header('Pragma: no-cache');
         header('Last-Modified: ' . date('D, d M Y H:i:s') . 'GMT');
         header('Expires: Mon, 26 Jul 2007 05:00:00 GMT');
         header('Cache-Control: no-store, no-cache, must-revalidate');
         header("Content-Type: application/json; charset=utf-8");
-        header('HTTP/1.1 ' . $status . ' ' . $status);
+        header('HTTP/1.1 200 200');
 
         if ( self::$Section->Controller )
             $message = Zero_I18n::Message(self::$Section->Controller, $code, $params);
         else
             $message = Zero_I18n::Message('Zero', $code, $params);
-        if ( -1 == $code || 500 == $code || 403 == $code || 404 == $code || 5000 <= $code )
+        if ( -1 == $code || 5000 <= $code )
         {
             $errorStatus = true;
             Zero_Logs::Set_Message_Error($message[1]);
@@ -599,7 +603,7 @@ class Zero_App
         if ( self::MODE_CONSOLE == self::$mode || !isset($_SERVER['REQUEST_URI']) )
             self::ResponseConsole();
         else if ( self::MODE_API == self::$mode )
-            self::ResponseJson('', $code, -1, [$exception->getMessage()]);
+            self::ResponseJson200(null, -1, [$exception->getMessage()]);
         else if ( self::MODE_WEB == self::$mode )
         {
             $View = new Zero_View(ucfirst(self::$Config->Site_DomainSub) . '_Error');

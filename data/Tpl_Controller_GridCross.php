@@ -48,15 +48,15 @@ class Zero_Controller_Grid extends Zero_Crud_Grid
     public function Action_Link_Add()
     {
         if ( !$_REQUEST['id'] )
-            return $this->Set_Message('Error_ParamNot', 1);
+            return $this->SetMessage(5301);
         //  target parent object
         $Object1 = Zero_Model::Makes($this->Params['obj_parent_table'], $this->Params['obj_parent_id']);
         //  this object
         $Object2 = Zero_Model::Makes($this->ModelName, $_REQUEST['id']);
         //
         if ( !$Object1->AR->Insert_Cross($Object2) )
-            return $this->Set_Message('Error_ParamNot', 1);
-        return $this->Set_Message('Object_LinkAdd', 0);
+            return $this->SetMessage(5301);
+        return $this->SetMessage();
     }
 
     /**
@@ -67,14 +67,14 @@ class Zero_Controller_Grid extends Zero_Crud_Grid
     public function Action_Link_Rem()
     {
         if ( !$_REQUEST['id'] )
-            return $this->Set_Message('Error_Link_Rem', 1);
+            return $this->SetMessage(5302);
         //  target parent object
         $Object1 = Zero_Model::Makes($this->Params['obj_parent_table'], $this->Params['obj_parent_id']);
         //  this object
         $Object2 = Zero_Model::Makes($this->ModelName, $_REQUEST['id']);
         //
         if ( !$Object1->AR->Delete_Cross($Object2) )
-            return $this->Set_Message('Error_Link_Rem', 1);
-        return $this->Set_Message('Link_Rem', 0);
+            return $this->SetMessage(5302);
+        return $this->SetMessage();
     }
 }

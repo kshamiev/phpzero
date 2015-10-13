@@ -93,17 +93,16 @@ class Zero_Users_Grid extends Zero_Crud_Grid
     protected function Chunk_CatalogMove()
     {
         if ( !$_REQUEST['id'] )
-            return $this->Set_Message('Error_NotParam', 1);
+            return $this->SetMessage(5303);
         $prop = $this->Params['obj_parent_prop'];
         $Object = Zero_Model::Makes($this->ModelName, $_REQUEST['id']);
-        /* @var $Object Zero_Users */
         if ( 0 == count($Object->Load('ID')) )
-            return $this->Set_Message('Error_NotFound', 1);
+            return $this->SetMessage(5303);
         if ( 'NULL' == $this->Params['obj_parent_id'] )
             $Object->$prop = null;
         else
             $Object->$prop = $this->Params['obj_parent_id'];
         $Object->Save();
-        return $this->Set_Message('Move', 0);
+        return $this->SetMessage();
     }
 }

@@ -73,7 +73,7 @@ abstract class Zero_Controller
     public function SetMessage($code = 0, $params = [])
     {
         $arr = Zero_I18n::Message(get_class($this), $code, $params);
-        if ( -1 == $code || 500 == $code || 403 == $code || 404 == $code || 5000 <= $code )
+        if ( -1 == $code || 5000 <= $code )
             $errorStatus = true;
         else
             $errorStatus = false;
@@ -83,63 +83,6 @@ abstract class Zero_Controller
             'ErrorStatus' => $errorStatus,
         ];
         return $errorStatus;
-    }
-
-    /**
-     * Poluchenie massiva soobshchenii` o rezul`tate dei`stvii` pol`zovatelia.
-     *
-     * S uchetom perevoda
-     *
-     * @return array soobshcheniia
-     * @deprecated GetMessage
-     */
-    public function Get_Message()
-    {
-        if ( count(self::$_Message) == 0 )
-            $this->Set_Message();
-        return self::$_Message;
-    }
-
-    /**
-     * Dobavlenie soobshchenii` o rezul`tate dei`stvii` pol`zovatelia.
-     *
-     * @param string $message soobshchenie
-     * @param int $code kod soobshcheniia
-     * @return int
-     * @deprecated SetMessage()
-     */
-    public function Set_Message($message = '', $code = 0)
-    {
-        if ( 0 != $code )
-            $errorStatus = true;
-        else
-            $errorStatus = false;
-        self::$_Message = [
-            'Code' => $code,
-            'Message' => Zero_I18n::Controller(get_class($this), $message),
-            'ErrorStatus' => $errorStatus,
-        ];
-
-        $arr = func_get_args();
-        switch ( count($arr) )
-        {
-            case 3:
-                self::$_Message['Message'] = sprintf(self::$_Message['Message'], $arr[2]);
-                break;
-            case 4:
-                self::$_Message['Message'] = sprintf(self::$_Message['Message'], $arr[2], $arr[3]);
-                break;
-            case 5:
-                self::$_Message['Message'] = sprintf(self::$_Message['Message'], $arr[2], $arr[3], $arr[4]);
-                break;
-            case 6:
-                self::$_Message['Message'] = sprintf(self::$_Message['Message'], $arr[2], $arr[3], $arr[4], $arr[5]);
-                break;
-            case 7:
-                self::$_Message['Message'] = sprintf(self::$_Message['Message'], $arr[2], $arr[3], $arr[4], $arr[5], $arr[6]);
-                break;
-        }
-        return $code ? false : true;
     }
 
     /**

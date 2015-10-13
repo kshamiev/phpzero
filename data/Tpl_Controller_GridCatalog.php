@@ -92,18 +92,16 @@ class Zero_Controller_Grid extends Zero_Crud_Grid
     protected function Chunk_CatalogMove()
     {
         if ( !$_REQUEST['id'] )
-        {
-            $this->SetMessage(-1, ['параметры не заданы']);
-            return false;
-        }
+            return $this->SetMessage(5303);
         $prop = $this->Params['obj_parent_prop'];
         $Object = Zero_Model::Makes($this->ModelName, $_REQUEST['id']);
+        if ( 0 == count($Object->Load('ID')) )
+            return $this->SetMessage(5303);
         if ( 'NULL' == $this->Params['obj_parent_id'] )
             $Object->$prop = null;
         else
             $Object->$prop = $this->Params['obj_parent_id'];
         $Object->Save();
-        $this->SetMessage(0, ['перемещено']);
-        return true;
+        return $this->SetMessage();
     }
 }

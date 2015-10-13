@@ -15,7 +15,7 @@ class Zero_Api_Base_Upload extends Zero_Controller
     {
         $index = 'file';
         if ( !isset($_FILES[$index]) )
-            Zero_App::ResponseJson("", 200, -1, ["Данные не получены"]);
+            Zero_App::ResponseJson200("", -1, ["Данные не получены"]);
 
         $sha1 = sha1_file($_FILES[$index]['tmp_name']);
         $path = dirname(ZERO_PATH_DATA) . '/temp';
@@ -27,12 +27,12 @@ class Zero_Api_Base_Upload extends Zero_Controller
         $pathInfo = $path . '/' . $sha1 . ".txt";
         // перемещение во временную папку
         if ( false == move_uploaded_file($_FILES[$index]['tmp_name'], $pathData) )
-            Zero_App::ResponseJson(null, 200, -1, ["Файл не загружен"]);
+            Zero_App::ResponseJson200(null, -1, ["Файл не загружен"]);
         $_FILES[$index]['tmp_name'] = $pathData;
         // сохранение информации о загруженном файле
         $data = json_encode($_FILES[$index], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
         Zero_Helper_File::File_Save($pathInfo, $data);
-        Zero_App::ResponseJson([$sha1, str_replace(ZERO_PATH_SITE, '', $path), $ext], 200);
+        Zero_App::ResponseJson200([$sha1, str_replace(ZERO_PATH_SITE, '', $path), $ext]);
         /*
         array (
          'myFile' =>
