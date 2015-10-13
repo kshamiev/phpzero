@@ -134,12 +134,12 @@ class Zero_Section_Grid extends Zero_Crud_Grid
         if ( !$section_id )
         {
             if ( !$this->Params['obj_parent_id'] )
-                return $this->SetMessage(-1, 'Error_Update_Url');
+                return $this->SetMessage(-1, ['Error_Update_Url']);
             $section_id = $this->Params['obj_parent_id'];
         }
         if ( true == Zero_Section::DB_Update_Url($section_id) )
             return $this->SetMessage();
         else
-            return $this->SetMessage(-1, 'Error_Update_Url');
+            return $this->SetMessage(-1, ['Error_Update_Url']);
     }
 }

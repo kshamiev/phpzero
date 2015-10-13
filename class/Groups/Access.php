@@ -179,7 +179,7 @@ class Zero_Groups_Access extends Zero_Controller
         //  Reset Cache
         $Model = Zero_Model::Makes('Zero_Groups', $this->Params['obj_parent_id']);
         $Model->Cache->Reset();
-        return $this->SetMessage(0, 'Сохранено');
+        return $this->SetMessage(0, ['Сохранено']);
     }
 
     /**
@@ -205,6 +205,6 @@ class Zero_Groups_Access extends Zero_Controller
           `Groups_ID` = {$this->Params['obj_parent_id']}
         ";
         Zero_DB::Update($sql);
-        return $this->SetMessage(0, 'Скопировано');
+        return $this->SetMessage(0, ['Скопировано']);
     }
 }

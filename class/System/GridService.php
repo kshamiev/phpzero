@@ -62,9 +62,9 @@ class Zero_System_GridService extends Zero_Controller
         $_REQUEST['flag_edit'] = isset($_REQUEST['flag_edit']) ? true : false;
         $Controller_Factory = new Zero_Engine;
         if ( $Controller_Factory->Factory_Modules_DB($_REQUEST['connectDb'], $_REQUEST['flag_gird'], $_REQUEST['flag_edit']) )
-            return $this->SetMessage(-1, "Engine_Modules_DB");
+            return $this->SetMessage(-1, ["Engine_Modules_DB"]);
         else
-            return $this->SetMessage(-1, "Error_Engine_Modules_DB");
+            return $this->SetMessage(-1, ["Error_Engine_Modules_DB"]);
     }
 
     public function Action_CacheReset()

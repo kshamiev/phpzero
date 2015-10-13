@@ -128,7 +128,7 @@ class Zero_System_FileManager extends Zero_Controller
     protected function Chunk_FolderRemove()
     {
         if ( !$_REQUEST['dir_name'] )
-            return $this->SetMessage(-1, 'Error_FolderRemove');
+            return $this->SetMessage(-1, ['Error_FolderRemove']);
         $path = end($this->Params['obj_parent_path']) . '/' . $_REQUEST['dir_name'];
         Zero_Helper_File::Folder_Remove($path);
         return $this->SetMessage();
@@ -193,7 +193,7 @@ class Zero_System_FileManager extends Zero_Controller
             if ( !is_uploaded_file($_FILES['FileUpload']['tmp_name']) || 0 != $_FILES['FileUpload']['error'] )
             {
                 Zero_Logs::Set_Message_Error("файловый менеджер - {$_FILES['FileUpload']['error']}");
-                return $this->SetMessage(-1, 'Error_FileUpload');
+                return $this->SetMessage(-1, ['Error_FileUpload']);
             }
             $filename = Zero_Helper_Strings::Transliteration_FileName($_FILES['FileUpload']['name']);
             $path = end($this->Params['obj_parent_path']) . '/' . $filename;
@@ -220,7 +220,7 @@ class Zero_System_FileManager extends Zero_Controller
     protected function Chunk_FolderAdd()
     {
         if ( !isset($_REQUEST['FolderName']) || !$_REQUEST['FolderName'] )
-            return $this->SetMessage(-1, 'Error_FolderAdd');
+            return $this->SetMessage(-1, ['Error_FolderAdd']);
         $path = end($this->Params['obj_parent_path']) . '/' . Zero_Helper_Strings::Transliteration_FileName($_REQUEST['FolderName']);
         mkdir($path);
         chmod($path, 0777);
