@@ -116,7 +116,7 @@ class Zero_Cache
      */
     public static function Get_Data($indexFullPath, $time = 0)
     {
-        if ( false == Zero_App::$Config->Site_IsCache )
+        if ( false == Zero_App::$Config->Site_IsCache && 0 < $time )
             $time = 1;
         //  file cache
         if ( null == self::$_Memcache )
@@ -139,7 +139,7 @@ class Zero_Cache
      * Low-level (direct) method of maintaining cache.
      *
      * @param string $indexFullPath index cache
-     * @param string $value cached data
+     * @param mixed $value cached data
      * @param integer $time 0 - persistent cache, 0 < cache lifetime in seconds
      * @return boolean
      */

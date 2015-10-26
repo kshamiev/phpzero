@@ -415,7 +415,6 @@ final class Zero_Helper_File
         if ( !is_dir(dirname($path_file)) )
             mkdir(dirname($path_file), 0777, true);
         file_put_contents($path_file, trim($value));
-        chmod($path_file, 0666);
         return true;
     }
 
