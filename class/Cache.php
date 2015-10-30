@@ -116,7 +116,7 @@ class Zero_Cache
      */
     public static function Get_Data($indexFullPath, $time = 0)
     {
-        if ( false == Zero_App::$Config->Site_IsCache && 0 < $time )
+        if ( false == Zero_App::$Config->Site_IsCache )
             $time = 1;
         //  file cache
         if ( null == self::$_Memcache )
