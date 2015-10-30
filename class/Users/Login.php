@@ -20,6 +20,13 @@ class Zero_Users_Login extends Zero_Controller
     protected $Model = null;
 
     /**
+     * Пользователь
+     *
+     * @var string
+     */
+    protected $UrlRedirect = '';
+
+    /**
      * Контроллер по умолчанию
      *
      * @return string собранный шаблон
@@ -81,7 +88,7 @@ class Zero_Users_Login extends Zero_Controller
 
         Zero_App::$Users = $this->Model;
         Zero_App::$Users->Factory_Set();
-        Zero_App::ResponseRedirect(Zero_App::$Users->UrlRedirect);
+        Zero_App::ResponseRedirect($this->UrlRedirect);
         return '';
     }
 
@@ -150,14 +157,13 @@ class Zero_Users_Login extends Zero_Controller
         }
         $this->Model = Zero_Users::Make();
         $this->View = new Zero_View(get_class($this));
-        if ( !Zero_App::$Users->UrlRedirect )
+        if ( !$this->UrlRedirect )
         {
             if ( 1 < count(explode($_SERVER["HTTP_HOST"], ZERO_HTTPH)) )
-                Zero_App::$Users->UrlRedirect = ZERO_HTTPH;
+                $this->UrlRedirect = ZERO_HTTPH;
             else
-                Zero_App::$Users->UrlRedirect = '/';
+                $this->UrlRedirect = '/';
         }
-        //        Zero_App::$Users->Factory_Set();
     }
 
     /**

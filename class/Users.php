@@ -40,13 +40,6 @@ class Zero_Users extends Zero_Model
     public $Keystring = '';
 
     /**
-     * KCAPTCacheA
-     *
-     * @var string
-     */
-    public $UrlRedirect = '';
-
-    /**
      * Usloviia pol`zovatelia.
      * Prava po gorizotali ( na stroki )
      *

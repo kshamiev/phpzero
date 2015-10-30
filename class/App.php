@@ -353,41 +353,6 @@ class Zero_App
         Zero_Session::Init(self::$Config->Site_Domain);
     }
 
-    /**
-     * Поиск роутинга в конфигурационных файлах
-     *
-     * @return array
-     * @throws Exception
-     */
-    private static function _SearchRouteApi()
-    {
-        $route = [];
-        foreach (Zero_Config::Get_Modules() as $module)
-        {
-            $config = Zero_Config::Get_Config($module, 'route' . self::$mode);
-            if ( isset($config[ZERO_URL]) )
-            {
-                $route = $config[ZERO_URL];
-                if ( !is_array($route) )
-                {
-                    $route['Controller'] = $route;
-                }
-                break;
-            }
-        }
-        if ( 0 == count($route) )
-            throw new Exception('Page Not Found', 404);
-
-        if ( isset($route['Controller']) )
-            self::$Section->Controller = $route['Controller'];
-        if ( isset($route['View']) )
-            self::$Section->Layout = $route['View'];
-        if ( isset($route['UrlRedirect']) )
-            self::$Section->UrlRedirect = $route['UrlRedirect'];
-
-        return $route;
-    }
-
     public static function ExecuteSimple()
     {
         // Пользователь
@@ -414,12 +379,14 @@ class Zero_App
         if ( 0 == count($route) )
             throw new Exception('Page Not Found', 404);
 
+        if ( isset($route['UrlRedirect']) )
+            self::$Section->UrlRedirect = $route['UrlRedirect'];
+        if ( self::$Section->UrlRedirect )
+            self::ResponseRedirect(self::$Section->UrlRedirect);
         if ( isset($route['Controller']) )
             self::$Section->Controller = $route['Controller'];
         if ( isset($route['View']) )
             self::$Section->Layout = $route['View'];
-        if ( isset($route['UrlRedirect']) )
-            self::$Section->UrlRedirect = $route['UrlRedirect'];
 
         //  Выполнение контроллера
         $view = '';
