@@ -63,6 +63,8 @@ class Zero_DB
             $name = key(self::$Config);
         if ( isset(self::$DB[$name]) )
             return $name;
+        else if ( !isset(self::$Config[$name]) )
+            throw new Exception("обращение к не определенной в конфигурации БД '{$name}'", -1);
         //  Initcializatciia ob``ekta mysqli
         /* create a connection object which is not connected */
         try
