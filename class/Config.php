@@ -355,9 +355,9 @@ class Zero_Config
             if ( !mkdir(ZERO_PATH_CACHE, 0777, true) )
                 die('path "cache": "' . ZERO_PATH_CACHE . '" not exists');
 
-        if ( !is_dir(ZERO_PATH_APPLICATION . '/zero') )
-            if ( !symlink(ZERO_PATH_ZERO, ZERO_PATH_APPLICATION . '/zero') )
-                die('module "zero" path: "' . ZERO_PATH_APPLICATION . '/zero" not exists');
+//        if ( !is_dir(ZERO_PATH_APPLICATION . '/zero') )
+//            if ( !symlink(ZERO_PATH_ZERO, ZERO_PATH_APPLICATION . '/zero') )
+//                die('module "zero" path: "' . ZERO_PATH_APPLICATION . '/zero" not exists');
 
         //  Storage sessions
         if ( !session_id() )

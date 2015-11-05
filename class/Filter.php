@@ -556,8 +556,6 @@ class Zero_Filter
                     $this->Add_Sort($prop, $row);
                 }
             }
-            //            if ( isset($row['Sort']) && $row['Sort'] )
-            //                $this->Set_Sort($prop, $row['Sort']);
         }
         return $this;
     }

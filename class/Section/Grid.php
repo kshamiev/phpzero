@@ -32,22 +32,24 @@ class Zero_Section_Grid extends Zero_Crud_Grid
      */
     protected function Chunk_Init()
     {
+        parent::Chunk_Init();
+        //
         $this->Params['obj_parent_prop'] = 'Section_ID';
         $this->Params['obj_parent_name'] = '';
         if ( !isset($this->Params['obj_parent_path']) )
         {
             $this->Params['obj_parent_path'] = ['root'];
         }
-        if ( isset($_GET['pid']) && $this->Params['obj_parent_id'] != $_GET['pid'] )
+        if ( isset($_REQUEST['pid']) && $this->Params['obj_parent_id'] != $_REQUEST['pid'] )
         {
-            $this->Params['obj_parent_id'] = $_GET['pid'];
+            $this->Params['obj_parent_id'] = $_REQUEST['pid'];
             //  move up
-            if ( isset($this->Params['obj_parent_path'][$_GET['pid']]) )
+            if ( isset($this->Params['obj_parent_path'][$_REQUEST['pid']]) )
             {
                 $flag = true;
                 foreach ($this->Params['obj_parent_path'] as $id => $name)
                 {
-                    if ( $id == $_GET['pid'] )
+                    if ( $id == $_REQUEST['pid'] )
                         $flag = false;
                     else if ( false == $flag )
                         unset($this->Params['obj_parent_path'][$id]);
@@ -56,14 +58,16 @@ class Zero_Section_Grid extends Zero_Crud_Grid
             //  move down
             else
             {
-                $ObjectGo = Zero_Model::Makes($this->ModelName, $_GET['pid']);
+                $ObjectGo = Zero_Model::Makes($this->ModelName, $_REQUEST['pid']);
                 $ObjectGo->Load('Name');
-                $this->Params['obj_parent_path'][$_GET['pid']] = $ObjectGo->Name;
+                $this->Params['obj_parent_path'][$_REQUEST['pid']] = $ObjectGo->Name;
                 unset($ObjectGo);
             }
             Zero_Filter::Factory($this->Model)->Reset();
         }
-        parent::Chunk_Init();
+        $Filter = Zero_Filter::Factory($this->Model);
+        if ( false == $Filter->IsSet )
+            $Filter->Set_Sort('Sort');
         return true;
     }
 
@@ -116,6 +120,24 @@ class Zero_Section_Grid extends Zero_Crud_Grid
     {
         $this->Chunk_Init();
         $this->Chunk_UpdateUrl();
+        $this->Chunk_View();
+        return $this->View->Fetch($this->ViewTplOutString);
+    }
+
+    /**
+     * Initialization of the stack chunks and input parameters
+     *
+     * @return boolean flag stop execute of the next chunk
+     */
+    public function Action_FilterReset()
+    {
+        $this->Chunk_Init();
+
+        $Filter = Zero_Filter::Factory($this->Model);
+        $Filter->Reset();
+        $Filter->Set_Sort('Sort');
+        $Filter->Page = 1;
+
         $this->Chunk_View();
         return $this->View->Fetch($this->ViewTplOutString);
     }

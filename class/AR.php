@@ -362,7 +362,7 @@ class Zero_AR
         foreach ($filter_list as $row)
         {
             // если фильтр не установлен
-            if ( empty($row['Value']) || !$row['Value'] || empty($row['AR']) || $row['AR'] == false )
+            if ( empty($row['Value']) || !$row['Value'] || (isset($row['AR']) && $row['AR'] == false) )
                 continue;
 
             // если нулевое или не нулевое значение

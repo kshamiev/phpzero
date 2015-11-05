@@ -90,6 +90,9 @@ abstract class Zero_Crud_Grid extends Zero_Controller
      */
     protected function Chunk_Init()
     {
+        $this->View = new Zero_View($this->ViewName);
+        $this->Model = Zero_Model::Makes($this->ModelName);
+        //
         if ( isset($_REQUEST['pid']) )
             $this->Params['obj_parent_id'] = $_REQUEST['pid'];
         else if ( empty($this->Params['obj_parent_id']) )
@@ -99,9 +102,6 @@ abstract class Zero_Crud_Grid extends Zero_Controller
             $this->Params['id'] = $_REQUEST['id'];
         else if ( empty($this->Params['id']) )
             $this->Params['id'] = 0;
-        //
-        $this->View = new Zero_View($this->ViewName);
-        $this->Model = Zero_Model::Makes($this->ModelName);
         //
         $Filter = Zero_Filter::Factory($this->Model);
         if ( isset($_REQUEST['pg']) && 0 < $_REQUEST['pg'] )
