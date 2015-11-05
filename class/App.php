@@ -563,14 +563,15 @@ class Zero_App
     public static function Exception(Exception $exception)
     {
         $code = $exception->getCode();
-        if ( 500 == $code )
+        if ( 404 != $code && 403 != $code && 301 != $code  )
         {
+            $code = 500;
             Zero_Logs::Exception_Trace($exception);
         }
         if ( self::MODE_CONSOLE == self::$mode || !isset($_SERVER['REQUEST_URI']) )
             self::ResponseConsole();
         else if ( self::MODE_API == self::$mode )
-            self::ResponseJson200(null, -1, [$exception->getMessage()]);
+            self::ResponseJson200(null, $code, [$exception->getMessage()]);
         else if ( self::MODE_WEB == self::$mode )
         {
             $View = new Zero_View(ucfirst(self::$Config->Site_DomainSub) . '_Error');

@@ -64,16 +64,10 @@ class Zero_DB
         if ( isset(self::$DB[$name]) )
             return $name;
         else if ( !isset(self::$Config[$name]) )
-            throw new Exception("обращение к не определенной в конфигурации БД '{$name}'", -1);
+            die("обращение к не определенной в конфигурации БД '{$name}'");
         //  Initcializatciia ob``ekta mysqli
         /* create a connection object which is not connected */
-        try
-        {
-            self::$DB[$name] = mysqli_connect(self::$Config[$name]['Host'], self::$Config[$name]['Login'], self::$Config[$name]['Password'], self::$Config[$name]['Name']);
-        } catch ( Exception $e )
-        {
-            throw new Exception(mysqli_connect_error(), -1);
-        }
+        self::$DB[$name] = mysqli_connect(self::$Config[$name]['Host'], self::$Config[$name]['Login'], self::$Config[$name]['Password'], self::$Config[$name]['Name']);
         /* check connection */
         if ( mysqli_connect_errno() )
             die("mysqli - Unable to connect to the server or choose a database.<br>\n Cause: " . mysqli_connect_error());
