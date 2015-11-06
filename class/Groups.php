@@ -70,10 +70,10 @@ class Zero_Groups extends Zero_Model
     protected static function Config_Filter($Model, $scenario = '')
     {
         return [
-            'ID' => ['Visible' => true],
-            'Name' => ['Visible' => true],
-            'Status' => ['Visible' => true],
-            'Description' => ['Visible' => true],
+            'ID' => ['Visible' => true, 'AR' => true],
+            'Name' => ['Visible' => true, 'AR' => true],
+            'Status' => ['Visible' => true, 'AR' => true],
+            'Description' => ['Visible' => true, 'AR' => true],
         ];
     }
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Controller. Abstract controller for viewing a list of items.
  *
@@ -56,11 +57,45 @@ abstract class Zero_Crud_Grid extends Zero_Controller
     {
         $this->Chunk_Init();
 
+        $filter = isset($_REQUEST['Filter']) ? $_REQUEST['Filter'] : [];
+        $search = isset($_REQUEST['Search']) ? $_REQUEST['Search'] : [];
+        $sort = isset($_REQUEST['Sort']) ? $_REQUEST['Sort'] : [];
+
         $Filter = Zero_Filter::Factory($this->Model);
-        $_REQUEST['Filter'] = isset($_REQUEST['Filter']) ? $_REQUEST['Filter'] : [] ;
-        $_REQUEST['Search'] = isset($_REQUEST['Search']) ? $_REQUEST['Search'] : [] ;
-        $_REQUEST['Sort'] = isset($_REQUEST['Sort']) ? $_REQUEST['Sort'] : [] ;
-        $Filter->Set($_REQUEST['Filter'], $_REQUEST['Search'], $_REQUEST['Sort']);
+        //  Filters
+        foreach ($filter as $Prop => $Value)
+        {
+            $Filter->Set_Filter($Prop, $Value);
+        }
+        //  Search
+        $Filter->Set_Search();
+        if ( isset($search['List']) )
+        {
+            foreach ($search['List'] as $prop => $value)
+            {
+                $Filter->Set_Search($prop, $value);
+            }
+        }
+        else if ( isset($search['Prop']) )
+        {
+            $Filter->Set_Search($search['Prop'], $search['Value']);
+        }
+        //  Sorting
+        $Filter->Set_Sort();
+        if ( isset($sort['List']) )
+        {
+            foreach ($sort['List'] as $prop => $value)
+            {
+                $Filter->Set_Sort($prop, $value);
+            }
+        }
+        else if ( isset($sort['Prop']) )
+        {
+            $Filter->Set_Sort($sort['Prop'], $sort['Value']);
+        }
+        // page
+        $Filter->Page = 1;
+        $Filter->IsSet = true;
 
         $this->Chunk_View();
         return $this->View->Fetch($this->ViewTplOutString);
@@ -119,7 +154,19 @@ abstract class Zero_Crud_Grid extends Zero_Controller
      */
     public function Action_Add()
     {
+    }
 
+    /**
+     * Вывод данных операции контроллера в шаблон
+     *
+     * Возвращает выполненый (собранный) шаблон с данными
+     *
+     * @return string
+     */
+    protected function Chunk_View_Out()
+    {
+        $this->Chunk_View();
+        return $this->View->Fetch($this->ViewTplOutString);
     }
 
     /**
@@ -217,6 +264,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
         $this->View->Assign('Filter', $Filter->Get_Filter());
         $this->View->Assign('Search', $Filter->Get_Search());
         $this->View->Assign('Sort', $Filter->Get_Sort());
+        return true;
     }
 
     /**

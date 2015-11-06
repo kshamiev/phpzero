@@ -80,12 +80,12 @@ class Zero_Content extends Zero_Model
     protected static function Config_Filter($Model, $scenario = '')
     {
         return [
-            'ID' => ['Visible' => true],
-            'Section_ID' => ['Visible' => true],
-            'Lang' => ['Visible' => true],
-            'Name' => ['Visible' => true],
-            'Content' => ['Visible' => true],
-            'Block' => ['Visible' => false],
+            'ID' => ['Visible' => true, 'AR' => true],
+            'Section_ID' => ['Visible' => true, 'AR' => true],
+            'Lang' => ['Visible' => true, 'AR' => true],
+            'Name' => ['Visible' => true, 'AR' => true],
+            'Content' => ['Visible' => true, 'AR' => true],
+            'Block' => ['Visible' => false, 'AR' => true],
         ];
     }
 

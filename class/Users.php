@@ -129,14 +129,14 @@ class Zero_Users extends Zero_Model
     {
         return [
             /*BEG_CONFIG_FILTER_PROP*/
-            'ID' => [],
-            'Name' => [],
-            'Groups_ID' => [],
-            'Users_ID' => [],
-            'IsAccess' => [],
-            'IsCondition' => [],
-            'IsOnline' => [],
-            'Date' => [],
+            'ID' => ['AR' => true],
+            'Name' => ['AR' => true],
+            'Groups_ID' => ['AR' => true],
+            'Users_ID' => ['AR' => true],
+            'IsAccess' => ['AR' => true],
+            'IsCondition' => ['AR' => true],
+            'IsOnline' => ['AR' => true],
+            'Date' => ['AR' => true],
             /*END_CONFIG_FILTER_PROP*/
         ];
     }

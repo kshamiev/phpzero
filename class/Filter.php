@@ -80,13 +80,6 @@ class Zero_Filter
     public $Page_Item;
 
     /**
-     * Flag initcializatcii fil`tra
-     *
-     * @var boolean
-     */
-    public $IsInit = false;
-
-    /**
      * Статус установленного фильтра
      *
      * @var boolean
@@ -558,50 +551,5 @@ class Zero_Filter
             }
         }
         return $this;
-    }
-
-    /**
-     * Set Filters
-     *
-     * @param $filter
-     * @param $search
-     * @param $sort
-     */
-    public function Set($filter = [], $search = [], $sort = [])
-    {
-        $this->IsSet = true;
-        //  Filters
-        foreach ($filter as $Prop => $Value)
-        {
-            $this->Set_Filter($Prop, $Value);
-        }
-        //  Search
-        $this->Set_Search();
-        if ( isset($search['List']) )
-        {
-            foreach ($search['List'] as $prop => $value)
-            {
-                $this->Set_Search($prop, $value);
-            }
-        }
-        else if ( isset($search['Prop']) )
-        {
-            $this->Set_Search($search['Prop'], $search['Value']);
-        }
-        //  Sorting
-        $this->Set_Sort();
-        if ( isset($sort['List']) )
-        {
-            foreach ($sort['List'] as $prop => $value)
-            {
-                $this->Set_Sort($prop, $value);
-            }
-        }
-        else if ( isset($sort['Prop']) )
-        {
-            $this->Set_Sort($sort['Prop'], $sort['Value']);
-        }
-        // page
-        $this->Page = 1;
     }
 }
