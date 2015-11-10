@@ -8,10 +8,10 @@ return [
     /**
      * Какой-то там контроллер
      *
-     * @see controllerName
+     * @see Zero_Section_Page
      */
     '/' => [
-        'Controller' => 'controllerName',
+        'Controller' => 'Zero_Section_Page',
         'View' => 'Zero_Content',
     ],
 ];
