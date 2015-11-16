@@ -304,8 +304,9 @@ class Zero_App
      * - Session Initialization. Component Zero_Session
      *
      * @param string $fileApp суффикс конфигурационного файла
+     * @param string $mode режим работы приложения
      */
-    public static function Init($fileApp = 'application')
+    public static function Init($fileApp = 'application', $mode = '')
     {
         // Если инициализация уже произведена
         if ( !is_null(self::$Config) )
@@ -342,7 +343,10 @@ class Zero_App
 
         // Роутинг
         $arr = app_route();
-        self::$mode = $arr[0];
+        if ( $mode )
+            self::$mode = $mode;
+        else
+            self::$mode = $arr[0];
         self::$lang = $arr[1];
         self::$url = $arr[2];
 
@@ -563,7 +567,7 @@ class Zero_App
     public static function Exception(Exception $exception)
     {
         $code = $exception->getCode();
-        if ( 404 != $code && 403 != $code && 301 != $code  )
+        if ( 404 != $code && 403 != $code && 301 != $code )
         {
             $code = 500;
             Zero_Logs::Exception_Trace($exception);
