@@ -11,7 +11,6 @@
  */
 class Zero_Controller_Grid extends Zero_Crud_Grid
 {
-
     /**
      * The table stores the objects handled by this controller.
      *
@@ -34,36 +33,32 @@ class Zero_Controller_Grid extends Zero_Crud_Grid
      */
     protected function Chunk_Init()
     {
+        parent::Chunk_Init();
+        //
         $this->Params['obj_parent_prop'] = 'TableName_ID';
         $this->Params['obj_parent_name'] = '';
         if ( !isset($this->Params['obj_parent_prop']) )
             $this->Params['obj_parent_path'] = ['root'];
-        if ( isset($_GET['pid']) && $this->Params['obj_parent_id'] != $_GET['pid'] )
+        //  move up
+        if ( isset($this->Params['obj_parent_path'][$_GET['pid']]) )
         {
-            $this->Params['obj_parent_id'] = $_GET['pid'];
-            //  move up
-            if ( isset($this->Params['obj_parent_path'][$_GET['pid']]) )
+            $flag = true;
+            foreach ($this->Params['obj_parent_path'] as $id => $name)
             {
-                $flag = true;
-                foreach ($this->Params['obj_parent_path'] as $id => $name)
-                {
-                    if ( $id == $_GET['pid'] )
-                        $flag = false;
-                    else if ( false == $flag )
-                        unset($this->Params['obj_parent_path'][$id]);
-                }
+                if ( $id == $_GET['pid'] )
+                    $flag = false;
+                else if ( false == $flag )
+                    unset($this->Params['obj_parent_path'][$id]);
             }
-            //  move down
-            else
-            {
-                $ObjectGo = Zero_Model::Makes($this->ModelName, $_GET['pid']);
-                $ObjectGo->Load('Name');
-                $this->Params['obj_parent_path'][$_GET['pid']] = $ObjectGo->Name;
-                unset($ObjectGo);
-            }
-            Zero_Filter::Factory($this->Model)->Reset();
         }
-        parent::Chunk_Init();
+        //  move down
+        else
+        {
+            $ObjectGo = Zero_Model::Makes($this->ModelName, $_GET['pid']);
+            $ObjectGo->Load('Name');
+            $this->Params['obj_parent_path'][$_GET['pid']] = $ObjectGo->Name;
+            unset($ObjectGo);
+        }
         return true;
     }
 

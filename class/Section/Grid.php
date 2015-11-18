@@ -40,31 +40,26 @@ class Zero_Section_Grid extends Zero_Crud_Grid
         {
             $this->Params['obj_parent_path'] = ['root'];
         }
-        if ( isset($_REQUEST['pid']) && $this->Params['obj_parent_id'] != $_REQUEST['pid'] )
+        //  move up
+        if ( isset($this->Params['obj_parent_path'][$_REQUEST['pid']]) )
         {
-            $this->Params['obj_parent_id'] = $_REQUEST['pid'];
-            //  move up
-            if ( isset($this->Params['obj_parent_path'][$_REQUEST['pid']]) )
+            $flag = true;
+            foreach ($this->Params['obj_parent_path'] as $id => $name)
             {
-                $flag = true;
-                foreach ($this->Params['obj_parent_path'] as $id => $name)
-                {
-                    if ( $id == $_REQUEST['pid'] )
-                        $flag = false;
-                    else if ( false == $flag )
-                        unset($this->Params['obj_parent_path'][$id]);
-                }
+                if ( $id == $_REQUEST['pid'] )
+                    $flag = false;
+                else if ( false == $flag )
+                    unset($this->Params['obj_parent_path'][$id]);
             }
-            //  move down
-            else
-            {
-                $ObjectGo = Zero_Model::Makes($this->ModelName, $_REQUEST['pid']);
-                $ObjectGo->Load('Name');
-                $this->Params['obj_parent_path'][$_REQUEST['pid']] = $ObjectGo->Name;
-                unset($ObjectGo);
-            }
-            Zero_Filter::Factory($this->Model)->Reset();
+        } //  move down
+        else
+        {
+            $ObjectGo = Zero_Model::Makes($this->ModelName, $_REQUEST['pid']);
+            $ObjectGo->Load('Name');
+            $this->Params['obj_parent_path'][$_REQUEST['pid']] = $ObjectGo->Name;
+            unset($ObjectGo);
         }
+
         $Filter = Zero_Filter::Factory($this->Model);
         if ( false == $Filter->IsSet )
             $Filter->Set_Sort('Sort');
