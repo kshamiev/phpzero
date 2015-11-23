@@ -105,6 +105,7 @@ class Zero_Section extends Zero_Model
             'Keywords' => ['AliasDB' => 'z.Keywords', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'],
             'Description' => ['AliasDB' => 'z.Description', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Textarea'],
             'Content' => ['AliasDB' => 'z.Content', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Content'],
+            'Img' => ['AliasDB' => 'z.Img', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Img'],
             /*END_CONFIG_PROP*/
         ];
     }
@@ -195,6 +196,7 @@ class Zero_Section extends Zero_Model
             'Keywords' => [],
             'Description' => [],
             'Content' => [],
+            'Img' => [],
         ];
     }
 

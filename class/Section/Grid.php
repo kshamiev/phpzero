@@ -52,14 +52,13 @@ class Zero_Section_Grid extends Zero_Crud_Grid
                     unset($this->Params['obj_parent_path'][$id]);
             }
         } //  move down
-        else
+        else if ( isset($_REQUEST['pid']) )
         {
             $ObjectGo = Zero_Model::Makes($this->ModelName, $_REQUEST['pid']);
             $ObjectGo->Load('Name');
             $this->Params['obj_parent_path'][$_REQUEST['pid']] = $ObjectGo->Name;
             unset($ObjectGo);
         }
-
         $Filter = Zero_Filter::Factory($this->Model);
         if ( false == $Filter->IsSet )
             $Filter->Set_Sort('Sort');

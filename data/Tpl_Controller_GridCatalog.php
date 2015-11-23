@@ -52,7 +52,7 @@ class Zero_Controller_Grid extends Zero_Crud_Grid
             }
         }
         //  move down
-        else
+        else if ( isset($_REQUEST['pid']) )
         {
             $ObjectGo = Zero_Model::Makes($this->ModelName, $_GET['pid']);
             $ObjectGo->Load('Name');

@@ -157,19 +157,6 @@ abstract class Zero_Crud_Grid extends Zero_Controller
     }
 
     /**
-     * Вывод данных операции контроллера в шаблон
-     *
-     * Возвращает выполненый (собранный) шаблон с данными
-     *
-     * @return string
-     */
-    protected function Chunk_View_Out()
-    {
-        $this->Chunk_View();
-        return $this->View->Fetch($this->ViewTplOutString);
-    }
-
-    /**
      * Create views.
      *
      * @return boolean flag stop execute of the next chunk

@@ -24,9 +24,9 @@ abstract class Zero_Crud_Edit extends Zero_Controller
     protected $ViewName = __CLASS__;
 
     /**
-     * Initialization of the stack chunks and input parameters
+     * Контроллер по умолчанию.
      *
-     * @return boolean flag stop execute of the next chunk
+     * @return string
      */
     public function Action_Default()
     {
@@ -36,9 +36,9 @@ abstract class Zero_Crud_Edit extends Zero_Controller
     }
 
     /**
-     * Initialization of the stack chunks and input parameters
+     * Add
      *
-     * @return boolean flag stop execute of the next chunk
+     * @return string
      */
     public function Action_Add()
     {
@@ -49,9 +49,9 @@ abstract class Zero_Crud_Edit extends Zero_Controller
     }
 
     /**
-     * Initialization of the stack chunks and input parameters
+     * Save
      *
-     * @return boolean flag stop execute of the next chunk
+     * @return string
      */
     public function Action_Save()
     {
@@ -62,9 +62,9 @@ abstract class Zero_Crud_Edit extends Zero_Controller
     }
 
     /**
-     * Initialization filters
+     * Инициализация операции контроллера до его выполнения
      *
-     * @return boolean flag stop execute of the next chunk
+     * @return boolean флаг операции
      */
     protected function Chunk_Init()
     {
@@ -82,12 +82,13 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         $this->Model = Zero_Model::Makes($this->ModelName, $this->Params['id'], true);
         //
         Zero_Filter::Factory($this->Model);
+        return true;
     }
 
     /**
-     * Create views.
+     * Вывод данных операции контроллера в шаблон
      *
-     * @return boolean flag stop execute of the next chunk
+     * @return boolean флаг операции
      * @throws Exception
      */
     protected function Chunk_View()
@@ -134,7 +135,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
     /**
      *  Adding an object
      *
-     * @return boolean flag stop execute of the next chunk
+     * @return boolean флаг операции
      */
     protected function Chunk_Add()
     {
@@ -153,12 +154,13 @@ abstract class Zero_Crud_Edit extends Zero_Controller
             else
                 $this->Model->$prop = null;
         }
+        return true;
     }
 
     /**
      * Save object
      *
-     * @return boolean flag stop execute of the next chunk
+     * @return boolean флаг операции
      */
     protected function Chunk_Save()
     {

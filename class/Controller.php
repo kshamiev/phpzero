@@ -98,7 +98,9 @@ abstract class Zero_Controller
     }
 
     /**
-     * Инициализация контроллера до его выполнения
+     * Инициализация операции контроллера до его выполнения
+     *
+     * Может быть переопределен конкретным контроллером
      *
      * @return bool
      */
@@ -121,18 +123,7 @@ abstract class Zero_Controller
     /**
      * Вывод данных операции контроллера в шаблон
      *
-     * Возвращает выполненый (собранный) шаблон с данными
-     *
-     * @return string
-     */
-    protected function Chunk_View_Out()
-    {
-        $this->View->Assign('variable', 'value');
-        return $this->View->Fetch($this->ViewTplOutString);
-    }
-
-    /**
-     * Вывод данных операции контроллера в шаблон
+     * Может быть переопределен конкретным контроллером
      *
      * @return bool
      */

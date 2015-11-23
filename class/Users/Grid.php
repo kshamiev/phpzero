@@ -54,7 +54,7 @@ class Zero_Users_Grid extends Zero_Crud_Grid
             }
         }
         //  move down
-        else
+        else if ( isset($_REQUEST['pid']) )
         {
             $ObjectGo = Zero_Model::Makes($this->ModelName, $_REQUEST['pid']);
             $ObjectGo->Load('Name');
