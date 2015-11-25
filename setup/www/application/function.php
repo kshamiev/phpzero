@@ -48,8 +48,9 @@ function app_route()
     // чпу параметры
     $p = array_pop($row);
     $p = explode('.', $p)[0];
-    $p = explode('-', $p);
-    Zero_App::$RequestParams = $p;
+    $p = explode('_', $p);
+    if ( 1 < count($p) )
+        Zero_App::$RequestParams = explode('-', $p[1]);
     $row[] = $p[0];
 
     // uri
