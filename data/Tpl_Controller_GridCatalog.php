@@ -12,13 +12,6 @@
 class Zero_Controller_Grid extends Zero_Crud_Grid
 {
     /**
-     * The compile tpl in string and out
-     *
-     * @var bool
-     */
-    protected $ViewTplOutString = false;
-
-    /**
      * The table stores the objects handled by this controller.
      *
      * @var string
@@ -81,7 +74,7 @@ class Zero_Controller_Grid extends Zero_Crud_Grid
         $this->Chunk_Init();
         $this->Chunk_CatalogMove();
         $this->Chunk_View();
-        return $this->View->Fetch($this->ViewTplOutString);
+        return $this->View;
     }
 
     /**

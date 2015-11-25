@@ -12,13 +12,6 @@
 class Zero_Controller_Sample extends Zero_Controller
 {
     /**
-     * The compile tpl in string and out
-     *
-     * @var bool
-     */
-    protected $ViewTplOutString = false;
-
-    /**
      * The table stores the objects handled by this controller.
      *
      * @var string

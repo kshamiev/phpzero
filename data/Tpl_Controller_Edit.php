@@ -10,13 +10,6 @@
 class Zero_Controller_Edit extends Zero_Crud_Edit
 {
     /**
-     * The compile tpl in string and out
-     *
-     * @var bool
-     */
-    protected $ViewTplOutString = false;
-
-    /**
      * The table stores the objects handled by this controller.
      *
      * @var string

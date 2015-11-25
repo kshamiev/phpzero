@@ -46,6 +46,6 @@ class Zero_Console_Section_SiteMap extends Zero_Controller
 
         $str .= "\n</urlset>";
         Zero_Helper_File::File_Save(ZERO_PATH_SITE . '/sitemap.xml', $str);
-        return $this->View->Fetch($this->ViewTplOutString);
+        return $this->View;
     }
 }
