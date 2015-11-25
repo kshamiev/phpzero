@@ -2,7 +2,7 @@
 /**
  * Navigating the subsections of the current section.
  *
- * Sample: {plugin "Zero_Section_NavigationChild" view="" section_id="0"}
+ * Sample: {plugin "Zero_Section_Plugin_NavigationChild" view="" section_id="0"}
  *
  * @package Zero.Section.Navigation
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
@@ -11,7 +11,7 @@
  * @copyright <PHP_ZERO_COPYRIGHT>
  * @license http://www.phpzero.com/license/
  */
-class Zero_Section_NavigationChild extends Zero_Controller
+class Zero_Section_Plugin_NavigationChild extends Zero_Controller
 {
     /**
      * Vy`polnenie dei`stvii`
@@ -37,6 +37,6 @@ class Zero_Section_NavigationChild extends Zero_Controller
             $this->View = new Zero_View(get_class($this));
         $this->View->Assign('Section', Zero_App::$Section);
         $this->View->Assign('navigation', $navigation);
-        return $this->View->Fetch($this->ViewTplOutString);
+        return $this->View;
     }
 }

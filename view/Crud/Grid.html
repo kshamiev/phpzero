@@ -137,7 +137,7 @@
             {if ( isset($Action['Link_Add']) )}
             <select name="param_post" style="width: 200px;" onchange="button_form_obj_id(this.form, '{URL}', 'Link_Add', this.value, 0);"><option value="">not selected</option>{foreach ($DataLink as $id => $name)}<option value="{$id}">{$name}</option>{/foreach}</select>
             {/if}
-            {plugin "Zero_Crud_Toolbar" Model=$Object Action=$Action}
+            {plugin "Zero_Crud_Plugin_Toolbar" Model=$Object Action=$Action}
             {foreach ($Interface as $row)}
             <a href="{URL}/{$row['UrlThis']}" style="vertical-align: middle;">{$row['Name']}</a>&nbsp;&nbsp;
             {/foreach}
@@ -177,7 +177,7 @@
 <h2>Sorry, no results found.</h2>
 {/if}
 
-{plugin "Zero_Crud_Pager" Count=$PagerCount Page=$PagerPage PageItem=$PagerPageItem PageStep=$PagerPageStep}
+{plugin "Zero_Crud_Plugin_Pager" Count=$PagerCount Page=$PagerPage PageItem=$PagerPageItem PageStep=$PagerPageStep}
 
 <form id="formpanel" method="post" enctype="multipart/form-data">
   <input type="hidden" name="act">

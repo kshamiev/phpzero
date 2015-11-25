@@ -2,13 +2,13 @@
 /**
  * Контент-блоки страницы.
  *
- * {plugin "Zero_Content_Page" block="footer"}
+ * {plugin "Zero_Content_Plugin_Page" block="footer"}
  *
  * @package Zero.Content.Plugin
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
-class Zero_Content_Page extends Zero_Controller
+class Zero_Content_Plugin_Page extends Zero_Controller
 {
     /**
      * Create views.

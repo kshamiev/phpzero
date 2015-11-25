@@ -2,7 +2,7 @@
 /**
  * Output meta tags.
  *
- * {plugin "Zero_Section_SeoTag" view="Zero_Section_SeoTag"}
+ * {plugin "Zero_Section_Plugin_SeoTag" view="Zero_Section_SeoTag"}
  *
  * @package Zero.Section.Page
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
@@ -11,7 +11,7 @@
  * @copyright <PHP_ZERO_COPYRIGHT>
  * @license http://www.phpzero.com/license/
  */
-class Zero_Section_SeoTag extends Zero_Controller
+class Zero_Section_Plugin_SeoTag extends Zero_Controller
 {
     /**
      * Create views meta tags.

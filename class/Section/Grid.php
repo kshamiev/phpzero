@@ -77,7 +77,7 @@ class Zero_Section_Grid extends Zero_Crud_Grid
         $this->Chunk_Init();
         $this->Chunk_CatalogMove();
         $this->Chunk_View();
-        return $this->View->Fetch($this->ViewTplOutString);
+        return $this->View;
     }
 
     /**
@@ -115,7 +115,7 @@ class Zero_Section_Grid extends Zero_Crud_Grid
         $this->Chunk_Init();
         $this->Chunk_UpdateUrl();
         $this->Chunk_View();
-        return $this->View->Fetch($this->ViewTplOutString);
+        return $this->View;
     }
 
     /**
@@ -133,7 +133,7 @@ class Zero_Section_Grid extends Zero_Crud_Grid
         $Filter->Page = 1;
 
         $this->Chunk_View();
-        return $this->View->Fetch($this->ViewTplOutString);
+        return $this->View;
     }
 
     /**

@@ -405,16 +405,25 @@ class Zero_App
                 $_REQUEST['act'] = 'Default';
             $_REQUEST['act'] = 'Action_' . $_REQUEST['act'];
 
-            Zero_Logs::Start('#{CONTROLLER.Action} ' . self::$Section->Controller . ' -> ' . $_REQUEST['act']);
+            Zero_Logs::Start('#{CONTROLLER} ' . self::$Section->Controller . ' -> ' . $_REQUEST['act']);
             $Controller = Zero_Controller::Factory(self::$Section->Controller);
             if ( !method_exists($Controller, $_REQUEST['act']) )
             {
                 throw new Exception('Контроллер не имеет метода: ' . $_REQUEST['act'], -1);
             }
-            $view = $Controller->$_REQUEST['act']();
-            Zero_Logs::Stop('#{CONTROLLER.Action} ' . self::$Section->Controller . ' -> ' . $_REQUEST['act']);
-
+            $viewController = $Controller->$_REQUEST['act']();
             $messageResponse = $Controller->GetMessage();
+            if ( true == $viewController instanceof Zero_View )
+            {
+                /* @var $viewController Zero_View */
+                $viewController->Assign('Message', $messageResponse);
+                $view = $viewController->Fetch(Zero_App::$Config->View_TplOutString);
+            }
+            else
+            {
+                $view = $viewController;
+            }
+            Zero_Logs::Stop('#{CONTROLLER} ' . self::$Section->Controller . ' -> ' . $_REQUEST['act']);
         }
 
         // Сборка ст раницы на основании макета
@@ -422,17 +431,8 @@ class Zero_App
         {
             $viewLayout = new Zero_View(self::$Section->Layout);
             $viewLayout->Assign('Message', $messageResponse);
-            if ( true == $view instanceof Zero_View )
-            {
-                /* @var $view Zero_View */
-                $view->Assign('Message', $messageResponse);
-                $viewLayout->Assign('Content', $view->Fetch());
-            }
-            else
-            {
-                $viewLayout->Assign('Content', $view);
-            }
-            $view = $viewLayout->Fetch();
+            $viewLayout->Assign('Content', $view);
+            $view = $viewLayout->Fetch(Zero_App::$Config->View_TplOutString);
         }
         self::ResponseHtml($view, 200);
     }
@@ -454,11 +454,11 @@ class Zero_App
      */
     public static function Execute()
     {
-        //  Пользователь
-        self::$Users = Zero_Users::Factor();
-
         //  Раздел - страница
         self::$Section = Zero_Section::Instance();
+
+        //  Пользователь
+        self::$Users = Zero_Users::Factor();
 
         if ( 0 == self::$Section->ID || 'no' == self::$Section->IsEnable )
             throw new Exception('Page Not Found', 404);
@@ -487,33 +487,33 @@ class Zero_App
             //
             $_REQUEST['act'] = 'Action_' . $_REQUEST['act'];
 
-            Zero_Logs::Start('#{CONTROLLER.Action} ' . self::$Section->Controller . ' -> ' . $_REQUEST['act']);
+            Zero_Logs::Start('#{CONTROLLER} ' . self::$Section->Controller . ' -> ' . $_REQUEST['act']);
             $Controller = Zero_Controller::Factory(self::$Section->Controller);
             if ( !method_exists($Controller, $_REQUEST['act']) )
             {
                 throw new Exception('Контроллер не имеет метода: ' . $_REQUEST['act'], -1);
             }
-            $view = $Controller->$_REQUEST['act']();
-
-            Zero_Logs::Stop('#{CONTROLLER.Action} ' . self::$Section->Controller . ' -> ' . $_REQUEST['act']);
+            $viewController = $Controller->$_REQUEST['act']();
             $messageResponse = $Controller->GetMessage();
+            if ( true == $viewController instanceof Zero_View )
+            {
+                /* @var $viewController Zero_View */
+                $viewController->Assign('Message', $messageResponse);
+                $view = $viewController->Fetch(Zero_App::$Config->View_TplOutString);
+            }
+            else
+            {
+                $view = $viewController;
+            }
+            Zero_Logs::Stop('#{CONTROLLER} ' . self::$Section->Controller . ' -> ' . $_REQUEST['act']);
         }
         // Сборка ст раницы на основании макета
         if ( self::$Section->Layout )
         {
             $viewLayout = new Zero_View(self::$Section->Layout);
             $viewLayout->Assign('Message', $messageResponse);
-            if ( true == $view instanceof Zero_View )
-            {
-                /* @var $view Zero_View */
-                $view->Assign('Message', $messageResponse);
-                $viewLayout->Assign('Content', $view->Fetch());
-            }
-            else
-            {
-                $viewLayout->Assign('Content', $view);
-            }
-            $view = $viewLayout->Fetch();
+            $viewLayout->Assign('Content', $view);
+            $view = $viewLayout->Fetch(Zero_App::$Config->View_TplOutString);
         }
         self::ResponseHtml($view, 200);
     }

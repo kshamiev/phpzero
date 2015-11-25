@@ -76,7 +76,7 @@ class Zero_Users_Grid extends Zero_Crud_Grid
         $this->Chunk_Init();
         $this->Chunk_CatalogMove();
         $this->Chunk_View();
-        return $this->View->Fetch($this->ViewTplOutString);
+        return $this->View;
     }
 
     /**

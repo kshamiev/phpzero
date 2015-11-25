@@ -47,6 +47,8 @@ return [
         'PageItem' => "20",
         //  The range of visible pages
         'PageStep' => "11",
+        // Сборка шаблона с данными в одну строку
+        'TplOutString' => false,
     ],
     //  Monitoring
     'Log' => [

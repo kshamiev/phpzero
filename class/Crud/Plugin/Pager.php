@@ -2,13 +2,13 @@
 /**
  * Controller. Page by page
  *
- * Sample: {plugin "Zero_Crud_Pager" view="" Count=$PagerCount Page=$PagerPage PageItem=$PagerPageItem PageStep=$PagerPageStep}
+ * Sample: {plugin "Zero_Crud_Plugin_Pager" view="" Count=$PagerCount Page=$PagerPage PageItem=$PagerPageItem PageStep=$PagerPageStep}
  *
  * @package Zero.Crud
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
-class Zero_Crud_Pager extends Zero_Controller
+class Zero_Crud_Plugin_Pager extends Zero_Controller
 {
     /**
      * Create views.
@@ -82,6 +82,6 @@ class Zero_Crud_Pager extends Zero_Controller
         $this->View->Assign('Right', $right);
         $this->View->Assign('StepRight', $StepRight);
         $this->View->Assign('PageEnd', $page_count);
-        return $this->View->Fetch($this->ViewTplOutString);
+        return $this->View;
     }
 }

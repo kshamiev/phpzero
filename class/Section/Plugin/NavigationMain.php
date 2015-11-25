@@ -3,7 +3,7 @@
  * Navigating the root sections of the site.
  *
  * - two level
- * Sample: {plugin "Zero_Section_NavigationMain" view=""}
+ * Sample: {plugin "Zero_Section_Plugin_NavigationMain" view=""}
  *
  * @package Zero.Section.Navigation
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
@@ -12,7 +12,7 @@
  * @copyright <PHP_ZERO_COPYRIGHT>
  * @license http://www.phpzero.com/license/
  */
-class Zero_Section_NavigationMain extends Zero_Controller
+class Zero_Section_Plugin_NavigationMain extends Zero_Controller
 {
     /**
      * Create views meta tags.
@@ -31,6 +31,6 @@ class Zero_Section_NavigationMain extends Zero_Controller
             $this->View = new Zero_View(get_class($this));
         $this->View->Assign('Section', Zero_App::$Section);
         $this->View->Assign('navigation', $Section->Get_Navigation_Child());
-        return $this->View->Fetch($this->ViewTplOutString);
+        return $this->View;
     }
 }

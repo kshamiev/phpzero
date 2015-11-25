@@ -3,13 +3,13 @@
  * A two-level navigation through the main sections of the site.
  *
  * - 2 и 3 уровень.
- * Sample: {plugin "Zero_Section_NavigationAccordion" view="" section_id="0"}
+ * Sample: {plugin "Zero_Section_Plugin_NavigationAccordion" view="" section_id="0"}
  *
  * @package Zero.Section.Navigation
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
-class Zero_Section_NavigationAccordion extends Zero_Controller
+class Zero_Section_Plugin_NavigationAccordion extends Zero_Controller
 {
     /**
      * Vy`polnenie dei`stvii`
@@ -36,6 +36,7 @@ class Zero_Section_NavigationAccordion extends Zero_Controller
             {
                 $navigation[$id]['child'] = Zero_Section::DB_Navigation_Child($id);
             }
+            Zero_Cache::Set_Link('Section', $Section->ID);
             $Section->Cache->Set($index, $navigation);
         }
         if ( isset($this->Params['view']) )
@@ -44,6 +45,6 @@ class Zero_Section_NavigationAccordion extends Zero_Controller
             $this->View = new Zero_View(get_class($this));
         $this->View->Assign('Section', Zero_App::$Section);
         $this->View->Assign('navigation', $navigation);
-        return $this->View->Fetch($this->ViewTplOutString);
+        return $this->View;
     }
 }

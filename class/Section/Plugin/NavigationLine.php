@@ -2,7 +2,7 @@
 /**
  * Formation of bread crumbs.
  *
- * Sample: {plugin "Zero_Section_NavigationLine" view=""}
+ * Sample: {plugin "Zero_Section_Plugin_NavigationLine" view=""}
  *
  * @package Zero.Section.Navigation
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
@@ -11,7 +11,7 @@
  * @copyright <PHP_ZERO_COPYRIGHT>
  * @license http://www.phpzero.com/license/
  */
-class Zero_Section_NavigationLine extends Zero_Controller
+class Zero_Section_Plugin_NavigationLine extends Zero_Controller
 {
     /**
      * Create views meta tags.
@@ -45,6 +45,6 @@ class Zero_Section_NavigationLine extends Zero_Controller
         else
             $this->View = new Zero_View(get_class($this));
         $this->View->Assign('navigation', $navigation);
-        return $this->View->Fetch($this->ViewTplOutString);
+        return $this->View;
     }
 }

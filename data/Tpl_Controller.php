@@ -11,6 +11,27 @@
  */
 class Zero_Controller_Sample extends Zero_Controller
 {
+    /**
+     * The compile tpl in string and out
+     *
+     * @var bool
+     */
+    protected $ViewTplOutString = false;
+
+    /**
+     * The table stores the objects handled by this controller.
+     *
+     * @var string
+     */
+    protected $ModelName = 'Zero_Model_Pattern';
+
+    /**
+     * Template view
+     *
+     * @var string
+     */
+    protected $ViewName = 'Zero_Crud_Edit';
+
     //// Пример контроллера для WEB
     /**
      * Контроллер по умолчанию.
@@ -21,7 +42,7 @@ class Zero_Controller_Sample extends Zero_Controller
     {
         $this->Chunk_Init();
         $this->Chunk_View();
-        return $this->View->Fetch($this->ViewTplOutString);
+        return $this->View;
     }
 
     //// Пример контроллера для API

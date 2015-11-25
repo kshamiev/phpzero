@@ -2,14 +2,14 @@
 /**
  * Controller. Initialize the online status of the current user.
  *
- * Sample: {plugin "Zero_Users_Online" time="60"}
+ * Sample: {plugin "Zero_Users_Plugin_Online" time="60"}
  * Только для зарегистрированных пользователей.
  *
  * @package Zero.Users.Login
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
-class Zero_Users_Online extends Zero_Controller
+class Zero_Users_Plugin_Online extends Zero_Controller
 {
     /**
      * Initialize the online status of the current user.
@@ -35,6 +35,6 @@ class Zero_Users_Online extends Zero_Controller
             $Model->DateOnline = Zero_App::$Users->DateOnline;
             $Model->Save();
         }
-        return $this->View;
+        return '';
     }
 }

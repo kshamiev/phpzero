@@ -347,16 +347,14 @@ class Zero_View
         //        Zero_Logs::Start('#{APP.Controller} ' . $plugin_name);
         $Controller = Zero_Controller::Makes($plugin_name, $properties);
         /* @var $Controller Zero_Controller */
-        Zero_Logs::Start('#{PLUGIN.Action} ' . $plugin_name . ' -> Action_Default');
-        $View = $Controller->Action_Default();
-        Zero_Logs::Stop('#{PLUGIN.Action} ' . $plugin_name . ' -> Action_Default');
-        if ( $View instanceof Zero_View )
+        Zero_Logs::Start('#{PLUGIN} ' . $plugin_name . ' -> Action_Default');
+        $view = $Controller->Action_Default();
+        if ( $view instanceof Zero_View )
         {
-            Zero_Logs::Start('#{PLUGIN.View} ' . $plugin_name);
-            $View = $View->Fetch();
-            Zero_Logs::Stop('#{PLUGIN.View} ' . $plugin_name);
+            $view = $view->Fetch(Zero_App::$Config->View_TplOutString);
         }
+        Zero_Logs::Stop('#{PLUGIN} ' . $plugin_name . ' -> Action_Default');
         //        Zero_Logs::Stop('#{APP.Controller} ' . $plugin_name);
-        return $View;
+        return $view;
     }
 }

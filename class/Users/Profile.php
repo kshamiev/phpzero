@@ -13,7 +13,7 @@
 class Zero_Users_Profile extends Zero_Controller
 {
     /**
-     * ������������
+     * Обрабатываемая модель
      *
      * @var Zero_Users
      */
@@ -28,7 +28,7 @@ class Zero_Users_Profile extends Zero_Controller
     {
         $this->Chunk_Init();
         $this->Chunk_View();
-        return $this->View->Fetch($this->ViewTplOutString);
+        return $this->View;
     }
 
     /**
@@ -41,7 +41,7 @@ class Zero_Users_Profile extends Zero_Controller
         $this->Chunk_Init();
         $this->Chunk_Profile();
         $this->Chunk_View();
-        return $this->View->Fetch($this->ViewTplOutString);
+        return $this->View;
     }
 
     /**

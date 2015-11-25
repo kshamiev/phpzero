@@ -32,7 +32,7 @@ class Zero_Groups_Access extends Zero_Controller
     {
         $this->Chunk_Init();
         $this->Chunk_View();
-        return $this->View->Fetch($this->ViewTplOutString);
+        return $this->View;
     }
 
     /**
@@ -45,7 +45,7 @@ class Zero_Groups_Access extends Zero_Controller
         $this->Chunk_Init();
         $this->Chunk_Save();
         $this->Chunk_View();
-        return $this->View->Fetch($this->ViewTplOutString);
+        return $this->View;
     }
 
     /**
@@ -58,7 +58,7 @@ class Zero_Groups_Access extends Zero_Controller
         $this->Chunk_Init();
         $this->Chunk_Copy();
         $this->Chunk_View();
-        return $this->View->Fetch($this->ViewTplOutString);
+        return $this->View;
     }
 
     /**
