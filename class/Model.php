@@ -243,14 +243,14 @@ abstract class Zero_Model
         $config = $this->Get_Config_Prop();
         foreach ($row as $prop => $value)
         {
-            //  Personal`ny`i` ili algoritmichny`i` setter
+            //  Персональный или алгоритмичный сеттер
             if ( method_exists($this, $method = 'Set_' . $prop) )
             {
                 $this->$method($value);
                 continue;
             }
-            //  Svoi`stva modeli
-            if ( 'S' == $config[$prop]['DB'] && !is_array($value) )
+            //  Свойства модели
+            if ( isset($config[$prop]) && 'S' == $config[$prop]['DB'] && !is_array($value) )
             {
                 if ( $value )
                     $this->_Props[$prop] = explode(',', $value);

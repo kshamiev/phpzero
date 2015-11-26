@@ -187,7 +187,6 @@ class Zero_Users extends Zero_Model
                 'Phone' => [],
                 'Skype' => [],
                 'ImgAvatar' => [],
-                'Sector_ID' => [],
             ];
         }
         else
@@ -207,7 +206,6 @@ class Zero_Users extends Zero_Model
                 'IsOnline' => [],
                 'DateOnline' => [],
                 'Date' => [],
-                'Sector_ID' => [],
             ];
         }
     }

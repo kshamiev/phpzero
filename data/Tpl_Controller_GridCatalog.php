@@ -39,25 +39,28 @@ class Zero_Controller_Grid extends Zero_Crud_Grid
         $this->Params['obj_parent_name'] = '';
         if ( !isset($this->Params['obj_parent_prop']) )
             $this->Params['obj_parent_path'] = ['root'];
-        //  move up
-        if ( isset($this->Params['obj_parent_path'][$_GET['pid']]) )
+        if ( isset($_REQUEST['pid']) )
         {
-            $flag = true;
-            foreach ($this->Params['obj_parent_path'] as $id => $name)
+            //  move up
+            if ( isset($this->Params['obj_parent_path'][$_REQUEST['pid']]) )
             {
-                if ( $id == $_GET['pid'] )
-                    $flag = false;
-                else if ( false == $flag )
-                    unset($this->Params['obj_parent_path'][$id]);
+                $flag = true;
+                foreach ($this->Params['obj_parent_path'] as $id => $name)
+                {
+                    if ( $id == $_REQUEST['pid'] )
+                        $flag = false;
+                    else if ( false == $flag )
+                        unset($this->Params['obj_parent_path'][$id]);
+                }
             }
-        }
-        //  move down
-        else if ( isset($_REQUEST['pid']) )
-        {
-            $ObjectGo = Zero_Model::Makes($this->ModelName, $_GET['pid']);
-            $ObjectGo->Load('Name');
-            $this->Params['obj_parent_path'][$_GET['pid']] = $ObjectGo->Name;
-            unset($ObjectGo);
+            //  move down
+            else
+            {
+                $ObjectGo = Zero_Model::Makes($this->ModelName, $_REQUEST['pid']);
+                $ObjectGo->Load('Name');
+                $this->Params['obj_parent_path'][$_REQUEST['pid']] = $ObjectGo->Name;
+                unset($ObjectGo);
+            }
         }
         return true;
     }

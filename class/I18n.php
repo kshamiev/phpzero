@@ -107,7 +107,6 @@ class Zero_I18n
             return $path;
         }
         $path = ZERO_PATH_SITE . '/' . strtolower($folder_list[0]) . '/i18n/' . $lang . '/' . $folder_list[1] . '.php';
-
         if ( file_exists($path) )
         {
             self::$_I18n[$folder_list[0] . '_' . $folder_list[1]] = include $path;
