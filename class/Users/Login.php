@@ -124,10 +124,21 @@ class Zero_Users_Login extends Zero_Controller
         $View->Assign('password', $password);
         $message = $View->Fetch();
 
-        $from = ['Email' => Zero_App::$Config->Site_Email, 'Name' => Zero_App::$Config->Site_Name];
-        $to = [['Email' => $this->Model->Email, 'Name' => $this->Model->Name]];
-        $reply = $from;
-        Mail_Queue::SendMessage($reply, $from, $to, $subject, $message);
+        $sample = [
+            'Email' => [
+                'Reply' => ['Name' => Zero_App::$Config->Site_Name, 'Email' => Zero_App::$Config->Site_Email],
+                'From' => ['Name' => Zero_App::$Config->Site_Name, 'Email' => Zero_App::$Config->Site_Email],
+                'To' => [
+                    $this->Model->Email => $this->Model->Name,
+                ],
+                'Subject' => "Reminder access details " . HTTP,
+                'Message' => $message,
+                'Attach' => [
+                ],
+            ],
+        ];
+
+        Mail_Queue::SendMessage($sample['Email']);
 
         $this->SetMessage(0, ["Реквизиты отправлены на почту"]);
 
