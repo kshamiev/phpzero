@@ -410,7 +410,7 @@ class Zero_DB
      * Priamoi` zapros k BD na poluchenie rezul`tata raboty` dlia agregiruiushchikh funktcii`
      *
      * @param string $sql zapros
-     * @return string|integer
+     * @return mixed or null
      */
     public static function Select_Field($sql, $nameConnect = '')
     {
