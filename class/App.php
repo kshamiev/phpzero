@@ -258,6 +258,48 @@ class Zero_App
     }
 
     /**
+     * Отдача ошибки в работе в формате json
+     *
+     * Для ответов на API запросы
+     *
+     * @param int $code
+     * @param array $params
+     */
+    public static function ResponseJson500($code = 0, $params = [])
+    {
+        header('Pragma: no-cache');
+        header('Last-Modified: ' . date('D, d M Y H:i:s') . 'GMT');
+        header('Expires: Mon, 26 Jul 2007 05:00:00 GMT');
+        header('Cache-Control: no-store, no-cache, must-revalidate');
+        header("Content-Type: application/json; charset=utf-8");
+        header('HTTP/1.1 200 200');
+
+        if ( self::$Section->Controller )
+            $message = Zero_I18n::Message(self::$Section->Controller, $code, $params);
+        else
+            $message = Zero_I18n::Message('Zero', $code, $params);
+
+        Zero_Logs::Set_Message_Error($message[1]);
+
+        $data = [
+            'Code' => $message[0],
+            'Message' => $message[1],
+            'ErrorStatus' => true,
+        ];
+
+        echo json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
+        // закрываем соединение с браузером (работает только под нгинx)
+        if ( function_exists('fastcgi_finish_request') )
+            fastcgi_finish_request();
+
+        // Логирование в файлы
+        if ( Zero_App::$Config->Log_Output_File )
+            Zero_Logs::Output_File();
+        exit;
+    }
+
+    /**
      * Сборка ответа клиенту
      *
      * @return bool
