@@ -239,7 +239,7 @@
     <table width="100%" cellspacing="1" cellpadding="0" border="0">
         <tr>
             <td>
-                <textarea id="ckeditor-{$Prop}" name="Prop[Content]" cols="80" rows="30">{htmlspecialchars($Object->$Prop)}</textarea>
+                <textarea id="ckeditor-{$Prop}" name="Prop[{$Prop}]" cols="80" rows="30">{htmlspecialchars($Object->$Prop)}</textarea>
                 <script type="text/javascript">
                     CKEDITOR.replace('ckeditor-{$Prop}', {
                         height: 700,
