@@ -2,7 +2,7 @@
 /**
  * Контент-блоки страницы.
  *
- * {plugin "Zero_Content_Plugin_Page" block="footer"}
+ * @sample {plugin "Zero_Content_Plugin_Page" block="Content_Left"}
  *
  * @package Zero.Content.Plugin
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>

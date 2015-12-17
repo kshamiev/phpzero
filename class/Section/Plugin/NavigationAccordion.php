@@ -3,7 +3,7 @@
  * A two-level navigation through the main sections of the site.
  *
  * - 2 и 3 уровень.
- * Sample: {plugin "Zero_Section_Plugin_NavigationAccordion" view="" section_id="0"}
+ * @sample {plugin "Zero_Section_Plugin_NavigationAccordion" view="" section_id="0"}
  *
  * @package Zero.Section.Navigation
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>

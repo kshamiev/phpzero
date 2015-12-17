@@ -2,7 +2,7 @@
 /**
  * Navigating the subsections of the current section.
  *
- * Sample: {plugin "Zero_Section_Plugin_NavigationChild" view="" section_id="0"}
+ * @sample {plugin "Zero_Section_Plugin_NavigationChild" view="" section_id="0"}
  *
  * @package Zero.Section.Navigation
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>

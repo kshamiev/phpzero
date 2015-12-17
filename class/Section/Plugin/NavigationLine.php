@@ -2,7 +2,7 @@
 /**
  * Formation of bread crumbs.
  *
- * Sample: {plugin "Zero_Section_Plugin_NavigationLine" view=""}
+ * @sample {plugin "Zero_Section_Plugin_NavigationLine" view=""}
  *
  * @package Zero.Section.Navigation
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>

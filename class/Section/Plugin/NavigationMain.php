@@ -3,7 +3,7 @@
  * Navigating the root sections of the site.
  *
  * - two level
- * Sample: {plugin "Zero_Section_Plugin_NavigationMain" view=""}
+ * @sample {plugin "Zero_Section_Plugin_NavigationMain" view=""}
  *
  * @package Zero.Section.Navigation
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
