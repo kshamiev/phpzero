@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Navigating the subsections of the current section.
  *
@@ -31,12 +32,30 @@ class Zero_Section_Plugin_NavigationChild extends Zero_Controller
             $Section = Zero_Model::Makes('Zero_Section', Zero_App::$Section->Section_ID);
             $navigation = $Section->Get_Navigation_Child();
         }
-        if ( isset($this->Params['view']) )
-            $this->View = new Zero_View($this->Params['view']);
-        else
-            $this->View = new Zero_View(get_class($this));
+        $this->Chunk_Init();
         $this->View->Assign('Section', Zero_App::$Section);
         $this->View->Assign('navigation', $navigation);
         return $this->View;
+    }
+
+    /**
+     * Инициализация контроллера
+     *
+     * @return bool
+     */
+    protected function Chunk_Init()
+    {
+        // Шаблон
+        if ( isset($this->Params['view']) )
+            $this->View = new Zero_View($this->Params['view']);
+        else if ( isset($this->Params['tpl']) )
+            $this->View = new Zero_View($this->Params['tpl']);
+        else if ( isset($this->Params['template']) )
+            $this->View = new Zero_View($this->Params['template']);
+        else
+            $this->View = new Zero_View(get_class($this));
+        // Модель (пример)
+        // $this->Model = Zero_Model::Makes('Zero_Users');
+        return true;
     }
 }

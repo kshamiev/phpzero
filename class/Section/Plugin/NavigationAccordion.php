@@ -1,4 +1,5 @@
 <?php
+
 /**
  * A two-level navigation through the main sections of the site.
  *
@@ -19,11 +20,11 @@ class Zero_Section_Plugin_NavigationAccordion extends Zero_Controller
     public function Action_Default()
     {
         $index = __CLASS__ . Zero_App::$Users->Groups_ID . Zero_App::$Config->Site_DomainSub;
-        $Section = Zero_Model::Makes('Zero_Section');
+        $Section = Zero_Section::Make();
         /* @var $Section Zero_Section */
         if ( isset($this->Params['section_id']) && 0 < $this->Params['section_id'] )
         {
-            $Section = Zero_Model::Makes('Zero_Section', $this->Params['section_id']);
+            $Section = Zero_Section::Make($this->Params['section_id']);
             $index .= $this->Params['section_id'];
         }
         else
@@ -39,12 +40,30 @@ class Zero_Section_Plugin_NavigationAccordion extends Zero_Controller
             Zero_Cache::Set_Link('Section', $Section->ID);
             $Section->Cache->Set($index, $navigation);
         }
-        if ( isset($this->Params['view']) )
-            $this->View = new Zero_View($this->Params['view']);
-        else
-            $this->View = new Zero_View(get_class($this));
+        $this->Chunk_Init();
         $this->View->Assign('Section', Zero_App::$Section);
         $this->View->Assign('navigation', $navigation);
         return $this->View;
+    }
+
+    /**
+     * Инициализация контроллера
+     *
+     * @return bool
+     */
+    protected function Chunk_Init()
+    {
+        // Шаблон
+        if ( isset($this->Params['view']) )
+            $this->View = new Zero_View($this->Params['view']);
+        else if ( isset($this->Params['tpl']) )
+            $this->View = new Zero_View($this->Params['tpl']);
+        else if ( isset($this->Params['template']) )
+            $this->View = new Zero_View($this->Params['template']);
+        else
+            $this->View = new Zero_View(get_class($this));
+        // Модель (пример)
+        // $this->Model = Zero_Model::Makes('Zero_Users');
+        return true;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Navigating the root sections of the site.
  *
@@ -21,16 +22,32 @@ class Zero_Section_Plugin_NavigationMain extends Zero_Controller
      */
     public function Action_Default()
     {
-        $Section = Zero_Model::Makes('Zero_Section');
-        /* @var $Section Zero_Section */
+        $Section = Zero_Section::Make();
         $Section->Init_Url('/');
-        //  шаблон
-        if ( isset($this->Params['view']) )
-            $this->View = new Zero_View($this->Params['view']);
-        else
-            $this->View = new Zero_View(get_class($this));
+        $this->Chunk_Init();
         $this->View->Assign('Section', Zero_App::$Section);
         $this->View->Assign('navigation', $Section->Get_Navigation_Child());
         return $this->View;
+    }
+
+    /**
+     * Инициализация контроллера
+     *
+     * @return bool
+     */
+    protected function Chunk_Init()
+    {
+        // Шаблон
+        if ( isset($this->Params['view']) )
+            $this->View = new Zero_View($this->Params['view']);
+        else if ( isset($this->Params['tpl']) )
+            $this->View = new Zero_View($this->Params['tpl']);
+        else if ( isset($this->Params['template']) )
+            $this->View = new Zero_View($this->Params['template']);
+        else
+            $this->View = new Zero_View(get_class($this));
+        // Модель (пример)
+        // $this->Model = Zero_Model::Makes('Zero_Users');
+        return true;
     }
 }

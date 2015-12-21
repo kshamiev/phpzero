@@ -333,34 +333,17 @@ class Zero_Section extends Zero_Model
             $sql_where = "
             s.Section_ID = {$id} AND s.IsVisible = 'yes'
             ";
-        //  Translation
-        if ( LANG != Zero_App::$Config->Site_Language )
-        {
-            $sql = "
-            SELECT
-              s.ID, l.Name, SUBSTRING(s.Url, POSITION('/' IN s.Url)) AS Url, s.UrlThis, l.Title
-            FROM Section AS s
-                INNER JOIN Content AS l ON l.Section_ID = s.ID AND l.Lang = '" . ZERO_LANG . "' AND l.Block = 'Content'
-                LEFT JOIN Action AS a ON a.`Section_ID` = s.`ID`
-            WHERE
-                {$sql_where}
-            ORDER BY
-              s.`Sort` ASC
-            ";
-        }
-        else
-        {
-            $sql = "
-            SELECT
-              s.ID, s.Name, SUBSTRING(s.Url, POSITION('/' IN s.Url)) AS Url, UrlThis, Title
-            FROM Section AS s
-                LEFT JOIN Action AS a ON a.`Section_ID` = s.`ID`
-            WHERE
-                {$sql_where}
-            ORDER BY
-              s.`Sort` ASC
-            ";
-        }
+        //
+        $sql = "
+        SELECT
+          s.ID, s.Name, s.NameMenu, SUBSTRING(s.Url, POSITION('/' IN s.Url)) AS Url, UrlThis, Title
+        FROM Section AS s
+            LEFT JOIN Action AS a ON a.`Section_ID` = s.`ID`
+        WHERE
+            {$sql_where}
+        ORDER BY
+          s.`Sort` ASC
+        ";
         return Zero_DB::Select_Array_Index($sql);
     }
 

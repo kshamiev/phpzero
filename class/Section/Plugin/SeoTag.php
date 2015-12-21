@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Output meta tags.
  *
@@ -27,11 +28,35 @@ class Zero_Section_Plugin_SeoTag extends Zero_Controller
             'Description' => Zero_App::$Section->Description,
         ];
         $this->View->Assign('seo_data', $seo_data);
-        if ( Zero_App::$Section->IsIndex == 'no' ) {
+        if ( Zero_App::$Section->IsIndex == 'no' )
+        {
             $this->View->Assign('seo_index', '<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">' . "\n");
-        } else {
+        }
+        else
+        {
             $this->View->Assign('seo_index', '');
         }
         return $this->View;
+    }
+
+    /**
+     * Инициализация контроллера
+     *
+     * @return bool
+     */
+    protected function Chunk_Init()
+    {
+        // Шаблон
+        if ( isset($this->Params['view']) )
+            $this->View = new Zero_View($this->Params['view']);
+        else if ( isset($this->Params['tpl']) )
+            $this->View = new Zero_View($this->Params['tpl']);
+        else if ( isset($this->Params['template']) )
+            $this->View = new Zero_View($this->Params['template']);
+        else
+            $this->View = new Zero_View(get_class($this));
+        // Модель (пример)
+        // $this->Model = Zero_Model::Makes('Zero_Users');
+        return true;
     }
 }

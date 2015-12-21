@@ -541,6 +541,9 @@ class Zero_App
             {
                 /* @var $viewController Zero_View */
                 $viewController->Assign('Message', $messageResponse);
+                $viewController->Assign('Head', Zero_App::$Section->Name);
+                $viewController->Assign('H1', Zero_App::$Section->Name);
+                $viewController->Assign('Content', Zero_App::$Section->Content);
                 $view = $viewController->Fetch(Zero_App::$Config->View_TplOutString);
             }
             else
@@ -554,6 +557,8 @@ class Zero_App
         {
             $viewLayout = new Zero_View(self::$Section->Layout);
             $viewLayout->Assign('Message', $messageResponse);
+            $viewLayout->Assign('Head', Zero_App::$Section->Name);
+            $viewLayout->Assign('H1', Zero_App::$Section->Name);
             $viewLayout->Assign('Content', $view);
             $view = $viewLayout->Fetch(Zero_App::$Config->View_TplOutString);
         }

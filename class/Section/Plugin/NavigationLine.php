@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Formation of bread crumbs.
  *
@@ -26,25 +27,42 @@ class Zero_Section_Plugin_NavigationLine extends Zero_Controller
             $navigation[] = [
                 'Url' => URL,
                 'Title' => Zero_App::$Section->Title,
-                'Name' => Zero_App::$Section->Name
+                'NameMenu' => Zero_App::$Section->NameMenu
             ];
             $id = Zero_App::$Section->Section_ID;
             while ( 0 < $id )
             {
-                $Zero_Section = Zero_Model::Makes('Zero_Section', $id);
-                $Zero_Section->Load("Name, Title, SUBSTRING(Url, POSITION('/' IN Url)) as Url, Section_ID");
+                $Zero_Section = Zero_Section::Make($id);
+                $Zero_Section->Load("NameMenu, Title, SUBSTRING(Url, POSITION('/' IN Url)) as Url, Section_ID");
                 $id = $Zero_Section->Section_ID;
-                $navigation[] = ['Url' => $Zero_Section->Url, 'Name' => $Zero_Section->Name, 'Title' => $Zero_Section->Title];
+                $navigation[] = ['Url' => $Zero_Section->Url, 'NameMenu' => $Zero_Section->NameMenu, 'Title' => $Zero_Section->Title];
             }
             $navigation = array_reverse($navigation);
             Zero_App::$Section->Cache->Set($index, $navigation);
         }
-        //  шаблон
-        if ( isset($this->Params['view']) )
-            $this->View = new Zero_View($this->Params['view']);
-        else
-            $this->View = new Zero_View(get_class($this));
+        $this->Chunk_Init();
         $this->View->Assign('navigation', $navigation);
         return $this->View;
+    }
+
+    /**
+     * Инициализация контроллера
+     *
+     * @return bool
+     */
+    protected function Chunk_Init()
+    {
+        // Шаблон
+        if ( isset($this->Params['view']) )
+            $this->View = new Zero_View($this->Params['view']);
+        else if ( isset($this->Params['tpl']) )
+            $this->View = new Zero_View($this->Params['tpl']);
+        else if ( isset($this->Params['template']) )
+            $this->View = new Zero_View($this->Params['template']);
+        else
+            $this->View = new Zero_View(get_class($this));
+        // Модель (пример)
+        // $this->Model = Zero_Model::Makes('Zero_Users');
+        return true;
     }
 }
