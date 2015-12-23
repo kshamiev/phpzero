@@ -625,11 +625,42 @@ class Zero_App
             self::ResponseJson200(null, $code, [$exception->getMessage()]);
         else if ( self::MODE_WEB == self::$mode )
         {
-            $View = new Zero_View(ucfirst(self::$Config->Site_DomainSub) . '_Error');
-            $View->Add('Zero_Error');
-            $View->Assign('code', $code);
-            $View->Assign('message', $exception->getMessage());
-            self::ResponseHtml($View->Fetch(), $code);
+            $sql = "SELECT Layout, Controller FROM Section WHERE UrlThis = '{$code}'";
+            if ( true == self::$Config->Site_UseDB && 0 < count($row = Zero_DB::Select_Row($sql)) )
+            {
+                if ( $row['Layout'] )
+                    $View = new Zero_View($row['Layout']);
+                else
+                    $View = new Zero_View('Zero_Error');
+                if ( $row['Controller'] )
+                {
+                    $Controller = Zero_Controller::Makes($row['Controller']);
+                    if ( method_exists($Controller, 'Action_Default') )
+                    {
+                        $viewController = $Controller->Action_Default();
+                        if ( true == $viewController instanceof Zero_View )
+                        {
+                            /* @var $viewController Zero_View */
+                            $viewController->Assign('Head', Zero_App::$Section->Name);
+                            $viewController->Assign('H1', Zero_App::$Section->Name);
+                            $viewController->Assign('Content', Zero_App::$Section->Content);
+                            $view = $viewController->Fetch(Zero_App::$Config->View_TplOutString);
+                        }
+                        else
+                        {
+                            $view = $viewController;
+                        }
+                        $View->Assign('Content', $view);
+                    }
+                }
+            }
+            else
+            {
+                $View = new Zero_View('Zero_Error');
+                $View->Assign('code', $code);
+                $View->Assign('message', $exception->getMessage());
+            }
+            self::ResponseHtml($View->Fetch(Zero_App::$Config->View_TplOutString), $code);
         }
     }
 
