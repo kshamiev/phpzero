@@ -71,10 +71,12 @@
             <td>
                 {if ( 'Readonly' == $row['Form'] )}
 
-                {if ( $Object->$Prop && isset($Filter[$Prop]['List'][$Object->$Prop]) )}
-                    {$Filter[$Prop]['List'][$Object->$Prop]}
-                {else if ( '_ID' == substr($Prop, -3) )}
-                    {$Object->$Prop('Name')}
+                {if ( '_ID' == substr($Prop, -3) )}
+                    {if ( isset($Filter[$Prop]['List'][$Object->$Prop]) )}
+                        {$Filter[$Prop]['List'][$Object->$Prop]}
+                    {else}
+                        {$Object->$Prop('Name')}
+                    {/}
                 {else}
                     {nl2br($Object->$Prop)}
                 {/}
