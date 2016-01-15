@@ -57,9 +57,8 @@ class Zero_Section_Grid extends Zero_Crud_Grid
             //  move down
             else
             {
-                $ObjectGo = Zero_Model::Makes($this->ModelName, $_REQUEST['pid']);
-                $ObjectGo->Load('Name');
-                $this->Params['obj_parent_path'][$_REQUEST['pid']] = $ObjectGo->Name;
+                $ObjectGo = Zero_Section::Make($_REQUEST['pid']);
+                $this->Params['obj_parent_path'][$_REQUEST['pid']] = $ObjectGo->NameMenu;
                 unset($ObjectGo);
             }
         }
