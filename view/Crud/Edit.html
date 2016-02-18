@@ -38,8 +38,8 @@
 <div id="tabs">
 
 {if ( count($props_content) )}
-<script type="text/javascript" src="/assets/ckeditor/ckeditor.js"></script>
-<script type="text/javascript" src="/assets/ckeditor/config.js"></script>
+<script type="text/javascript" src="/library/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="/library/ckeditor/config.js"></script>
 <script type="text/javascript">
     $(function () {
         $("#tabs").tabs();
@@ -245,12 +245,12 @@
                 <script type="text/javascript">
                     CKEDITOR.replace('ckeditor-{$Prop}', {
                         height: 700,
-                        filebrowserBrowseUrl: '/assets/ckfinder/ckfinder.html',
-                        filebrowserImageBrowseUrl: '/assets/ckfinder/ckfinder.html',
-                        filebrowserFlashBrowseUrl: '/assets/ckfinder/ckfinder.html',
-                        filebrowserUploadUrl: '/assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Content',
-                        filebrowserImageUploadUrl: '/assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Content',
-                        filebrowserFlashUploadUrl: '/assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Content'
+                        filebrowserBrowseUrl: '/library/ckfinder/ckfinder.html',
+                        filebrowserImageBrowseUrl: '/library/ckfinder/ckfinder.html',
+                        filebrowserFlashBrowseUrl: '/library/ckfinder/ckfinder.html',
+                        filebrowserUploadUrl: '/library/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Content',
+                        filebrowserImageUploadUrl: '/library/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Content',
+                        filebrowserFlashUploadUrl: '/library/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Content'
                     });
                 </script>
             </td>

@@ -77,7 +77,7 @@ class Zero_Logs
         self::$_Message = [];
         self::$_StartTime = microtime(1);
         self::$_CurrentTime = [];
-        self::$_FileLog = $fileLog;
+        self::$_FileLog = strtolower($fileLog);
     }
 
     /**
@@ -252,12 +252,13 @@ class Zero_Logs
             }
         }
         // логирование операций пользователиа в файл
-        if ( Zero_App::$Config->Log_Profile_Action && Zero_App::MODE_CONSOLE != Zero_App::Get_Mode() && isset($_REQUEST['act']) && 'Action_Default' != $_REQUEST['act'] )
-        {
-            $act = date('[d.m.Y H:i:s]') . "\t" . Zero_App::$Users->Login . "\t";
-            $act .= Zero_App::$Section->Controller . " -> " . $_REQUEST['act'] . "\t" . ZERO_HTTP . $_SERVER['REQUEST_URI'];
-            self::File(self::$_FileLog . '_action', $act);
-        }
+        if ( Zero_App::$Config->Log_Profile_Action && isset($_SERVER['REQUEST_METHOD']) )
+            if ( 'POST' == $_SERVER['REQUEST_METHOD'] || 'PUT' == $_SERVER['REQUEST_METHOD'] || 'DELETE' == $_SERVER['REQUEST_METHOD'] )
+            {
+                $act = date('[d.m.Y H:i:s]') . "\t" . Zero_App::$Users->Login . "\t";
+                $act .= Zero_App::$Section->Controller . " -> " . $_REQUEST['act'] . "\t" . ZERO_HTTP . $_SERVER['REQUEST_URI'];
+                self::File(self::$_FileLog . '_action', $act);
+            }
     }
 
     /**

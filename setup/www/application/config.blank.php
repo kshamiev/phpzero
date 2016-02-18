@@ -91,4 +91,16 @@ return [
             //  'localhost:11211'
         ],
     ],
+    //  роутинг Web запросов
+    'Web' => [
+        new Zero_Config_Web(),
+    ],
+    //  Ротуинг Api запросов
+    'Api' => [
+        new Zero_Config_Api(),
+    ],
+    //  Консольные задачи
+    'Console' => [
+        new Zero_Config_Console(),
+    ],
 ];

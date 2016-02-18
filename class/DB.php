@@ -157,9 +157,7 @@ class Zero_DB
     public static function EscD($str)
     {
         $str = trim(strval($str));
-        if ( 'NOW' == $str || 'now' == $str )
-            return 'NOW()';
-        else if ( $str )
+        if ( $str )
             //            return "'" . self::$DB['']->real_escape_string($str) . "'";
             return "'" . addslashes($str) . "'";
         else

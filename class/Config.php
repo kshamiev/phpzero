@@ -213,6 +213,27 @@ class Zero_Config
     public $Memcache = [];
 
     /**
+     * роутинг Web запросов
+     *
+     * @var array
+     */
+    public $Web = [];
+
+    /**
+     * Ротуинг Api запросов
+     *
+     * @var array
+     */
+    public $Api = [];
+
+    /**
+     * Консольные задачи
+     *
+     * @var array
+     */
+    public $Console = [];
+
+    /**
      * IP the source address of the request
      *
      * @var string
@@ -226,6 +247,11 @@ class Zero_Config
      */
     public function __construct($fileConfig)
     {
+        if ( file_exists($path = ZERO_PATH_APPLICATION . '/config_' . $fileConfig . '.php') )
+            $Config = require $path;
+        else
+            $Config = require ZERO_PATH_APPLICATION . '/config.php';
+
         // Setting php
         set_time_limit(3600);
         date_default_timezone_set('Europe/Moscow');
@@ -235,18 +261,44 @@ class Zero_Config
         ini_set('display_startup_errors', 0);
 
         // Initialization of the profiled application processors
-        if ( !is_dir(ZERO_PATH_LOG) )
-            if ( !mkdir(ZERO_PATH_LOG, 0777, true) )
-                die('logs path: "' . ZERO_PATH_LOG . '" not exists');
         ini_set('log_errors', true);
         ini_set('error_log', ZERO_PATH_LOG . "/{$fileConfig}_fatal.log");
         ini_set('magic_quotes_gpc', 0);
         error_reporting(-1);
 
-        if ( file_exists($path = ZERO_PATH_APPLICATION . '/config_' . $fileConfig . '.php') )
-            $Config = require $path;
-        else
-            $Config = require ZERO_PATH_APPLICATION . '/config.php';
+        // IP the source address of the request
+        if ( isset($_SERVER["HTTP_X_FORWARDED_FOR"]) )
+            $this->Ip = $_SERVER["HTTP_X_FORWARDED_FOR"];
+        else if ( isset($_SERVER["REMOTE_ADDR"]) )
+            $this->Ip = $_SERVER["REMOTE_ADDR"];
+
+        if ( !is_dir(ZERO_PATH_EXCHANGE) )
+            if ( !mkdir(ZERO_PATH_EXCHANGE, 0777, true) )
+                die('path "exchange": "' . ZERO_PATH_EXCHANGE . '" not create');
+
+        if ( !is_dir(ZERO_PATH_CACHE) )
+            if ( !mkdir(ZERO_PATH_CACHE, 0777, true) )
+                die('path "cache": "' . ZERO_PATH_CACHE . '" not create');
+
+        if ( !is_dir(ZERO_PATH_LOG) )
+            if ( !mkdir(ZERO_PATH_LOG, 0777, true) )
+                die('logs path: "' . ZERO_PATH_LOG . '" not create');
+
+        //  Storage sessions
+        if ( !session_id() )
+            if ( 0 < count($Config['Memcache']['Session']) )
+            {
+                ini_set('session.save_handler', 'memcache');
+                ini_set('session.save_path', $Config['Memcache']['Session'][0]);
+            }
+            else
+            {
+                ini_set('session.save_handler', 'files');
+                $path = ini_get('session.save_path');
+                if ( $path && !is_dir($path) )
+                    if ( !mkdir($path, 0777, true) )
+                        die('session path: "' . $path . '" not exists');
+            }
 
         // The path to the php Interpreter
         $this->Site_PathPhp = $Config['Site']['PathPhp'];
@@ -301,15 +353,6 @@ class Zero_Config
 
         $this->Site_UseDB = $Config['Site']['UseDB'];
 
-        //        $this->Site_ClassRoute = $Config['Site']['ClassRoute'];
-        //        if ( !$this->Site_ClassRoute )
-        //            die('class Route undefined');
-        //        $this->Site_ClassSection = $Config['Site']['ClassSection'];
-        //        if ( !$this->Site_ClassSection )
-        //            die('class Route undefined');
-        //        $this->Site_ClassUsers = $Config['Site']['ClassUsers'];
-        //        if ( !$this->Site_ClassUsers )
-        //            die('class Route undefined');
         //  Number of items per page
         $this->View_PageItem = $Config['View']['PageItem'];
         //  The range of visible pages
@@ -341,39 +384,14 @@ class Zero_Config
         // Servers Memcache
         $this->Memcache = $Config['Memcache'];
 
-        // IP the source address of the request
-        if ( isset($_SERVER["HTTP_X_FORWARDED_FOR"]) )
-            $this->Ip = $_SERVER["HTTP_X_FORWARDED_FOR"];
-        else if ( isset($_SERVER["REMOTE_ADDR"]) )
-            $this->Ip = $_SERVER["REMOTE_ADDR"];
+        // роутинг Web запросов
+        $this->Web = $Config['Web'];
 
-        if ( !is_dir(ZERO_PATH_EXCHANGE) )
-            if ( !mkdir(ZERO_PATH_EXCHANGE, 0777, true) )
-                die('path "exchange": "' . ZERO_PATH_EXCHANGE . '" not exists');
+        // Ротуинг Api запросов
+        $this->Api = $Config['Api'];
 
-        if ( !is_dir(ZERO_PATH_CACHE) )
-            if ( !mkdir(ZERO_PATH_CACHE, 0777, true) )
-                die('path "cache": "' . ZERO_PATH_CACHE . '" not exists');
-
-//        if ( !is_dir(ZERO_PATH_APPLICATION . '/zero') )
-//            if ( !symlink(ZERO_PATH_ZERO, ZERO_PATH_APPLICATION . '/zero') )
-//                die('module "zero" path: "' . ZERO_PATH_APPLICATION . '/zero" not exists');
-
-        //  Storage sessions
-        if ( !session_id() )
-            if ( 0 < count($Config['Memcache']['Session']) )
-            {
-                ini_set('session.save_handler', 'memcache');
-                ini_set('session.save_path', $Config['Memcache']['Session'][0]);
-            }
-            else
-            {
-                ini_set('session.save_handler', 'files');
-                $path = ini_get('session.save_path');
-                if ( $path && !is_dir($path) )
-                    if ( !mkdir($path, 0777, true) )
-                        die('session path: "' . $path . '" not exists');
-            }
+        // Консольные задачи
+        $this->Console = $Config['Console'];
     }
 
     /**
@@ -383,25 +401,43 @@ class Zero_Config
      * @param string $fileConfig config file
      * @return array Массив конфигурации указанного модуля и файла
      */
-    public static function Get_Config($module, $fileConfig = '')
+    public static function Get_Config($module)
     {
         $configuration = [];
+        $path = ZERO_PATH_APPLICATION . '/' . $module . '/config.php';
+        if ( file_exists($path) )
+        {
+            $configuration = require $path;
+        }
+        return $configuration;
+        //
         if ( $module = strtolower($module) )
         {
             if ( is_dir($path = ZERO_PATH_APPLICATION . '/' . $module . '/config') )
             {
-                if ( $fileConfig == '' )
-                {
-                    foreach (glob($path . '/*.php') as $fileConfig)
-                    {
-                        $fileConfig = substr(basename($fileConfig), 0, -4);
-                        $configuration[$fileConfig] = require $fileConfig;
-                    }
-                }
-                else if ( file_exists($path . '/' . $fileConfig . '.php') )
+                if ( file_exists($path . '/' . $fileConfig . '.php') )
                 {
                     $configuration = require $path . '/' . $fileConfig . '.php';
                 }
+                else if ( file_exists($path = ZERO_PATH_APPLICATION . '/' . $module . '/' . $fileConfig . '.php') )
+                {
+                    $configuration = require $path;
+                }
+                //                if ( $fileConfig == '' )
+                //                {
+                //                    foreach (glob($path . '/*.php') as $fileConfig)
+                //                    {
+                //                        $configuration[substr(basename($fileConfig), 0, -4)] = require $fileConfig;
+                //                    }
+                //                }
+                //                else if ( file_exists($path . '/' . $fileConfig . '.php') )
+                //                {
+                //                    $configuration = require $path . '/' . $fileConfig . '.php';
+                //                }
+            }
+            else if ( file_exists($path = ZERO_PATH_APPLICATION . '/' . $module . '/' . $fileConfig . '.php') )
+            {
+                $configuration = require $path;
             }
         }
         return $configuration;

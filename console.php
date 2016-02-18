@@ -57,7 +57,7 @@ function zero_crontab_check_datetime($date_this, $date_cron)
 
 //  Connecting application
 require __DIR__ . '/class/App.php';
-Zero_App::Init('console');
+Zero_App::Init();
 
 //  Work console task
 if ( count($_SERVER['argv']) > 1 )
@@ -69,11 +69,8 @@ if ( count($_SERVER['argv']) > 1 )
         $_REQUEST['act'] = 'Action_Default';
     $Controller = Zero_Controller::Makes($arr[0]);
     $Controller->$_REQUEST['act']();
-
-    Zero_App::ResponseConsole();
 }
-//  Launch Manager console task
-else
+else //  Launch Manager console task
 {
     $week = date('w');
     $month = date('n');
@@ -84,10 +81,9 @@ else
     // check whether the process is running on a server
     exec("ps ax | grep -v 'grep' | grep -v 'cd ' | grep -v 'sudo ' | grep 'console.php '", $result);
     $result = join("\n", $result);
-    foreach (Zero_Config::Get_Modules() as $module)
+    foreach (Zero_App::$Config->Console as $console)
     {
-        $config = Zero_Config::Get_Config($module, 'console');
-        foreach ($config as $sys_demon => $sys_cron)
+        foreach ($console->Task as $sys_demon => $sys_cron)
         {
             if ( !$sys_cron['IsActive'] || false !== strpos($result, Zero_App::$Config->Site_PathPhp . ' ' . ZERO_PATH_SITE . '/console.php ' . $sys_demon) )
                 continue;
@@ -108,4 +104,6 @@ else
         }
     }
 }
+
+Zero_App::ResponseConsole();
 exit;

@@ -52,6 +52,7 @@ define('ZERO_PATH_LAYOUT', ZERO_PATH_SITE . '/layout');
  * @package General.Component
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
+ * @todo логи дифференцировать
  */
 class Zero_App
 {
@@ -103,7 +104,7 @@ class Zero_App
     private static $url;
 
     /**
-     * Режим работы приложения (api, web, console).
+     * Режим работы приложения (Api, Web, Console).
      *
      * @var string
      */
@@ -348,7 +349,7 @@ class Zero_App
      * @param string $fileApp суффикс конфигурационного файла
      * @param string $mode режим работы приложения
      */
-    public static function Init($fileApp = 'application', $mode = '')
+    public static function Init($fileApp = '')
     {
         // Если инициализация уже произведена
         if ( !is_null(self::$Config) )
@@ -370,8 +371,14 @@ class Zero_App
         //  Configuration (Zero_Config)
         self::$Config = new Zero_Config($fileApp);
 
+        // Роутинг
+        $arr = app_route();
+        self::$mode = $arr[0];
+        self::$lang = $arr[1];
+        self::$url = $arr[2];
+
         //  Initializing monitoring system (Zero_Logs)
-        Zero_Logs::Init($fileApp);
+        Zero_Logs::Init($fileApp . self::$mode);
 
         //  Initialize cache subsystem (Zero_Cache)
         if ( (0 < count(self::$Config->Memcache['Cache'])) && class_exists('Memcache') )
@@ -382,15 +389,6 @@ class Zero_App
         {
             Zero_DB::Config_Add($name, $config);
         }
-
-        // Роутинг
-        $arr = app_route();
-        if ( $mode )
-            self::$mode = $mode;
-        else
-            self::$mode = $arr[0];
-        self::$lang = $arr[1];
-        self::$url = $arr[2];
 
         // Шаблонизатор
         require_once ZERO_PATH_ZERO . '/class/View.php';
@@ -409,19 +407,16 @@ class Zero_App
 
         // Поиск роутинга в конфигурационных файлах
         $route = [];
-        foreach (Zero_Config::Get_Modules() as $module)
+        $Property = self::$mode;
+        foreach (self::$Config->$Property as $route)
         {
-            $config = Zero_Config::Get_Config($module, 'route' . self::$mode);
-            if ( isset($config[ZERO_URL]) )
+            if ( isset($route->Route[ZERO_URL]) )
             {
-                $route = $config[ZERO_URL];
-                if ( !is_array($route) )
-                {
-                    $route['Controller'] = $route;
-                }
+                $route = $route->Route[ZERO_URL];
                 break;
             }
         }
+
         if ( 0 == count($route) )
             throw new Exception('Page Not Found', 404);
 
