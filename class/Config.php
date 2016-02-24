@@ -242,15 +242,10 @@ class Zero_Config
 
     /**
      * Configuration
-     *
-     * @param string $fileConfig суффикс конфигурационного файла
      */
-    public function __construct($fileConfig)
+    public function __construct()
     {
-        if ( file_exists($path = ZERO_PATH_APPLICATION . '/config_' . $fileConfig . '.php') )
-            $Config = require $path;
-        else
-            $Config = require ZERO_PATH_APPLICATION . '/config.php';
+        $Config = require ZERO_PATH_APPLICATION . '/config.php';
 
         // Setting php
         set_time_limit(3600);
@@ -262,7 +257,7 @@ class Zero_Config
 
         // Initialization of the profiled application processors
         ini_set('log_errors', true);
-        ini_set('error_log', ZERO_PATH_LOG . "/{$fileConfig}_fatal.log");
+        ini_set('error_log', ZERO_PATH_LOG . "/fatal.log");
         ini_set('magic_quotes_gpc', 0);
         error_reporting(-1);
 
@@ -408,37 +403,6 @@ class Zero_Config
         if ( file_exists($path) )
         {
             $configuration = require $path;
-        }
-        return $configuration;
-        //
-        if ( $module = strtolower($module) )
-        {
-            if ( is_dir($path = ZERO_PATH_APPLICATION . '/' . $module . '/config') )
-            {
-                if ( file_exists($path . '/' . $fileConfig . '.php') )
-                {
-                    $configuration = require $path . '/' . $fileConfig . '.php';
-                }
-                else if ( file_exists($path = ZERO_PATH_APPLICATION . '/' . $module . '/' . $fileConfig . '.php') )
-                {
-                    $configuration = require $path;
-                }
-                //                if ( $fileConfig == '' )
-                //                {
-                //                    foreach (glob($path . '/*.php') as $fileConfig)
-                //                    {
-                //                        $configuration[substr(basename($fileConfig), 0, -4)] = require $fileConfig;
-                //                    }
-                //                }
-                //                else if ( file_exists($path . '/' . $fileConfig . '.php') )
-                //                {
-                //                    $configuration = require $path . '/' . $fileConfig . '.php';
-                //                }
-            }
-            else if ( file_exists($path = ZERO_PATH_APPLICATION . '/' . $module . '/' . $fileConfig . '.php') )
-            {
-                $configuration = require $path;
-            }
         }
         return $configuration;
     }

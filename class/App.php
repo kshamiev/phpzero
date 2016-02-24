@@ -52,7 +52,7 @@ define('ZERO_PATH_LAYOUT', ZERO_PATH_SITE . '/layout');
  * @package General.Component
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
- * @todo логи дифференцировать
+ * @todo json формат числа
  */
 class Zero_App
 {
@@ -185,7 +185,7 @@ class Zero_App
      */
     public static function RequestJson($method, $url, $content = '')
     {
-        $content = json_encode($content, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        $content = json_encode($content, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK);
         $opts = array(
             'http' => array(
                 'method' => $method,
@@ -246,7 +246,7 @@ class Zero_App
         if ( $content )
             $data['Content'] = $content;
 
-        echo json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        echo json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK);
 
         // закрываем соединение с браузером (работает только под нгинx)
         if ( function_exists('fastcgi_finish_request') )
@@ -288,7 +288,7 @@ class Zero_App
             'ErrorStatus' => true,
         ];
 
-        echo json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        echo json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK);
 
         // закрываем соединение с браузером (работает только под нгинx)
         if ( function_exists('fastcgi_finish_request') )
@@ -369,7 +369,7 @@ class Zero_App
         // register_shutdown_function(['Zero_App', 'Exit_Application']);
 
         //  Configuration (Zero_Config)
-        self::$Config = new Zero_Config($fileApp);
+        self::$Config = new Zero_Config();
 
         // Роутинг
         $arr = app_route();
