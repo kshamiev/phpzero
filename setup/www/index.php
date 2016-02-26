@@ -7,7 +7,7 @@
 // Including the class Zero_App
 require __DIR__ . '/zero/class/App.php';
 
-Zero_App::Init('app');
+Zero_App::Init();
 
 // General Authorization Application
 if ( Zero_App::$Config->Site_AccessLogin )
@@ -25,5 +25,4 @@ if ( Zero_App::$Config->Site_UseDB && Zero_App::MODE_WEB == Zero_App::Get_Mode()
     Zero_App::Execute();
 else
     Zero_App::ExecuteSimple();
-
 exit;
