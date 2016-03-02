@@ -52,7 +52,7 @@ define('ZERO_PATH_LAYOUT', ZERO_PATH_SITE . '/layout');
  * @package General.Component
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
- * @todo json формат числа
+ * @todo Убрать User Condition как системный подход сам метод оставить
  */
 class Zero_App
 {
