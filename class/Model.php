@@ -265,28 +265,6 @@ abstract class Zero_Model
     }
 
     /**
-     * Configuration links many to many
-     *
-     * @param Zero_Model $Model The exact working model
-     * @return array
-     */
-    protected static function Config_Link($Model, $scenario = '')
-    {
-        return [];
-    }
-
-    /**
-     * Poluchenie konfiguratcii sviazei` modeli
-     *
-     * @param string $scenario scenario
-     * @return array dvumerny`i` assotciativny`i` massiv konfiguratcii
-     */
-    public function Get_Config_Link($scenario = '')
-    {
-        return static::Config_Link($this, $scenario);
-    }
-
-    /**
      * The configuration properties
      *
      * @param Zero_Model $Model The exact working model
@@ -474,18 +452,6 @@ abstract class Zero_Model
         if ( !is_object($this->_Cache) )
             $this->_Cache = new Zero_Cache($this);
         return $this->_Cache;
-    }
-
-    /**
-     * Формирование from части запроса к БД
-     * May be removed
-     *
-     * @param array $params параметры контроллера
-     * @return string
-     */
-    public function Get_Query_From($params)
-    {
-        return "FROM {$this->Source} as z";
     }
 
     /**

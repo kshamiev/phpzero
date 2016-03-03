@@ -124,34 +124,6 @@ class Zero_AR
     }
 
     /**
-     * Get list id linked
-     *
-     * @param string $source_target tcelevaia tablitca s kotoroi` postroena sviaz` (mnogie ko mnogim)
-     * @param mixed $source_target_id identifikator(y` stroka cherez zapiatuiu) ob``ekta tcelevoi` tablitca s kotoroi` postroena sviaz` mnogie ko mnogim
-     * @return array
-     */
-    public function Select_Cross_ID($source_target, $source_target_id)
-    {
-        $link = $this->Model->Get_Config_Link();
-        if ( !$source_target || !$source_target_id || !isset($link[$source_target]) )
-        {
-            Zero_Logs::Set_Message_Error("nepravil`noe obrashchenie k kross tablitce: {$this->Model->Source} - {$source_target}, ID = {$source_target_id}");
-            return [];
-        }
-        $link = $link[$source_target];
-        $sql = "
-        SELECT
-          {$link['prop_this']}
-        FROM {$link['table_link']}
-        WHERE
-          {$link['prop_target']} IN ({$source_target_id})
-        ORDER BY
-          1
-        ";
-        return Zero_DB::Select_List($sql);
-    }
-
-    /**
      * Ustavnoka uslovii` dlia vy`polneniia osnovny`kh zaprosov (Insert, Update, Delete, Select, Load).
      *
      * Sluzhebny`i` metod dlia osnovnogo zaprosa.
@@ -528,34 +500,6 @@ class Zero_AR
     }
 
     /**
-     * Proverka sushchestvovanie sviazi (mnogie ko mnogim).
-     *
-     * @param string $source_target istochnik danny`kh s kotory`m postroena sviaz` (mnogie ko mnogim)
-     * @param mixed $source_target_id identifikator(y` stroka cherez zapiatuiu) ob``ekta tcelevogo istochnika s kotory`m postroena sviaz` (mnogie ko mnogim)
-     * @return int est` li sviaz`
-     */
-    public function Select_Cross_IsExist($source_target, $source_target_id)
-    {
-        $link = $this->Model->Get_Config_Link();
-        if ( !$source_target || !$source_target_id || !isset($link[$source_target]) )
-        {
-            Zero_Logs::Set_Message_Error("nepravil`noe obrashchenie k kross tablitce: {$this->Model->Source} - {$source_target}, ID = {$source_target_id}");
-            return -1;
-        }
-        $link = $link[$source_target];
-        $sql = "
-        SELECT
-          COUNT(*)
-        FROM {$link['table_link']}
-        WHERE
-          {$link['prop_target']} IN ({$source_target_id})
-          AND {$link['prop_this']} = {$this->Model->ID}
-        ";
-        unset($link);
-        return Zero_DB::Select_Field($sql);
-    }
-
-    /**
      * Poisk ob``ektov s signaturoi` ravnoi` delegirovannomu ob``ektu (odin ko mnogim i mnogie ko mnogim).
      *
      * Poriadok formirovanie zaprosa:
@@ -619,6 +563,14 @@ class Zero_AR
         else
             $sql_prop = "SELECT " . $props;
         /**
+         * From
+         */
+        $source = $this->Model->Source;
+        if ( isset($this->Params['From']) )
+            $sql_from = $this->Params['From'];
+        else
+            $sql_from = "FROM {$source} AS z";
+        /**
          * Usloviia Where
          */
         if ( isset($this->Params['Where']) )
@@ -657,14 +609,6 @@ class Zero_AR
             else
                 $sql_limit = 'LIMIT ' . $this->Params['Limit'][0];
         }
-        /**
-         * From
-         */
-        $source = $this->Model->Source;
-        if ( isset($this->Params['From']) )
-            $sql_from = $this->Params['From'];
-        else
-            $sql_from = "FROM {$source} AS z";
         /**
          * OB``EKTY
          */
@@ -869,27 +813,6 @@ class Zero_AR
     }
 
     /**
-     * Sozdanie sviazei` mezhdu ob``ektami.
-     *
-     * @param Zero_Model $ObjectParent Roditel`skii` ob``ekt s kotory`m sozdaem sviaz`
-     * @return boolean
-     */
-    public function Insert_Cross($ObjectParent)
-    {
-        if ( !is_object($ObjectParent) || 0 == $ObjectParent->ID )
-            return false;
-        $link = $this->Model->Get_Config_Link()[$ObjectParent->Source];
-        $sql = "
-        INSERT INTO {$link['table_link']}
-          ({$link['prop_this']}, {$link['prop_target']})
-        VALUES
-          ({$this->Model->ID}, {$ObjectParent->ID})
-        ";
-        Zero_DB::Update($sql);
-        return true;
-    }
-
-    /**
      * Sortirovka ob``ekta.
      *
      * Sortiruet ob``ekt za ukazanny`m v $object_id
@@ -972,27 +895,6 @@ class Zero_AR
         Zero_DB::Update($sql);
         //
         $this->Model->Direction = $sort;
-        return true;
-    }
-
-    /**
-     * Udalenie sviazei` mezhdu ob``ektami.
-     *
-     * @param Zero_Model $ObjectParent Roditel`skii` ob``ekt s kotory`m udaliaem sviaz`
-     * @return boolean
-     */
-    public function Delete_Cross($ObjectParent)
-    {
-        if ( !is_object($ObjectParent) || 0 == $ObjectParent->ID )
-            return false;
-        $link = $this->Model->Get_Config_Link()[$ObjectParent->Source];
-        $sql = "
-        DELETE FROM {$link['table_link']}
-        WHERE
-          {$link['prop_this']} = {$this->Model->ID}
-          AND {$link['prop_target']} = {$ObjectParent->ID}
-        ";
-        Zero_DB::Update($sql);
         return true;
     }
 

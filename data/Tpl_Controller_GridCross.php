@@ -51,11 +51,11 @@ class Zero_Controller_Grid extends Zero_Crud_Grid
             return $this->SetMessage(5301);
         //  target parent object
         $Object1 = Zero_Model::Makes($this->Params['obj_parent_table'], $this->Params['obj_parent_id']);
-        //  this object
-        $Object2 = Zero_Model::Makes($this->ModelName, $_REQUEST['id']);
-        //
-        if ( !$Object1->AR->Insert_Cross($Object2) )
-            return $this->SetMessage(5301);
+        if ( method_exists($Object1, $method = 'DB_Cross_' . $this->Params['obj_parent_table']) )
+        {
+            if ( false === $Object1->$method($_REQUEST['id']) )
+                return $this->SetMessage(5301);
+        }
         return $this->SetMessage();
     }
 
@@ -70,11 +70,11 @@ class Zero_Controller_Grid extends Zero_Crud_Grid
             return $this->SetMessage(5302);
         //  target parent object
         $Object1 = Zero_Model::Makes($this->Params['obj_parent_table'], $this->Params['obj_parent_id']);
-        //  this object
-        $Object2 = Zero_Model::Makes($this->ModelName, $_REQUEST['id']);
-        //
-        if ( !$Object1->AR->Delete_Cross($Object2) )
-            return $this->SetMessage(5302);
+        if ( method_exists($Object1, $method = 'DB_Cross_' . $this->Params['obj_parent_table']) )
+        {
+            if ( false === $Object1->$method($_REQUEST['id'], false) )
+                return $this->SetMessage(5302);
+        }
         return $this->SetMessage();
     }
 }

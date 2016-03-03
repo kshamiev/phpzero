@@ -380,13 +380,16 @@ class Zero_Config
         $this->Memcache = $Config['Memcache'];
 
         // роутинг Web запросов
-        $this->Web = $Config['Web'];
+        if ( isset($Config['Web']) )
+            $this->Web = $Config['Web'];
 
         // Ротуинг Api запросов
-        $this->Api = $Config['Api'];
+        if ( isset($Config['Api']) )
+            $this->Api = $Config['Api'];
 
         // Консольные задачи
-        $this->Console = $Config['Console'];
+        if ( isset($Config['Console']) )
+            $this->Console = $Config['Console'];
     }
 
     /**

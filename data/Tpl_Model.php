@@ -20,23 +20,6 @@ class Zero_Model_Pattern extends Zero_Model
     protected $Source = 'Zero_Model_Pattern';
 
     /**
-     * Configuration links many to many
-     *
-     * - 'table_target' => ['table_link', 'prop_this', 'prop_target']
-     *
-     * @param Zero_Model_Pattern $Model The exact working model
-     * @param string $scenario Сценарий свойств
-     * @return array
-     */
-    protected static function Config_Link($Model, $scenario = '')
-    {
-        return [
-            /*BEG_CONFIG_LINK*/
-            /*END_CONFIG_LINK*/
-        ];
-    }
-
-    /**
      * Базовая конфигурация свойств модели
      *
      * Настройки свойств наследуются остальными конфигурациоными методами
@@ -123,6 +106,46 @@ class Zero_Model_Pattern extends Zero_Model
             /*BEG_CONFIG_FORM_PROP*/
             /*END_CONFIG_FORM_PROP*/
         ];
+    }
+
+    /**
+     * Формирование from части запроса к БД
+     * May be removed
+     *
+     * @param array $params параметры контроллера
+     * @return string
+     */
+    public function AR_From($params)
+    {
+        $this->AR->Sql_From("FROM {$this->Source} as z");
+    }
+
+    /**
+     * Создание и удаление связи многие ко многим
+     *
+     * @param $id
+     * @return bool
+     */
+    public function DB_Cross_TableName($id, $flag = true)
+    {
+        if ( $flag )
+        {
+            $sql = "
+            INSERT INTO TableName
+              FieldName1, FieldName2
+            VALUES
+              {$id}, {$this->ID}
+            ";
+            return Zero_DB::Insert($sql);
+        }
+        else
+        {
+            $sqk_where = '';
+            if ( 0 < $id )
+                $sqk_where = "AND FieldName2 = {$id}";
+            $sql = "DELETE FROM TableName WHERE FieldName1 = {$this->ID} {$sqk_where}";
+            return Zero_DB::Update($sql);
+        }
     }
 
     /**

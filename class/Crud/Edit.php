@@ -124,7 +124,6 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         $this->View->Assign('Filter', $Filter->Get_Filter());
         // CKEDITOR - this -> Object
         $pathObject = '/' . strtolower($this->Model->Source) . '/' . Zero_Helper_File::Get_Path_Cache($this->Model->ID) . '/' . $this->Model->ID;
-        //$pathObject = '/ssss';
         if ( !is_dir(ZERO_PATH_DATA . $pathObject) )
             mkdir(ZERO_PATH_DATA . $pathObject, 0777, true);
         $_SESSION['pathObject'] = $pathObject;
@@ -181,12 +180,12 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         }
 
         //  Set the user conditions
-        $users_condition = Zero_App::$Users->Get_Condition();
-        foreach (array_keys($this->Model->Get_Config_Prop(get_class($this))) as $prop)
-        {
-            if ( isset($users_condition[$prop]) && 1 == count($users_condition[$prop]) )
-                $this->Model->$prop = key($users_condition[$prop]);
-        }
+        //        $users_condition = Zero_App::$Users->Get_Condition();
+        //        foreach (array_keys($this->Model->Get_Config_Prop(get_class($this))) as $prop)
+        //        {
+        //            if ( isset($users_condition[$prop]) && 1 == count($users_condition[$prop]) )
+        //                $this->Model->$prop = key($users_condition[$prop]);
+        //        }
 
         $this->Model->VL->Validate($_REQUEST['Prop'], get_class($this));
         if ( 0 < count($this->Model->VL->Get_Errors()) )
@@ -213,21 +212,12 @@ abstract class Zero_Crud_Edit extends Zero_Controller
                 return false;
             }
             //  When you add an object having a cross (many to many) relationship with the parent object
-            if ( isset($this->Params['obj_parent_table']) )
+            if ( isset($this->Params['obj_parent_table']) && method_exists($this->Model, $method = 'DB_Cross_' . $this->Params['obj_parent_table']) )
             {
-                //  target parent object
-                $Object = Zero_Model::Makes($this->Params['obj_parent_table'], $this->Params['obj_parent_id']);
-                //  creating a connection
-                if ( !$this->Model->AR->Insert_Cross($Object) )
-                {
-                    $this->SetMessage(5000, [$this->Model->Name, $this->Model->ID]);
-                    return false;
-                }
+                $this->Model->$method($this->Params['obj_parent_id']);
             }
         }
-
         $this->Params['id'] = $this->Model->ID;
-        //        $_GET['id'] = $this->Model->ID;
 
         //  Reset Cache
         $this->Model->Cache->Reset();

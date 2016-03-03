@@ -20,22 +20,6 @@ class Zero_Action extends Zero_Model
     protected $Source = 'Action';
 
     /**
-     * Configuration links many to many
-     *
-     * - 'table_target' => ['table_link', 'prop_this', 'prop_target']
-     *
-     * @param Zero_Model $Model The exact working model
-     * @return array
-     */
-    protected static function Config_Link($Model, $scenario = '')
-    {
-        return [
-            /*BEG_CONFIG_LINK*/
-            /*END_CONFIG_LINK*/
-        ];
-    }
-
-    /**
      * The configuration properties
      *
      * - 'DB'=> 'T, I, F, E, S, D, B'

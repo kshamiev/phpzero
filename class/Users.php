@@ -55,22 +55,6 @@ class Zero_Users extends Zero_Model
     public $Timeout = 0;
 
     /**
-     * Configuration links many to many
-     *
-     * - 'table_target' => ['table_link', 'prop_this', 'prop_target']
-     *
-     * @param Zero_Model $Model The exact working model
-     * @return array
-     */
-    protected static function Config_Link($Model, $scenario = '')
-    {
-        return [
-            /*BEG_CONFIG_LINK*/
-            /*END_CONFIG_LINK*/
-        ];
-    }
-
-    /**
      * The configuration properties
      *
      * - 'DB'=> 'T, I, F, E, S, D, B'
@@ -252,25 +236,9 @@ class Zero_Users extends Zero_Model
             //  uslovie pol`zovatelia
             if ( 'yes' == $this->IsCondition )
             {
-                $prop = 'Users_ID';
-                $this->_Condition[$prop] = Zero_DB::Select_List_Index("SELECT ID, Name FROM Users WHERE Users_ID = {$this->ID}");
-                $this->_Condition[$prop][$this->ID] = $this->Name;
+                $this->_Condition['Users_ID'] = Zero_DB::Select_List_Index("SELECT ID, Name FROM Users WHERE Users_ID = {$this->ID}");
+                $this->_Condition['Users_ID'][$this->ID] = $this->Name;
             }
-            //  uslovie gruppy`
-            //            if ( 1 != $this->Groups_ID )
-            //                $this->_Condition['Groups_ID'][$this->Groups_ID] = $this->Groups_ID('Name');
-            //  dopolnitel`ny`e usloviia
-            /*
-            foreach ($this->Get_Props(1) as $prop => $value)
-            {
-                if ( 'Groups_ID' == $prop || 'Users_ID' == $prop )
-                    continue;
-                if ( '_ID' == substr($prop, -3) && 0 < $value )
-                {
-                    $this->_Condition[$prop][$value] = Zero_DB::Select_Field("SELECT `Name` FROM `" . zero_relation($prop) . "` WHERE ID = {$value}");
-                }
-            }
-            */
         }
         return $this->_Condition;
     }

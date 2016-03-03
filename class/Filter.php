@@ -223,11 +223,7 @@ class Zero_Filter
         $this->Filter[$prop]['Visible'] = $is_visible;
         $this->Filter[$prop]['Value'] = '';
         $this->Filter[$prop]['List'] = [];
-        if ( is_array($load) )
-        {
-            $this->Filter[$prop]['List'] = $load;
-        }
-        else if ( 0 < $load )
+        if ( $load )
         {
             if ( 'Lang' == $prop )
                 $this->Filter[$prop]['List'] = $this->FL_Lang();
@@ -291,17 +287,13 @@ class Zero_Filter
         $this->Filter[$prop]['Visible'] = $is_visible;
         $this->Filter[$prop]['Value'] = [];
         $this->Filter[$prop]['List'] = [];
-        if ( is_array($load) )
+        if ( method_exists($this->Model, $method = 'FL_' . $prop) )
         {
-            $this->Filter[$prop]['List'] = $load;
+            $this->Filter[$prop]['List'] = $this->Model->$method();
         }
-        else if ( 0 < $load )
+        else if ( $load )
         {
-            if ( method_exists($this->Model, $method = 'FL_' . $prop) )
-            {
-                $this->Filter[$prop]['List'] = $this->Model->$method();
-            }
-            else if ( isset($row['List']) )
+            if ( isset($row['List']) )
                 $this->Filter[$prop]['List'] = $row['List'];
             else
             {
@@ -509,7 +501,7 @@ class Zero_Filter
         $this->IsSet = false;
 
         // Инициализация фильтра
-        $condition = Zero_App::$Users->Get_Condition();
+//        $condition = Zero_App::$Users->Get_Condition();
         foreach ($this->Model->Get_Config_Filter(get_class($this)) as $prop => $row)
         {
             $method = 'Add_Filter_' . $row['Form'];
@@ -520,14 +512,14 @@ class Zero_Filter
                 else
                     $row['Visible'] = 0;
                 //
-                if ( isset($condition[$prop]) )
-                {
-                    if ( 1 < count($condition[$prop]) )
-                        $this->$method($prop, $row, $row['Visible'], $condition[$prop]);
-                    else
-                        $this->$method($prop, $row, 0, $condition[$prop]);
-                }
-                else
+//                if ( isset($condition[$prop]) )
+//                {
+//                    if ( 1 < count($condition[$prop]) )
+//                        $this->$method($prop, $row, $row['Visible'], $condition[$prop]);
+//                    else
+//                        $this->$method($prop, $row, 0, $condition[$prop]);
+//                }
+//                else
                     $this->$method($prop, $row, $row['Visible'], 1);
                 //
                 if ( isset($row['DB']) && $row['DB'] == 'D' )

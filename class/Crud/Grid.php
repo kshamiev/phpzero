@@ -164,7 +164,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
     protected function Chunk_View()
     {
         $Filter = Zero_Filter::Factory($this->Model);
-        $users_condition = Zero_App::$Users->Get_Condition();
+        //        $users_condition = Zero_App::$Users->Get_Condition();
 
         //  ИНИЦИАЛИЗАЦИЯ ПОЛЕЙ ГРИДА
         $props_grid = $this->Model->Get_Config_Grid(get_class($this));
@@ -173,11 +173,11 @@ abstract class Zero_Crud_Grid extends Zero_Controller
             unset($props_grid[$this->Params['obj_parent_prop']]);
         }
         //  Remove the user conditions
-        foreach ($users_condition as $prop => $value)
-        {
-            if ( 1 == count($value) )
-                unset($props_grid[$prop]);
-        }
+        //        foreach ($users_condition as $prop => $value)
+        //        {
+        //            if ( 1 == count($value) )
+        //                unset($props_grid[$prop]);
+        //        }
         $props = [];
         foreach ($props_grid as $prop => $row)
         {
@@ -186,11 +186,19 @@ abstract class Zero_Crud_Grid extends Zero_Controller
         unset($props_grid['ID']);
 
         //  FROM
-        $this->Model->AR->Sql_From($this->Model->Get_Query_From($this->Params));
+        if ( method_exists($this->Model, 'Get_Query_From') )
+            $this->Model->AR->Sql_From($this->Model->Get_Query_From($this->Params));
+        if ( method_exists($this->Model, 'AR_From') )
+            $this->Model->AR_From($this->Params);
 
         // WHERE
         $this->Model->AR->Sql_Where_Filter($Filter);
-        // Прямая родительская связь
+
+        // WHERE Custom
+        if ( method_exists($this->Model, 'AR_Where') )
+            $this->Model->AR_Where($this->Params);
+
+        // WHERE Прямая родительская связь
         if ( isset($this->Params['obj_parent_prop']) )
         {
             if ( 0 < $this->Params['obj_parent_id'] )
@@ -199,12 +207,12 @@ abstract class Zero_Crud_Grid extends Zero_Controller
                 $this->Model->AR->Sql_Where_IsNull('z.' . $this->Params['obj_parent_prop']);
         }
         //  The user conditions
-        foreach (array_keys($this->Model->Get_Config_Prop(get_class($this))) as $prop)
-        {
-            if ( isset($users_condition[$prop]) )
-                $this->Model->AR->Sql_Where_In('z.' . $prop, array_keys($users_condition[$prop]));
-        }
-        unset($users_condition);
+        //        foreach (array_keys($this->Model->Get_Config_Prop(get_class($this))) as $prop)
+        //        {
+        //            if ( isset($users_condition[$prop]) )
+        //                $this->Model->AR->Sql_Where_In('z.' . $prop, array_keys($users_condition[$prop]));
+        //        }
+        //        unset($users_condition);
 
         //  ПОЛУЧЕНИЕ ДАННЫХ
         $data_grid = $this->Model->AR->Select_Array($props, false);

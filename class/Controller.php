@@ -57,7 +57,7 @@ abstract class Zero_Controller
     }
 
     /**
-     * Установка сообщения
+     * Установка сообщения об успехе
      *
      * @param int $code код сообщения
      * @param array $params параметры сообщения (sprintf)
@@ -66,16 +66,30 @@ abstract class Zero_Controller
     public function SetMessage($code = 0, $params = [])
     {
         $arr = Zero_I18n::Message(get_class($this), $code, $params);
-        if ( -1 == $code || 5000 <= $code )
-            $errorStatus = true;
-        else
-            $errorStatus = false;
         self::$_Message = [
             'Code' => $arr[0],
             'Message' => $arr[1],
-            'ErrorStatus' => $errorStatus,
+            'ErrorStatus' => false,
         ];
-        return $errorStatus;
+        return false;
+    }
+
+    /**
+     * Установка сообщения об ошибке
+     *
+     * @param int $code код сообщения
+     * @param array $params параметры сообщения (sprintf)
+     * @return bool флаг ошибки
+     */
+    public function SetMessageError($code = 0, $params = [])
+    {
+        $arr = Zero_I18n::Message(get_class($this), $code, $params);
+        self::$_Message = [
+            'Code' => $arr[0],
+            'Message' => $arr[1],
+            'ErrorStatus' => true,
+        ];
+        return true;
     }
 
     /**
