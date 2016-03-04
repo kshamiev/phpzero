@@ -130,19 +130,19 @@ class Zero_Filter
         $this->Filter[$prop] = $row;
         $this->Filter[$prop]['Form'] = 'Link';
         $this->Filter[$prop]['Visible'] = $is_visible;
-        $this->Filter[$prop]['Value'] = '';
+        $this->Filter[$prop]['Value'] = 0;
         $this->Filter[$prop]['List'] = [];
-        if ( is_array($load) )
+        if ( 'Lang' == $prop )
         {
-            $this->Filter[$prop]['List'] = $load;
+            $this->Filter[$prop]['List'] = $this->FL_Lang();
         }
-        else if ( 0 < $load )
+        else if ( method_exists($this->Model, $method = 'FL_' . $prop) )
         {
-            if ( 'Lang' == $prop )
-                $this->Filter[$prop]['List'] = $this->FL_Lang();
-            else if ( method_exists($this->Model, $method = 'FL_' . $prop) )
-                $this->Filter[$prop]['List'] = $this->Model->$method();
-            else if ( isset($row['List']) )
+            $this->Filter[$prop]['List'] = $this->Model->$method();
+        }
+        else if ( $load )
+        {
+            if ( isset($row['List']) )
                 $this->Filter[$prop]['List'] = $row['List'];
             else
             {
@@ -163,22 +163,21 @@ class Zero_Filter
     public function Add_Filter_Select($prop, $row, $is_visible = 0, $load = 0)
     {
         $this->Filter[$prop] = $row;
-        $this->Filter[$prop]['Comment'] = Zero_I18n::Model(get_class($this->Model), $prop);
         $this->Filter[$prop]['Form'] = 'Select';
         $this->Filter[$prop]['Visible'] = $is_visible;
         $this->Filter[$prop]['Value'] = '';
         $this->Filter[$prop]['List'] = [];
-        if ( is_array($load) )
+        if ( 'Lang' == $prop )
         {
-            $this->Filter[$prop]['List'] = $load;
+            $this->Filter[$prop]['List'] = $this->FL_Lang();
         }
-        else if ( 0 < $load )
+        else if ( method_exists($this->Model, $method = 'FL_' . $prop) )
         {
-            if ( 'Lang' == $prop )
-                $this->Filter[$prop]['List'] = $this->FL_Lang();
-            else if ( method_exists($this->Model, $method = 'FL_' . $prop) )
-                $this->Filter[$prop]['List'] = $this->Model->$method();
-            else if ( isset($row['List']) )
+            $this->Filter[$prop]['List'] = $this->Model->$method();
+        }
+        else if ( $load )
+        {
+            if ( isset($row['List']) )
                 $this->Filter[$prop]['List'] = $row['List'];
             else
             {
@@ -223,13 +222,17 @@ class Zero_Filter
         $this->Filter[$prop]['Visible'] = $is_visible;
         $this->Filter[$prop]['Value'] = '';
         $this->Filter[$prop]['List'] = [];
-        if ( $load )
+        if ( 'Lang' == $prop )
         {
-            if ( 'Lang' == $prop )
-                $this->Filter[$prop]['List'] = $this->FL_Lang();
-            else if ( method_exists($this->Model, $method = 'FL_' . $prop) )
-                $this->Filter[$prop]['List'] = $this->Model->$method();
-            else if ( isset($row['List']) )
+            $this->Filter[$prop]['List'] = $this->FL_Lang();
+        }
+        else if ( method_exists($this->Model, $method = 'FL_' . $prop) )
+        {
+            $this->Filter[$prop]['List'] = $this->Model->$method();
+        }
+        else if ( $load )
+        {
+            if ( isset($row['List']) )
                 $this->Filter[$prop]['List'] = $row['List'];
             else
             {
@@ -287,7 +290,11 @@ class Zero_Filter
         $this->Filter[$prop]['Visible'] = $is_visible;
         $this->Filter[$prop]['Value'] = [];
         $this->Filter[$prop]['List'] = [];
-        if ( method_exists($this->Model, $method = 'FL_' . $prop) )
+        if ( 'Lang' == $prop )
+        {
+            $this->Filter[$prop]['List'] = $this->FL_Lang();
+        }
+        else if ( method_exists($this->Model, $method = 'FL_' . $prop) )
         {
             $this->Filter[$prop]['List'] = $this->Model->$method();
         }
@@ -501,7 +508,7 @@ class Zero_Filter
         $this->IsSet = false;
 
         // Инициализация фильтра
-//        $condition = Zero_App::$Users->Get_Condition();
+        //        $condition = Zero_App::$Users->Get_Condition();
         foreach ($this->Model->Get_Config_Filter(get_class($this)) as $prop => $row)
         {
             $method = 'Add_Filter_' . $row['Form'];
@@ -512,15 +519,15 @@ class Zero_Filter
                 else
                     $row['Visible'] = 0;
                 //
-//                if ( isset($condition[$prop]) )
-//                {
-//                    if ( 1 < count($condition[$prop]) )
-//                        $this->$method($prop, $row, $row['Visible'], $condition[$prop]);
-//                    else
-//                        $this->$method($prop, $row, 0, $condition[$prop]);
-//                }
-//                else
-                    $this->$method($prop, $row, $row['Visible'], 1);
+                //                if ( isset($condition[$prop]) )
+                //                {
+                //                    if ( 1 < count($condition[$prop]) )
+                //                        $this->$method($prop, $row, $row['Visible'], $condition[$prop]);
+                //                    else
+                //                        $this->$method($prop, $row, 0, $condition[$prop]);
+                //                }
+                //                else
+                $this->$method($prop, $row, $row['Visible'], 1);
                 //
                 if ( isset($row['DB']) && $row['DB'] == 'D' )
                     $this->Add_Sort($prop, $row);
