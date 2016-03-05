@@ -127,11 +127,11 @@ while ( isset($_REQUEST['act']) && 'Install_System' == $_REQUEST['act'] && 0 == 
     $config = str_replace('ISUSEDB', $isUseDb, $config);
     file_put_contents(ZERO_PATH_SITE . '/application/config.php', $config);
 
-    if ( !@symlink(ZERO_PATH_ZERO, ZERO_PATH_APPLICATION . '/zero') )
-    {
-        $message_install_list[] = "Error create symlink from module zero";
-        break;
-    }
+//    if ( !@symlink(ZERO_PATH_ZERO, ZERO_PATH_APPLICATION . '/zero') )
+//    {
+//        $message_install_list[] = "Error create symlink from module zero";
+//        break;
+//    }
 
     $message_install_list[110] = "System install success full";
     $error_init_list[120] = 'system is already installed (remove /config.php)';

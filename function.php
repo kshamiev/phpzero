@@ -54,3 +54,53 @@ function zero_sprintf()
         return vsprintf($str, $arr);
     return $str;
 }
+
+/**
+ * Check function on the the date and time run in the format of crontab
+ *
+ * @param string $date_this
+ * @param string $date_cron
+ * @return boolean
+ */
+function zero_crontab_check_datetime($date_this, $date_cron)
+{
+    //  any valid value or exact match
+    if ( '*' == $date_cron || $date_this == $date_cron )
+    {
+        return true;
+    }
+    //  range
+    if ( false !== strpos($date_cron, '-') )
+    {
+        $arr = explode('-', $date_cron);
+        if ( $arr[0] <= $date_this && $date_this <= $arr[1] )
+        {
+            return true;
+        }
+        return false;
+    }
+    //  fold
+    else if ( false !== strpos($date_cron, '/') )
+    {
+        $arr = explode('/', $date_cron);
+        if ( $date_this % $arr[1] )
+        {
+            return false;
+        }
+        return true;
+    }
+    //  list
+    else if ( false !== strpos($date_cron, ',') )
+    {
+        $arr = explode(',', $date_cron);
+        if ( in_array($date_this, $arr) )
+        {
+            return true;
+        }
+        return false;
+    }
+    else
+    {
+        return false;
+    }
+}

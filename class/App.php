@@ -356,13 +356,13 @@ class Zero_App
             return;
 
         //  Include Components
+        require_once ZERO_PATH_APPLICATION . '/function.php';
         require_once ZERO_PATH_ZERO . '/function.php';
         require_once ZERO_PATH_ZERO . '/class/Config.php';
         require_once ZERO_PATH_ZERO . '/class/Logs.php';
         require_once ZERO_PATH_ZERO . '/class/DB.php';
         require_once ZERO_PATH_ZERO . '/class/Session.php';
         require_once ZERO_PATH_ZERO . '/class/Cache.php';
-        require_once ZERO_PATH_APPLICATION . '/function.php';
 
         spl_autoload_register(['Zero_App', 'Autoload']);
         set_exception_handler(['Zero_App', 'Exception']);
@@ -407,16 +407,27 @@ class Zero_App
 
         // Поиск роутинга в конфигурационных файлах
         $route = [];
-        $Property = self::$mode;
-        foreach (self::$Config->$Property as $route)
+        foreach (self::$Config->Api as $route)
         {
             if ( isset($route->Route[ZERO_URL]) )
             {
                 $route = $route->Route[ZERO_URL];
+                self::$mode = self::MODE_API;
                 break;
             }
+            $route = [];
         }
-
+        if ( 0 == count($route) )
+            foreach (self::$Config->Web as $route)
+            {
+                if ( isset($route->Route[ZERO_URL]) )
+                {
+                    $route = $route->Route[ZERO_URL];
+                    self::$mode = self::MODE_WEB;
+                    break;
+                }
+                $route = [];
+            }
         if ( 0 == count($route) )
             throw new Exception('Page Not Found', 404);
 
