@@ -10,21 +10,21 @@
 abstract class Zero_Crud_Edit extends Zero_Controller
 {
     /**
-     * Имя обрабатываемой модели
+     * пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
      *
      * @var string
      */
     protected $ModelName = '';
 
     /**
-     * Имя шаблона представления
+     * пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
      *
      * @var string
      */
     protected $ViewName = __CLASS__;
 
     /**
-     * Контроллер по умолчанию.
+     * пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
      *
      * @return string
      */
@@ -62,9 +62,9 @@ abstract class Zero_Crud_Edit extends Zero_Controller
     }
 
     /**
-     * Инициализация операции контроллера до его выполнения
+     * пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
      *
-     * @return boolean флаг операции
+     * @return boolean пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
      */
     protected function Chunk_Init()
     {
@@ -86,9 +86,9 @@ abstract class Zero_Crud_Edit extends Zero_Controller
     }
 
     /**
-     * Вывод данных операции контроллера в шаблон
+     * пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
      *
-     * @return boolean флаг операции
+     * @return boolean пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
      * @throws Exception
      */
     protected function Chunk_View()
@@ -134,7 +134,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
     /**
      *  Adding an object
      *
-     * @return boolean флаг операции
+     * @return boolean пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
      */
     protected function Chunk_Add()
     {
@@ -159,7 +159,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
     /**
      * Save object
      *
-     * @return boolean флаг операции
+     * @return boolean пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
      */
     protected function Chunk_Save()
     {

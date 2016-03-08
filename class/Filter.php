@@ -130,7 +130,7 @@ class Zero_Filter
         $this->Filter[$prop] = $row;
         $this->Filter[$prop]['Form'] = 'Link';
         $this->Filter[$prop]['Visible'] = $is_visible;
-        $this->Filter[$prop]['Value'] = 0;
+        $this->Filter[$prop]['Value'] = '';
         $this->Filter[$prop]['List'] = [];
         if ( 'Lang' == $prop )
         {

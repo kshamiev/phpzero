@@ -631,7 +631,7 @@ abstract class Zero_Model
         if ( 0 == $this->ID || !isset($this->Get_Config_Prop()[$prop]) )
             return null;
         //  svoi`stvo pustoe, ne zagruzhennoe iz BD
-//        Zero_Logs::Set_Message_Notice('#{LOAD PROP} load prop "' . $prop . '" for model "' . get_class($this) . '"');
+        //        Zero_Logs::Set_Message_Notice('#{LOAD PROP} load prop "' . $prop . '" for model "' . get_class($this) . '"');
         $arr = Zero_DB::Select_Row("SELECT `{$prop}` FROM {$this->Source} WHERE ID = {$this->ID}");
         $this->_Props[$prop] = isset($arr[$prop]) ? $arr[$prop] : null;
         return $this->_Props[$prop];
@@ -692,6 +692,8 @@ abstract class Zero_Model
         //  rabota so sviazanny`m roditel`skim ob``etom cherez svoi`tsvo sviazi (odin ko mnogim)
         if ( isset($this->Get_Config_Prop()[$method]) )
         {
+            if ( !$this->$method )
+                return null;
             return Zero_DB::Select_Field("SELECT {$params[0]} FROM " . zero_relation($method) . " WHERE ID = " . intval($this->$method));
             //            return self::Make(zero_relation($method), $this->$method, !empty($params[0]));
         }
