@@ -24,8 +24,8 @@
       <td width="200px">{$row['Comment']}</td>
       <td>
         <select class="field" name="Filter[{$prop}]" data-link-prop="{$prop}"><option value="">{translation "Zero" "All"}</option>
-          <option value="NULL"{if ( 'NULL' == $row['Value'] )} selected{/if}>{translation "Zero" "Undefined"}</option>
-          <option value="NOTNULL"{if ( 'NOTNULL' == $row['Value'] )} selected{/if}>{translation "Zero" "Defined"}</option>
+          <option value="NULL"{if ( 'NULL' === $row['Value'] )} selected{/if}>{translation "Zero" "Undefined"}</option>
+          <option value="NOTNULL"{if ( 'NOTNULL' === $row['Value'] )} selected{/if}>{translation "Zero" "Defined"}</option>
           {foreach ($row['List'] as $id => $name)}<option value="{$id}"{if ( $id == $row['Value'] )} selected{/if}>{$name}</option>{/foreach}
         </select>
       </td>
@@ -36,7 +36,7 @@
       <td>
         <div id="blockroot">
             {foreach ($row['List'] as $key => $name)}
-            <div id="blocklevel33"><div id="blocklevel2"><input type="radio" name="Filter[{$prop}]" value="{$key}"{if ( $key == $row['Value'] )} checked{/if}>&nbsp;{$name}</div></div>
+            <div id="blocklevel33"><div id="blocklevel2"><input type="radio" name="Filter[{$prop}]" value="{$key}"{if ( $key === $row['Value'] )} checked{/if}>&nbsp;{$name}</div></div>
             {/foreach}
         </div>
       </td>
@@ -46,8 +46,8 @@
       <td width="200px">{$row['Comment']}</td>
       <td>
         <select class="field" name="Filter[{$prop}]" data-select-prop="{$prop}"><option value="">{translation "Zero" "All"}</option>
-          <option value="NULL"{if ( 'NULL' == $row['Value'] )} selected{/if}>{translation "Zero" "Undefined"}</option>
-          <option value="NOTNULL"{if ( 'NOTNULL' == $row['Value'] )} selected{/if}>{translation "Zero" "Defined"}</option>
+          <option value="NULL"{if ( 'NULL' === $row['Value'] )} selected{/if}>{translation "Zero" "Undefined"}</option>
+          <option value="NOTNULL"{if ( 'NOTNULL' === $row['Value'] )} selected{/if}>{translation "Zero" "Defined"}</option>
           {foreach ($row['List'] as $key => $name)}<option value="{$key}"{if ( $key == $row['Value'] )} selected{/if}>{$name}</option>{/foreach}
         </select>
       </td>

@@ -77,6 +77,8 @@
                     {else}
                         {$Object->$Prop('Name')}
                     {/}
+                {else if ( isset($Filter[$Prop]['List'][$Object->$Prop]) )}
+                    {$Filter[$Prop]['List'][$Object->$Prop]}
                 {else}
                     {nl2br($Object->$Prop)}
                 {/}
