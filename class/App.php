@@ -397,94 +397,6 @@ class Zero_App
         Zero_Session::Init(self::$Config->Site_Domain);
     }
 
-    public static function ExecuteSimple()
-    {
-        // Пользователь
-        self::$Users = Zero_Users::Factor();
-
-        //  Раздел - страница
-        self::$Section = Zero_Section::Instance();
-
-        // Поиск роутинга в конфигурационных файлах
-        $route = [];
-        foreach (self::$Config->Api as $route)
-        {
-            if ( isset($route->Route[ZERO_URL]) )
-            {
-                $route = $route->Route[ZERO_URL];
-                self::$mode = self::MODE_API;
-                break;
-            }
-            $route = [];
-        }
-        if ( 0 == count($route) )
-            foreach (self::$Config->Web as $route)
-            {
-                if ( isset($route->Route[ZERO_URL]) )
-                {
-                    $route = $route->Route[ZERO_URL];
-                    self::$mode = self::MODE_WEB;
-                    break;
-                }
-                $route = [];
-            }
-        if ( 0 == count($route) )
-            throw new Exception('Page Not Found', 404);
-
-        if ( isset($route['UrlRedirect']) )
-            self::$Section->UrlRedirect = $route['UrlRedirect'];
-        if ( self::$Section->UrlRedirect )
-            self::ResponseRedirect(self::$Section->UrlRedirect);
-        if ( isset($route['Controller']) )
-            self::$Section->Controller = $route['Controller'];
-        if ( isset($route['View']) )
-            self::$Section->Layout = $route['View'];
-
-        //  Выполнение контроллера
-        $view = '';
-        $messageResponse = ['Code' => 0, 'Message' => ''];
-        if ( self::$Section->Controller )
-        {
-            if ( isset($_REQUEST['act']) && $_REQUEST['act'] )
-                $_REQUEST['act'] = trim($_REQUEST['act']);
-            else if ( self::MODE_API == self::$mode )
-                $_REQUEST['act'] = $_SERVER['REQUEST_METHOD'];
-            else
-                $_REQUEST['act'] = 'Default';
-            $_REQUEST['act'] = 'Action_' . $_REQUEST['act'];
-
-            Zero_Logs::Start('#{CONTROLLER} ' . self::$Section->Controller . ' -> ' . $_REQUEST['act']);
-            $Controller = Zero_Controller::Factory(self::$Section->Controller);
-            if ( !method_exists($Controller, $_REQUEST['act']) )
-            {
-                throw new Exception('Контроллер не имеет метода: ' . $_REQUEST['act'], -1);
-            }
-            $viewController = $Controller->$_REQUEST['act']();
-            $messageResponse = $Controller->GetMessage();
-            if ( true == $viewController instanceof Zero_View )
-            {
-                /* @var $viewController Zero_View */
-                $viewController->Assign('Message', $messageResponse);
-                $view = $viewController->Fetch(Zero_App::$Config->View_TplOutString);
-            }
-            else
-            {
-                $view = $viewController;
-            }
-            Zero_Logs::Stop('#{CONTROLLER} ' . self::$Section->Controller . ' -> ' . $_REQUEST['act']);
-        }
-
-        // Сборка ст раницы на основании макета
-        if ( self::$Section->Layout )
-        {
-            $viewLayout = new Zero_View(self::$Section->Layout);
-            $viewLayout->Assign('Message', $messageResponse);
-            $viewLayout->Assign('Content', $view);
-            $view = $viewLayout->Fetch(Zero_App::$Config->View_TplOutString);
-        }
-        self::ResponseHtml($view, 200);
-    }
-
     /**
      * Method of Application Execution
      *
@@ -502,11 +414,10 @@ class Zero_App
      */
     public static function Execute()
     {
-        //  Раздел - страница
-        self::$Section = Zero_Section::Instance();
-
         //  Пользователь
         self::$Users = Zero_Users::Factor();
+        //  Раздел - страница
+        self::$Section = Zero_Section::Instance();
 
         if ( 0 == self::$Section->ID || 'no' == self::$Section->IsEnable )
             throw new Exception('Page Not Found', 404);

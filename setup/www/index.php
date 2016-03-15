@@ -21,8 +21,5 @@ if ( Zero_App::$Config->Site_AccessLogin )
     }
 }
 
-if ( Zero_App::$Config->Site_UseDB && Zero_App::MODE_WEB == Zero_App::Get_Mode() )
-    Zero_App::Execute();
-else
-    Zero_App::ExecuteSimple();
+Zero_App::Execute();
 exit;
