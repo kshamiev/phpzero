@@ -20,7 +20,7 @@ class Zero_Users_Login extends Zero_Controller
     protected $Model = null;
 
     /**
-     * Пользователь
+     * Редирект в случае успеха авторизации
      *
      * @var string
      */
