@@ -192,7 +192,7 @@ class Zero_Cache
      */
     public function Set($index, $value, $time = 0)
     {
-        self::$_Link[] = [$this->Model->Source, $this->Model->ID];
+        self::Set_Link($this->Model->Source, $this->Model->ID);
         return self::Set_Data(self::_Get_Index_Path($this->Model->Source, $this->Model->ID, $index), $value, $time);
     }
 
@@ -207,7 +207,8 @@ class Zero_Cache
      */
     public static function Set_Link($sourceName, $id)
     {
-        self::$_Link[] = [$sourceName, $id];
+        if ( 0 < $id )
+            self::$_Link[] = [$sourceName, $id];
     }
 
     /**
