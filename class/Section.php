@@ -209,16 +209,37 @@ class Zero_Section extends Zero_Model
         if ( false === $row = Zero_Cache::Get_Data($index) )
         {
             // Поиск в программе
-            foreach (array_merge(Zero_App::$Config->Api, Zero_App::$Config->Web) as $route)
+            $arr = [];
+            if ( Zero_App::MODE_API == Zero_App::Get_Mode()  )
+                $arr = Zero_App::$Config->Api;
+            if ( Zero_App::MODE_WEB == Zero_App::Get_Mode()  )
+                $arr = Zero_App::$Config->Web;
+
+            foreach ($arr as $route)
             {
                 if ( isset($route->Route[ZERO_URL]) )
                 {
                     $route = $route->Route[ZERO_URL];
+                    $route['Url'] = ZERO_URL;
+                    if ( empty($route['IsEnable']) )
+                        $route['IsEnable'] = 'yes';
+                    if ( empty($route['UrlRedirect']) )
+                        $route['UrlRedirect'] = '';
+                    if ( empty($route['IsAuthorized']) )
+                        $route['IsAuthorized'] = 'no';
+                    if ( empty($route['Name']) )
+                        $route['Name'] = '';
+                    if ( empty($route['Content']) )
+                        $route['Content'] = '';
+                    if ( empty($route['Layout']) )
+                        $route['Layout'] = '';
+                    if ( isset($route['View']) )
+                        $route['Layout'] = $route['View'];
                     foreach ($route as $property => $value)
                     {
                         $this->$property = $value;
                     }
-                    $this->ID = -1;
+                    $this->ID = 1000000;
                     Zero_Cache::Set_Data($index, $route);
                     break;
                 }
