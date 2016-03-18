@@ -215,7 +215,6 @@ class Zero_Section extends Zero_Model
             if ( Zero_App::MODE_WEB == Zero_App::Get_Mode()  )
                 $arr = Zero_App::$Config->Web;
 
-            $flag = false;
             foreach ($arr as $route)
             {
                 if ( isset($route->Route[ZERO_URL]) )
@@ -242,12 +241,11 @@ class Zero_Section extends Zero_Model
                     }
                     $this->ID = -1;
                     Zero_Cache::Set_Data($index, $route);
-                    $flag = true;
                     break;
                 }
             }
             // Поиск в БД
-            if ( !$flag && Zero_App::$Config->Site_UseDB )
+            if ( 0 == $this->ID && Zero_App::$Config->Site_UseDB )
             {
                 $sql = "SELECT * FROM {$this->Source} WHERE Url = " . Zero_DB::EscT($url);
                 $row = Zero_DB::Select_Row($sql);

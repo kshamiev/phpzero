@@ -419,8 +419,6 @@ class Zero_App
         //  Раздел - страница
         self::$Section = Zero_Section::Instance();
 
-
-
         if ( 0 == self::$Section->ID || 'no' == self::$Section->IsEnable )
             throw new Exception('Page Not Found', 404);
         if ( self::$Section->UrlRedirect )
