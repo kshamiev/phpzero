@@ -239,13 +239,13 @@ class Zero_Section extends Zero_Model
                     {
                         $this->$property = $value;
                     }
-                    $this->ID = 1000000;
+                    $this->ID = -1;
                     Zero_Cache::Set_Data($index, $route);
                     break;
                 }
             }
             // Поиск в БД
-            if ( 1000000 != $this->ID && Zero_App::$Config->Site_UseDB )
+            if ( !$this->ID && Zero_App::$Config->Site_UseDB )
             {
                 $sql = "SELECT * FROM {$this->Source} WHERE Url = " . Zero_DB::EscT($url);
                 $row = Zero_DB::Select_Row($sql);
