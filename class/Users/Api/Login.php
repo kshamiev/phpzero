@@ -17,13 +17,33 @@ class Zero_Users_Api_Login extends Zero_Controller
     protected $UrlRedirect = '';
 
     /**
-     * Какой-то контроллер
+     * Авторизация пользователя
      *
-     * @sample /api/v1/sample?param=value...
+     * Описание
      *
+     * @api
+     *
+     * PUT /api/v1.0/zero/user/login
+     *
+     * - "Hardware" Редирект в случае успеха авторизации
+     *  - "Cpu" Редирект в случае успеха авторизации
+     *  - "Ram" Редирект в случае успеха авторизации
+     *  - "Platform" Редирект в случае успеха авторизации
+     * - "Software" Редирект в случае успеха авторизации
+     *  - "OS" Редирект в случае успеха авторизации
+     *  - "Bit" Редирект в случае успеха авторизации
+     *  - "RdpLicCount" Редирект в случае успеха авторизации
+     *      - ssss
+     *      - ssss
+     *      - ssss
+     * @link http://site-f.hostke.ru/exchange/order.json
+     * @link /exchange/order.json
+     *
+     * @param string $name Какая-то строка
+     * @param integer $id Какое-то число
      * @return boolean flag статус выполнения
      */
-    public function Action_PUT()
+    public function Action_PUT($name, $id)
     {
         // Инициализация
         if ( !$_REQUEST['Login'] || !$_REQUEST['Password'] )

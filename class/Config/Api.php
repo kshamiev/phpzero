@@ -24,13 +24,13 @@ class Zero_Config_Api
         /**
          * Загрузка бинарных данных через веб форму (ajax)
          *
-         * @see Zero_Api_Base_Upload
+         * @see Zero_Users_Api_Login
          */
         '/api/v1.0/zero/user/login' => ['Controller' => 'Zero_Users_Api_Login', 'View' => ''],
         /**
          * Загрузка бинарных данных через веб форму (ajax)
          *
-         * @see Zero_Api_Base_Upload
+         * @see Zero_Users_Api_Logout
          */
         '/api/v1.0/zero/user/logout' => ['Controller' => 'Zero_Users_Api_Logout', 'View' => ''],
     ];
