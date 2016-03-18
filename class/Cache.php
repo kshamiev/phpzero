@@ -179,7 +179,6 @@ class Zero_Cache
      */
     public function Get($index, $time = 0)
     {
-//        return self::Get_Data(self::_Get_Index_Path(get_class($this->Model), $this->Model->ID, $index), $time);
         return self::Get_Data(self::_Get_Index_Path($this->Model->Source, $this->Model->ID, $index), $time);
     }
 
@@ -193,9 +192,7 @@ class Zero_Cache
      */
     public function Set($index, $value, $time = 0)
     {
-//        self::$_Link[] = [get_class($this->Model), $this->Model->ID];
         self::$_Link[] = [$this->Model->Source, $this->Model->ID];
-//        return self::Set_Data(self::_Get_Index_Path(get_class($this->Model), $this->Model->ID, $index), $value, $time);
         return self::Set_Data(self::_Get_Index_Path($this->Model->Source, $this->Model->ID, $index), $value, $time);
     }
 
@@ -244,6 +241,7 @@ class Zero_Cache
         }
         fclose($fp);
         unlink($path_file);
+        return true;
     }
 
     /**

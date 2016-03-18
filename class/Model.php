@@ -655,11 +655,8 @@ abstract class Zero_Model
         //  Svoi`stva modeli
         if ( !isset($this->_Props[$prop]) )
         {
-            if ( $value )
-            {
-                $this->_Props[$prop] = $value;
-                $this->_Props_Change[$prop] = -1;
-            }
+            $this->_Props[$prop] = $value;
+            $this->_Props_Change[$prop] = -1;
         }
         else if ( $this->_Props[$prop] != $value )
         {

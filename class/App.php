@@ -419,6 +419,8 @@ class Zero_App
         //  Раздел - страница
         self::$Section = Zero_Section::Instance();
 
+
+
         if ( 0 == self::$Section->ID || 'no' == self::$Section->IsEnable )
             throw new Exception('Page Not Found', 404);
         if ( self::$Section->UrlRedirect )
@@ -469,7 +471,8 @@ class Zero_App
             }
             Zero_Logs::Stop('#{CONTROLLER} ' . self::$Section->Controller . ' -> ' . $_REQUEST['act']);
         }
-        // Сборка ст раницы на основании макета
+
+        // Сборка страницы на основании макета
         if ( self::$Section->Layout )
         {
             $viewLayout = new Zero_View(self::$Section->Layout);

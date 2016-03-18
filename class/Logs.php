@@ -252,7 +252,7 @@ class Zero_Logs
             }
         }
         // логирование операций пользователиа в файл
-        if ( Zero_App::$Config->Log_Profile_Action && isset($_SERVER['REQUEST_METHOD']) )
+        if ( Zero_App::$Config->Log_Profile_Action && isset($_REQUEST['act']) && isset($_SERVER['REQUEST_METHOD']) )
             if ( 'POST' == $_SERVER['REQUEST_METHOD'] || 'PUT' == $_SERVER['REQUEST_METHOD'] || 'DELETE' == $_SERVER['REQUEST_METHOD'] )
             {
                 $act = date('[d.m.Y H:i:s]') . "\t" . Zero_App::$Users->Login . "\t";
