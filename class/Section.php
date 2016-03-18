@@ -245,7 +245,7 @@ class Zero_Section extends Zero_Model
                 }
             }
             // Поиск в БД
-            if ( !$this->ID && Zero_App::$Config->Site_UseDB )
+            if ( 1000000 != $this->ID && Zero_App::$Config->Site_UseDB )
             {
                 $sql = "SELECT * FROM {$this->Source} WHERE Url = " . Zero_DB::EscT($url);
                 $row = Zero_DB::Select_Row($sql);
