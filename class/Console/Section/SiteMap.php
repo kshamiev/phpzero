@@ -32,18 +32,6 @@ class Zero_Console_Section_SiteMap extends Zero_Controller
             </url>';
         }
 
-        // товары
-        foreach (Zero_DB::Select_Array("SELECT ID, `Name` FROM Shop_Wares") as $row)
-        {
-            $str .= '
-            <url>
-                <loc>' . HTTP . '/product-id:' . $row['ID'] . '-' . Zero_Helper_Strings::Transliteration_Url($row['Name']) . '.html</loc>
-                <lastmod>' . date('Y-m-d') . '</lastmod>
-                <changefreq>monthly</changefreq>
-                <priority>0.8</priority>
-            </url>';
-        }
-
         $str .= "\n</urlset>";
         Zero_Helper_File::File_Save(ZERO_PATH_SITE . '/sitemap.xml', $str);
         return $this->View;
