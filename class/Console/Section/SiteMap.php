@@ -25,7 +25,7 @@ class Zero_Console_Section_SiteMap extends Zero_Controller
         {
             $str .= '
             <url>
-                <loc>' . Zero_App::$Config->Site_Domain . substr($row['Url'], strpos($row['Url'], '/')) . '</loc>
+                <loc>' . HTTP . substr($row['Url'], strpos($row['Url'], '/')) . '</loc>
                 <lastmod>' . date('Y-m-d') . '</lastmod>
                 <changefreq>monthly</changefreq>
                 <priority>0.5</priority>
