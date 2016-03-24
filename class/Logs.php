@@ -298,7 +298,7 @@ class Zero_Logs
             if ( isset($_SERVER['REQUEST_URI']) )
                 self::$_OutputApplication = [date('[d.m.Y H:i:s]') . ' [' . $_SERVER['REQUEST_METHOD'] . '] ' . ZERO_HTTP . $_SERVER['REQUEST_URI']];
             else if ( Zero_App::Get_Mode() == Zero_App::MODE_CONSOLE && isset($_SERVER['argv'][1]) )
-                self::$_OutputApplication = [date('[d.m.Y H:i:s]') . ' ' . Zero_App::$Config->Site_PathPhp . ' ' . ZERO_PATH_ZERO . '/console.php ' . $_SERVER['argv'][1]];
+                self::$_OutputApplication = [date('[d.m.Y H:i:s]') . ' ' . $_SERVER['argv'][1]];
             // Sobiraem tai`mery` v kuchu
             foreach (self::$_CurrentTime as $description => $time)
             {

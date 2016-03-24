@@ -53,6 +53,7 @@ define('ZERO_PATH_LAYOUT', ZERO_PATH_SITE . '/layout');
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  * @todo Убрать функционал вывода в одну строку
+ * @todo Добавить раздел для ручного запуска косольных задач
  */
 class Zero_App
 {
