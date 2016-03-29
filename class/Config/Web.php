@@ -10,7 +10,7 @@
 class Zero_Config_Web
 {
     /**
-     * 'url' => 'ClassName'
+     * 'url' => ['Controller' => 'ClassName', 'View' => ''],
      *
      * @var array
      */

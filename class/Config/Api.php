@@ -10,7 +10,7 @@
 class Zero_Config_Api
 {
     /**
-     * 'url' => 'ClassName-MethodName'
+     * 'url' => ['Controller' => 'ClassName', 'View' => ''],
      *
      * @var array
      */

@@ -85,7 +85,7 @@ class Zero_Logs
      *
      * @return string
      */
-    public static function Get_FullTime()
+    protected static function Get_FullTime()
     {
         return sprintf("%01.3f", microtime(1) - self::$_StartTime);
     }
@@ -197,7 +197,7 @@ class Zero_Logs
         $View->Assign('output', self::Get_Usage_MemoryAndTime());
         $View->Assign('message', self::$_Message);
         $View->Assign('iterator_list', $iterator_list);
-        return $View->Fetch();
+        echo $View->Fetch();
     }
 
     /**

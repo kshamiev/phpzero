@@ -538,6 +538,10 @@ class Zero_App
             $code = 500;
             Zero_Logs::Exception_Trace($exception);
         }
+        else
+        {
+            Zero_Logs::Set_Message_Warninng($code);
+        }
         if ( self::MODE_CONSOLE == self::$mode || !isset($_SERVER['REQUEST_URI']) )
             self::ResponseConsole();
         else if ( self::MODE_API == self::$mode )
@@ -602,7 +606,7 @@ class Zero_App
 
         // Логирование (в браузер)
         if ( self::$Config->Log_Output_Display )
-            echo Zero_Logs::Output_Display();
+            Zero_Logs::Output_Display();
 
         // закрываем соединение с браузером (работает только под нгинx)
         if ( function_exists('fastcgi_finish_request') )
