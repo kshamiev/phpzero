@@ -54,6 +54,9 @@ define('ZERO_PATH_LAYOUT', ZERO_PATH_SITE . '/layout');
  * @date 2015.01.01
  * @todo Убрать функционал вывода в одну строку
  * @todo Добавить раздел для ручного запуска косольных задач
+ * @todo Документировать
+ * @todo Доработать конфигурирования почтового модуля и переписать на апи базовое использование
+ * @todo Бибилиотечные модули пренесети в бибилотеки доработать
  */
 class Zero_App
 {
@@ -182,7 +185,7 @@ class Zero_App
      * @param $method
      * @param $url
      * @param string $content
-     * @return mixed|string
+     * @return mixed
      */
     public static function RequestJson($method, $url, $content = '')
     {

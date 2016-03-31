@@ -2,7 +2,7 @@
 /**
  * Actions controllers and the access to them.
  *
- * @package Zero.Action
+ * @package Zero
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  *
