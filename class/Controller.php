@@ -71,7 +71,7 @@ abstract class Zero_Controller
             'Message' => $arr[1],
             'ErrorStatus' => false,
         ];
-        return false;
+        return true;
     }
 
     /**
@@ -89,7 +89,7 @@ abstract class Zero_Controller
             'Message' => $arr[1],
             'ErrorStatus' => true,
         ];
-        return true;
+        return false;
     }
 
     /**

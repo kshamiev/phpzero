@@ -167,10 +167,9 @@ class Zero_View
      * - E`ksport daneny`kh
      * - Vy`polnenie shablona i vozvrat rezul`tata
      *
-     * @param bool|false $TplOutString выдача шаблона в виде одной строки
      * @return string sobranny`i` shablon so vstavlenny`mi danny`mi
      */
-    public function Fetch($__TplOutString__ = false)
+    public function Fetch()
     {
         if ( 0 == count($this->_Template) )
             return '';
@@ -200,19 +199,7 @@ class Zero_View
         extract($this->_Data);
         $this->_Data = [];
         include $arr[1];
-        if ( $__TplOutString__ )
-        {
-            $result = '';
-            foreach (explode("\n", ob_get_clean()) as $val)
-            {
-                $result .= trim($val);
-            }
-            return $result;
-        }
-        else
-        {
-            return ob_get_clean();
-        }
+        return ob_get_clean();
     }
 
     /**
@@ -351,7 +338,7 @@ class Zero_View
         $view = $Controller->Action_Default();
         if ( $view instanceof Zero_View )
         {
-            $view = $view->Fetch(Zero_App::$Config->View_TplOutString);
+            $view = $view->Fetch();
         }
         Zero_Logs::Stop('#{PLUGIN} ' . $plugin_name . ' -> Action_Default');
         //        Zero_Logs::Stop('#{APP.Controller} ' . $plugin_name);

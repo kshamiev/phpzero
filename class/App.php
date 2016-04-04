@@ -235,19 +235,13 @@ class Zero_App
             $message = Zero_I18n::Message(self::$Section->Controller, $code, $params);
         else
             $message = Zero_I18n::Message('Zero', $code, $params);
-        if ( -1 == $code || 5000 <= $code )
-        {
-            $errorStatus = true;
-            Zero_Logs::Set_Message_Error($message[1]);
-        }
-        else
-            $errorStatus = false;
 
         $data = [
             'Code' => $message[0],
             'Message' => $message[1],
-            'ErrorStatus' => $errorStatus,
+            'ErrorStatus' => false,
         ];
+
         if ( $content )
             $data['Content'] = $content;
 
@@ -466,7 +460,7 @@ class Zero_App
                 $viewController->Assign('Head', Zero_App::$Section->Name);
                 $viewController->Assign('H1', Zero_App::$Section->Name);
                 $viewController->Assign('Content', Zero_App::$Section->Content);
-                $view = $viewController->Fetch(Zero_App::$Config->View_TplOutString);
+                $view = $viewController->Fetch();
             }
             else
             {
@@ -483,7 +477,7 @@ class Zero_App
             $viewLayout->Assign('Head', Zero_App::$Section->Name);
             $viewLayout->Assign('H1', Zero_App::$Section->Name);
             $viewLayout->Assign('Content', $view);
-            $view = $viewLayout->Fetch(Zero_App::$Config->View_TplOutString);
+            $view = $viewLayout->Fetch();
         }
         self::ResponseHtml($view, 200);
     }
@@ -571,7 +565,7 @@ class Zero_App
                             $viewController->Assign('Head', Zero_App::$Section->Name);
                             $viewController->Assign('H1', Zero_App::$Section->Name);
                             $viewController->Assign('Content', Zero_App::$Section->Content);
-                            $view = $viewController->Fetch(Zero_App::$Config->View_TplOutString);
+                            $view = $viewController->Fetch();
                         }
                         else
                         {
@@ -587,7 +581,7 @@ class Zero_App
                 $View->Assign('code', $code);
                 $View->Assign('message', $exception->getMessage());
             }
-            self::ResponseHtml($View->Fetch(Zero_App::$Config->View_TplOutString), $code);
+            self::ResponseHtml($View->Fetch(), $code);
         }
     }
 
