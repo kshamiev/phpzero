@@ -48,5 +48,11 @@ class Zero_Config_Console
          *
          */
         'Zero_Console_Base_Engine' => ['Minute' => '*/10', 'Hour' => '*', 'Day' => '*', 'Month' => '*', 'Week' => '*', 'IsActive' => false],
+        /**
+         * Отправка очереди почтовых сообщений
+         *
+         * @see Zero_Mail_Console_Send
+         */
+        'Zero_Mail_Console_Send' => ['Minute' => '*/30', 'Hour' => '*', 'Day' => '*', 'Month' => '*', 'Week' => '*', 'IsActive' => true],
     ];
 }
