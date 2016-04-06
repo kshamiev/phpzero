@@ -124,24 +124,22 @@ class Zero_Users_Login extends Zero_Controller
         $View->Assign('password', $password);
         $message = $View->Fetch();
 
-        $sample = [
-            'Email' => [
-                'Reply' => ['Name' => Zero_App::$Config->Site_Name, 'Email' => Zero_App::$Config->Site_Email],
-                'From' => ['Name' => Zero_App::$Config->Site_Name, 'Email' => Zero_App::$Config->Site_Email],
-                'To' => [
-                    $this->Model->Email => $this->Model->Name,
-                ],
-                'Subject' => "Reminder access details " . HTTP,
-                'Message' => $message,
-                'Attach' => [
-                ],
+        $email = [
+            'Reply' => ['Name' => Zero_App::$Config->Site_Name, 'Email' => Zero_App::$Config->Site_Email],
+            'From' => ['Name' => Zero_App::$Config->Site_Name, 'Email' => Zero_App::$Config->Site_Email],
+            'To' => [
+                $this->Model->Email => $this->Model->Name,
+            ],
+            'Subject' => "Reminder access details " . HTTP,
+            'Message' => $message,
+            'Attach' => [
             ],
         ];
-
-        Mail_Queue::SendMessage($sample['Email']);
-
-        $this->SetMessage(0, ["Реквизиты отправлены на почту"]);
-
+        $cnt = Zero_Mail::SendMessage($email);
+        if ( 0 < $cnt )
+            $this->SetMessageError(-1, ["Реквизиты не отправлены на почту"]);
+        else
+            $this->SetMessage(0, ["Реквизиты отправлены на почту"]);
         return $this->Chunk_View();
     }
 
@@ -166,8 +164,6 @@ class Zero_Users_Login extends Zero_Controller
         {
             Zero_App::ResponseRedirect('/admin');
         }
-        $this->Model = Zero_Users::Make();
-        $this->View = new Zero_View(get_class($this));
         if ( !$this->UrlRedirect )
         {
             if ( 1 < count(explode($_SERVER["HTTP_HOST"], ZERO_HTTPH)) )
@@ -175,6 +171,8 @@ class Zero_Users_Login extends Zero_Controller
             else
                 $this->UrlRedirect = '/';
         }
+        $this->Model = Zero_Users::Make();
+        $this->View = new Zero_View(get_class($this));
     }
 
     /**
@@ -184,7 +182,6 @@ class Zero_Users_Login extends Zero_Controller
      */
     protected function Chunk_View()
     {
-        $this->View->Assign('Message', $this->GetMessage());
         return $this->View;
     }
 }

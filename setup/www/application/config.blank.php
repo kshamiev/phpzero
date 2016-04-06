@@ -41,14 +41,30 @@ return [
             'Name' => "<DB_NAME>", //  Name DB
         ],
     ],
+    //  Настройки почты
+    'Mail' => [
+        'Host' => '',
+        //  Port
+        'Port' => 25,
+        //  Username
+        'Username' => '',
+        //  Password
+        'Password' => '',
+        //  Retry count
+        'RetryCnt' => 10,
+        //  Api прямой отправки письма (если указан то используется он)
+        'ApiSend' => 'http://domain.ru/api/v1/mail/send',
+        //  Api отправки письма через очередь (если указан то используется он)
+        'ApiQueue' => 'http://domain.ru/api/v1/mail/queue',
+        // Кодировка
+        'CharSet' => 'utf-8',
+    ],
     //  The settings of the presentation of data
     'View' => [
         //  Number of items per page
         'PageItem' => "20",
         //  The range of visible pages
         'PageStep' => "11",
-        // Сборка шаблона с данными в одну строку
-        'TplOutString' => false,
     ],
     //  Monitoring
     'Log' => [

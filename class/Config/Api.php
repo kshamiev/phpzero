@@ -33,5 +33,31 @@ class Zero_Config_Api
          * @see Zero_Users_Api_Logout
          */
         '/api/v1.0/zero/user/logout' => ['Controller' => 'Zero_Users_Api_Logout', 'View' => ''],
+        /**
+         * Прямая отправка письма
+         *
+         * @see Zero_Mail_Api_Send
+         */
+        '/api/v1/mail/send' => ['Controller' => 'Zero_Mail_Api_Send', 'View' => ''],
+        /**
+         * Прямая отправка письма
+         *
+         * @deprecated
+         * @see Zero_Mail_Api_Send
+         */
+        '/api/v1.0/mail/send' => ['Controller' => 'Zero_Mail_Api_Send', 'View' => ''],
+        /**
+         * Отправка письма через очередь
+         *
+         * @see Zero_Mail_Api_Queue
+         */
+        '/api/v1/mail/queue' => ['Controller' => 'Zero_Mail_Api_Queue', 'View' => ''],
+        /**
+         * Отправка письма через очередь
+         *
+         * @deprecated
+         * @see Zero_Mail_Api_Queue
+         */
+        '/api/v1.0/mail/queue' => ['Controller' => 'Zero_Mail_Api_Queue', 'View' => ''],
     ];
 }

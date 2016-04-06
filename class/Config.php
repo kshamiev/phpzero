@@ -126,6 +126,62 @@ class Zero_Config
      *
      * @var string
      */
+    public $Mail_Host = '';
+
+    /**
+     * Number of items per page
+     *
+     * @var string
+     */
+    public $Mail_Port = 25;
+
+    /**
+     * Number of items per page
+     *
+     * @var string
+     */
+    public $Mail_Username = '';
+
+    /**
+     * Number of items per page
+     *
+     * @var string
+     */
+    public $Mail_Password = '';
+
+    /**
+     * Number of items per page
+     *
+     * @var string
+     */
+    public $Mail_RetryCnt = 10;
+
+    /**
+     * Number of items per page
+     *
+     * @var string
+     */
+    public $Mail_ApiSend = '';
+
+    /**
+     * Number of items per page
+     *
+     * @var string
+     */
+    public $Mail_ApiQueue = '';
+
+    /**
+     * Number of items per page
+     *
+     * @var string
+     */
+    public $Mail_CharSet = '';
+
+    /**
+     * Number of items per page
+     *
+     * @var string
+     */
     public $View_PageItem = '';
 
     /**
@@ -238,8 +294,6 @@ class Zero_Config
      */
     public function __construct()
     {
-        $Config = require ZERO_PATH_APPLICATION . '/config.php';
-
         // Setting php
         set_time_limit(3600);
         date_default_timezone_set('Europe/Moscow');
@@ -253,6 +307,8 @@ class Zero_Config
         ini_set('error_log', ZERO_PATH_LOG . "/fatal.log");
         ini_set('magic_quotes_gpc', 0);
         error_reporting(-1);
+
+        $Config = require ZERO_PATH_APPLICATION . '/config.php';
 
         // IP the source address of the request
         if ( isset($_SERVER["HTTP_X_FORWARDED_FOR"]) )
@@ -295,10 +351,6 @@ class Zero_Config
         $this->Site_AccessLogin = $Config['Site']['AccessLogin'];
         // File storage sessions
         $this->Site_AccessPassword = $Config['Site']['AccessPassword'];
-
-        // Access for DB (Mysql)
-        $this->Db = $Config['Db'];
-
         // Site name (of the project)
         $this->Site_Name = $Config['Site']['Name'];
         // Email the site (by default)
@@ -311,23 +363,22 @@ class Zero_Config
         $this->Site_TemplateParsing = $Config['Site']['TemplateParsing'];
         //  Default language
         $this->Site_Language = $Config['Site']['Language'];
-
+        //
         $this->Site_Domain = $Config['Site']['Domain'];
         if ( $Config['Site']['DomainAssets'] )
             $this->Site_DomainAssets = $Config['Site']['DomainAssets'];
         else
             $this->Site_DomainAssets = $this->Site_Domain;
-
+        //
         if ( $Config['Site']['DomainUpload'] )
             $this->Site_DomainUpload = $Config['Site']['DomainUpload'];
         else
             $this->Site_DomainUpload = $this->Site_Domain;
-
+        //
         if ( isset($_SERVER["HTTP_HOST"]) )
             $this->Site_DomainAlias = $_SERVER["HTTP_HOST"];
         else
             $this->Site_DomainAlias = $Config['Site']['Domain'];
-
         //  Absolute system host a website.
         $this->Site_DomainSub = explode('.', $this->Site_Domain)[0];
         if ( isset($_SERVER['HTTP_HOST']) )
@@ -338,8 +389,21 @@ class Zero_Config
                 $this->Site_DomainSub = $arr[0];
             }
         }
-
+        //
         $this->Site_UseDB = $Config['Site']['UseDB'];
+
+        // Access for DB (Mysql)
+        $this->Db = $Config['Db'];
+
+        // Настройки почты
+        $this->Mail_Host = $Config['Mail']['Host'];
+        $this->Mail_Port = $Config['Mail']['Port'];
+        $this->Mail_Username = $Config['Mail']['Username'];
+        $this->Mail_Password = $Config['Mail']['Password'];
+        $this->Mail_RetryCnt = $Config['Mail']['RetryCnt'];
+        $this->Mail_ApiSend = $Config['Mail']['ApiSend'];
+        $this->Mail_ApiQueue = $Config['Mail']['ApiQueue'];
+        $this->Mail_CharSet = $Config['Mail']['CharSet'];
 
         //  Number of items per page
         $this->View_PageItem = $Config['View']['PageItem'];
