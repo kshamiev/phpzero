@@ -52,7 +52,7 @@ define('ZERO_PATH_LAYOUT', ZERO_PATH_SITE . '/layout');
  * @package General.Component
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
- * @todo Убрать функционал вывода в одну строку
+ * @todo mail & document вклчить в ядро ?????!!!!
  * @todo Добавить раздел для ручного запуска косольных задач
  * @todo Документировать
  * @todo Доработать конфигурирования почтового модуля и переписать на апи базовое использование

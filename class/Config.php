@@ -136,13 +136,6 @@ class Zero_Config
     public $View_PageStep = '';
 
     /**
-     * The compile tpl in string and out
-     *
-     * @var bool
-     */
-    public $View_TplOutString = false;
-
-    /**
      * Monitoring. Fatal errors
      *
      * @var bool
@@ -352,9 +345,6 @@ class Zero_Config
         $this->View_PageItem = $Config['View']['PageItem'];
         //  The range of visible pages
         $this->View_PageStep = $Config['View']['PageStep'];
-        //  The compile tpl in string and out
-        if ( isset($Config['View']['TplOutString']) )
-            $this->View_TplOutString = $Config['View']['TplOutString'];
 
         // Monitoring. Fatal errors
         $this->Log_Profile_Error = $Config['Log']['Profile']['Error'];
