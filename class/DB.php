@@ -113,9 +113,6 @@ class Zero_DB
      */
     public static function EscI($int)
     {
-        $int = intval($int);
-        if ( 0 == strlen($int) )
-            return 'NULL';
         return intval($int);
     }
 
@@ -127,8 +124,6 @@ class Zero_DB
      */
     public static function EscF($float)
     {
-        //        if ( 0 == strlen($float) )
-        //            return 'NULL';
         return floatval(str_replace(',', '.', $float));
     }
 
@@ -142,8 +137,8 @@ class Zero_DB
     {
         $str = trim(strval($str));
         if ( $str )
-            //            return "'" . self::$DB['']->real_escape_string($str) . "'";
-            return "'" . addslashes($str) . "'";
+            return "'" . self::$DB[key(self::$Config)]->real_escape_string($str) . "'";
+            //return "'" . addslashes($str) . "'";
         else
             return 'NULL';
     }
@@ -158,8 +153,8 @@ class Zero_DB
     {
         $str = trim(strval($str));
         if ( $str )
-            //            return "'" . self::$DB['']->real_escape_string($str) . "'";
-            return "'" . addslashes($str) . "'";
+            return "'" . self::$DB[key(self::$Config)]->real_escape_string($str) . "'";
+//            return "'" . addslashes($str) . "'";
         else
             return 'NULL';
     }
@@ -174,8 +169,8 @@ class Zero_DB
     {
         $enum = trim(strval($enum));
         if ( $enum )
-            //            return "'" . self::$DB['']->real_escape_string($enum) . "'";
-            return "'" . addslashes($enum) . "'";
+            return "'" . self::$DB[key(self::$Config)]->real_escape_string($str) . "'";
+//            return "'" . addslashes($enum) . "'";
         else
             return 'NULL';
     }
@@ -191,8 +186,8 @@ class Zero_DB
     {
         $str = trim(implode($separator, $array));
         if ( $str )
-            //            return "'" . self::$DB['']->real_escape_string($str) . "'";
-            return "'" . addslashes($str) . "'";
+            return "'" . self::$DB[key(self::$Config)]->real_escape_string($str) . "'";
+//            return "'" . addslashes($str) . "'";
         else
             return 'NULL';
     }

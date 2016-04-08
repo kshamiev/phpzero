@@ -430,10 +430,7 @@ final class Zero_Helper_File
         if ( !is_dir(dirname($path_file)) )
             mkdir(dirname($path_file), 0777, true);
         $fp = fopen($path_file, 'a');
-        if ( 'array' == gettype($value) || 'object' == gettype($value) )
-            fputs($fp, print_r($value, true) . "\n");
-        else
-            fputs($fp, trim($value) . "\n");
+        fputs($fp, trim($value) . "\n");
         fclose($fp);
         return true;
     }
