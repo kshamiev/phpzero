@@ -137,8 +137,8 @@ class Zero_DB
     {
         $str = trim(strval($str));
         if ( $str )
-            return "'" . self::$DB[key(self::$Config)]->real_escape_string($str) . "'";
-            //return "'" . addslashes($str) . "'";
+//            return "'" . self::$DB[key(self::$Config)]->real_escape_string($str) . "'";
+            return "'" . addslashes($str) . "'";
         else
             return 'NULL';
     }
@@ -153,8 +153,8 @@ class Zero_DB
     {
         $str = trim(strval($str));
         if ( $str )
-            return "'" . self::$DB[key(self::$Config)]->real_escape_string($str) . "'";
-//            return "'" . addslashes($str) . "'";
+//            return "'" . self::$DB[key(self::$Config)]->real_escape_string($str) . "'";
+            return "'" . addslashes($str) . "'";
         else
             return 'NULL';
     }
@@ -169,8 +169,8 @@ class Zero_DB
     {
         $enum = trim(strval($enum));
         if ( $enum )
-            return "'" . self::$DB[key(self::$Config)]->real_escape_string($str) . "'";
-//            return "'" . addslashes($enum) . "'";
+//            return "'" . self::$DB[key(self::$Config)]->real_escape_string($str) . "'";
+            return "'" . addslashes($enum) . "'";
         else
             return 'NULL';
     }
@@ -186,8 +186,8 @@ class Zero_DB
     {
         $str = trim(implode($separator, $array));
         if ( $str )
-            return "'" . self::$DB[key(self::$Config)]->real_escape_string($str) . "'";
-//            return "'" . addslashes($str) . "'";
+//            return "'" . self::$DB[key(self::$Config)]->real_escape_string($str) . "'";
+            return "'" . addslashes($str) . "'";
         else
             return 'NULL';
     }
