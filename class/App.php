@@ -49,7 +49,7 @@ define('ZERO_PATH_LAYOUT', ZERO_PATH_SITE . '/layout');
  *
  * The main component of execute the application as a whole.
  *
- * @package General.Component
+ * @package Zero.Component
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  * @todo Добавить раздел для ручного запуска косольных задач

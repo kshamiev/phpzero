@@ -4,7 +4,7 @@
  *
  * Определение неактивных пользоватлей в системе
  *
- * @package Console.Zero.Users
+ * @package Zero.Console.Users
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */

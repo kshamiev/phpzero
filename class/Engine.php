@@ -30,7 +30,7 @@
  * <li> Linkmore  - (select) Svoi`stvo sviazi s drugim ob``ektom (mnogochislenny`m - ajax)
  * </ol>
  *
- * @package Zero.Developer
+ * @package Zero.Component
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */

@@ -3,7 +3,7 @@
 /**
  * Content Page.
  *
- * @package Zero.Section.Page
+ * @package Zero.Controller.Section
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */

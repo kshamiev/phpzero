@@ -2,7 +2,7 @@
 /**
  * Инженеринг моделей и контроллеров CRUD по БД (первой по умолчанию)
  *
- * @package Console.Zero.Base
+ * @package Zero.Console.Base
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.05.14
  */

@@ -2,7 +2,7 @@
 /**
  * A helper class for working with the string.
  *
- * @package General.Helper
+ * @package Zero.Helper
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */

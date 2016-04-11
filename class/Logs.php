@@ -11,7 +11,7 @@
  * - Zatrachennaia pamiat`
  * - Dei`stvii` pol`zovatelia
  *
- * @package General.Component
+ * @package Zero.Component
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
@@ -77,7 +77,7 @@ class Zero_Logs
         self::$_Message = [];
         self::$_StartTime = microtime(1);
         self::$_CurrentTime = [];
-        self::$_FileLog = strtolower($fileLog) . '.log';
+        self::$_FileLog = strtolower($fileLog);
     }
 
     /**
@@ -212,7 +212,7 @@ class Zero_Logs
         {
             $output = join("\n", self::Get_Usage_MemoryAndTime()) . "\n";
 //            self::File(self::$_FileLog, $output);
-            Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . self::$_FileLog, $output);
+            Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . self::$_FileLog . '.log', $output);
         }
         //
         if ( 0 < count(self::$_Message) )
@@ -236,7 +236,7 @@ class Zero_Logs
                 array_unshift($errors, str_replace(["\r", "\t"], " ", $output));
                 $errors = preg_replace('![ ]{2,}!', ' ', join("\n", $errors));
 //                self::File(self::$_FileLog . '_errors', $errors);
-                Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/errors_' . self::$_FileLog, $errors);
+                Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . self::$_FileLog . '_error.log', $errors);
             }
             // логирование предупреждений в файл
             if ( Zero_App::$Config->Log_Profile_Warning && 0 < count($warnings) )
@@ -244,7 +244,7 @@ class Zero_Logs
                 array_unshift($warnings, str_replace(["\r", "\t"], " ", $output));
                 $warnings = preg_replace('![ ]{2,}!', ' ', join("\n", $warnings));
 //                self::File(self::$_FileLog . '_warnings', $warnings);
-                Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/warnings_' . self::$_FileLog, $warnings);
+                Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . self::$_FileLog .'_warning.log', $warnings);
             }
             // логирование сообщений в файл
             if ( Zero_App::$Config->Log_Profile_Notice && 0 < count($notice) )
@@ -252,7 +252,7 @@ class Zero_Logs
                 array_unshift($notice, str_replace(["\r", "\t"], " ", $output));
                 $notice = preg_replace('![ ]{2,}!', ' ', join("\n", $notice));
 //                self::File(self::$_FileLog . '_notice', $notice);
-                Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/notice_' . self::$_FileLog, $notice);
+                Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . self::$_FileLog . '_notice.log', $notice);
             }
         }
         // логирование операций пользователиа в файл
@@ -262,7 +262,7 @@ class Zero_Logs
                 $act = date('[d.m.Y H:i:s]') . "\t" . Zero_App::$Users->Login . "\t";
                 $act .= Zero_App::$Section->Controller . " -> " . $_REQUEST['act'] . "\t" . ZERO_HTTP . $_SERVER['REQUEST_URI'];
 //                self::File(self::$_FileLog . '_action', $act);
-                Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/action_' . self::$_FileLog, $act);
+                Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . self::$_FileLog . '_action.log', $act);
             }
     }
 

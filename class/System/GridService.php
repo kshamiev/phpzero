@@ -2,7 +2,7 @@
 /**
  * Controller. Development and maintenance of the system.
  *
- * @package Zero.Developer
+ * @package Zero.Controller.System
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */

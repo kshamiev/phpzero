@@ -40,7 +40,7 @@ define('LANG', Zero_App::Get_Lang());
  * Gathers ready-made template to the transferred data (as it executes a program.)
  * The mechanism of the multi-language templates
  *
- * @package General.Component Шаблонизатор
+ * @package Zero.Component Шаблонизатор
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */

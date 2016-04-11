@@ -2,7 +2,7 @@
 /**
  * Controller. Formation of abstract panel controllers actions.
  *
- * @package Zero.Crud
+ * @package Zero.Plugin.Crud
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */

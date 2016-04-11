@@ -19,7 +19,7 @@
  * - Metody` zagruzki, obnovleniia, vstavki i udaleniia po zadanny`m usloviiam (rabotaet ot modeli). Imeiut prefiks Load_, Update_, Insert_, Delete_
  * - Metody` kotory`e keshiruiut rezul`taty` zaprosov k BD imeiut konechny`i` suffiks _Cache
  *
- * @package General.Component
+ * @package Zero.Component
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
@@ -57,7 +57,7 @@ class Zero_DB
      * @return string имя реально используемого коннекта
      * @throws Exception
      */
-    protected static function Init($name)
+    protected static function Init($name = '')
     {
         if ( $name == '' )
             $name = key(self::$Config);
@@ -137,8 +137,8 @@ class Zero_DB
     {
         $str = trim(strval($str));
         if ( $str )
-//            return "'" . self::$DB[key(self::$Config)]->real_escape_string($str) . "'";
-            return "'" . addslashes($str) . "'";
+            return "'" . self::$DB[self::Init()]->real_escape_string($str) . "'";
+            //            return "'" . addslashes($str) . "'";
         else
             return 'NULL';
     }
@@ -153,8 +153,8 @@ class Zero_DB
     {
         $str = trim(strval($str));
         if ( $str )
-//            return "'" . self::$DB[key(self::$Config)]->real_escape_string($str) . "'";
-            return "'" . addslashes($str) . "'";
+            return "'" . self::$DB[self::Init()]->real_escape_string($str) . "'";
+//            return "'" . addslashes($str) . "'";
         else
             return 'NULL';
     }
@@ -169,8 +169,8 @@ class Zero_DB
     {
         $enum = trim(strval($enum));
         if ( $enum )
-//            return "'" . self::$DB[key(self::$Config)]->real_escape_string($str) . "'";
-            return "'" . addslashes($enum) . "'";
+            return "'" . self::$DB[self::Init()]->real_escape_string($enum) . "'";
+//            return "'" . addslashes($enum) . "'";
         else
             return 'NULL';
     }
@@ -186,8 +186,8 @@ class Zero_DB
     {
         $str = trim(implode($separator, $array));
         if ( $str )
-//            return "'" . self::$DB[key(self::$Config)]->real_escape_string($str) . "'";
-            return "'" . addslashes($str) . "'";
+            return "'" . self::$DB[self::Init()]->real_escape_string($str) . "'";
+//            return "'" . addslashes($str) . "'";
         else
             return 'NULL';
     }

@@ -3,7 +3,7 @@
 /**
  * Abstract controller for editing objects.
  *
- * @package Zero.Crud
+ * @package Zero.Controller.Crud
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */

@@ -3,7 +3,7 @@
 /**
  * Отправка письма через очередь
  *
- * @package Mail.Api
+ * @package Zero.Api.Mail
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.09.08
  */

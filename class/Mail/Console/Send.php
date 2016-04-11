@@ -4,7 +4,7 @@ require_once ZERO_PATH_LIBRARY . '/PHPMailer/PHPMailerAutoload.php';
 /**
  * Отправка очереди почтовых сообщений
  *
- * @package Mail.Console
+ * @package Zero.Console.Mail
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */

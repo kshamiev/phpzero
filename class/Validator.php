@@ -11,7 +11,7 @@
  * - Poisk validatora zdes` v validatore po forme predstavleniia svoi`stva
  * Esli ni odin validator ne by`l nai`den proishodit bezuslovnoe prisvoenie znachenie svoi`stvu ob``etu.
  *
- * @package General.Component
+ * @package Zero.Component
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */

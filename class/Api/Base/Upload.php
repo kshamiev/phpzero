@@ -2,7 +2,7 @@
 /**
  * Загрузка бинарных данных через веб форму (ajax)
  *
- * @package Api.Zero.Base
+ * @package Zero.Api.Base
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */

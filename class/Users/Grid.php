@@ -5,7 +5,7 @@
  *
  * To work with the catalog.
  *
- * @package Zero.Users.Admin
+ * @package Zero.Controller.Users
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */

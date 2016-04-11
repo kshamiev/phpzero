@@ -3,7 +3,7 @@
 /**
  * The configuration of systems and applications in general.
  *
- * @package General.Component
+ * @package Zero.Component
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */

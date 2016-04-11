@@ -9,7 +9,7 @@
  * Reazlizuet fil`tratciiu pri vy`vode ob``ektov v gride.
  * V forme vy`stupaet kak spravochnik variantov znachenii` dlia svoi`stv.
  *
- * @package General.Component Фильтр
+ * @package Zero.Component Фильтр
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */

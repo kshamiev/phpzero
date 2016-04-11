@@ -13,7 +13,7 @@
  * - Система объектного (целевого) кеширования
  * - Component on interaction and working with the database in the philosophy of ORM
  *
- * @package General.Component Базовая абстрактная модель
+ * @package Zero.Component Базовая абстрактная модель
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  *

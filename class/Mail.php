@@ -7,9 +7,10 @@ require_once ZERO_PATH_LIBRARY . '/PHPMailer/PHPMailerAutoload.php';
  * Поставнока в очередь на отправку.
  * Получение очереди для отправления по почте.
  *
- * @package General.Component
+ * @package Zero
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
+ * @link https://github.com/PHPMailer/PHPMailer
  *
  * @property string $Name
  * @property string $Description

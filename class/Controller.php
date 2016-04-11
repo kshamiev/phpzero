@@ -8,7 +8,7 @@
  * Vy`polnenie dei`stvii` s uchetom prav
  * Mehanizm soobshchenii` o rezul`tatakh dei`stvii`
  *
- * @package General.Component
+ * @package Zero.Component
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */

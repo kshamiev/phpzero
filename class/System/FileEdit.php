@@ -2,7 +2,7 @@
 /**
  * Controller. Editing a text file.
  *
- * @package Zero.FileManager
+ * @package Zero.Controller.System
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */

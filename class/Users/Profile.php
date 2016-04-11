@@ -3,7 +3,7 @@
 /**
  * Controller. User Profile.
  *
- * @package Zero.Users.Controller
+ * @package Zero.Controller.Users
  * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
  * @version $Id$
  * @link http://www.phpzero.com/

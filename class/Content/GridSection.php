@@ -2,7 +2,7 @@
 /**
  * View a list content of related by page.
  *
- * @package Zero.Content.Admin
+ * @package Zero.Controller.Content
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
