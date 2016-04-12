@@ -371,7 +371,8 @@ class Zero_Config
         //  Default language
         $this->Site_Language = $Config['Site']['Language'];
         //  Protocol
-        $this->Site_Protocol = $Config['Site']['Protocol'];
+        if ( isset($Config['Site']['Protocol']) )
+            $this->Site_Protocol = $Config['Site']['Protocol'];
         //
         $this->Site_Domain = $Config['Site']['Domain'];
         if ( $Config['Site']['DomainAssets'] )
