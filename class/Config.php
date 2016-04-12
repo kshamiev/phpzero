@@ -73,6 +73,13 @@ class Zero_Config
     public $Site_Language = '';
 
     /**
+     * Protocol
+     *
+     * @var string
+     */
+    public $Site_Protocol = 'http';
+
+    /**
      * Default language
      *
      * @var string
@@ -363,6 +370,8 @@ class Zero_Config
         $this->Site_TemplateParsing = $Config['Site']['TemplateParsing'];
         //  Default language
         $this->Site_Language = $Config['Site']['Language'];
+        //  Protocol
+        $this->Site_Protocol = $Config['Site']['Protocol'];
         //
         $this->Site_Domain = $Config['Site']['Domain'];
         if ( $Config['Site']['DomainAssets'] )

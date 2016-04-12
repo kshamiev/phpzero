@@ -22,6 +22,8 @@ return [
         'TemplateParsing' => true,
         //  Language of the site by default
         'Language' => "<SITE_LANGDEFAULT>",
+        //  Protocol
+        'Protocol' => 'http',
         //  Domain of the site by default
         'Domain' => '<DOMAIN>',
         //  Static Data Domain Site (css, js, img - design)
