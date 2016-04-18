@@ -3,11 +3,11 @@
 /**
  * Конфигурация роутинга апи запросов
  *
- * @package Zero.Config
+ * @package Zero.Route
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2016.02.17
  */
-class Zero_Config_Api
+class Zero_ZRouteApi
 {
     /**
      * 'url' => ['Controller' => 'ClassName', 'View' => ''],
