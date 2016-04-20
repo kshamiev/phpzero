@@ -111,14 +111,14 @@ return [
     ],
     //  роутинг Web запросов
     'Web' => [
-        new Zero_ZRouteWeb(),
+        new Zero_Route_Web(),
     ],
     //  Ротуинг Api запросов
     'Api' => [
-        new Zero_ZRouteApi(),
+        new Zero_Route_Api(),
     ],
     //  Консольные задачи
     'Console' => [
-        new Zero_ZRouteConsole(),
+        new Zero_Route_Console(),
     ],
 ];

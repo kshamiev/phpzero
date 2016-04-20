@@ -7,7 +7,7 @@
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2016.02.17
  */
-class Zero_ZRouteApi
+class Zero_Route_Api
 {
     /**
      * 'url' => ['Controller' => 'ClassName', 'View' => ''],
