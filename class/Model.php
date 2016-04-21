@@ -197,15 +197,15 @@ abstract class Zero_Model
     }
 
     /**
-     * Poluchenie svoi`stv modeli i ikh znachenii`
+     * Получение свойств модели и их значений
      *
-     * Znachenie $flag
+     * $flag
      * - -1 получить только измененные свойства (не сохраненные)
      * - 0 получить все свойства (по умолчанию)
      * - 1 получить только не измененные свойства (сохраненные)
      *
-     * @param int $flag kakie svoi`stva poluchat`
-     * @return array svoi`stva modeli i ikh znachenii`
+     * @param int $flag
+     * @return array свойства
      */
     public function Get_Props($flag = 0)
     {

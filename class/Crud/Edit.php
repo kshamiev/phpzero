@@ -179,14 +179,6 @@ abstract class Zero_Crud_Edit extends Zero_Controller
                 $this->Model->$prop = null;
         }
 
-        //  Set the user conditions
-        //        $users_condition = Zero_App::$Users->Get_Condition();
-        //        foreach (array_keys($this->Model->Get_Config_Prop(get_class($this))) as $prop)
-        //        {
-        //            if ( isset($users_condition[$prop]) && 1 == count($users_condition[$prop]) )
-        //                $this->Model->$prop = key($users_condition[$prop]);
-        //        }
-
         $this->Model->VL->Validate($_REQUEST['Prop'], get_class($this));
         if ( 0 < count($this->Model->VL->Get_Errors()) )
         {
