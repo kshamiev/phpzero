@@ -165,6 +165,13 @@ class Zero_App
             if ( class_exists($class_name) )
                 return true;
         }
+        $path = ZERO_PATH_APPLICATION . '/' . str_replace('_', '/', strtolower($class_name)) . '.php';
+        if ( file_exists($path) )
+        {
+            require_once $path;
+            if ( class_exists($class_name) )
+                return true;
+        }
         Zero_Logs::Set_Message_Error('Класс не найден: ' . $class_name);
         return false;
     }
