@@ -35,6 +35,7 @@ class Zero_I18n
     {
         // инициализация файла перевода
         $folder_list = explode('_', $file_name);
+        $folder_list[0] = strtolower($folder_list[0]);
         $folder_list[1] = 'Message';
         $file_name = $folder_list[0] . '_' . $folder_list[1];
         if ( !isset(self::$_I18n[$file_name]) )
@@ -42,14 +43,14 @@ class Zero_I18n
             self::Search_Path_I18n($folder_list);
         }
         // инициализация перевода
-        $codeGlobal = $code;
+        $codeGlobal = $folder_list[0] . '-' . $code;
         if ( isset(self::$_I18n[$file_name][$code]) )
         {
             array_unshift($params, self::$_I18n[$file_name][$code]);
             //
-            $config = Zero_Config::Get_Config($folder_list[0]);
-            settype($config['GlobalCodeMessage'], 'int');
-            $codeGlobal = $config['GlobalCodeMessage'] * 10000 + $code;
+//            $config = Zero_Config::Get_Config($folder_list[0]);
+//            settype($config['GlobalCodeMessage'], 'int');
+//            $codeGlobal = $config['GlobalCodeMessage'] * 10000 + $code;
         }
         else if ( 0 < $code )
         {
@@ -71,6 +72,7 @@ class Zero_I18n
     {
         // инициализация файла перевода
         $folder_list = explode('_', $file_name);
+        $folder_list[0] = strtolower($folder_list[0]);
         $folder_list[1] = $section;
         $file_name = $folder_list[0] . '_' . $folder_list[1];
         if ( !isset(self::$_I18n[$file_name]) )
@@ -99,14 +101,14 @@ class Zero_I18n
             $lang = ZERO_LANG;
         self::$_I18n[$folder_list[0] . '_' . $folder_list[1]] = [];
         //
-        $path = ZERO_PATH_APPLICATION . '/' . strtolower($folder_list[0]) . '/i18n/' . $lang . '/' . $folder_list[1] . '.php';
+        $path = ZERO_PATH_APPLICATION . '/' . $folder_list[0] . '/i18n/' . $lang . '/' . $folder_list[1] . '.php';
 
         if ( file_exists($path) )
         {
             self::$_I18n[$folder_list[0] . '_' . $folder_list[1]] = include $path;
             return $path;
         }
-        $path = ZERO_PATH_SITE . '/' . strtolower($folder_list[0]) . '/i18n/' . $lang . '/' . $folder_list[1] . '.php';
+        $path = ZERO_PATH_SITE . '/' . $folder_list[0] . '/i18n/' . $lang . '/' . $folder_list[1] . '.php';
         if ( file_exists($path) )
         {
             self::$_I18n[$folder_list[0] . '_' . $folder_list[1]] = include $path;

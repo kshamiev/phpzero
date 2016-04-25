@@ -11,20 +11,6 @@
  */
 class Zero_Controller_Sample extends Zero_Controller
 {
-    /**
-     * The table stores the objects handled by this controller.
-     *
-     * @var string
-     */
-    protected $ModelName = 'Zero_Model_Pattern';
-
-    /**
-     * Template view
-     *
-     * @var string
-     */
-    protected $ViewName = 'Zero_Crud_Edit';
-
     //// Пример контроллера для WEB
     /**
      * Контроллер по умолчанию.
