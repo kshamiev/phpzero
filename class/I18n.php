@@ -44,13 +44,14 @@ class Zero_I18n
         }
         // инициализация перевода
         $codeGlobal = $folder_list[0] . '-' . $code;
+        $codeGlobal = $code;
         if ( isset(self::$_I18n[$file_name][$code]) )
         {
             array_unshift($params, self::$_I18n[$file_name][$code]);
             //
-//            $config = Zero_Config::Get_Config($folder_list[0]);
-//            settype($config['GlobalCodeMessage'], 'int');
-//            $codeGlobal = $config['GlobalCodeMessage'] * 10000 + $code;
+            $config = Zero_Config::Get_Config($folder_list[0]);
+            settype($config['GlobalCodeMessage'], 'int');
+            $codeGlobal = $config['GlobalCodeMessage'] * 10000 + $code;
         }
         else if ( 0 < $code )
         {
