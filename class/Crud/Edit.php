@@ -100,17 +100,17 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         if ( isset($this->Params['obj_parent_prop']) )
             unset($props_form[$this->Params['obj_parent_prop']]);
         //  Remove the user conditions
-        $users_condition = Zero_App::$Users->Get_Condition();
-        foreach (array_keys($this->Model->Get_Config_Prop(get_class($this))) as $prop)
-        {
-            if ( isset($users_condition[$prop]) )
-            {
-                if ( 0 < $this->Model->ID && !isset($users_condition[$prop][$this->Model->$prop]) )
-                    throw new Exception('Page Forbidden', 403);
-                if ( 1 == count($users_condition[$prop]) )
-                    unset($props_form[$prop]);
-            }
-        }
+//        $users_condition = Zero_App::$Users->Get_Condition();
+//        foreach (array_keys($this->Model->Get_Config_Prop(get_class($this))) as $prop)
+//        {
+//            if ( isset($users_condition[$prop]) )
+//            {
+//                if ( 0 < $this->Model->ID && !isset($users_condition[$prop][$this->Model->$prop]) )
+//                    throw new Exception('Page Forbidden', 403);
+//                if ( 1 == count($users_condition[$prop]) )
+//                    unset($props_form[$prop]);
+//            }
+//        }
 
         //  Data
         $this->View->Assign('Section', Zero_App::$Section);
