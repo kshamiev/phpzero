@@ -15,7 +15,7 @@ class Zero_Users_Kcaptcha extends Zero_Controller
      */
     public function Action_Default()
     {
-        require_once ZERO_PATH_ZERO . '/kcaptcha/kcaptcha.php';
+        require_once ZERO_PATH_ZERO . '/assets/kcaptcha/kcaptcha.php';
         $Captcha = new KCAPTCHA();
         Zero_App::$Users->Keystring = $Captcha->getKeyString();
         exit;

@@ -22,7 +22,7 @@ class Zero_Console_Base_ApiGen extends Zero_Controller
         // source (источники)
         $command .= ' -s '. ZERO_PATH_ZERO .' -s '. ZERO_PATH_APPLICATION;
         // exclude (исключения)
-        $command .= ' --exclude="setup/*" --exclude="i18n/*" --exclude="data/*"';
+        $command .= ' --exclude="setup/*" --exclude="i18n/*" --exclude="data/* --exclude="assets/* --exclude="view/*"';
         // target (куда)
         $command .= ' -d '. ZERO_PATH_SITE .'/doc/api';
         // advanced

@@ -124,6 +124,7 @@ abstract class Zero_Controller
             $this->View = new Zero_View(get_class($this));
         // Модель (пример)
         // $this->Model = Zero_Model::Makes('Zero_Users');
+        // $this->Model = Zero_Users::Make();
         return true;
     }
 
