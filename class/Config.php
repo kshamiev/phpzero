@@ -315,6 +315,11 @@ class Zero_Config
         ini_set('magic_quotes_gpc', 0);
         error_reporting(-1);
 
+        if ( !file_exists(ZERO_PATH_APPLICATION . '/config.php') )
+        {
+            error_log('global config file not found: ' . ZERO_PATH_APPLICATION . '/config.php');
+            exit;
+        }
         $Config = require ZERO_PATH_APPLICATION . '/config.php';
 
         // IP the source address of the request
