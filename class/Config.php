@@ -311,13 +311,14 @@ class Zero_Config
 
         // Initialization of the profiled application processors
         ini_set('log_errors', true);
-        ini_set('error_log', ZERO_PATH_LOG . "/fatal.log");
+        ini_set('error_log', ZERO_PATH_LOG . '/fatal.log');
         ini_set('magic_quotes_gpc', 0);
         error_reporting(-1);
 
         if ( !file_exists(ZERO_PATH_APPLICATION . '/config.php') )
         {
-            error_log('global config file not found: ' . ZERO_PATH_APPLICATION . '/config.php');
+            Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/fatal.log', 'global config file not found: ' . ZERO_PATH_APPLICATION . '/config.php');
+            header('HTTP/1.1 500 500');
             exit;
         }
         $Config = require ZERO_PATH_APPLICATION . '/config.php';
