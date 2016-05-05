@@ -115,11 +115,11 @@ abstract class Zero_Controller
     {
         // Шаблон
         if ( isset($this->Params['view']) )
-            $this->View = new Zero_View($this->Params['view']);
+            $this->View = new Zero_View(get_class($this) . '_' . $this->Params['view']);
         else if ( isset($this->Params['tpl']) )
-            $this->View = new Zero_View($this->Params['tpl']);
+            $this->View = new Zero_View(get_class($this) . '_' . $this->Params['tpl']);
         else if ( isset($this->Params['template']) )
-            $this->View = new Zero_View($this->Params['template']);
+            $this->View = new Zero_View(get_class($this) . '_' . $this->Params['template']);
         else
             $this->View = new Zero_View(get_class($this));
         // Модель (пример)

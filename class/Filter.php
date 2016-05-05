@@ -508,8 +508,8 @@ class Zero_Filter
         $this->IsSet = false;
 
         // Инициализация фильтра
-        //        $condition = Zero_App::$Users->Get_Condition();
-        foreach ($this->Model->Get_Config_Filter(get_class($this)) as $prop => $row)
+        $properties = $this->Model->Get_Config_Filter(get_class($this));
+        foreach ($properties as $prop => $row)
         {
             $method = 'Add_Filter_' . $row['Form'];
             if ( method_exists($this, $method) )
@@ -518,15 +518,6 @@ class Zero_Filter
                     $row['Visible'] = 1;
                 else
                     $row['Visible'] = 0;
-                //
-                //                if ( isset($condition[$prop]) )
-                //                {
-                //                    if ( 1 < count($condition[$prop]) )
-                //                        $this->$method($prop, $row, $row['Visible'], $condition[$prop]);
-                //                    else
-                //                        $this->$method($prop, $row, 0, $condition[$prop]);
-                //                }
-                //                else
                 $this->$method($prop, $row, $row['Visible'], 1);
                 //
                 if ( isset($row['DB']) && $row['DB'] == 'D' )
@@ -549,6 +540,10 @@ class Zero_Filter
                 }
             }
         }
+        if ( isset($properties['Date']) )
+            $this->Set_Sort('Date', 'DESC');
+        if ( isset($properties['Sort']) )
+            $this->Set_Sort('Sort', 'ASC');
         return $this;
     }
 }
