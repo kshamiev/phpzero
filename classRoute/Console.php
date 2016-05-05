@@ -51,8 +51,8 @@ class Zero_Route_Console
         /**
          * Отправка очереди почтовых сообщений
          *
-         * @see Zero_Mail_Console_Send
+         * @see Zero_Console_Mail_Send
          */
-        'Zero_Mail_Console_Send' => ['Minute' => '*/30', 'Hour' => '*', 'Day' => '*', 'Month' => '*', 'Week' => '*', 'IsActive' => true],
+        'Zero_Console_Mail_Send' => ['Minute' => '*/30', 'Hour' => '*', 'Day' => '*', 'Month' => '*', 'Week' => '*', 'IsActive' => true],
     ];
 }

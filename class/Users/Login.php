@@ -135,7 +135,7 @@ class Zero_Users_Login extends Zero_Controller
             'Attach' => [
             ],
         ];
-        $cnt = Zero_Mail::SendMessage($email);
+        $cnt = Zero_Helper_Mail::SendMessage($email);
         if ( 0 < $cnt )
             $this->SetMessageError(-1, ["Реквизиты не отправлены на почту"]);
         else

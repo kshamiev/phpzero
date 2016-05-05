@@ -49,9 +49,9 @@ class Zero_I18n
         {
             array_unshift($params, self::$_I18n[$file_name][$code]);
             //
-            $config = Zero_Config::Get_Config($folder_list[0]);
-            settype($config['GlobalCodeMessage'], 'int');
-            $codeGlobal = $config['GlobalCodeMessage'] * 10000 + $code;
+            $codePrefix = Zero_App::$Config->Modules[$folder_list[0]]['codePrefix'];
+            settype($codePrefix, 'int');
+            $codeGlobal = $codePrefix * 10000 + $code;
         }
         else if ( 0 < $code )
         {

@@ -36,28 +36,27 @@ class Zero_Route_Api
         /**
          * Прямая отправка письма
          *
-         * @see Zero_Mail_Api_Send
+         * @see Zero_Api_Mail_Send
          */
-        '/api/v1/mail/send' => ['Controller' => 'Zero_Mail_Api_Send', 'View' => ''],
+        '/api/v1/mail/send' => ['Controller' => 'Zero_Api_Mail_Send', 'View' => ''],
         /**
          * Прямая отправка письма
          *
-         * @deprecated
-         * @see Zero_Mail_Api_Send
+         * @see Zero_Api_Mail_Send
          */
-        '/api/v1.0/mail/send' => ['Controller' => 'Zero_Mail_Api_Send', 'View' => ''],
+        '/api/v1.0/mail/send' => ['Controller' => 'Zero_Api_Mail_Send', 'View' => ''],
         /**
          * Отправка письма через очередь
          *
-         * @see Zero_Mail_Api_Queue
+         * @see Zero_Api_Mail_Queue
          */
-        '/api/v1/mail/queue' => ['Controller' => 'Zero_Mail_Api_Queue', 'View' => ''],
+        '/api/v1/mail/queue' => ['Controller' => 'Zero_Api_Mail_Queue', 'View' => ''],
         /**
          * Отправка письма через очередь
          *
          * @deprecated
-         * @see Zero_Mail_Api_Queue
+         * @see Zero_Api_Mail_Queue
          */
-        '/api/v1.0/mail/queue' => ['Controller' => 'Zero_Mail_Api_Queue', 'View' => ''],
+        '/api/v1.0/mail/queue' => ['Controller' => 'Zero_Api_Mail_Queue', 'View' => ''],
     ];
 }

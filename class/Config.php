@@ -269,25 +269,11 @@ class Zero_Config
     public $Memcache = [];
 
     /**
-     * роутинг Web запросов
+     * Конфигурации модулей
      *
      * @var array
      */
-    public $Web = [];
-
-    /**
-     * Ротуинг Api запросов
-     *
-     * @var array
-     */
-    public $Api = [];
-
-    /**
-     * Консольные задачи
-     *
-     * @var array
-     */
-    public $Console = [];
+    public $Modules = [];
 
     /**
      * IP the source address of the request
@@ -448,17 +434,8 @@ class Zero_Config
         // Servers Memcache
         $this->Memcache = $Config['Memcache'];
 
-        // роутинг Web запросов
-        if ( isset($Config['Web']) )
-            $this->Web = $Config['Web'];
-
-        // Ротуинг Api запросов
-        if ( isset($Config['Api']) )
-            $this->Api = $Config['Api'];
-
-        // Консольные задачи
-        if ( isset($Config['Console']) )
-            $this->Console = $Config['Console'];
+        // Конфигурации модулей
+        $this->Modules = $Config['Modules'];
     }
 
     /**
@@ -467,6 +444,7 @@ class Zero_Config
      * @param string $module module
      * @param string $fileConfig config file
      * @return array Массив конфигурации указанного модуля и файла
+     * @deprecated not use
      */
     public static function Get_Config($module)
     {

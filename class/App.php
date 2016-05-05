@@ -148,6 +148,13 @@ class Zero_App
             if ( class_exists($class_name) )
                 return true;
         }
+        $path = ZERO_PATH_APPLICATION . '/' . $module . '/class' . $class . '.php';
+        if ( file_exists($path) )
+        {
+            require_once $path;
+            if ( class_exists($class_name) )
+                return true;
+        }
         $path = ZERO_PATH_SITE . '/' . $module . '/class/' . $class . '.php';
         if ( file_exists($path) )
         {
@@ -155,17 +162,7 @@ class Zero_App
             if ( class_exists($class_name) )
                 return true;
         }
-        /**
-         * Новое
-         */
-        $path = ZERO_PATH_APPLICATION . '/' . str_replace('_', '/', $class_name) . '.php';
-        if ( file_exists($path) )
-        {
-            require_once $path;
-            if ( class_exists($class_name) )
-                return true;
-        }
-        $path = ZERO_PATH_APPLICATION . '/' . str_replace('_', '/', strtolower($class_name)) . '.php';
+        $path = ZERO_PATH_SITE . '/' . $module . '/class' . $class . '.php';
         if ( file_exists($path) )
         {
             require_once $path;

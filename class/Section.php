@@ -209,14 +209,12 @@ class Zero_Section extends Zero_Model
         if ( false === $row = Zero_Cache::Get_Data($index) )
         {
             // Поиск в программе
-            $arr = [];
-            if ( Zero_App::MODE_API == Zero_App::Get_Mode()  )
-                $arr = Zero_App::$Config->Api;
-            if ( Zero_App::MODE_WEB == Zero_App::Get_Mode()  )
-                $arr = Zero_App::$Config->Web;
-
-            foreach ($arr as $route)
+            foreach (Zero_App::$Config->Modules as $route)
             {
+                $index = 'route' . Zero_App::Get_Mode();
+                if ( !isset($route[$index]) || !is_object($route[$index]) )
+                    continue;
+                $route = $route[$index];
                 if ( isset($route->Route[ZERO_URL]) )
                 {
                     $route = $route->Route[ZERO_URL];
