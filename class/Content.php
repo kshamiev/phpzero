@@ -14,7 +14,7 @@
  * @property string $Keywords
  * @property string $Description
  * @property string $Content
- * @property string $Block
+ * @property string $Target
  */
 class Zero_Content extends Zero_Model
 {
@@ -45,7 +45,7 @@ class Zero_Content extends Zero_Model
             'Lang' => ['AliasDB' => 'z.Lang', 'DB' => 'T', 'IsNull' => 'NO', 'Default' => '', 'Form' => 'Select'],
             'Name' => ['AliasDB' => 'z.Name', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'],
             'Content' => ['AliasDB' => 'z.Content', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Textarea'],
-            'Block' => ['AliasDB' => 'z.Block', 'DB' => 'T', 'IsNull' => 'NO', 'Default' => 'content', 'Form' => 'Select'],
+            'Target' => ['AliasDB' => 'z.Target', 'DB' => 'E', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Select'],
         ];
     }
 
@@ -69,7 +69,7 @@ class Zero_Content extends Zero_Model
             'Lang' => ['Visible' => true, 'AR' => true],
             'Name' => ['Visible' => true, 'AR' => true],
             'Content' => ['Visible' => true, 'AR' => true],
-            'Block' => ['Visible' => false, 'AR' => true],
+            'Target' => ['Visible' => true, 'AR' => true],
         ];
     }
 
@@ -88,7 +88,7 @@ class Zero_Content extends Zero_Model
         return [
             'ID' => [],
             'Name' => [],
-            'Block' => [],
+            'Target' => [],
         ];
     }
 
@@ -114,7 +114,7 @@ class Zero_Content extends Zero_Model
                 'Lang' => [],
                 'Name' => [],
                 'Content' => [],
-                'Block' => [],
+                'Target' => [],
             ];
         }
         else
@@ -123,7 +123,7 @@ class Zero_Content extends Zero_Model
                 'ID' => [],
                 'Name' => [],
                 'Content' => [],
-                'Block' => [],
+                'Target' => [],
             ];
         }
     }
@@ -137,31 +137,11 @@ class Zero_Content extends Zero_Model
     public function Load_Page($blockName, $sectionId = 0)
     {
         if ( 0 < $sectionId )
-            $sql = "SELECT * FROM {$this->Source} WHERE Block = '{$blockName}' AND Section_ID = {$sectionId}";
+            $sql = "SELECT * FROM {$this->Source} WHERE Target = '{$blockName}' AND Section_ID = {$sectionId}";
         else
-            $sql = "SELECT * FROM {$this->Source} WHERE Block = '{$blockName}' AND Lang = '" . ZERO_LANG . "'";
+            $sql = "SELECT * FROM {$this->Source} WHERE Target = '{$blockName}' AND Lang = '" . ZERO_LANG . "'";
         $row = Zero_DB::Select_Row($sql);
         $this->Set_Props($row);
-    }
-
-    /**
-     * Фильтр для блока и его значения
-     *
-     * @return array
-     */
-    public function FL_Block()
-    {
-        return [
-            'header_Left' => 'header_Left',
-            'header_Center' => 'header_Center',
-            'header_Right' => 'header_Right',
-            'content_Left' => 'content_Left',
-            'content_Center' => 'content_Center',
-            'content_Right' => 'content_Right',
-            'footer_Left' => 'footer_Left',
-            'footer_Center' => 'footer_Center',
-            'footer_Right' => 'footer_Right',
-        ];
     }
 
     /**

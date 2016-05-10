@@ -70,4 +70,6 @@ return [
     'Address' => 'Адрес доставки по умолчанию',
     'Error_NotNull' => 'Поле не заполненно',
     'Error_PasswordValid' => 'Пароль задан неверно (не совпадают)',
+    'Content Target' => 'Место и вид вывода',
+    'Content Target options' => ['TopLeft' => 'TopLeft'],
 ];
