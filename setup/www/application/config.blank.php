@@ -109,16 +109,13 @@ return [
             //  'localhost:11211'
         ],
     ],
-    //  роутинг Web запросов
-    'Web' => [
-        new Zero_Route_Web(),
-    ],
-    //  Ротуинг Api запросов
-    'Api' => [
-        new Zero_Route_Api(),
-    ],
-    //  Консольные задачи
-    'Console' => [
-        new Zero_Route_Console(),
+    // Конфигурации модулей
+    'Modules' => [
+        'zero' => [
+            'codePrefix' => 100,
+            'routeWeb' => new Zero_Route_Web(),
+            'routeApi' => new Zero_Route_Api(),
+            'routeConsole' => new Zero_Route_Console(),
+        ],
     ],
 ];

@@ -529,10 +529,6 @@ class Zero_App
             $code = 500;
             Zero_Logs::Exception_Trace($exception);
         }
-        else
-        {
-            Zero_Logs::Set_Message_Warninng($code);
-        }
         if ( self::MODE_CONSOLE == self::$mode || !isset($_SERVER['REQUEST_URI']) )
             self::ResponseConsole();
         else if ( self::MODE_API == self::$mode )
