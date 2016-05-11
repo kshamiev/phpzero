@@ -112,7 +112,7 @@ class Zero_Logs
      *
      * @param string $value Soobshchenie ob oshibke
      */
-    protected static function Set_Message_ErrorTrace($value)
+    public static function Set_Message_ErrorTrace($value)
     {
         self::$_Message[] = [print_r($value, true), 'errorTrace'];
     }
@@ -211,7 +211,7 @@ class Zero_Logs
         if ( Zero_App::$Config->Log_Profile_Application )
         {
             $output = join("\n", self::Get_Usage_MemoryAndTime()) . "\n";
-//            self::File(self::$_FileLog, $output);
+            //            self::File(self::$_FileLog, $output);
             Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . self::$_FileLog . '.log', $output);
         }
         //
@@ -235,7 +235,7 @@ class Zero_Logs
             {
                 array_unshift($errors, str_replace(["\r", "\t"], " ", $output));
                 $errors = preg_replace('![ ]{2,}!', ' ', join("\n", $errors));
-//                self::File(self::$_FileLog . '_errors', $errors);
+                //                self::File(self::$_FileLog . '_errors', $errors);
                 Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . self::$_FileLog . '_error.log', $errors);
             }
             // логирование предупреждений в файл
@@ -243,15 +243,15 @@ class Zero_Logs
             {
                 array_unshift($warnings, str_replace(["\r", "\t"], " ", $output));
                 $warnings = preg_replace('![ ]{2,}!', ' ', join("\n", $warnings));
-//                self::File(self::$_FileLog . '_warnings', $warnings);
-                Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . self::$_FileLog .'_warning.log', $warnings);
+                //                self::File(self::$_FileLog . '_warnings', $warnings);
+                Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . self::$_FileLog . '_warning.log', $warnings);
             }
             // логирование сообщений в файл
             if ( Zero_App::$Config->Log_Profile_Notice && 0 < count($notice) )
             {
                 array_unshift($notice, str_replace(["\r", "\t"], " ", $output));
                 $notice = preg_replace('![ ]{2,}!', ' ', join("\n", $notice));
-//                self::File(self::$_FileLog . '_notice', $notice);
+                //                self::File(self::$_FileLog . '_notice', $notice);
                 Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . self::$_FileLog . '_notice.log', $notice);
             }
         }
@@ -261,7 +261,7 @@ class Zero_Logs
             {
                 $act = date('[d.m.Y H:i:s]') . "\t" . Zero_App::$Users->Login . "\t";
                 $act .= Zero_App::$Section->Controller . " -> " . $_REQUEST['act'] . "\t" . ZERO_HTTP . $_SERVER['REQUEST_URI'];
-//                self::File(self::$_FileLog . '_action', $act);
+                //                self::File(self::$_FileLog . '_action', $act);
                 Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . self::$_FileLog . '_action.log', $act);
             }
     }
@@ -274,7 +274,7 @@ class Zero_Logs
      * @param int $range_file_error diapazon vy`vodimy`kh strok fai`la vokrug oshibochneoi` stroki
      * @return string
      */
-    protected static function Get_SourceCode($file, $line, $range_file_error)
+    public static function Get_SourceCode($file, $line, $range_file_error)
     {
         $file_line = explode('<br />', highlight_file($file, true));
         $offset = $line - $range_file_error;
@@ -340,6 +340,7 @@ class Zero_Logs
      *
      * @param string $file_log имиа файл-лога
      * @return bool
+     * @deprecated Custom
      */
     public static function File($file_log)
     {
@@ -357,10 +358,30 @@ class Zero_Logs
     /**
      * Логирование в файл.
      *
+     * @param string $file_log имиа файл-лога
+     * @param array|string $data данные
+     * @return bool
+     */
+    public static function Custom($file_log, $data)
+    {
+        $file_log = $file_log . '.log';
+        if ( !is_array($data) )
+            $data = [$data];
+        foreach ($data as $val)
+        {
+            Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . $file_log, print_r($val, true));
+        }
+        return true;
+    }
+
+    /**
+     * Логирование в файл.
+     *
      * Обциональное количество параметров после имени файла
      *
      * @param string $file_log имиа файл-лога
      * @return bool
+     * @deprecated Custom_DateTime
      */
     public static function File_DateTime($file_log)
     {
@@ -377,54 +398,22 @@ class Zero_Logs
     }
 
     /**
-     * Трассировка данных исключения. (trace)
+     * Логирование в файл.
      *
-     * @param Exception $exception
+     * @param string $file_log имя файл-лога
+     * @param array|string $data данные
+     * @return bool
      */
-    public static function Exception_Trace(Exception $exception)
+    public static function Custom_DateTime($file_log, $data)
     {
-        $range_file_error = 10;
-        $error = "#{ERROR_EXCEPTION} " . $exception->getMessage() . ' ' . $exception->getFile() . '(' . $exception->getLine() . ')';
-        self::Set_Message_Error($error);
-        if ( Zero_App::$Config->Log_Output_Display == true )
+        $file_log = $file_log . '.log';
+        if ( !is_array($data) )
+            $data = [$data];
+        foreach ($data as $val)
         {
-            self::Set_Message_ErrorTrace(self::Get_SourceCode($exception->getFile(), $exception->getLine(), $range_file_error));
+            Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . $file_log, date('[d.m.Y H:i:s]'));
+            Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . $file_log, print_r($val, true));
         }
-
-        $traceList = $exception->getTrace();
-        array_shift($traceList);
-        foreach ($traceList as $id => $trace)
-        {
-            if ( !isset($trace['args']) )
-                continue;
-            $args = [];
-            $range_file_error = $range_file_error - 2;
-            foreach ($trace['args'] as $arg)
-            {
-                if ( is_scalar($arg) )
-                    $args[] = "'" . $arg . "'";
-                else if ( is_array($arg) )
-                    $args[] = print_r($arg, true);
-                else if ( is_object($arg) )
-                    $args[] = get_class($arg) . ' Object...';
-            }
-            $trace['args'] = join(', ', $args);
-            if ( isset($trace['class']) )
-                $callback = $trace['class'] . $trace['type'] . $trace['function'];
-            else if ( isset($trace['function']) )
-                $callback = $trace['function'];
-            else
-                $callback = '';
-            if ( !isset($trace['file']) )
-                $trace['file'] = '';
-            if ( !isset($trace['line']) )
-                $trace['line'] = 0;
-            $error = "\t#{" . $id . "}" . $trace['file'] . '(' . $trace['line'] . '): ' . $callback . "(" . str_replace("\n", "", $trace['args']) . ");";
-            self::Set_Message_Error($error);
-            if ( Zero_App::$Config->Log_Output_Display == true )
-            {
-                self::Set_Message_ErrorTrace(self::Get_SourceCode($trace['file'], $trace['line'], $range_file_error));
-            }
-        }
+        return true;
     }
 }
