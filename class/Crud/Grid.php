@@ -177,6 +177,8 @@ abstract class Zero_Crud_Grid extends Zero_Controller
             $props[] = $row['AliasDB'] . ' AS ' . $prop;
         }
         unset($props_grid['ID']);
+        unset($props_grid['Id']);
+        unset($props_grid['id']);
 
         //  FROM
         if ( method_exists($this->Model, 'Get_Query_From') )

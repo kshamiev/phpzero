@@ -53,6 +53,7 @@ define('ZERO_PATH_LAYOUT', ZERO_PATH_SITE . '/layout');
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  * @todo Добавить раздел для ручного запуска косольных задач
+ * @todo авторизованная работа с api по ключу. (Ключи меняются с каждым запросом) (ключ имя сессии)
  * @todo Документировать
  */
 class Zero_App

@@ -495,6 +495,8 @@ abstract class Zero_Model
         unset($row['Lang']);
         unset($row[$this->Source . '_ID']);
         unset($row['ID']);
+        unset($row['Id']);
+        unset($row['id']);
         $this->Set_Props($row);
         return $row;
     }
@@ -510,6 +512,8 @@ abstract class Zero_Model
         $sql_update = [];
         $prop_list = $this->Get_Config_Prop();
         unset($prop_list['ID']);
+        unset($prop_list['Id']);
+        unset($prop_list['id']);
         foreach ($this->Get_Props(-1) as $prop => $value)
         {
             if ( !isset($prop_list[$prop]) || (isset($prop_list['AR']) && false == $prop_list['AR']) )
