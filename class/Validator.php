@@ -202,6 +202,11 @@ class Zero_Validator
         $props = $this->Model->Get_Config_Form($scenario);
         foreach ($props as $prop => $row)
         {
+            if ( empty($row['Form']) || empty($row['IsNull']) )
+            {
+                Zero_Logs::Set_Message_Error('конфигурцмя для валидации не полная: ' . $this->Model->Source . $prop);
+                continue;
+            }
 
             if ( 'Readonly' == $row['Form'] || 'ID' == $prop )
                 continue;
