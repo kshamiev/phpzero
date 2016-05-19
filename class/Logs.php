@@ -85,7 +85,7 @@ class Zero_Logs
      *
      * @return string
      */
-    protected static function Get_FullTime()
+    public static function Get_FullTime()
     {
         return sprintf("%01.3f", microtime(1) - self::$_StartTime);
     }
