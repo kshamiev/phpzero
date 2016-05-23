@@ -85,7 +85,7 @@ class Zero_Logs
      *
      * @return string
      */
-    protected static function Get_FullTime()
+    public static function Get_FullTime()
     {
         return sprintf("%01.3f", microtime(1) - self::$_StartTime);
     }
@@ -365,12 +365,7 @@ class Zero_Logs
     public static function Custom($file_log, $data)
     {
         $file_log = $file_log . '.log';
-        if ( !is_array($data) )
-            $data = [$data];
-        foreach ($data as $val)
-        {
-            Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . $file_log, print_r($val, true));
-        }
+        Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . $file_log, print_r($data, true));
         return true;
     }
 
@@ -407,13 +402,8 @@ class Zero_Logs
     public static function Custom_DateTime($file_log, $data)
     {
         $file_log = $file_log . '.log';
-        if ( !is_array($data) )
-            $data = [$data];
-        foreach ($data as $val)
-        {
-            Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . $file_log, date('[d.m.Y H:i:s]'));
-            Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . $file_log, print_r($val, true));
-        }
+        Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . $file_log, date('[d.m.Y H:i:s]'));
+        Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . $file_log, print_r($data, true));
         return true;
     }
 }

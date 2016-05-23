@@ -45,6 +45,7 @@ return [
     ],
     //  Настройки почты
     'Mail' => [
+        //  Host
         'Host' => '',
         //  Port
         'Port' => 25,
