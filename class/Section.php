@@ -166,7 +166,6 @@ class Zero_Section extends Zero_Model
     protected static function Config_Form($Model, $scenario = '')
     {
         return [
-            'ID' => [],
             'Url' => [],
             'UrlThis' => ['Form' => 'Text'],
             'UrlRedirect' => [],

@@ -72,4 +72,7 @@ return [
     'Error_PasswordValid' => 'Пароль задан неверно (не совпадают)',
     'Content Target' => 'Место и вид вывода',
     'Content Target options' => ['TopLeft' => 'TopLeft'],
+    'Section NameMenu' => 'В навигации',
+    'Section NameSub' => 'Позаголовок',
+    'Section Img' => 'Картинка',
 ];
