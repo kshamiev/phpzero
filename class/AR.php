@@ -369,10 +369,15 @@ class Zero_AR
             // Фильтр перечислений
             else if ( 'Checkbox' == $row['Form'] && 0 < count($row['Value']) )
             {
-                foreach ($row['Value'] as $val)
+                if ( isset($row['Value'][0]) && ( 'Null' == $row['Value'][0] || 'null' == $row['Value'][0] ) )
                 {
-                    $this->Sql_Where_Like($row['AliasDB'], $val);
+                    $this->Sql_Where_IsNull($row['AliasDB']);
                 }
+                else
+                    foreach ($row['Value'] as $val)
+                    {
+                        $this->Sql_Where_Like($row['AliasDB'], $val);
+                    }
             }
             // Фильтр даты и времени
             else if ( 'Datetime' == $row['Form'] || 'Date' == $row['Form'] || 'Time' == $row['Form'] )

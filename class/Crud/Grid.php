@@ -60,12 +60,15 @@ abstract class Zero_Crud_Grid extends Zero_Controller
         $filter = isset($_REQUEST['Filter']) ? $_REQUEST['Filter'] : [];
         $search = isset($_REQUEST['Search']) ? $_REQUEST['Search'] : [];
         $sort = isset($_REQUEST['Sort']) ? $_REQUEST['Sort'] : [];
-
         $Filter = Zero_Filter::Factory($this->Model);
+
         //  Filters
-        foreach ($filter as $Prop => $Value)
+        foreach ($Filter->Get_Filter() as $Prop => $row)
         {
-            $Filter->Set_Filter($Prop, $Value);
+            if ( isset($filter[$Prop]) )
+                $Filter->Set_Filter($Prop, $filter[$Prop]);
+            else
+                $Filter->Set_Filter($Prop, null);
         }
         //  Search
         $Filter->Set_Search();

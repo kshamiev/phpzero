@@ -120,7 +120,7 @@ class Zero_Users extends Zero_Model
             'IsAccess' => ['AR' => true],
             'IsCondition' => ['AR' => true],
             'IsOnline' => ['AR' => true],
-            'Date' => ['AR' => true],
+            'Date' => ['Visible' => true, 'AR' => true, 'Form' => 'Datetime'],
             /*END_CONFIG_FILTER_PROP*/
         ];
     }

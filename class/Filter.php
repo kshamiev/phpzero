@@ -253,7 +253,7 @@ class Zero_Filter
         $this->Filter[$prop]['Form'] = 'Null';
         $this->Filter[$prop]['Visible'] = $is_visible;
         $this->Filter[$prop]['Value'] = '';
-        $this->Filter[$prop]['List'] = Zero_I18n::Model('Zero_General', 'FlagOptions');
+        $this->Filter[$prop]['List'] = Zero_I18n::Model('Zero_Model', 'FlagOptions');
         return true;
     }
 
