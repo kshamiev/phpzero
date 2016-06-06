@@ -327,6 +327,7 @@ class Zero_AR
      * - Ustanvalivaet postranichnost`
      *
      * @param Zero_Filter $Filter component filter object
+     * @todo переместить в фильтр
      */
     public function Sql_Where_Filter(Zero_Filter $Filter)
     {
@@ -338,12 +339,12 @@ class Zero_AR
                 continue;
 
             // если нулевое или не нулевое значение
-            if ( 'NULL' == $row['Value'] || 'IS NULL' == $row['Value'] )
+            if ( 'NULL' == $row['Value'] )
             {
                 $this->Sql_Where_IsNull($row['AliasDB']);
                 continue;
             }
-            else if ( 'NOT NULL' == $row['Value'] || 'NOTNULL' == $row['Value'] || 'IS NOT NULL' == $row['Value'] )
+            else if ( 'NOT NULL' == $row['Value'] || 'NOTNULL' == $row['Value'] )
             {
                 $this->Sql_Where_IsNotNull($row['AliasDB']);
                 continue;
@@ -369,9 +370,13 @@ class Zero_AR
             // Фильтр перечислений
             else if ( 'Checkbox' == $row['Form'] && 0 < count($row['Value']) )
             {
-                if ( isset($row['Value'][0]) && ( 'Null' == $row['Value'][0] || 'null' == $row['Value'][0] ) )
+                if ( isset($row['Value'][0]) && 'NULL' == $row['Value'][0] )
                 {
                     $this->Sql_Where_IsNull($row['AliasDB']);
+                }
+                else if ( isset($row['Value'][0]) && ( 'NOTNULL' == $row['Value'][0] || 'NOT NULL' == $row['Value'][0] ) )
+                {
+                    $this->Sql_Where_IsNotNull($row['AliasDB']);
                 }
                 else
                     foreach ($row['Value'] as $val)

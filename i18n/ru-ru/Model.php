@@ -11,7 +11,7 @@ return [
     'Title' => 'Титул',
     'Keywords' => 'Ключи',
     'Description' => 'Описание',
-    'FlagOptions' => ['no' => 'нет', 'yes' => 'да'],
+    'FilterCheck' => ['no' => 'нет', 'yes' => 'да'],
     'Error_Path_Class' => 'Контроллер не найден',
     'ID' => 'Идентификатор',
     'Groups_ID' => 'Группа',
