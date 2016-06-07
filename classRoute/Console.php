@@ -53,6 +53,6 @@ class Zero_Route_Console
          *
          * @see Zero_Console_Mail_Send
          */
-        'Zero_Console_Mail_Send' => ['Minute' => '*/30', 'Hour' => '*', 'Day' => '*', 'Month' => '*', 'Week' => '*', 'IsActive' => true],
+        'Zero_Console_Mail_Send' => ['Minute' => '*/30', 'Hour' => '*', 'Day' => '*', 'Month' => '*', 'Week' => '*', 'IsActive' => false],
     ];
 }
