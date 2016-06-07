@@ -286,7 +286,7 @@ class Zero_Section extends Zero_Model
         if ( Zero_App::$Config->Site_UseDB && 'yes' == $this->IsAuthorized && 1 < Zero_App::$Users->Groups_ID )
         {
             $Model = Zero_Model::Makes('Zero_Action');
-            $Model->AR->Sql_Where('Controllers_ID', '=', $this->ID);
+            $Model->AR->Sql_Where('Section_ID', '=', $this->ID);
             $Model->AR->Sql_Where('Groups_ID', '=', Zero_App::$Users->Groups_ID);
             $this->_Action_List = $Model->AR->Select_Array_Index('Action');
             foreach ($this->_Action_List as $action => $row)

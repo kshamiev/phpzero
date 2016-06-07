@@ -86,9 +86,9 @@ return [
     'Controllers Name' => 'Название контроллера',
     'Controllers Typ' => 'Тип контроллера',
     'Controllers Typ options' => ['Web' => 'Web','Api' => 'Api','Console' => 'Console'],
-    'Controllers Url' => 'Урл для API контроллеров',
+    'Controllers Url' => 'Урл API контроллеров',
     'Controllers Week' => 'День недели',
-    'Controllers IsAuthorized' => 'Раздел авторизованный',
+    'Controllers IsAuthorized' => 'Авторизованный',
     'Controllers IsAuthorized options' => ['no' => 'нет', 'yes' => 'да'],
     'Section Controllers_ID' => 'Контроллер',
 ];
