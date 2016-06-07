@@ -26,7 +26,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
     /**
      * Initialization of the stack chunks and input parameters
      *
-     * @return boolean flag stop execute of the next chunk
+     * @return Zero_View
      */
     public function Action_Default()
     {
@@ -36,9 +36,9 @@ abstract class Zero_Crud_Grid extends Zero_Controller
     }
 
     /**
-     * Initialization of the stack chunks and input parameters
+     * Удаление
      *
-     * @return boolean flag stop execute of the next chunk
+     * @return Zero_View
      */
     public function Action_Remove()
     {

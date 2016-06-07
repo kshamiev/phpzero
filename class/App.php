@@ -56,6 +56,7 @@ define('ZERO_PATH_LAYOUT', ZERO_PATH_SITE . '/layout');
  * @todo Документировать
  * @todo Контроллеры перезжают в classWeb
  * @todo Переделать пользователей в линейную струтуру
+ * @todo При инженеринге убрать ID из форм
  */
 class Zero_App
 {
@@ -88,7 +89,7 @@ class Zero_App
     /**
      * Section (page)
      *
-     * @var Zero_Section
+     * @var Zero_Section|Zero_Controllers
      */
     public static $Section = null;
 
@@ -146,28 +147,28 @@ class Zero_App
         $path = ZERO_PATH_APPLICATION . '/' . $module . '/class/' . $class . '.php';
         if ( file_exists($path) )
         {
-            require_once $path;
+            include_once $path;
             if ( class_exists($class_name) )
                 return true;
         }
         $path = ZERO_PATH_APPLICATION . '/' . $module . '/class' . $class . '.php';
         if ( file_exists($path) )
         {
-            require_once $path;
+            include_once $path;
             if ( class_exists($class_name) )
                 return true;
         }
         $path = ZERO_PATH_SITE . '/' . $module . '/class/' . $class . '.php';
         if ( file_exists($path) )
         {
-            require_once $path;
+            include_once $path;
             if ( class_exists($class_name) )
                 return true;
         }
         $path = ZERO_PATH_SITE . '/' . $module . '/class' . $class . '.php';
         if ( file_exists($path) )
         {
-            require_once $path;
+            include_once $path;
             if ( class_exists($class_name) )
                 return true;
         }
@@ -391,6 +392,17 @@ class Zero_App
         Zero_Session::Init(self::$Config->Site_Domain);
     }
 
+    public static function Execute()
+    {
+        if ( self::MODE_WEB == self::Get_Mode() )
+            self::executeWeb();
+        else if ( self::MODE_API == self::Get_Mode() )
+            self::executeApi();
+        else
+            self::ResponseHtml('unknow mode');
+
+    }
+
     /**
      * Method of Application Execution
      *
@@ -406,7 +418,7 @@ class Zero_App
      *
      * @throws Exception
      */
-    public static function Execute()
+    private static function executeWeb()
     {
         //  Пользователь
         self::$Users = Zero_Users::Factor();
@@ -418,7 +430,7 @@ class Zero_App
         if ( self::$Section->UrlRedirect )
             self::ResponseRedirect(self::$Section->UrlRedirect);
 
-        //  Доступные операции контроллера раздела с учетом прав. Проверка прав на раздел
+        //  Доступные операции-методы контроллера раздела с учетом прав. Проверка прав на раздел (Action_Default)
         $Action_List = self::$Section->Get_Action_List();
         if ( 1 < self::$Users->Groups_ID && 'yes' == self::$Section->IsAuthorized && 0 == count($Action_List) )
             throw new Exception('Page Forbidden', 403);
@@ -428,10 +440,9 @@ class Zero_App
         $messageResponse = ['Code' => 0, 'Message' => ''];
         if ( self::$Section->Controller )
         {
+            // инициализация и проверка прав на действие
             if ( isset($_REQUEST['act']) && $_REQUEST['act'] )
                 $_REQUEST['act'] = trim($_REQUEST['act']);
-            else if ( self::MODE_API == self::$mode )
-                $_REQUEST['act'] = $_SERVER['REQUEST_METHOD'];
             else
                 $_REQUEST['act'] = 'Default';
             //
@@ -478,6 +489,63 @@ class Zero_App
     }
 
     /**
+     * Method of Application Execution
+     *
+     * - Инициализация запрошенного раздела (ZSection)
+     * - Инициализация пользователя (Users)
+     * - Инициализация и выполнение контролера и его действия
+     * - Формирование и вывод профилированного результата
+     *
+     * - Initialization of the requested section (Section)
+     * - User Initialization (Users)
+     * - Initialization and execution of the controller and its actions
+     * - The formation results and conclusion of the profiled format
+     *
+     * @throws Exception
+     */
+    private static function executeApi()
+    {
+        //  Пользователь
+        self::$Users = Zero_Users::Factor();
+        // Контроллер
+        self::$Section = Zero_Controllers::Instance();
+
+        if ( 0 == self::$Section->ID )
+            throw new Exception('Page Not Found', 404);
+
+        //  Доступные операции - методы контроллера с учетом прав.
+        $Action_List = self::$Section->Get_Action_List();
+        if ( 1 < self::$Users->Groups_ID && 'yes' == self::$Section->IsAuthorized && 0 == count($Action_List) )
+            throw new Exception('Page Forbidden', 403);
+
+        //  Выполнение контроллера
+        $view = "";
+        $messageResponse = ['Code' => 0, 'Message' => ''];
+        if ( self::$Section->Controller )
+        {
+            // инициализация и проверка прав на действие
+            if ( isset($_REQUEST['act']) && $_REQUEST['act'] )
+                $_REQUEST['act'] = trim($_REQUEST['act']);
+            else
+                $_REQUEST['act'] = $_SERVER['REQUEST_METHOD'];
+            //
+            if ( !isset($Action_List[$_REQUEST['act']]) )
+                throw new Exception('Page Forbidden', 403);
+            //
+            $_REQUEST['act'] = 'Action_' . $_REQUEST['act'];
+
+            Zero_Logs::Start('#{CONTROLLER} ' . self::$Section->Controller . ' -> ' . $_REQUEST['act']);
+            $Controller = Zero_Controller::Factory(self::$Section->Controller);
+            if ( !method_exists($Controller, $_REQUEST['act']) )
+            {
+                throw new Exception('Контроллер не имеет метода: ' . $_REQUEST['act'], -1);
+            }
+            $Controller->$_REQUEST['act']();
+        }
+        self::ResponseJson200('terminate unknown api');
+    }
+
+    /**
      * Redirect to the specified page
      *
      * @param string $url link to which page to produce redirect
@@ -490,29 +558,36 @@ class Zero_App
     }
 
     /**
-     * Sending headers browser
+     * Ответ. Выдача контента в формате html
      *
-     * The possible values $type
-     * - 'html' document html (или просто текст) в макете
-     * - 'json' data format json
-     * - 'xml' data xml
-     * - 'img' binary data, output images
-     * - 'file' binary data for download
-     *
+     * @param mixed $content
+     * @param int $status
      */
-    /**
-     * Obrabotchik oshibok dlia funktcii set_error_handler()
-     *
-     * @param int $code kod oshibki
-     * @param string $message soobshchenie ob oshibke
-     * @param string $filename fai`l v kotorom proizoshla oshibka
-     * @param string $line stroka, v kotoroi` proizoshla oshibka
-     * @throws ErrorException
-     */
-    //    public static function ErrorHandler($code, $message, $filename, $line)
-    //    {
-    //        throw new ErrorException($message, $code, 0, $filename, $line);
-    //    }
+    public static function ResponseHtml($content, $status = 200)
+    {
+        header('Pragma: no-cache');
+        header('Last-Modified: ' . date('D, d M Y H:i:s') . 'GMT');
+        header('Expires: Mon, 26 Jul 2007 05:00:00 GMT');
+        header('Cache-Control: no-store, no-cache, must-revalidate');
+        header("Content-Type: text/html; charset=utf-8");
+        header('HTTP/1.1 ' . $status . ' ' . $status);
+        echo $content;
+
+        // Логирование (в браузер)
+        if ( self::$Config->Log_Output_Display )
+            Zero_Logs::Output_Display();
+
+        // закрываем соединение с браузером (работает только под нгинx)
+        if ( function_exists('fastcgi_finish_request') )
+            fastcgi_finish_request();
+
+        // Логирование в файлы
+        if ( Zero_App::$Config->Log_Output_File )
+        {
+            Zero_Logs::Output_File();
+        }
+        exit;
+    }
 
     /**
      * Obrabotchik iscliuchenii` dlia funktcii set_exception_handler()
@@ -534,7 +609,7 @@ class Zero_App
         if ( self::MODE_CONSOLE == self::$mode || !isset($_SERVER['REQUEST_URI']) )
             self::ResponseConsole();
         else if ( self::MODE_API == self::$mode )
-            self::ResponseJson200(null, $code, [$exception->getMessage()]);
+            self::ResponseJson500($code, [$exception->getMessage()]);
         else if ( self::MODE_WEB == self::$mode )
         {
             $sql = "SELECT Layout, Controller FROM Section WHERE UrlThis = '{$code}'";
@@ -546,7 +621,7 @@ class Zero_App
                     $View = new Zero_View('Zero_Error');
                 if ( $row['Controller'] )
                 {
-                    $Controller = Zero_Controller::Makes($row['Controller']);
+                    $Controller = Zero_Controller::Makes($row['Controller'], ['message' => $exception->getMessage()]);
                     if ( method_exists($Controller, 'Action_Default') )
                     {
                         $viewController = $Controller->Action_Default();
@@ -626,38 +701,5 @@ class Zero_App
                 Zero_Logs::Set_Message_ErrorTrace(Zero_Logs::Get_SourceCode($trace['file'], $trace['line'], $range_file_error));
             }
         }
-    }
-
-    /**
-     * Profilirovanie raboty` prilozheniia pri ego zavershenii
-     *
-     * - Sbor vsekh tai`merov i zatrachennoi` pamiati
-     * - Zamer polnogo vremeni vy`polneniia prilozheniia
-     * - Vy`vod vsei` profilirovannoi` informatcii v ukazanny`e istochniki
-     */
-    public static function ResponseHtml($content, $status)
-    {
-        header('Pragma: no-cache');
-        header('Last-Modified: ' . date('D, d M Y H:i:s') . 'GMT');
-        header('Expires: Mon, 26 Jul 2007 05:00:00 GMT');
-        header('Cache-Control: no-store, no-cache, must-revalidate');
-        header("Content-Type: text/html; charset=utf-8");
-        header('HTTP/1.1 ' . $status . ' ' . $status);
-        echo $content;
-
-        // Логирование (в браузер)
-        if ( self::$Config->Log_Output_Display )
-            Zero_Logs::Output_Display();
-
-        // закрываем соединение с браузером (работает только под нгинx)
-        if ( function_exists('fastcgi_finish_request') )
-            fastcgi_finish_request();
-
-        // Логирование в файлы
-        if ( Zero_App::$Config->Log_Output_File )
-        {
-            Zero_Logs::Output_File();
-        }
-        exit;
     }
 }

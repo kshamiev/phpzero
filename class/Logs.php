@@ -49,6 +49,7 @@ class Zero_Logs
      * Dopustimy`i` vremennoi` porog. Pri prevy`shenii kotorogo rabotaiut tai`mery`.
      *
      * @var float
+     * @todo еренести в глобальную конфигурацию
      */
     private static $_CurrentTimeLimit = 0.000;
 

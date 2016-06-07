@@ -10,23 +10,23 @@
 abstract class Zero_Crud_Edit extends Zero_Controller
 {
     /**
-     * ��� �������������� ������
+     * The table stores the objects handled by this controller.
      *
      * @var string
      */
     protected $ModelName = '';
 
     /**
-     * ��� ������� �������������
+     * Template view
      *
      * @var string
      */
     protected $ViewName = __CLASS__;
 
     /**
-     * ���������� �� ���������.
+     * Initialization of the stack chunks and input parameters
      *
-     * @return string
+     * @return Zero_View
      */
     public function Action_Default()
     {
@@ -38,7 +38,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
     /**
      * Add
      *
-     * @return string
+     * @return Zero_View
      */
     public function Action_Add()
     {
@@ -99,18 +99,6 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         //  Remove the coupling condition
         if ( isset($this->Params['obj_parent_prop']) )
             unset($props_form[$this->Params['obj_parent_prop']]);
-        //  Remove the user conditions
-//        $users_condition = Zero_App::$Users->Get_Condition();
-//        foreach (array_keys($this->Model->Get_Config_Prop(get_class($this))) as $prop)
-//        {
-//            if ( isset($users_condition[$prop]) )
-//            {
-//                if ( 0 < $this->Model->ID && !isset($users_condition[$prop][$this->Model->$prop]) )
-//                    throw new Exception('Page Forbidden', 403);
-//                if ( 1 == count($users_condition[$prop]) )
-//                    unset($props_form[$prop]);
-//            }
-//        }
 
         //  Data
         $this->View->Assign('Section', Zero_App::$Section);

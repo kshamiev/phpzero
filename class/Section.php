@@ -17,6 +17,7 @@
  * @date 2015.01.01
  *
  * @property integer $Section_ID
+ * @property integer $Controllers_ID
  * @property string $Url
  * @property string $UrlThis
  * @property string $UrlRedirect
@@ -74,6 +75,7 @@ class Zero_Section extends Zero_Model
             /*BEG_CONFIG_PROP*/
             'ID' => ['AliasDB' => 'z.ID', 'DB' => 'ID', 'IsNull' => 'NO', 'Default' => '', 'Form' => ''],
             'Section_ID' => ['AliasDB' => 'z.Section_ID', 'DB' => 'ID', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Link'],
+            'Controllers_ID' => ['AliasDB' => 'z.Controllers_ID', 'DB' => 'ID', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Link'],
             'Url' => ['AliasDB' => 'z.Url', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Readonly'],
             'UrlThis' => ['AliasDB' => 'z.UrlThis', 'DB' => 'T', 'IsNull' => 'NO', 'Default' => '', 'Form' => 'Text'],
             'UrlRedirect' => ['AliasDB' => 'z.UrlRedirect', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'],
@@ -123,6 +125,7 @@ class Zero_Section extends Zero_Model
             'Title' => ['Visible' => true, 'AR' => true],
             'Keywords' => ['Visible' => true, 'AR' => true],
             'Description' => ['Visible' => true, 'AR' => true],
+            'Controllers_ID' => ['Visible' => false, 'AR' => false],
             'Sort' => ['Visible' => true],
             /*END_CONFIG_FILTER_PROP*/
         ];
@@ -170,6 +173,7 @@ class Zero_Section extends Zero_Model
             'UrlThis' => ['Form' => 'Text'],
             'UrlRedirect' => [],
             'Layout' => [],
+            'Controllers_ID' => [],
             'Controller' => [],
             'IsAuthorized' => [],
             'IsVisible' => [],
@@ -187,24 +191,25 @@ class Zero_Section extends Zero_Model
     }
 
     /**
-     * Dynamic factory method to create an object through the factory.
-     */
-    protected function Init()
-    {
-        if ( $this->ID == 0 )
-        {
-            $this->Init_Url(ZERO_URL);
-        }
-    }
-
-    /**
-     * Initialization section on his Url.
+     * Иициализация раздела по указанному url
      *
-     * @param string $url full reference to the section (www.domainname.ru/article)
+     * @param string $url
      */
     public function Init_Url($url)
     {
-        $index = 'route' . $url . '/' . LANG . '/url';
+        $this->Init($url);
+    }
+
+    /**
+     * Системная иициализация раздела по запрошенному url
+     *
+     * @param string $url
+     */
+    protected function Init($url = ZERO_URL)
+    {
+        if ( $this->ID != 0 )
+            return;
+        $index = 'route' . ZERO_URL . '/' . LANG . '/url';
         if ( false === $row = Zero_Cache::Get_Data($index) )
         {
             // Поиск в программе
@@ -241,8 +246,13 @@ class Zero_Section extends Zero_Model
             // Поиск в БД
             if ( 0 == $this->ID && Zero_App::$Config->Site_UseDB )
             {
-                $sql = "SELECT * FROM {$this->Source} WHERE Url = " . Zero_DB::EscT($url);
+                $sql = "SELECT * FROM {$this->Source} WHERE Url = " . Zero_DB::EscT(ZERO_URL);
                 $row = Zero_DB::Select_Row($sql);
+                if ( 0 < $row['Controllers_ID'] )
+                {
+                    $sql = "SELECT * FROM Controllers WHERE ID = {$row['Controllers_ID']}";
+                    $row['Controller'] = Zero_DB::Select_Row($sql)['Controller'];
+                }
                 $this->Set_Props($row);
                 Zero_Cache::Set_Link('Section', $this->ID);
                 Zero_Cache::Set_Data($index, $row);
@@ -276,7 +286,7 @@ class Zero_Section extends Zero_Model
         if ( Zero_App::$Config->Site_UseDB && 'yes' == $this->IsAuthorized && 1 < Zero_App::$Users->Groups_ID )
         {
             $Model = Zero_Model::Makes('Zero_Action');
-            $Model->AR->Sql_Where('Section_ID', '=', $this->ID);
+            $Model->AR->Sql_Where('Controllers_ID', '=', $this->ID);
             $Model->AR->Sql_Where('Groups_ID', '=', Zero_App::$Users->Groups_ID);
             $this->_Action_List = $Model->AR->Select_Array_Index('Action');
             foreach ($this->_Action_List as $action => $row)
@@ -491,6 +501,12 @@ class Zero_Section extends Zero_Model
             $arr[$index] = $index;
         }
         return $arr;
+    }
+
+    public function FL_Controllers_ID()
+    {
+        $sql = "SELECT `ID`, `Name` FROM Controllers WHERE `Typ` = 'Web' AND IsActive = 1 ORDER BY `Name` ASC";
+        return Zero_DB::Select_List_Index($sql);
     }
 
     /**
