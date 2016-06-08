@@ -390,6 +390,8 @@ class Zero_Controllers extends Zero_Model
 					$route['Typ'] = Zero_App::MODE_API;
 					if ( empty($route['Name']) )
 						$route['Name'] = $route['Controller'];
+					if ( empty($route['IsAuthorized']) )
+						$route['IsAuthorized'] = 'no';
 					if ( empty($route['IsActive']) )
 						$route['IsActive'] = 1;
 					$this->Set_Props($route);
