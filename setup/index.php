@@ -25,7 +25,7 @@ header("Content-Type: text/html; charset=utf-8");
 
 require dirname(__DIR__) . '/class/Config.php';
 require dirname(__DIR__) . '/class/App.php';
-require dirname(__DIR__) . '/class/Helper/File.php';
+require dirname(__DIR__) . '/classHelper/File.php';
 
 if ( !isset($_REQUEST['site_name']) )
     $_REQUEST['site_name'] = '';
