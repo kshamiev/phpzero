@@ -170,7 +170,7 @@ class Zero_Validator
                 }
             }
             $_FILES[$prop]['name'] = Zero_Helper_Strings::Transliteration_FileName($_FILES[$prop]['name']);
-            if ( file_exists($filename = ZERO_PATH_DATA . '/' . $this->Model->$prop) )
+            if ( file_exists($filename = ZERO_PATH_DATA . '/' . $this->Model->$prop) && is_file($filename) )
                 unlink($filename);
             $this->Model->$prop = $_FILES[$prop]['name'];
         }
@@ -204,7 +204,7 @@ class Zero_Validator
         {
             if ( empty($row['Form']) || empty($row['IsNull']) )
             {
-                Zero_Logs::Set_Message_Error('конфигурцмя для валидации не полная: ' . $this->Model->Source . $prop);
+                Zero_Logs::Set_Message_Error('Конфигурцмя для валидации не полная: ' . $this->Model->Source . '.' . $prop);
                 continue;
             }
 

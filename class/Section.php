@@ -246,12 +246,14 @@ class Zero_Section extends Zero_Model
             // Поиск в БД
             if ( 0 == $this->ID && Zero_App::$Config->Site_UseDB )
             {
-                $sql = "SELECT * FROM {$this->Source} WHERE Url = " . Zero_DB::EscT(ZERO_URL);
-                $row = Zero_DB::Select_Row($sql);
+                $row = Zero_DB::Select_Row("SELECT * FROM Section WHERE Url = " . Zero_DB::EscT(ZERO_URL));
+                if ( 0 == count($row) )
+                    return;
                 if ( 0 < $row['Controllers_ID'] )
                 {
-                    $sql = "SELECT * FROM Controllers WHERE ID = {$row['Controllers_ID']}";
-                    $row['Controller'] = Zero_DB::Select_Row($sql)['Controller'];
+                    $arr = Zero_DB::Select_Row("SELECT * FROM Controllers WHERE ID = {$row['Controllers_ID']}");
+                    if ( 0 < count($arr) )
+                        $row['Controller'] = $arr['Controller'];
                 }
                 $this->Set_Props($row);
                 Zero_Cache::Set_Link('Section', $this->ID);
