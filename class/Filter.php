@@ -181,9 +181,7 @@ class Zero_Filter
                 $this->Filter[$prop]['List'] = $row['List'];
             else
             {
-                $data = Zero_I18n::Model(get_class($this->Model), $this->Model->Source . ' ' . $prop . ' options');
-                if ( !is_array($data) )
-                    $data = Zero_I18n::Model(get_class($this->Model), $prop . ' options');
+                $data = Zero_I18n::Model(get_class($this->Model), $prop . ' options');
                 //
                 if ( is_array($data) )
                     $this->Filter[$prop]['List'] = $data;
@@ -236,9 +234,7 @@ class Zero_Filter
                 $this->Filter[$prop]['List'] = $row['List'];
             else
             {
-                $data = Zero_I18n::Model(get_class($this->Model), $this->Model->Source . ' ' . $prop . ' options');
-                if ( !is_array($data) )
-                    $data = Zero_I18n::Model(get_class($this->Model), $prop . ' options');
+                $data = Zero_I18n::Model(get_class($this->Model), $prop . ' options');
                 //
                 if ( is_array($data) )
                     $this->Filter[$prop]['List'] = $data;
@@ -304,9 +300,7 @@ class Zero_Filter
                 $this->Filter[$prop]['List'] = $row['List'];
             else
             {
-                $data = Zero_I18n::Model(get_class($this->Model), $this->Model->Source . ' ' . $prop . ' options');
-                if ( !is_array($data) )
-                    $data = Zero_I18n::Model(get_class($this->Model), $prop . ' options');
+                $data = Zero_I18n::Model(get_class($this->Model), $prop . ' options');
                 //
                 if ( is_array($data) )
                     $this->Filter[$prop]['List'] = $data;

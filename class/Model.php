@@ -295,9 +295,7 @@ abstract class Zero_Model
         {
             foreach (static::Config_Prop($this, $scenario) as $prop => $row)
             {
-                $row['Comment'] = Zero_I18n::Model($index, $this->Source . ' ' . $prop);
-                if ( $row['Comment'] == $this->Source . ' ' . $prop )
-                    $row['Comment'] = Zero_I18n::Model($index, $prop);
+                $row['Comment'] = Zero_I18n::Model($index, $prop);
                 self::$_Config[$index]['props'][$prop] = $row;
             }
         }

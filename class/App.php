@@ -53,8 +53,6 @@ define('ZERO_PATH_LAYOUT', ZERO_PATH_SITE . '/layout');
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  * @todo авторизованная работа с api по ключу. (Ключи меняются с каждым запросом) (ключ имя сессии)
- * @todo Документировать
- * @todo Контроллеры перезжают в classWeb
  * @todo Переделать пользователей в линейную струтуру
  * @todo При инженеринге убрать ID из форм
  */
@@ -373,7 +371,7 @@ class Zero_App
         self::$url = $arr[2];
 
         //  Initializing monitoring system (Zero_Logs)
-        Zero_Logs::Init($fileApp . self::$mode);
+        Zero_Logs::Init($fileApp . self::$mode, self::$Config->Log_TimeLimitTimer);
 
         //  Initialize cache subsystem (Zero_Cache)
         if ( (0 < count(self::$Config->Memcache['Cache'])) && class_exists('Memcache') )

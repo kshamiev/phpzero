@@ -18,17 +18,26 @@ class Zero_I18n
 
     public static function Model($file_name, $key)
     {
-        return self::T($file_name, 'Model', $key);
+        $str = self::T($file_name, 'Model', $key);
+        if ( $str == $key )
+            return self::T($file_name, 'Model', $file_name . ' ' . $key);
+        return $str;
     }
 
     public static function View($file_name, $key)
     {
-        return self::T($file_name, 'View', $key);
+        $str = self::T($file_name, 'View', $key);
+        if ( $str == $key )
+            return self::T($file_name, 'View', $file_name . ' ' . $key);
+        return $str;
     }
 
     public static function Controller($file_name, $key)
     {
-        return self::T($file_name, 'Controller', $key);
+        $str = self::T($file_name, 'Controller', $key);
+        if ( $str == $key )
+            return self::T($file_name, 'Controller', $file_name . ' ' . $key);
+        return $str;
     }
 
     public static function Message($file_name, $code, $params = [])

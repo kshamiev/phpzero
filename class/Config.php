@@ -255,6 +255,13 @@ class Zero_Config
     public $Log_Output_Display = true;
 
     /**
+     * Допустимый верменной порог. При превышении которого работают таймеры
+     *
+     * @var bool
+     */
+    public $Log_TimeLimitTimer = 0.000;
+
+    /**
      * Languages
      *
      * @var array
@@ -427,6 +434,9 @@ class Zero_Config
         $this->Log_Output_File = $Config['Log']['Output']['File'];
         // Output Display
         $this->Log_Output_Display = $Config['Log']['Output']['Display'];
+        // Output Display
+        if ( isset($Config['Log']['TimeLimitTimer']) )
+            $this->Log_TimeLimitTimer = $Config['Log']['TimeLimitTimer'];
 
         // Languages
         $this->Language = $Config['Language'];

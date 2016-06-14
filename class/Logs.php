@@ -46,10 +46,9 @@ class Zero_Logs
     private static $_CurrentTimeLevel = 0;
 
     /**
-     * Dopustimy`i` vremennoi` porog. Pri prevy`shenii kotorogo rabotaiut tai`mery`.
+     * Допустимый верменной порог. При превышении которого работают таймеры
      *
      * @var float
-     * @todo еренести в глобальную конфигурацию
      */
     private static $_CurrentTimeLimit = 0.000;
 
@@ -70,15 +69,18 @@ class Zero_Logs
     private static $_FileLog = '';
 
     /**
-     * Initcializatciia soobshchenii`, log fai`la, tai`merov
-     *
+     * Инициализация логера
+     * 
+     * @param string $fileLog имя файллога
+     * @param float $currentTimeLimit пороговое значения для таймеров
      */
-    public static function Init($fileLog)
+    public static function Init($fileLog, $currentTimeLimit = 0.000)
     {
         self::$_Message = [];
         self::$_StartTime = microtime(1);
         self::$_CurrentTime = [];
         self::$_FileLog = strtolower($fileLog);
+        self::$_CurrentTimeLimit = $currentTimeLimit;
     }
 
     /**
