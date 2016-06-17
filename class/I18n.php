@@ -18,45 +18,34 @@ class Zero_I18n
 
     public static function Model($file_name, $key)
     {
-        $str = self::T($file_name, 'Model', $key);
-        if ( $str == $key )
-            return self::T($file_name, 'Model', $file_name . ' ' . $key);
-        return $str;
+        return self::T($file_name, 'Model', $key);
     }
 
     public static function View($file_name, $key)
     {
-        $str = self::T($file_name, 'View', $key);
-        if ( $str == $key )
-            return self::T($file_name, 'View', $file_name . ' ' . $key);
-        return $str;
+        return self::T($file_name, 'View', $key);
     }
 
     public static function Controller($file_name, $key)
     {
-        $str = self::T($file_name, 'Controller', $key);
-        if ( $str == $key )
-            return self::T($file_name, 'Controller', $file_name . ' ' . $key);
-        return $str;
+        return self::T($file_name, 'Controller', $key);
     }
 
     public static function Message($file_name, $code, $params = [])
     {
         // инициализация файла перевода
         $folder_list = explode('_', $file_name);
-        $folder_list[0] = strtolower($folder_list[0]);
         $folder_list[1] = 'Message';
-        $file_name = $folder_list[0] . '_' . $folder_list[1];
-        if ( !isset(self::$_I18n[$file_name]) )
+        $index = $folder_list[0] . '_' . $folder_list[1];
+        if ( !isset(self::$_I18n[$index]) )
         {
-            self::Search_Path_I18n($folder_list);
+            self::$_I18n[$index] = self::Search_Path_I18n([strtolower($folder_list[0]), $folder_list[1]]);
         }
         // инициализация перевода
-        $codeGlobal = $folder_list[0] . '-' . $code;
         $codeGlobal = $code;
-        if ( isset(self::$_I18n[$file_name][$code]) )
+        if ( isset(self::$_I18n[$index][$code]) )
         {
-            array_unshift($params, self::$_I18n[$file_name][$code]);
+            array_unshift($params, self::$_I18n[$index][$code]);
             //
             $codePrefix = Zero_App::$Config->Modules[$folder_list[0]]['codePrefix'];
             settype($codePrefix, 'int');
@@ -64,7 +53,7 @@ class Zero_I18n
         }
         else if ( 0 < $code )
         {
-            Zero_Logs::Set_Message_Warninng('I18N NOT FOUND MESSAGE: ' . LANG . ' -> ' . $file_name . ' -> ' . $code);
+            Zero_Logs::Set_Message_Warninng('I18N NOT FOUND MESSAGE: ' . LANG . ' -> ' . $index . ' -> ' . $code);
         }
         // перевод
         return [$codeGlobal, strval(zero_sprintf($params))];
@@ -81,20 +70,23 @@ class Zero_I18n
     protected static function T($file_name, $section, $key)
     {
         // инициализация файла перевода
-        $folder_list = explode('_', $file_name);
-        $folder_list[0] = strtolower($folder_list[0]);
-        $folder_list[1] = $section;
-        $file_name = $folder_list[0] . '_' . $folder_list[1];
-        if ( !isset(self::$_I18n[$file_name]) )
+        $module = explode('_', $file_name)[0];
+        $index = $module . '_' . $section;
+        if ( !isset(self::$_I18n[$index]) )
         {
-            self::Search_Path_I18n($folder_list);
+            self::$_I18n[$index] = self::Search_Path_I18n([strtolower($module), $section]);
         }
+//        pre(self::$_I18n[$index]);
         // перевод
-        if ( isset(self::$_I18n[$file_name][$key]) )
+        if ( isset(self::$_I18n[$index][$file_name . ' ' . $key]) )
         {
-            return self::$_I18n[$file_name][$key];
+            return self::$_I18n[$index][$file_name . ' ' . $key];
         }
-        //        Zero_Logs::Set_Message_Warninng('I18N NOT FOUND KEY: ' . LANG . ' -> ' . $file_name . ' -> ' . $key);
+        else if ( isset(self::$_I18n[$index][$key]) )
+        {
+            return self::$_I18n[$index][$key];
+        }
+        Zero_Logs::Set_Message_Warninng('I18N NOT FOUND KEY: ' . LANG . ' -> ' . $file_name . ' -> ' . $key);
         return $key;
     }
 
@@ -109,22 +101,19 @@ class Zero_I18n
     {
         if ( '' == $lang )
             $lang = ZERO_LANG;
-        self::$_I18n[$folder_list[0] . '_' . $folder_list[1]] = [];
         //
-        $path = ZERO_PATH_APPLICATION . '/' . $folder_list[0] . '/i18n/' . $lang . '/' . $folder_list[1] . '.php';
-
+        $path = ZERO_PATH_APPLICATION . '/' . strtolower($folder_list[0]) . '/i18n/' . $lang . '/' . $folder_list[1] . '.php';
         if ( file_exists($path) )
         {
-            self::$_I18n[$folder_list[0] . '_' . $folder_list[1]] = include $path;
-            return $path;
+            return include $path;
         }
-        $path = ZERO_PATH_SITE . '/' . $folder_list[0] . '/i18n/' . $lang . '/' . $folder_list[1] . '.php';
+        //
+        $path = ZERO_PATH_SITE . '/' . strtolower($folder_list[0]) . '/i18n/' . $lang . '/' . $folder_list[1] . '.php';
         if ( file_exists($path) )
         {
-            self::$_I18n[$folder_list[0] . '_' . $folder_list[1]] = include $path;
-            return $path;
+            return include $path;
         }
         Zero_Logs::Set_Message_Warninng('I18N NOT FOUND FILE: ' . $path);
-        return '';
+        return [];
     }
 }

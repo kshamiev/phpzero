@@ -129,7 +129,7 @@ class Zero_Controllers extends Zero_Model
 			'IsActive' => [
 				'AliasDB' => 'z.IsActive',
 				'DB' => 'I',
-				'IsNull' => 'NO',
+				'IsNull' => 'YES',
 				'Default' => '0',
 				'Form' => 'Check',
 			],

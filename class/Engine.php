@@ -36,7 +36,6 @@
  */
 class Zero_Engine
 {
-
     /**
      * Путь до гереруемого модуля
      *
@@ -380,7 +379,7 @@ class Zero_Engine
         {
             $str .= "'{$key}' => {$val},\n";
         }
-//        $str = substr(trim($str), 0, -1);
+        //        $str = substr(trim($str), 0, -1);
         $str = trim($str);
         $path1 = ZERO_PATH_ZERO . '/data/Tpl_I18n.php';
         foreach (array_keys(Zero_App::$Config->Language) as $lang)
@@ -493,7 +492,7 @@ class Zero_Engine
                 $str_property .= " * @property string \${$prop}\n";
             }
         }
-//        $str_props = substr(trim($str_props), 0, -1);
+        //        $str_props = substr(trim($str_props), 0, -1);
         $str_props = trim($str_props);
         $str_property = substr(trim($str_property), 0, -1);
 
@@ -525,7 +524,7 @@ class Zero_Engine
                 $str_props = substr($str_props, 0, -2);
                 $str_props .= "],\n";
             }
-//            $str_props = substr(trim($str_props), 0, -1);
+            //            $str_props = substr(trim($str_props), 0, -1);
             $str_props = trim($str_props);
             $class = preg_replace('~/\*BEG_CONFIG_FILTER_PROP\*/(.*?)/\*END_CONFIG_FILTER_PROP\*/~si', "{$str_props}", $class);
         }
@@ -539,7 +538,6 @@ class Zero_Engine
             {
                 $str_props .= "\t\t\t'" . $prop . "' => [],\n";
             }
-//            $str_props = substr(trim($str_props), 0, -1);
             $str_props = trim($str_props);
             $class = preg_replace('~/\*BEG_CONFIG_GRID_PROP\*/(.*?)/\*END_CONFIG_GRID_PROP\*/~si', "{$str_props}", $class);
         }
@@ -551,14 +549,10 @@ class Zero_Engine
             $str_props = "";
             foreach ($config as $prop => $row)
             {
+                if ( $prop == 'ID' )
+                    continue;
                 $str_props .= "\t\t\t'" . $prop . "' => [],\n";
-                //                $str_props .= "\t\t\t'" . $prop . "' => array(";
-                //                $str_props .= "'Form' => '" . $row['Form'] . "', ";
-                //                $str_props .= "'IsNull' => '" . $row['IsNull'] . "', ";
-                //                $str_props = substr($str_props, 0, -2);
-                //                $str_props .= "),\n";
             }
-//            $str_props = substr(trim($str_props), 0, -1);
             $str_props = trim($str_props);
             $class = preg_replace('~/\*BEG_CONFIG_FORM_PROP\*/(.*?)/\*END_CONFIG_FORM_PROP\*/~si', "{$str_props}", $class);
         }

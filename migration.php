@@ -11,31 +11,35 @@
 require __DIR__ . '/class/App.php';
 Zero_App::Init();
 
-$sql = "UPDATE Section SET Controllers_ID = NULL";
-Zero_DB::Update($sql);
-$sql = "DELETE FROM Controllers";
-Zero_DB::Update($sql);
+//$sql = "UPDATE Section SET Controllers_ID = NULL";
+//Zero_DB::Update($sql);
+//$sql = "DELETE FROM Controllers";
+//Zero_DB::Update($sql);
 
 // Web
-$sql = "SELECT ID, `Controller` FROM `Section`";
+$controllerList = [];
+$sql = "SELECT ID, `Controller` FROM `Section` WHERE `Controller` IS NOT NULL ORDER BY `Controller` ASC";
 $sectionList = Zero_DB::Select_Array($sql);
 foreach ($sectionList as $row)
 {
     if ( !$row['Controller'] )
         continue;
 
-    $sql = "
-    INSERT INTO `Controllers` SET
-      `Name` = '{$row['Controller']}',
-      `Controller` = '{$row['Controller']}',
-      `Typ` = 'Web',
-      `IsActive` = 1
-    ";
-    $controller_ID = Zero_DB::Insert($sql);
+    if ( empty($controllerList[$row['Controller']]) )
+    {
+        $sql = "
+        INSERT INTO `Controllers` SET
+          `Name` = '{$row['Controller']}',
+          `Controller` = '{$row['Controller']}',
+          `Typ` = 'Web',
+          `IsActive` = 1
+        ";
+        $controllerList[$row['Controller']] = Zero_DB::Insert($sql);
+    }
 
     $sql = "
         UPDATE Section SET
-          Controllers_ID = {$controller_ID}
+          Controllers_ID = {$controllerList[$row['Controller']]}
         WHERE
           ID = {$row['ID']}
         ";

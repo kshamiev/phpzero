@@ -38,8 +38,16 @@ class Zero_Users_Grid extends Zero_Crud_Grid
         $this->Params['obj_parent_name'] = '';
         if ( !isset($this->Params['obj_parent_path']) )
         {
-            $this->Params['obj_parent_path'] = [Zero_App::$Users->ID => 'root'];
-            $this->Params['obj_parent_id'] = Zero_App::$Users->ID;
+            if ( 'yes' == Zero_App::$Users->IsCondition )
+            {
+                $this->Params['obj_parent_path'] = [Zero_App::$Users->ID => 'root'];
+                $this->Params['obj_parent_id'] = Zero_App::$Users->ID;
+            }
+            else
+            {
+                $this->Params['obj_parent_path'] = ['root'];
+                $this->Params['obj_parent_id'] = 0;
+            }
         }
         if ( isset($_REQUEST['pid']) )
         {

@@ -164,7 +164,6 @@ class Zero_Users extends Zero_Model
         if ( 'Zero_Users_Profile' == $scenario )
         {
             return [
-                'ID' => [],
                 'Name' => [],
                 'Password' => [],
                 'Email' => [],
@@ -176,7 +175,6 @@ class Zero_Users extends Zero_Model
         else
         {
             return [
-                'ID' => [],
                 'Groups_ID' => [],
                 'Name' => [],
                 'Login' => [],
