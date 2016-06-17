@@ -93,6 +93,8 @@ return [
             //  Display
             'Display' => true,
         ],
+        // Допустимый верменной порог. При превышении которого работают таймеры
+        'TimeLimitTimer' => 0.001
     ],
     //  Languages
     'Language' => [
