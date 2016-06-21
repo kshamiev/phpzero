@@ -47,7 +47,7 @@ class Zero_I18n
         {
             array_unshift($params, self::$_I18n[$index][$code]);
             //
-            $codePrefix = Zero_App::$Config->Modules[$folder_list[0]]['codePrefix'];
+            $codePrefix = Zero_App::$Config->Modules[strtolower($folder_list[0])]['codePrefix'];
             settype($codePrefix, 'int');
             $codeGlobal = $codePrefix * 10000 + $code;
         }
@@ -76,7 +76,6 @@ class Zero_I18n
         {
             self::$_I18n[$index] = self::Search_Path_I18n([strtolower($module), $section]);
         }
-//        pre(self::$_I18n[$index]);
         // перевод
         if ( isset(self::$_I18n[$index][$file_name . ' ' . $key]) )
         {
