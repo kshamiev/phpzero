@@ -1,4 +1,4 @@
-<?
+<?php
 
 /**
  * Вспомогательный класс для обмена информацией и проведения операций с внешними ресурсами
@@ -7,91 +7,152 @@
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2016.06.15
  */
-final class Zero_Helper_Curl
+class Zero_Helper_Curl
 {
-    //	конструктор
-    var $url = ' ';                    //	для проеврки правильной страницы
+    /**
+     * Заголовки ответа
+     *
+     * @var string
+     */
+    public $Head = [];
 
-    public $host = '';
+    /**
+     * Тело ответа
+     *
+     * @var string
+     */
+    public $Body = '';
 
-    var $cookie_file = '';
+    /**
+     * Путь до файла хранящего куку сессии
+     *
+     * @var string
+     */
+    protected $cookie_file = '';
 
-    var $log_file = '';
+    /**
+     * Url главной страницы сайта к которому обращаемся
+     *
+     * @var string
+     */
+    protected $url = '';
 
-    var $proxy_id = 0;
+    /**
+     * Хост к которому обращаемся
+     *
+     * @var string
+     */
+    protected $host = '';
 
     /**
      * Прокси сервер (ip адресс)
      *
      * @var string
      */
-    public $proxy = '';
+    protected $proxy = '';
 
-    public function __construct($proxy = '', $url, $host, $log_file)
+    /**
+     * Для стандартной авторизации методом apache
+     *
+     * @var string
+     */
+    protected $apacheUser = '';
+
+    /**
+     * Для стандартной авторизации методом apache
+     *
+     * @var string
+     */
+    protected $apachePwd = '';
+
+    /**
+     * Конструктор
+     *
+     * @param string $url (http://www.odnoklassniki.ru/)
+     * @param string $host (www.odnoklassniki.ru)
+     * @param string $proxy Прокси сервер (ip адресс)
+     */
+    public function __construct($url, $host, $proxy = '')
     {
-        $this->proxy = $proxy;
-
-        my_db::__construct();
         $this->url = $url;
         $this->host = $host;
-        $this->log_file = $log_file;
-        $this->cookie_file();
-        $this->proxy_id = 0;
+        $this->proxy = $proxy;
+        $this->Set_Cookie_file();
     }
 
-    function cookie_file()
+    /**
+     * Установка логина и пароля для авторизации методом apache
+     *
+     * @param $user
+     * @param $pwd
+     */
+    public function Set_Auth_Apache($user, $pwd)
+    {
+        $this->apacheUser = $user;
+        $this->apachePwd = $pwd;
+    }
+
+    /**
+     * Иницилизация файл-лога хранящего куку сессии
+     *
+     */
+    protected function Set_Cookie_file()
     {
         if ( $this->cookie_file )
-            unlink('logs/' . $this->cookie_file);
-        $this->cookie_file = $this->log_file . '_cookie_' . date('d.m.Y_H.i.s') . '.txt';
-        while ( file_exists('logs/' . $this->cookie_file) )
+            unlink($this->cookie_file);
+        do
         {
             sleep(1);
-            $this->cookie_file = $this->log_file . '_cookie_' . date('d.m.Y_H.i.s') . '.txt';
+            $this->cookie_file = ZERO_PATH_EXCHANGE . '/cookie_' . $this->host . '_' . zero_random_string('8', 'lower,upper,numbers') . '_' . date('d.m.Y_H.i.s') . '.txt';
         }
-        $fp = fopen('logs/' . $this->cookie_file, 'w');
-        fclose($fp);
+        while ( file_exists($this->cookie_file) );
+        fclose(fopen($this->cookie_file, 'w'));
     }
 
     /**
      * Получение страницы ( text/html )
      *
      * @param string $url запрашиваемый url
-     * @param string $postData
-     * @return bool|mixed|string
+     * @param array $postData key => value
+     * @return bool
      */
-    public function Get_Page($url, $postData = '')
+    public function Get_Page($url, $postData = [])
     {
         $ch = curl_init($url);
         //	идем через proxy
         if ( $this->proxy )
+        {
             curl_setopt($ch, CURLOPT_PROXY, $this->proxy);
-        // curl_setopt($ch,CURLOPT_PROXYUSERPWD,'user:password');
-        curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, 1);
+            curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, 1);
+            // curl_setopt($ch,CURLOPT_PROXYUSERPWD,'user:password');
+        }
         //	время работы
-        curl_setopt($ch, CURLOPT_TIMEOUT, 10);                        //	полное время сеанса
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);        //	время ожидания соединения в секундах
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);          //	полное время сеанса
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);    //	время ожидания соединения в секундах
         //	Передаем и возвращаем Заголовки и тело страницы
         curl_setopt($ch, CURLOPT_HEADER, 1);
         curl_setopt($ch, CURLOPT_NOBODY, 0);
-        //	User-Agent
-        curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)");
-        //	Referer
+        //	Заголовки
+        curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:47.0) Gecko/20100101 Firefox/47.0");
+        //	Referer (откуда пришли, с какой страницы)
         curl_setopt($ch, CURLOPT_REFERER, $url);
         //	Host
         $header_mas = array();
         $header_mas[] = "Host: " . $this->host;
         curl_setopt($ch, CURLOPT_HTTPHEADER, $header_mas);
         //	Cookie
-        curl_setopt($ch, CURLOPT_COOKIEFILE, 'logs/' . $this->cookie_file);    //	посылка
-        curl_setopt($ch, CURLOPT_COOKIEJAR, 'logs/' . $this->cookie_file);        //	получение
+        curl_setopt($ch, CURLOPT_COOKIEFILE, $this->cookie_file);   //	посылка
+        curl_setopt($ch, CURLOPT_COOKIEJAR, $this->cookie_file);    //	получение
         //	АВТОРИЗАЦИЯ МЕТОДОМ APACHE
-        //	curl_setopt($ch,CURLOPT_USERPWD,"guest:mics6");
+        if ( $this->apacheUser && $this->apachePwd )
+        {
+            curl_setopt($ch, CURLOPT_USERPWD, "{$this->apacheUser}:{$this->apachePwd}");
+        }
         //	переадресация
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);    //	переход по редиректу
-        curl_setopt($ch, CURLOPT_MAXREDIRS, 3);                //	максимальное количество переадресаций
+        curl_setopt($ch, CURLOPT_MAXREDIRS, 3);         //	максимальное количество переадресаций
         //	запрос GET
-        if ( $postdata == '' )
+        if ( 0 == count($postData) )
         {
             curl_setopt($ch, CURLOPT_HTTPGET, 1);
         }
@@ -99,7 +160,8 @@ final class Zero_Helper_Curl
         else
         {
             curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postData));
+            //            curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
         }
         //	возвращаем результат в переменную
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -107,94 +169,52 @@ final class Zero_Helper_Curl
         //	ошибки
         $error_code = curl_errno($ch);
         $error_subj = curl_error($ch);
-        if ( stripos($page, $this->url) === false )
+        if ( 0 < $error_code )
         {
+            Zero_Logs::Set_Message_Error('CURL: ' . $error_subj);
             curl_close($ch);
+            $this->Head = [];
+            $this->Body = '';
             return false;
         }
         else
         {
-            $content_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
-            //			if ( preg_match("(utf-8)si",$content_type) ) $page=mb_convert_encoding($page,'CP1251');
-            //			if ( preg_match("(utf-8)si",$content_type) ) $page=mb_convert_encoding($page,'UTF-8');
-            if ( preg_match("(utf-8)si", $content_type) )
-                $page = iconv("UTF-8", "CP1251", $page);
-            if ( $this->get_query_cnt("SELECT COUNT(*) FROM KlassTraffic WHERE Date = ' " . date('Y-m-d') . "'") )
-            {
-                $sql = "UPDATE KlassTraffic SET Size = Size + " . strlen($page) . " WHERE Date = '" . date('Y-m-d') . "'";
-            }
-            else
-            {
-                $sql = "INSERT INTO KlassTraffic (Date, Size) VALUES (NOW(), " . strlen($page) . ")";
-            }
-            $this->set_query($sql);
             curl_close($ch);
-            return $page;
+            $arr = explode("\n", $page);
+            $this->Head = [];
+            while ( $h = trim(array_shift($arr)) )
+            {
+                $this->Head[] = $h;
+            }
+            $this->Body = implode("\n", $arr);
+            return true;
         }
         //	print curl_getinfo($ch,CURLINFO_HTTP_CODE).'<br>';
     }
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //	ПОЛУЧЕНИЕ БИНАРНЫХ ДАННЫХ ( images/gif ... )	ЧЕРЕЗ PROXY
-    function get_file_proxy($url, $file)
-    {
-        global $user_access;
-        $page = false;
-        if ( $this->proxy )
-        {
-            $page = $this->get_file($url, $this->proxy, $file);
-            if ( $page )
-            {
-                return $page;
-            }
-            else
-            {
-                $sql = "UPDATE ProxyList SET HttpCode = 404 WHERE ID = " . $this->proxy_id;
-                $this->set_query($sql);
-                $this->proxy_id = 0;
-                $this->proxy = '';
-            }
-        }
-        if ( !$this->proxy_id )
-        {
-            $proxy_mas = $this->get_query_two("SELECT ID, Host FROM ProxyList WHERE HttpCode = 200 AND FlagBlock = 0");
-            foreach ($proxy_mas as $id => $proxy)
-            {
-                $page = $this->get_file($url, $proxy, $file);
-                if ( $page )
-                {
-                    $sql = "UPDATE ProxyList SET FlagBlock = 1 WHERE ID = " . $id;
-                    $this->set_query($sql);
-                    $this->proxy_id = $id;
-                    $this->proxy = $proxy;
-                    return $page;
-                }
-                else
-                {
-                    $sql = "UPDATE ProxyList SET HttpCode = 404 WHERE ID = " . $id;
-                    $this->set_query($sql);
-                    $this->proxy_id = 0;
-                    $this->proxy = '';
-                }
-            }
-        }
-        $this->log_file('! СТРАНИЦА НЕ ПОЛУЧЕНА !');
-        unlink('logs/' . $this->cookie_file);
-        $sql = 'UPDATE KlassLogin SET Flag = 0 WHERE ID = ' . $user_access['ID'];
-        $this->set_query($sql);
-        exit;
-    }
 
-    //	получение бинарных данны в файл
-    function get_file($url, $proxy, $file)
+    /**
+     * Получение бинарных данных в файл
+     *
+     * @param string $url запрашиваемый url
+     * @param string $file имя файла в который будет сохранен результат
+     * @return bool
+     */
+    function Get_File($url, $file)
     {
         $fp = fopen($file, 'w');
         $ch = curl_init($url);
         //	идем через proxy
-        curl_setopt($ch, CURLOPT_PROXY, $proxy);
-        curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, 1);
+        if ( $this->proxy )
+        {
+            curl_setopt($ch, CURLOPT_PROXY, $this->proxy);
+            curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, 1);
+        }
         //	время работы
-        curl_setopt($ch, CURLOPT_TIMEOUT, 10);                    //	полное время сеанса
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);        //	время ожидания соединения в секундах
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);          //	полное время сеанса
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);    //	время ожидания соединения в секундах
+        //	Cookie
+        curl_setopt($ch, CURLOPT_COOKIEFILE, $this->cookie_file);   //	посылка
+        curl_setopt($ch, CURLOPT_COOKIEJAR, $this->cookie_file);    //	получение
         //	получение только тела
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_FILE, $fp);
@@ -208,21 +228,13 @@ final class Zero_Helper_Curl
             return false;
         return true;
     }
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //	ЛОГИ
-    function log_file($str)
-    {
-        $fp = fopen('logs/' . $this->log_file . '_log.log', 'a+');
-        fputs($fp, date('[d.m.Y H:i:s] ') . $str . "\n");
-        fclose($fp);
-    }
 
-    function __destruct()
+    /**
+     * Завершение работы очистка
+     */
+    public function Finish()
     {
-        unlink('logs/' . $this->cookie_file);
-        $sql = "UPDATE ProxyList SET FlagBlock = 0 WHERE ID = " . $this->proxy_id;
-        $this->set_query($sql);
-        $this->proxy_id = 0;
-        $this->proxy = '';
+        if ( $this->cookie_file )
+            unlink($this->cookie_file);
     }
 }
