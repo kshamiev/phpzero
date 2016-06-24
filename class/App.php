@@ -90,20 +90,6 @@ class Zero_App
     public static $Section = null;
 
     /**
-     * Routing (по URL)
-     *
-     * @var string
-     */
-    private static $lang;
-
-    /**
-     * Routing (по URL)
-     *
-     * @var string
-     */
-    private static $url;
-
-    /**
      * Режим работы приложения (Api, Web, Console).
      *
      * @var string
@@ -113,16 +99,6 @@ class Zero_App
     public static function Get_Mode()
     {
         return self::$mode;
-    }
-
-    public static function Get_Lang()
-    {
-        return self::$lang;
-    }
-
-    public static function Get_Url()
-    {
-        return self::$url;
     }
 
     /**
@@ -365,8 +341,8 @@ class Zero_App
         // Роутинг
         $arr = app_route();
         self::$mode = $arr[0];
-        self::$lang = $arr[1];
-        self::$url = $arr[2];
+        $_REQUEST['l'] = $arr[1];
+        $_REQUEST['u'] = $arr[2];
 
         //  Initializing monitoring system (Zero_Logs)
         Zero_Logs::Init($fileApp . self::$mode, self::$Config->Log_TimeLimitTimer);
@@ -394,9 +370,6 @@ class Zero_App
             self::executeWeb();
         else if ( self::MODE_API == self::Get_Mode() )
             self::executeApi();
-        else
-            self::ResponseHtml('unknow mode');
-
     }
 
     /**
@@ -426,49 +399,55 @@ class Zero_App
         if ( self::$Section->UrlRedirect )
             self::ResponseRedirect(self::$Section->UrlRedirect);
 
-        //  Доступные операции-методы контроллера раздела с учетом прав. Проверка прав на раздел (Action_Default)
-        $Action_List = self::$Section->Get_Action_List();
-        if ( 1 < self::$Users->Groups_ID && 'yes' == self::$Section->IsAuthorized && 0 == count($Action_List) )
-            throw new Exception('Page Forbidden', 403);
-
         //  Выполнение контроллера
         $view = "";
         $messageResponse = ['Code' => 0, 'Message' => ''];
         if ( self::$Section->Controller )
         {
-            // инициализация и проверка прав на действие
-            if ( isset($_REQUEST['act']) && $_REQUEST['act'] )
-                $_REQUEST['act'] = trim($_REQUEST['act']);
-            else
-                $_REQUEST['act'] = 'Default';
-            //
-            if ( !isset($Action_List[$_REQUEST['act']]) )
-                throw new Exception('Page Forbidden', 403);
-            //
-            $_REQUEST['act'] = 'Action_' . $_REQUEST['act'];
+            if ( self::Autoload(self::$Section->Controller) )
+            {
+                //  Доступные операции-методы контроллера раздела с учетом прав. Проверка прав на раздел (Action_Default)
+                $Action_List = self::$Section->Get_Action_List();
+                if ( 1 < self::$Users->Groups_ID && 'yes' == self::$Section->IsAuthorized && 0 == count($Action_List) )
+                    throw new Exception('Page Forbidden', 403);
 
-            Zero_Logs::Start('#{CONTROLLER} ' . self::$Section->Controller . ' -> ' . $_REQUEST['act']);
-            $Controller = Zero_Controller::Factory(self::$Section->Controller);
-            if ( !method_exists($Controller, $_REQUEST['act']) )
-            {
-                throw new Exception('Контроллер не имеет метода: ' . $_REQUEST['act'], -1);
-            }
-            $viewController = $Controller->$_REQUEST['act']();
-            $messageResponse = $Controller->GetMessage();
-            if ( true == $viewController instanceof Zero_View )
-            {
-                /* @var $viewController Zero_View */
-                $viewController->Assign('Message', $messageResponse);
-                $viewController->Assign('Head', Zero_App::$Section->Name);
-                $viewController->Assign('H1', Zero_App::$Section->Name);
-                $viewController->Assign('Content', Zero_App::$Section->Content);
-                $view = $viewController->Fetch();
+                // инициализация и проверка прав на действие
+                if ( isset($_REQUEST['act']) && $_REQUEST['act'] )
+                    $_REQUEST['act'] = trim($_REQUEST['act']);
+                else
+                    $_REQUEST['act'] = 'Default';
+                //
+                if ( !isset($Action_List[$_REQUEST['act']]) )
+                    throw new Exception('Page Forbidden', 403);
+                //
+                $_REQUEST['act'] = 'Action_' . $_REQUEST['act'];
+
+                Zero_Logs::Start('#{CONTROLLER} ' . self::$Section->Controller . ' -> ' . $_REQUEST['act']);
+                $Controller = Zero_Controller::Factory(self::$Section->Controller);
+                if ( !method_exists($Controller, $_REQUEST['act']) )
+                {
+                    throw new Exception('Контроллер не имеет метода: ' . $_REQUEST['act'], -1);
+                }
+                $view = $Controller->$_REQUEST['act']();
+                $messageResponse = $Controller->GetMessage();
+                if ( true == $view instanceof Zero_View )
+                {
+                    /* @var $view Zero_View */
+                    $view->Assign('Message', $messageResponse);
+                    $view->Assign('H1', Zero_App::$Section->Name);
+                    $view->Assign('Content', Zero_App::$Section->Content);
+                    $view = $view->Fetch();
+                }
+                Zero_Logs::Stop('#{CONTROLLER} ' . self::$Section->Controller . ' -> ' . $_REQUEST['act']);
             }
             else
             {
-                $view = $viewController;
+                $view = new Zero_View(self::$Section->Controller);
+                $view->Assign('Message', $messageResponse);
+                $view->Assign('H1', Zero_App::$Section->Name);
+                $view->Assign('Content', Zero_App::$Section->Content);
+                $view = $view->Fetch();
             }
-            Zero_Logs::Stop('#{CONTROLLER} ' . self::$Section->Controller . ' -> ' . $_REQUEST['act']);
         }
 
         // Сборка страницы на основании макета
@@ -476,7 +455,6 @@ class Zero_App
         {
             $viewLayout = new Zero_View(self::$Section->Layout);
             $viewLayout->Assign('Message', $messageResponse);
-            $viewLayout->Assign('Head', Zero_App::$Section->Name);
             $viewLayout->Assign('H1', Zero_App::$Section->Name);
             $viewLayout->Assign('Content', $view);
             $view = $viewLayout->Fetch();
