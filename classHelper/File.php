@@ -9,7 +9,6 @@
  */
 final class Zero_Helper_File
 {
-
     /**
      * Spisok papok raspolozheniia binarny`kh danny`kh ob``ekta (ot identifikatora, kratny`i` 100)
      *
@@ -268,7 +267,7 @@ final class Zero_Helper_File
                 if ( '' == $filter || preg_match('~' . $filter . '~si', $name_file) )
                 {
                     mkdir($path_output . '/' . $name_file);
-//                    chmod($path_output . '/' . $name_file, 0777);
+                    //                    chmod($path_output . '/' . $name_file, 0777);
                     self::Folder_Move($path_input . '/' . $name_file, $path_output . '/' . $name_file, $filter);
                     //rmdir($path_input . '/' . $name_file);
                 }
@@ -276,7 +275,7 @@ final class Zero_Helper_File
             else
             {
                 rename($path_input . '/' . $name_file, $path_output . '/' . $name_file);
-//                chmod($path_output . '/' . $name_file, 0666);
+                //                chmod($path_output . '/' . $name_file, 0666);
             }
         }
         closedir($fp_folder);
@@ -354,17 +353,31 @@ final class Zero_Helper_File
      * @param string $k_in - tekushchaia kodirovka fai`la
      * @param string $k_ot - tcelevaia kodirovka fai`la
      */
-    public static function File_Convert($path, $k_in, $k_ot)
+    public static function Folder_Convert($folderPath, $k_in = "WINDOWS-1251", $k_ot = "UTF-8")
     {
-        foreach (glob($path . '/*', GLOB_ONLYDIR) as $path_file)
+        foreach (glob($folderPath . '/*', GLOB_ONLYDIR) as $path)
         {
-            self::File_Convert($path_file, $k_in = "WINDOWS-1251", $k_ot = "UTF-8");
+            self::Folder_Convert($path, $k_in, $k_ot);
         }
-        foreach (glob($path . '/*.*') as $path_file)
+        foreach (glob($folderPath . '/*.*') as $path)
         {
-            file_put_contents($path_file, iconv($k_in, $k_ot, file_get_contents($path_file)));
-            //  exec("iconv --from-code={$k_in} --to-code={$k_ot} {$path_file} > {$path_file}");
+            self::File_Convert($path, $k_in, $k_ot);
         }
+    }
+
+    /**
+     * Konvertatciia fai`lov iz odnoi` kodirovki v druguiu
+     *
+     * Rekursivno obhodit vse podkatalogi
+     *
+     * @param string $path - tcelevoi` katalog
+     * @param string $k_in - tekushchaia kodirovka fai`la
+     * @param string $k_ot - tcelevaia kodirovka fai`la
+     */
+    public static function File_Convert($filePath, $k_in = "WINDOWS-1251", $k_ot = "UTF-8")
+    {
+        file_put_contents($filePath, iconv($k_in, $k_ot, file_get_contents($filePath)));
+        //  exec("iconv --from-code={$k_in} --to-code={$k_ot} {$path_file} > {$path_file}");
     }
 
     /**
