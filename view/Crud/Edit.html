@@ -79,6 +79,8 @@
                     {/}
                 {else if ( isset($Filter[$Prop]['List'][$Object->$Prop]) )}
                     {$Filter[$Prop]['List'][$Object->$Prop]}
+                {else if ( 'Checkbox' == $Filter[$Prop]['Form'] )}
+                    {implode(', ', $Object->$Prop)}
                 {else}
                     {nl2br($Object->$Prop)}
                 {/}
