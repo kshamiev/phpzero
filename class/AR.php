@@ -370,19 +370,19 @@ class Zero_AR
             // Фильтр перечислений
             else if ( 'Checkbox' == $row['Form'] && 0 < count($row['Value']) )
             {
-                if ( isset($row['Value'][0]) && 'NULL' == $row['Value'][0] )
+                //                if ( isset($row['Value'][0]) && 'NULL' == $row['Value'][0] )
+                //                {
+                //                    $this->Sql_Where_IsNull($row['AliasDB']);
+                //                }
+                //                else if ( isset($row['Value'][0]) && ( 'NOTNULL' == $row['Value'][0] || 'NOT NULL' == $row['Value'][0] ) )
+                //                {
+                //                    $this->Sql_Where_IsNotNull($row['AliasDB']);
+                //                }
+                //                else
+                foreach ($row['Value'] as $val)
                 {
-                    $this->Sql_Where_IsNull($row['AliasDB']);
+                    $this->Sql_Where_Like($row['AliasDB'], $val);
                 }
-                else if ( isset($row['Value'][0]) && ( 'NOTNULL' == $row['Value'][0] || 'NOT NULL' == $row['Value'][0] ) )
-                {
-                    $this->Sql_Where_IsNotNull($row['AliasDB']);
-                }
-                else
-                    foreach ($row['Value'] as $val)
-                    {
-                        $this->Sql_Where_Like($row['AliasDB'], $val);
-                    }
             }
             // Фильтр даты и времени
             else if ( 'Datetime' == $row['Form'] || 'Date' == $row['Form'] || 'Time' == $row['Form'] )
