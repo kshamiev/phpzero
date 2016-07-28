@@ -116,6 +116,7 @@ class Zero_App
         $arr = explode('_', $class_name);
         $module = strtolower(array_shift($arr));
         $class = implode('/', $arr);
+        //
         $path = ZERO_PATH_APPLICATION . '/' . $module . '/class/' . $class . '.php';
         if ( file_exists($path) )
         {
@@ -130,6 +131,7 @@ class Zero_App
             if ( class_exists($class_name) )
                 return true;
         }
+        //
         $path = ZERO_PATH_SITE . '/' . $module . '/class/' . $class . '.php';
         if ( file_exists($path) )
         {
@@ -138,6 +140,21 @@ class Zero_App
                 return true;
         }
         $path = ZERO_PATH_SITE . '/' . $module . '/class' . $class . '.php';
+        if ( file_exists($path) )
+        {
+            include_once $path;
+            if ( class_exists($class_name) )
+                return true;
+        }
+        //
+        $path = ZERO_PATH_APPLICATION . '/' . $module . '/' . $class . '.php';
+        if ( file_exists($path) )
+        {
+            include_once $path;
+            if ( class_exists($class_name) )
+                return true;
+        }
+        $path = ZERO_PATH_SITE . '/' . $module . '/' . $class . '.php';
         if ( file_exists($path) )
         {
             include_once $path;
