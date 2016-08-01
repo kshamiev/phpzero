@@ -70,7 +70,7 @@ class Zero_Logs
 
     /**
      * Инициализация логера
-     * 
+     *
      * @param string $fileLog имя файллога
      * @param float $currentTimeLimit пороговое значения для таймеров
      */
@@ -190,12 +190,24 @@ class Zero_Logs
     public static function Output_Display()
     {
         $iterator_list = [];
-        $iterator = Zero_Session::Get_Instance()->getIterator();
-        while ( $iterator->valid() )
+        //        $iterator = Zero_Session::Get_Instance()->getIterator();
+        //        while ( $iterator->valid() )
+        //        {
+        //            $iterator_list[$iterator->key()]['name'] = get_class($iterator->current());
+        //            $iterator_list[$iterator->key()]['type'] = gettype($iterator->current());
+        //            $iterator->next();
+        //        }
+        foreach ($_SESSION['Session'] as $key => $val)
         {
-            $iterator_list[$iterator->key()] = get_class($iterator->current());
-            $iterator->next();
+            $iterator_list[$key]['name'] = get_class($val);
+            $iterator_list[$key]['type'] = gettype($val);
         }
+        foreach ($_SESSION as $key => $val)
+        {
+            $iterator_list[$key]['name'] = get_class($val);
+            $iterator_list[$key]['type'] = gettype($val);
+        }
+        unset($iterator_list['Session']);
         $View = new Zero_View('Zero_Debug_Info');
         $View->Assign('output', self::Get_Usage_MemoryAndTime());
         $View->Assign('message', self::$_Message);

@@ -42,7 +42,6 @@
     <br>
     <h3>РЕЕСТОР (Сессия)</h3>
     {foreach ( $iterator_list as $key => $value )}
-    <div>&nbsp;&nbsp;&nbsp;{$key} => {$value}</div>
+    <div>&nbsp;&nbsp;&nbsp;{$key} => {$value['type']} - {$value['name']} </div>
     {/}
-    <pre>{print_r($_SESSION)}</pre>
 </div>
