@@ -224,7 +224,13 @@ abstract class Zero_Web_Crud_Grid extends Zero_Controller
                     $f = $filterList[$prop]['Form'];
                     if ( $f == 'Radio' || $f == 'Select' || $f == 'Checkbox' )
                     {
-                        $row[$prop] = $filterList[$prop]['List'][$value];
+                        if ( isset($filterList[$prop]['List'][$value]) )
+                            $row[$prop] = $filterList[$prop]['List'][$value];
+                        else
+                        {
+                            Zero_Logs::Custom_DateTime('ERROR', [get_class($this->Model), $prop]);
+                            $row[$prop] = 'не известно';
+                        }
                     }
                 }
             }
