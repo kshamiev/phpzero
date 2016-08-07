@@ -5,18 +5,18 @@
  *
  * To work with the item.
  *
- * @package <Package>.<Subpackage>
+ * @package Zero.Controllers
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
- * @date <Date>
+ * @date 2016.06.07
  */
-class Zero_Controller_Grid extends Zero_Web_Crud_Grid
+class Zero_Web_Controllers_Grid extends Zero_Web_Crud_Grid
 {
     /**
      * The table stores the objects handled by this controller.
      *
      * @var string
      */
-    protected $ModelName = 'Zero_Model_Pattern';
+    protected $ModelName = 'Zero_Controllers';
 
     /**
      * Template view

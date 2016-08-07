@@ -217,8 +217,6 @@ class Zero_View
     protected static function Search_Template($template)
     {
         $arr = explode('_', $template);
-        if ( 'Web' == $arr[1] || 'Api' == $arr[1] || 'Console' == $arr[1] || 'Helper' == $arr[1] )
-            unset($arr[1]);
         $module = strtolower(array_shift($arr));
         //
         $path = ZERO_PATH_APPLICATION . '/' . $module . '/view/' . implode('/', $arr) . self::EXT_VIEW;

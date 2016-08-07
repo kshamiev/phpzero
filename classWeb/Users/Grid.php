@@ -1,22 +1,22 @@
 <?php
 
 /**
- * View a list of cataloged objects by page.
+ * Controller. Users list.
  *
  * To work with the catalog.
  *
- * @package <Package>.<Subpackage>
+ * @package Zero.Controller.Users
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
- * @date <Date>
+ * @date 2015.01.01
  */
-class Zero_Controller_Grid extends Zero_Web_Crud_Grid
+class Zero_Web_Users_Grid extends Zero_Web_Crud_Grid
 {
     /**
      * The table stores the objects handled by this controller.
      *
      * @var string
      */
-    protected $ModelName = 'Zero_Model_Pattern';
+    protected $ModelName = 'Zero_Users';
 
     /**
      * Template view
@@ -26,19 +26,29 @@ class Zero_Controller_Grid extends Zero_Web_Crud_Grid
     protected $ViewName = 'Zero_Web_Crud_Grid';
 
     /**
-     * Initialization of the input parameters
+     * Vy`polnenie dei`stvii`
      *
-     * @param string $action action
-     * @return boolean flag stop execute of the next chunk
+     * @return bool
      */
     protected function Chunk_Init()
     {
         parent::Chunk_Init();
         //
-        $this->Params['obj_parent_prop'] = 'TableName_ID';
+        $this->Params['obj_parent_prop'] = 'Users_ID';
         $this->Params['obj_parent_name'] = '';
-        if ( !isset($this->Params['obj_parent_prop']) )
-            $this->Params['obj_parent_path'] = ['root'];
+        if ( !isset($this->Params['obj_parent_path']) )
+        {
+            if ( 'yes' == Zero_App::$Users->IsCondition )
+            {
+                $this->Params['obj_parent_path'] = [Zero_App::$Users->ID => 'root'];
+                $this->Params['obj_parent_id'] = Zero_App::$Users->ID;
+            }
+            else
+            {
+                $this->Params['obj_parent_path'] = ['root'];
+                $this->Params['obj_parent_id'] = 0;
+            }
+        }
         if ( isset($_REQUEST['pid']) )
         {
             //  move up
@@ -70,7 +80,7 @@ class Zero_Controller_Grid extends Zero_Web_Crud_Grid
      *
      * Moving a node or branch of a tree branch in the current parent
      *
-     * @return boolean flag stop execute of the next chunk
+     * @return Zero_View
      */
     public function Action_CatalogMove()
     {
