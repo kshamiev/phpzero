@@ -591,8 +591,13 @@ class Zero_App
      */
     public static function Exception(Exception $exception)
     {
+        $codeList = [
+           301 => 1,
+           403 => 1,
+           404 => 1,
+        ];
         $code = $exception->getCode();
-        if ( 404 != $code && 403 != $code && 301 != $code )
+        if ( empty($codeList[$code]) )
         {
             $code = 500;
             self::exception_Trace($exception);
@@ -603,40 +608,39 @@ class Zero_App
             self::ResponseJson500($code, [$exception->getMessage()]);
         else if ( self::MODE_WEB == self::$mode )
         {
-            $sql = "SELECT Layout, Controller FROM Section WHERE UrlThis = '{$code}'";
-            if ( true == self::$Config->Site_UseDB && 0 < count($row = Zero_DB::Select_Row($sql)) )
+            $View = new Zero_View('Zero_Exception');
+            $controller = 'Zero_Exception_' . $code;
+            if ( self::Autoload($controller) )
             {
-                if ( $row['Layout'] )
-                    $View = new Zero_View($row['Layout']);
-                else
-                    $View = new Zero_View('Zero_Error');
-                if ( $row['Controller'] )
+                $Controller = Zero_Controller::Makes($controller);
+                if ( method_exists($Controller, 'Action_Default') )
                 {
-                    $Controller = Zero_Controller::Makes($row['Controller'], ['message' => $exception->getMessage()]);
-                    if ( method_exists($Controller, 'Action_Default') )
+                    $viewController = $Controller->Action_Default();
+                    if ( true == $viewController instanceof Zero_View )
                     {
-                        $viewController = $Controller->Action_Default();
-                        if ( true == $viewController instanceof Zero_View )
-                        {
-                            /* @var $viewController Zero_View */
-                            $viewController->Assign('Head', Zero_App::$Section->Name);
-                            $viewController->Assign('H1', Zero_App::$Section->Name);
-                            $viewController->Assign('Content', Zero_App::$Section->Content);
-                            $view = $viewController->Fetch();
-                        }
-                        else
-                        {
-                            $view = $viewController;
-                        }
-                        $View->Assign('Content', $view);
+                        /* @var $viewController Zero_View */
+                        $viewController->Assign('code', $code);
+                        $viewController->Assign('message', $exception->getMessage());
+                        $view = $viewController->Fetch();
+                    }
+                    else
+                    {
+                        $view = $viewController;
                     }
                 }
+                else
+                {
+                    Zero_Logs::Set_Message_Error("У контроллера '{$Controller}' нет метода по умолчанию");
+                    $view = '';
+                }
+                $View->Assign('Content', $view);
             }
             else
             {
-                $View = new Zero_View('Zero_Error');
-                $View->Assign('code', $code);
-                $View->Assign('message', $exception->getMessage());
+                $view = new Zero_View($controller);
+                $view->Assign('code', $code);
+                $view->Assign('message', $exception->getMessage());
+                $View->Assign('Content', $view->Fetch());
             }
             self::ResponseHtml($View->Fetch(), $code);
         }
