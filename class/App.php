@@ -608,7 +608,9 @@ class Zero_App
             self::ResponseJson500($code, [$exception->getMessage()]);
         else if ( self::MODE_WEB == self::$mode )
         {
-            $View = new Zero_View('Zero_Exception');
+            $viewLayout = new Zero_View('Zero_Exception');
+            $viewLayout->Assign('code', $code);
+            $viewLayout->Assign('message', $exception->getMessage());
             $controller = 'Zero_Exception_' . $code;
             if ( self::Autoload($controller) )
             {
@@ -633,16 +635,16 @@ class Zero_App
                     Zero_Logs::Set_Message_Error("У контроллера '{$Controller}' нет метода по умолчанию");
                     $view = '';
                 }
-                $View->Assign('Content', $view);
+                $viewLayout->Assign('Content', $view);
             }
             else
             {
                 $view = new Zero_View($controller);
                 $view->Assign('code', $code);
                 $view->Assign('message', $exception->getMessage());
-                $View->Assign('Content', $view->Fetch());
+                $viewLayout->Assign('Content', $view->Fetch());
             }
-            self::ResponseHtml($View->Fetch(), $code);
+            self::ResponseHtml($viewLayout->Fetch(), $code);
         }
     }
 
