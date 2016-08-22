@@ -8,7 +8,6 @@
 return [
     '' => '',
     // Действия
-    'Zero_Controllers_Edit Action_Run' => 'выполнить',
     'Action_Default' => 'Контроллер по умолчанию',
     'Action_Remove' => 'удалить',
     'Action_FilterSet' => 'применить фильтр',
