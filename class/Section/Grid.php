@@ -1,22 +1,22 @@
 <?php
 
 /**
- * View a list of cataloged objects by page.
+ * Section list.
  *
  * To work with the catalog.
  *
- * @package <Package>.<Subpackage>
+ * @package Zero.Controller.Section
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
- * @date <Date>
+ * @date 2015.01.01
  */
-class Zero_Controller_Grid extends Zero_Crud_Grid
+class Zero_Section_Grid extends Zero_Crud_Grid
 {
     /**
      * The table stores the objects handled by this controller.
      *
      * @var string
      */
-    protected $ModelName = 'Zero_Model_Pattern';
+    protected $ModelName = 'Zero_Section';
 
     /**
      * Template view
@@ -26,19 +26,20 @@ class Zero_Controller_Grid extends Zero_Crud_Grid
     protected $ViewName = 'Zero_Crud_Grid';
 
     /**
-     * Initialization of the input parameters
+     * Initialization filters
      *
-     * @param string $action action
      * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_Init()
     {
         parent::Chunk_Init();
         //
-        $this->Params['obj_parent_prop'] = 'TableName_ID';
+        $this->Params['obj_parent_prop'] = 'Section_ID';
         $this->Params['obj_parent_name'] = '';
-        if ( !isset($this->Params['obj_parent_prop']) )
+        if ( !isset($this->Params['obj_parent_path']) )
+        {
             $this->Params['obj_parent_path'] = ['root'];
+        }
         if ( isset($_REQUEST['pid']) )
         {
             //  move up
@@ -56,12 +57,14 @@ class Zero_Controller_Grid extends Zero_Crud_Grid
             //  move down
             else
             {
-                $ObjectGo = Zero_Model::Makes($this->ModelName, $_REQUEST['pid']);
-                $ObjectGo->Load('Name');
-                $this->Params['obj_parent_path'][$_REQUEST['pid']] = $ObjectGo->Name;
+                $ObjectGo = Zero_Section::Make($_REQUEST['pid']);
+                $this->Params['obj_parent_path'][$_REQUEST['pid']] = $ObjectGo->NameMenu;
                 unset($ObjectGo);
             }
         }
+        $Filter = Zero_Filter::Factory($this->Model);
+        if ( false == $Filter->IsSet )
+            $Filter->Set_Sort('Sort');
         return true;
     }
 
@@ -101,5 +104,61 @@ class Zero_Controller_Grid extends Zero_Crud_Grid
             $Object->$prop = $this->Params['obj_parent_id'];
         $Object->Save();
         return $this->SetMessage();
+    }
+
+    /**
+     * Moving.
+     *
+     * Moving a node or branch of a tree branch in the current parent
+     *
+     * @return boolean flag stop execute of the next chunk
+     */
+    public function Action_UpdateUrl()
+    {
+        $this->Chunk_Init();
+        $this->Chunk_UpdateUrl();
+        $this->Chunk_View();
+        return $this->View;
+    }
+
+    /**
+     * Initialization of the stack chunks and input parameters
+     *
+     * @return boolean flag stop execute of the next chunk
+     */
+    public function Action_FilterReset()
+    {
+        $this->Chunk_Init();
+
+        $Filter = Zero_Filter::Factory($this->Model);
+        $Filter->Reset();
+        $Filter->Set_Sort('Sort');
+        $Filter->Page = 1;
+
+        $this->Chunk_View();
+        return $this->View;
+    }
+
+    /**
+     * Correcting an absolute reference.
+     *
+     * Correcting an absolute reference catalog and all its subdirectories (usually when moving).
+     * - After changing the links, move a catalog, the new installation
+     *
+     * @param integer $section_id ID of the parent directory
+     * @return boolean flag stop execute of the next chunk
+     */
+    protected function Chunk_UpdateUrl($section_id = null)
+    {
+        if ( !$section_id )
+        {
+            if ( !$this->Params['obj_parent_id'] )
+                return $this->SetMessage(-1, ['Error_Update_Url']);
+            $section_id = $this->Params['obj_parent_id'];
+        }
+        if ( true == Zero_Section::DB_Update_Url($section_id) )
+            return $this->SetMessage();
+        else
+            return $this->SetMessage(-1, ['Error_Update_Url']);
     }
 }

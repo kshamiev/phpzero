@@ -1,22 +1,19 @@
 <?php
-
 /**
- * View a list of related objects by page.
+ * View a list content of related by page.
  *
- * To work with the item. Relation one to many.
- *
- * @package <Package>.<Subpackage>
+ * @package Zero.Controller.Content
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
- * @date <Date>
+ * @date 2015.01.01
  */
-class Zero_Controller_Grid extends Zero_Crud_Grid
+class Zero_Content_GridSection extends Zero_Crud_Grid
 {
     /**
      * The table stores the objects handled by this controller.
      *
      * @var string
      */
-    protected $ModelName = 'Zero_Model_Pattern';
+    protected $ModelName = 'Zero_Content';
 
     /**
      * Template view
@@ -28,12 +25,11 @@ class Zero_Controller_Grid extends Zero_Crud_Grid
     /**
      * Initialization of the input parameters
      *
-     * @param string $action action
      * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_Init()
     {
-        $this->Params['obj_parent_prop'] = 'relation_prop';
+        $this->Params['obj_parent_prop'] = 'Section_ID';
         $this->Params['obj_parent_name'] = '';
         parent::Chunk_Init();
         return true;

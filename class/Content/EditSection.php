@@ -1,20 +1,19 @@
 <?php
-
 /**
- * <Comment>
+ * Changing the content blocks page of related by page.
  *
- * @package <Package>.<Subpackage>
+ * @package Zero.Controller.Content
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
- * @date <Date>
+ * @date 2015.01.01
  */
-class Zero_Controller_Edit extends Zero_Crud_Edit
+class Zero_Content_EditSection extends Zero_Crud_Edit
 {
     /**
      * The table stores the objects handled by this controller.
      *
      * @var string
      */
-    protected $ModelName = 'Zero_Model_Pattern';
+    protected $ModelName = 'Zero_Content';
 
     /**
      * Template view
@@ -30,14 +29,8 @@ class Zero_Controller_Edit extends Zero_Crud_Edit
      */
     protected function Chunk_Init()
     {
-        //  relation transition one to many (CL)
-        $this->Params['obj_parent_prop'] = 'relation_prop';
+        $this->Params['obj_parent_prop'] = 'Section_ID';
         $this->Params['obj_parent_name'] = '';
-        //  relation transition many to many (CCL)
-        $this->Params['obj_parent_table'] = 'relation_table';
-        $this->Params['obj_parent_prop'] = 'relation_prop';
-        $this->Params['obj_parent_name'] = '';
-        //
         parent::Chunk_Init();
         return true;
     }

@@ -1,22 +1,19 @@
 <?php
-
 /**
- * View a list of objects by page.
+ * Controller. List Groups.
  *
- * To work with the item.
- *
- * @package <Package>.<Subpackage>
+ * @package Zero.Controller.Groups
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
- * @date <Date>
+ * @date 2015.01.01
  */
-class Zero_Controller_Grid extends Zero_Crud_Grid
+class Zero_Groups_Grid extends Zero_Crud_Grid
 {
     /**
      * The table stores the objects handled by this controller.
      *
      * @var string
      */
-    protected $ModelName = 'Zero_Model_Pattern';
+    protected $ModelName = 'Zero_Groups';
 
     /**
      * Template view

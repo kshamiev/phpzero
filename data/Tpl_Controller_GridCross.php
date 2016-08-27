@@ -9,7 +9,7 @@
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date <Date>
  */
-class Zero_Controller_Grid extends Zero_Web_Crud_Grid
+class Zero_Controller_Grid extends Zero_Crud_Grid
 {
     /**
      * The table stores the objects handled by this controller.
@@ -23,7 +23,7 @@ class Zero_Controller_Grid extends Zero_Web_Crud_Grid
      *
      * @var string
      */
-    protected $ViewName = 'Zero_Web_Crud_Grid';
+    protected $ViewName = 'Zero_Crud_Grid';
 
     /**
      * Initialization of the input parameters
