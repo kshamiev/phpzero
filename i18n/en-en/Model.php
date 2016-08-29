@@ -90,6 +90,7 @@ return [
     'Zero_Controllers IsAuthorized' => 'Авторизованный (для API к.)',
     'Zero_Controllers IsAuthorized options' => ['no' => 'нет', 'yes' => 'да'],
     'Controllers_ID' => 'Контроллер',
+    'Zero_Section Name' => 'Заголовок',
     'Token' => 'Токен',
     'Zero_Content Target' => 'Место и вид вывода',
     'Zero_Content Target options' => ['top' => 'top', 'information' => 'information', 'feature' => 'feature', 'voucher' => 'voucher'],
