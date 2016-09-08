@@ -221,15 +221,12 @@ class Zero_Logs
      */
     public static function Output_File()
     {
-        //        self::$_FileLog = Zero_App::$Config->Site_DomainSub . '_' . self::$_FileLog;
         // Логируем работу приложения в целом
         if ( Zero_App::$Config->Log_Profile_Application )
         {
             $output = join("\n", self::Get_Usage_MemoryAndTime()) . "\n";
-            //            self::File(self::$_FileLog, $output);
             Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . self::$_FileLog . '.log', $output);
         }
-        //
         if ( 0 < count(self::$_Message) )
         {
             $output = self::Get_Usage_MemoryAndTime()[0];
@@ -250,7 +247,6 @@ class Zero_Logs
             {
                 array_unshift($errors, str_replace(["\r", "\t"], " ", $output));
                 $errors = preg_replace('![ ]{2,}!', ' ', join("\n", $errors));
-                //                self::File(self::$_FileLog . '_errors', $errors);
                 Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . self::$_FileLog . '_error.log', $errors);
             }
             // логирование предупреждений в файл
@@ -258,7 +254,6 @@ class Zero_Logs
             {
                 array_unshift($warnings, str_replace(["\r", "\t"], " ", $output));
                 $warnings = preg_replace('![ ]{2,}!', ' ', join("\n", $warnings));
-                //                self::File(self::$_FileLog . '_warnings', $warnings);
                 Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . self::$_FileLog . '_warning.log', $warnings);
             }
             // логирование сообщений в файл
@@ -266,17 +261,17 @@ class Zero_Logs
             {
                 array_unshift($notice, str_replace(["\r", "\t"], " ", $output));
                 $notice = preg_replace('![ ]{2,}!', ' ', join("\n", $notice));
-                //                self::File(self::$_FileLog . '_notice', $notice);
                 Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . self::$_FileLog . '_notice.log', $notice);
             }
         }
         // логирование операций пользователиа в файл
-        if ( Zero_App::$Config->Log_Profile_Action && isset($_REQUEST['act']) && isset($_SERVER['REQUEST_METHOD']) )
-            if ( 'POST' == $_SERVER['REQUEST_METHOD'] || 'PUT' == $_SERVER['REQUEST_METHOD'] || 'DELETE' == $_SERVER['REQUEST_METHOD'] )
+        if ( Zero_App::$Config->Log_Profile_Action && isset($_REQUEST['act']) && 'Action_Default' != $_REQUEST['act'] )
+            if ( is_object(Zero_App::$Users) && is_object(Zero_App::$Section) )
             {
-                $act = date('[d.m.Y H:i:s]') . "\t" . Zero_App::$Users->Login . "\t";
-                $act .= Zero_App::$Section->Controller . " -> " . $_REQUEST['act'] . "\t" . ZERO_HTTP . $_SERVER['REQUEST_URI'];
-                //                self::File(self::$_FileLog . '_action', $act);
+                $act = date('[d.m.Y H:i:s]') . "\t";
+                $act .= Zero_App::$Users->Login . "\t";
+                $act .= Zero_App::$Section->Controller . " -> " . $_REQUEST['act'] . "\t";
+                $act .= ZERO_HTTP . $_SERVER['REQUEST_URI'];
                 Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . self::$_FileLog . '_action.log', $act);
             }
     }

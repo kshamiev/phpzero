@@ -22,7 +22,6 @@
  * @property string $UrlThis
  * @property string $UrlRedirect
  * @property string $Layout
- * @property string $Controller
  * @property string $IsAuthorized
  * @property string $IsVisible
  * @property string $IsEnable
