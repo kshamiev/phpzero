@@ -68,16 +68,12 @@ class Zero_Helper_Curl
     /**
      * Конструктор
      *
-     * @param string $url (http://www.odnoklassniki.ru/)
-     * @param string $host (www.odnoklassniki.ru)
      * @param string $proxy Прокси сервер (ip адресс)
      */
-    public function __construct($url, $host, $proxy = '')
+    public function __construct($proxy = '')
     {
-        $this->url = $url;
-        $this->host = $host;
         $this->proxy = $proxy;
-        $this->Set_Cookie_file();
+        $this->set_Cookie_file();
     }
 
     /**
@@ -96,17 +92,30 @@ class Zero_Helper_Curl
      * Иницилизация файл-лога хранящего куку сессии
      *
      */
-    protected function Set_Cookie_file()
+    private function set_Cookie_file()
     {
         if ( $this->cookie_file )
             unlink($this->cookie_file);
         do
         {
             sleep(1);
-            $this->cookie_file = ZERO_PATH_EXCHANGE . '/cookie_' . $this->host . '_' . zero_random_string('8', 'lower,upper,numbers') . '_' . date('d.m.Y_H.i.s') . '.txt';
+            $this->cookie_file = ZERO_PATH_EXCHANGE . '/cookie_' . zero_random_string('8', 'lower,upper,numbers') . '_' . date('d.m.Y_H.i.s') . '.txt';
         }
         while ( file_exists($this->cookie_file) );
         fclose(fopen($this->cookie_file, 'w'));
+    }
+
+    private function init($url)
+    {
+        $arr = explode('/', $url);
+        if ( !$this->url )
+        {
+            $this->url = $arr[0] . '//' . $arr[2] . '/';
+        }
+        if ( !$this->host )
+        {
+            $this->host = $arr[2];
+        }
     }
 
     /**
@@ -118,6 +127,7 @@ class Zero_Helper_Curl
      */
     public function Get_Page($url, $postData = [])
     {
+        $this->init($url);
         $ch = curl_init($url);
         //	идем через proxy
         if ( $this->proxy )
@@ -127,7 +137,7 @@ class Zero_Helper_Curl
             // curl_setopt($ch,CURLOPT_PROXYUSERPWD,'user:password');
         }
         //	время работы
-        curl_setopt($ch, CURLOPT_TIMEOUT, 30);          //	полное время сеанса
+        curl_setopt($ch, CURLOPT_TIMEOUT, 300);          //	полное время сеанса
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);    //	время ожидания соединения в секундах
         //	Передаем и возвращаем Заголовки и тело страницы
         curl_setopt($ch, CURLOPT_HEADER, 1);

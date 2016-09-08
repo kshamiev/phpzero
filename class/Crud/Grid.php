@@ -163,6 +163,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
      * Create views.
      *
      * @return boolean flag stop execute of the next chunk
+     * @todo ERROR разобраться
      */
     protected function Chunk_View()
     {
