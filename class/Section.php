@@ -22,7 +22,6 @@
  * @property string $UrlThis
  * @property string $UrlRedirect
  * @property string $Layout
- * @property string $Controller
  * @property string $IsAuthorized
  * @property string $IsVisible
  * @property string $IsEnable
@@ -80,7 +79,6 @@ class Zero_Section extends Zero_Model
             'UrlThis' => ['AliasDB' => 'z.UrlThis', 'DB' => 'T', 'IsNull' => 'NO', 'Default' => '', 'Form' => 'Text'],
             'UrlRedirect' => ['AliasDB' => 'z.UrlRedirect', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'],
             'Layout' => ['AliasDB' => 'z.Layout', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Select'],
-            'Controller' => ['AliasDB' => 'z.Controller', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'],
             'IsAuthorized' => ['AliasDB' => 'z.IsAuthorized', 'DB' => 'E', 'IsNull' => 'NO', 'Default' => 'no', 'Form' => 'Radio'],
             'IsVisible' => ['AliasDB' => 'z.IsVisible', 'DB' => 'E', 'IsNull' => 'NO', 'Default' => 'no', 'Form' => 'Radio'],
             'IsEnable' => ['AliasDB' => 'z.IsEnable', 'DB' => 'E', 'IsNull' => 'NO', 'Default' => 'yes', 'Form' => 'Radio'],
@@ -114,7 +112,6 @@ class Zero_Section extends Zero_Model
         return [
             /*BEG_CONFIG_FILTER_PROP*/
             'ID' => ['Visible' => true, 'AR' => true],
-            'Controller' => ['Visible' => true, 'AR' => true],
             'IsAuthorized' => ['Visible' => true, 'AR' => true],
             'Layout' => ['AR' => true],
             'IsVisible' => ['Visible' => true, 'AR' => true],
@@ -147,7 +144,6 @@ class Zero_Section extends Zero_Model
             /*BEG_CONFIG_GRID_PROP*/
             'ID' => [],
             'Name' => [],
-            'Controller' => [],
             'Url' => [],
             /*END_CONFIG_GRID_PROP*/
         ];
@@ -174,14 +170,13 @@ class Zero_Section extends Zero_Model
             'UrlRedirect' => [],
             'Layout' => [],
             'Controllers_ID' => [],
-            'Controller' => [],
             'IsAuthorized' => [],
             'IsVisible' => [],
             'IsEnable' => [],
             'IsIndex' => [],
             'Sort' => [],
-            'Name' => [],
             'NameMenu' => [],
+            'Name' => [],
             'Title' => [],
             'Keywords' => [],
             'Description' => [],

@@ -77,8 +77,8 @@ class Zero_Users extends Zero_Model
                 'Default' => '',
                 'Form' => ''
             ],
-            'Groups_ID' => ['AliasDB' => 'z.Groups_ID', 'DB' => 'I', 'IsNull' => 'YES', 'Default' => '2', 'Form' => 'Link'],
-            'Users_ID' => ['AliasDB' => 'z.Users_ID', 'DB' => 'I', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Link'],
+            'Groups_ID' => ['AliasDB' => 'z.Groups_ID', 'DB' => 'ID', 'IsNull' => 'YES', 'Default' => '2', 'Form' => 'Link'],
+            'Users_ID' => ['AliasDB' => 'z.Users_ID', 'DB' => 'ID', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Link'],
             'Name' => ['AliasDB' => 'z.Name', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'],
             'Login' => ['AliasDB' => 'z.Login', 'DB' => 'T', 'IsNull' => 'NO', 'Default' => '', 'Form' => 'Text'],
             'Password' => ['AliasDB' => 'z.Password', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Password'],
