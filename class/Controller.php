@@ -51,7 +51,7 @@ abstract class Zero_Controller
      */
     public function GetMessage()
     {
-        if ( count(self::$_Message) == 0 )
+        if (count(self::$_Message) == 0)
             $this->SetMessage();
         return self::$_Message;
     }
@@ -114,11 +114,11 @@ abstract class Zero_Controller
     protected function Chunk_Init()
     {
         // Шаблон
-        if ( isset($this->Params['view']) )
+        if (isset($this->Params['view']))
             $this->View = new Zero_View(get_class($this) . '_' . $this->Params['view']);
-        else if ( isset($this->Params['tpl']) )
+        else if (isset($this->Params['tpl']))
             $this->View = new Zero_View(get_class($this) . '_' . $this->Params['tpl']);
-        else if ( isset($this->Params['template']) )
+        else if (isset($this->Params['template']))
             $this->View = new Zero_View(get_class($this) . '_' . $this->Params['template']);
         else
             $this->View = new Zero_View(get_class($this));
@@ -151,13 +151,12 @@ abstract class Zero_Controller
      */
     public static function Makes($class_name, $properties = [])
     {
-        if ( '' == $class_name )
+        if ('' == $class_name)
             throw new Exception('Имя класса создаваемого контроллера не указано', -1);
-        if ( false == Zero_App::Autoload($class_name) )
+        if (false == Zero_App::Autoload($class_name))
             throw new Exception('Контроллер "' . $class_name . '" отсутсвует в приложении', -1);
         $Controller = new $class_name();
-        foreach ($properties as $property => $value)
-        {
+        foreach ($properties as $property => $value) {
             $Controller->Params[$property] = $value;
         }
         return $Controller;
@@ -174,8 +173,7 @@ abstract class Zero_Controller
      */
     public static function Factory($class_name, $properties = [])
     {
-        if ( !$result = Zero_Session::Get($class_name) )
-        {
+        if (!$result = Zero_Session::Get($class_name)) {
             $result = self::Makes($class_name, $properties);
             Zero_Session::Set($class_name, $result);
         }
@@ -215,5 +213,11 @@ abstract class Zero_Controller
     {
         $index = get_class($this);
         Zero_Session::Rem($index);
+    }
+
+    public static function Api($post = null)
+    {
+        $response = Zero_App::RequestJson("POST", "https://www.domain.ru/api/v1/...", $post);
+        return $response;
     }
 }
