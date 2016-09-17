@@ -86,19 +86,23 @@ class Zero_Groups_Access extends Zero_Controller
     protected function Chunk_View()
     {
         $Section = Zero_Model::Makes('Zero_Section');
-        $section_list = $Section->AR->Select_Tree('ID, Name, Controller, Url, IsAuthorized');
+        $section_list = $Section->AR->Select_Tree('ID, Name, Controllers_ID, Url, IsAuthorized');
         foreach ($section_list as $id => $row)
         {
-            if ( 'no' == $row['IsAuthorized'] || '' == $row['Controller'] )
+            if ( 'no' == $row['IsAuthorized'] || !$row['Controllers_ID'] )
             {
                 unset($section_list[$id]);
                 continue;
             }
+            $sql = "SELECT `Name`, `Controller` FROM Controllers WHERE ID = {$row['Controllers_ID']}";
+            $controller = Zero_DB::Select_Row($sql);
+            $section_list[$id]['ControllerName'] = $controller['Name'];
+            $section_list[$id]['Controller'] = $controller['Controller'];
             //  read from the controllers
             $method_list = [];
             try
             {
-                $reflection = new ReflectionClass($row['Controller']);
+                $reflection = new ReflectionClass($controller['Controller']);
             } catch ( Exception $e )
             {
                 throw new Exception($e->getMessage(), -1);
@@ -114,7 +118,7 @@ class Zero_Groups_Access extends Zero_Controller
                 {
                     array_shift($arr);
                     $index = join('_', $arr);
-                    $method_list[$index] = Zero_I18n::Controller($row['Controller'], $name);
+                    $method_list[$index] = Zero_I18n::Controller($controller['Controller'], $name);
                 }
             }
             $section_list[$id]['action_list_all'] = $method_list;
