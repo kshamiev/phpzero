@@ -51,7 +51,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
     /**
      * Initialization of the stack chunks and input parameters
      *
-     * @return boolean flag stop execute of the next chunk
+     * @return Zero_View
      */
     public function Action_FilterSet()
     {
@@ -107,7 +107,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
     /**
      * Initialization of the stack chunks and input parameters
      *
-     * @return boolean flag stop execute of the next chunk
+     * @return Zero_View
      */
     public function Action_FilterReset()
     {
@@ -153,10 +153,12 @@ abstract class Zero_Crud_Grid extends Zero_Controller
     /**
      *  Adding an object
      *
-     * @return boolean flag stop execute of the next chunk
+     * @return Zero_View
      */
     public function Action_Add()
     {
+        $this->View = new Zero_View($this->ViewName);
+        return $this->View;
     }
 
     /**
