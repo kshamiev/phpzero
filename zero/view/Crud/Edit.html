@@ -13,7 +13,7 @@
                 {if ( isset($Action['Add']) )}
                 <input class="btn" type="button" value="{$Action['Add']['Name']}" onclick="button_form(this.form, '{URL}?id=0', 'Add', 0);">
                 {/if}
-                {plugin "Zero_Plugin_Crud_Toolbar" Model=$Object Action=$Action}
+                {plugin "Zero_Crud_Plugin_Toolbar" Model=$Object Action=$Action}
                 {foreach ($Interface as $row)}
                 <a href="{URL}/{$row['UrlThis']}?pid={$Object->ID}" style="vertical-align: middle;">{$row['Name']}</a>&nbsp;&nbsp;
                 {/foreach}

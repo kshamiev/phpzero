@@ -6,7 +6,7 @@ define('VERSION_PHPZERO', '2.0.0');
 /**
  * The absolute path to the project (site)
  */
-define('ZERO_PATH_SITE', dirname(dirname(__DIR__)));
+define('ZERO_PATH_SITE', dirname(dirname(dirname(__DIR__))));
 /**
  * Location of binary data
  */
@@ -32,17 +32,9 @@ define('ZERO_PATH_EXCHANGE', ZERO_PATH_SITE . '/exchange');
  */
 define('ZERO_PATH_APPLICATION', ZERO_PATH_SITE . '/application');
 /**
- * Location templates grouped by subject
- */
-define('ZERO_PATH_VIEW', ZERO_PATH_SITE . '/view');
-/**
  * Location System
  */
-define('ZERO_PATH_ZERO', ZERO_PATH_SITE . '/zero');
-/**
- * Location System
- */
-define('ZERO_PATH_LAYOUT', ZERO_PATH_SITE . '/layout');
+define('ZERO_PATH_ZERO', ZERO_PATH_SITE . '/phpzero');
 
 /**
  * Application.
@@ -125,7 +117,14 @@ class Zero_App
             if ( class_exists($class_name) )
                 return true;
         }
-        $path = ZERO_PATH_APPLICATION . '/' . $module . '/class' . $class . '.php';
+        $path = ZERO_PATH_APPLICATION . '/' . $module . '/class' . $class . '.php'; // old
+        if ( file_exists($path) )
+        {
+            include_once $path;
+            if ( class_exists($class_name) )
+                return true;
+        }
+        $path = ZERO_PATH_APPLICATION . '/' . $module . '/' . $class . '.php'; // old
         if ( file_exists($path) )
         {
             include_once $path;
@@ -133,29 +132,21 @@ class Zero_App
                 return true;
         }
         //
-        $path = ZERO_PATH_SITE . '/' . $module . '/class/' . $class . '.php';
+        $path = ZERO_PATH_ZERO . '/' . $module . '/class/' . $class . '.php';
         if ( file_exists($path) )
         {
             include_once $path;
             if ( class_exists($class_name) )
                 return true;
         }
-        $path = ZERO_PATH_SITE . '/' . $module . '/class' . $class . '.php';
+        $path = ZERO_PATH_ZERO . '/' . $module . '/class' . $class . '.php'; // old
         if ( file_exists($path) )
         {
             include_once $path;
             if ( class_exists($class_name) )
                 return true;
         }
-        //
-        $path = ZERO_PATH_APPLICATION . '/' . $module . '/' . $class . '.php';
-        if ( file_exists($path) )
-        {
-            include_once $path;
-            if ( class_exists($class_name) )
-                return true;
-        }
-        $path = ZERO_PATH_SITE . '/' . $module . '/' . $class . '.php';
+        $path = ZERO_PATH_ZERO . '/' . $module . '/' . $class . '.php'; // old
         if ( file_exists($path) )
         {
             include_once $path;
@@ -341,13 +332,13 @@ class Zero_App
             return;
 
         //  Include Components
-        require_once ZERO_PATH_APPLICATION . '/function.php';
         require_once ZERO_PATH_ZERO . '/function.php';
-        require_once ZERO_PATH_ZERO . '/class/Config.php';
-        require_once ZERO_PATH_ZERO . '/class/Logs.php';
-        require_once ZERO_PATH_ZERO . '/class/DB.php';
-        require_once ZERO_PATH_ZERO . '/class/Session.php';
-        require_once ZERO_PATH_ZERO . '/class/Cache.php';
+        require_once ZERO_PATH_ZERO . '/zero/class/Config.php';
+        require_once ZERO_PATH_ZERO . '/zero/class/Logs.php';
+        require_once ZERO_PATH_ZERO . '/zero/class/DB.php';
+        require_once ZERO_PATH_ZERO . '/zero/class/Session.php';
+        require_once ZERO_PATH_ZERO . '/zero/class/Cache.php';
+        require_once ZERO_PATH_APPLICATION . '/function.php';
 
         spl_autoload_register(['Zero_App', 'Autoload']);
         set_exception_handler(['Zero_App', 'Exception']);
@@ -376,7 +367,7 @@ class Zero_App
         }
 
         // Шаблонизатор
-        require_once ZERO_PATH_ZERO . '/class/View.php';
+        require_once ZERO_PATH_ZERO . '/zero/class/View.php';
 
         //  Session Initialization (Zero_Session)
         Zero_Session::Init(self::$Config->Site_Domain);

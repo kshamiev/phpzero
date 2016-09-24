@@ -444,38 +444,6 @@ class Zero_Section extends Zero_Model
     }
 
     /**
-     * Custom controller
-     *
-     * @param mixed $value value to check
-     * @param string $scenario scenario validation
-     * @return string
-     */
-    public function VL_Controller($value, $scenario)
-    {
-        if ( !$value )
-        {
-            $this->Controller = null;
-            return '';
-        }
-        $arr = explode('_', $value);
-        $path = ZERO_PATH_APPLICATION . '/' . strtolower(array_shift($arr)) . '/class/' . implode('/', $arr) . '.php';
-        if ( !file_exists($path) )
-        {
-            $path = ZERO_PATH_ZERO . '/class/' . implode('/', $arr) . '.php';
-            if ( !file_exists($path) )
-            {
-                return 'Error_Path_Class';
-            }
-        }
-        if ( !preg_match("~\nclass {$value}~si", file_get_contents($path)) )
-        {
-            return 'Error_Class_Exists';
-        }
-        $this->Controller = $value;
-        return '';
-    }
-
-    /**
      * Sample. Filter for property.
      *
      * @return array
@@ -483,7 +451,7 @@ class Zero_Section extends Zero_Model
     public function FL_Layout()
     {
         $arr = [];
-        foreach (glob(ZERO_PATH_APPLICATION . "/*", GLOB_ONLYDIR) as $dir)
+        foreach (glob(ZERO_PATH_ZERO . "/*", GLOB_ONLYDIR) as $dir)
         {
             $mod = ucfirst(basename($dir));
             $row = glob($dir . "/view/*.html");
@@ -493,12 +461,15 @@ class Zero_Section extends Zero_Model
                 $arr[$index] = $index;
             }
         }
-        $mod = ucfirst(basename(ZERO_PATH_ZERO));
-        $row = glob(ZERO_PATH_ZERO . "/view/*.html");
-        foreach ($row as $r)
+        foreach (glob(ZERO_PATH_APPLICATION . "/*", GLOB_ONLYDIR) as $dir)
         {
-            $index = $mod . '_' . substr(basename($r), 0, -5);
-            $arr[$index] = $index;
+            $mod = ucfirst(basename($dir));
+            $row = glob($dir . "/view/*.html");
+            foreach ($row as $r)
+            {
+                $index = $mod . '_' . substr(basename($r), 0, -5);
+                $arr[$index] = $index;
+            }
         }
         return $arr;
     }

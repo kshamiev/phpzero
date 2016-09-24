@@ -2,13 +2,13 @@
 /**
  * Controller. Page by page
  *
- * Sample: {plugin "Zero_Plugin_Crud_Pager" view="" Count=$PagerCount Page=$PagerPage PageItem=$PagerPageItem PageStep=$PagerPageStep}
+ * Sample: {plugin "Zero_Crud_Plugin_Pager" view="" Count=$PagerCount Page=$PagerPage PageItem=$PagerPageItem PageStep=$PagerPageStep}
  *
  * @package Zero.Plugin.Crud
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
-class Zero_Plugin_Crud_Pager extends Zero_Controller
+class Zero_Crud_Plugin_Pager extends Zero_Controller
 {
     /**
      * Create views.

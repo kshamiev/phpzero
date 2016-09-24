@@ -328,7 +328,7 @@ class Zero_Engine
         $this->I18n = [];
         foreach ($table_list as $row)
         {
-            $path_pattern = ZERO_PATH_ZERO . '/data/Tpl_Model.php';
+            $path_pattern = ZERO_PATH_ZERO . '/zero/data/Tpl_Model.php';
             $path_model = $dir . '/class/' . $row['Name'] . '.php';
             $class = file_get_contents($path_pattern);
             $class = str_replace('<Comment>', $row['Name'], $class);
@@ -349,7 +349,7 @@ class Zero_Engine
             if ( $flag_grid )
             {
                 //          echo 'CREATE CONTROLLER ' . $path_target . '<br>';
-                $path_pattern = ZERO_PATH_ZERO . '/data/Tpl_Controller_Grid.php';
+                $path_pattern = ZERO_PATH_ZERO . '/zero/data/Tpl_Controller_Grid.php';
                 $class = file_get_contents($path_pattern);
                 $class = str_replace('<Comment>', 'Контроллер просмотра списка объектов', $class);
                 $class = str_replace('<Subpackage>', $row['Name'], $class);
@@ -362,7 +362,7 @@ class Zero_Engine
             $path_target = substr($path_model, 0, -4) . '/Edit.php';
             if ( $flag_edit )
             {
-                $path_pattern = ZERO_PATH_ZERO . '/data/Tpl_Controller_Edit.php';
+                $path_pattern = ZERO_PATH_ZERO . '/zero/data/Tpl_Controller_Edit.php';
                 $class = file_get_contents($path_pattern);
                 $class = str_replace('<Comment>', 'Контроллер изменения объекта', $class);
                 $class = str_replace('<Subpackage>', $row['Name'], $class);
@@ -381,7 +381,7 @@ class Zero_Engine
         }
         //        $str = substr(trim($str), 0, -1);
         $str = trim($str);
-        $path1 = ZERO_PATH_ZERO . '/data/Tpl_I18n.php';
+        $path1 = ZERO_PATH_ZERO . '/zero/data/Tpl_I18n.php';
         foreach (array_keys(Zero_App::$Config->Language) as $lang)
         {
             $path2 = self::$path . '/i18n/' . $lang . '/Model.php';

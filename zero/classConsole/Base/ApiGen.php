@@ -13,7 +13,7 @@ class Zero_Console_Base_ApiGen extends Zero_Controller
      */
     public function Action_Default()
     {
-        Zero_Helper_File::Folder_Copy(ZERO_PATH_ZERO .'/data/doc', ZERO_PATH_SITE .'/doc');
+        Zero_Helper_File::Folder_Copy(ZERO_PATH_ZERO .'/zero/data/doc', ZERO_PATH_SITE .'/doc');
         $tpl = file_get_contents(ZERO_PATH_SITE .'/doc/.htaccess');
         $tpl = str_replace('PATHFRILEACCESS', ZERO_PATH_SITE, $tpl);
         file_put_contents(ZERO_PATH_SITE .'/doc/.htaccess', $tpl);

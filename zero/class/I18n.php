@@ -107,7 +107,7 @@ class Zero_I18n
             return include $path;
         }
         //
-        $path = ZERO_PATH_SITE . '/' . strtolower($folder_list[0]) . '/i18n/' . $lang . '/' . $folder_list[1] . '.php';
+        $path = ZERO_PATH_ZERO . '/' . strtolower($folder_list[0]) . '/i18n/' . $lang . '/' . $folder_list[1] . '.php';
         if ( file_exists($path) )
         {
             return include $path;

@@ -6,7 +6,7 @@
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
-class Zero_Plugin_Crud_Toolbar extends Zero_Controller
+class Zero_Crud_Plugin_Toolbar extends Zero_Controller
 {
     /**
      * Create views.

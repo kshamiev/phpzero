@@ -225,7 +225,7 @@ class Zero_View
             return [$path, ZERO_PATH_CACHE . '/view/' . $module . '/' . implode('/', $arr) . '_' . ZERO_LANG . '.tpl'];
         }
         //
-        $path = ZERO_PATH_SITE . '/' . $module . '/view/' . implode('/', $arr) . self::EXT_VIEW;
+        $path = ZERO_PATH_ZERO . '/' . $module . '/view/' . implode('/', $arr) . self::EXT_VIEW;
         if ( file_exists($path) )
         {
             return [$path, ZERO_PATH_CACHE . '/view/' . $module . '/' . implode('/', $arr) . '_' . ZERO_LANG . '.tpl'];
