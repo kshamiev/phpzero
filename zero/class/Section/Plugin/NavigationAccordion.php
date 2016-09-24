@@ -10,7 +10,7 @@
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
-class Zero_Plugin_Section_NavigationAccordion extends Zero_Controller
+class Zero_Section_Plugin_NavigationAccordion extends Zero_Controller
 {
     /**
      * Vy`polnenie dei`stvii`

@@ -9,7 +9,7 @@
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
-class Zero_Plugin_Users_Online extends Zero_Controller
+class Zero_Users_Plugin_Online extends Zero_Controller
 {
     /**
      * Initialize the online status of the current user.

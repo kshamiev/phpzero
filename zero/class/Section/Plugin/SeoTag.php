@@ -1,40 +1,41 @@
 <?php
 
 /**
- * Navigating the subsections of the current section.
+ * Output meta tags.
  *
- * @sample {plugin "Zero_Section_Plugin_NavigationChild" view="" section_id="0"}
+ * @sample {plugin "Zero_Section_Plugin_SeoTag" view="Zero_Section_SeoTag"}
  *
- * @package Zero.Section.Navigation
+ * @package Zero.Section.Page
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @version $Id$
  * @link http://www.phpzero.com/
  * @copyright <PHP_ZERO_COPYRIGHT>
  * @license http://www.phpzero.com/license/
  */
-class Zero_Plugin_Section_NavigationChild extends Zero_Controller
+class Zero_Section_Plugin_SeoTag extends Zero_Controller
 {
     /**
-     * Vy`polnenie dei`stvii`
+     * Create views meta tags.
      *
-     * @return Zero_View or string
+     * @return boolean flag stop execute of the next chunk
      */
     public function Action_Default()
     {
-        if ( isset($this->Params['section_id']) && 0 < $this->Params['section_id'] )
-            $Section = Zero_Model::Makes('Zero_Section', $this->Params['section_id']);
-        else
-            $Section = Zero_App::$Section;
-        /* @var $Section Zero_Section */
-        $navigation = $Section->Get_Navigation_Child();
-        if ( 0 == count($navigation) )
-        {
-            $Section = Zero_Model::Makes('Zero_Section', Zero_App::$Section->Section_ID);
-            $navigation = $Section->Get_Navigation_Child();
-        }
         $this->Chunk_Init();
-        $this->View->Assign('Section', Zero_App::$Section);
-        $this->View->Assign('navigation', $navigation);
+        $seo_data = [
+            'Title' => Zero_App::$Section->Title,
+            'Keywords' => Zero_App::$Section->Keywords,
+            'Description' => Zero_App::$Section->Description,
+        ];
+        $this->View->Assign('seo_data', $seo_data);
+        if ( Zero_App::$Section->IsIndex == 'no' )
+        {
+            $this->View->Assign('seo_index', '<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">' . "\n");
+        }
+        else
+        {
+            $this->View->Assign('seo_index', '');
+        }
         return $this->View;
     }
 

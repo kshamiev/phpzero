@@ -1,10 +1,9 @@
 <?php
 
 /**
- * Navigating the root sections of the site.
+ * Navigating the subsections of the current section.
  *
- * - two level
- * @sample {plugin "Zero_Section_Plugin_NavigationMain" view=""}
+ * @sample {plugin "Zero_Section_Plugin_NavigationChild" view="" section_id="0"}
  *
  * @package Zero.Section.Navigation
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
@@ -13,20 +12,29 @@
  * @copyright <PHP_ZERO_COPYRIGHT>
  * @license http://www.phpzero.com/license/
  */
-class Zero_Plugin_Section_NavigationMain extends Zero_Controller
+class Zero_Section_Plugin_NavigationChild extends Zero_Controller
 {
     /**
-     * Create views meta tags.
+     * Vy`polnenie dei`stvii`
      *
-     * @return boolean flag stop execute of the next chunk
+     * @return Zero_View or string
      */
     public function Action_Default()
     {
-        $Section = Zero_Section::Make();
-        $Section->Init_Url('/');
+        if ( isset($this->Params['section_id']) && 0 < $this->Params['section_id'] )
+            $Section = Zero_Model::Makes('Zero_Section', $this->Params['section_id']);
+        else
+            $Section = Zero_App::$Section;
+        /* @var $Section Zero_Section */
+        $navigation = $Section->Get_Navigation_Child();
+        if ( 0 == count($navigation) )
+        {
+            $Section = Zero_Model::Makes('Zero_Section', Zero_App::$Section->Section_ID);
+            $navigation = $Section->Get_Navigation_Child();
+        }
         $this->Chunk_Init();
         $this->View->Assign('Section', Zero_App::$Section);
-        $this->View->Assign('navigation', $Section->Get_Navigation_Child());
+        $this->View->Assign('navigation', $navigation);
         return $this->View;
     }
 

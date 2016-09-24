@@ -12,7 +12,7 @@
  * @copyright <PHP_ZERO_COPYRIGHT>
  * @license http://www.phpzero.com/license/
  */
-class Zero_Plugin_Section_NavigationLine extends Zero_Controller
+class Zero_Section_Plugin_NavigationLine extends Zero_Controller
 {
     /**
      * Create views meta tags.

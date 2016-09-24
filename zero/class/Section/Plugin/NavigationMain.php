@@ -1,18 +1,19 @@
 <?php
 
 /**
- * Output meta tags.
+ * Navigating the root sections of the site.
  *
- * @sample {plugin "Zero_Section_Plugin_SeoTag" view="Zero_Section_SeoTag"}
+ * - two level
+ * @sample {plugin "Zero_Section_Plugin_NavigationMain" view=""}
  *
- * @package Zero.Section.Page
+ * @package Zero.Section.Navigation
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @version $Id$
  * @link http://www.phpzero.com/
  * @copyright <PHP_ZERO_COPYRIGHT>
  * @license http://www.phpzero.com/license/
  */
-class Zero_Plugin_Section_SeoTag extends Zero_Controller
+class Zero_Section_Plugin_NavigationMain extends Zero_Controller
 {
     /**
      * Create views meta tags.
@@ -21,21 +22,11 @@ class Zero_Plugin_Section_SeoTag extends Zero_Controller
      */
     public function Action_Default()
     {
+        $Section = Zero_Section::Make();
+        $Section->Init_Url('/');
         $this->Chunk_Init();
-        $seo_data = [
-            'Title' => Zero_App::$Section->Title,
-            'Keywords' => Zero_App::$Section->Keywords,
-            'Description' => Zero_App::$Section->Description,
-        ];
-        $this->View->Assign('seo_data', $seo_data);
-        if ( Zero_App::$Section->IsIndex == 'no' )
-        {
-            $this->View->Assign('seo_index', '<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">' . "\n");
-        }
-        else
-        {
-            $this->View->Assign('seo_index', '');
-        }
+        $this->View->Assign('Section', Zero_App::$Section);
+        $this->View->Assign('navigation', $Section->Get_Navigation_Child());
         return $this->View;
     }
 

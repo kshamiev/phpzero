@@ -3,13 +3,13 @@
 /**
  * Контент-блоки страницы.
  *
- * @sample {plugin "Zero_Plugin_Content" target="TopLeft"}
+ * @sample {plugin "Zero_Content_Plugin" target="TopLeft"}
  *
  * @package Zero.Plugin.Content
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
-class Zero_Plugin_Content extends Zero_Controller
+class Zero_Content_Plugin extends Zero_Controller
 {
     /**
      * Create views.
