@@ -6,7 +6,7 @@
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
-final class Zero_Helper_Strings
+final class Helper_Strings
 {
     public static $Transliteration = [
         0 => 0,

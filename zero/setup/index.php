@@ -108,7 +108,7 @@ while ( isset($_REQUEST['act']) && 'Install_System' == $_REQUEST['act'] && 0 == 
     }
 
     //  Creating a filesystem structure. Copy the system and base  module
-    Zero_Helper_File::Folder_Copy(__DIR__ . "/www", ZERO_PATH_SITE);
+    Helper_File::Folder_Copy(__DIR__ . "/www", ZERO_PATH_SITE);
 
     //  Baseline configuration
     if ( $_REQUEST['db_use'] )

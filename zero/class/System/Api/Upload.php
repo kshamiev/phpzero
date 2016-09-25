@@ -6,7 +6,7 @@
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
-class Zero_Api_Base_Upload extends Zero_Controller
+class Zero_System_Api_Upload extends Zero_Controller
 {
     /**
      * Загрузка бинарных данных через веб форму (ajax)
@@ -31,7 +31,7 @@ class Zero_Api_Base_Upload extends Zero_Controller
         $_FILES[$index]['tmp_name'] = $pathData;
         // сохранение информации о загруженном файле
         $data = json_encode($_FILES[$index], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-        Zero_Helper_File::File_Save($pathInfo, $data);
+        Helper_File::File_Save($pathInfo, $data);
         Zero_App::ResponseJson200([$sha1, str_replace(ZERO_PATH_SITE, '', $path), $ext]);
         /*
         array (

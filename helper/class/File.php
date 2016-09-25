@@ -7,7 +7,7 @@
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
-final class Zero_Helper_File
+final class Helper_File
 {
     /**
      * Spisok papok raspolozheniia binarny`kh danny`kh ob``ekta (ot identifikatora, kratny`i` 100)
@@ -397,7 +397,7 @@ final class Zero_Helper_File
         if ( !is_dir($path) )
             mkdir($path, 0777, true);
         //  korrektciia imeni fai`la i polny`i` put` do fai`la
-        $path .= '/' . Zero_Helper_Strings::Transliteration_FileName(basename($path_file));
+        $path .= '/' . Helper_Strings::Transliteration_FileName(basename($path_file));
         //  resize
         $row = getimagesize($path_file);
         if ( 0 < count($resize) && 'image' == substr($row['mime'], 0, 5) )

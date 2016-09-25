@@ -181,7 +181,7 @@ class Zero_View
             if ( 0 < count($arr) )
             {
                 if ( true == Zero_App::$Config->Site_TemplateParsing || !file_exists($arr[1]) )
-                    Zero_Helper_File::File_Save($arr[1], $this->_Parsing(file_get_contents($arr[0])));
+                    Helper_File::File_Save($arr[1], $this->_Parsing(file_get_contents($arr[0])));
                 break;
             }
         }

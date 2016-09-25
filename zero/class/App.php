@@ -295,7 +295,7 @@ class Zero_App
 
     public static function ResponseImg($path)
     {
-        header("Content-Type: " . Zero_Helper_File::File_Type($path));
+        header("Content-Type: " . Helper_File::File_Type($path));
         header("Content-Length: " . filesize($path));
         if ( file_exists($path) )
             echo file_get_contents($path);
@@ -304,7 +304,7 @@ class Zero_App
 
     public static function ResponseFile($path)
     {
-        header("Content-Type: " . Zero_Helper_File::File_Type($path));
+        header("Content-Type: " . Helper_File::File_Type($path));
         header("Content-Length: " . filesize($path));
         header('Content-Disposition: attachment; filename = "' . basename($path) . '"');
         if ( file_exists($path) )

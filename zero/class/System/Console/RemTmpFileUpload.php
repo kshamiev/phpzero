@@ -6,7 +6,7 @@
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
-class Zero_Console_Base_RemTmpFileUpload extends Zero_Controller
+class Zero_System_Console_RemTmpFileUpload extends Zero_Controller
 {
     /**
      * Удаление старых бинарных данных загруженных через веб (ajax)

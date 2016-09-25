@@ -7,7 +7,7 @@
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2016.06.15
  */
-class Zero_Helper_Curl
+class Helper_Curl
 {
     /**
      * Заголовки ответа

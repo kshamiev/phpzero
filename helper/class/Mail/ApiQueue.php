@@ -7,7 +7,7 @@
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.09.08
  */
-class Zero_Api_Mail_Queue extends Zero_Controller
+class Helper_Mail_ApiQueue extends Zero_Controller
 {
     public function Action_POST()
     {
@@ -32,7 +32,7 @@ class Zero_Api_Mail_Queue extends Zero_Controller
         if ( empty($_REQUEST['Queue']) || empty($_REQUEST['Email']) )
             Zero_App::ResponseJson500(-1, ["Данные не переданы"]);
 
-        $res = Zero_Helper_Mail::Queuing($_REQUEST['Queue']['Name'], $_REQUEST['Queue']['Description'], $_REQUEST['Email'], Zero_Helper_Mail::SendMessage);
+        $res = Helper_Mail::Queuing($_REQUEST['Queue']['Name'], $_REQUEST['Queue']['Description'], $_REQUEST['Email'], Helper_Mail::SendMessage);
         if ( 0 < $res )
             Zero_App::ResponseJson200();
         else
@@ -43,7 +43,7 @@ class Zero_Api_Mail_Queue extends Zero_Controller
      * Фабричный метод по созданию контроллера.
      *
      * @param array $properties входные параметры плагина
-     * @return Zero_Api_Mail_Queue
+     * @return Helper_Mail_ApiQueue
      */
     public static function Make($properties = [])
     {

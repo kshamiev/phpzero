@@ -7,7 +7,7 @@
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015-03-15
  */
-class Zero_Api_Users_Login extends Zero_Controller
+class Zero_Users_Api_Login extends Zero_Controller
 {
     /**
      * Редирект в случае успеха авторизации

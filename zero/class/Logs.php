@@ -225,7 +225,7 @@ class Zero_Logs
         if ( Zero_App::$Config->Log_Profile_Application )
         {
             $output = join("\n", self::Get_Usage_MemoryAndTime()) . "\n";
-            Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . self::$_FileLog . '.log', $output);
+            Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . self::$_FileLog . '.log', $output);
         }
         if ( 0 < count(self::$_Message) )
         {
@@ -247,21 +247,21 @@ class Zero_Logs
             {
                 array_unshift($errors, str_replace(["\r", "\t"], " ", $output));
                 $errors = preg_replace('![ ]{2,}!', ' ', join("\n", $errors));
-                Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . self::$_FileLog . '_error.log', $errors);
+                Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . self::$_FileLog . '_error.log', $errors);
             }
             // логирование предупреждений в файл
             if ( Zero_App::$Config->Log_Profile_Warning && 0 < count($warnings) )
             {
                 array_unshift($warnings, str_replace(["\r", "\t"], " ", $output));
                 $warnings = preg_replace('![ ]{2,}!', ' ', join("\n", $warnings));
-                Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . self::$_FileLog . '_warning.log', $warnings);
+                Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . self::$_FileLog . '_warning.log', $warnings);
             }
             // логирование сообщений в файл
             if ( Zero_App::$Config->Log_Profile_Notice && 0 < count($notice) )
             {
                 array_unshift($notice, str_replace(["\r", "\t"], " ", $output));
                 $notice = preg_replace('![ ]{2,}!', ' ', join("\n", $notice));
-                Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . self::$_FileLog . '_notice.log', $notice);
+                Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . self::$_FileLog . '_notice.log', $notice);
             }
         }
         // логирование операций пользователиа в файл
@@ -272,7 +272,7 @@ class Zero_Logs
                 $act .= Zero_App::$Users->Login . "\t";
                 $act .= Zero_App::$Section->Controller . " -> " . $_REQUEST['act'] . "\t";
                 $act .= ZERO_HTTP . $_SERVER['REQUEST_URI'];
-                Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . self::$_FileLog . '_action.log', $act);
+                Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . self::$_FileLog . '_action.log', $act);
             }
     }
 
@@ -360,7 +360,7 @@ class Zero_Logs
             return true;
         foreach ($arr as $val)
         {
-            Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . $file_log, print_r($val, true));
+            Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . $file_log, print_r($val, true));
         }
         return true;
     }
@@ -375,7 +375,7 @@ class Zero_Logs
     public static function Custom($file_log, $data)
     {
         $file_log = $file_log . '.log';
-        Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . $file_log, print_r($data, true));
+        Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . $file_log, print_r($data, true));
         return true;
     }
 
@@ -396,8 +396,8 @@ class Zero_Logs
             return true;
         foreach ($arr as $val)
         {
-            Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . $file_log, date('[d.m.Y H:i:s]'));
-            Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . $file_log, print_r($val, true));
+            Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . $file_log, date('[d.m.Y H:i:s]'));
+            Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . $file_log, print_r($val, true));
         }
         return true;
     }
@@ -412,8 +412,8 @@ class Zero_Logs
     public static function Custom_DateTime($file_log, $data)
     {
         $file_log = $file_log . '.log';
-        Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . $file_log, date('[d.m.Y H:i:s]'));
-        Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . $file_log, print_r($data, true));
+        Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . $file_log, date('[d.m.Y H:i:s]'));
+        Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . $file_log, print_r($data, true));
         return true;
     }
 }

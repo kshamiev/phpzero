@@ -111,7 +111,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         //  Filter
         $this->View->Assign('Filter', $Filter->Get_Filter());
         // CKEDITOR - this -> Object
-        $pathObject = '/' . strtolower($this->Model->Source) . '/' . Zero_Helper_File::Get_Path_Cache($this->Model->ID) . '/' . $this->Model->ID;
+        $pathObject = '/' . strtolower($this->Model->Source) . '/' . Helper_File::Get_Path_Cache($this->Model->ID) . '/' . $this->Model->ID;
         if ( !is_dir(ZERO_PATH_DATA . $pathObject) )
             mkdir(ZERO_PATH_DATA . $pathObject, 0777, true);
         $_SESSION['pathObject'] = $pathObject;

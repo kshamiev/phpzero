@@ -310,7 +310,7 @@ class Zero_Config
 
         if ( !file_exists(ZERO_PATH_APPLICATION . '/config.php') )
         {
-            Zero_Helper_File::File_Save_After(ZERO_PATH_LOG . '/fatal.log', 'global config file not found: ' . ZERO_PATH_APPLICATION . '/config.php');
+            Helper_File::File_Save_After(ZERO_PATH_LOG . '/fatal.log', 'global config file not found: ' . ZERO_PATH_APPLICATION . '/config.php');
             exit;
         }
         $Config = require ZERO_PATH_APPLICATION . '/config.php';

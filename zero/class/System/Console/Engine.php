@@ -6,7 +6,7 @@
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.05.14
  */
-class Zero_Console_Base_Engine extends Zero_Controller
+class Zero_System_Console_Engine extends Zero_Controller
 {
     /**
      * Инженеринг моделей и контроллеров CRUD по БД (первой по умолчанию)

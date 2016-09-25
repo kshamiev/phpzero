@@ -101,7 +101,7 @@ class Zero_System_GridService extends Zero_Controller
      */
     protected function Chunk_SessionReset()
     {
-        Zero_Helper_File::File_Remove(ini_get('session.save_path'));
+        Helper_File::File_Remove(ini_get('session.save_path'));
         return $this->SetMessage(2301);
     }
 }

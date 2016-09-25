@@ -19,7 +19,7 @@ require_once ZERO_PATH_LIBRARY . '/PHPMailer/PHPMailerAutoload.php';
  * @property string $DateSend
  * @property int $RetryCnt
  */
-class Zero_Helper_Mail
+class Helper_Mail
 {
     /**
      * The table stores the objects this model

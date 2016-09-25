@@ -130,7 +130,7 @@ class Zero_System_FileManager extends Zero_Controller
         if ( !$_REQUEST['dir_name'] )
             return $this->SetMessage(-1, ['Error_FolderRemove']);
         $path = end($this->Params['obj_parent_path']) . '/' . $_REQUEST['dir_name'];
-        Zero_Helper_File::Folder_Remove($path);
+        Helper_File::Folder_Remove($path);
         return $this->SetMessage();
     }
 
@@ -195,7 +195,7 @@ class Zero_System_FileManager extends Zero_Controller
                 Zero_Logs::Set_Message_Error("файловый менеджер - {$_FILES['FileUpload']['error']}");
                 return $this->SetMessage(-1, ['Error_FileUpload']);
             }
-            $filename = Zero_Helper_Strings::Transliteration_FileName($_FILES['FileUpload']['name']);
+            $filename = Helper_Strings::Transliteration_FileName($_FILES['FileUpload']['name']);
             $path = end($this->Params['obj_parent_path']) . '/' . $filename;
             copy($_FILES['FileUpload']['tmp_name'], $path);
             chmod($path, 0666);
@@ -221,7 +221,7 @@ class Zero_System_FileManager extends Zero_Controller
     {
         if ( !isset($_REQUEST['FolderName']) || !$_REQUEST['FolderName'] )
             return $this->SetMessage(-1, ['Error_FolderAdd']);
-        $path = end($this->Params['obj_parent_path']) . '/' . Zero_Helper_Strings::Transliteration_FileName($_REQUEST['FolderName']);
+        $path = end($this->Params['obj_parent_path']) . '/' . Helper_Strings::Transliteration_FileName($_REQUEST['FolderName']);
         mkdir($path);
         chmod($path, 0777);
         return $this->SetMessage();

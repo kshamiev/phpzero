@@ -8,7 +8,7 @@
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
-class Zero_Console_Users_Offline extends Zero_Controller
+class Zero_Users_Console_Offline extends Zero_Controller
 {
     /**
      * Оперделение не  активных пользователей.

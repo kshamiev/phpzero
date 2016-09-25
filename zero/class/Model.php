@@ -555,13 +555,13 @@ abstract class Zero_Model
             if ( 0 === $_FILES[$prop]['error'] )
             {
                 // V fai`lovoi` sisteme
-                $file = strtolower($this->Source) . '/' . Zero_Helper_File::Get_Path_Cache($this->ID) . '/' . $this->ID . '/' . $_FILES[$prop]['name'];
+                $file = strtolower($this->Source) . '/' . Helper_File::Get_Path_Cache($this->ID) . '/' . $this->ID . '/' . $_FILES[$prop]['name'];
                 $path = ZERO_PATH_DATA . '/' . $file;
                 if ( file_exists($path) )
                 {
                     $pos = strrpos($_FILES[$prop]['name'], ".", -1);
                     $_FILES[$prop]['name'] = substr($_FILES[$prop]['name'], 0, $pos) . '_' . $prop . substr($_FILES[$prop]['name'], $pos);
-                    $file = strtolower($this->Source) . '/' . Zero_Helper_File::Get_Path_Cache($this->ID) . '/' . $this->ID . '/' . $_FILES[$prop]['name'];
+                    $file = strtolower($this->Source) . '/' . Helper_File::Get_Path_Cache($this->ID) . '/' . $this->ID . '/' . $_FILES[$prop]['name'];
                     $path = ZERO_PATH_DATA . '/' . $file;
                 }
                 if ( !is_dir(dirname($path)) )
@@ -600,10 +600,10 @@ abstract class Zero_Model
         //  Удаляем кеш
         $this->Get_Cache()->Reset();
         // Удаляем бинарные данные
-        $path = ZERO_PATH_DATA . '/' . strtolower($this->Source) . '/' . Zero_Helper_File::Get_Path_Cache($this->ID) . '/' . $this->ID;
+        $path = ZERO_PATH_DATA . '/' . strtolower($this->Source) . '/' . Helper_File::Get_Path_Cache($this->ID) . '/' . $this->ID;
         if ( is_dir($path) )
         {
-            Zero_Helper_File::Folder_Remove($path);
+            Helper_File::Folder_Remove($path);
         }
         // Удаляем из сессии
         $this->Factory_Unset(1);
