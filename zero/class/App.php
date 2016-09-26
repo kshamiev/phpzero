@@ -217,6 +217,7 @@ class Zero_App
             'Code' => $message[0],
             'Message' => $message[1],
             'ErrorStatus' => false,
+            'Token' => false,
         ];
 
         if ( $content )
