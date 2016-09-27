@@ -94,4 +94,9 @@ return [
     'Token' => 'Токен',
     'Zero_Content Target' => 'Место и вид вывода',
     'Zero_Content Target options' => ['top' => 'top', 'information' => 'information', 'feature' => 'feature', 'voucher' => 'voucher'],
+    'Zero_Options ID' => 'Идентификатор',
+    'Zero_Options Name' => 'Имя параметра',
+    'Zero_Options Typ' => 'Тип параметра',
+    'Zero_Options Typ options' => ['string' => 'string','int' => 'int','float' => 'float','array' => 'array'],
+    'Zero_Options Value' => 'Значение параметра',
 ];
