@@ -44,7 +44,6 @@ define('ZERO_PATH_ZERO', ZERO_PATH_SITE . '/phpzero');
  * @package Zero.Component
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
- * @todo авторизованная работа с api по ключу. (Ключи меняются с каждым запросом) (ключ имя сессии)
  * @todo Реализовать полноценное добавление как отедблный функционал. Должно быть различие между добавлением и сохранением.
  */
 class Zero_App

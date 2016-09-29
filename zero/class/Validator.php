@@ -195,9 +195,6 @@ class Zero_Validator
     public function Validate($data, $scenario = '')
     {
         $this->Errors = [];
-        //  Obshchaia nachal`naia validatciia
-        if ( method_exists($this->Model, $method = 'Validate_Before') )
-            $data = $this->Model->Validate_Before($data, $scenario);
 
         $props = $this->Model->Get_Config_Form($scenario);
         foreach ($props as $prop => $row)
@@ -212,7 +209,7 @@ class Zero_Validator
                 continue;
 
             //  инициализация значения или первичнач обработка
-            if ( isset($data[$prop]) && $data[$prop] )
+            if ( isset($data[$prop]) )
                 $value = $data[$prop];
             else
                 $value = null;

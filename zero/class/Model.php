@@ -613,18 +613,6 @@ abstract class Zero_Model
     }
 
     /**
-     * Sample. The total initial validation properties
-     *
-     * @param array $data verifiable data array
-     * @param string $scenario scenario validation
-     * @return array
-     */
-    public function Validate_Before($data, $scenario)
-    {
-        return $data;
-    }
-
-    /**
      * Poluchenie znacheniia abstraktnogo svoi`stva
      *
      * Universal`ny`i` getter pozvoliaiushchii` obernut` vse priamy`e obrashcheniia

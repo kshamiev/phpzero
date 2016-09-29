@@ -236,7 +236,6 @@ class Zero_Controllers extends Zero_Model
      * May be removed
      *
      * @param array $params параметры контроллера
-     * @return string
      */
     public function AR_From($params)
     {
@@ -269,43 +268,6 @@ class Zero_Controllers extends Zero_Model
             $sql = "DELETE FROM TableName WHERE FieldName1 = {$this->ID} {$sqk_where}";
             return Zero_DB::Update($sql);
         }
-    }
-
-    /**
-     * Sample. The total initial validation properties
-     *
-     * @param array $data verifiable data array
-     * @param string $scenario scenario validation
-     * @return array
-     */
-    public function Validate_Before($data, $scenario)
-    {
-        return $data;
-    }
-
-    /**
-     * Sample. The validation property
-     * May be removed
-     *
-     * @param mixed $value value to check and set
-     * @param string $scenario scenario validation
-     * @return string
-     */
-    public function VL_PropertyName($value, $scenario)
-    {
-        $this->PropertyName = $value;
-        return '';
-    }
-
-    /**
-     * Sample. Filter for property.
-     * May be removed
-     *
-     * @return array
-     */
-    public function FL_PropertyName()
-    {
-        return [23 => 'Value'];
     }
 
 	/**

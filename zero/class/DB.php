@@ -136,7 +136,7 @@ class Zero_DB
     public static function EscT($str)
     {
         $str = trim(strval($str));
-        if ( $str )
+        if ( 0 < strlen($str) )
             return "'" . self::$DB[self::Init()]->real_escape_string($str) . "'";
             //            return "'" . addslashes($str) . "'";
         else

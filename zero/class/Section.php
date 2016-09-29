@@ -418,29 +418,18 @@ class Zero_Section extends Zero_Model
     {
         if ( !$value )
             return 'Error_Prop';
-        $this->UrlThis = Helper_Strings::Transliteration_Url($value);
         if ( 0 < $this->Section_ID )
         {
+            $this->UrlThis = Helper_Strings::Transliteration_Url($value);
             $Object = Zero_Model::Makes(__CLASS__, $this->Section_ID);
             $this->Url = rtrim($Object->Url, '/') . '/' . $this->UrlThis;
         }
         else
-            $this->Url = '/';
-        return '';
-    }
-
-    /**
-     * Sample. The total initial validation properties
-     *
-     * @param array $data verifiable data array
-     * @param string $scenario scenario validation
-     * @return array
-     */
-    public function Validate_Before($data, $scenario)
-    {
-        if ( $this->Section_ID == 0 )
+        {
             $this->UrlThis = '/';
-        return $data;
+            $this->Url = '/';
+        }
+        return '';
     }
 
     /**

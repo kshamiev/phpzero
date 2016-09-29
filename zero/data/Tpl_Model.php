@@ -149,18 +149,6 @@ class Zero_Model_Pattern extends Zero_Model
     }
 
     /**
-     * Sample. The total initial validation properties
-     *
-     * @param array $data verifiable data array
-     * @param string $scenario scenario validation
-     * @return array
-     */
-    public function Validate_Before($data, $scenario)
-    {
-        return $data;
-    }
-
-    /**
      * Sample. The validation property
      * May be removed
      *

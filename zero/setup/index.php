@@ -25,7 +25,7 @@ header("Content-Type: text/html; charset=utf-8");
 
 require dirname(__DIR__) . '/class/Config.php';
 require dirname(__DIR__) . '/class/App.php';
-require dirname(__DIR__) . '/classHelper/File.php';
+require dirname(dirname(__DIR__)) . '/helper/class/File.php';
 
 if ( !isset($_REQUEST['site_name']) )
     $_REQUEST['site_name'] = '';
@@ -126,6 +126,7 @@ while ( isset($_REQUEST['act']) && 'Install_System' == $_REQUEST['act'] && 0 == 
     $config = str_replace('<SITE_LANGDEFAULT>', $_REQUEST['lang'], $config);
     $config = str_replace('ISUSEDB', $isUseDb, $config);
     file_put_contents(ZERO_PATH_SITE . '/application/config.php', $config);
+    unlink(ZERO_PATH_SITE . '/application/config.blank.php');
 
 //    if ( !@symlink(ZERO_PATH_ZERO, ZERO_PATH_APPLICATION . '/zero') )
 //    {
