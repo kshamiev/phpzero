@@ -162,7 +162,7 @@ class Zero_Users_Login extends Zero_Controller
     {
         if ( 0 < Zero_App::$Users->ID )
         {
-            Zero_App::ResponseRedirect('/admin');
+            Zero_App::ResponseRedirect('/zero');
         }
         if ( !$this->UrlRedirect )
         {
