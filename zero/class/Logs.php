@@ -197,16 +197,18 @@ class Zero_Logs
         //            $iterator_list[$iterator->key()]['type'] = gettype($iterator->current());
         //            $iterator->next();
         //        }
-        foreach ($_SESSION['Session'] as $key => $val)
-        {
-            $iterator_list[$key]['name'] = get_class($val);
-            $iterator_list[$key]['type'] = gettype($val);
-        }
-        foreach ($_SESSION as $key => $val)
-        {
-            $iterator_list[$key]['name'] = '';
-            $iterator_list[$key]['type'] = gettype($val);
-        }
+        if ( isset($_SESSION['Session']) )
+            foreach ($_SESSION['Session'] as $key => $val)
+            {
+                $iterator_list[$key]['name'] = get_class($val);
+                $iterator_list[$key]['type'] = gettype($val);
+            }
+        if ( isset($_SESSION['Session']) )
+            foreach ($_SESSION as $key => $val)
+            {
+                $iterator_list[$key]['name'] = '';
+                $iterator_list[$key]['type'] = gettype($val);
+            }
         unset($iterator_list['Session']);
         $View = new Zero_View('Zero_Debug_Info');
         $View->Assign('output', self::Get_Usage_MemoryAndTime());
@@ -286,6 +288,8 @@ class Zero_Logs
      */
     public static function Get_SourceCode($file, $line, $range_file_error)
     {
+        if ( !$file )
+            return '';
         $file_line = explode('<br />', highlight_file($file, true));
         $offset = $line - $range_file_error;
         if ( $offset < 0 )

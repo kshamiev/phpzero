@@ -222,7 +222,7 @@ class Zero_App
             'Code' => $message[0],
             'Message' => $message[1],
             'ErrorStatus' => false,
-            'Token' => false,
+            'Token' => Zero_App::$Users->Token,
         ];
 
         if ( $content )
@@ -268,6 +268,7 @@ class Zero_App
             'Code' => $message[0],
             'Message' => $message[1],
             'ErrorStatus' => true,
+            'Token' => Zero_App::$Users->Token,
         ];
 
         echo json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK);
