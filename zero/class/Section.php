@@ -213,7 +213,7 @@ class Zero_Section extends Zero_Model
             // Поиск в программе
             foreach (Zero_App::$Config->Modules as $route)
             {
-                $index = 'route' . Zero_App::Get_Mode();
+                $index = 'route' . Zero_App::$Mode;
                 if ( !isset($route[$index]) || !is_object($route[$index]) )
                     continue;
                 $route = $route[$index];

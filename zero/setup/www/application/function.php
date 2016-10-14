@@ -6,43 +6,17 @@
  */
 function app_route()
 {
-    $Url = '/';
-    $Lang = Zero_App::$Config->Site_Language;
-    $Mode = Zero_App::MODE_WEB;
-
-    // если запрос консольный
-    if ( !isset($_SERVER['REQUEST_URI']) )
-    {
-        $Mode = Zero_App::MODE_CONSOLE;
-        return [$Mode, $Lang, $Url];
-    }
-
     // главная страница
-    if ( $_SERVER['REQUEST_URI'] == '/' )
-        return [$Mode, $Lang, $Url];
+    if ( $_SERVER['REQUEST_URI'] == Zero_App::$Route )
+        return;
 
     // инициализация
-    $Url = '';
-    if ( substr($_SERVER['REQUEST_URI'], -1) == '/' )
-    {
-        $_SERVER['REQUEST_URI'] = substr($_SERVER['REQUEST_URI'], 0, -1);
-    }
     $row = explode('/', strtolower(rtrim(ltrim(explode('?', $_SERVER['REQUEST_URI'])[0], '/'), '/')));
 
     // язык
-    if ( $Lang != $row[0] && isset(Zero_App::$Config->Language[$row[0]]) )
+    if ( Zero_App::$Config->Site_Language != $row[0] && isset(Zero_App::$Config->Language[$row[0]]) )
     {
-        $Lang = array_shift($row);
-        $Url = '/' . $Lang;
-        if ( count($row) == 0 )
-            return [$Mode, $Lang, $Url];
-    }
-
-    // api
-    if ( strtolower(Zero_App::MODE_API) == $row[0] || strtolower(Zero_App::MODE_API) == Zero_App::$Config->Site_DomainSub )
-    {
-        $Mode = Zero_App::MODE_API;
-        app_request_data_api();
+        Zero_App::$Config->Site_Language = array_shift($row);
     }
 
     // чпу параметры
@@ -50,12 +24,12 @@ function app_route()
     $p = explode('.', $p)[0];
     $p = explode('_', $p);
     if ( 1 < count($p) )
-        Zero_App::$RequestParams = explode('-', $p[1]);
+        Zero_App::$RouteParams = explode('-', $p[1]);
     $row[] = $p[0];
 
     // uri
-    $Url .= '/' . implode('/', $row);
-    return [$Mode, $Lang, $Url];
+    Zero_App::$Route = '/' . implode('/', $row);
+    return;
 }
 
 function app_request_data_api()

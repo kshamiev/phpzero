@@ -340,7 +340,7 @@ class Zero_Controllers extends Zero_Model
 		{
 			foreach (Zero_App::$Config->Modules as $module)
 			{
-				$index = 'route' . Zero_App::Get_Mode();
+				$index = 'route' . Zero_App::$Mode;
 				if ( !isset($module[$index]) || !is_object($module[$index]) )
 					continue;
 				$route = $module[$index];
@@ -349,7 +349,7 @@ class Zero_Controllers extends Zero_Model
 					$route = $route->Route[ZERO_URL];
 					$route['ID'] = -1;
 					$route['Url'] = ZERO_URL;
-					$route['Typ'] = Zero_App::MODE_API;
+					$route['Typ'] = ZERO_MODE_API;
 					if ( empty($route['Name']) )
 						$route['Name'] = $route['Controller'];
 					if ( empty($route['IsAuthorized']) )

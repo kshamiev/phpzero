@@ -23,13 +23,13 @@ define('HTTPH', ZERO_HTTPH);
 /**
  * The relative url path to the project (site)
  */
-define('ZERO_URL', $_REQUEST['u']);
-define('URL', $_REQUEST['u']);
+define('ZERO_URL', Zero_App::$Route);
+define('URL', Zero_App::$Route);
 /**
  * The language suffix
  */
-define('ZERO_LANG', $_REQUEST['l']);
-define('LANG', $_REQUEST['l']);
+define('ZERO_LANG', Zero_App::$Config->Site_Language);
+define('LANG', Zero_App::$Config->Site_Language);
 
 /**
  * Representation.

@@ -4,6 +4,18 @@
  */
 define('VERSION_PHPZERO', '2.0.0');
 /**
+ * Режимы работы приложения
+ */
+define('ZERO_MODE_WEB', 'Web');
+/**
+ * Режимы работы приложения
+ */
+define('ZERO_MODE_API', 'Api');
+/**
+ * Режимы работы приложения
+ */
+define('ZERO_MODE_CONSOLE', 'Console');
+/**
  * The absolute path to the project (site)
  */
 define('ZERO_PATH_SITE', dirname(dirname(dirname(__DIR__))));
@@ -48,16 +60,19 @@ define('ZERO_PATH_ZERO', ZERO_PATH_SITE . '/phpzero');
  */
 class Zero_App
 {
-    const MODE_WEB = 'Web';
-    const MODE_API = 'Api';
-    const MODE_CONSOLE = 'Console';
+    /**
+     * Запрошенный uri
+     *
+     * @var array
+     */
+    public static $Route = '';
 
     /**
      * Параметры uri
      *
      * @var array
      */
-    public static $RequestParams = [];
+    public static $RouteParams = [];
 
     /**
      * Configuration
@@ -74,6 +89,20 @@ class Zero_App
     public static $Options = null;
 
     /**
+     * Section (page)
+     *
+     * @var Zero_Section
+     */
+    public static $Section = null;
+
+    /**
+     * Controller
+     *
+     * @var Zero_Controllers
+     */
+    public static $Controller = null;
+
+    /**
      * User
      *
      * @var Zero_Users
@@ -81,23 +110,11 @@ class Zero_App
     public static $Users = null;
 
     /**
-     * Section (page)
-     *
-     * @var Zero_Section|Zero_Controllers
-     */
-    public static $Section = null;
-
-    /**
      * Режим работы приложения (Api, Web, Console).
      *
      * @var string
      */
-    private static $mode;
-
-    public static function Get_Mode()
-    {
-        return self::$mode;
-    }
+    public static $Mode;
 
     /**
      * Connection classes
@@ -213,8 +230,8 @@ class Zero_App
         header("Content-Type: application/json; charset=utf-8");
         header('HTTP/1.1 200 200');
 
-        if ( self::$Section->Controller )
-            $message = Zero_I18n::Message(self::$Section->Controller, $code, $params);
+        if ( self::$Controller->Controller )
+            $message = Zero_I18n::Message(self::$Controller->Controller, $code, $params);
         else
             $message = Zero_I18n::Message('Zero', $code, $params);
 
@@ -329,10 +346,10 @@ class Zero_App
      * - Processing incoming request (GET). Component Zero_Route
      * - Session Initialization. Component Zero_Session
      *
-     * @param string $fileApp суффикс конфигурационного файла
+     * @param string $appLog префикс лог файла приложения
      * @param string $mode режим работы приложения
      */
-    public static function Init($fileApp = '')
+    public static function Init($appLog = '')
     {
         // Если инициализация уже произведена
         if ( !is_null(self::$Config) )
@@ -351,35 +368,48 @@ class Zero_App
         set_exception_handler(['Zero_App', 'Exception']);
         // register_shutdown_function(['Zero_App', 'Exit_Application']);
 
-        //  Configuration (Zero_Config)
+        //  Configuration
         self::$Config = new Zero_Config();
-        self::$Options = new Zero_Options();
-
-        // Роутинг
-        $arr = app_route();
-        self::$mode = $arr[0];
-        $_REQUEST['l'] = $arr[1];
-        $_REQUEST['u'] = $arr[2];
-
-        //  Initializing monitoring system (Zero_Logs)
-        Zero_Logs::Init($fileApp . self::$mode, self::$Config->Log_TimeLimitTimer);
-
-        //  Initialize cache subsystem (Zero_Cache)
-        if ( 0 < count(self::$Config->Memcache['Cache']) && class_exists('Memcache') )
-            Zero_Cache::InitMemcache(self::$Config->Memcache['Cache']);
 
         // DB init config
         foreach (self::$Config->Db as $name => $config)
         {
             Zero_DB::Config_Add($name, $config);
         }
+
+        // Options
         if ( self::$Config->Site_UseDB )
-        {
             self::$Options = new Zero_OptionsValue(true);
+        else
+            self::$Options = new Zero_OptionsValue();
+
+        // Определение режима работы
+        if ( empty($_SERVER['REQUEST_URI']) )
+        {
+            self::$Mode = ZERO_MODE_CONSOLE;
         }
+        else if ( strpos($_SERVER['REQUEST_URI'], '/api/') === 0 || strtolower(ZERO_MODE_API) == Zero_App::$Config->Site_DomainSub )
+        {
+            self::$Mode = ZERO_MODE_API;
+            app_request_data_api();
+        }
+        else
+        {
+            self::$Mode = ZERO_MODE_WEB;
+        }
+
+        // Роутинг
+        app_route();
 
         // Шаблонизатор
         require_once ZERO_PATH_ZERO . '/zero/class/View.php';
+
+        //  Initialize cache subsystem (Zero_Cache)
+        if ( 0 < count(self::$Config->Memcache['Cache']) && class_exists('Memcache') )
+            Zero_Cache::InitMemcache(self::$Config->Memcache['Cache']);
+
+        //  Initializing monitoring system (Zero_Logs)
+        Zero_Logs::Init($appLog . self::$Mode, self::$Config->Log_TimeLimitTimer);
 
         //  Session Initialization (Zero_Session)
         Zero_Session::Init(self::$Config->Site_Domain);
@@ -387,14 +417,24 @@ class Zero_App
 
     public static function Execute()
     {
-        if ( self::MODE_WEB == self::Get_Mode() )
-            self::executeWeb();
-        else if ( self::MODE_API == self::Get_Mode() )
-            self::executeApi();
+        if ( ZERO_MODE_WEB == self::$Mode )
+            self::ExecuteWeb();
+        else if ( ZERO_MODE_API == self::$Mode )
+            self::ExecuteApi();
+        else if ( ZERO_MODE_CONSOLE == self::$Mode )
+            self::ExecuteConsole();
     }
 
     /**
-     * Method of Application Execution
+     * Method of console (crontab) application execution
+     */
+    public static function ExecuteConsole()
+    {
+        include ZERO_PATH_ZERO . '/console.php';
+    }
+
+    /**
+     * Method of application execution
      *
      * - Инициализация запрошенного раздела (ZSection)
      * - Инициализация пользователя (Users)
@@ -408,8 +448,20 @@ class Zero_App
      *
      * @throws Exception
      */
-    private static function executeWeb()
+    public static function ExecuteWeb()
     {
+        // General Authorization Application
+        if ( Zero_App::$Config->Site_AccessLogin )
+        {
+            if ( !isset($_SERVER['PHP_AUTH_USER']) || $_SERVER['PHP_AUTH_USER'] != Zero_App::$Config->Site_AccessLogin || $_SERVER['PHP_AUTH_PW'] != Zero_App::$Config->Site_AccessPassword )
+            {
+                header('WWW-Authenticate: Basic realm="Auth"');
+                header('HTTP/1.0 401 Unauthorized');
+                echo 'Auth Failed';
+                exit;
+            }
+        }
+
         //  Пользователь
         self::$Users = Zero_Users::Factor();
         //  Раздел - страница
@@ -484,7 +536,7 @@ class Zero_App
     }
 
     /**
-     * Method of Application Execution
+     * Method of application execution
      *
      * - Инициализация запрошенного раздела (ZSection)
      * - Инициализация пользователя (Users)
@@ -498,25 +550,23 @@ class Zero_App
      *
      * @throws Exception
      */
-    private static function executeApi()
+    public static function ExecuteApi()
     {
         //  Пользователь
         self::$Users = Zero_Users::Factor();
         // Контроллер
-        self::$Section = Zero_Controllers::Instance();
+        self::$Controller = Zero_Controllers::Instance();
 
-        if ( 0 == self::$Section->ID )
+        if ( 0 == self::$Controller->ID )
             throw new Exception('Page Not Found', 404);
 
         //  Доступные операции - методы контроллера с учетом прав.
-        $Action_List = self::$Section->Get_Action_List();
-        if ( 1 < self::$Users->Groups_ID && 'yes' == self::$Section->IsAuthorized && 0 == count($Action_List) )
+        $Action_List = self::$Controller->Get_Action_List();
+        if ( 1 < self::$Users->Groups_ID && 'yes' == self::$Controller->IsAuthorized && 0 == count($Action_List) )
             throw new Exception('Page Forbidden', 403);
 
         //  Выполнение контроллера
-        $view = "";
-        $messageResponse = ['Code' => 0, 'Message' => ''];
-        if ( self::$Section->Controller )
+        if ( self::$Controller->Controller )
         {
             // инициализация и проверка прав на действие
             if ( isset($_REQUEST['act']) && $_REQUEST['act'] )
@@ -529,8 +579,8 @@ class Zero_App
             //
             $_REQUEST['act'] = 'Action_' . $_REQUEST['act'];
 
-            Zero_Logs::Start('#{CONTROLLER} ' . self::$Section->Controller . ' -> ' . $_REQUEST['act']);
-            $Controller = Zero_Controller::Factory(self::$Section->Controller);
+            Zero_Logs::Start('#{CONTROLLER} ' . self::$Controller->Controller . ' -> ' . $_REQUEST['act']);
+            $Controller = Zero_Controller::Factory(self::$Controller->Controller);
             if ( !method_exists($Controller, $_REQUEST['act']) )
             {
                 throw new Exception('Контроллер не имеет метода: ' . $_REQUEST['act'], -1);
@@ -606,11 +656,11 @@ class Zero_App
             $code = 500;
             self::exception_Trace($exception);
         }
-        if ( self::MODE_CONSOLE == self::$mode || !isset($_SERVER['REQUEST_URI']) )
+        if ( ZERO_MODE_CONSOLE == self::$Mode || !isset($_SERVER['REQUEST_URI']) )
             self::ResponseConsole();
-        else if ( self::MODE_API == self::$mode )
+        else if ( ZERO_MODE_API == self::$Mode )
             self::ResponseJson500($code, [$exception->getMessage()]);
-        else if ( self::MODE_WEB == self::$mode )
+        else if ( ZERO_MODE_WEB == self::$Mode )
         {
             $viewLayout = new Zero_View('Zero_Exception');
             $viewLayout->Assign('code', $code);

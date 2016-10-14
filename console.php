@@ -6,7 +6,7 @@
  */
 
 //  Connecting application
-require __DIR__ . '/zero/class/App.php';
+require_once __DIR__ . '/zero/class/App.php';
 Zero_App::Init();
 
 //  Work console task
