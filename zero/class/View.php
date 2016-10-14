@@ -57,7 +57,7 @@ class Zero_View
     /**
      * Reguliarnoe vy`razhenie dlia obrabotki direktiv plugin
      */
-    const PATTERN_PLUGIN = '~\{plugin[ ]+[\'"]+([\w\d_]+)[\'"]+(\s+[^\{\}]+)?\}~si';
+    const PATTERN_PLUGIN = '~\{(?:plugin|bar)[ ]+[\'"]+([\w\d_]+)[\'"]+(\s+[^\{\}]+)?\}~si';
     /**
      * Reguliarnoe vy`razhenie dlia obrabotki direktiv translation
      */
