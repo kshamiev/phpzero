@@ -18,9 +18,9 @@ class Zero_Route_Api
         /**
          * Загрузка бинарных данных через веб форму (ajax)
          *
-         * @see Zero_Api_Base_Upload
+         * @see Zero_System_Api_Upload
          */
-        '/api/v1/zero/base/upload' => ['Controller' => 'Zero_Api_Base_Upload', 'View' => ''],
+        '/api/v1/zero/base/upload' => ['Controller' => 'Zero_System_Api_Upload', 'View' => ''],
         /**
          * Загрузка бинарных данных через веб форму (ajax)
          *
