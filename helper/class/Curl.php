@@ -10,20 +10,6 @@
 class Helper_Curl
 {
     /**
-     * Заголовки ответа
-     *
-     * @var string
-     */
-    public $Head = [];
-
-    /**
-     * Тело ответа
-     *
-     * @var string
-     */
-    public $Body = '';
-
-    /**
      * Путь до файла хранящего куку сессии
      *
      * @var string
@@ -66,12 +52,29 @@ class Helper_Curl
     protected $apachePwd = '';
 
     /**
+     * Для стандартной авторизации методом apache
+     *
+     * @var string
+     */
+    protected $proxyUser = '';
+
+    /**
+     * Для стандартной авторизации методом apache
+     *
+     * @var string
+     */
+    protected $proxyPwd = '';
+
+    /**
      * Конструктор
      *
      * @param string $proxy Прокси сервер (ip адресс)
      */
-    public function __construct($proxy = '')
+    public function __construct($url, $proxy = '')
     {
+        $arr = explode('/', $url);
+        $this->url = $arr[0] . '//' . $arr[2] . '/';
+        $this->host = $arr[2];
         $this->proxy = $proxy;
         $this->set_Cookie_file();
     }
@@ -86,6 +89,18 @@ class Helper_Curl
     {
         $this->apacheUser = $user;
         $this->apachePwd = $pwd;
+    }
+
+    /**
+     * Установка логина и пароля для авторизации методом apache
+     *
+     * @param $user
+     * @param $pwd
+     */
+    public function Set_Auth_Proxy($user, $pwd)
+    {
+        $this->proxyUser = $user;
+        $this->proxyPwd = $pwd;
     }
 
     /**
@@ -105,17 +120,18 @@ class Helper_Curl
         fclose(fopen($this->cookie_file, 'w'));
     }
 
-    private function init($url)
+    /**
+     * Получение страницы ( text/html )
+     *
+     * @param string $url запрашиваемый url
+     * @param array $postData key => value
+     * @return Helper_Curl_Response
+     */
+    public function Get_ApiJson($url, $postData = [])
     {
-        $arr = explode('/', $url);
-        if ( !$this->url )
-        {
-            $this->url = $arr[0] . '//' . $arr[2] . '/';
-        }
-        if ( !$this->host )
-        {
-            $this->host = $arr[2];
-        }
+        $response = $this->Get_Page($url, $postData);
+        $response->Body = json_decode($response->Body, true);
+        return $response;
     }
 
     /**
@@ -123,18 +139,20 @@ class Helper_Curl
      *
      * @param string $url запрашиваемый url
      * @param array $postData key => value
-     * @return bool
+     * @return Helper_Curl_Response
      */
     public function Get_Page($url, $postData = [])
     {
-        $this->init($url);
         $ch = curl_init($url);
         //	идем через proxy
         if ( $this->proxy )
         {
             curl_setopt($ch, CURLOPT_PROXY, $this->proxy);
             curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, 1);
-            // curl_setopt($ch,CURLOPT_PROXYUSERPWD,'user:password');
+            if ( $this->proxyUser && $this->proxyPwd )
+            {
+                curl_setopt($ch, CURLOPT_PROXYUSERPWD, "{$this->proxyUser}:{$this->proxyPwd}");
+            }
         }
         //	время работы
         curl_setopt($ch, CURLOPT_TIMEOUT, 300);          //	полное время сеанса
@@ -176,30 +194,33 @@ class Helper_Curl
         //	возвращаем результат в переменную
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         $page = curl_exec($ch);
+        $response = new Helper_Curl_Response();
         //	ошибки
         $error_code = curl_errno($ch);
         $error_subj = curl_error($ch);
+
         if ( 0 < $error_code )
         {
             Zero_Logs::Set_Message_Error('CURL: ' . $error_subj);
             curl_close($ch);
-            $this->Head = [];
-            $this->Body = '';
-            return false;
+            $response->Head = [];
+            $response->Body = '';
+            $response->Flag = false;
         }
         else
         {
             curl_close($ch);
             $arr = explode("\n", $page);
-            $this->Head = [];
+            $response->Head = [];
             while ( $h = trim(array_shift($arr)) )
             {
-                $this->Head[] = $h;
+                $response->Head[] = $h;
             }
-            $this->Body = implode("\n", $arr);
-            return true;
+            $response->Body = implode("\n", $arr);
+            $response->Flag = true;
         }
         //	print curl_getinfo($ch,CURLINFO_HTTP_CODE).'<br>';
+        return $response;
     }
 
     /**
@@ -247,4 +268,28 @@ class Helper_Curl
         if ( $this->cookie_file )
             unlink($this->cookie_file);
     }
+}
+
+class Helper_Curl_Response
+{
+    /**
+     * Правильный ответ
+     *
+     * @var boolean
+     */
+    public $Flag;
+
+    /**
+     * Заголовки ответа
+     *
+     * @var array
+     */
+    public $Head = [];
+
+    /**
+     * Тело ответа
+     *
+     * @var mixed
+     */
+    public $Body;
 }
