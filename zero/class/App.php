@@ -383,7 +383,7 @@ class Zero_App
         else
             self::$Options = new Zero_OptionsValue();
 
-        // Определение режима работы
+        // Определение режима работы и роутинг
         if ( empty($_SERVER['REQUEST_URI']) )
         {
             self::$Mode = ZERO_MODE_CONSOLE;
@@ -391,15 +391,14 @@ class Zero_App
         else if ( strpos($_SERVER['REQUEST_URI'], '/api/') === 0 || strtolower(ZERO_MODE_API) == Zero_App::$Config->Site_DomainSub )
         {
             self::$Mode = ZERO_MODE_API;
+            app_route();
             app_request_data_api();
         }
         else
         {
             self::$Mode = ZERO_MODE_WEB;
+            app_route();
         }
-
-        // Роутинг
-        app_route();
 
         // Шаблонизатор
         require_once ZERO_PATH_ZERO . '/zero/class/View.php';
