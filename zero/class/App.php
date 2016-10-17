@@ -274,8 +274,8 @@ class Zero_App
         header("Content-Type: application/json; charset=utf-8");
         header('HTTP/1.1 200 200');
 
-        if ( self::$Section->Controller )
-            $message = Zero_I18n::Message(self::$Section->Controller, $code, $params);
+        if ( self::$Controller->Controller )
+            $message = Zero_I18n::Message(self::$Controller->Controller, $code, $params);
         else
             $message = Zero_I18n::Message('Zero', $code, $params);
 
