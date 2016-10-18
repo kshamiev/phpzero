@@ -202,6 +202,8 @@ class Zero_App
         if ( $fp == false )
         {
             Zero_Logs::Set_Message_Error('Обращение к не корректному ресурсу: ' . $url);
+            Zero_Logs::Set_Message_Error($url);
+            Zero_Logs::Set_Message_Error($content);
             return null;
         }
         $response = stream_get_contents($fp);

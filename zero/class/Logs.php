@@ -143,6 +143,19 @@ class Zero_Logs
      * @param mixed $value Сообщение об ошибке
      * @return mixed
      */
+    public static function Set_Message_Info($value)
+    {
+        self::Start(print_r($value, true));
+        self::Stop(print_r($value, true));
+        return $value;
+    }
+
+    /**
+     * Инициализация входиащего системного сообщения.
+     *
+     * @param mixed $value Сообщение об ошибке
+     * @return mixed
+     */
     public static function Set_Message_Notice($value)
     {
         self::$_Message[] = [print_r($value, true), 'notice'];
@@ -227,7 +240,7 @@ class Zero_Logs
         if ( Zero_App::$Config->Log_Profile_Application )
         {
             $output = join("\n", self::Get_Usage_MemoryAndTime()) . "\n";
-            Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . self::$_FileLog . '.log', $output);
+            Helper_File::File_Save_After(ZERO_PATH_LOG . '/' . self::$_FileLog . '_info.log', $output);
         }
         if ( 0 < count(self::$_Message) )
         {

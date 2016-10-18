@@ -101,6 +101,12 @@ class Zero_I18n
         if ( '' == $lang )
             $lang = ZERO_LANG;
         //
+        $path = ZERO_PATH_SITE . '/i18n/' . $lang . '/' . $folder_list[1] . '.php';
+        if ( file_exists($path) )
+        {
+            return include $path;
+        }
+        //
         $path = ZERO_PATH_APPLICATION . '/' . strtolower($folder_list[0]) . '/i18n/' . $lang . '/' . $folder_list[1] . '.php';
         if ( file_exists($path) )
         {
