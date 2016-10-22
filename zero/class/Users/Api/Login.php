@@ -23,27 +23,11 @@ class Zero_Users_Api_Login extends Zero_Controller
      *
      * @api
      *
-     * PUT /api/v1.0/zero/user/login
+     * PUT /api/v1/zero/user/login
      *
-     * - "Hardware" Редирект в случае успеха авторизации
-     *  - "Cpu" Редирект в случае успеха авторизации
-     *  - "Ram" Редирект в случае успеха авторизации
-     *  - "Platform" Редирект в случае успеха авторизации
-     * - "Software" Редирект в случае успеха авторизации
-     *  - "OS" Редирект в случае успеха авторизации
-     *  - "Bit" Редирект в случае успеха авторизации
-     *  - "RdpLicCount" Редирект в случае успеха авторизации
-     *      - ssss
-     *      - ssss
-     *      - ssss
-     * @link http://site-f.hostke.ru/exchange/order.json
-     * @link /exchange/order.json
-     *
-     * @param string $name Какая-то строка
-     * @param integer $id Какое-то число
      * @return boolean flag статус выполнения
      */
-    public function Action_PUT($name, $id)
+    public function Action_PUT()
     {
         // Инициализация
         if ( !$_REQUEST['Login'] || !$_REQUEST['Password'] )
@@ -100,7 +84,7 @@ class Zero_Users_Api_Login extends Zero_Controller
      * Фабричный метод по созданию контроллера.
      *
      * @param array $properties входные параметры плагина
-     * @return Zero_Api_Users_Login
+     * @return Zero_Users_Api_Login
      */
     public static function Make($properties = [])
     {

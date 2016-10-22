@@ -214,10 +214,4 @@ abstract class Zero_Controller
         $index = get_class($this);
         Zero_Session::Rem($index);
     }
-
-    public static function Api($post = null)
-    {
-        $response = Zero_App::RequestJson("POST", "https://www.domain.ru/api/v1/...", $post);
-        return $response;
-    }
 }

@@ -10,9 +10,9 @@
 class Zero_Users_Api_Logout extends Zero_Controller
 {
     /**
-     * Какой-то контроллер
+     * Завершение сессии пользователя
      *
-     * @sample /api/v1/sample?param=value...
+     * @sample /api/v1/zero/user/logout
      *
      * @return boolean flag статус выполнения
      */
@@ -30,7 +30,7 @@ class Zero_Users_Api_Logout extends Zero_Controller
      * Фабричный метод по созданию контроллера.
      *
      * @param array $properties входные параметры плагина
-     * @return Zero_Api_Users_Logout
+     * @return Zero_Users_Api_Logout
      */
     public static function Make($properties = [])
     {

@@ -125,4 +125,22 @@ class Zero_Controller_Sample extends Zero_Controller
         }
         return $Controller;
     }
+
+    /**
+     * Fabrika po sozdaniiu kontrollerov.
+     *
+     * Rabotaet cherez sessiiu. Indeks: $class_name
+     *
+     * @param array $properties vhodny`e parametry` plagina
+     * @return Zero_Controller
+     */
+    public static function Factor($properties = [])
+    {
+        if ( !$result = Zero_Session::Get(__CLASS__) )
+        {
+            $result = self::Make($properties);
+            Zero_Session::Set(__CLASS__, $result);
+        }
+        return $result;
+    }
 }
