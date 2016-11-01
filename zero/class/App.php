@@ -201,7 +201,7 @@ class Zero_App
         $fp = fopen($url, 'rb', false, stream_context_create($opts));
         if ( $fp == false )
         {
-            Zero_Logs::Set_Message_Error('Обращение к не корректному ресурсу: ' . $url);
+            Zero_Logs::Set_Message_Error('Обращение к не корректному ресурсу:');
             Zero_Logs::Set_Message_Error($url);
             Zero_Logs::Set_Message_Error($content);
             return null;
