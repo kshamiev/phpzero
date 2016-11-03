@@ -59,19 +59,22 @@ class Zero_DB
      */
     protected static function Init($name = '')
     {
-        if ( $name == '' )
+        if ($name == '')
             $name = key(self::$Config);
-        if ( isset(self::$DB[$name]) )
+        if (isset(self::$DB[$name]))
             return $name;
-        else if ( !isset(self::$Config[$name]) )
+        else if (!isset(self::$Config[$name]))
             die("обращение к не определенной в конфигурации БД '{$name}'");
         //  Initcializatciia ob``ekta mysqli
         /* create a connection object which is not connected */
         self::$DB[$name] = mysqli_connect(self::$Config[$name]['Host'], self::$Config[$name]['Login'], self::$Config[$name]['Password'], self::$Config[$name]['Name']);
         /* check connection */
-        if ( mysqli_connect_errno() )
+        if (mysqli_connect_errno())
             die("mysqli - Unable to connect to the server or choose a database.<br>\n Cause: " . mysqli_connect_error());
-        self::$DB[$name]->set_charset('utf8');
+        if (empty(self::$Config[$name]['Charset']))
+            self::$DB[$name]->set_charset('utf8');
+        else
+            self::$DB[$name]->set_charset(self::$Config[$name]['Charset']);
         //  self::$DB = mysqli_init();
         /* set connection options */
         //  self::$DB->options(MYSQLI_INIT_COMMAND, "SET AUTOCOMMIT=1");
@@ -100,7 +103,7 @@ class Zero_DB
     public static function EscID($int)
     {
         $int = intval($int);
-        if ( !$int )
+        if (!$int)
             return 'NULL';
         return $int;
     }
@@ -136,9 +139,9 @@ class Zero_DB
     public static function EscT($str)
     {
         $str = trim(strval($str));
-        if ( 0 < strlen($str) )
+        if (0 < strlen($str))
             return "'" . self::$DB[self::Init()]->real_escape_string($str) . "'";
-            //            return "'" . addslashes($str) . "'";
+        //            return "'" . addslashes($str) . "'";
         else
             return 'NULL';
     }
@@ -152,7 +155,7 @@ class Zero_DB
     public static function EscD($str)
     {
         $str = trim(strval($str));
-        if ( $str )
+        if ($str)
             return "'" . self::$DB[self::Init()]->real_escape_string($str) . "'";
 //            return "'" . addslashes($str) . "'";
         else
@@ -168,7 +171,7 @@ class Zero_DB
     public static function EscE($enum)
     {
         $enum = trim(strval($enum));
-        if ( $enum )
+        if ($enum)
             return "'" . self::$DB[self::Init()]->real_escape_string($enum) . "'";
 //            return "'" . addslashes($enum) . "'";
         else
@@ -185,7 +188,7 @@ class Zero_DB
     public static function EscS($array, $separator = ',')
     {
         $str = trim(implode($separator, $array));
-        if ( $str )
+        if ($str)
             return "'" . self::$DB[self::Init()]->real_escape_string($str) . "'";
 //            return "'" . addslashes($str) . "'";
         else
@@ -201,12 +204,10 @@ class Zero_DB
     public static function EscB($databinary)
     {
         $rph = "0x";
-        if ( 0 < strlen($databinary) )
-        {
-            for ($i = 0; $i < strlen($databinary); $i++)
-            {
+        if (0 < strlen($databinary)) {
+            for ($i = 0; $i < strlen($databinary); $i++) {
                 $chr = dechex(ord($databinary[$i]));
-                if ( strlen($chr) < 2 )
+                if (strlen($chr) < 2)
                     $chr = "0" . $chr;
                 $rph .= $chr;
             }
@@ -227,20 +228,16 @@ class Zero_DB
      */
     protected static function Query($sql, $nameConnect = '')
     {
-        if ( !isset(self::$DB[$nameConnect]) )
+        if (!isset(self::$DB[$nameConnect]))
             $nameConnect = self::Init($nameConnect);
-        if ( true == Zero_App::$Config->Log_Profile_Sql )
-        {
+        if (true == Zero_App::$Config->Log_Profile_Sql) {
             Zero_Logs::Start('#{SQL} ' . $sql);
             $res = self::$DB[$nameConnect]->query($sql);
             Zero_Logs::Stop('#{SQL} ' . $sql);
-        }
-        else
-        {
+        } else {
             $res = self::$DB[$nameConnect]->query($sql);
         }
-        if ( !$res )
-        {
+        if (!$res) {
             Zero_Logs::Set_Message_Error("#{SQL_ERROR} " . self::$DB[$nameConnect]->error);
             Zero_Logs::Set_Message_Error("#{SQL_QUERY} " . $sql);
             throw new Exception(self::$DB[$nameConnect]->error, -1);
@@ -262,20 +259,16 @@ class Zero_DB
      */
     protected static function Query_Real($sql, $nameConnect = '')
     {
-        if ( !isset(self::$DB[$nameConnect]) )
+        if (!isset(self::$DB[$nameConnect]))
             $nameConnect = self::Init($nameConnect);
-        if ( true == Zero_App::$Config->Log_Profile_Sql )
-        {
+        if (true == Zero_App::$Config->Log_Profile_Sql) {
             Zero_Logs::Start('#{SQL} ' . $sql);
             $res = self::$DB[$nameConnect]->query($sql);
             Zero_Logs::Stop('#{SQL} ' . $sql);
-        }
-        else
-        {
+        } else {
             $res = self::$DB[$nameConnect]->query($sql);
         }
-        if ( !$res )
-        {
+        if (!$res) {
             Zero_Logs::Set_Message_Error("#{SQL_ERROR} " . self::$DB[$nameConnect]->error);
             Zero_Logs::Set_Message_Error("#{SQL_QUERY} " . $sql);
             throw new Exception(self::$DB[$nameConnect]->error, -1);
@@ -291,12 +284,12 @@ class Zero_DB
      */
     public static function Select_Row($sql, $nameConnect = '')
     {
-        if ( !$res = self::Query($sql, $nameConnect) )
+        if (!$res = self::Query($sql, $nameConnect))
             return false;
         /* @var $res mysqli_result */
         $row = $res->fetch_assoc();
         $res->close();
-        if ( is_array($row) )
+        if (is_array($row))
             return $row;
         return [];
     }
@@ -310,11 +303,10 @@ class Zero_DB
     public static function Select_List($sql, $nameConnect = '')
     {
         $result = [];
-        if ( !$res = self::Query($sql, $nameConnect) )
+        if (!$res = self::Query($sql, $nameConnect))
             return false;
         /* @var $res mysqli_result */
-        while ( false != $row = $res->fetch_row() )
-        {
+        while (false != $row = $res->fetch_row()) {
             $result[] = $row[0];
         }
         $res->close();
@@ -330,11 +322,10 @@ class Zero_DB
     public static function Select_List_Index($sql, $nameConnect = '')
     {
         $result = [];
-        if ( !$res = self::Query($sql, $nameConnect) )
+        if (!$res = self::Query($sql, $nameConnect))
             return false;
         /* @var $res mysqli_result */
-        while ( false != $row = $res->fetch_row() )
-        {
+        while (false != $row = $res->fetch_row()) {
             $result[$row[0]] = $row[1];
         }
         $res->close();
@@ -350,11 +341,10 @@ class Zero_DB
     public static function Select_Array($sql, $nameConnect = '')
     {
         $result = [];
-        if ( !$res = self::Query($sql, $nameConnect) )
+        if (!$res = self::Query($sql, $nameConnect))
             return false;
         /* @var $res mysqli_result */
-        while ( false != $row = $res->fetch_assoc() )
-        {
+        while (false != $row = $res->fetch_assoc()) {
             $result[] = $row;
         }
         $res->close();
@@ -370,11 +360,10 @@ class Zero_DB
     public static function Select_Array_Index($sql, $nameConnect = '')
     {
         $result = [];
-        if ( !$res = self::Query($sql, $nameConnect) )
+        if (!$res = self::Query($sql, $nameConnect))
             return false;
         /* @var $res mysqli_result */
-        while ( false != $row = $res->fetch_assoc() )
-        {
+        while (false != $row = $res->fetch_assoc()) {
             $result[reset($row)] = $row;
         }
         $res->close();
@@ -390,11 +379,10 @@ class Zero_DB
     public static function Select_Array_IndexTwo($sql, $nameConnect = '')
     {
         $result = [];
-        if ( !$res = self::Query($sql, $nameConnect) )
+        if (!$res = self::Query($sql, $nameConnect))
             return false;
         /* @var $res mysqli_result */
-        while ( false != $row = $res->fetch_assoc() )
-        {
+        while (false != $row = $res->fetch_assoc()) {
             $result[reset($row)][next($row)] = $row;
         }
         $res->close();
@@ -409,7 +397,7 @@ class Zero_DB
      */
     public static function Select_Field($sql, $nameConnect = '')
     {
-        if ( !$res = self::Query($sql, $nameConnect) )
+        if (!$res = self::Query($sql, $nameConnect))
             return false;
         /* @var $res mysqli_result */
         $row = $res->fetch_row();
@@ -429,7 +417,7 @@ class Zero_DB
     public static function Update($sql, $nameConnect = '')
     {
         $nameConnect = self::Init($nameConnect);
-        if ( self::Query($sql, $nameConnect) )
+        if (self::Query($sql, $nameConnect))
             return self::$DB[$nameConnect]->affected_rows;
         return false;
     }
@@ -446,7 +434,7 @@ class Zero_DB
     public static function Insert($sql, $nameConnect = '')
     {
         $nameConnect = self::Init($nameConnect);
-        if ( self::Query($sql, $nameConnect) )
+        if (self::Query($sql, $nameConnect))
             return self::$DB[$nameConnect]->insert_id;
         return false;
     }
@@ -465,34 +453,29 @@ class Zero_DB
     {
         $nameConnect = self::Init($nameConnect);
         $quotedparams = [];
-        foreach ($params as $param)
-        {
+        foreach ($params as $param) {
             array_push($quotedparams, $param === null ? 'NULL' : "'" . self::$DB[$nameConnect]->real_escape_string($param) . "'");
         }
         $sql = 'CALL ' . $store_procedure_name . '(' . implode(',', $quotedparams) . ');';
         /* execute multi query */
-        if ( !self::Query_Real($sql, $nameConnect) )
+        if (!self::Query_Real($sql, $nameConnect))
             return false;
         $results = [];
-        do
-        {
-            if ( false != $result = self::$DB[$nameConnect]->use_result() )
-            {
+        do {
+            if (false != $result = self::$DB[$nameConnect]->use_result()) {
                 $rows = [];
-                while ( false != $row = $result->fetch_assoc() )
-                {
+                while (false != $row = $result->fetch_assoc()) {
                     $rows[] = $row;
                 }
                 $result->close();
                 $results[] = $rows;
             }
-        }
-        while ( self::$DB[$nameConnect]->more_results() && self::$DB[$nameConnect]->next_result() );
-        if ( 1 < count($results) )
+        } while (self::$DB[$nameConnect]->more_results() && self::$DB[$nameConnect]->next_result());
+        if (1 < count($results))
             return $results;
-        else if ( 1 < count($results[0]) )
+        else if (1 < count($results[0]))
             return $results[0];
-        else if ( 1 < count($results[0][0]) )
+        else if (1 < count($results[0][0]))
             return $results[0][0];
         return array_shift($results[0][0]);
     }
