@@ -154,6 +154,8 @@ class Helper_Curl
                 curl_setopt($ch, CURLOPT_PROXYUSERPWD, "{$this->proxyUser}:{$this->proxyPwd}");
             }
         }
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,  0);
         //	время работы
         curl_setopt($ch, CURLOPT_TIMEOUT, 300);          //	полное время сеанса
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);    //	время ожидания соединения в секундах
