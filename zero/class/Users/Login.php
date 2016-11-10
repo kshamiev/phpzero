@@ -74,13 +74,13 @@ class Zero_Users_Login extends Zero_Controller
         // Авторизация
         if ( isset($_REQUEST['Memory']) && $_REQUEST['Memory'] )
         {
-            $this->Model->Token = crypt($_REQUEST['Password'], crypt($_REQUEST['Password']));
-            setcookie('i09u9Maf6l6sr7Um0m8A3u0r9i55m3il', $this->Model->Token, time() + 2592000, '/');
+            $this->Model->Token = $this->Model->Get_TokenNew();
+            setcookie(Zero_App::$Config->Site_Token, $this->Model->Token, time() + 2592000, '/');
         }
         else
         {
             $this->Model->Token = '';
-            setcookie('i09u9Maf6l6sr7Um0m8A3u0r9i55m3il', null, 0, '/');
+            setcookie(Zero_App::$Config->Site_Token, null, 0, '/');
         }
         $this->Model->IsOnline = 'yes';
         $this->Model->DateOnline = date('Y-m-d H:i:s');
@@ -148,10 +148,12 @@ class Zero_Users_Login extends Zero_Controller
      */
     public function Action_Logout()
     {
+        Zero_App::$Users->IsOnline = 'no';
+        Zero_App::$Users->Save();
         Zero_Session::Unset_Instance();
         session_unset();
         session_destroy();
-        setcookie('i09u9Maf6l6sr7Um0m8A3u0r9i55m3il', null, 0, '/');
+        setcookie(Zero_App::$Config->Site_Token, null, 0, '/');
         Zero_App::ResponseRedirect(ZERO_HTTP);
     }
 

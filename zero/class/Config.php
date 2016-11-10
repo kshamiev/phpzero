@@ -122,6 +122,13 @@ class Zero_Config
     public $Site_UseDB = false;
 
     /**
+     * Токен сессии пользователя
+     *
+     * @var string
+     */
+    public $Site_Token = 'i09u9Maf6l6sr7Um0m8A3u0r9i55m3il';
+
+    /**
      * Access for DB (Mysql)
      *
      * @var array
@@ -399,6 +406,9 @@ class Zero_Config
         }
         //
         $this->Site_UseDB = $Config['Site']['UseDB'];
+        //
+        if ( isset($Config['Site']['Token']) && $Config['Site']['Token'] )
+            $this->Site_Token = $Config['Site']['Token'];
 
         // Access for DB (Mysql)
         $this->Db = $Config['Db'];

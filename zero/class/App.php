@@ -390,7 +390,8 @@ class Zero_App
         {
             self::$Mode = ZERO_MODE_CONSOLE;
         }
-        else if ( strpos($_SERVER['REQUEST_URI'], '/api/') === 0 || strtolower(ZERO_MODE_API) == Zero_App::$Config->Site_DomainSub )
+//        else if ( strpos($_SERVER['REQUEST_URI'], '/api/') === 0 || strtolower(ZERO_MODE_API) == Zero_App::$Config->Site_DomainSub )
+        else if ( preg_match("~^/v[0-9]+/~si", $_SERVER['REQUEST_URI']) )
         {
             self::$Mode = ZERO_MODE_API;
             app_route();
@@ -480,8 +481,9 @@ class Zero_App
         {
             if ( self::Autoload(self::$Section->Controller) )
             {
-                //  Доступные операции-методы контроллера раздела с учетом прав. Проверка прав на раздел (Action_Default)
+                //  Доступные операции-методы контроллера раздела с учетом прав.
                 $Action_List = self::$Section->Get_Action_List();
+                // Проверка прав на раздел (Action_Default)
                 if ( 1 < self::$Users->Groups_ID && 'yes' == self::$Section->IsAuthorized && 0 == count($Action_List) )
                     throw new Exception('Page Forbidden', 403);
 
@@ -490,7 +492,7 @@ class Zero_App
                     $_REQUEST['act'] = trim($_REQUEST['act']);
                 else
                     $_REQUEST['act'] = 'Default';
-                //
+                // право на действие (action)
                 if ( !isset($Action_List[$_REQUEST['act']]) )
                     throw new Exception('Page Forbidden', 403);
                 //

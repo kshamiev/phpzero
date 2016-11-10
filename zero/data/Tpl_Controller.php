@@ -78,15 +78,39 @@ class Zero_Controller_Sample extends Zero_Controller
     }
 
     /**
-     * Какой-то контроллер
-     *
-     * @sample /api/v1/sample?param=value...
+     * Опции запроса
      *
      * @return boolean flag статус выполнения
      */
     public function Action_OPTIONS()
     {
-        Zero_App::ResponseJson200($_REQUEST, 0, []);
+        settype($_REQUEST['method'], 'string');
+        if ( !$_REQUEST['method'] )
+            Zero_App::ResponseJson200(null, 0, ['?method=[GET,POST,PUT,DELETE]']);
+
+        $_REQUEST['method'] = strtolower($_REQUEST['method']);
+        switch ( $_REQUEST['method'] )
+        {
+            case 'get':
+                $response = [];
+                Zero_App::ResponseJson200($response, 0, ['?']);
+                break;
+            case 'post':
+                $response = [];
+                Zero_App::ResponseJson200($response, 0, ['?']);
+                break;
+            case 'put':
+                $response = [];
+                Zero_App::ResponseJson200($response, 0, ['?']);
+                break;
+            case 'delete':
+                $response = [];
+                Zero_App::ResponseJson200($response, 0, ['?']);
+                break;
+            default:
+                Zero_App::ResponseJson200('метод не реализован');
+                break;
+        }
         return true;
     }
 

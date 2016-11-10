@@ -22,6 +22,7 @@
  * @property string $DateOnline
  * @property string $Date
  * @property string $Token
+ * @property string $TokenNew
  */
 class Zero_Users extends Zero_Model
 {
@@ -166,30 +167,25 @@ class Zero_Users extends Zero_Model
             return [
                 'Name' => [],
                 'Password' => [],
+                'PasswordR' => ['AliasDB' => 'z.Password', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Password'],
                 'Email' => [],
                 'Phone' => [],
                 'Skype' => [],
-                'ImgAvatar' => [],
+                'Address' => [],
             ];
         }
-        else
-        {
-            return [
-                'Groups_ID' => [],
-                'Name' => [],
-                'Login' => [],
-                'Password' => [],
-                'IsAccess' => [],
-                'Email' => [],
-                'Phone' => [],
-                'Skype' => [],
-                'IsCondition' => [],
-                'ImgAvatar' => [],
-                'IsOnline' => [],
-                'DateOnline' => [],
-                'Date' => [],
-            ];
-        }
+        // регистрация
+        return [
+            'Users_ID' => [],
+            'Name' => [],
+            'Login' => [],
+            'Password' => [],
+            'PasswordR' => ['AliasDB' => 'z.Password', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Password'],
+            'Email' => [],
+            'Phone' => [],
+            'Skype' => [],
+            'Address' => [],
+        ];
     }
 
     /**
@@ -201,24 +197,17 @@ class Zero_Users extends Zero_Model
         {
             $this->Groups_ID = 2;
             $this->Login = 'guest';
-
-            if ( isset($_SERVER['HTTP_X_ACCESS_TOKEN']) )
-                $_REQUEST['Token'] = $_SERVER['HTTP_X_ACCESS_TOKEN'];
-            else if ( isset($_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il']) )
-                $_REQUEST['Token'] = $_COOKIE['i09u9Maf6l6sr7Um0m8A3u0r9i55m3il'];
-            if ( isset($_REQUEST['Token']) )
-                setcookie('i09u9Maf6l6sr7Um0m8A3u0r9i55m3il', $_REQUEST['Token'], time() + 2592000, '/');
-
-            if ( isset($_REQUEST['Token']) && Zero_App::$Config->Site_UseDB )
-            {
-                $sql = "SELECT * FROM Users WHERE Token = " . Zero_DB::EscT($_REQUEST['Token']);
-                $row = Zero_DB::Select_Row($sql);
-                if ( 0 < count($row) )
-                    $this->Set_Props($row);
-                else
-                    setcookie('i09u9Maf6l6sr7Um0m8A3u0r9i55m3il', null, 0, '/');
-            }
         }
+    }
+
+    /**
+     * Генерация нового токена
+     *
+     * @return string - новый токен
+     */
+    public function Get_TokenNew()
+    {
+        return crypt($this->Name . $this->Email, crypt($this->Password));
     }
 
     /**
@@ -252,7 +241,7 @@ class Zero_Users extends Zero_Model
      */
     public static function DB_Offline($seconds = 600)
     {
-        $sql = "UPDATE Users SET IsOnline = 'no' WHERE DateOnline < NOW() - INTERVAL {$seconds} SECOND";
+        $sql = "UPDATE Users SET IsOnline = 'no', Token = NULL WHERE DateOnline < NOW() - INTERVAL {$seconds} SECOND";
         Zero_DB::Update($sql);
     }
 
@@ -389,6 +378,18 @@ class Zero_Users extends Zero_Model
     public function Load_Login($login)
     {
         $sql = "SELECT * FROM {$this->Source} WHERE Login = " . Zero_DB::EscT($login);
+        $row = Zero_DB::Select_Row($sql);
+        $this->Set_Props($row);
+    }
+
+    /**
+     * Загрузка пользователя по его токену
+     *
+     * @param string $token
+     */
+    public function Load_Token($token)
+    {
+        $sql = "SELECT * FROM {$this->Source} WHERE Token = " . Zero_DB::EscT($token);
         $row = Zero_DB::Select_Row($sql);
         $this->Set_Props($row);
     }

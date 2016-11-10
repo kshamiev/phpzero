@@ -28,12 +28,12 @@ class Zero_Controllers extends Zero_Model
      */
     protected $Source = 'Controllers';
 
-	/**
-	 * Action List
-	 *
-	 * @var array
-	 */
-	private $_Action_List = null;
+    /**
+     * Action List
+     *
+     * @var array
+     */
+    private $_Action_List = null;
 
     /**
      * Базовая конфигурация свойств модели
@@ -57,89 +57,89 @@ class Zero_Controllers extends Zero_Model
     {
         return [
             'ID' => [
-				'AliasDB' => 'z.ID',
-				'DB' => 'ID',
-				'IsNull' => 'NO',
-				'Default' => '',
-				'Form' => '',
-			],
-			'Name' => [
-				'AliasDB' => 'z.Name',
-				'DB' => 'T',
-				'IsNull' => 'NO',
-				'Default' => '',
-				'Form' => 'Text',
-			],
-			'Controller' => [
-				'AliasDB' => 'z.Controller',
-				'DB' => 'T',
-				'IsNull' => 'NO',
-				'Default' => '',
-				'Form' => 'Text',
-			],
-			'Typ' => [
-				'AliasDB' => 'z.Typ',
-				'DB' => 'E',
-				'IsNull' => 'NO',
-				'Default' => 'Web',
-				'Form' => 'Radio',
-			],
-			'Url' => [
-				'AliasDB' => 'z.Url',
-				'DB' => 'T',
-				'IsNull' => 'YES',
-				'Default' => '',
-				'Form' => 'Text',
-			],
-			'Minute' => [
-				'AliasDB' => 'z.Minute',
-				'DB' => 'T',
-				'IsNull' => 'YES',
-				'Default' => '',
-				'Form' => 'Text',
-			],
-			'Hour' => [
-				'AliasDB' => 'z.Hour',
-				'DB' => 'T',
-				'IsNull' => 'YES',
-				'Default' => '',
-				'Form' => 'Text',
-			],
-			'Day' => [
-				'AliasDB' => 'z.Day',
-				'DB' => 'T',
-				'IsNull' => 'YES',
-				'Default' => '',
-				'Form' => 'Text',
-			],
-			'Month' => [
-				'AliasDB' => 'z.Month',
-				'DB' => 'T',
-				'IsNull' => 'YES',
-				'Default' => '',
-				'Form' => 'Text',
-			],
-			'Week' => [
-				'AliasDB' => 'z.Week',
-				'DB' => 'T',
-				'IsNull' => 'YES',
-				'Default' => '',
-				'Form' => 'Text',
-			],
-			'IsActive' => [
-				'AliasDB' => 'z.IsActive',
-				'DB' => 'I',
-				'IsNull' => 'YES',
-				'Default' => '0',
-				'Form' => 'Check',
-			],
-			'IsAuthorized' => [
-				'AliasDB' => 'z.IsAuthorized',
-				'DB' => 'E',
-				'IsNull' => 'NO',
-				'Default' => 'no',
-				'Form' => 'Radio'
-			],
+                'AliasDB' => 'z.ID',
+                'DB' => 'ID',
+                'IsNull' => 'NO',
+                'Default' => '',
+                'Form' => '',
+            ],
+            'Name' => [
+                'AliasDB' => 'z.Name',
+                'DB' => 'T',
+                'IsNull' => 'NO',
+                'Default' => '',
+                'Form' => 'Text',
+            ],
+            'Controller' => [
+                'AliasDB' => 'z.Controller',
+                'DB' => 'T',
+                'IsNull' => 'NO',
+                'Default' => '',
+                'Form' => 'Text',
+            ],
+            'Typ' => [
+                'AliasDB' => 'z.Typ',
+                'DB' => 'E',
+                'IsNull' => 'NO',
+                'Default' => 'Web',
+                'Form' => 'Radio',
+            ],
+            'Url' => [
+                'AliasDB' => 'z.Url',
+                'DB' => 'T',
+                'IsNull' => 'YES',
+                'Default' => '',
+                'Form' => 'Text',
+            ],
+            'Minute' => [
+                'AliasDB' => 'z.Minute',
+                'DB' => 'T',
+                'IsNull' => 'YES',
+                'Default' => '',
+                'Form' => 'Text',
+            ],
+            'Hour' => [
+                'AliasDB' => 'z.Hour',
+                'DB' => 'T',
+                'IsNull' => 'YES',
+                'Default' => '',
+                'Form' => 'Text',
+            ],
+            'Day' => [
+                'AliasDB' => 'z.Day',
+                'DB' => 'T',
+                'IsNull' => 'YES',
+                'Default' => '',
+                'Form' => 'Text',
+            ],
+            'Month' => [
+                'AliasDB' => 'z.Month',
+                'DB' => 'T',
+                'IsNull' => 'YES',
+                'Default' => '',
+                'Form' => 'Text',
+            ],
+            'Week' => [
+                'AliasDB' => 'z.Week',
+                'DB' => 'T',
+                'IsNull' => 'YES',
+                'Default' => '',
+                'Form' => 'Text',
+            ],
+            'IsActive' => [
+                'AliasDB' => 'z.IsActive',
+                'DB' => 'I',
+                'IsNull' => 'YES',
+                'Default' => '0',
+                'Form' => 'Check',
+            ],
+            'IsAuthorized' => [
+                'AliasDB' => 'z.IsAuthorized',
+                'DB' => 'E',
+                'IsNull' => 'NO',
+                'Default' => 'no',
+                'Form' => 'Radio'
+            ],
         ];
     }
 
@@ -163,17 +163,17 @@ class Zero_Controllers extends Zero_Model
     {
         return [
             'ID' => ['Visible' => true, 'AR' => true],
-			'Name' => ['Visible' => true, 'AR' => true],
-			'Controller' => ['Visible' => true, 'AR' => true],
-			'Typ' => ['Visible' => true, 'AR' => true],
-			'Url' => ['Visible' => true, 'AR' => true],
-			'Minute' => ['Visible' => true, 'AR' => true],
-			'Hour' => ['Visible' => true, 'AR' => true],
-			'Day' => ['Visible' => true, 'AR' => true],
-			'Month' => ['Visible' => true, 'AR' => true],
-			'Week' => ['Visible' => true, 'AR' => true],
-			'IsActive' => ['Visible' => true, 'AR' => true],
-			'IsAuthorized' => ['Visible' => true, 'AR' => true],
+            'Name' => ['Visible' => true, 'AR' => true],
+            'Controller' => ['Visible' => true, 'AR' => true],
+            'Typ' => ['Visible' => true, 'AR' => true],
+            'Url' => ['Visible' => true, 'AR' => true],
+            'Minute' => ['Visible' => true, 'AR' => true],
+            'Hour' => ['Visible' => true, 'AR' => true],
+            'Day' => ['Visible' => true, 'AR' => true],
+            'Month' => ['Visible' => true, 'AR' => true],
+            'Week' => ['Visible' => true, 'AR' => true],
+            'IsActive' => ['Visible' => true, 'AR' => true],
+            'IsAuthorized' => ['Visible' => true, 'AR' => true],
         ];
     }
 
@@ -192,13 +192,13 @@ class Zero_Controllers extends Zero_Model
     {
         return [
             'ID' => [],
-			'Name' => [],
-			'Url' => [],
-			'Minute' => [],
-			'Hour' => [],
-			'Day' => [],
-			'Month' => [],
-			'Week' => [],
+            'Name' => [],
+            'Url' => [],
+            'Minute' => [],
+            'Hour' => [],
+            'Day' => [],
+            'Month' => [],
+            'Week' => [],
         ];
     }
 
@@ -216,18 +216,39 @@ class Zero_Controllers extends Zero_Model
      */
     protected static function Config_Form($Model, $scenario = '')
     {
+        if ( 'Web' == $Model->Typ )
+            return [
+                'Name' => [],
+                'Controller' => [],
+                'IsActive' => [],
+                'Typ' => [],
+            ];
+        else if ( 'Api' == $Model->Typ )
+            return [
+                'Name' => [],
+                'Controller' => [],
+                'Url' => [],
+                'IsActive' => [],
+                'IsAuthorized' => [],
+                'Typ' => [],
+            ];
+        else if ( 'Console' == $Model->Typ )
+            return [
+                'Name' => [],
+                'Controller' => [],
+                'Minute' => [],
+                'Hour' => [],
+                'Day' => [],
+                'Month' => [],
+                'Week' => [],
+                'IsActive' => [],
+                'Typ' => [],
+            ];
         return [
-			'Name' => [],
-			'Controller' => [],
-			'Url' => [],
-			'Minute' => [],
-			'Hour' => [],
-			'Day' => [],
-			'Month' => [],
-			'Week' => [],
-			'IsActive' => [],
-			'IsAuthorized' => [],
-			'Typ' => [],
+            'Name' => [],
+            'Controller' => [],
+            'IsActive' => [],
+            'Typ' => [],
         ];
     }
 
@@ -270,98 +291,98 @@ class Zero_Controllers extends Zero_Model
         }
     }
 
-	/**
-	 * Getting a controller actions with regard to the rights section.
-	 *
-	 * @return array ist of actions controllers section
-	 * @throws Exception
-	 */
-	public function Get_Action_List()
-	{
-		if ( 0 == $this->ID )
-			return [];
-		else if ( !is_null($this->_Action_List) )
-			return $this->_Action_List;
+    /**
+     * Getting a controller actions with regard to the rights section.
+     *
+     * @return array ist of actions controllers section
+     * @throws Exception
+     */
+    public function Get_Action_List()
+    {
+        if ( 0 == $this->ID )
+            return [];
+        else if ( !is_null($this->_Action_List) )
+            return $this->_Action_List;
 
-		$controllerName = $this->Controller;
-		$index_cache = 'ControllerList_' . Zero_App::$Users->Groups_ID . '_' . $controllerName;
-		if ( false !== $this->_Action_List = $this->Cache->Get($index_cache) )
-			return $this->_Action_List;
+        $controllerName = $this->Controller;
+        $index_cache = 'ControllerList_' . Zero_App::$Users->Groups_ID . '_' . $controllerName;
+        if ( false !== $this->_Action_List = $this->Cache->Get($index_cache) )
+            return $this->_Action_List;
 
-		$this->_Action_List = [];
-		if ( Zero_App::$Config->Site_UseDB && 'yes' == $this->IsAuthorized && 1 < Zero_App::$Users->Groups_ID )
-		{
-			$Model = Zero_Model::Makes('Zero_Action');
-			$Model->AR->Sql_Where('Controllers_ID', '=', $this->ID);
-			$Model->AR->Sql_Where('Groups_ID', '=', Zero_App::$Users->Groups_ID);
-			$this->_Action_List = $Model->AR->Select_Array_Index('Action');
-			foreach ($this->_Action_List as $action => $row)
-			{
-				$this->_Action_List[$action] = ['Name' => Zero_I18n::Controller($controllerName, 'Action_' . $action)];
-			}
-		}
-		else if ( '' != $controllerName )
-		{
-			if ( false == Zero_App::Autoload($controllerName) )
-				throw new Exception('Класс не найден: ' . $controllerName, -1);
+        $this->_Action_List = [];
+        if ( Zero_App::$Config->Site_UseDB && 'yes' == $this->IsAuthorized && 1 < Zero_App::$Users->Groups_ID )
+        {
+            $Model = Zero_Model::Makes('Zero_Action');
+            $Model->AR->Sql_Where('Controllers_ID', '=', $this->ID);
+            $Model->AR->Sql_Where('Groups_ID', '=', Zero_App::$Users->Groups_ID);
+            $this->_Action_List = $Model->AR->Select_Array_Index('Action');
+            foreach ($this->_Action_List as $action => $row)
+            {
+                $this->_Action_List[$action] = ['Name' => Zero_I18n::Controller($controllerName, 'Action_' . $action)];
+            }
+        }
+        else if ( '' != $controllerName )
+        {
+            if ( false == Zero_App::Autoload($controllerName) )
+                throw new Exception('Класс не найден: ' . $controllerName, -1);
 
-			$reflection = new ReflectionClass($controllerName);
-			foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method)
-			{
-				$name = $method->getName();
-				$arr = explode('_', $name);
-				if ( $arr[0] == 'Action' )
-				{
-					array_shift($arr);
-					$index = join('_', $arr);
-					$this->_Action_List[$index] = ['Name' => Zero_I18n::Controller($controllerName, $name)];
-				}
-			}
-		}
-		Zero_Cache::Set_Link('Groups', Zero_App::$Users->Groups_ID);
-		$this->Cache->Set($index_cache, $this->_Action_List);
-		return $this->_Action_List;
-	}
+            $reflection = new ReflectionClass($controllerName);
+            foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method)
+            {
+                $name = $method->getName();
+                $arr = explode('_', $name);
+                if ( $arr[0] == 'Action' )
+                {
+                    array_shift($arr);
+                    $index = join('_', $arr);
+                    $this->_Action_List[$index] = ['Name' => Zero_I18n::Controller($controllerName, $name)];
+                }
+            }
+        }
+        Zero_Cache::Set_Link('Groups', Zero_App::$Users->Groups_ID);
+        $this->Cache->Set($index_cache, $this->_Action_List);
+        return $this->_Action_List;
+    }
 
     /**
      * Динамический фабричный метод длиа создании объекта через фабрику и инстанс.
      */
     protected function Init()
     {
-		// Поиск в БД
-		if ( Zero_App::$Config->Site_UseDB )
-		{
-			$sql = "SELECT * FROM Controllers WHERE Url = " . Zero_DB::EscT(ZERO_URL);
-			$row = Zero_DB::Select_Row($sql);
-			$this->Set_Props($row);
-		}
-		// Поиск в программе
-		else
-		{
-			foreach (Zero_App::$Config->Modules as $module)
-			{
-				$index = 'route' . Zero_App::$Mode;
-				if ( !isset($module[$index]) || !is_object($module[$index]) )
-					continue;
-				$route = $module[$index];
-				if ( isset($route->Route[ZERO_URL]) )
-				{
-					$route = $route->Route[ZERO_URL];
-					$route['ID'] = -1;
-					$route['Url'] = ZERO_URL;
-					$route['Typ'] = ZERO_MODE_API;
-					if ( empty($route['Name']) )
-						$route['Name'] = $route['Controller'];
-					if ( empty($route['IsAuthorized']) )
-						$route['IsAuthorized'] = 'no';
-					if ( empty($route['IsActive']) )
-						$route['IsActive'] = 1;
-					$this->Set_Props($route);
-					Zero_Cache::Set_Data($index, $route);
-					break;
-				}
-			}
-		}
+        // Поиск в БД
+        if ( Zero_App::$Config->Site_UseDB )
+        {
+            $sql = "SELECT * FROM Controllers WHERE Url = " . Zero_DB::EscT(ZERO_URL);
+            $row = Zero_DB::Select_Row($sql);
+            $this->Set_Props($row);
+        }
+        // Поиск в программе
+        else
+        {
+            foreach (Zero_App::$Config->Modules as $module)
+            {
+                $index = 'route' . Zero_App::$Mode;
+                if ( !isset($module[$index]) || !is_object($module[$index]) )
+                    continue;
+                $route = $module[$index];
+                if ( isset($route->Route[ZERO_URL]) )
+                {
+                    $route = $route->Route[ZERO_URL];
+                    $route['ID'] = -1;
+                    $route['Url'] = ZERO_URL;
+                    $route['Typ'] = ZERO_MODE_API;
+                    if ( empty($route['Name']) )
+                        $route['Name'] = $route['Controller'];
+                    if ( empty($route['IsAuthorized']) )
+                        $route['IsAuthorized'] = 'no';
+                    if ( empty($route['IsActive']) )
+                        $route['IsActive'] = 1;
+                    $this->Set_Props($route);
+                    Zero_Cache::Set_Data($index, $route);
+                    break;
+                }
+            }
+        }
     }
 
     /**
