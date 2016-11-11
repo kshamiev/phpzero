@@ -1,0 +1,28 @@
+<h1>{$Controller->Name} ({$Controller->Controller})</h1>
+<form method="post">
+    <input type="hidden" name="act">
+    <input class="btn" type="button" value="сохранить" onclick="button_form(this.form, '{URL}', 'Save', 0);">
+    <table class="tbledit" width="100%" cellspacing="1" cellpadding="0" border="0">
+        <tr>
+            <th>Группы</th>
+            {foreach ($methodList as $method)}
+            <th>{$method}</th>
+            {/foreach}
+        </tr>
+        {foreach ($groups as $grId => $grName)}
+        <tr>
+            <td width="80" align="center">{$grName}</td>
+            {foreach ($methodList as $method)}
+            <td align="center">
+                {if ( isset($access[$grId][$method]) )}
+                <input type="checkbox" name="access[{$grId}][]" value="{$method}" checked>
+                {else}
+                <input type="checkbox" name="access[{$grId}][]" value="{$method}">
+                {/if}
+            </td>
+            {/foreach}
+        </tr>
+        {/foreach}
+    </table>
+    <input class="btn" type="button" value="сохранить" onclick="button_form(this.form, '{URL}', 'Save', 0);">
+</form>

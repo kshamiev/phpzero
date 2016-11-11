@@ -34,6 +34,7 @@ return [
     'Action_Logout' => 'Выход',
     'Action_Profile' => 'Профиль',
     'Action_Run' => 'запустить',
+    'Action_AccessApi' => 'права',
     // Результат действия
     'Save' => 'сохранено',
     'Reminder' => 'Письмо с реквизитами отправлено',
