@@ -176,6 +176,7 @@ class Zero_Users extends Zero_Model
         }
         // регистрация
         return [
+            'Groups_ID' => [],
             'Users_ID' => [],
             'Name' => [],
             'Login' => [],
