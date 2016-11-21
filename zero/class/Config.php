@@ -306,14 +306,14 @@ class Zero_Config
         date_default_timezone_set('Europe/Moscow');
         setlocale(LC_CTYPE, 'ru_RU.UTF-8');
         setlocale(LC_COLLATE, 'ru_RU.UTF-8');
-        ini_set('display_errors', 0);
-        ini_set('display_startup_errors', 0);
+        // ini_set('display_errors', 0);
+        // ini_set('display_startup_errors', 0);
 
         // Initialization of the profiled application processors
         ini_set('log_errors', true);
-        ini_set('error_log', ZERO_PATH_LOG . '/fatal.log');
+        ini_set('error_log', ZERO_PATH_LOG . '/error_php.log');
         ini_set('magic_quotes_gpc', 0);
-        error_reporting(-1);
+        // error_reporting(-1);
 
         if ( !file_exists(ZERO_PATH_APPLICATION . '/config.php') )
         {
