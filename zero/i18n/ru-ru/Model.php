@@ -97,6 +97,6 @@ return [
     'Zero_Options ID' => 'Идентификатор',
     'Zero_Options Name' => 'Имя параметра',
     'Zero_Options Typ' => 'Тип параметра',
-    'Zero_Options Typ options' => ['string' => 'string','int' => 'int','float' => 'float','array' => 'array'],
+    'Zero_Options Typ options' => ['string' => 'строка','int' => 'число','float' => 'пл. число','array' => 'массив'],
     'Zero_Options Value' => 'Значение параметра',
 ];

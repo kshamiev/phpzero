@@ -263,8 +263,55 @@ class Zero_App
      *
      * Для ответов на API запросы
      *
+     * @param $content
      * @param int $code
      * @param array $params
+     */
+    public static function ResponseJson409($content = null, $code = -1, $params = [])
+    {
+        header('Pragma: no-cache');
+        header('Last-Modified: ' . date('D, d M Y H:i:s') . 'GMT');
+        header('Expires: Mon, 26 Jul 2007 05:00:00 GMT');
+        header('Cache-Control: no-store, no-cache, must-revalidate');
+        header("Content-Type: application/json; charset=utf-8");
+        header('HTTP/1.1 200 200');
+
+        if ( self::$Controller->Controller )
+            $message = Zero_I18n::Message(self::$Controller->Controller, $code, $params);
+        else
+            $message = Zero_I18n::Message('Zero', $code, $params);
+
+        Zero_Logs::Set_Message_Error($message[1]);
+
+        $data = [
+            'Code' => $message[0],
+            'Message' => $message[1],
+            'ErrorStatus' => true,
+        ];
+
+        if ( $content )
+            $data['Content'] = $content;
+
+        echo json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK);
+
+        // закрываем соединение с браузером (работает только под нгинx)
+        if ( function_exists('fastcgi_finish_request') )
+            fastcgi_finish_request();
+
+        // Логирование в файлы
+        if ( Zero_App::$Config->Log_Output_File )
+            Zero_Logs::Output_File();
+        exit;
+    }
+
+    /**
+     * Отдача ошибки в работе в формате json
+     *
+     * Для ответов на API запросы
+     *
+     * @param int $code
+     * @param array $params
+     * @deprecated ResponseJson409
      */
     public static function ResponseJson500($code = -1, $params = [])
     {
@@ -388,7 +435,7 @@ class Zero_App
         {
             self::$Mode = ZERO_MODE_CONSOLE;
         }
-//        else if ( strpos($_SERVER['REQUEST_URI'], '/api/') === 0 || strtolower(ZERO_MODE_API) == Zero_App::$Config->Site_DomainSub )
+        //        else if ( strpos($_SERVER['REQUEST_URI'], '/api/') === 0 || strtolower(ZERO_MODE_API) == Zero_App::$Config->Site_DomainSub )
         else if ( preg_match("~/v[0-9|.]+/~si", $_SERVER['REQUEST_URI']) )
         {
             self::$Mode = ZERO_MODE_API;
