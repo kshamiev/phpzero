@@ -34,6 +34,8 @@ return [
         'UseDB' => ISUSEDB,
         // Токен сессии пользователя
         'Token' => 'i09u9Maf6l6sr7Um0m8A3u0r9i55m3il',
+        // Timezone
+        'TimeZone' => 'Europe/Moscow',
     ],
     //  Access for DB (Mysql)
     'Db' => [

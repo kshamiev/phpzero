@@ -303,7 +303,7 @@ class Zero_Config
     {
         // Setting php
         set_time_limit(3600);
-        date_default_timezone_set('Europe/Moscow');
+
         setlocale(LC_CTYPE, 'ru_RU.UTF-8');
         setlocale(LC_COLLATE, 'ru_RU.UTF-8');
         // ini_set('display_errors', 0);
@@ -321,6 +321,12 @@ class Zero_Config
             exit;
         }
         $Config = require ZERO_PATH_APPLICATION . '/config.php';
+
+        // Timezone
+        if ( isset($Config['Site']['TimeZone']) )
+            date_default_timezone_set($Config['Site']['TimeZone']);
+        else
+            date_default_timezone_set('Europe/Moscow');
 
         // IP the source address of the request
         if ( isset($_SERVER["HTTP_X_FORWARDED_FOR"]) )
