@@ -290,6 +290,13 @@ class Zero_Config
     public $Modules = [];
 
     /**
+     * Модули
+     *
+     * @var array
+     */
+    public $Mod = [];
+
+    /**
      * IP the source address of the request
      *
      * @var string
@@ -462,6 +469,9 @@ class Zero_Config
 
         // Конфигурации модулей
         $this->Modules = $Config['Modules'];
+
+        // Модули
+        $this->Mod = self::Get_Modules();
     }
 
     /**
@@ -493,8 +503,9 @@ class Zero_Config
         $result = [];
         foreach (glob(ZERO_PATH_APPLICATION . '/*', GLOB_ONLYDIR) as $path)
         {
-            $result[] = basename($path);
+            $result[basename($path)] = basename($path);
         }
+        $result['zero'] = 'zero';
         return $result;
     }
 }
