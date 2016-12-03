@@ -37,8 +37,11 @@ function app_request_data_api()
     $version = explode('.', phpversion());
     if ( 5 <= $version[0] && 6 <= $version[1] )
     {
-        $data = file_get_contents('php://input', false, null, -1, $_SERVER['CONTENT_LENGTH']);
-        $_REQUEST = json_decode($data, true);
+        if ( $_SERVER['REQUEST_METHOD'] === "PUT" || $_SERVER['REQUEST_METHOD'] === "POST" )
+        {
+            $data = file_get_contents('php://input', false, null, -1, $_SERVER['CONTENT_LENGTH']);
+            $_REQUEST = json_decode($data, true);
+        }
     }
     else
     {
