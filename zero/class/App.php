@@ -419,18 +419,6 @@ class Zero_App
         //  Configuration
         self::$Config = new Zero_Config();
 
-        // DB init config
-        foreach (self::$Config->Db as $name => $config)
-        {
-            Zero_DB::Config_Add($name, $config);
-        }
-
-        // Options
-        if ( self::$Config->Site_UseDB )
-            self::$Options = new Zero_OptionsValue(true);
-        else
-            self::$Options = new Zero_OptionsValue();
-
         // Определение режима работы и роутинг
         if ( empty($_SERVER['REQUEST_URI']) )
         {
@@ -449,18 +437,30 @@ class Zero_App
             app_route();
         }
 
-        // Шаблонизатор
-        require_once ZERO_PATH_ZERO . '/zero/class/View.php';
+        //  Initializing monitoring system (Zero_Logs)
+        Zero_Logs::Init($appLog . self::$Mode, self::$Config->Log_TimeLimitTimer);
+
+        // DB init config
+        foreach (self::$Config->Db as $name => $config)
+        {
+            Zero_DB::Config_Add($name, $config);
+        }
+
+        // Options
+        if ( self::$Config->Site_UseDB )
+            self::$Options = new Zero_OptionsValue(true);
+        else
+            self::$Options = new Zero_OptionsValue();
 
         //  Initialize cache subsystem (Zero_Cache)
         if ( 0 < count(self::$Config->Memcache['Cache']) && class_exists('Memcache') )
             Zero_Cache::InitMemcache(self::$Config->Memcache['Cache']);
 
-        //  Initializing monitoring system (Zero_Logs)
-        Zero_Logs::Init($appLog . self::$Mode, self::$Config->Log_TimeLimitTimer);
-
         //  Session Initialization (Zero_Session)
         Zero_Session::Init(self::$Config->Site_Domain);
+
+        // Шаблонизатор
+        require_once ZERO_PATH_ZERO . '/zero/class/View.php';
     }
 
     public static function Execute()
@@ -498,6 +498,14 @@ class Zero_App
      */
     public static function ExecuteWeb()
     {
+        // Maintenance mode
+        if ( !in_array(self::$Config->Ip, self::$Config->Site_MaintenanceIp) )
+        {
+            $view = new Zero_View('Zero_Maintenance');
+            $view = $view->Fetch();
+            self::ResponseHtml($view, 200);
+        }
+
         // General Authorization Application
         if ( Zero_App::$Config->Site_AccessLogin )
         {
@@ -598,6 +606,7 @@ class Zero_App
      * - The formation results and conclusion of the profiled format
      *
      * @throws Exception
+     * @todo доработать режим обслуживания
      */
     public static function ExecuteApi()
     {

@@ -129,6 +129,13 @@ class Zero_Config
     public $Site_Token = 'i09u9Maf6l6sr7Um0m8A3u0r9i55m3il';
 
     /**
+     * Maintenance ip access (list ip separator ',')
+     *
+     * @var array
+     */
+    public $Site_MaintenanceIp = [];
+
+    /**
      * Access for DB (Mysql)
      *
      * @var array
@@ -308,32 +315,12 @@ class Zero_Config
      */
     public function __construct()
     {
-        // Setting php
-        set_time_limit(3600);
-
-        setlocale(LC_CTYPE, 'ru_RU.UTF-8');
-        setlocale(LC_COLLATE, 'ru_RU.UTF-8');
-        // ini_set('display_errors', 0);
-        // ini_set('display_startup_errors', 0);
-
-        // Initialization of the profiled application processors
-        ini_set('log_errors', true);
-        ini_set('error_log', ZERO_PATH_LOG . '/error_php.log');
-        ini_set('magic_quotes_gpc', 0);
-        // error_reporting(-1);
-
         if ( !file_exists(ZERO_PATH_APPLICATION . '/config.php') )
         {
             Helper_File::File_Save_After(ZERO_PATH_LOG . '/fatal.log', 'global config file not found: ' . ZERO_PATH_APPLICATION . '/config.php');
             exit;
         }
         $Config = require ZERO_PATH_APPLICATION . '/config.php';
-
-        // Timezone
-        if ( isset($Config['Site']['TimeZone']) )
-            date_default_timezone_set($Config['Site']['TimeZone']);
-        else
-            date_default_timezone_set('Europe/Moscow');
 
         // IP the source address of the request
         if ( isset($_SERVER["HTTP_X_FORWARDED_FOR"]) )
@@ -422,6 +409,14 @@ class Zero_Config
         //
         if ( isset($Config['Site']['Token']) && $Config['Site']['Token'] )
             $this->Site_Token = $Config['Site']['Token'];
+        // Timezone
+        if ( isset($Config['Site']['TimeZone']) )
+            date_default_timezone_set($Config['Site']['TimeZone']);
+        else
+            date_default_timezone_set('Europe/Moscow');
+        //
+        if ( isset($Config['Site']['MaintenanceIp']) && $Config['Site']['MaintenanceIp'] )
+            $this->Site_MaintenanceIp = explode(',', $Config['Site']['MaintenanceIp']);
 
         // Access for DB (Mysql)
         $this->Db = $Config['Db'];
@@ -472,6 +467,17 @@ class Zero_Config
 
         // Модули
         $this->Mod = self::Get_Modules();
+
+        // Setting php
+        set_time_limit(3600);
+        setlocale(LC_CTYPE, 'ru_RU.UTF-8');
+        setlocale(LC_COLLATE, 'ru_RU.UTF-8');
+        // ini_set('display_errors', 0);
+        // ini_set('display_startup_errors', 0);
+        ini_set('log_errors', true);
+        ini_set('error_log', ZERO_PATH_LOG . '/error_php.log');
+        ini_set('magic_quotes_gpc', 0);
+        // error_reporting(-1);
     }
 
     /**
