@@ -499,7 +499,7 @@ class Zero_App
     public static function ExecuteWeb()
     {
         // Maintenance mode
-        if ( !in_array(self::$Config->Ip, self::$Config->Site_MaintenanceIp) )
+        if ( count(self::$Config->Site_MaintenanceIp) && !in_array(self::$Config->Ip, self::$Config->Site_MaintenanceIp) )
         {
             $view = new Zero_View('Zero_Maintenance');
             $view = $view->Fetch();
