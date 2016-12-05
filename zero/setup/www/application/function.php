@@ -34,26 +34,14 @@ function app_route()
 
 function app_request_data_api()
 {
-    $version = explode('.', phpversion());
-    if ( 5 <= $version[0] && 6 <= $version[1] )
+    if ( $_SERVER['REQUEST_METHOD'] === "PUT" || $_SERVER['REQUEST_METHOD'] === "POST" )
     {
-        if ( $_SERVER['REQUEST_METHOD'] === "PUT" || $_SERVER['REQUEST_METHOD'] === "POST" )
-        {
-            $data = file_get_contents('php://input', false, null, -1, $_SERVER['CONTENT_LENGTH']);
-            $_REQUEST = json_decode($data, true);
-        }
-    }
-    else
-    {
-        // Инициализация входных параметров и данных в случае api
-        if ( $_SERVER['REQUEST_METHOD'] === "PUT" )
-        {
-            $data = file_get_contents('php://input', false, null, -1, $_SERVER['CONTENT_LENGTH']);
-            $_REQUEST = json_decode($data, true);
-        }
-        else if ( $_SERVER['REQUEST_METHOD'] === "POST" && isset($GLOBALS["HTTP_RAW_POST_DATA"]) )
-        {
+        if ( isset($GLOBALS["HTTP_RAW_POST_DATA"]) )
             $_REQUEST = json_decode($GLOBALS["HTTP_RAW_POST_DATA"], true);
+        else
+        {
+            $_REQUEST = file_get_contents('php://input', false, null, -1, $_SERVER['CONTENT_LENGTH']);
+            $_REQUEST = json_decode($_REQUEST, true);
         }
     }
 }
