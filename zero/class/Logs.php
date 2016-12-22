@@ -331,6 +331,8 @@ class Zero_Logs
                 self::$_OutputApplication = [date('[d.m.Y H:i:s]') . ' [' . $_SERVER['REQUEST_METHOD'] . '] ' . ZERO_HTTP . $_SERVER['REQUEST_URI']];
             else if ( isset($_SERVER['argv'][1]) )
                 self::$_OutputApplication = [date('[d.m.Y H:i:s]') . ' ' . $_SERVER['argv'][1]];
+            else
+                self::$_OutputApplication = [date('[d.m.Y H:i:s]')];
             // Sobiraem tai`mery` v kuchu
             foreach (self::$_CurrentTime as $description => $time)
             {
