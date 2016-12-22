@@ -226,13 +226,6 @@ class Zero_App
      */
     public static function ResponseJson200($content = null, $code = 0, $params = [])
     {
-        header('Pragma: no-cache');
-        header('Last-Modified: ' . date('D, d M Y H:i:s') . 'GMT');
-        header('Expires: Mon, 26 Jul 2007 05:00:00 GMT');
-        header('Cache-Control: no-store, no-cache, must-revalidate');
-        header("Content-Type: application/json; charset=utf-8");
-        header('HTTP/1.1 200 200');
-
         if ( self::$Controller->Controller )
             $message = Zero_I18n::Message(self::$Controller->Controller, $code, $params);
         else
@@ -247,7 +240,16 @@ class Zero_App
         if ( $content )
             $data['Content'] = $content;
 
-        echo json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK);
+        $data = json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK);
+
+        header('Pragma: no-cache');
+        header('Last-Modified: ' . date('D, d M Y H:i:s') . 'GMT');
+        header('Expires: Mon, 26 Jul 2007 05:00:00 GMT');
+        header('Cache-Control: no-store, no-cache, must-revalidate');
+        header("Content-Type: application/json; charset=utf-8");
+        header("Content-Length: " . strlen($data));
+        header('HTTP/1.1 200 200');
+        echo $data;
 
         // закрываем соединение с браузером (работает только под нгинx)
         if ( function_exists('fastcgi_finish_request') )
