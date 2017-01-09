@@ -196,7 +196,7 @@ class Zero_App
                 'method' => $method,
                 'header' => "Content-Type: application/json; charset=utf-8\r\n" . "Content-Length: " . strlen($content) . "\r\n" . "",
                 'content' => $content,
-                'timeout' => 30,
+                'timeout' => 300,
             )
         );
         $fp = fopen($url, 'rb', false, stream_context_create($opts));
