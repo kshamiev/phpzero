@@ -30,7 +30,7 @@ define('ZERO_PATH_LIBRARY', ZERO_PATH_SITE . '/library');
 /**
  * The location of the site log
  */
-define('ZERO_PATH_LOG', ZERO_PATH_SITE . '/log');
+define('ZERO_PATH_LOG', dirname(ZERO_PATH_SITE) . '/log');
 /**
  * Location cache
  */
@@ -399,7 +399,7 @@ class Zero_App
      * @param string $appLog префикс лог файла приложения
      * @param string $mode режим работы приложения
      */
-    public static function Init($appLog = '')
+    public static function Init($appLog = 'main')
     {
         // Если инициализация уже произведена
         if ( !is_null(self::$Config) )
@@ -427,7 +427,7 @@ class Zero_App
             self::$Mode = ZERO_MODE_CONSOLE;
         }
         //        else if ( strpos($_SERVER['REQUEST_URI'], '/api/') === 0 || strtolower(ZERO_MODE_API) == Zero_App::$Config->Site_DomainSub )
-        else if ( preg_match("~/v[0-9|.]+/~si", $_SERVER['REQUEST_URI']) )
+        else if ( preg_match("~/v[0-9|.]+/~si", $_SERVER['REQUEST_URI']) || preg_match("~^/json/~si", $_SERVER['REQUEST_URI']) )
         {
             self::$Mode = ZERO_MODE_API;
             app_route();
@@ -440,7 +440,7 @@ class Zero_App
         }
 
         //  Initializing monitoring system (Zero_Logs)
-        Zero_Logs::Init($appLog . self::$Mode, self::$Config->Log_TimeLimitTimer);
+        Zero_Logs::Init(ZERO_PATH_LOG . '/' . $appLog . '_' . self::$Mode, self::$Config->Log_TimeLimitTimer);
 
         // DB init config
         foreach (self::$Config->Db as $name => $config)
