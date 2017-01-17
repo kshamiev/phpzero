@@ -199,7 +199,7 @@ class Zero_App
                 'timeout' => 300,
             ),
             'ssl' => array(
-                'verify_peer_name' => false,
+                'verify_peer' => false,
             )
         );
         $fp = fopen($url, 'rb', false, stream_context_create($opts));
