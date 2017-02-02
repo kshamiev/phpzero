@@ -315,11 +315,8 @@ class Zero_Config
      */
     public function __construct()
     {
-        if ( !file_exists(ZERO_PATH_APPLICATION . '/config.php') )
-        {
-            Helper_File::File_Save_After(ZERO_PATH_LOG . '/error_php.log', 'global config file not found: ' . ZERO_PATH_APPLICATION . '/config.php');
-            exit;
-        }
+        if ( !file_exists($path = ZERO_PATH_APPLICATION . '/config.php') )
+            die('Конфигурационный файл не найден');
         $Config = require ZERO_PATH_APPLICATION . '/config.php';
 
         // IP the source address of the request
