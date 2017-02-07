@@ -217,6 +217,36 @@ class Zero_DB
         return $rph;
     }
 
+    public static function EscValueSet($field, $value)
+    {
+        if ( is_array($value) )
+            $value = implode(',', $value);
+        $value = trim($value);
+        if ( 0 < strlen($value) )
+        {
+            return "{$field} = '" . self::$DB[self::Init()]->real_escape_string($value) . "'";
+        }
+        else
+        {
+            return "{$field} = NULL";
+        }
+    }
+
+    public static function EscValueWhere($field, $value)
+    {
+        if ( is_array($value) )
+            $value = implode(',', $value);
+        $value = trim($value);
+        if ( 0 < strlen($value) )
+        {
+            return "{$field} = '" . self::$DB[self::Init()]->real_escape_string($value) . "'";
+        }
+        else
+        {
+            return "{$field} IS NULL";
+        }
+    }
+
     /**
      * Vy`polnenie zaprosa i vozvrashchenie deskriptora na rezul`tat
      *
