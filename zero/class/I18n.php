@@ -47,9 +47,7 @@ class Zero_I18n
         {
             array_unshift($params, self::$_I18n[$index][$code]);
             //
-            $codePrefix = Zero_App::$Config->Modules[strtolower($folder_list[0])]['codePrefix'];
-            settype($codePrefix, 'int');
-            $codeGlobal = $codePrefix * 10000 + $code;
+            $codeGlobal = 10000 + $code;
         }
         else if ( 0 < $code )
         {
