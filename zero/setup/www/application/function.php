@@ -37,11 +37,11 @@ function app_request_data_api()
     if ( $_SERVER['REQUEST_METHOD'] === "PUT" || $_SERVER['REQUEST_METHOD'] === "POST" )
     {
         if ( isset($GLOBALS["HTTP_RAW_POST_DATA"]) )
-            $_REQUEST = json_decode($GLOBALS["HTTP_RAW_POST_DATA"], true);
+            $data = json_decode($GLOBALS["HTTP_RAW_POST_DATA"], true);
         else
-        {
-            $_REQUEST = file_get_contents('php://input', false, null, -1, $_SERVER['CONTENT_LENGTH']);
-            $_REQUEST = json_decode($_REQUEST, true);
-        }
+            $data = json_decode(file_get_contents('php://input', false, null, -1, $_SERVER['CONTENT_LENGTH']), true);
+        if ( !is_array($data) )
+            $data = [$data];
+        $_REQUEST = array_merge_recursive($_REQUEST, $data);
     }
 }
