@@ -337,22 +337,6 @@ class Zero_Config
             if ( !mkdir(ZERO_PATH_LOG, 0777, true) )
                 die('logs path: "' . ZERO_PATH_LOG . '" not create');
 
-        //  Storage sessions
-        if ( !session_id() )
-            if ( 0 < count($Config['Memcache']['Session']) )
-            {
-                ini_set('session.save_handler', 'memcache');
-                ini_set('session.save_path', $Config['Memcache']['Session'][0]);
-            }
-            else
-            {
-                ini_set('session.save_handler', 'files');
-                $path = ini_get('session.save_path');
-                if ( $path && !is_dir($path) )
-                    if ( !mkdir($path, 0777, true) )
-                        die('session path: "' . $path . '" not exists');
-            }
-
         // The path to the php Interpreter
         $this->Site_PathPhp = $Config['Site']['PathPhp'];
 
@@ -475,6 +459,22 @@ class Zero_Config
         ini_set('error_log', ZERO_PATH_LOG . '/error_php.log');
         ini_set('magic_quotes_gpc', 0);
         // error_reporting(-1);
+
+        //  Storage sessions
+        if ( !session_id() )
+            if ( 0 < count($Config['Memcache']['Session']) )
+            {
+                ini_set('session.save_handler', 'memcache');
+                ini_set('session.save_path', $Config['Memcache']['Session'][0]);
+            }
+            else
+            {
+                ini_set('session.save_handler', 'files');
+                $path = ini_get('session.save_path');
+                if ( $path && !is_dir($path) )
+                    if ( !mkdir($path, 0777, true) )
+                        die('session path: "' . $path . '" not exists');
+            }
     }
 
     /**
