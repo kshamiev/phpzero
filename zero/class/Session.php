@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Сессия.
  *
@@ -20,15 +21,16 @@ class Zero_Session extends ArrayObject
 
     /**
      * Инициализация сессии в виде реестра (одиночка).
-     *
-     * @param string $sessionName Имя сессиии.
      */
-    public static function Init($sessionName)
+    public static function Init()
     {
         // проверяем запущена ли сессия
         if ( !session_id() )
         {
-            session_name(md5($sessionName));
+            if ( isset($_REQUEST['token']) )
+                session_id($_REQUEST['token']);
+            else if ( isset($_SERVER['HTTP_X_ACCESS_TOKEN']) )
+                session_id($_SERVER['HTTP_X_ACCESS_TOKEN']);
             session_start();
         }
         if ( !isset($_SESSION['Session']) || !$_SESSION['Session'] instanceof Zero_Session )

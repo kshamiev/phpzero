@@ -409,12 +409,12 @@ class Zero_App
             return;
 
         //  Include Components
-        require_once ZERO_PATH_ZERO . '/function.php';
         require_once ZERO_PATH_ZERO . '/zero/class/Config.php';
         require_once ZERO_PATH_ZERO . '/zero/class/Logs.php';
         require_once ZERO_PATH_ZERO . '/zero/class/DB.php';
         require_once ZERO_PATH_ZERO . '/zero/class/Session.php';
         require_once ZERO_PATH_ZERO . '/zero/class/Cache.php';
+        require_once ZERO_PATH_ZERO . '/function.php';
         require_once ZERO_PATH_APPLICATION . '/function.php';
 
         spl_autoload_register(['Zero_App', 'Autoload']);
@@ -462,7 +462,7 @@ class Zero_App
             Zero_Cache::InitMemcache(self::$Config->Memcache['Cache']);
 
         //  Session Initialization (Zero_Session)
-        Zero_Session::Init(self::$Config->Site_Domain);
+        Zero_Session::Init();
 
         // Шаблонизатор
         require_once ZERO_PATH_ZERO . '/zero/class/View.php';
