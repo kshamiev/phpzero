@@ -129,11 +129,25 @@ class Zero_Config
     public $Site_Token = 'i09u9Maf6l6sr7Um0m8A3u0r9i55m3il';
 
     /**
-     * Maintenance ip access (list ip separator ',')
+     * Maintenance ip access (для всех остальных будет показана страница заглушка)
      *
      * @var array
      */
     public $Site_MaintenanceIp = [];
+
+    /**
+     * Список разрешенных ip адресов для запросов API
+     *
+     * @var array
+     */
+    public $Site_AccessAllowIpFromApi = [];
+
+    /**
+     * Список разрешенных ip адресов для работы через WWW
+     *
+     * @var array
+     */
+    public $Site_AccessAllowIpFromWeb = [];
 
     /**
      * Access for DB (Mysql)
@@ -269,13 +283,6 @@ class Zero_Config
     public $Log_Output_Display = true;
 
     /**
-     * Допустимый верменной порог. При превышении которого работают таймеры
-     *
-     * @var bool
-     */
-    public $Log_TimeLimitTimer = 0.000;
-
-    /**
      * Languages
      *
      * @var array
@@ -395,9 +402,14 @@ class Zero_Config
             date_default_timezone_set($Config['Site']['TimeZone']);
         else
             date_default_timezone_set('Europe/Moscow');
-        //
-        if ( isset($Config['Site']['MaintenanceIp']) && $Config['Site']['MaintenanceIp'] )
-            $this->Site_MaintenanceIp = explode(',', $Config['Site']['MaintenanceIp']);
+        // Разаработческий режи
+        if ( isset($Config['Site']['MaintenanceIp']) && is_array($Config['Site']['MaintenanceIp']) )
+            $this->Site_MaintenanceIp = array_keys($Config['Site']['MaintenanceIp']);
+        // Безопасность
+        if ( isset($Config['Site']['AccessAllowIpFromApi']) && is_array($Config['Site']['AccessAllowIpFromApi']) )
+            $this->Site_AccessAllowIpFromApi = array_keys($Config['Site']['AccessAllowIpFromApi']);
+        if ( isset($Config['Site']['AccessAllowIpFromWeb']) && is_array($Config['Site']['AccessAllowIpFromWeb']) )
+            $this->Site_AccessAllowIpFromWeb = array_keys($Config['Site']['AccessAllowIpFromWeb']);
 
         // Access for DB (Mysql)
         $this->Db = $Config['Db'];
@@ -433,9 +445,6 @@ class Zero_Config
         $this->Log_Output_File = $Config['Log']['Output']['File'];
         // Output Display
         $this->Log_Output_Display = $Config['Log']['Output']['Display'];
-        // Output Display
-        if ( isset($Config['Log']['TimeLimitTimer']) )
-            $this->Log_TimeLimitTimer = $Config['Log']['TimeLimitTimer'];
 
         // Languages
         $this->Language = $Config['Language'];

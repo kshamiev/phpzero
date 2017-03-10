@@ -46,13 +46,6 @@ class Zero_Logs
     private static $_CurrentTimeLevel = 0;
 
     /**
-     * Допустимый верменной порог. При превышении которого работают таймеры
-     *
-     * @var float
-     */
-    private static $_CurrentTimeLimit = 0.000;
-
-    /**
      * Danny`e o rabote prilozheniia v tcelom.
      *
      * Obrabotanny`e danny`e profilirovaniia tai`merov i pamiati.
@@ -72,15 +65,13 @@ class Zero_Logs
      * Инициализация логера
      *
      * @param string $fileLog имя файллога
-     * @param float $currentTimeLimit пороговое значения для таймеров
      */
-    public static function Init($fileLog, $currentTimeLimit = 0.000)
+    public static function Init($fileLog)
     {
         self::$_Message = [];
         self::$_StartTime = microtime(1);
         self::$_CurrentTime = [];
         self::$_FileLog = $fileLog;
-        self::$_CurrentTimeLimit = $currentTimeLimit;
     }
 
     /**
@@ -341,7 +332,7 @@ class Zero_Logs
                 {
                     $limit = round($time['stop'] - $time['start'], 4);
                 }
-                if ( $limit != -1 && $limit < self::$_CurrentTimeLimit )
+                if ( $limit != -1 )
                     continue;
                 $description = str_replace("\r", "", $description);
                 $description = preg_replace("~(\s+\n){1,}~si", "\n", $description);

@@ -22,7 +22,7 @@ class Zero_Session extends ArrayObject
     /**
      * Инициализация сессии в виде реестра (одиночка).
      */
-    public static function Init()
+    public static function Init($token = '')
     {
         // проверяем запущена ли сессия
         if ( !session_id() )
@@ -31,6 +31,8 @@ class Zero_Session extends ArrayObject
                 session_id($_REQUEST['token']);
             else if ( isset($_SERVER['HTTP_X_ACCESS_TOKEN']) )
                 session_id($_SERVER['HTTP_X_ACCESS_TOKEN']);
+            if ( $token )
+                session_name($token);
             session_start();
         }
         if ( !isset($_SESSION['Session']) || !$_SESSION['Session'] instanceof Zero_Session )

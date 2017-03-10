@@ -38,6 +38,10 @@ return [
         'TimeZone' => 'Europe/Moscow',
         // Maintenance ip access (list ip separator ',')
         'MaintenanceIp' => '',
+        // Список разрешенных ip адресов для запросов API
+        'AccessAllowIpFromApi' => [],
+        // Список разрешенных ip адресов для работы через WWW
+        'AccessAllowIpFromWeb' => [],
     ],
     //  Access for DB (Mysql)
     'Db' => [
@@ -99,8 +103,6 @@ return [
             //  Display
             'Display' => true,
         ],
-        // Допустимый верменной порог. При превышении которого работают таймеры
-        'TimeLimitTimer' => 0.001
     ],
     //  Languages
     'Language' => [

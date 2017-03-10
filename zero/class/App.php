@@ -443,7 +443,7 @@ class Zero_App
         }
 
         //  Initializing monitoring system (Zero_Logs)
-        Zero_Logs::Init(ZERO_PATH_LOG . '/' . $appLog . '_' . self::$Mode, self::$Config->Log_TimeLimitTimer);
+        Zero_Logs::Init(ZERO_PATH_LOG . '/' . $appLog . '_' . self::$Mode);
 
         // DB init config
         foreach (self::$Config->Db as $name => $config)
@@ -462,7 +462,7 @@ class Zero_App
             Zero_Cache::InitMemcache(self::$Config->Memcache['Cache']);
 
         //  Session Initialization (Zero_Session)
-        Zero_Session::Init();
+        Zero_Session::Init(self::$Config->Site_Token);
 
         // Шаблонизатор
         require_once ZERO_PATH_ZERO . '/zero/class/View.php';
@@ -503,14 +503,6 @@ class Zero_App
      */
     public static function ExecuteWeb()
     {
-        // Maintenance mode
-        if ( count(self::$Config->Site_MaintenanceIp) && !in_array(self::$Config->Ip, self::$Config->Site_MaintenanceIp) )
-        {
-            $view = new Zero_View('Zero_Maintenance');
-            $view = $view->Fetch();
-            self::ResponseHtml($view, 200);
-        }
-
         // General Authorization Application
         if ( Zero_App::$Config->Site_AccessLogin )
         {
@@ -521,6 +513,20 @@ class Zero_App
                 echo 'Auth Failed';
                 exit;
             }
+        }
+
+        // Maintenance mode
+        if ( count(self::$Config->Site_MaintenanceIp) && empty(self::$Config->Site_MaintenanceIp[self::$Config->Ip]) )
+        {
+            $view = new Zero_View('Zero_Maintenance');
+            $view = $view->Fetch();
+            self::ResponseHtml($view, 200);
+        }
+
+        // Доступ с определенных IP адресов
+        if ( count(self::$Config->Site_AccessAllowIpFromWeb) && empty(self::$Config->Site_AccessAllowIpFromWeb[self::$Config->Ip]) )
+        {
+            throw new Exception('Page Forbidden', 403);
         }
 
         //  Пользователь
@@ -611,24 +617,28 @@ class Zero_App
      * - The formation results and conclusion of the profiled format
      *
      * @throws Exception
+     * @todo Переработать Exception (только ошибки)
      * @todo доработать режим обслуживания
      */
     public static function ExecuteApi()
     {
-        // General Authorization Application
-        if ( Zero_App::$Config->Site_AccessLogin )
+        // Доступ с определенных IP адресов
+        if ( count(self::$Config->Site_AccessAllowIpFromApi) && empty(self::$Config->Site_AccessAllowIpFromApi[self::$Config->Ip]) )
         {
-            if ( !isset($_SERVER['PHP_AUTH_USER']) || $_SERVER['PHP_AUTH_USER'] != Zero_App::$Config->Site_AccessLogin || $_SERVER['PHP_AUTH_PW'] != Zero_App::$Config->Site_AccessPassword )
-            {
-                header('WWW-Authenticate: Basic realm="Auth"');
-                header('HTTP/1.0 401 Unauthorized');
-                echo 'Auth Failed';
-                exit;
-            }
+            throw new Exception('Page Forbidden', 403);
         }
 
         //  Пользователь
         self::$Users = Zero_Users::Factor();
+
+        // Доступ по логину и паролю
+        if ( isset($_REQUEST['login']) && isset($_REQUEST['password']) && self::$Users->Login != $_REQUEST['login'] )
+        {
+            self::$Users->Load_Login($_REQUEST['login']);
+            if ( self::$Users->Password != md5($_REQUEST['password']) )
+                throw new Exception('Page Forbidden', 403);
+        }
+
         // Контроллер
         self::$Controller = Zero_Controllers::Instance();
 
