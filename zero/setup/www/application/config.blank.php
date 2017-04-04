@@ -51,6 +51,7 @@ return [
             'Login' => "<DB_LOGIN>", //  User
             'Password' => "<DB_PASSWORD>", //  Password
             'Name' => "<DB_NAME>", //  Name DB
+            'Charset' => "utf8", //  Name DB
         ],
     ],
     //  Настройки почты
