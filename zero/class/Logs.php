@@ -332,8 +332,8 @@ class Zero_Logs
                 {
                     $limit = round($time['stop'] - $time['start'], 4);
                 }
-                if ( $limit != -1 )
-                    continue;
+//                if ( $limit != -1 )
+//                    continue;
                 $description = str_replace("\r", "", $description);
                 $description = preg_replace("~(\s+\n){1,}~si", "\n", $description);
                 $description = preg_replace('~[ ]{2,}~', ' ', $description);

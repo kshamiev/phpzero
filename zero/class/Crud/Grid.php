@@ -276,7 +276,8 @@ abstract class Zero_Crud_Grid extends Zero_Controller
         $ObjectRem = Zero_Model::Makes(get_class($this->Model), $_REQUEST['id']);
         if ( $ObjectRem->Remove() )
         {
-            $this->SetMessage(2200, [$this->Model->Name, $this->Model->ID]);
+            $this->SetMessage(2200, [$ObjectRem->Source, $ObjectRem->ID]);
+            Zero_Logs::Set_Message_Info('remove:' . Zero_App::$Users->Login . ':' . Zero_App::$Users->ID . ':' . $ObjectRem->Source . ':' . $ObjectRem->ID);
             return true;
         }
         else
