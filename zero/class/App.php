@@ -783,7 +783,11 @@ class Zero_App
                 $view->Assign('message', $exception->getMessage());
                 $viewLayout->Assign('Content', $view->Fetch());
             }
-            self::ResponseHtml($viewLayout->Fetch(), $code);
+            // Логирование (в браузер)
+            if ( self::$Config->Log_Output_Display )
+                self::ResponseHtml($viewLayout->Fetch(), $code);
+            else
+                self::ResponseConsole();
         }
     }
 
