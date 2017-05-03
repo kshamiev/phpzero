@@ -784,7 +784,7 @@ class Zero_App
                 $viewLayout->Assign('Content', $view->Fetch());
             }
             // Логирование (в браузер)
-            if ( self::$Config->Log_Output_Display )
+            if ( $code != 500 || self::$Config->Log_Output_Display )
                 self::ResponseHtml($viewLayout->Fetch(), $code);
             else
                 self::ResponseConsole();
