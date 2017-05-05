@@ -455,6 +455,26 @@ class Zero_DB
     }
 
     /**
+     * Priamoi` zapros k BD na poluchenie danny`kh v vide indeksirovannogo dvukhmernogo assotciativnogo massiva
+     *
+     * @param string $sql zapros
+     * @return array
+     */
+    public static function Select_Array_IndexTwoArray($sql, $nameConnect = '')
+    {
+        $result = [];
+        if ( !$res = self::Query($sql, $nameConnect) )
+            return false;
+        /* @var $res mysqli_result */
+        while ( false != $row = $res->fetch_assoc() )
+        {
+            $result[reset($row)][next($row)][] = $row;
+        }
+        $res->close();
+        return $result;
+    }
+
+    /**
      * Priamoi` zapros k BD na poluchenie rezul`tata raboty` dlia agregiruiushchikh funktcii`
      *
      * @param string $sql zapros
