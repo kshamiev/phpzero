@@ -420,7 +420,6 @@ class Zero_Logs
      */
     public static function Custom_DateTime($file_log, $data)
     {
-        $file_log = $file_log . '.log';
         Helper_File::File_Save_After(self::$_FileLog . '_' . $file_log . '.log', date('[d.m.Y H:i:s]'));
         Helper_File::File_Save_After(self::$_FileLog . '_' . $file_log . '.log', print_r($data, true));
         return true;

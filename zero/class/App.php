@@ -132,6 +132,23 @@ class Zero_App
         $module = strtolower(array_shift($arr));
         $class = implode('/', $arr);
         //
+        foreach (['class', 'api', 'sol'] as $folder)
+        {
+            $path = ZERO_PATH_APPLICATION . '/' . $module . '/' . $folder . '/' . $class . '.php';
+            if ( file_exists($path) )
+            {
+                include_once $path;
+                if ( class_exists($class_name) )
+                    return true;
+            }
+            $path = ZERO_PATH_ZERO . '/' . $module . '/' . $folder . '/' . $class . '.php';
+            if ( file_exists($path) )
+            {
+                include_once $path;
+                if ( class_exists($class_name) )
+                    return true;
+            }
+        }
         $path = ZERO_PATH_APPLICATION . '/' . $module . '/class/' . $class . '.php';
         if ( file_exists($path) )
         {
