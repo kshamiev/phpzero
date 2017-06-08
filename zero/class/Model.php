@@ -655,7 +655,7 @@ abstract class Zero_Model
         if ( method_exists($this, $method = 'Set_' . $prop) )
             return $this->$method($value);
         //  Svoi`stva modeli
-        if ( !isset($this->_Props[$prop]) )
+        if ( !isset($this->_Props[$prop]) && $value )
         {
             $this->_Props[$prop] = $value;
             $this->_Props_Change[$prop] = -1;
