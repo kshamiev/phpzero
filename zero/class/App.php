@@ -34,7 +34,7 @@ define('ZERO_PATH_LOG', dirname(ZERO_PATH_SITE) . '/log');
 /**
  * Location cache
  */
-define('ZERO_PATH_CACHE', ZERO_PATH_SITE . '/cache');
+define('ZERO_PATH_CACHE', dirname(ZERO_PATH_SITE) . '/cache');
 /**
  * Communication with the outside world
  */
