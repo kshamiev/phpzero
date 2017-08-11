@@ -136,18 +136,11 @@ class Zero_Config
     public $Site_MaintenanceIp = [];
 
     /**
-     * Список разрешенных ip адресов для запросов API
+     * Список разрешенных ip адресов для работы
      *
      * @var array
      */
-    public $Site_AccessAllowIpFromApi = [];
-
-    /**
-     * Список разрешенных ip адресов для работы через WWW
-     *
-     * @var array
-     */
-    public $Site_AccessAllowIpFromWeb = [];
+    public $Site_AccessAllowIp = [];
 
     /**
      * Access for DB (Mysql)
@@ -406,10 +399,8 @@ class Zero_Config
         if ( isset($Config['Site']['MaintenanceIp']) && is_array($Config['Site']['MaintenanceIp']) )
             $this->Site_MaintenanceIp = array_keys($Config['Site']['MaintenanceIp']);
         // Безопасность
-        if ( isset($Config['Site']['AccessAllowIpFromApi']) && is_array($Config['Site']['AccessAllowIpFromApi']) )
-            $this->Site_AccessAllowIpFromApi = array_keys($Config['Site']['AccessAllowIpFromApi']);
-        if ( isset($Config['Site']['AccessAllowIpFromWeb']) && is_array($Config['Site']['AccessAllowIpFromWeb']) )
-            $this->Site_AccessAllowIpFromWeb = array_keys($Config['Site']['AccessAllowIpFromWeb']);
+        if ( isset($Config['Site']['AccessAllowIp']) && is_array($Config['Site']['AccessAllowIp']) )
+            $this->Site_AccessAllowIp = array_keys($Config['Site']['AccessAllowIp']);
 
         // Access for DB (Mysql)
         $this->Db = $Config['Db'];

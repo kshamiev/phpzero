@@ -23,7 +23,7 @@ class Zero_Section_Plugin_NavigationMain extends Zero_Controller
     public function Action_Default()
     {
         $Section = Zero_Section::Make();
-        $Section->Init_Url('/');
+        $Section->Load_Url('/');
         $this->Chunk_Init();
         $this->View->Assign('Section', Zero_App::$Section);
         $this->View->Assign('navigation', $Section->Get_Navigation_Child());

@@ -57,13 +57,14 @@ define('ZERO_PATH_ZERO', ZERO_PATH_SITE . '/phpzero');
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  * @todo Реализовать полноценное добавление как отедблный функционал. Должно быть различие между добавлением и сохранением.
+ * @todo Переработать Exception (только ошибки)
  */
 class Zero_App
 {
     /**
      * Запрошенный uri
      *
-     * @var array
+     * @var string
      */
     public static $Route = '';
 
@@ -122,9 +123,10 @@ class Zero_App
      * Setting up automatic downloads of files with the required classes
      *
      * @param string $class_name
+     * @param bool $flagLog
      * @return bool
      */
-    public static function Autoload($class_name)
+    public static function Autoload($class_name, $flagLog = true)
     {
         if ( class_exists($class_name) )
             return true;
@@ -192,40 +194,57 @@ class Zero_App
             if ( class_exists($class_name) )
                 return true;
         }
-        if ( isset(self::$Config->Mod[$module]) )
+        //        if ( isset(self::$Config->Mod[$module]) )
+        if ( true == $flagLog )
             Zero_Logs::Set_Message_Error('Класс не найден: ' . $class_name);
         return false;
     }
 
     /**
-     * API Запрос к стороннему сервису (серверу)
+     * Запрос к стороннему сервису (серверу)
      *
-     * @param $method
-     * @param $url
+     * API запросы в вормате json
+     *
+     * @param string $method
+     * @param string $url
      * @param string $content
-     * @return mixed
+     * @param string $basicHttpAccess 'login:passw'
+     * @return string
+     * @todo Переработать в ответы Zero_Request::Json()
      */
-    public static function RequestJson($method, $url, $content = '')
+
+    public static function RequestJson($method, $url, $content = '', $accessBasicHttp = '', $accessUser = '')
     {
+        $head = "Content-Type: application/json; charset=utf-8\r\n";
+        $head .= "Content-Length: " . strlen($content) . "\r\n";
+        if ( $accessBasicHttp )
+        {
+            $head .= "Authorization: Basic " . base64_encode($accessBasicHttp) . "\r\n";
+        }
+        if ( $accessUser )
+        {
+            $head .= "AuthUser: " . md5($accessUser) . "\r\n";
+        }
         $content = json_encode($content, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK);
-        $opts = array(
-            'http' => array(
+        $opts = [
+            'http' => [
+                'header' => $head,
                 'method' => $method,
-                'header' => "Content-Type: application/json; charset=utf-8\r\n" . "Content-Length: " . strlen($content) . "\r\n" . "",
                 'content' => $content,
                 'timeout' => 300,
-            ),
-            'ssl' => array(
+            ],
+            'ssl' => [
                 'verify_peer' => false,
-            )
-        );
+            ]
+        ];
+        //
         $fp = fopen($url, 'rb', false, stream_context_create($opts));
         if ( $fp == false )
         {
             Zero_Logs::Set_Message_Error('Обращение к не корректному ресурсу:');
             Zero_Logs::Set_Message_Error($url);
             Zero_Logs::Set_Message_Error($content);
-            return null;
+            return '';
         }
         $response = stream_get_contents($fp);
         fclose($fp);
@@ -241,8 +260,9 @@ class Zero_App
      * Для ответов на API запросы
      *
      * @param $content
+     * @param int $status
      */
-    public static function ResponseJson($content)
+    public static function ResponseJson($content, $status = 200)
     {
 
         $content = json_encode($content, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK);
@@ -253,7 +273,7 @@ class Zero_App
         header('Cache-Control: no-store, no-cache, must-revalidate');
         header("Content-Type: application/json; charset=utf-8");
         header("Content-Length: " . strlen($content));
-        header('HTTP/1.1 200 200');
+        header('HTTP/1.1 ' . $status . ' ' . $status);
         echo $content;
 
         // закрываем соединение с браузером (работает только под нгинx)
@@ -518,51 +538,6 @@ class Zero_App
 
     public static function Execute()
     {
-        if ( ZERO_MODE_WEB == self::$Mode )
-            self::ExecuteWeb();
-        else if ( ZERO_MODE_API == self::$Mode )
-            self::ExecuteApi();
-        else if ( ZERO_MODE_CONSOLE == self::$Mode )
-            self::ExecuteConsole();
-    }
-
-    /**
-     * Method of console (crontab) application execution
-     */
-    public static function ExecuteConsole()
-    {
-        include ZERO_PATH_ZERO . '/console.php';
-    }
-
-    /**
-     * Method of application execution
-     *
-     * - Инициализация запрошенного раздела (ZSection)
-     * - Инициализация пользователя (Users)
-     * - Инициализация и выполнение контролера и его действия
-     * - Формирование и вывод профилированного результата
-     *
-     * - Initialization of the requested section (Section)
-     * - User Initialization (Users)
-     * - Initialization and execution of the controller and its actions
-     * - The formation results and conclusion of the profiled format
-     *
-     * @throws Exception
-     */
-    public static function ExecuteWeb()
-    {
-        // General Authorization Application
-        if ( Zero_App::$Config->Site_AccessLogin )
-        {
-            if ( !isset($_SERVER['PHP_AUTH_USER']) || $_SERVER['PHP_AUTH_USER'] != Zero_App::$Config->Site_AccessLogin || $_SERVER['PHP_AUTH_PW'] != Zero_App::$Config->Site_AccessPassword )
-            {
-                header('WWW-Authenticate: Basic realm="Auth"');
-                header('HTTP/1.0 401 Unauthorized');
-                echo 'Auth Failed';
-                exit;
-            }
-        }
-
         // Maintenance mode
         if ( count(self::$Config->Site_MaintenanceIp) && empty(self::$Config->Site_MaintenanceIp[self::$Config->Ip]) )
         {
@@ -572,52 +547,85 @@ class Zero_App
         }
 
         // Доступ с определенных IP адресов
-        if ( count(self::$Config->Site_AccessAllowIpFromWeb) && empty(self::$Config->Site_AccessAllowIpFromWeb[self::$Config->Ip]) )
+        if ( count(self::$Config->Site_AccessAllowIp) && empty(self::$Config->Site_AccessAllowIp[self::$Config->Ip]) )
         {
             throw new Exception('Page Forbidden', 403);
         }
 
+        // General Authorization Application
+        if ( Zero_App::$Config->Site_AccessLogin )
+        {
+            if ( !isset($_SERVER['PHP_AUTH_USER']) || $_SERVER['PHP_AUTH_USER'] != Zero_App::$Config->Site_AccessLogin || $_SERVER['PHP_AUTH_PW'] != Zero_App::$Config->Site_AccessPassword )
+            {
+                header('WWW-Authenticate: Basic realm="Auth"');
+                header('HTTP/1.0 401 Unauthorized');
+                die('Auth Failed');
+            }
+        }
+
+        if ( true == Zero_App::$Config->Site_UseDB )
+            self::executeUseDB();
+        else
+            self::executeUseDB_Not();
+    }
+
+    /**
+     * Method of console (crontab) application execution
+     */
+    private static function executeUseDB_Not()
+    {
         //  Пользователь
         self::$Users = Zero_Users::Factor();
-        //  Раздел - страница
-        self::$Section = Zero_Section::Instance();
 
-        if ( 0 == self::$Section->ID || 'no' == self::$Section->IsEnable )
-            throw new Exception('Page Not Found', 404);
-        if ( self::$Section->UrlRedirect )
-            self::ResponseRedirect(self::$Section->UrlRedirect);
+        self::$Section = Zero_Section::Make();
 
-        //  Выполнение контроллера
-        $view = "";
-        $messageResponse = ['Code' => 0, 'Message' => ''];
-        if ( self::$Section->Controller )
+        // Поиск в программе
+        $route = [];
+        foreach (self::$Config->Modules as $route)
         {
-            if ( self::Autoload(self::$Section->Controller) )
+            if ( isset($route['routeWeb']) || isset($route['routeWeb']->Route[ZERO_URL]) )
+                $route = $route['routeWeb']->Route[ZERO_URL];
+            else if ( isset($route['routeApi']) || isset($route['routeApi']->Route[ZERO_URL]) )
+                $route = $route['routeApi']->Route[ZERO_URL];
+            else
+                continue;
+            break;
+        }
+
+        if ( 0 == count($route) || empty($route['Controller']) )
+        {
+            throw new Exception('Page Not Found', 404);
+        }
+
+        //  КОНТРОЛЛЕР
+        $view = '';
+        $messageResponse = ['Code' => 0, 'Message' => ''];
+        if ( $route['Controller'] )
+        {
+            if ( self::Autoload($route['Controller'], false) )
             {
-                //  Доступные операции-методы контроллера раздела с учетом прав.
-                $Action_List = self::$Section->Get_Action_List();
-                // Проверка прав на раздел (Action_Default)
-                if ( 1 < self::$Users->Groups_ID && 'yes' == self::$Section->IsAuthorized && 0 == count($Action_List) )
-                    throw new Exception('Page Forbidden', 403);
-
-                // инициализация и проверка прав на действие
+                // инициализация и проверка существование метода действия
+                $Controller = Zero_Controller::Factory($route['Controller']);
                 if ( isset($_REQUEST['act']) && $_REQUEST['act'] )
-                    $_REQUEST['act'] = trim($_REQUEST['act']);
+                    $action = $_REQUEST['act'];
                 else
-                    $_REQUEST['act'] = 'Default';
-                // право на действие (action)
-                if ( !isset($Action_List[$_REQUEST['act']]) )
-                    throw new Exception('Page Forbidden', 403);
-                //
-                $_REQUEST['act'] = 'Action_' . $_REQUEST['act'];
-
-                Zero_Logs::Start('#{CONTROLLER} ' . self::$Section->Controller . ' -> ' . $_REQUEST['act']);
-                $Controller = Zero_Controller::Factory(self::$Section->Controller);
-                if ( !method_exists($Controller, $_REQUEST['act']) )
+                    $action = $_SERVER['REQUEST_METHOD'];
+                if ( !method_exists($Controller, 'Action_' . $action) )
                 {
-                    throw new Exception('Контроллер не имеет метода: ' . $_REQUEST['act'], -1);
+                    if ( 'GET' != $action )
+                        throw new Exception('Контроллер не имеет метода: ' . $action, 409);
+                    $action = 'Default';
                 }
-                $view = $Controller->$_REQUEST['act']();
+
+                // доступные операции - методы контроллера с учетом прав.
+                $actionList = Zero_Engine::Get_Method_From_Class($route['Controller'], 'Action');
+                if ( !isset($actionList[$action]) )
+                    throw new Exception('Page Forbidden', 403);
+
+                // выполнение контроллера
+                $action = 'Action_' . $action;
+                Zero_Logs::Start('#{CONTROLLER} ' . $route['Controller'] . ' -> ' . $action);
+                $view = $Controller->$action();
                 $messageResponse = $Controller->GetMessage();
                 if ( true == $view instanceof Zero_View )
                 {
@@ -627,11 +635,11 @@ class Zero_App
                     $view->Assign('Content', Zero_App::$Section->Content);
                     $view = $view->Fetch();
                 }
-                Zero_Logs::Stop('#{CONTROLLER} ' . self::$Section->Controller . ' -> ' . $_REQUEST['act']);
+                Zero_Logs::Stop('#{CONTROLLER} ' . $route['Controller'] . ' -> ' . $action);
             }
             else
             {
-                $view = new Zero_View(self::$Section->Controller);
+                $view = new Zero_View($route['Controller']);
                 $view->Assign('Message', $messageResponse);
                 $view->Assign('H1', Zero_App::$Section->Name);
                 $view->Assign('Content', Zero_App::$Section->Content);
@@ -639,10 +647,10 @@ class Zero_App
             }
         }
 
-        // Сборка страницы на основании макета
-        if ( self::$Section->Layout )
+        //  РАЗДЕЛ - СТРАНИЦА
+        if ( isset($route['View']) && $route['View'] )
         {
-            $viewLayout = new Zero_View(self::$Section->Layout);
+            $viewLayout = new Zero_View($route['View']);
             $viewLayout->Assign('Message', $messageResponse);
             $viewLayout->Assign('H1', Zero_App::$Section->Name);
             $viewLayout->Assign('Content', $view);
@@ -665,62 +673,112 @@ class Zero_App
      * - The formation results and conclusion of the profiled format
      *
      * @throws Exception
-     * @todo Переработать Exception (только ошибки)
-     * @todo доработать режим обслуживания
      */
-    public static function ExecuteApi()
+    private static function executeUseDB()
     {
-        // Доступ с определенных IP адресов
-        if ( count(self::$Config->Site_AccessAllowIpFromApi) && empty(self::$Config->Site_AccessAllowIpFromApi[self::$Config->Ip]) )
-        {
-            throw new Exception('Page Forbidden', 403);
-        }
-
         //  Пользователь
         self::$Users = Zero_Users::Factor();
 
-        // Доступ по логину и паролю
-        if ( isset($_REQUEST['login']) && isset($_REQUEST['password']) && self::$Users->Login != $_REQUEST['login'] )
+        // General Authorization Users
+        if ( isset($_SERVER['HTTP_AUTHUSER']) && 0 == self::$Users->ID )
         {
-            self::$Users->Load_Login($_REQUEST['login']);
-            if ( self::$Users->Password != md5($_REQUEST['password']) )
-                throw new Exception('Page Forbidden', 403);
-        }
-
-        // Контроллер
-        self::$Controller = Zero_Controllers::Instance();
-
-        if ( 0 == self::$Controller->ID )
-            throw new Exception('Page Not Found', 404);
-
-        //  Доступные операции - методы контроллера с учетом прав.
-        $Action_List = self::$Controller->Get_Action_List();
-        if ( 1 < self::$Users->Groups_ID && 'yes' == self::$Controller->IsAuthorized && 0 == count($Action_List) )
-            throw new Exception('Page Forbidden', 403);
-
-        //  Выполнение контроллера
-        if ( self::$Controller->Controller )
-        {
-            // инициализация и проверка прав на действие
-            if ( isset($_REQUEST['act']) && $_REQUEST['act'] )
-                $_REQUEST['act'] = trim($_REQUEST['act']);
-            else
-                $_REQUEST['act'] = $_SERVER['REQUEST_METHOD'];
-            //
-            if ( !isset($Action_List[$_REQUEST['act']]) )
-                throw new Exception('Page Forbidden', 403);
-            //
-            $_REQUEST['act'] = 'Action_' . $_REQUEST['act'];
-
-            Zero_Logs::Start('#{CONTROLLER} ' . self::$Controller->Controller . ' -> ' . $_REQUEST['act']);
-            $Controller = Zero_Controller::Factory(self::$Controller->Controller);
-            if ( !method_exists($Controller, $_REQUEST['act']) )
+            self::$Users->Load_Token($_SERVER['HTTP_AUTHUSER']);
+            if ( 0 == self::$Users->ID )
             {
-                throw new Exception('Контроллер не имеет метода: ' . $_REQUEST['act'], -1);
+                throw new Exception('Page Forbidden', 403);
             }
-            $Controller->$_REQUEST['act']();
         }
-        self::ResponseJson200('terminate unknown api');
+
+        //  ИНИЦИАЛИЗАЦИЯ Раздел - Страница и Контроллер
+        self::$Section = Zero_Section::Instance();
+        if ( 0 < self::$Section->ID )
+        {
+            // страница отключена, закрыта.
+            if ( 'no' == self::$Section->IsEnable )
+                throw new Exception('Page Not Found', 404);
+            // редирект
+            if ( self::$Section->UrlRedirect )
+                self::ResponseRedirect(self::$Section->UrlRedirect);
+            // проверка прав на авторизованную страницу
+            if ( 1 < self::$Users->Groups_ID && 'yes' == self::$Section->IsAuthorized && false == self::$Section->Get_Access() )
+                throw new Exception('Page Forbidden', 403);
+            // загрузка контроллера
+            if ( 0 < self::$Section->Controllers_ID )
+            {
+                self::$Controller = Zero_Controllers::Make(self::$Section->Controllers_ID, true);
+            }
+        }
+        else
+        {
+            self::$Controller = Zero_Controllers::Instance();
+            // проверка на существование контроллера по запрошенному урлу
+            if ( 0 == self::$Controller->ID )
+                throw new Exception('Page Not Found', 404);
+            // проверка прав на авторизованный контроллер
+            if ( 1 < self::$Users->Groups_ID && 'yes' == self::$Controller->IsAuthorized && 0 == count(self::$Controller->Get_Action_List()) )
+                throw new Exception('Controller Forbidden', 403);
+        }
+
+        //  КОНТРОЛЛЕР
+        $view = '';
+        $messageResponse = ['Code' => 0, 'Message' => ''];
+        if ( 0 < self::$Controller->ID )
+        {
+            if ( self::Autoload(self::$Controller->Controller, false) )
+            {
+                // инициализация и проверка существование метода действия
+                $Controller = Zero_Controller::Factory(self::$Controller->Controller);
+                if ( isset($_REQUEST['act']) && $_REQUEST['act'] )
+                    $action = $_REQUEST['act'];
+                else
+                    $action = $_SERVER['REQUEST_METHOD'];
+                if ( !method_exists($Controller, 'Action_' . $action) )
+                {
+                    if ( 'GET' != $action )
+                        throw new Exception('Контроллер не имеет метода: ' . $action, 409);
+                    $action = 'Default';
+                }
+
+                // доступные операции - методы контроллера с учетом прав.
+                $actionList = self::$Controller->Get_Action_List();
+                if ( !isset($actionList[$action]) )
+                    throw new Exception('Action Forbidden', 403);
+
+                // выполнение контроллера
+                $action = 'Action_' . $action;
+                Zero_Logs::Start('#{CONTROLLER} ' . self::$Controller->Controller . ' -> ' . $action);
+                $view = $Controller->$action();
+                $messageResponse = $Controller->GetMessage();
+                if ( true == $view instanceof Zero_View )
+                {
+                    /* @var $view Zero_View */
+                    $view->Assign('Message', $messageResponse);
+                    $view->Assign('H1', Zero_App::$Section->Name);
+                    $view->Assign('Content', Zero_App::$Section->Content);
+                    $view = $view->Fetch();
+                }
+                Zero_Logs::Stop('#{CONTROLLER} ' . self::$Controller->Controller . ' -> ' . $action);
+            }
+            else
+            {
+                $view = new Zero_View(self::$Controller->Controller);
+                $view->Assign('Message', $messageResponse);
+                $view->Assign('H1', Zero_App::$Section->Name);
+                $view->Assign('Content', Zero_App::$Section->Content);
+                $view = $view->Fetch();
+            }
+        }
+
+        //  РАЗДЕЛ - СТРАНИЦА
+        if ( self::$Section->Layout )
+        {
+            $viewLayout = new Zero_View(self::$Section->Layout);
+            $viewLayout->Assign('Message', $messageResponse);
+            $viewLayout->Assign('H1', Zero_App::$Section->Name);
+            $viewLayout->Assign('Content', $view);
+            $view = $viewLayout->Fetch();
+        }
+        self::ResponseHtml($view, 200);
     }
 
     /**
@@ -775,6 +833,8 @@ class Zero_App
      * - '500' vse ostal`ny`e kriticheskie oshibki prilozheniia libo servera
      *
      * @param Exception $exception
+     * @todo Переработать в ответы Zero_Response::Html403()
+     * @todo Переработать в ответы Zero_Response::Json()
      */
     public static function Exception(Exception $exception)
     {
@@ -786,57 +846,50 @@ class Zero_App
         $code = $exception->getCode();
         if ( empty($codeList[$code]) )
         {
-            $code = 500;
+            $code = 409;
             self::exception_Trace($exception);
         }
-        if ( ZERO_MODE_CONSOLE == self::$Mode || !isset($_SERVER['REQUEST_URI']) )
-            self::ResponseConsole();
-        else if ( ZERO_MODE_API == self::$Mode )
-            self::ResponseJson500($code, [$exception->getMessage()]);
-        else if ( ZERO_MODE_WEB == self::$Mode )
+        $viewLayout = new Zero_View('Zero_Exception');
+        $viewLayout->Assign('code', $code);
+        $viewLayout->Assign('message', $exception->getMessage());
+        $controller = 'Zero_Exception_' . $code;
+        if ( self::Autoload($controller) )
         {
-            $viewLayout = new Zero_View('Zero_Exception');
-            $viewLayout->Assign('code', $code);
-            $viewLayout->Assign('message', $exception->getMessage());
-            $controller = 'Zero_Exception_' . $code;
-            if ( self::Autoload($controller) )
+            $Controller = Zero_Controller::Makes($controller);
+            if ( method_exists($Controller, 'Action_Default') )
             {
-                $Controller = Zero_Controller::Makes($controller);
-                if ( method_exists($Controller, 'Action_Default') )
+                $viewController = $Controller->Action_Default();
+                if ( true == $viewController instanceof Zero_View )
                 {
-                    $viewController = $Controller->Action_Default();
-                    if ( true == $viewController instanceof Zero_View )
-                    {
-                        /* @var $viewController Zero_View */
-                        $viewController->Assign('code', $code);
-                        $viewController->Assign('message', $exception->getMessage());
-                        $view = $viewController->Fetch();
-                    }
-                    else
-                    {
-                        $view = $viewController;
-                    }
+                    /* @var $viewController Zero_View */
+                    $viewController->Assign('code', $code);
+                    $viewController->Assign('message', $exception->getMessage());
+                    $view = $viewController->Fetch();
                 }
                 else
                 {
-                    Zero_Logs::Set_Message_Error("У контроллера '{$Controller}' нет метода по умолчанию");
-                    $view = '';
+                    $view = $viewController;
                 }
-                $viewLayout->Assign('Content', $view);
             }
             else
             {
-                $view = new Zero_View($controller);
-                $view->Assign('code', $code);
-                $view->Assign('message', $exception->getMessage());
-                $viewLayout->Assign('Content', $view->Fetch());
+                Zero_Logs::Set_Message_Error("У контроллера '{$Controller}' нет метода по умолчанию");
+                $view = '';
             }
-            // Логирование (в браузер)
-            if ( $code != 500 || self::$Config->Log_Output_Display )
-                self::ResponseHtml($viewLayout->Fetch(), $code);
-            else
-                self::ResponseConsole();
+            $viewLayout->Assign('Content', $view);
         }
+        else
+        {
+            $view = new Zero_View($controller);
+            $view->Assign('code', $code);
+            $view->Assign('message', $exception->getMessage());
+            $viewLayout->Assign('Content', $view->Fetch());
+        }
+        // Логирование (в браузер)
+        if ( $code != 409 || self::$Config->Log_Output_Display )
+            self::ResponseHtml($viewLayout->Fetch(), $code);
+        else
+            self::ResponseConsole();
     }
 
     /**

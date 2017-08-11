@@ -23,7 +23,7 @@ class Zero_Section_Plugin_NavigationAccordion extends Zero_Controller
         if ( isset($this->Params['section_id']) && 0 < $this->Params['section_id'] )
             $Section = Zero_Section::Make($this->Params['section_id']);
         else
-            $Section->Init_Url('/');
+            $Section->Load_Url('/');
         $index = __CLASS__ . '_' . Zero_App::$Users->Groups_ID . '_' . $Section->ID;
 
         if ( false === $navigation = $Section->Cache->Get($index) )

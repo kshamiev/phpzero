@@ -38,10 +38,8 @@ return [
         'TimeZone' => 'Europe/Moscow',
         // Maintenance ip access (list ip separator ',')
         'MaintenanceIp' => '',
-        // Список разрешенных ip адресов для запросов API
-        'AccessAllowIpFromApi' => [],
-        // Список разрешенных ip адресов для работы через WWW
-        'AccessAllowIpFromWeb' => [],
+        // Список разрешенных ip адресов для работы
+        'AccessAllowIp' => [],
     ],
     //  Access for DB (Mysql)
     'Db' => [

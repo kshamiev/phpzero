@@ -640,4 +640,28 @@ class Zero_Engine
             }
         }
     }
+
+    /**
+     * Получение публичных методов класса
+     *
+     * @param string $className
+     * @param string $methodPrefix если указан, то получаем методы с указанным префиксом до разделителя _
+     * @return array
+     */
+    public static function Get_Method_From_Class($className, $methodPrefix = '')
+    {
+        $result = [];
+        $reflection = new ReflectionClass($className);
+        foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method)
+        {
+            $name = $method->getName();
+            $arr = explode('_', $name);
+            if ( '' == $methodPrefix || $arr[0] == $methodPrefix )
+            {
+                array_shift($arr);
+                $result[implode('_', $arr)] = ['Name' => Zero_I18n::Controller($className, $name)];
+            }
+        }
+        return $result;
+    }
 }

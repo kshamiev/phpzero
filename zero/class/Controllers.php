@@ -310,7 +310,7 @@ class Zero_Controllers extends Zero_Model
             return $this->_Action_List;
 
         $this->_Action_List = [];
-        if ( Zero_App::$Config->Site_UseDB && 'yes' == $this->IsAuthorized && 1 < Zero_App::$Users->Groups_ID )
+        if ( 'yes' == $this->IsAuthorized && 1 < Zero_App::$Users->Groups_ID )
         {
             $Model = Zero_Model::Makes('Zero_Action');
             $Model->AR->Sql_Where('Controllers_ID', '=', $this->ID);
@@ -323,21 +323,9 @@ class Zero_Controllers extends Zero_Model
         }
         else if ( '' != $controllerName )
         {
-            if ( false == Zero_App::Autoload($controllerName) )
-                throw new Exception('Класс не найден: ' . $controllerName, -1);
-
-            $reflection = new ReflectionClass($controllerName);
-            foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method)
-            {
-                $name = $method->getName();
-                $arr = explode('_', $name);
-                if ( $arr[0] == 'Action' )
-                {
-                    array_shift($arr);
-                    $index = join('_', $arr);
-                    $this->_Action_List[$index] = ['Name' => Zero_I18n::Controller($controllerName, $name)];
-                }
-            }
+            if ( false == Zero_App::Autoload($controllerName, false) )
+                throw new Exception('Класс не найден: ' . $controllerName, 409);
+            $this->_Action_List = Zero_Engine::Get_Method_From_Class($controllerName, 'Action');
         }
         Zero_Cache::Set_Link('Groups', Zero_App::$Users->Groups_ID);
         $this->Cache->Set($index_cache, $this->_Action_List);
@@ -347,42 +335,14 @@ class Zero_Controllers extends Zero_Model
     /**
      * Динамический фабричный метод длиа создании объекта через фабрику и инстанс.
      */
-    protected function Init()
+    protected function Init($url = ZERO_URL)
     {
-        // Поиск в БД
-        if ( Zero_App::$Config->Site_UseDB )
-        {
-            $sql = "SELECT * FROM Controllers WHERE Url = " . Zero_DB::EscT(ZERO_URL);
-            $row = Zero_DB::Select_Row($sql);
-            $this->Set_Props($row);
-        }
-        // Поиск в программе
-        else
-        {
-            foreach (Zero_App::$Config->Modules as $module)
-            {
-                $index = 'route' . Zero_App::$Mode;
-                if ( !isset($module[$index]) || !is_object($module[$index]) )
-                    continue;
-                $route = $module[$index];
-                if ( isset($route->Route[ZERO_URL]) )
-                {
-                    $route = $route->Route[ZERO_URL];
-                    $route['ID'] = -1;
-                    $route['Url'] = ZERO_URL;
-                    $route['Typ'] = ZERO_MODE_API;
-                    if ( empty($route['Name']) )
-                        $route['Name'] = $route['Controller'];
-                    if ( empty($route['IsAuthorized']) )
-                        $route['IsAuthorized'] = 'no';
-                    if ( empty($route['IsActive']) )
-                        $route['IsActive'] = 1;
-                    $this->Set_Props($route);
-                    Zero_Cache::Set_Data($index, $route);
-                    break;
-                }
-            }
-        }
+        if ( $this->ID != 0 )
+            return;
+        $row = Zero_DB::Select_Row("SELECT * FROM Controllers WHERE Url = " . Zero_DB::EscT($url));
+        if ( 0 == count($row) )
+            return;
+        $this->Set_Props($row);
     }
 
     /**

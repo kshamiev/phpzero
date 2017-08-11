@@ -136,6 +136,7 @@ class Zero_Logs
      */
     public static function Set_Message_Info($value)
     {
+        self::$_Message[] = [print_r($value, true), 'info'];
         self::Start(print_r($value, true));
         self::Stop(print_r($value, true));
         return $value;

@@ -32,6 +32,7 @@
  * @property string $Keywords
  * @property string $Description
  * @property string $Content
+ * @property bool $Access
  */
 class Zero_Section extends Zero_Model
 {
@@ -48,6 +49,13 @@ class Zero_Section extends Zero_Model
      * @var array
      */
     private $_Action_List = null;
+
+    /**
+     * Право на страницу сайта
+     *
+     * @var bool
+     */
+    private $_Access = null;
 
     /**
      * List subsection
@@ -190,7 +198,7 @@ class Zero_Section extends Zero_Model
      *
      * @param string $url
      */
-    public function Init_Url($url)
+    public function Load_Url($url)
     {
         $this->Init($url);
     }
@@ -204,64 +212,32 @@ class Zero_Section extends Zero_Model
     {
         if ( $this->ID != 0 )
             return;
-        if ( '/' == $url )
-            $index = 'route/' . LANG . '/url';
-        else
-            $index = 'route' . $url . '/' . LANG . '/url';
-        if ( false === $row = Zero_Cache::Get_Data($index) )
+        $row = Zero_DB::Select_Row("SELECT * FROM Section WHERE Url = " . Zero_DB::EscT($url));
+        if ( 0 == count($row) )
+            return;
+        $this->Set_Props($row);
+    }
+
+    /**
+     * Получение прав на страницу сайта
+     *
+     * @return bool
+     */
+    public function Get_Access()
+    {
+        if ( !is_null($this->_Access) )
+            return $this->_Access;
+        if ( 1 < Zero_App::$Users->Groups_ID && 'yes' == $this->IsAuthorized )
         {
-            // Поиск в программе
-            foreach (Zero_App::$Config->Modules as $route)
-            {
-                $index = 'route' . Zero_App::$Mode;
-                if ( !isset($route[$index]) || !is_object($route[$index]) )
-                    continue;
-                $route = $route[$index];
-                if ( isset($route->Route[$url]) )
-                {
-                    $route = $route->Route[$url];
-                    $route['ID'] = -1;
-                    $route['Url'] = $url;
-                    if ( empty($route['IsEnable']) )
-                        $route['IsEnable'] = 'yes';
-                    if ( empty($route['UrlRedirect']) )
-                        $route['UrlRedirect'] = '';
-                    if ( empty($route['IsAuthorized']) )
-                        $route['IsAuthorized'] = 'no';
-                    if ( empty($route['Name']) )
-                        $route['Name'] = '';
-                    if ( empty($route['Content']) )
-                        $route['Content'] = '';
-                    if ( empty($route['Layout']) )
-                        $route['Layout'] = '';
-                    if ( isset($route['View']) )
-                        $route['Layout'] = $route['View'];
-                    $this->Set_Props($route);
-                    Zero_Cache::Set_Data($index, $route);
-                    break;
-                }
-            }
-            // Поиск в БД
-            if ( 0 == $this->ID && Zero_App::$Config->Site_UseDB )
-            {
-                $row = Zero_DB::Select_Row("SELECT * FROM Section WHERE Url = " . Zero_DB::EscT($url));
-                if ( 0 == count($row) )
-                    return;
-                if ( 0 < $row['Controllers_ID'] )
-                {
-                    $arr = Zero_DB::Select_Row("SELECT * FROM Controllers WHERE ID = {$row['Controllers_ID']}");
-                    if ( 0 < count($arr) )
-                        $row['Controller'] = $arr['Controller'];
-                }
-                $this->Set_Props($row);
-                Zero_Cache::Set_Link('Section', $this->ID);
-                Zero_Cache::Set_Data($index, $row);
-            }
+            $this->_Access = true;
+            return $this->_Access;
         }
+        $sql = "SELECT COUNT(*) FROM Action WHERE Section_ID = {$this->ID} AND Groups_ID = " . Zero_App::$Users->Groups_ID;
+        if ( 0 < Zero_DB::Select_Field($sql) )
+            $this->_Access = true;
         else
-        {
-            $this->Set_Props($row);
-        }
+            $this->_Access = false;
+        return $this->_Access;
     }
 
     /**
@@ -269,9 +245,11 @@ class Zero_Section extends Zero_Model
      *
      * @return array ist of actions controllers section
      * @throws Exception
+     * @deprecated
      */
     public function Get_Action_List()
     {
+        return Zero_App::$Controller->Get_Action_List();
         if ( 0 == $this->ID )
             return [];
         else if ( !is_null($this->_Action_List) )
@@ -283,7 +261,7 @@ class Zero_Section extends Zero_Model
             return $this->_Action_List;
 
         $this->_Action_List = [];
-        if ( Zero_App::$Config->Site_UseDB && 'yes' == $this->IsAuthorized && 1 < Zero_App::$Users->Groups_ID )
+        if ( 'yes' == $this->IsAuthorized && 1 < Zero_App::$Users->Groups_ID )
         {
             $Model = Zero_Model::Makes('Zero_Action');
             $Model->AR->Sql_Where('Section_ID', '=', $this->ID);
@@ -296,21 +274,9 @@ class Zero_Section extends Zero_Model
         }
         else if ( '' != $controllerName )
         {
-            if ( false == Zero_App::Autoload($controllerName) )
-                throw new Exception('Класс не найден: ' . $controllerName, -1);
-
-            $reflection = new ReflectionClass($controllerName);
-            foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method)
-            {
-                $name = $method->getName();
-                $arr = explode('_', $name);
-                if ( $arr[0] == 'Action' )
-                {
-                    array_shift($arr);
-                    $index = join('_', $arr);
-                    $this->_Action_List[$index] = ['Name' => Zero_I18n::Controller($controllerName, $name)];
-                }
-            }
+            if ( false == Zero_App::Autoload($controllerName, false) )
+                throw new Exception('Класс не найден: ' . $controllerName, 409);
+            $this->_Action_List = Zero_Engine::Get_Method_From_Class($controllerName, 'Action');
         }
         Zero_Cache::Set_Link('Groups', Zero_App::$Users->Groups_ID);
         $this->Cache->Set($index_cache, $this->_Action_List);
