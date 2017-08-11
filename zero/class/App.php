@@ -583,10 +583,14 @@ class Zero_App
         $route = [];
         foreach (self::$Config->Modules as $route)
         {
-            if ( isset($route['routeWeb']) || isset($route['routeWeb']->Route[ZERO_URL]) )
+            if ( isset($route['routeWeb']) && isset($route['routeWeb']->Route[ZERO_URL]) )
+            {
                 $route = $route['routeWeb']->Route[ZERO_URL];
-            else if ( isset($route['routeApi']) || isset($route['routeApi']->Route[ZERO_URL]) )
+            }
+            else if ( isset($route['routeApi']) && isset($route['routeApi']->Route[ZERO_URL]) )
+            {
                 $route = $route['routeApi']->Route[ZERO_URL];
+            }
             else
                 continue;
             break;
