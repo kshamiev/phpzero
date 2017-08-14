@@ -227,7 +227,7 @@ class Zero_Section extends Zero_Model
     {
         if ( !is_null($this->_Access) )
             return $this->_Access;
-        if ( 1 < Zero_App::$Users->Groups_ID && 'yes' == $this->IsAuthorized )
+        if ( 1 == Zero_App::$Users->Groups_ID || 'yes' != $this->IsAuthorized )
         {
             $this->_Access = true;
             return $this->_Access;
