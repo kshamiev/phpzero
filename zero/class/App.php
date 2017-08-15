@@ -215,21 +215,17 @@ class Zero_App
 
     public static function RequestJson($method, $url, $content = '', $accessBasicHttp = '', $accessUser = '')
     {
+        $content = json_encode($content, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK);
         $head = "Content-Type: application/json; charset=utf-8\r\n";
         $head .= "Content-Length: " . strlen($content) . "\r\n";
         if ( $accessBasicHttp )
-        {
             $head .= "Authorization: Basic " . base64_encode($accessBasicHttp) . "\r\n";
-        }
         if ( $accessUser )
-        {
             $head .= "AuthUser: " . md5($accessUser) . "\r\n";
-        }
-        $content = json_encode($content, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK);
         $opts = [
             'http' => [
-                'header' => $head,
                 'method' => $method,
+                'header' => $head,
                 'content' => $content,
                 'timeout' => 300,
             ],
