@@ -16,7 +16,7 @@ class Zero_Crud_Plugin_Toolbar extends Zero_Controller
     public function Action_Default()
     {
         $this->View = new Zero_View();
-        $this->View->Add(Zero_App::$Section->Controller . 'Toolbar');
+        $this->View->Add(Zero_App::$Controller->Controller . 'Toolbar');
         $this->View->Add(__CLASS__);
         foreach ($this->Params as $prop => $value)
         {

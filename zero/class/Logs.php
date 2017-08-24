@@ -277,7 +277,7 @@ class Zero_Logs
             {
                 $act = date('[d.m.Y H:i:s]') . "\t";
                 $act .= Zero_App::$Users->Login . "\t";
-                $act .= Zero_App::$Section->Controller . " -> " . $_REQUEST['act'] . "\t";
+                $act .= Zero_App::$Controller->Controller . " -> " . $_REQUEST['act'] . "\t";
                 $act .= ZERO_HTTP . $_SERVER['REQUEST_URI'];
                 Helper_File::File_Save_After(self::$_FileLog . '_action.log', $act);
             }
