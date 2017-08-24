@@ -806,6 +806,7 @@ class Zero_App
         header('Expires: Mon, 26 Jul 2007 05:00:00 GMT');
         header('Cache-Control: no-store, no-cache, must-revalidate');
         header("Content-Type: text/html; charset=utf-8");
+        header('Access-Control-Allow-Origin: *');
         header('HTTP/1.1 ' . $status . ' ' . $status);
         echo $content;
 
