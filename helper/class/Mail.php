@@ -335,6 +335,7 @@ class Helper_Mail
             if ( !$mail->send() )
             {
                 $cntFail++;
+                Zero_Logs::Set_Message_Error("From: {$from['Email']}; To: {$row['Email']}; Subject: {$subject}");
             }
             //
             $mail->ClearAddresses();
