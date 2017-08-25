@@ -203,6 +203,45 @@ class Zero_View
     }
 
     /**
+     * Poluchenie predstavleniia s danny`mi.
+     *
+     * - Poisk shablona presdtavleniia
+     * - Kompiliatciia html shablona v tpl
+     * - E`ksport daneny`kh
+     * - Vy`polnenie shablona i vozvrat rezul`tata
+     *
+     * @return string sobranny`i` shablon so vstavlenny`mi danny`mi
+     */
+    public function Fetch_Php()
+    {
+        if ( 0 == count($this->_Template) )
+            return '';
+
+        $path = [];
+        foreach ($this->_Template as $template)
+        {
+            $path = self::Search_Template_Extension($template, '.php');
+            if ( $path )
+            {
+                break;
+            }
+        }
+        if ( !$path )
+        {
+            Zero_Logs::Set_Message_Error('NOT FOUND view [' . implode(', ', $this->_Template) . ']');
+            return '';
+        }
+        if ( Zero_App::$Config->Site_TemplateParsing )
+        {
+            $this->_Data['__'] = $this->_Data;
+            $this->_Data['_'] = array_keys($this->_Data);
+        }
+        extract($this->_Data);
+        $this->_Data = [];
+        return require $path;
+    }
+
+    /**
      * Poisk shablona
      *
      * V imeni shablona '_' meniaetsia na '/'
@@ -231,6 +270,37 @@ class Zero_View
             return [$path, ZERO_PATH_CACHE . '/view/' . $module . '/' . implode('/', $arr) . '_' . ZERO_LANG . '.tpl'];
         }
         return [];
+    }
+
+    /**
+     * Poisk shablona
+     *
+     * V imeni shablona '_' meniaetsia na '/'
+     * Algoritm poiska:
+     * - /themes/theme-name/Zero/Users/Login.html
+     * - /application/Zero/view/Users/Login.html
+     * - /zero/view/Users/Login.html
+     *
+     * @param string $template imia shablona
+     * @return array найденный шаблон [0], путь до скомпилированного tpl [1] ( путь от корниа сайта )
+     */
+    protected static function Search_Template_Extension($template, $extension = '.php')
+    {
+        $arr = explode('_', $template);
+        $module = strtolower(array_shift($arr));
+        //
+        $path = ZERO_PATH_APPLICATION . '/' . $module . '/view/' . implode('/', $arr) . $extension;
+        if ( file_exists($path) )
+        {
+            return $path;
+        }
+        //
+        $path = ZERO_PATH_ZERO . '/' . $module . '/view/' . implode('/', $arr) . $extension;
+        if ( file_exists($path) )
+        {
+            return $path;
+        }
+        return '';
     }
 
     /**
