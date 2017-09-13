@@ -259,10 +259,17 @@ class Zero_View
         $template = preg_replace('~{(break|continue)}~si', '<' . '?php $1; ?' . '>', $template);
         //	переменные установка
         $template = preg_replace('~{set (\$[^}]{1,255})}~si', '<' . '?php $1; ?' . '>', $template);
+
         //	переменные вывод
-        $template = preg_replace('~{(\$[^}]{1,255})}~si', '<' . '?php echo $1; ?' . '>', $template);
+        //  $template = preg_replace('~{(\$[^}]{1,255})}~si', '<' . '?php echo $1; ?' . '>', $template);
         //	функции и константы
-        $template = preg_replace('~{([a-z]{1}[^}]{0,150})}~si', '<' . '?php echo $1; ?' . '>', $template);
+        //  $template = preg_replace('~{([a-z]{1}[^}]{0,150})}~si', '<' . '?php echo $1; ?' . '>', $template);
+
+        ////	переменные вывод
+        $template = preg_replace('~([^{]){(\$[^}]{1,255})}([^}])~si', '$1<' . '?php echo $2; ?' . '>$3', $template);
+        ////	функции и константы
+        $template = preg_replace('~([^{]){([a-z]{1}[^}]{0,150})}([^}])~si', '$1<' . '?php echo $2; ?' . '>$3', $template);
+
         //
         return $template;
     }
