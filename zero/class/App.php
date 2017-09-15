@@ -494,7 +494,8 @@ class Zero_App
             self::$Mode = ZERO_MODE_CONSOLE;
         }
         //        else if ( strpos($_SERVER['REQUEST_URI'], '/api/') === 0 || strtolower(ZERO_MODE_API) == Zero_App::$Config->Site_DomainSub )
-        else if ( preg_match("~/v[0-9|.]+/~si", $_SERVER['REQUEST_URI']) || preg_match("~^/json/~si", $_SERVER['REQUEST_URI']) )
+//        else if ( preg_match("~/v[0-9|.]+/~si", $_SERVER['REQUEST_URI']) || preg_match("~^/json/~si", $_SERVER['REQUEST_URI']) )
+        else if ( preg_match("~^/(api|json)/~si", $_SERVER['REQUEST_URI']) )
         {
             self::$Mode = ZERO_MODE_API;
             app_route();
