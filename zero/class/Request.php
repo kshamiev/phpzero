@@ -9,33 +9,40 @@
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2017-09-14
  *
- * @method Test
+ * @method Sample($method, $uri, $content) Пример запроса
  */
 class Zero_Request
 {
     /**
-     * API запрос к биллингу
-     *
-     * @param array $postData
-     * @return array
+     * Конструктор. Инициализация реквизитов доуступа к внешним ресурсам
      */
-    private function request($method ='', $content = '', $access = '')
+    public function __construct()
     {
-        pre(__FUNCTION__, __METHOD__);
-        /*
-         * Доступы получаются через ключевое слово = имя метода или через последний параметр
-         * Поиск реквизитов ведтся либо по БД либо через конфигурационный блок AccessApi
-         *
-         */
+        if (Zero_App::$Config->Site_UseDB) {
+            $sql = "SELECT Access, `Name`, Url, ApacheLogin, ApachePassword, UserToken, IsDebug";
+            foreach (Zero_DB::Select_Array_Index($sql) as $key => $row) {
+                Zero_App::$Config->AccessApi[$key] = $row;
+            }
+        }
+    }
 
-
-
-
+    /**
+     * API запрос к внешнему ресурсу
+     *
+     * @param string $access
+     * @param string $method
+     * @param string $uri
+     * @param mixed $content
+     * @return Zero_Request_Type
+     */
+    private function request($access, $method, $uri, $content)
+    {
+        $access = Zero_App::$Config->AccessApi[$access];
 
         // $content = json_encode($content, JSON_PRESERVE_ZERO_FRACTION);
         $content = json_encode($content, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK);
 
-        $ch = curl_init('https://dev.hostkey.ru/api/test.php');
+        $ch = curl_init($access['Url'] . $uri);
         //	время работы
         curl_setopt($ch, CURLOPT_TIMEOUT, 10);          //	полное время сеанса
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);    //	время ожидания соединения в секундах
@@ -43,43 +50,40 @@ class Zero_Request
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_NOBODY, 0);
         //	Заголовки
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            "Content-Type: application/json; charset=utf-8",
-            "Content-Length: " . strlen($content),
-            "AuthUser: " . md5('funtik'),
-        ]);
+        $headers = [];
+        $headers[] = "Content-Type: application/json; charset=utf-8";
+        $headers[] = "Content-Length: " . strlen($content);
+        if ($access['UserToken'])
+            $headers[] = "AuthUser: " . md5($access['UserToken']);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         //	АВТОРИЗАЦИЯ МЕТОДОМ APACHE
-        if ( true )
-        {
-            curl_setopt($ch, CURLOPT_USERPWD, "dev:dev");
+        if ($access['ApacheLogin'] && $access['ApachePassword']) {
+            curl_setopt($ch, CURLOPT_USERPWD, $access['ApacheLogin'] . ":" . $access['ApachePassword']);
         }
         // Метод запроса и тело запроса
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $content);
         //	возвращаем результат в переменную
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         // SSL
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-        if ( true )
-        {
+        if ($access['IsDebug']) {
             curl_setopt($ch, CURLOPT_VERBOSE, 1);
-            curl_setopt($ch, CURLOPT_STDERR, fopen(ZERO_PATH_LOG . '/curl.log', 'a'));
+            curl_setopt($ch, CURLOPT_STDERR, fopen(ZERO_PATH_LOG . "/curl_{$access['Access']}.log", 'a'));
         }
         // Запрос
         $body = curl_exec($ch);
         $head = curl_getinfo($ch);
         $error_code = curl_errno($ch);
         $error_subj = curl_error($ch);
-        if ( 0 < $error_code )
-        {
+        if (0 < $error_code) {
             Zero_Logs::Set_Message_ErrorTrace('Curl error: ' . $error_code . ' - ' . $error_subj);
             return new Zero_Request_Type;
         }
         curl_close($ch);
         // Заголовки
-        switch ( $head['http_code'] )
-        {
+        switch ($head['http_code']) {
             case '201':
                 break;
             case '400':
@@ -95,8 +99,7 @@ class Zero_Request
         }
         // Данные
         $typ = explode(' ', $head['content_type']);
-        if ( $typ[0] = 'application/json;' )
-        {
+        if ($typ[0] = 'application/json;') {
             $body = json_decode($body, true);
         }
         //
@@ -115,12 +118,7 @@ class Zero_Request
      */
     public function __call($method, $params)
     {
-        if ( empty($params[0]) )
-        {
-            $params[0] = [];
-        }
-        $params[0]['action'] = str_replace('_', '', $method);
-        return $this->request($params[0]);
+        return $this->request($method, $params[0], $params[1], $params[2]);
     }
 }
 
