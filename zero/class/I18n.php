@@ -34,27 +34,26 @@ class Zero_I18n
     public static function Message($file_name, $code, $params = [])
     {
         // инициализация файла перевода
-        $folder_list = explode('_', $file_name);
-        $folder_list[1] = 'Message';
-        $index = $folder_list[0] . '_' . $folder_list[1];
-        if ( !isset(self::$_I18n[$index]) )
+        if ( !isset(self::$_I18n['Message']) )
         {
-            self::$_I18n[$index] = self::Search_Path_I18n([strtolower($folder_list[0]), $folder_list[1]]);
+            self::$_I18n['Message'] = [];
+            $path = ZERO_PATH_SITE . '/i18n/' . ZERO_LANG . '/Message.php';
+            if ( file_exists($path) )
+                self::$_I18n['Message'] = include $path;
+            else
+                Zero_Logs::Set_Message_Warninng('I18N NOT FOUND FILE: ' . $path);
         }
         // инициализация перевода
-        $codeGlobal = $code;
-        if ( isset(self::$_I18n[$index][$code]) )
+        if ( isset(self::$_I18n['Message'][$code]) )
         {
-            array_unshift($params, self::$_I18n[$index][$code]);
-            //
-            $codeGlobal = 10000 + $code;
+            array_unshift($params, self::$_I18n['Message'][$code]);
         }
         else if ( 0 < $code )
         {
-            Zero_Logs::Set_Message_Warninng("I18N NOT FOUND MESSAGE ({$folder_list[0]}_Message): " . LANG . ' -> ' . $index . ' -> ' . $code);
+            Zero_Logs::Set_Message_Warninng("I18N NOT FOUND MESSAGE: " . LANG . ' / ' . $code);
         }
         // перевод
-        return [$codeGlobal, strval(zero_sprintf($params))];
+        return strval(zero_sprintf($params));
     }
 
     /**
@@ -68,55 +67,25 @@ class Zero_I18n
     protected static function T($file_name, $section, $key)
     {
         // инициализация файла перевода
-        $module = explode('_', $file_name)[0];
-        $index = $module . '_' . $section;
-        if ( !isset(self::$_I18n[$index]) )
+        if ( !isset(self::$_I18n[$section]) )
         {
-            self::$_I18n[$index] = self::Search_Path_I18n([strtolower($module), $section]);
+            self::$_I18n[$section] = [];
+            $path = ZERO_PATH_SITE . '/i18n/' . ZERO_LANG . '/' . $section . '.php';
+            if ( file_exists($path) )
+                self::$_I18n[$section] = include $path;
+            else
+                Zero_Logs::Set_Message_Warninng('I18N NOT FOUND FILE: ' . $path);
         }
         // перевод
-        if ( isset(self::$_I18n[$index][$file_name . ' ' . $key]) )
+        if ( isset(self::$_I18n[$section][$file_name . ' ' . $key]) )
         {
-            return self::$_I18n[$index][$file_name . ' ' . $key];
+            return self::$_I18n[$section][$file_name . ' ' . $key];
         }
-        else if ( isset(self::$_I18n[$index][$key]) )
+        else if ( isset(self::$_I18n[$section][$key]) )
         {
-            return self::$_I18n[$index][$key];
+            return self::$_I18n[$section][$key];
         }
-        Zero_Logs::Set_Message_Warninng("I18N NOT FOUND KEY ({$module}_{$section}): " . LANG . ' -> ' . $file_name . ' -> ' . $key);
-        return $key;
-    }
-
-    /**
-     * Poisk mestonahozhdeniia i podcliuchenie iazy`kovogo fai`la.
-     *
-     * @param array $folder_list spisok papok dlia poiska raspolozheniia iazy`kovogo fai`la
-     * @param string $lang prefiks iazy`ka (esli ne ukazan beretsia tekushchii`)
-     * @return string put` do iazy`kovogo fai`la
-     */
-    protected static function Search_Path_I18n($folder_list, $lang = '')
-    {
-        if ( '' == $lang )
-            $lang = ZERO_LANG;
-        //
-        $path = ZERO_PATH_SITE . '/i18n/' . $lang . '/' . $folder_list[1] . '.php';
-        if ( file_exists($path) )
-        {
-            return include $path;
-        }
-        //
-        $path = ZERO_PATH_APPLICATION . '/' . strtolower($folder_list[0]) . '/i18n/' . $lang . '/' . $folder_list[1] . '.php';
-        if ( file_exists($path) )
-        {
-            return include $path;
-        }
-        //
-        $path = ZERO_PATH_ZERO . '/' . strtolower($folder_list[0]) . '/i18n/' . $lang . '/' . $folder_list[1] . '.php';
-        if ( file_exists($path) )
-        {
-            return include $path;
-        }
-        Zero_Logs::Set_Message_Warninng('I18N NOT FOUND FILE: ' . $path);
-        return [];
+        Zero_Logs::Set_Message_Warninng("I18N NOT FOUND KEY: " . LANG . "->{$section} / " . $file_name . '->' . $key);
+        return $file_name . ' ' . $key;
     }
 }

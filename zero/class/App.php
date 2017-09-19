@@ -283,14 +283,9 @@ class Zero_App
      */
     public static function ResponseJson200($content = null, $code = 0, $params = [])
     {
-        if ( self::$Controller->Controller )
-            $message = Zero_I18n::Message(self::$Controller->Controller, $code, $params);
-        else
-            $message = Zero_I18n::Message('Zero', $code, $params);
-
         $data = [
-            'Code' => $message[0],
-            'Message' => $message[1],
+            'Code' => $code,
+            'Message' => Zero_I18n::Message('', $code, $params),
             'ErrorStatus' => false,
         ];
 
@@ -336,18 +331,13 @@ class Zero_App
         header("Content-Type: application/json; charset=utf-8");
         header('HTTP/1.1 200 200');
 
-        if ( self::$Controller->Controller )
-            $message = Zero_I18n::Message(self::$Controller->Controller, $code, $params);
-        else
-            $message = Zero_I18n::Message('Zero', $code, $params);
-
-        Zero_Logs::Set_Message_Error($message[1]);
-
         $data = [
-            'Code' => $message[0],
-            'Message' => $message[1],
+            'Code' => $code,
+            'Message' => Zero_I18n::Message('', $code, $params),
             'ErrorStatus' => true,
         ];
+
+        Zero_Logs::Set_Message_Error($data['Message']);
 
         if ( $content )
             $data['Content'] = $content;
@@ -382,18 +372,13 @@ class Zero_App
         header("Content-Type: application/json; charset=utf-8");
         header('HTTP/1.1 200 200');
 
-        if ( self::$Controller->Controller )
-            $message = Zero_I18n::Message(self::$Controller->Controller, $code, $params);
-        else
-            $message = Zero_I18n::Message('Zero', $code, $params);
-
-        Zero_Logs::Set_Message_Error($message[1]);
-
         $data = [
-            'Code' => $message[0],
-            'Message' => $message[1],
+            'Code' => $code,
+            'Message' => Zero_I18n::Message('', $code, $params),
             'ErrorStatus' => true,
         ];
+
+        Zero_Logs::Set_Message_Error($data['Message']);
 
         echo json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK);
 

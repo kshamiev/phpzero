@@ -65,10 +65,9 @@ abstract class Zero_Controller
      */
     public function SetMessage($code = 0, $params = [])
     {
-        $arr = Zero_I18n::Message(get_class($this), $code, $params);
         self::$_Message = [
-            'Code' => $arr[0],
-            'Message' => $arr[1],
+            'Code' => $code,
+            'Message' => Zero_I18n::Message(get_class($this), $code, $params),
             'ErrorStatus' => false,
         ];
         return true;
@@ -83,10 +82,9 @@ abstract class Zero_Controller
      */
     public function SetMessageError($code = 0, $params = [])
     {
-        $arr = Zero_I18n::Message(get_class($this), $code, $params);
         self::$_Message = [
-            'Code' => $arr[0],
-            'Message' => $arr[1],
+            'Code' => $code,
+            'Message' => Zero_I18n::Message(get_class($this), $code, $params),
             'ErrorStatus' => true,
         ];
         return false;

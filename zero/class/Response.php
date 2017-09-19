@@ -126,19 +126,10 @@ class Zero_Response
      */
     public static function JsonRestful($content = null, $code = 0, $message = [], $status = 200)
     {
-        if ( Zero_App::$Controller->Controller )
-            $message = Zero_I18n::Message(Zero_App::$Controller->Controller, $code, $message);
-        else
-            $message = Zero_I18n::Message('Zero', $code, $message);
-
-        $error = false;
-        if ( 299 < $status )
-            $error = true;
-
         $data = [
-            'Code' => $message[0],
-            'Message' => $message[1],
-            'ErrorStatus' => $error,
+            'Code' => $code,
+            'Message' => Zero_I18n::Message('', $code, $message),
+            'ErrorStatus' => 299 < $status ? true: false,
         ];
 
         if ( $content )
