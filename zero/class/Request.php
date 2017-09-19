@@ -3,25 +3,29 @@
 /**
  * Запросы к внешним источникам (службам, сервисам)
  *
- * Компонент
+ * Компонент/ Можно переопределить и расширять
  *
  * @package Zero.Component
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2017-09-14
  *
- * @method Sample($method, $uri, $content) Пример запроса
+ * @method Sample($method, $uri, $content = null, $headers = []) Пример запроса
  */
 class Zero_Request
 {
     /**
      * Конструктор. Инициализация реквизитов доуступа к внешним ресурсам
+     *
+     * @param bool $IsDB загружать ли опции из БД
      */
-    public function __construct()
+    public function __construct($IsDB = false)
     {
-        if (Zero_App::$Config->Site_UseDB) {
-            $sql = "SELECT Access, `Name`, Url, ApacheLogin, ApachePassword, UserToken, IsDebug";
-            foreach (Zero_DB::Select_Array_Index($sql) as $key => $row) {
-                Zero_App::$Config->AccessApi[$key] = $row;
+        if ( $IsDB )
+        {
+            $sql = "SELECT AccessMethod, `Name`, Url, ApacheLogin, ApachePassword, AuthUserToken, IsDebug FROM AccessOutside";
+            foreach (Zero_DB::Select_Array_Index($sql) as $key => $row)
+            {
+                Zero_App::$Config->Site_AccessOutside[$key] = $row;
             }
         }
     }
@@ -33,11 +37,12 @@ class Zero_Request
      * @param string $method
      * @param string $uri
      * @param mixed $content
+     * @param array $headers список заголовков
      * @return Zero_Request_Type
      */
-    private function request($access, $method, $uri, $content)
+    private function request($access, $method, $uri, $content = null, $headers = [])
     {
-        $access = Zero_App::$Config->AccessApi[$access];
+        $access = Zero_App::$Config->Site_AccessOutside[$access];
 
         // $content = json_encode($content, JSON_PRESERVE_ZERO_FRACTION);
         $content = json_encode($content, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK);
@@ -50,14 +55,14 @@ class Zero_Request
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_NOBODY, 0);
         //	Заголовки
-        $headers = [];
         $headers[] = "Content-Type: application/json; charset=utf-8";
         $headers[] = "Content-Length: " . strlen($content);
-        if ($access['UserToken'])
-            $headers[] = "AuthUser: " . md5($access['UserToken']);
+        if ( $access['AuthUserToken'] )
+            $headers[] = "AuthUserToken: " . md5($access['AuthUserToken']);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         //	АВТОРИЗАЦИЯ МЕТОДОМ APACHE
-        if ($access['ApacheLogin'] && $access['ApachePassword']) {
+        if ( $access['ApacheLogin'] && $access['ApachePassword'] )
+        {
             curl_setopt($ch, CURLOPT_USERPWD, $access['ApacheLogin'] . ":" . $access['ApachePassword']);
         }
         // Метод запроса и тело запроса
@@ -68,22 +73,25 @@ class Zero_Request
         // SSL
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-        if ($access['IsDebug']) {
+        if ( $access['IsDebug'] )
+        {
             curl_setopt($ch, CURLOPT_VERBOSE, 1);
-            curl_setopt($ch, CURLOPT_STDERR, fopen(ZERO_PATH_LOG . "/curl_{$access['Access']}.log", 'a'));
+            curl_setopt($ch, CURLOPT_STDERR, fopen(ZERO_PATH_LOG . "/curl_{$access['AccessMethod']}.log", 'a'));
         }
         // Запрос
         $body = curl_exec($ch);
         $head = curl_getinfo($ch);
         $error_code = curl_errno($ch);
         $error_subj = curl_error($ch);
-        if (0 < $error_code) {
+        if ( 0 < $error_code )
+        {
             Zero_Logs::Set_Message_ErrorTrace('Curl error: ' . $error_code . ' - ' . $error_subj);
             return new Zero_Request_Type;
         }
         curl_close($ch);
         // Заголовки
-        switch ($head['http_code']) {
+        switch ( $head['http_code'] )
+        {
             case '201':
                 break;
             case '400':
@@ -99,7 +107,8 @@ class Zero_Request
         }
         // Данные
         $typ = explode(' ', $head['content_type']);
-        if ($typ[0] = 'application/json;') {
+        if ( $typ[0] = 'application/json;' )
+        {
             $body = json_decode($body, true);
         }
         //

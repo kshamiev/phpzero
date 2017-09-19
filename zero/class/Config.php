@@ -143,6 +143,13 @@ class Zero_Config
     public $Site_AccessAllowIp = [];
 
     /**
+     * Реквизиты доступа к внешним источникам
+     *
+     * @var array
+     */
+    public $Site_AccessOutside = [];
+
+    /**
      * Access for DB (Mysql)
      *
      * @var array
@@ -290,13 +297,6 @@ class Zero_Config
     public $Memcache = [];
 
     /**
-     * Реквизиты доступа к внешним источникам
-     *
-     * @var array
-     */
-    public $AccessApi = [];
-
-    /**
      * Конфигурации модулей
      *
      * @var array
@@ -320,28 +320,32 @@ class Zero_Config
     /**
      * Configuration
      */
-    public function __construct()
+    public function __construct($configSuf)
     {
-        if (!file_exists($path = ZERO_PATH_APPLICATION . '/config.php'))
-            die('Конфигурационный файл не найден');
-        $Config = require ZERO_PATH_APPLICATION . '/config.php';
+        if ( !file_exists($path = ZERO_PATH_SITE . "/config{$configSuf}.php") )
+            if ( !file_exists($path = ZERO_PATH_APPLICATION . "/config{$configSuf}.php") )
+                if ( !file_exists($path = ZERO_PATH_SITE . "/config.php") )
+                    if ( !file_exists($path = ZERO_PATH_APPLICATION . "/config.php") )
+                        die('Конфигурационный файл не найден');
+
+        $Config = require $path;
 
         // IP the source address of the request
-        if (isset($_SERVER["HTTP_X_FORWARDED_FOR"]))
+        if ( isset($_SERVER["HTTP_X_FORWARDED_FOR"]) )
             $this->Ip = $_SERVER["HTTP_X_FORWARDED_FOR"];
-        else if (isset($_SERVER["REMOTE_ADDR"]))
+        else if ( isset($_SERVER["REMOTE_ADDR"]) )
             $this->Ip = $_SERVER["REMOTE_ADDR"];
 
-        if (!is_dir(ZERO_PATH_EXCHANGE))
-            if (!mkdir(ZERO_PATH_EXCHANGE, 0777, true))
+        if ( !is_dir(ZERO_PATH_EXCHANGE) )
+            if ( !mkdir(ZERO_PATH_EXCHANGE, 0777, true) )
                 die('path "exchange": "' . ZERO_PATH_EXCHANGE . '" not create');
 
-        if (!is_dir(ZERO_PATH_CACHE))
-            if (!mkdir(ZERO_PATH_CACHE, 0777, true))
+        if ( !is_dir(ZERO_PATH_CACHE) )
+            if ( !mkdir(ZERO_PATH_CACHE, 0777, true) )
                 die('path "cache": "' . ZERO_PATH_CACHE . '" not create');
 
-        if (!is_dir(ZERO_PATH_LOG))
-            if (!mkdir(ZERO_PATH_LOG, 0777, true))
+        if ( !is_dir(ZERO_PATH_LOG) )
+            if ( !mkdir(ZERO_PATH_LOG, 0777, true) )
                 die('logs path: "' . ZERO_PATH_LOG . '" not create');
 
         // The path to the php Interpreter
@@ -364,48 +368,53 @@ class Zero_Config
         //  Default language
         $this->Site_Language = $Config['Site']['Language'];
         //  Protocol
-        if (isset($Config['Site']['Protocol']))
+        if ( isset($Config['Site']['Protocol']) )
             $this->Site_Protocol = $Config['Site']['Protocol'];
         //
         $this->Site_Domain = $Config['Site']['Domain'];
-        if ($Config['Site']['DomainAssets'])
+        if ( $Config['Site']['DomainAssets'] )
             $this->Site_DomainAssets = $Config['Site']['DomainAssets'];
         else
             $this->Site_DomainAssets = $this->Site_Domain;
         //
-        if ($Config['Site']['DomainUpload'])
+        if ( $Config['Site']['DomainUpload'] )
             $this->Site_DomainUpload = $Config['Site']['DomainUpload'];
         else
             $this->Site_DomainUpload = $this->Site_Domain;
         //
-        if (isset($_SERVER["HTTP_HOST"]))
+        if ( isset($_SERVER["HTTP_HOST"]) )
             $this->Site_DomainAlias = $_SERVER["HTTP_HOST"];
         else
             $this->Site_DomainAlias = $Config['Site']['Domain'];
         //  Absolute system host a website.
         $this->Site_DomainSub = explode('.', $this->Site_Domain)[0];
-        if (isset($_SERVER['HTTP_HOST'])) {
+        if ( isset($_SERVER['HTTP_HOST']) )
+        {
             $arr = explode('.', strtolower($_SERVER['HTTP_HOST']));
-            if (2 < count($arr)) {
+            if ( 2 < count($arr) )
+            {
                 $this->Site_DomainSub = $arr[0];
             }
         }
         //
         $this->Site_UseDB = $Config['Site']['UseDB'];
         //
-        if (isset($Config['Site']['Token']) && $Config['Site']['Token'])
+        if ( isset($Config['Site']['Token']) && $Config['Site']['Token'] )
             $this->Site_Token = $Config['Site']['Token'];
         // Timezone
-        if (isset($Config['Site']['TimeZone']))
+        if ( isset($Config['Site']['TimeZone']) )
             date_default_timezone_set($Config['Site']['TimeZone']);
         else
             date_default_timezone_set('Europe/Moscow');
         // Разаработческий режи
-        if (isset($Config['Site']['MaintenanceIp']) && is_array($Config['Site']['MaintenanceIp']))
+        if ( isset($Config['Site']['MaintenanceIp']) && is_array($Config['Site']['MaintenanceIp']) )
             $this->Site_MaintenanceIp = array_keys($Config['Site']['MaintenanceIp']);
         // Безопасность
-        if (isset($Config['Site']['AccessAllowIp']) && is_array($Config['Site']['AccessAllowIp']))
+        if ( isset($Config['Site']['AccessAllowIp']) && is_array($Config['Site']['AccessAllowIp']) )
             $this->Site_AccessAllowIp = array_keys($Config['Site']['AccessAllowIp']);
+        // Реквизиты доступа к внешним источникам
+        if ( isset($Config['Site']['AccessOutside']) && is_array($Config['Site']['AccessOutside']) )
+            $this->Site_AccessOutside = array_keys($Config['Site']['AccessOutside']);
 
         // Access for DB (Mysql)
         $this->Db = $Config['Db'];
@@ -448,9 +457,6 @@ class Zero_Config
         // Servers Memcache
         $this->Memcache = $Config['Memcache'];
 
-        // Servers Memcache
-        $this->AccessApi = $Config['AccessApi'];
-
         // Конфигурации модулей
         $this->Modules = $Config['Modules'];
 
@@ -469,15 +475,18 @@ class Zero_Config
         // error_reporting(-1);
 
         //  Storage sessions
-        if (!session_id())
-            if (0 < count($Config['Memcache']['Session'])) {
+        if ( !session_id() )
+            if ( 0 < count($Config['Memcache']['Session']) )
+            {
                 ini_set('session.save_handler', 'memcache');
                 ini_set('session.save_path', $Config['Memcache']['Session'][0]);
-            } else {
+            }
+            else
+            {
                 ini_set('session.save_handler', 'files');
                 $path = ini_get('session.save_path');
-                if ($path && !is_dir($path))
-                    if (!mkdir($path, 0777, true))
+                if ( $path && !is_dir($path) )
+                    if ( !mkdir($path, 0777, true) )
                         die('session path: "' . $path . '" not exists');
             }
     }
@@ -494,7 +503,8 @@ class Zero_Config
     {
         $configuration = [];
         $path = ZERO_PATH_APPLICATION . '/' . $module . '/config.php';
-        if (file_exists($path)) {
+        if ( file_exists($path) )
+        {
             $configuration = require $path;
         }
         return $configuration;
@@ -508,7 +518,8 @@ class Zero_Config
     public static function Get_Modules()
     {
         $result = [];
-        foreach (glob(ZERO_PATH_APPLICATION . '/*', GLOB_ONLYDIR) as $path) {
+        foreach (glob(ZERO_PATH_APPLICATION . '/*', GLOB_ONLYDIR) as $path)
+        {
             $result[basename($path)] = basename($path);
         }
         $result['zero'] = 'zero';

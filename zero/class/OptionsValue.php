@@ -19,13 +19,16 @@ class Zero_OptionsValue
     /**
      * Конструктор
      *
-     * @param bool $flag_load загружать ли опции из БД
+     * @param bool $IsDB загружать ли опции из БД
      */
-    public function __construct($flag_load = false)
+    public function __construct($IsDB = false)
     {
-        if ($flag_load) {
-            foreach (Zero_DB::Select_Array("SELECT * FROM Options") as $row) {
-                switch ($row['Typ']) {
+        if ( $IsDB )
+        {
+            foreach (Zero_DB::Select_Array("SELECT * FROM Options") as $row)
+            {
+                switch ( $row['Typ'] )
+                {
                     case 'string':
                         $this->options[$row['Name']] = strval($row['Value']);
                         break;
@@ -51,9 +54,12 @@ class Zero_OptionsValue
      */
     public function __get($prop)
     {
-        if (isset($this->options[$prop])) {
+        if ( isset($this->options[$prop]) )
+        {
             return $this->options[$prop];
-        } else {
+        }
+        else
+        {
             Zero_Logs::Set_Message_Error("обращение к несуществующей опции: {$prop}");
             return null;
         }

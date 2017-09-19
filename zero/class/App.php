@@ -4,18 +4,6 @@
  */
 define('VERSION_PHPZERO', '2.0.0');
 /**
- * Режимы работы приложения
- */
-define('ZERO_MODE_WEB', 'Web');
-/**
- * Режимы работы приложения
- */
-define('ZERO_MODE_API', 'Api');
-/**
- * Режимы работы приложения
- */
-define('ZERO_MODE_CONSOLE', 'Console');
-/**
  * The absolute path to the project (site)
  */
 define('ZERO_PATH_SITE', dirname(dirname(dirname(__DIR__))));
@@ -111,11 +99,13 @@ class Zero_App
     public static $Users = null;
 
     /**
-     * Режим работы приложения (Api, Web, Console).
+     * Запросы к внешним источникам
      *
-     * @var string
+     * API запросы, получение контента страниц сайта
+     *
+     * @var Zero_Request
      */
-    public static $Mode;
+    public static $Request = null;
 
     /**
      * Connection classes
@@ -463,10 +453,9 @@ class Zero_App
      * - Processing incoming request (GET). Component Zero_Route
      * - Session Initialization. Component Zero_Session
      *
-     * @param string $appLog префикс лог файла приложения
-     * @param string $mode режим работы приложения
+     * @param string $configSuf суффикс конфигурационного файла
      */
-    public static function Init($appLog = 'main')
+    public static function Init($configSuf = '')
     {
         // Если инициализация уже произведена
         if ( !is_null(self::$Config) )
@@ -486,29 +475,24 @@ class Zero_App
         // register_shutdown_function(['Zero_App', 'Exit_Application']);
 
         //  Configuration
-        self::$Config = new Zero_Config();
+        self::$Config = new Zero_Config($configSuf);
 
-        // Определение режима работы и роутинг
+        // Инициализация роутинга, входных данных и логирования
         if ( empty($_SERVER['REQUEST_URI']) )
         {
-            self::$Mode = ZERO_MODE_CONSOLE;
+            Zero_Logs::Init(ZERO_PATH_LOG . '/console');
         }
-        //        else if ( strpos($_SERVER['REQUEST_URI'], '/api/') === 0 || strtolower(ZERO_MODE_API) == Zero_App::$Config->Site_DomainSub )
-//        else if ( preg_match("~/v[0-9|.]+/~si", $_SERVER['REQUEST_URI']) || preg_match("~^/json/~si", $_SERVER['REQUEST_URI']) )
         else if ( preg_match("~^/(api|json)/~si", $_SERVER['REQUEST_URI']) )
         {
-            self::$Mode = ZERO_MODE_API;
             app_route();
             app_request_data_api();
+            Zero_Logs::Init(ZERO_PATH_LOG . '/api');
         }
         else
         {
-            self::$Mode = ZERO_MODE_WEB;
             app_route();
+            Zero_Logs::Init(ZERO_PATH_LOG . '/web');
         }
-
-        //  Initializing monitoring system (Zero_Logs)
-        Zero_Logs::Init(ZERO_PATH_LOG . '/' . $appLog . '_' . self::$Mode);
 
         // DB init config
         foreach (self::$Config->Db as $name => $config)
@@ -517,10 +501,10 @@ class Zero_App
         }
 
         // Options
-        if ( self::$Config->Site_UseDB )
-            self::$Options = new Zero_OptionsValue(true);
-        else
-            self::$Options = new Zero_OptionsValue();
+        self::$Options = new Zero_OptionsValue(self::$Config->Site_UseDB);
+
+        // Request
+        self::$Request = new Zero_Request(self::$Config->Site_UseDB);
 
         //  Initialize cache subsystem (Zero_Cache)
         if ( 0 < count(self::$Config->Memcache['Cache']) && class_exists('Memcache') )
@@ -680,9 +664,9 @@ class Zero_App
         self::$Users = Zero_Users::Factor();
 
         // General Authorization Users
-        if ( isset($_SERVER['HTTP_AUTHUSER']) && 0 == self::$Users->ID )
+        if ( isset($_SERVER['HTTP_AUTHUSERTOKEN']) && 0 == self::$Users->ID )
         {
-            self::$Users->Load_Token($_SERVER['HTTP_AUTHUSER']);
+            self::$Users->Load_Token($_SERVER['HTTP_AUTHUSERTOKEN']);
             if ( 0 == self::$Users->ID )
             {
                 throw new Exception('Page Forbidden', 403);
@@ -700,7 +684,7 @@ class Zero_App
             if ( self::$Section->UrlRedirect )
                 self::ResponseRedirect(self::$Section->UrlRedirect);
             // проверка прав на авторизованную страницу
-//            if ( 1 < self::$Users->Groups_ID && 'yes' == self::$Section->IsAuthorized && false == self::$Section->Get_Access() )
+            //            if ( 1 < self::$Users->Groups_ID && 'yes' == self::$Section->IsAuthorized && false == self::$Section->Get_Access() )
             if ( false == self::$Section->Get_Access() )
                 throw new Exception('Page Forbidden', 403);
             // загрузка контроллера
@@ -888,7 +872,7 @@ class Zero_App
             $viewLayout->Assign('Content', $view->Fetch());
         }
         // Логирование (в браузер)
-        if ( $code != 409 || self::$Config->Log_Output_Display )
+        if ( self::$Config->Log_Output_Display )
             self::ResponseHtml($viewLayout->Fetch(), $code);
         else
             self::ResponseConsole();

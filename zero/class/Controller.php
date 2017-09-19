@@ -45,13 +45,6 @@ abstract class Zero_Controller
     private static $_Message = [];
 
     /**
-     * Запросы к внешним источникам (API)
-     *
-     * @var Zero_Request
-     */
-    protected $Request = null;
-
-    /**
      * Получение сообщения
      *
      * @return array ['Code' => int, 'Message' => string, 'ErrorStatus' => bool]

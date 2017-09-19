@@ -7,7 +7,7 @@
 function app_route()
 {
     // главная страница
-    if ( $_SERVER['REQUEST_URI'] == Zero_App::$Route )
+    if ( !$_SERVER['REQUEST_URI'] )
         return;
 
     // инициализация
@@ -25,6 +25,15 @@ function app_route()
     $p = explode('_', $p);
     if ( 1 < count($p) )
         Zero_App::$RouteParams = explode('-', $p[1]);
+    else
+    {
+        $p = explode('-', $p[0]);
+        if ( 1 < count($p) )
+        {
+            Zero_App::$RouteParams = $p;
+            array_shift(Zero_App::$RouteParams);
+        }
+    }
     $row[] = $p[0];
 
     // uri
