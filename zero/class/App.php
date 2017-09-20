@@ -99,6 +99,13 @@ class Zero_App
     public static $Users = null;
 
     /**
+     * ТИп запроса
+     *
+     * @var string (api or web or console)
+     */
+    private static $mode = '';
+
+    /**
      * Запросы к внешним источникам
      *
      * API запросы, получение контента страниц сайта
@@ -247,6 +254,7 @@ class Zero_App
      *
      * @param $content
      * @param int $status
+     * @deprecated Zero_Response
      */
     public static function ResponseJson($content, $status = 200)
     {
@@ -280,6 +288,7 @@ class Zero_App
      * @param $content
      * @param int $code
      * @param array $params
+     * @deprecated Zero_Response
      */
     public static function ResponseJson200($content = null, $code = 0, $params = [])
     {
@@ -321,6 +330,7 @@ class Zero_App
      * @param $content
      * @param int $code
      * @param array $params
+     * @deprecated Zero_Response
      */
     public static function ResponseJson409($content = null, $code = -1, $params = [])
     {
@@ -362,6 +372,7 @@ class Zero_App
      * @param int $code
      * @param array $params
      * @deprecated ResponseJson409
+     * @deprecated Zero_Response
      */
     public static function ResponseJson500($code = -1, $params = [])
     {
@@ -409,6 +420,10 @@ class Zero_App
         exit;
     }
 
+    /**
+     * @param $path
+     * @deprecated Zero_Response
+     */
     public static function ResponseImg($path)
     {
         header("Content-Type: " . Helper_File::File_Type($path));
@@ -418,6 +433,10 @@ class Zero_App
         exit;
     }
 
+    /**
+     * @param $path
+     * @deprecated Zero_Response
+     */
     public static function ResponseFile($path)
     {
         header("Content-Type: " . Helper_File::File_Type($path));
@@ -466,17 +485,20 @@ class Zero_App
         if ( empty($_SERVER['REQUEST_URI']) )
         {
             Zero_Logs::Init(ZERO_PATH_LOG . '/console');
+            self::$mode = 'Console';
         }
         else if ( preg_match("~^/(api|json)/~si", $_SERVER['REQUEST_URI']) )
         {
             app_route();
             app_request_data_api();
             Zero_Logs::Init(ZERO_PATH_LOG . '/api');
+            self::$mode = 'Api';
         }
         else
         {
             app_route();
             Zero_Logs::Init(ZERO_PATH_LOG . '/web');
+            self::$mode = 'Web';
         }
 
         // DB init config
@@ -547,20 +569,14 @@ class Zero_App
 
         // Поиск в программе
         $route = [];
-        foreach (self::$Config->Modules as $route)
-        {
-            if ( isset($route['routeWeb']) && isset($route['routeWeb']->Route[ZERO_URL]) )
-            {
-                $route = $route['routeWeb']->Route[ZERO_URL];
-            }
-            else if ( isset($route['routeApi']) && isset($route['routeApi']->Route[ZERO_URL]) )
-            {
-                $route = $route['routeApi']->Route[ZERO_URL];
-            }
-            else
-                continue;
-            break;
-        }
+        if ( !file_exists($path = ZERO_PATH_APPLICATION . '/route' . self::$mode . '.php') )
+            Zero_Logs::Set_Message_Error('NOT FOUND ROUTE: ' . $path);
+        else
+            $route = require $path;
+
+        if ( isset($route[ZERO_URL]) )
+            $route = $route[ZERO_URL];
+
         if ( 0 == count($route) || empty($route['Controller']) )
         {
             throw new Exception('Page Not Found', 404);
@@ -755,6 +771,7 @@ class Zero_App
      * Redirect to the specified page
      *
      * @param string $url link to which page to produce redirect
+     * @deprecated Zero_Response
      */
     public static function ResponseRedirect($url)
     {

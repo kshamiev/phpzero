@@ -297,20 +297,6 @@ class Zero_Config
     public $Memcache = [];
 
     /**
-     * Конфигурации модулей
-     *
-     * @var array
-     */
-    public $Modules = [];
-
-    /**
-     * Модули
-     *
-     * @var array
-     */
-    public $Mod = [];
-
-    /**
      * IP the source address of the request
      *
      * @var string
@@ -456,12 +442,6 @@ class Zero_Config
 
         // Servers Memcache
         $this->Memcache = $Config['Memcache'];
-
-        // Конфигурации модулей
-        $this->Modules = $Config['Modules'];
-
-        // Модули
-        $this->Mod = self::Get_Modules();
 
         // Setting php
         set_time_limit(3600);

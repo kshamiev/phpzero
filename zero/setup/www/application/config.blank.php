@@ -1,6 +1,8 @@
 <?php
 /**
  * The basic configuration of the all application.
+ *
+ * @package Config
  */
 return [
     //  site settings
@@ -38,8 +40,10 @@ return [
         'TimeZone' => 'Europe/Moscow',
         // Maintenance ip access (list ip separator ',')
         'MaintenanceIp' => '',
-        // Список разрешенных ip адресов для работы
+        // Список разрешенных ip адресов для запросов
         'AccessAllowIp' => [],
+        // Реквизиты доступа к внешним источникам
+        'AccessOutside' => [],
     ],
     //  Access for DB (Mysql)
     'Db' => [
@@ -117,15 +121,6 @@ return [
         //  Session storage
         'Session' => [
             //  'localhost:11211'
-        ],
-    ],
-    // Конфигурации модулей
-    'Modules' => [
-        'zero' => [
-            'codePrefix' => 100,
-            'routeWeb' => new Zero_Route_Web(),
-            'routeApi' => new Zero_Route_Api(),
-            'routeConsole' => new Zero_Route_Console(),
         ],
     ],
 ];
