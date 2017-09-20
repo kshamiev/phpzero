@@ -720,7 +720,7 @@ class Zero_App
                     $action = $_SERVER['REQUEST_METHOD'];
                 if ( !method_exists($Controller, 'Action_' . $action) )
                 {
-                    if ( 'GET' != $action )
+                    if ( 'GET' != $action && 'HEAD' != $action )
                         throw new Exception('Контроллер не имеет метода: ' . $action, 409);
                     $action = 'Default';
                 }
