@@ -572,7 +572,7 @@ class Zero_App
         if ( !file_exists($path = ZERO_PATH_APPLICATION . '/route' . self::$mode . '.php') )
             Zero_Logs::Set_Message_Error('NOT FOUND ROUTE: ' . $path);
         else
-            $route = require $path;
+            $route = include $path;
 
         if ( isset($route[ZERO_URL]) )
             $route = $route[ZERO_URL];
