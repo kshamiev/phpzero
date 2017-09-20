@@ -330,15 +330,28 @@ class Zero_View
         //	переменные установка
         $template = preg_replace('~{set (\$[^}]{1,255})}~si', '<' . '?php $1; ?' . '>', $template);
 
-        //	переменные вывод
-        //  $template = preg_replace('~{(\$[^}]{1,255})}~si', '<' . '?php echo $1; ?' . '>', $template);
-        //	функции и константы
-        //  $template = preg_replace('~{([a-z]{1}[^}]{0,150})}~si', '<' . '?php echo $1; ?' . '>', $template);
+        // Literal
+        preg_match_all("~{literal}(.+?){/literal}~si", $template, $match);
+        foreach($match[0] as $key => $val)
+        {
+            $template = str_replace($val, "<LITERAL{$key}LITERAL>", $template);
+        }
 
-        ////	переменные вывод
-        $template = preg_replace('~([^{]?){(\$[^}]{1,255})}([^}]?)~si', '$1<' . '?php echo $2; ?' . '>$3', $template);
-        ////	функции и константы
-        $template = preg_replace('~([^{]?){([a-z]{1}[^}]{0,150})}([^}]?)~si', '$1<' . '?php echo $2; ?' . '>$3', $template);
+        //	переменные вывод
+        $template = preg_replace('~{(\$[^}]{1,255})}~si', '<' . '?php echo $1; ?' . '>', $template);
+        //	функции и константы
+        $template = preg_replace('~{([a-z]{1}[^}]{0,150})}~si', '<' . '?php echo $1; ?' . '>', $template);
+
+        // Literal
+        foreach($match[1] as $key => $val)
+        {
+            $template = str_replace("<LITERAL{$key}LITERAL>", trim($val), $template);
+        }
+
+        //        ////	переменные вывод
+        //        $template = preg_replace('~([^{]?){(\$[^}]{1,255})}([^}]?)~si', '$1<' . '?php echo $2; ?' . '>$3', $template);
+        //        ////	функции и константы
+        //        $template = preg_replace('~([^{]?){([a-z]{1}[^}]{0,150})}([^}]?)~si', '$1<' . '?php echo $2; ?' . '>$3', $template);
 
         //
         return $template;
