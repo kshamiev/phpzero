@@ -834,7 +834,6 @@ class Zero_App
         $code = $exception->getCode();
         if ( empty($codeList[$code]) )
         {
-            $code = 409;
             self::exception_Trace($exception);
         }
         $viewLayout = new Zero_View('Zero_Exception');
@@ -874,7 +873,7 @@ class Zero_App
             $viewLayout->Assign('Content', $view->Fetch());
         }
         // Логирование (в браузер)
-        if ( self::$Config->Log_Output_Display )
+        if ( self::$Config->Log_Output_Display || isset($codeList[$code]) )
             self::ResponseHtml($viewLayout->Fetch(), $code);
         else
             self::ResponseConsole();
