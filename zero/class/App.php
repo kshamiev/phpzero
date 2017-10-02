@@ -590,12 +590,13 @@ class Zero_App
             if ( self::Autoload($route['Controller'], false) )
             {
                 // инициализация и проверка существование метода действия
-                $Controller = Zero_Controller::Factory($route['Controller']);
+                self::$Controller = Zero_Controller::Factory($route['Controller']);
+                self::$Controller->Controller = $route['Controller'];
                 if ( isset($_REQUEST['act']) && $_REQUEST['act'] )
                     $action = $_REQUEST['act'];
                 else
                     $action = $_SERVER['REQUEST_METHOD'];
-                if ( !method_exists($Controller, 'Action_' . $action) )
+                if ( !method_exists(self::$Controller, 'Action_' . $action) )
                 {
                     if ( 'GET' != $action )
                         throw new Exception('Контроллер не имеет метода: ' . $action, 409);
@@ -610,8 +611,8 @@ class Zero_App
                 // выполнение контроллера
                 $action = 'Action_' . $action;
                 Zero_Logs::Start('#{CONTROLLER} ' . $route['Controller'] . ' -> ' . $action);
-                $view = $Controller->$action();
-                $messageResponse = $Controller->GetMessage();
+                $view = self::$Controller->$action();
+                $messageResponse = self::$Controller->GetMessage();
                 if ( true == $view instanceof Zero_View )
                 {
                     /* @var $view Zero_View */

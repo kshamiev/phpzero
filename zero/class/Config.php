@@ -485,7 +485,7 @@ class Zero_Config
         $path = ZERO_PATH_APPLICATION . '/' . $module . '/config.php';
         if ( file_exists($path) )
         {
-            $configuration = require $path;
+            $configuration = include $path;
         }
         return $configuration;
     }

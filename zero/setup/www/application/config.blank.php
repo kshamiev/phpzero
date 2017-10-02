@@ -47,7 +47,6 @@ return [
     ],
     //  Access for DB (Mysql)
     'Db' => [
-        //  Profiling
         'main' => [
             'Host' => "<DB_HOST>", //  Host or Socket
             'Login' => "<DB_LOGIN>", //  User

@@ -277,7 +277,10 @@ class Zero_Logs
             {
                 $act = date('[d.m.Y H:i:s]') . "\t";
                 $act .= Zero_App::$Users->Login . "\t";
-                $act .= Zero_App::$Controller->Controller . " -> " . $_REQUEST['act'] . "\t";
+                if ( is_object(Zero_App::$Controller) )
+                    $act .= Zero_App::$Controller->Controller . " -> " . $_REQUEST['act'] . "\t";
+                else
+                    self::Custom_DateTime('error_Zero_Logs', [URL, $_REQUEST]);
                 $act .= ZERO_HTTP . $_SERVER['REQUEST_URI'];
                 Helper_File::File_Save_After(self::$_FileLog . '_action.log', $act);
             }
@@ -333,8 +336,8 @@ class Zero_Logs
                 {
                     $limit = round($time['stop'] - $time['start'], 4);
                 }
-//                if ( $limit != -1 )
-//                    continue;
+                //                if ( $limit != -1 )
+                //                    continue;
                 $description = str_replace("\r", "", $description);
                 $description = preg_replace("~(\s+\n){1,}~si", "\n", $description);
                 $description = preg_replace('~[ ]{2,}~', ' ', $description);
