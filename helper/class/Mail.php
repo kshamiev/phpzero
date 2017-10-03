@@ -1,5 +1,4 @@
 <?php
-require_once ZERO_PATH_LIBRARY . '/PHPMailer/PHPMailerAutoload.php';
 
 /**
  * Работа с почтой (почтовыми сообщениями).
@@ -11,29 +10,163 @@ require_once ZERO_PATH_LIBRARY . '/PHPMailer/PHPMailerAutoload.php';
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  * @link https://github.com/PHPMailer/PHPMailer
- *
- * @property string $Name
- * @property string $Description
- * @property string $Content
- * @property string $Date
- * @property string $DateSend
- * @property int $RetryCnt
  */
 class Helper_Mail
 {
-    /**
-     * The table stores the objects this model
-     *
-     * @var string
-     */
-    protected $Source = 'MailQueue';
-
     /**
      * Возможные методы отправки почтового сообщения
      */
     const SendMessage = 'SendMessage';
     const SendMessageAuth = 'SendMessageAuth';
     const SendMessageAuthSsl = 'SendMessageAuthSsl';
+
+    /**
+     *
+     * @var string $smtp_username - логин
+     * @var string $smtp_password - пароль
+     * @var string $smtp_host - хост
+     * @var string $smtp_from - от кого
+     * @var integer $smtp_port - порт
+     * @var string $smtp_charset - кодировка
+     *
+     */
+    private $smtp_username;
+
+    private $smtp_password;
+
+    private $smtp_host;
+
+    private $smtp_port;
+
+    private $smtp_charset;
+
+    public function __construct($smtp_username, $smtp_password, $smtp_host, $smtp_port = 25, $smtp_charset = "UTF-8")
+    {
+        $this->smtp_username = $smtp_username;
+        $this->smtp_password = $smtp_password;
+        $this->smtp_host = $smtp_host;
+        $this->smtp_port = $smtp_port;
+        $this->smtp_charset = $smtp_charset;
+    }
+
+    /**
+     * Отправка письма
+     *
+     * @param array $data = [
+     * 'From' => ['Name' => 'From', 'Email' => 'from@mail.ru'],
+     * 'To' => 'Recipient@mail.ru',
+     * 'Subject' => 'Тема сообщения',
+     * 'Message' => 'Текст или тело сообщения',
+     * ];
+     * @param string $headers - заголовки письма
+     * @return bool|string В случаи отправки вернет true, иначе текст ошибки
+     */
+    public function Sending($data, $headers = '')
+    {
+        $contentMail = "Date: " . date("D, d M Y H:i:s") . " UT\r\n";
+        $contentMail .= 'Subject: =?' . $this->smtp_charset . '?B?' . base64_encode($data['Subject']) . "=?=\r\n";
+        $contentMail .= "MIME-Version: 1.0\r\n";
+        $contentMail .= "Content-type: text/html; charset={$this->smtp_charset}\r\n";
+        $contentMail .= "Content-Transfer-Encoding: 8bit\r\n";
+        $contentMail .= "From: {$data['From']['Name']} <{$data['From']['Email']}>\r\n";
+        $contentMail .= $headers . "\r\n";
+        $contentMail .= $data['Message'] . "\r\n";
+
+        try
+        {
+            if ( !$socket = @fsockopen($this->smtp_host, $this->smtp_port, $errorNumber, $errorDescription, 30) )
+            {
+                throw new Exception($errorNumber . "." . $errorDescription, 409);
+            }
+            if ( !$this->_parseServer($socket, "220") )
+            {
+                throw new Exception('Connection error', 409);
+            }
+
+            $server_name = $_SERVER["SERVER_NAME"];
+            fputs($socket, "HELO $server_name\r\n");
+            if ( !$this->_parseServer($socket, "250") )
+            {
+                fclose($socket);
+                throw new Exception('Error of command sending: HELO', 409);
+            }
+
+            fputs($socket, "AUTH LOGIN\r\n");
+            if ( !$this->_parseServer($socket, "334") )
+            {
+                fclose($socket);
+                throw new Exception('Autorization error', 409);
+            }
+
+            fputs($socket, base64_encode($this->smtp_username) . "\r\n");
+            if ( !$this->_parseServer($socket, "334") )
+            {
+                fclose($socket);
+                throw new Exception('Autorization error', 409);
+            }
+
+            fputs($socket, base64_encode($this->smtp_password) . "\r\n");
+            if ( !$this->_parseServer($socket, "235") )
+            {
+                fclose($socket);
+                throw new Exception('Autorization error', 409);
+            }
+
+            fputs($socket, "MAIL FROM: <" . $this->smtp_username . ">\r\n");
+            if ( !$this->_parseServer($socket, "250") )
+            {
+                fclose($socket);
+                throw new Exception('Error of command sending: MAIL FROM', 409);
+            }
+
+            $data['To'] = ltrim($data['To'], '<');
+            $data['To'] = rtrim($data['To'], '>');
+            fputs($socket, "RCPT TO: <" . $data['To'] . ">\r\n");
+            if ( !$this->_parseServer($socket, "250") )
+            {
+                fclose($socket);
+                throw new Exception('Error of command sending: RCPT TO', 409);
+            }
+
+            fputs($socket, "DATA\r\n");
+            if ( !$this->_parseServer($socket, "354") )
+            {
+                fclose($socket);
+                throw new Exception('Error of command sending: DATA', 409);
+            }
+
+            fputs($socket, $contentMail . "\r\n.\r\n");
+            if ( !$this->_parseServer($socket, "250") )
+            {
+                fclose($socket);
+                throw new Exception("E-mail didn't sent", 409);
+            }
+
+            fputs($socket, "QUIT\r\n");
+            fclose($socket);
+        } catch ( Exception $e )
+        {
+            return $e->getMessage();
+        }
+        return true;
+    }
+
+    private function _parseServer($socket, $response)
+    {
+        $responseServer = '';
+        while ( @substr($responseServer, 3, 1) != ' ' )
+        {
+            if ( !($responseServer = fgets($socket, 256)) )
+            {
+                return false;
+            }
+        }
+        if ( !(substr($responseServer, 0, 3) == $response) )
+        {
+            return false;
+        }
+        return true;
+    }
 
     /**
      * Постановка почтового сообщения в очередь
@@ -87,7 +220,7 @@ class Helper_Mail
             $data = json_decode($row["Content"], true);
             if ( !method_exists(__CLASS__, $method = $row['Method']) )
                 $method = self::SendMessage;
-            $cntFail = self::$method($data['Reply'], $data['From'], $data['To'], $data['Subject'], $data['Message'], $data['Attach']);
+            $cntFail = self::$method($data);
             if ( 0 < $cntFail )
                 $sql = "UPDATE MailQueue SET RetryCnt = RetryCnt + 1 WHERE Id = {$id}";
             else
@@ -115,62 +248,25 @@ class Helper_Mail
      */
     public static function SendMessage($data)
     {
-        $data = func_get_args();
-        if ( 1 < count($data) )
+        $errorCnt = 0;
+        $dataT = [
+            'From' => ['Name' => $data['From']['Name'], 'Email' => $data['From']['Email']],
+            'To' => '',
+            'Subject' => $data['Subject'],
+            'Message' => nl2br($data['Message']),
+        ];
+        $mailSMTP = new Helper_Mail(Zero_App::$Config->Mail_Username, Zero_App::$Config->Mail_Password, Zero_App::$Config->Mail_Host, Zero_App::$Config->Mail_Port);
+        foreach($data['To'] as $key=>$val)
         {
-            $reply = $data[0];
-            $from = $data[1];
-            $to = $data[2];
-            $subject = $data[3];
-            $message = $data[4];
-            $attach = isset($data[5]) ? $data[5] : [];
-        }
-        else
-        {
-            $reply = $data[0]['Reply'];
-            $from = $data[0]['From'];
-            $to = $data[0]['To'];
-            $subject = $data[0]['Subject'];
-            $message = $data[0]['Message'];
-            $attach = isset($data[0]['Attach']) ? $data[0]['Attach'] : [];
-        }
-        $cntFail = 0;
-        foreach ($to as $key => $row)
-        {
-            if ( !is_array($row) )
+            $dataT['To'] = $key;
+            $result = $mailSMTP->Sending($dataT);
+            if ( $result !== true )
             {
-                $row = [
-                    'Email' => $key,
-                    'Name' => $row,
-                ];
+                $errorCnt++;
+                Zero_Logs::Set_Message_Error($result);
             }
-            $mail = new PHPMailer;
-            //  Header mail
-            $mail->CharSet = Zero_App::$Config->Mail_CharSet;
-            //
-            $mail->setFrom($from['Email'], $from['Name']);
-            $mail->addReplyTo($reply['Email'], $reply['Name']);
-            $mail->addAddress($row['Email'], $row['Name']);
-            //  The message body
-            $mail->Subject = $subject;
-            $mail->msgHTML($message);
-            $mail->AltBody = $message;
-            //  Attachments
-            foreach ($attach as $path => $name)
-            {
-                $mail->addAttachment($path, $name);
-            }
-            //  Send
-            if ( !$mail->send() )
-            {
-                $cntFail++;
-                Zero_Logs::Set_Message_Error("From: {$from['Email']}; To: {$row['Email']}; Subject: {$subject}");
-            }
-            //
-            $mail->ClearAddresses();
-            $mail->ClearAttachments();
         }
-        return $cntFail;
+        return $errorCnt;
     }
 
     /**
@@ -192,71 +288,25 @@ class Helper_Mail
      */
     public static function SendMessageAuth($data)
     {
-        $data = func_get_args();
-        if ( 1 < count($data) )
+        $errorCnt = 0;
+        $dataT = [
+            'From' => ['Name' => $data['From']['Name'], 'Email' => $data['From']['Email']],
+            'To' => '',
+            'Subject' => $data['Subject'],
+            'Message' => nl2br($data['Message']),
+        ];
+        $mailSMTP = new Helper_Mail(Zero_App::$Config->Mail_Username, Zero_App::$Config->Mail_Password, Zero_App::$Config->Mail_Host, Zero_App::$Config->Mail_Port);
+        foreach($data['To'] as $key=>$val)
         {
-            $reply = $data[0];
-            $from = $data[1];
-            $to = $data[2];
-            $subject = $data[3];
-            $message = $data[4];
-            $attach = isset($data[5]) ? $data[5] : [];
-        }
-        else
-        {
-            $reply = $data[0]['Reply'];
-            $from = $data[0]['From'];
-            $to = $data[0]['To'];
-            $subject = $data[0]['Subject'];
-            $message = $data[0]['Message'];
-            $attach = isset($data[0]['Attach']) ? $data[0]['Attach'] : [];
-        }
-        $cntFail = 0;
-        foreach ($to as $key => $row)
-        {
-            if ( !is_array($row) )
+            $dataT['To'] = $key;
+            $result = $mailSMTP->Sending($dataT);
+            if ( $result !== true )
             {
-                $row = [
-                    'Email' => $key,
-                    'Name' => $row,
-                ];
+                $errorCnt++;
+                Zero_Logs::Set_Message_Error($result);
             }
-            $mail = new PHPMailer;
-            //  Header mail
-            $mail->isSMTP();
-            $mail->Debugoutput = 'html';
-            $mail->Host = Zero_App::$Config->Mail_Host;
-            $mail->Port = Zero_App::$Config->Mail_Port;
-            $mail->SMTPSecure = '';
-            $mail->SMTPAuth = true;
-            $mail->Username = Zero_App::$Config->Mail_Username;
-            $mail->Password = Zero_App::$Config->Mail_Password;
-            $mail->CharSet = Zero_App::$Config->Mail_CharSet;
-
-            //
-            $mail->setFrom($from['Email'], $from['Name']);
-            $mail->addReplyTo($reply['Email'], $reply['Name']);
-            $mail->addAddress($row['Email'], $row['Name']);
-            //  The message body
-            $mail->Subject = $subject;
-            $mail->msgHTML($message);
-            $mail->AltBody = $message;
-            //  Attachments
-            foreach ($attach as $path => $name)
-            {
-                $mail->addAttachment($path, $name);
-            }
-            //  Send
-            if ( !$mail->send() )
-            {
-                $cntFail++;
-                Zero_Logs::Set_Message_Error("From: {$from['Email']}; To: {$row['Email']}; Subject: {$subject}");
-            }
-            //
-            $mail->ClearAddresses();
-            $mail->ClearAttachments();
         }
-        return $cntFail;
+        return $errorCnt;
     }
 
     /**
@@ -278,69 +328,24 @@ class Helper_Mail
      */
     public static function SendMessageAuthSsl($data)
     {
-        $data = func_get_args();
-        if ( 1 < count($data) )
+        $errorCnt = 0;
+        $dataT = [
+            'From' => ['Name' => $data['From']['Name'], 'Email' => $data['From']['Email']],
+            'To' => '',
+            'Subject' => $data['Subject'],
+            'Message' => nl2br($data['Message']),
+        ];
+        $mailSMTP = new Helper_Mail(Zero_App::$Config->Mail_Username, Zero_App::$Config->Mail_Password, Zero_App::$Config->Mail_Host, Zero_App::$Config->Mail_Port);
+        foreach($data['To'] as $key=>$val)
         {
-            $reply = $data[0];
-            $from = $data[1];
-            $to = $data[2];
-            $subject = $data[3];
-            $message = $data[4];
-            $attach = isset($data[5]) ? $data[5] : [];
-        }
-        else
-        {
-            $reply = $data[0]['Reply'];
-            $from = $data[0]['From'];
-            $to = $data[0]['To'];
-            $subject = $data[0]['Subject'];
-            $message = $data[0]['Message'];
-            $attach = isset($data[0]['Attach']) ? $data[0]['Attach'] : [];
-        }
-        $cntFail = 0;
-        foreach ($to as $key => $row)
-        {
-            if ( !is_array($row) )
+            $dataT['To'] = $key;
+            $result = $mailSMTP->Sending($dataT);
+            if ( $result !== true )
             {
-                $row = [
-                    'Email' => $key,
-                    'Name' => $row,
-                ];
+                $errorCnt++;
+                Zero_Logs::Set_Message_Error($result);
             }
-            $mail = new PHPMailer;
-            //  Header mail
-            $mail->isSMTP();
-            $mail->Debugoutput = 'html';
-            $mail->Host = Zero_App::$Config->Mail_Host;
-            $mail->Port = Zero_App::$Config->Mail_Port;
-            $mail->SMTPSecure = 'tls';
-            $mail->SMTPAuth = true;
-            $mail->Username = Zero_App::$Config->Mail_Username;
-            $mail->Password = Zero_App::$Config->Mail_Password;
-            $mail->CharSet = Zero_App::$Config->Mail_CharSet;
-            //
-            $mail->setFrom($from['Email'], $from['Name']);
-            $mail->addReplyTo($reply['Email'], $reply['Name']);
-            $mail->addAddress($row['Email'], $row['Name']);
-            //  The message body
-            $mail->Subject = $subject;
-            $mail->msgHTML($message);
-            $mail->AltBody = $message;
-            //  Attachments
-            foreach ($attach as $path => $name)
-            {
-                $mail->addAttachment($path, $name);
-            }
-            //  Send
-            if ( !$mail->send() )
-            {
-                $cntFail++;
-                Zero_Logs::Set_Message_Error("From: {$from['Email']}; To: {$row['Email']}; Subject: {$subject}");
-            }
-            //
-            $mail->ClearAddresses();
-            $mail->ClearAttachments();
         }
-        return $cntFail;
+        return $errorCnt;
     }
 }

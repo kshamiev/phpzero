@@ -157,7 +157,7 @@ class Helper_Xml_Parser
     public function Parser($file, $class_handler = 'Helper_Xml_Handler')
     {
         if ( '' == $class_handler )
-            throw new Exception('Имя класса обработчика xml нод не указан', 500);
+            throw new Exception('Имя класса обработчика xml нод не указан', 409);
         $this->_Level = 0;
         $this->_Xml[$this->_Level] = new Helper_Xml_Object('root');
         $this->_Handler = new $class_handler();

@@ -105,7 +105,7 @@ class Zero_Groups_Access extends Zero_Controller
                 $reflection = new ReflectionClass($controller['Controller']);
             } catch ( Exception $e )
             {
-                throw new Exception($e->getMessage(), -1);
+                throw new Exception($e->getMessage(), 409);
             }
             foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method)
             {

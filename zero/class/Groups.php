@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Группы доступа пользователей.
  *
@@ -102,5 +103,38 @@ class Zero_Groups extends Zero_Model
             'Status' => [],
             'Description' => [],
         ];
+    }
+
+    /**
+     * Фабрика по созданию объектов.
+     *
+     * @param integer $id идентификатор объекта
+     * @param bool $flagLoad флаг полной загрузки объекта
+     * @return Zero_Model_Pattern
+     */
+    public static function Make($id = 0, $flagLoad = false)
+    {
+        return new self($id, $flagLoad);
+    }
+
+    /**
+     * Фабрика по созданию объектов.
+     *
+     * Работает через сессию (Zero_Session).
+     * Индекс имя класса
+     *
+     * @param integer $id идентификатор объекта
+     * @param bool $flagLoad флаг полной загрузки объекта
+     * @return Zero_Model_Pattern
+     */
+    public static function Factory($id = 0, $flagLoad = false)
+    {
+        $index = __CLASS__ . (0 < $id ? '_' . $id : '');
+        if ( !$result = Zero_Session::Get($index) )
+        {
+            $result = self::Make($id, $flagLoad);
+            Zero_Session::Set($index, $result);
+        }
+        return $result;
     }
 }

@@ -276,7 +276,7 @@ class Zero_DB
         {
             Zero_Logs::Set_Message_Error("#{SQL_ERROR} " . self::$DB[$nameConnect]->error);
             Zero_Logs::Set_Message_Error("#{SQL_QUERY} " . $sql);
-            throw new Exception(self::$DB[$nameConnect]->error, -1);
+            throw new Exception(self::$DB[$nameConnect]->error, 409);
         }
         return $res;
     }
@@ -311,7 +311,7 @@ class Zero_DB
         {
             Zero_Logs::Set_Message_Error("#{SQL_ERROR} " . self::$DB[$nameConnect]->error);
             Zero_Logs::Set_Message_Error("#{SQL_QUERY} " . $sql);
-            throw new Exception(self::$DB[$nameConnect]->error, -1);
+            throw new Exception(self::$DB[$nameConnect]->error, 409);
         }
         return $res;
     }

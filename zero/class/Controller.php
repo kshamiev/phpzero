@@ -150,9 +150,9 @@ abstract class Zero_Controller
     public static function Makes($class_name, $properties = [])
     {
         if ('' == $class_name)
-            throw new Exception('Имя класса создаваемого контроллера не указано', -1);
+            throw new Exception('Имя класса создаваемого контроллера не указано', 409);
         if (false == Zero_App::Autoload($class_name))
-            throw new Exception('Контроллер "' . $class_name . '" отсутсвует в приложении', -1);
+            throw new Exception('Контроллер "' . $class_name . '" отсутсвует в приложении', 409);
         $Controller = new $class_name();
         foreach ($properties as $property => $value) {
             $Controller->Params[$property] = $value;
@@ -169,7 +169,7 @@ abstract class Zero_Controller
      * @param array $properties vhodny`e parametry` plagina
      * @return Zero_Controller
      */
-    public static function Factory($class_name, $properties = [])
+    public static function Factories($class_name, $properties = [])
     {
         if (!$result = Zero_Session::Get($class_name)) {
             $result = self::Makes($class_name, $properties);

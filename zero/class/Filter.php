@@ -185,6 +185,15 @@ class Zero_Filter
                 //
                 if ( is_array($data) )
                     $this->Filter[$prop]['List'] = $data;
+                else
+                {
+                    $row = Zero_DB::Select_Row("DESCRIBE `{$this->Model->Source}` `{$prop}`");
+                    $arr = explode(',', explode(')', explode('(', $row['Type'])[1])[0]);
+                    foreach ($arr as $v)
+                    {
+                        $this->Filter[$prop]['List'][$v] = $v;
+                    }
+                }
             }
         }
         return true;
@@ -238,6 +247,15 @@ class Zero_Filter
                 //
                 if ( is_array($data) )
                     $this->Filter[$prop]['List'] = $data;
+                else
+                {
+                    $row = Zero_DB::Select_Row("DESCRIBE `{$this->Model->Source}` `{$prop}`");
+                    $arr = explode(',', explode(')', explode('(', $row['Type'])[1])[0]);
+                    foreach ($arr as $v)
+                    {
+                        $this->Filter[$prop]['List'][$v] = $v;
+                    }
+                }
             }
         }
         return true;
@@ -250,7 +268,6 @@ class Zero_Filter
      * @param integer $is_visible Vidimost` fil`tra (1 - otobrazhaetsia, 0 - ne otobrazhaetsia po umolchaniiu)
      * @param mixed $load 1 - avtonomnaia zagruzka fil`tra, 0 - bez zagruzki po umolchaniiu, array - peredanny`e varianty` (spisok ID => Name)
      * @return bool
-     * @todo дописать выбо элементов из струтуры БД
      */
     public function Add_Filter_Checkbox($prop, $row, $is_visible = 0, $load = 0)
     {
@@ -277,6 +294,15 @@ class Zero_Filter
                 //
                 if ( is_array($data) )
                     $this->Filter[$prop]['List'] = $data;
+                else
+                {
+                    $row = Zero_DB::Select_Row("DESCRIBE `{$this->Model->Source}` `{$prop}`");
+                    $arr = explode(',', explode(')', explode('(', $row['Type'])[1])[0]);
+                    foreach ($arr as $v)
+                    {
+                        $this->Filter[$prop]['List'][$v] = $v;
+                    }
+                }
             }
         }
         return true;

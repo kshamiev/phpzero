@@ -42,7 +42,7 @@ return [
         'MaintenanceIp' => '',
         // Список разрешенных ip адресов для запросов
         'AccessAllowIp' => [],
-        // Реквизиты доступа к внешним источникам
+        // Реквизиты доступа к внешним источникам SEE Zero_Request
         'AccessOutside' => [],
     ],
     //  Access for DB (Mysql)

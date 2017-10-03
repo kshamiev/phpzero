@@ -190,18 +190,6 @@ class Zero_Users extends Zero_Model
     }
 
     /**
-     * Dinahmicheskii` fabrichny`i` metod dlia sozdanii ob``ekta cherez fabriku.
-     */
-    protected function Init()
-    {
-        if ( $this->ID == 0 )
-        {
-            $this->Groups_ID = 2;
-            $this->Login = 'guest';
-        }
-    }
-
-    /**
      * Генерация нового токена
      *
      * @return string - новый токен
@@ -390,7 +378,7 @@ class Zero_Users extends Zero_Model
      */
     public function Load_Token($token)
     {
-        $sql = "SELECT * FROM {$this->Source} WHERE Token = " . Zero_DB::EscT($token);
+        $sql = "SELECT * FROM {$this->Source} WHERE Token = " . Zero_DB::EscT(md5($token));
         $row = Zero_DB::Select_Row($sql);
         $this->Set_Props($row);
     }
@@ -404,28 +392,10 @@ class Zero_Users extends Zero_Model
      */
     public static function Make($id = 0, $flagLoad = false)
     {
-        return new self($id, $flagLoad);
-    }
-
-    /**
-     * Фабрика по созданию объектов.
-     *
-     * Сохраниаетсиа в {$тис->_Инстанcе}
-     *
-     * @param integer $id идентификатор объекта
-     * @param bool $flagLoad флаг полной загрузки объекта
-     * @return Zero_Users
-     */
-    public static function Instance($id = 0, $flagLoad = false)
-    {
-        $index = __CLASS__ . (0 < $id ? '_' . $id : '');
-        if ( !isset(self::$Instance[$index]) )
-        {
-            $result = self::Make($id, $flagLoad);
-            $result->Init();
-            self::$Instance[$index] = $result;
-        }
-        return self::$Instance[$index];
+        $obj = new self($id, $flagLoad);
+        $obj->Groups_ID = 2;
+        $obj->Login = 'guest';
+        return $obj;
     }
 
     /**
@@ -438,13 +408,13 @@ class Zero_Users extends Zero_Model
      * @param bool $flagLoad флаг полной загрузки объекта
      * @return Zero_Users
      */
-    public static function Factor($id = 0, $flagLoad = false)
+    public static function Factory($id = 0, $flagLoad = false)
     {
-        if ( !$result = Zero_Session::Get(__CLASS__) )
+        $index = __CLASS__ . (0 < $id ? '_' . $id : '');
+        if ( !$result = Zero_Session::Get($index) )
         {
             $result = self::Make($id, $flagLoad);
-            $result->Init();
-            Zero_Session::Set(__CLASS__, $result);
+            Zero_Session::Set($index, $result);
         }
         return $result;
     }

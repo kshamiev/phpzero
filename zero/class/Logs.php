@@ -195,13 +195,6 @@ class Zero_Logs
     public static function Output_Display()
     {
         $iterator_list = [];
-        //        $iterator = Zero_Session::Get_Instance()->getIterator();
-        //        while ( $iterator->valid() )
-        //        {
-        //            $iterator_list[$iterator->key()]['name'] = get_class($iterator->current());
-        //            $iterator_list[$iterator->key()]['type'] = gettype($iterator->current());
-        //            $iterator->next();
-        //        }
         if ( isset($_SESSION['Session']) )
             foreach ($_SESSION['Session'] as $key => $val)
             {
@@ -277,10 +270,8 @@ class Zero_Logs
             {
                 $act = date('[d.m.Y H:i:s]') . "\t";
                 $act .= Zero_App::$Users->Login . "\t";
-                if ( is_object(Zero_App::$Controller) )
+                if ( Zero_App::$Controller->Controller )
                     $act .= Zero_App::$Controller->Controller . " -> " . $_REQUEST['act'] . "\t";
-                else
-                    self::Custom_DateTime('error_Zero_Logs', [URL, $_REQUEST]);
                 $act .= ZERO_HTTP . $_SERVER['REQUEST_URI'];
                 Helper_File::File_Save_After(self::$_FileLog . '_action.log', $act);
             }

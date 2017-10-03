@@ -13,8 +13,11 @@
 {else if ( $code == 404 )}
     <p align="center">Страница не найдена</p>
     <p align="center"><a href="{HTTP}">На главную страницу</a></p>
-{else}
+{else if ( $code == 409 )}
     <p align="center">Ошибка в работе приложения</p>
+    <p align="center">{$message}</p>
+{else}
+    <p align="center">Ошибка в работе сервера ({$code})</p>
     <p align="center">{$message}</p>
 {/if}
 </body>

@@ -123,9 +123,9 @@ abstract class Zero_Model
     public static function Makes($class_name, $id = 0, $flag_load = false)
     {
         if ( '' == $class_name )
-            throw new Exception("Модель не указана", -1);
+            throw new Exception("Модель не указана", 409);
         if ( false == Zero_App::Autoload($class_name) )
-            throw new Exception("Модель '{$class_name}' отсутсвует в приложении", -1);
+            throw new Exception("Модель '{$class_name}' отсутсвует в приложении", 409);
         return new $class_name($id, $flag_load);
     }
 
@@ -158,13 +158,6 @@ abstract class Zero_Model
             $index .= '_' . $this->ID;
         Zero_Session::Rem($index);
     }
-
-    /**
-     * Динамический фабричный метод длиа создании объекта через фабрику и инстанс.
-     */
-    //    protected function Init()
-    //    {
-    //    }
 
     /**
      * Poluchenie identifikatora ob``ekta
@@ -696,6 +689,6 @@ abstract class Zero_Model
             return Zero_DB::Select_Field("SELECT {$params[0]} FROM " . zero_relation($method) . " WHERE ID = " . intval($this->$method));
             //            return self::Make(zero_relation($method), $this->$method, !empty($params[0]));
         }
-        throw new Exception('metod not found: ' . get_class($this) . ' -> ' . $method, -1);
+        throw new Exception('metod not found: ' . get_class($this) . ' -> ' . $method, 409);
     }
 }

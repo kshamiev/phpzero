@@ -151,13 +151,6 @@ class Zero_Options extends Zero_Model
     }
 
     /**
-     * Динамический фабричный метод длиа создании объекта через фабрику и инстанс.
-     */
-    protected function Init()
-    {
-    }
-
-    /**
      * Фабрика по созданию объектов.
      *
      * @param integer $id идентификатор объекта
@@ -172,26 +165,6 @@ class Zero_Options extends Zero_Model
     /**
      * Фабрика по созданию объектов.
      *
-     * Сохраниаетсиа в {$тис->_Инстанcе}
-     *
-     * @param integer $id идентификатор объекта
-     * @param bool $flagLoad флаг полной загрузки объекта
-     * @return Zero_Options
-     */
-    public static function Instance($id = 0, $flagLoad = false)
-    {
-        $index = __CLASS__ . (0 < $id ? '_' . $id : '');
-        if (!isset(self::$Instance[$index])) {
-            $result = self::Make($id, $flagLoad);
-            $result->Init();
-            self::$Instance[$index] = $result;
-        }
-        return self::$Instance[$index];
-    }
-
-    /**
-     * Фабрика по созданию объектов.
-     *
      * Работает через сессию (Zero_Session).
      * Индекс имя класса
      *
@@ -199,12 +172,13 @@ class Zero_Options extends Zero_Model
      * @param bool $flagLoad флаг полной загрузки объекта
      * @return Zero_Options
      */
-    public static function Factor($id = 0, $flagLoad = false)
+    public static function Factory($id = 0, $flagLoad = false)
     {
-        if (!$result = Zero_Session::Get(__CLASS__)) {
+        $index = __CLASS__ . (0 < $id ? '_' . $id : '');
+        if ( !$result = Zero_Session::Get($index) )
+        {
             $result = self::Make($id, $flagLoad);
-            $result->Init();
-            Zero_Session::Set(__CLASS__, $result);
+            Zero_Session::Set($index, $result);
         }
         return $result;
     }

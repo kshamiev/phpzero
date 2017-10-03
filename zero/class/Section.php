@@ -198,17 +198,7 @@ class Zero_Section extends Zero_Model
      *
      * @param string $url
      */
-    public function Load_Url($url)
-    {
-        $this->Init($url);
-    }
-
-    /**
-     * Системная иициализация раздела по запрошенному url
-     *
-     * @param string $url
-     */
-    protected function Init($url = ZERO_URL)
+    public function Load_Url($url = ZERO_URL)
     {
         if ( $this->ID != 0 )
             return;
@@ -293,7 +283,7 @@ class Zero_Section extends Zero_Model
     {
         if ( 0 == $this->ID )
         {
-            throw new Exception('#{MODEL.Zero_Section} parent section not defined', -1);
+            throw new Exception('#{MODEL.Zero_Section} parent section not defined', 409);
         }
         if ( is_null($this->_Navigation_Child) )
         {
@@ -450,27 +440,6 @@ class Zero_Section extends Zero_Model
     /**
      * Фабрика по созданию объектов.
      *
-     * Сохраниаетсиа в {$тис->_Инстанcе}
-     *
-     * @param integer $id идентификатор объекта
-     * @param bool $flagLoad флаг полной загрузки объекта
-     * @return Zero_Section
-     */
-    public static function Instance($id = 0, $flagLoad = false)
-    {
-        $index = __CLASS__ . (0 < $id ? '_' . $id : '');
-        if ( !isset(self::$Instance[$index]) )
-        {
-            $result = self::Make($id, $flagLoad);
-            $result->Init();
-            self::$Instance[$index] = $result;
-        }
-        return self::$Instance[$index];
-    }
-
-    /**
-     * Фабрика по созданию объектов.
-     *
      * Работает через сессию (Zero_Session).
      * Индекс имя класса
      *
@@ -478,13 +447,13 @@ class Zero_Section extends Zero_Model
      * @param bool $flagLoad флаг полной загрузки объекта
      * @return Zero_Section
      */
-    public static function Factor($id = 0, $flagLoad = false)
+    public static function Factory($id = 0, $flagLoad = false)
     {
-        if ( !$result = Zero_Session::Get(__CLASS__) )
+        $index = __CLASS__ . (0 < $id ? '_' . $id : '');
+        if ( !$result = Zero_Session::Get($index) )
         {
             $result = self::Make($id, $flagLoad);
-            $result->Init();
-            Zero_Session::Set(__CLASS__, $result);
+            Zero_Session::Set($index, $result);
         }
         return $result;
     }

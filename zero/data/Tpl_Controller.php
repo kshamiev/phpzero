@@ -158,7 +158,7 @@ class Zero_Controller_Sample extends Zero_Controller
      * @param array $properties vhodny`e parametry` plagina
      * @return Zero_Controller
      */
-    public static function Factor($properties = [])
+    public static function Factory($properties = [])
     {
         if ( !$result = Zero_Session::Get(__CLASS__) )
         {

@@ -8,7 +8,7 @@ require_once ZERO_PATH_LIBRARY . '/PHPMailer/PHPMailerAutoload.php';
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */
-class Helper_Mail_SolSend
+class Helper_Mail_Sol_Send
 {
     /**
      * Отправка очереди почтовых сообщений

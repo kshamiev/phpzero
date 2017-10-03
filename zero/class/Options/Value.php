@@ -7,7 +7,7 @@
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2016.09.27
  */
-class Zero_OptionsValue
+class Zero_Options_Value
 {
     /**
      * Массив содержащий значения опций
