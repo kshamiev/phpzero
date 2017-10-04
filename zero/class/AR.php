@@ -327,7 +327,6 @@ class Zero_AR
      * - Ustanvalivaet postranichnost`
      *
      * @param Zero_Filter $Filter component filter object
-     * @todo переместить в фильтр
      */
     public function Sql_Where_Filter(Zero_Filter $Filter)
     {
