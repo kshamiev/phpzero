@@ -378,7 +378,7 @@ class Zero_Users extends Zero_Model
      */
     public function Load_Token($token)
     {
-        $sql = "SELECT * FROM {$this->Source} WHERE Token = " . Zero_DB::EscT(md5($token));
+        $sql = "SELECT * FROM {$this->Source} WHERE Token = " . Zero_DB::EscT($token);
         $row = Zero_DB::Select_Row($sql);
         $this->Set_Props($row);
     }

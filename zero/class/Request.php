@@ -68,7 +68,7 @@ class Zero_Request
         $headers[] = "Content-Type: application/json; charset=utf-8";
         $headers[] = "Content-Length: " . strlen($content);
         if ( $access['AuthUserToken'] )
-            $headers[] = "AuthUserToken: " . $access['AuthUserToken'];
+            $headers[] = "AuthUserToken: " . md5($access['AuthUserToken']);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         //	АВТОРИЗАЦИЯ МЕТОДОМ APACHE
         if ( $access['ApacheLogin'] && $access['ApachePassword'] )
