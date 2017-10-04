@@ -522,7 +522,12 @@ class Zero_App
             Zero_Cache::InitMemcache(self::$Config->Memcache['Cache']);
 
         //  Session Initialization (Zero_Session)
-        Zero_Session::Init(self::$Config->Site_Token);
+        if ( isset($_SERVER['HTTP_AUTHUSERTOKEN']) )
+            Zero_Session::Init($_SERVER['HTTP_AUTHUSERTOKEN']);
+        else if ( isset($_REQUEST['AuthUserToken']) )
+            Zero_Session::Init($_REQUEST['AuthUserToken']);
+        else
+            Zero_Session::Init(self::$Config->Site_Token);
 
         // Шаблонизатор
         require_once ZERO_PATH_ZERO . '/zero/class/View.php';
@@ -896,7 +901,7 @@ class Zero_App
             $viewLayout->Assign('Content', $view->Fetch());
         }
         // Логирование (в браузер)
-//        if ( self::$Config->Log_Output_Display || isset($codeList[$code]) )
+        //        if ( self::$Config->Log_Output_Display || isset($codeList[$code]) )
         if ( isset($codeList[$code]) )
             self::ResponseHtml($viewLayout->Fetch(), $code);
         else

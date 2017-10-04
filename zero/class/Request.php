@@ -9,7 +9,7 @@
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2017-09-14
  *
- * @method Sample($method, $uri, $content = null, $headers = []) Пример запроса
+ * @method Self($method, $uri, $content = null, $headers = []) Пример запроса
  */
 class Zero_Request
 {
@@ -28,6 +28,16 @@ class Zero_Request
                 Zero_App::$Config->Site_AccessOutside[$key] = $row;
             }
         }
+        $row = [
+            'Name' => 'Запросы на себя',
+            'AccessMethod' => 'Self',
+            'Url' => Zero_App::$Config->Site_Protocol . '://' . Zero_App::$Config->Site_Domain,
+            'ApacheLogin' => Zero_App::$Config->Site_AccessLogin,
+            'ApachePassword' => Zero_App::$Config->Site_AccessPassword,
+            'AuthUserToken' => Zero_App::$Config->Site_Token,
+            'IsDebug' => true,
+        ];
+        Zero_App::$Config->Site_AccessOutside['Self'] = $row;
     }
 
     /**

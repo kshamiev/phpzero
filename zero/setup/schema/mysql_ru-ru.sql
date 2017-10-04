@@ -1,6 +1,6 @@
 /*
 SQLyog Ultimate v12.09 (64 bit)
-MySQL - 5.5.25a-log : Database - nshakirova
+MySQL - 5.5.25a-log : Database - test
 *********************************************************************
 */
 
@@ -18,8 +18,8 @@ DROP TABLE IF EXISTS `AccessOutside`;
 
 CREATE TABLE `AccessOutside` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Идентификатор',
-  `Name` varchar(100) DEFAULT NULL COMMENT 'Название',
-  `AccessMethod` varchar(100) DEFAULT NULL COMMENT 'Метод реализации запроса',
+  `Name` varchar(100) DEFAULT NULL COMMENT 'Комментарий записи',
+  `AccessMethod` varchar(100) DEFAULT NULL COMMENT 'Имя метода в классе',
   `Url` varchar(100) DEFAULT NULL COMMENT 'Урл запроса к ресурсу',
   `ApacheLogin` varchar(100) DEFAULT NULL COMMENT 'Логин (Auth Basic)',
   `ApachePassword` varchar(100) DEFAULT NULL COMMENT 'Пароль (Auth Basic)',
@@ -211,7 +211,7 @@ CREATE TABLE `Users` (
 
 /*Data for the table `Users` */
 
-insert  into `Users`(`ID`,`Groups_ID`,`Users_ID`,`Name`,`Login`,`Password`,`IsAccess`,`Email`,`Phone`,`Skype`,`IsCondition`,`ImgAvatar`,`IsOnline`,`DateOnline`,`Date`,`Address`,`Token`) values (1,2,NULL,'Разработчик','guest','e77989ed21758e78331b20e477fc5582','open','test@test.ru',NULL,NULL,'no',NULL,'yes','2017-10-03 18:14:57',NULL,NULL,NULL);
+insert  into `Users`(`ID`,`Groups_ID`,`Users_ID`,`Name`,`Login`,`Password`,`IsAccess`,`Email`,`Phone`,`Skype`,`IsCondition`,`ImgAvatar`,`IsOnline`,`DateOnline`,`Date`,`Address`,`Token`) values (1,1,NULL,'Разработчик','dev','e77989ed21758e78331b20e477fc5582','open','dev@dev.ru',NULL,NULL,'no',NULL,'no',NULL,'2005-09-01 12:00:00',NULL,NULL);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
