@@ -3,13 +3,14 @@
 /**
  * Запросы к внешним источникам (службам, сервисам)
  *
- * Компонент/ Можно переопределить и расширять
+ * Компонент/ Можно переопределить и расширять.
+ * Путем добавления конфигураций и указания методов ниже в комментрии
  *
  * @package Zero.Component
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2017-09-14
  *
- * @method Self($method, $uri, $content = null, $headers = []) Пример запроса
+ * @method Self($method, $uri, $content = null, $headers = []) Пример запроса (на себя)
  */
 class Zero_Request
 {
@@ -38,6 +39,29 @@ class Zero_Request
             'IsDebug' => true,
         ];
         Zero_App::$Config->Site_AccessOutside['Self'] = $row;
+        $row = [
+            'Name' => 'Нативный запрос (без прав)',
+            'AccessMethod' => 'Native',
+            'Url' => '', // указывается в момент запроса (в самом запросе)
+            'ApacheLogin' => '',
+            'ApachePassword' => '',
+            'AuthUserToken' => '',
+            'IsDebug' => true,
+        ];
+        Zero_App::$Config->Site_AccessOutside['Native'] = $row;
+    }
+
+    /**
+     * Нативный запрос (без прав)
+     *
+     * @param string $method
+     * @param string $url
+     * @param mixed $content
+     * @return Zero_Request_Type
+     */
+    public function Native($method, $url, $content = null)
+    {
+        return $this->request('Native', $method, $url, $content);
     }
 
     /**

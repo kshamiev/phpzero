@@ -25,12 +25,12 @@ class Helper_Mail_Api_Queue extends Zero_Controller
             'Message' => 'Текст или тело сообщения',
         ];
         if ( empty($_REQUEST['Queue']) || empty($_REQUEST['Email']) )
-            Zero_Response::JsonRestful(null, -1, ["Данные не переданы"], 409);
+            Zero_Response::JsonRest(null, -1, ["Данные не переданы"], 409);
 
         $res = Helper_Mail::Queuing($_REQUEST['Queue']['Name'], $_REQUEST['Queue']['Description'], $_REQUEST['Email'], Helper_Mail::SendMessage);
         if ( 0 < $res )
-            Zero_Response::JsonRestful();
+            Zero_Response::JsonRest();
         else
-            Zero_Response::JsonRestful($res, -1, ["Ошибка постановки письма в очередь"], 409);
+            Zero_Response::JsonRest($res, -1, ["Ошибка постановки письма в очередь"], 409);
     }
 }

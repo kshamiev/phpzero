@@ -393,8 +393,6 @@ class Zero_Users extends Zero_Model
     public static function Make($id = 0, $flagLoad = false)
     {
         $obj = new self($id, $flagLoad);
-        $obj->Groups_ID = 2;
-        $obj->Login = 'guest';
         return $obj;
     }
 
@@ -414,6 +412,8 @@ class Zero_Users extends Zero_Model
         if ( !$result = Zero_Session::Get($index) )
         {
             $result = self::Make($id, $flagLoad);
+            $result->Groups_ID = 2;
+            $result->Login = 'guest';
             Zero_Session::Set($index, $result);
         }
         return $result;

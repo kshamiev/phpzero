@@ -620,7 +620,7 @@ class Zero_App
                 if ( !method_exists(self::$ControllerAction, 'Action_' . $action) )
                 {
                     if ( 'GET' != $action )
-                        throw new Exception('Контроллер не имеет метода: ' . $action, 409);
+                        throw new Exception("Контроллер '{$route['Controller']}' не имеет метода: " . $action, 409);
                     $action = 'Default';
                 }
 
@@ -745,7 +745,7 @@ class Zero_App
                 if ( !method_exists(self::$ControllerAction, 'Action_' . $action) )
                 {
                     if ( 'GET' != $action )
-                        throw new Exception('Контроллер не имеет метода: ' . $action, 409);
+                        throw new Exception('Контроллер \'' . self::$Controller->Controller . '\' не имеет метода: ' . $action, 409);
                     $action = 'Default';
                 }
 
@@ -799,9 +799,7 @@ class Zero_App
      */
     public static function ResponseRedirect($url)
     {
-        header('HTTP/1.1 301 Redirect');
-        header('Location: ' . $url);
-        exit;
+        Zero_Response::Redirect($url);
     }
 
     /**

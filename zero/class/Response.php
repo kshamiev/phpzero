@@ -124,12 +124,12 @@ class Zero_Response
      * @param array $message
      * @param int $status http код ответа
      */
-    public static function JsonRestful($content = null, $code = 0, $message = [], $status = 200)
+    public static function JsonRest($content = null, $code = 0, $message = [], $status = 200)
     {
         $data = [
             'Code' => $code,
             'Message' => Zero_I18n::Message('', $code, $message),
-            'ErrorStatus' => 299 < $status ? true: false,
+            'ErrorStatus' => 299 < $status ? true : false,
         ];
 
         if ( $content )
@@ -162,10 +162,18 @@ class Zero_Response
      *
      * @param string $url
      */
-    public static function ResponseRedirect($url)
+    public static function Redirect($url)
     {
         header('HTTP/1.1 301 Redirect');
         header('Location: ' . $url);
+
+        // закрываем соединение с браузером (работает только под нгинx)
+        if ( function_exists('fastcgi_finish_request') )
+            fastcgi_finish_request();
+
+        // Логирование в файлы
+        if ( Zero_App::$Config->Log_Output_File )
+            Zero_Logs::Output_File();
         exit;
     }
 }

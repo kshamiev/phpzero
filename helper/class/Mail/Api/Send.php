@@ -21,12 +21,12 @@ class Helper_Mail_Api_Send extends Zero_Controller
             'Message' => 'Текст или тело сообщения',
         ];
         if ( empty($_REQUEST['Email']) )
-            Zero_Response::JsonRestful(null, -1, ["Данные не переданы"], 409);
+            Zero_Response::JsonRest(null, -1, ["Данные не переданы"], 409);
 
         $res = Helper_Mail::SendMessage($_REQUEST['Email']);
         if ( 0 < $res )
-            Zero_Response::JsonRestful(null, -1, ["Ошибка отправки письма"], 409);
+            Zero_Response::JsonRest(null, -1, ["Ошибка отправки письма"], 409);
         else
-            Zero_Response::JsonRestful();
+            Zero_Response::JsonRest();
     }
 }
