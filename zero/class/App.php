@@ -212,10 +212,13 @@ class Zero_App
      * @param string $content
      * @param string $basicHttpAccess 'login:passw'
      * @return string
-     * @deprecated Zero_Request
+     * @deprecated Zero_App::$Request
      */
     public static function RequestJson($method, $url, $content = '', $accessBasicHttp = '', $accessUser = '')
     {
+        $request = self::$Request->Native($method, $url, $content);
+        return $request->Body;
+
         $content = json_encode($content, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK);
         $head = "Content-Type: application/json; charset=utf-8\r\n";
         $head .= "Content-Length: " . strlen($content) . "\r\n";
@@ -262,6 +265,7 @@ class Zero_App
      */
     public static function ResponseJson($content, $status = 200)
     {
+        Zero_Response::Json($content, $status);
 
         $content = json_encode($content, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK);
 
@@ -296,6 +300,8 @@ class Zero_App
      */
     public static function ResponseJson200($content = null, $code = 0, $params = [])
     {
+        Zero_Response::JsonRest($content, $code, $params);
+
         $data = [
             'Code' => $code,
             'Message' => Zero_I18n::Message('', $code, $params),
@@ -338,6 +344,8 @@ class Zero_App
      */
     public static function ResponseJson409($content = null, $code = -1, $params = [])
     {
+        Zero_Response::JsonRest($content, $code, $params, 409);
+
         header('Pragma: no-cache');
         header('Last-Modified: ' . date('D, d M Y H:i:s') . 'GMT');
         header('Expires: Mon, 26 Jul 2007 05:00:00 GMT');
@@ -380,6 +388,8 @@ class Zero_App
      */
     public static function ResponseJson500($code = -1, $params = [])
     {
+        Zero_Response::JsonRest(null, $code, $params, 500);
+
         header('Pragma: no-cache');
         header('Last-Modified: ' . date('D, d M Y H:i:s') . 'GMT');
         header('Expires: Mon, 26 Jul 2007 05:00:00 GMT');
@@ -411,9 +421,12 @@ class Zero_App
      * Сборка ответа клиенту
      *
      * @return bool
+     * @deprecated Zero_Response
      */
     public static function ResponseConsole()
     {
+        Zero_Response::Console();
+
         // закрываем соединение с браузером (работает только под нгинx)
         if ( function_exists('fastcgi_finish_request') )
             fastcgi_finish_request();
@@ -430,6 +443,8 @@ class Zero_App
      */
     public static function ResponseImg($path)
     {
+        Zero_Response::Img($path);
+
         header("Content-Type: " . Helper_File::File_Type($path));
         header("Content-Length: " . filesize($path));
         if ( file_exists($path) )
@@ -443,6 +458,8 @@ class Zero_App
      */
     public static function ResponseFile($path)
     {
+        Zero_Response::File($path);
+
         header("Content-Type: " . Helper_File::File_Type($path));
         header("Content-Length: " . filesize($path));
         header('Content-Disposition: attachment; filename = "' . basename($path) . '"');
@@ -807,9 +824,12 @@ class Zero_App
      *
      * @param mixed $content
      * @param int $status
+     * @deprecated Zero_Response
      */
     public static function ResponseHtml($content, $status = 200)
     {
+        Zero_Response::Html($content, $status);
+
         header('Pragma: no-cache');
         header('Last-Modified: ' . date('D, d M Y H:i:s') . 'GMT');
         header('Expires: Mon, 26 Jul 2007 05:00:00 GMT');
