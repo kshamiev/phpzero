@@ -87,13 +87,6 @@ abstract class Zero_Model
     private static $_Config = [];
 
     /**
-     * Spisok modelei` sozdanny`kh v peredelakh odnogo zaprosa
-     *
-     * @var array Zero_Model
-     */
-    protected static $Instance = [];
-
-    /**
      * Konstrutkor classa
      * Initcializatciia identifikatora ob``ekta
      * 0 - novy`i` ob``ekt, ne sokhraneny`i` v BD
