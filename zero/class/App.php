@@ -32,6 +32,10 @@ define('ZERO_PATH_EXCHANGE', ZERO_PATH_SITE . '/exchange');
  */
 define('ZERO_PATH_APPLICATION', ZERO_PATH_SITE . '/application');
 /**
+ * Location applications and modules
+ */
+define('ZERO_PATH_APP', ZERO_PATH_SITE . '/app');
+/**
  * Location System
  */
 define('ZERO_PATH_ZERO', ZERO_PATH_SITE . '/phpzero');
