@@ -90,10 +90,10 @@ class Zero_Response
     /**
      * Выдача контента в формате json
      *
-     * @param mixed $content данные
+     * @param array $content данные
      * @param int $status http код ответа
      */
-    public static function Json($content, $status = 200)
+    public static function Json($content = null, $status = 200)
     {
         $content = json_encode($content, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK);
         header('Pragma: no-cache');
@@ -119,7 +119,7 @@ class Zero_Response
     /**
      * Выдача структурного контента в формате json
      *
-     * @param mixed $content данные
+     * @param array $content данные
      * @param int $code внутренний код ответа приложения
      * @param array $message
      * @param int $status http код ответа
@@ -131,7 +131,6 @@ class Zero_Response
             'Message' => Zero_I18n::Message('', $code, $message),
             'ErrorStatus' => 299 < $status ? true : false,
         ];
-
         if ( $content )
             $data['Content'] = $content;
 

@@ -83,7 +83,7 @@ class Zero_Request
 
         $ch = curl_init($access['Url'] . $uri);
         //	время работы
-        curl_setopt($ch, CURLOPT_TIMEOUT, 10);          //	полное время сеанса
+        curl_setopt($ch, CURLOPT_TIMEOUT, 600);          //	полное время сеанса
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);    //	время ожидания соединения в секундах
         //	Передаем и возвращаем Заголовки и тело страницы
         curl_setopt($ch, CURLOPT_HEADER, 0);
