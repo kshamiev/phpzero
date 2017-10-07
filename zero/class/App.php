@@ -139,24 +139,6 @@ class Zero_App
         $arr = explode('_', $class_name);
         $module = strtolower(array_shift($arr));
         $class = implode('/', $arr);
-        //
-        foreach (['class', 'api', 'sol'] as $folder)
-        {
-            $path = ZERO_PATH_APPLICATION . '/' . $module . '/' . $folder . '/' . $class . '.php';
-            if ( file_exists($path) )
-            {
-                include_once $path;
-                if ( class_exists($class_name) )
-                    return true;
-            }
-            $path = ZERO_PATH_ZERO . '/' . $module . '/' . $folder . '/' . $class . '.php';
-            if ( file_exists($path) )
-            {
-                include_once $path;
-                if ( class_exists($class_name) )
-                    return true;
-            }
-        }
         $path = ZERO_PATH_APPLICATION . '/' . $module . '/class/' . $class . '.php';
         if ( file_exists($path) )
         {
@@ -171,7 +153,7 @@ class Zero_App
             if ( class_exists($class_name) )
                 return true;
         }
-        $path = ZERO_PATH_APPLICATION . '/' . $module . '/' . $class . '.php'; // old
+        $path = ZERO_PATH_APP . '/class/' . str_replace('_', '/', $class_name) . '.php';
         if ( file_exists($path) )
         {
             include_once $path;
@@ -193,7 +175,7 @@ class Zero_App
             if ( class_exists($class_name) )
                 return true;
         }
-        $path = ZERO_PATH_ZERO . '/' . $module . '/' . $class . '.php'; // old
+        $path = ZERO_PATH_ZERO . '/class/' . str_replace('_', '/', $class_name) . '.php';
         if ( file_exists($path) )
         {
             include_once $path;

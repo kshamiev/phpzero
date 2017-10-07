@@ -84,7 +84,7 @@ class Zero_View
      */
     public function __construct($template = '')
     {
-        if ( '' != $template )
+        if ('' != $template)
             $this->_Template[$template] = $template;
     }
 
@@ -107,7 +107,7 @@ class Zero_View
      */
     public function Delete($template = '')
     {
-        if ( '' != $template )
+        if ('' != $template)
             unset($this->_Template[$template]);
         else
             $this->_Template = [];
@@ -151,9 +151,9 @@ class Zero_View
      */
     public function Receive($variable = '')
     {
-        if ( isset($this->_Data[$variable]) )
+        if (isset($this->_Data[$variable]))
             return $this->_Data[$variable];
-        else if ( '' == $variable )
+        else if ('' == $variable)
             return $this->_Data;
         else
             return null;
@@ -171,27 +171,23 @@ class Zero_View
      */
     public function Fetch()
     {
-        if ( 0 == count($this->_Template) )
+        if (0 == count($this->_Template))
             return '';
 
         $arr = [];
-        foreach ($this->_Template as $template)
-        {
+        foreach ($this->_Template as $template) {
             $arr = self::Search_Template($template);
-            if ( 0 < count($arr) )
-            {
-                if ( true == Zero_App::$Config->Site_TemplateParsing || !file_exists($arr[1]) )
+            if (0 < count($arr)) {
+                if (true == Zero_App::$Config->Site_TemplateParsing || !file_exists($arr[1]))
                     Helper_File::File_Save($arr[1], $this->_Parsing(file_get_contents($arr[0])));
                 break;
             }
         }
-        if ( 0 == count($arr) )
-        {
+        if (0 == count($arr)) {
             Zero_Logs::Set_Message_Error('NOT FOUND view [' . implode(', ', $this->_Template) . ']');
             return '';
         }
-        if ( Zero_App::$Config->Site_TemplateParsing )
-        {
+        if (Zero_App::$Config->Site_TemplateParsing) {
             $this->_Data['__'] = $this->_Data;
             $this->_Data['_'] = array_keys($this->_Data);
         }
@@ -214,27 +210,19 @@ class Zero_View
      */
     public function Fetch_Php()
     {
-        if ( 0 == count($this->_Template) )
+        if (0 == count($this->_Template))
             return '';
 
         $path = [];
-        foreach ($this->_Template as $template)
-        {
+        foreach ($this->_Template as $template) {
             $path = self::Search_Template_Extension($template, '.php');
-            if ( $path )
-            {
+            if ($path) {
                 break;
             }
         }
-        if ( !$path )
-        {
+        if (!$path) {
             Zero_Logs::Set_Message_Error('NOT FOUND view [' . implode(', ', $this->_Template) . ']');
             return '';
-        }
-        if ( Zero_App::$Config->Site_TemplateParsing )
-        {
-            $this->_Data['__'] = $this->_Data;
-            $this->_Data['_'] = array_keys($this->_Data);
         }
         extract($this->_Data);
         $this->_Data = [];
@@ -259,15 +247,23 @@ class Zero_View
         $module = strtolower(array_shift($arr));
         //
         $path = ZERO_PATH_APPLICATION . '/' . $module . '/view/' . implode('/', $arr) . self::EXT_VIEW;
-        if ( file_exists($path) )
-        {
+        if (file_exists($path)) {
             return [$path, ZERO_PATH_CACHE . '/view/' . $module . '/' . implode('/', $arr) . '_' . ZERO_LANG . '.tpl'];
         }
         //
+        $path = ZERO_PATH_APP . '/view/' . str_replace('_', '/', $template) . self::EXT_VIEW;
+        if (file_exists($path)) {
+            return [$path, ZERO_PATH_CACHE . '/view/' . str_replace('_', '/', $template) . '_' . ZERO_LANG . '.tpl'];
+        }
+        //
         $path = ZERO_PATH_ZERO . '/' . $module . '/view/' . implode('/', $arr) . self::EXT_VIEW;
-        if ( file_exists($path) )
-        {
+        if (file_exists($path)) {
             return [$path, ZERO_PATH_CACHE . '/view/' . $module . '/' . implode('/', $arr) . '_' . ZERO_LANG . '.tpl'];
+        }
+        //
+        $path = ZERO_PATH_ZERO . '/view/' . str_replace('_', '/', $template) . self::EXT_VIEW;
+        if (file_exists($path)) {
+            return [$path, ZERO_PATH_CACHE . '/view/' . str_replace('_', '/', $template) . '_' . ZERO_LANG . '.tpl'];
         }
         return [];
     }
@@ -290,14 +286,22 @@ class Zero_View
         $module = strtolower(array_shift($arr));
         //
         $path = ZERO_PATH_APPLICATION . '/' . $module . '/view/' . implode('/', $arr) . $extension;
-        if ( file_exists($path) )
-        {
+        if (file_exists($path)) {
+            return $path;
+        }
+        //
+        $path = ZERO_PATH_APP . '/view/' . str_replace('_', '/', $template) . $extension;
+        if (file_exists($path)) {
             return $path;
         }
         //
         $path = ZERO_PATH_ZERO . '/' . $module . '/view/' . implode('/', $arr) . $extension;
-        if ( file_exists($path) )
-        {
+        if (file_exists($path)) {
+            return $path;
+        }
+        //
+        $path = ZERO_PATH_ZERO . '/view/' . str_replace('_', '/', $template) . $extension;
+        if (file_exists($path)) {
             return $path;
         }
         return '';
@@ -332,8 +336,7 @@ class Zero_View
 
         // Literal
         preg_match_all("~{literal}(.+?){/literal}~si", $template, $match);
-        foreach($match[0] as $key => $val)
-        {
+        foreach ($match[0] as $key => $val) {
             $template = str_replace($val, "<LITERAL{$key}LITERAL>", $template);
         }
 
@@ -343,8 +346,7 @@ class Zero_View
         $template = preg_replace('~{([a-z]{1}[^}]{0,150})}~si', '<' . '?php echo $1; ?' . '>', $template);
 
         // Literal
-        foreach($match[1] as $key => $val)
-        {
+        foreach ($match[1] as $key => $val) {
             $template = str_replace("<LITERAL{$key}LITERAL>", trim($val), $template);
         }
 
@@ -366,10 +368,9 @@ class Zero_View
     private function _Parsing_Include($matches)
     {
         $arr = self::Search_Template($matches[1]);
-        if ( 0 < count($arr) )
+        if (0 < count($arr))
             $matches = file_get_contents($arr[0]);
-        else
-        {
+        else {
             $matches = '';
             Zero_Logs::Set_Message_Error('NOT FOUND view [Include] [' . $matches[1] . ']');
         }
@@ -403,8 +404,7 @@ class Zero_View
     {
         $plugin_name = $matches[1];
         $properties = isset($matches[2]) ? trim($matches[2]) : '';
-        if ( $properties )
-        {
+        if ($properties) {
             //            $properties = preg_replace('!([\w\d_]+)\s*=\s*!si', ',' . "\n" . '"\\1" => ', $properties);
             $properties = preg_replace('!([\w\d_]+)\s*=\s*!si', ',' . '"\\1" => ', $properties);
             $properties = trim($properties, ',');
@@ -426,8 +426,7 @@ class Zero_View
         /* @var $Controller Zero_Controller */
         Zero_Logs::Start('#{PLUGIN} ' . $plugin_name . ' -> Action_Default');
         $view = $Controller->Action_Default();
-        if ( $view instanceof Zero_View )
-        {
+        if ($view instanceof Zero_View) {
             $view = $view->Fetch();
         }
         Zero_Logs::Stop('#{PLUGIN} ' . $plugin_name . ' -> Action_Default');
