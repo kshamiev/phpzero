@@ -1,0 +1,86 @@
+<h1>{$Section->Name}</h1>
+
+<table width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tr>
+        <td height="26px">
+            {foreach ($Interface as $row)}
+            <input class="btn" type="button" value="{$row['Name']}" onclick="button_form('formpanel', '{$row['Url']}', '', 0);">
+            {/foreach}
+            &nbsp;
+        </td>
+    </tr>
+</table>
+
+{if ( isset($Action['EngineModulesDB']) )}
+<br>
+<table class="tbledit" width="100%" cellspacing="1" cellpadding="0" border="0">
+    <th colspan="3">{translation "Zero_System" "engine"}</th>
+    <form method="post">
+        <input type="hidden" name="act">
+        <tr>
+            <td width="50" align="center">
+                <input type="image" src="/phpzero/assets/img/button/button_hammer.gif" onclick="button_form(this.form, '{URL}', 'EngineModulesDB', 0);">
+            </td>
+            <td width="500">
+                <select class="field" name="connectDb">
+                    <option value="">{translation "Zero" "Not selected"}</option>
+                    {foreach ($modules_db as $name)}
+                    <option value="{$name}">{$name}</option>
+                    {/foreach}
+                </select><br><br>
+                <input type="checkbox" name="flag_gird" value="1">&nbsp;Controller - Grid<br>
+                <input type="checkbox" name="flag_edit" value="1">&nbsp;Controller - Edit<br>
+            </td>
+            <td>
+                {translation "Zero_System" "model factory"}
+            </td>
+        </tr>
+    </form>
+</table>
+{/if}
+{if ( isset($Action['CacheReset']) )}
+<br>
+<table class="tbllist" width="100%" cellspacing="1" cellpadding="0" border="0">
+    <form method="post">
+        <input type="hidden" name="act">
+        <tr>
+            <td width="50" align="center">
+                <input type="image" src="/phpzero/assets/img/button/button_hammer.gif" onclick="button_form(this.form, '{URL}', 'CacheReset', 0);">
+            </td>
+            <td>
+                {translation "Zero_System" "controller Zero_System_GridService action Cache_Reset"}<br>
+            </td>
+        </tr>
+    </form>
+</table>
+{/if}
+{if ( isset($Action['SessionReset']) )}
+<br>
+<table class="tbllist" width="100%" cellspacing="1" cellpadding="0" border="0">
+    <form method="post">
+        <input type="hidden" name="act">
+        <tr>
+            <td width="50" align="center">
+                <input type="image" src="/phpzero/assets/img/button/button_hammer.gif" onclick="button_form(this.form, '{URL}', 'SessionReset', 0);">
+            </td>
+            <td>
+                {translation "Zero_System" "controller Zero_System_GridService action Session_Reset"}<br>
+            </td>
+        </tr>
+    </form>
+</table>
+{/if}
+
+<table width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tr>
+        <td height="26px">
+            {foreach ($Interface as $row)}
+            <input class="btn" type="button" value="{$row['Name']}" onclick="button_form('formpanel', '{$row['Url']}', '', 0);">
+            {/foreach}
+            &nbsp;
+        </td>
+    </tr>
+</table>
+<form id="formpanel" method="post">
+    <input type="hidden" name="act">
+</form>
