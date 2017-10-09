@@ -468,9 +468,9 @@ class Zero_App
      * - Processing incoming request (GET). Component Zero_Route
      * - Session Initialization. Component Zero_Session
      *
-     * @param string $configSuf суффикс конфигурационного файла
+     * @param string $suffix суффикс
      */
-    public static function Init($configSuf = '')
+    public static function Init($suffix = '')
     {
         // Если инициализация уже произведена
         if ( !is_null(self::$Config) )
@@ -493,25 +493,25 @@ class Zero_App
         // register_shutdown_function(['Zero_App', 'Exit_Application']);
 
         //  Configuration
-        self::$Config = new Zero_Config($configSuf);
+        self::$Config = new Zero_Config();
 
         // Инициализация роутинга, входных данных и логирования
         if ( empty($_SERVER['REQUEST_URI']) )
         {
-            Zero_Logs::Init(ZERO_PATH_LOG . '/console');
+            Zero_Logs::Init(ZERO_PATH_LOG . '/console' . $suffix);
             self::$mode = 'Console';
         }
         else if ( preg_match("~^/(api|json)/~si", $_SERVER['REQUEST_URI']) )
         {
             app_route();
             app_request_data_api();
-            Zero_Logs::Init(ZERO_PATH_LOG . '/api');
+            Zero_Logs::Init(ZERO_PATH_LOG . '/api' . $suffix);
             self::$mode = 'Api';
         }
         else
         {
             app_route();
-            Zero_Logs::Init(ZERO_PATH_LOG . '/web');
+            Zero_Logs::Init(ZERO_PATH_LOG . '/web' . $suffix);
             self::$mode = 'Web';
         }
 

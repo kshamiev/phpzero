@@ -306,11 +306,11 @@ class Zero_Config
     /**
      * Configuration
      */
-    public function __construct($configSuf)
+    public function __construct()
     {
-        if ( !file_exists($path = ZERO_PATH_SITE . "/config{$configSuf}.php") )
-            if ( !file_exists($path = ZERO_PATH_APPLICATION . "/config{$configSuf}.php") )
-                if ( !file_exists($path = ZERO_PATH_APP . "/config{$configSuf}.php") )
+        if ( !file_exists($path = ZERO_PATH_SITE . "/config.php") )
+            if ( !file_exists($path = ZERO_PATH_APPLICATION . "/config.php") )
+                if ( !file_exists($path = ZERO_PATH_APP . "/config.php") )
                     die('Конфигурационный файл не найден: ' . $path);
 
         $Config = require $path;
