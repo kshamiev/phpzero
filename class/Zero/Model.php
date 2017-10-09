@@ -646,7 +646,7 @@ abstract class Zero_Model
             $this->_Props[$prop] = $value;
             $this->_Props_Change[$prop] = -1;
         }
-        else if ( $this->_Props[$prop] != $value )
+        else if ( isset($this->_Props[$prop]) && $this->_Props[$prop] != $value )
         {
             if ( $this->_Props[$prop] || $value )
             {
