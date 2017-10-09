@@ -6,7 +6,7 @@ CMF phpzero
 developer version
 
 
-Zero_Controller::Factory(
-Factor(  ::Factor(
+Factor(
+ Init(
 ->Init(
-::Instance(
+Instance(

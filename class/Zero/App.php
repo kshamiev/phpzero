@@ -206,7 +206,7 @@ class Zero_App
      */
     public static function RequestJson($method, $url, $content = '', $accessBasicHttp = '', $accessUser = '')
     {
-        $request = self::$Request->Native($method, $url, $content);
+        $request = self::$Request->Simple($method, $url, $content);
         return $request->Body;
 
         $content = json_encode($content, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK);

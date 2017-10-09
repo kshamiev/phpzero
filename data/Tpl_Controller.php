@@ -21,7 +21,7 @@ class Zero_Controller_Sample extends Zero_Controller
     {
         $this->Chunk_Init();
         $this->Chunk_View();
-        return $this->View;
+        return $this->View->Fetch();
     }
 
     //// Пример консольного контроллера
@@ -49,58 +49,46 @@ class Zero_Controller_Sample extends Zero_Controller
      * Какой-то контроллер
      *
      * @sample /api/v1/sample?param=value...
-     *
-     * @return boolean flag статус выполнения
      */
     public function Action_GET()
     {
-        Zero_App::ResponseJson200($_REQUEST, 0, []);
-        return true;
+        Zero_Response::JsonRest($_REQUEST);
     }
 
     /**
      * Какой-то контроллер
      *
      * @sample /api/v1/sample?param=value...
-     *
-     * @return boolean flag статус выполнения
      */
     public function Action_PUT()
     {
-        Zero_App::ResponseJson200($_REQUEST, 0, []);
-        return true;
+        Zero_Response::JsonRest($_REQUEST);
     }
 
     /**
      * Какой-то контроллер
      *
      * @sample /api/v1/sample?param=value...
-     *
-     * @return boolean flag статус выполнения
      */
     public function Action_POST()
     {
-        Zero_App::ResponseJson200($_REQUEST, 0, []);
-        return true;
+        Zero_Response::JsonRest($_REQUEST);
     }
 
     /**
      * Какой-то контроллер
      *
      * @sample /api/v1/sample?param=value...
-     *
-     * @return boolean flag статус выполнения
      */
     public function Action_DELETE()
     {
-        Zero_App::ResponseJson200($_REQUEST, 0, []);
-        return true;
+        Zero_Response::JsonRest($_REQUEST);
     }
 
     /**
      * Опции запроса
      *
-     * @return boolean flag статус выполнения
+     * @sample /api/v1/sample?param=value...
      */
     public function Action_OPTIONS()
     {
@@ -113,22 +101,22 @@ class Zero_Controller_Sample extends Zero_Controller
         {
             case 'get':
                 $response = [];
-                Zero_App::ResponseJson200($response, 0, ['?']);
+                Zero_Response::JsonRest($response);
                 break;
             case 'post':
                 $response = [];
-                Zero_App::ResponseJson200($response, 0, ['?']);
+                Zero_Response::JsonRest($response);
                 break;
             case 'put':
                 $response = [];
-                Zero_App::ResponseJson200($response, 0, ['?']);
+                Zero_Response::JsonRest($response);
                 break;
             case 'delete':
                 $response = [];
-                Zero_App::ResponseJson200($response, 0, ['?']);
+                Zero_Response::JsonRest($response);
                 break;
             default:
-                Zero_App::ResponseJson200('метод не реализован');
+                Zero_Response::JsonRest('метод не реализован');
                 break;
         }
         return true;
