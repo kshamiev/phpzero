@@ -147,7 +147,7 @@ class Zero_Config
      *
      * @var array
      */
-    public $Site_AccessOutside = [];
+    public $AccessOutside = [];
 
     /**
      * Access for DB (Mysql)
@@ -398,8 +398,8 @@ class Zero_Config
         if ( isset($Config['Site']['AccessAllowIp']) && is_array($Config['Site']['AccessAllowIp']) )
             $this->Site_AccessAllowIp = array_keys($Config['Site']['AccessAllowIp']);
         // Реквизиты доступа к внешним источникам
-        if ( isset($Config['Site']['AccessOutside']) && is_array($Config['Site']['AccessOutside']) )
-            $this->Site_AccessOutside = array_keys($Config['Site']['AccessOutside']);
+        if ( isset($Config['AccessOutside']) && is_array($Config['AccessOutside']) )
+            $this->AccessOutside = $Config['AccessOutside'];
 
         // Access for DB (Mysql)
         $this->Db = $Config['Db'];

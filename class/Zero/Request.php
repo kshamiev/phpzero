@@ -10,7 +10,8 @@
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2017-09-14
  *
- * @method Sample($method, $uri, $content = null, $headers = []) Пример запроса
+ * @method Simple($method, $urn, $content = null, $headers = []) Прямые запросы без конфигурации
+ * @method Sample($method, $uri, $content = null, $headers = []) Пример запроса с реквизитами доступа
  */
 class Zero_Request
 {
@@ -26,32 +27,9 @@ class Zero_Request
             $sql = "SELECT AccessMethod, `Name`, Url, ApacheLogin, ApachePassword, AuthUserToken, IsDebug FROM AccessOutside";
             foreach (Zero_DB::Select_Array_Index($sql) as $key => $row)
             {
-                Zero_App::$Config->Site_AccessOutside[$key] = $row;
+                Zero_App::$Config->AccessOutside[$key] = $row;
             }
         }
-        $row = [
-            'Name' => 'Нативный запрос (без прав)',
-            'AccessMethod' => 'Simple',
-            'Url' => '', // указывается в момент запроса (в самом запросе)
-            'ApacheLogin' => '',
-            'ApachePassword' => '',
-            'AuthUserToken' => '',
-            'IsDebug' => true,
-        ];
-        Zero_App::$Config->Site_AccessOutside['Simple'] = $row;
-    }
-
-    /**
-     * Нативный запрос (без прав)
-     *
-     * @param string $method
-     * @param string $url
-     * @param mixed $content
-     * @return Zero_Request_Type
-     */
-    public function Simple($method, $url, $content = null)
-    {
-        return $this->request('Simple', $method, $url, $content);
     }
 
     /**
@@ -66,12 +44,12 @@ class Zero_Request
      */
     private function request($access, $method, $uri, $content = null, $headers = [])
     {
-        if ( empty(Zero_App::$Config->Site_AccessOutside[$access]) )
+        if ( empty(Zero_App::$Config->AccessOutside[$access]) )
         {
             Zero_Logs::Set_Message_ErrorTrace("Реквизиты метода {$access} для запросов не определены");
             return new Zero_Request_Type;
         }
-        $access = Zero_App::$Config->Site_AccessOutside[$access];
+        $access = Zero_App::$Config->AccessOutside[$access];
 
         // $content = json_encode($content, JSON_PRESERVE_ZERO_FRACTION);
         $content = json_encode($content, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK);
