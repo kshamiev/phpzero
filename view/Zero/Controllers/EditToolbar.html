@@ -1,0 +1,6 @@
+{if ( isset($Action['Run']) && $Model->Typ == 'Console' )}
+<input class="btn" type="button" value="{$Action['Run']['Name']}" onclick="button_form('formpanel', '{URL}', 'Run', 1);">
+{/if}
+{if ( $Model->Typ == 'Api' || $Model->Typ == 'Web' )}
+<input class="btn" type="button" value="права" onclick="location.href='{URL}/access?pid={$Model->ID}';">
+{/if}

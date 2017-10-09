@@ -1,0 +1,24 @@
+<h1>{$Section->Name}</h1>
+<form method="post">
+    <input type="hidden" name="act">
+    <input class="btn" type="button" value="сохранить" onclick="button_form(this.form, '{URL}', 'Save', 0);">
+    <table class="tbledit" width="100%" cellspacing="1" cellpadding="0" border="0">
+        <tr>
+            <th>Группы</th>
+            <th>Доступ разрешен</th>
+        </tr>
+        {foreach ($groups as $grId => $grName)}
+        <tr>
+            <td width="80" align="center">{$grName}</td>
+            <td align="center">
+                {if ( isset($access[$grId]['Default']) )}
+                <input type="checkbox" name="access[{$grId}][]" value="Default" checked>
+                {else}
+                <input type="checkbox" name="access[{$grId}][]" value="Default">
+                {/if}
+            </td>
+        </tr>
+        {/foreach}
+    </table>
+    <input class="btn" type="button" value="сохранить" onclick="button_form(this.form, '{URL}', 'Save', 0);">
+</form>

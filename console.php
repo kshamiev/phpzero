@@ -6,7 +6,7 @@
  */
 
 //  Connecting application
-require_once __DIR__ . '/zero/class/App.php';
+require_once __DIR__ . '/class/Zero/App.php';
 Zero_App::Init();
 
 //  Work console task
@@ -85,4 +85,4 @@ else //  Launch Manager console task
     }
 }
 
-Zero_App::ResponseConsole();
+Zero_Response::Console();
