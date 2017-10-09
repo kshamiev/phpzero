@@ -1,5 +1,10 @@
 <?php
 /**
+ * Константы приложения
+ */
+define("SAMPLE", "SAMPLE");
+
+/**
  * The basic configuration of the all application.
  *
  * @package Config
@@ -42,8 +47,27 @@ return [
         'MaintenanceIp' => '',
         // Список разрешенных ip адресов для запросов
         'AccessAllowIp' => [],
-        // Реквизиты доступа к внешним источникам SEE Zero_Request
-        'AccessOutside' => [],
+    ],
+    // Реквизиты доступа к внешним источникам SEE Zero_Request
+    'AccessOutside' => [
+        'Simple' => [
+            'Name' => 'Прямые запросы без конфигурации',
+            'AccessMethod' => 'Simple',
+            'Url' => '',
+            'ApacheLogin' => '',
+            'ApachePassword' => '',
+            'AuthUserToken' => '',
+            'IsDebug' => true,
+        ],
+        'Sample' => [
+            'Name' => 'Пример запроса с реквизитами доступа',
+            'AccessMethod' => 'Sample',
+            'Url' => 'http://domain.ru',
+            'ApacheLogin' => 'login',
+            'ApachePassword' => 'xxxxxxx',
+            'AuthUserToken' => 'xxxxxxx',
+            'IsDebug' => true,
+        ],
     ],
     //  Access for DB (Mysql)
     'Db' => [
