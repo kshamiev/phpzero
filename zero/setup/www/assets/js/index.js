@@ -1,7 +1,7 @@
 //  обработка кнопок
 function button_form(f, Url, Action, flag) {
     if (0 < flag)
-        if (false == confirm('вы действительно хотите сделать это!'))
+        if (false == confirm('вы действительно хотите сделать это?'))
             return false;
     if (typeof f == 'string')
         f = document.getElementById(f);
@@ -14,7 +14,7 @@ function button_form(f, Url, Action, flag) {
 //  обработка кнопок с параметром операций
 function button_form_obj_id(f, Url, Action, obj_id, flag) {
     if (0 < flag)
-        if (false == confirm('вы действительно хотите сделать это!'))
+        if (false == confirm('вы действительно хотите сделать это?'))
             return false;
     if (typeof f == 'string')
         f = document.getElementById(f);
