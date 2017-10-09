@@ -6,8 +6,6 @@ define("SAMPLE", "SAMPLE");
 
 /**
  * The basic configuration of the all application.
- *
- * @package Config
  */
 return [
     //  site settings
@@ -43,8 +41,8 @@ return [
         'Token' => 'i09u9Maf6l6sr7Um0m8A3u0r9i55m3il',
         // Timezone
         'TimeZone' => 'Europe/Moscow',
-        // Maintenance ip access (list ip separator ',')
-        'MaintenanceIp' => '',
+        // Maintenance ip access (для всех остальных будет показана страница заглушка)
+        'MaintenanceIp' => [],
         // Список разрешенных ip адресов для запросов
         'AccessAllowIp' => [],
     ],
