@@ -1,5 +1,10 @@
 <?php
 /**
+ * Константы приложения
+ */
+define("SAMPLE", "SAMPLE");
+
+/**
  * The basic configuration of the all application.
  *
  * @package Config
