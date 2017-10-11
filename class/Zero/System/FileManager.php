@@ -18,7 +18,7 @@ class Zero_System_FileManager extends Zero_Controller
     {
         $this->Chunk_Init();
         $this->Chunk_View();
-        return $this->View;
+        return $this->View->Fetch();
     }
 
     /**
@@ -82,7 +82,7 @@ class Zero_System_FileManager extends Zero_Controller
         $this->Chunk_Init();
         $this->Chunk_FolderGo();
         $this->Chunk_View();
-        return $this->View;
+        return $this->View->Fetch();
     }
 
     /**
@@ -117,7 +117,7 @@ class Zero_System_FileManager extends Zero_Controller
         $this->Chunk_Init();
         $this->Chunk_FolderRemove();
         $this->Chunk_View();
-        return $this->View;
+        return $this->View->Fetch();
     }
 
     /**
@@ -139,7 +139,7 @@ class Zero_System_FileManager extends Zero_Controller
         $this->Chunk_Init();
         $this->Chunk_FileRemove();
         $this->Chunk_View();
-        return $this->View;
+        return $this->View->Fetch();
     }
 
     /**
@@ -161,7 +161,7 @@ class Zero_System_FileManager extends Zero_Controller
         $this->Chunk_Init();
         $this->Chunk_FileDownLoad();
         $this->Chunk_View();
-        return $this->View;
+        return $this->View->Fetch();
     }
 
     /**
@@ -177,7 +177,7 @@ class Zero_System_FileManager extends Zero_Controller
         $this->Chunk_Init();
         $this->Chunk_FileUpload();
         $this->Chunk_View();
-        return $this->View;
+        return $this->View->Fetch();
     }
 
     /**
@@ -209,7 +209,7 @@ class Zero_System_FileManager extends Zero_Controller
         $this->Chunk_Init();
         $this->Chunk_FolderAdd();
         $this->Chunk_View();
-        return $this->View;
+        return $this->View->Fetch();
     }
 
     /**
@@ -234,6 +234,6 @@ class Zero_System_FileManager extends Zero_Controller
      */
     public function Action_EditFile()
     {
-        return $this->View;
+        return $this->View->Fetch();
     }
 }

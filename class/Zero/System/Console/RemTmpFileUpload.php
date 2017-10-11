@@ -20,5 +20,6 @@ class Zero_System_Console_RemTmpFileUpload extends Zero_Controller
             if ( 60 < $timeOutMinute )
                 unlink($file);
         }
+        return 0;
      }
 }

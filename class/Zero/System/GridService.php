@@ -12,7 +12,7 @@ class Zero_System_GridService extends Zero_Controller
     {
         $this->Chunk_Init();
         $this->Chunk_View();
-        return $this->View;
+        return $this->View->Fetch();
     }
 
     /**
@@ -45,7 +45,7 @@ class Zero_System_GridService extends Zero_Controller
         $this->Chunk_Init();
         $this->Chunk_EngineModulesDB();
         $this->Chunk_View();
-        return $this->View;
+        return $this->View->Fetch();
     }
 
     /**
@@ -72,7 +72,7 @@ class Zero_System_GridService extends Zero_Controller
         $this->Chunk_Init();
         $this->Chunk_View();
         $this->Chunk_CacheReset();
-        return $this->View;
+        return $this->View->Fetch();
     }
 
     /**
@@ -91,7 +91,7 @@ class Zero_System_GridService extends Zero_Controller
         $this->Chunk_Init();
         $this->Chunk_SessionReset();
         $this->Chunk_View();
-        return $this->View;
+        return $this->View->Fetch();
     }
 
     /**

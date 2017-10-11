@@ -35,7 +35,7 @@ class Zero_Section_Plugin_NavigationChild extends Zero_Controller
         $this->Chunk_Init();
         $this->View->Assign('Section', Zero_App::$Section);
         $this->View->Assign('navigation', $navigation);
-        return $this->View;
+        return $this->View->Fetch();
     }
 
     /**

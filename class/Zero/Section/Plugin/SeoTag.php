@@ -36,7 +36,7 @@ class Zero_Section_Plugin_SeoTag extends Zero_Controller
         {
             $this->View->Assign('seo_index', '');
         }
-        return $this->View;
+        return $this->View->Fetch();
     }
 
     /**

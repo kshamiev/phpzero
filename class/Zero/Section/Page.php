@@ -19,6 +19,6 @@ class Zero_Section_Page extends Zero_Controller
         $this->View = new Zero_View(get_class($this));
         $this->View->Assign('Name', Zero_App::$Section->Name);
         $this->View->Assign('Content', Zero_App::$Section->Content);
-        return $this->View;
+        return $this->View->Fetch();
     }
 }

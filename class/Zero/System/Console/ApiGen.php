@@ -29,5 +29,6 @@ class Zero_System_Console_ApiGen extends Zero_Controller
         $command .= ' --title="'. Zero_App::$Config->Site_Name. '" --access-levels="public" --groups="packages" --todo --deprecated --download';
         //
         exec($command);
+        return 0;
      }
 }

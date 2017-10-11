@@ -42,7 +42,7 @@ class Zero_Section_Plugin_NavigationLine extends Zero_Controller
         }
         $this->Chunk_Init();
         $this->View->Assign('navigation', $navigation);
-        return $this->View;
+        return $this->View->Fetch();
     }
 
     /**

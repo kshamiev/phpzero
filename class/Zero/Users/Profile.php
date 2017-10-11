@@ -28,7 +28,7 @@ class Zero_Users_Profile extends Zero_Controller
     {
         $this->Chunk_Init();
         $this->Chunk_View();
-        return $this->View;
+        return $this->View->Fetch();
     }
 
     /**
@@ -41,7 +41,7 @@ class Zero_Users_Profile extends Zero_Controller
         $this->Chunk_Init();
         $this->Chunk_Profile();
         $this->Chunk_View();
-        return $this->View;
+        return $this->View->Fetch();
     }
 
     /**

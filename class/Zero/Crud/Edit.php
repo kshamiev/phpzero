@@ -32,7 +32,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
     {
         $this->Chunk_Init();
         $this->Chunk_View();
-        return $this->View;
+        return $this->View->Fetch();
     }
 
     /**
@@ -45,7 +45,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         $this->Chunk_Init();
         $this->Chunk_Add();
         $this->Chunk_View();
-        return $this->View;
+        return $this->View->Fetch();
     }
 
     /**
@@ -58,7 +58,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         $this->Chunk_Init();
         $this->Chunk_Save();
         $this->Chunk_View();
-        return $this->View;
+        return $this->View->Fetch();
     }
 
     /**

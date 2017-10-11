@@ -25,7 +25,7 @@ class Zero_Controllers_Access extends Zero_Controller
     {
         $this->Chunk_Init();
         $this->Chunk_View();
-        return $this->View;
+        return $this->View->Fetch();
     }
 
     /**
@@ -51,7 +51,7 @@ class Zero_Controllers_Access extends Zero_Controller
         }
 
         $this->Chunk_View();
-        return $this->View;
+        return $this->View->Fetch();
     }
 
     /**

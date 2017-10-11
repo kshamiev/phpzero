@@ -12,7 +12,7 @@ class Zero_System_FileEdit extends Zero_Controller
     {
         $this->Chunk_Init();
         $this->Chunk_View();
-        return $this->View;
+        return $this->View->Fetch();
     }
 
     /**
@@ -49,7 +49,7 @@ class Zero_System_FileEdit extends Zero_Controller
         $this->Chunk_Init();
         $this->Chunk_FileSave();
         $this->Chunk_View();
-        return $this->View;
+        return $this->View->Fetch();
     }
 
     /**

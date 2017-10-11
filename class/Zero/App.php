@@ -48,9 +48,6 @@ define('ZERO_PATH_ZERO', ZERO_PATH_SITE . '/phpzero');
  * @package Zero.Component
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
- * @todo переработать капчу в хелпер
- * @todo apigen переработать
- * @todo все вебовские контроллеры должны иметь метод Default и возвращать результат в виде строки
  */
 class Zero_App
 {
@@ -521,7 +518,7 @@ class Zero_App
         }
 
         // Options
-        self::$Options = new Zero_Options_Value(self::$Config->Site_UseDB);
+        self::$Options = new Zero_OptionsV(self::$Config->Site_UseDB);
 
         // Request
         self::$Request = new Zero_Request(self::$Config->Site_UseDB);
