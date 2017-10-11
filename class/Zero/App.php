@@ -49,7 +49,6 @@ define('ZERO_PATH_ZERO', ZERO_PATH_SITE . '/phpzero');
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  * @todo переработать капчу в хелпер
- * @todo setup (установщик переработать)
  * @todo apigen переработать
  * @todo все вебовские контроллеры должны иметь метод Default и возвращать результат в виде строки
  */
@@ -872,8 +871,8 @@ class Zero_App
         $code = $exception->getCode();
         if ( empty($codeList[$code]) )
         {
+            Zero_Logs::Custom_DateTime('errorExceptionCode', [URL, $_REQUEST, $code]);
             $code = 409;
-            Zero_Logs::Custom_DateTime('errorExceptionCode', $code);
         }
         if ( $code != 403 && $code != 404 )
         {
