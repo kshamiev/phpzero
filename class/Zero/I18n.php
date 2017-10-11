@@ -36,14 +36,12 @@ class Zero_I18n
         // инициализация файла перевода
         if (!isset(self::$_I18n['Message'])) {
             self::$_I18n['Message'] = [];
-            if (file_exists($path = ZERO_PATH_SITE . '/i18n/' . ZERO_LANG . '/Message.php'))
-                self::$_I18n['Message'] = include $path;
-            else if (file_exists($path = ZERO_PATH_APP . '/i18n/' . ZERO_LANG . '/Message.php'))
-                self::$_I18n['Message'] = include $path;
-            else if (file_exists($path = ZERO_PATH_ZERO . '/i18n/' . ZERO_LANG . '/Message.php'))
-                self::$_I18n['Message'] = include $path;
-            else
-                Zero_Logs::Set_Message_Warninng('I18N NOT FOUND FILE: ' . $path);
+            if (file_exists($path = ZERO_PATH_ZERO . '/i18n/' . ZERO_LANG . '/' . 'Message' . '.php'))
+                self::$_I18n['Message'] = array_merge(self::$_I18n['Message'], include $path);
+            if (file_exists($path = ZERO_PATH_APP . '/i18n/' . ZERO_LANG . '/' . 'Message' . '.php'))
+                self::$_I18n['Message'] = array_merge(self::$_I18n['Message'], include $path);
+            if (file_exists($path = ZERO_PATH_SITE . '/i18n/' . ZERO_LANG . '/' . 'Message' . '.php'))
+                self::$_I18n['Message'] = array_merge(self::$_I18n['Message'], include $path);
         }
         // инициализация перевода
         if (isset(self::$_I18n['Message'][$code])) {
@@ -68,14 +66,12 @@ class Zero_I18n
         // инициализация файла перевода
         if (!isset(self::$_I18n[$section])) {
             self::$_I18n[$section] = [];
+            if (file_exists($path = ZERO_PATH_ZERO . '/i18n/' . ZERO_LANG . '/' . $section . '.php'))
+                self::$_I18n[$section] = array_merge(self::$_I18n[$section], include $path);
+            if (file_exists($path = ZERO_PATH_APP . '/i18n/' . ZERO_LANG . '/' . $section . '.php'))
+                self::$_I18n[$section] = array_merge(self::$_I18n[$section], include $path);
             if (file_exists($path = ZERO_PATH_SITE . '/i18n/' . ZERO_LANG . '/' . $section . '.php'))
-                self::$_I18n[$section] = include $path;
-            else if (file_exists($path = ZERO_PATH_APP . '/i18n/' . ZERO_LANG . '/' . $section . '.php'))
-                self::$_I18n[$section] = include $path;
-            else if (file_exists($path = ZERO_PATH_ZERO . '/i18n/' . ZERO_LANG . '/' . $section . '.php'))
-                self::$_I18n[$section] = include $path;
-            else
-                Zero_Logs::Set_Message_Warninng('I18N NOT FOUND FILE: ' . $path);
+                self::$_I18n[$section] = array_merge(self::$_I18n[$section], include $path);
         }
         // перевод
         if (isset(self::$_I18n[$section][$file_name . ' ' . $key])) {
@@ -84,6 +80,13 @@ class Zero_I18n
             return self::$_I18n[$section][$key];
         }
         Zero_Logs::Set_Message_Warninng("I18N NOT FOUND KEY: " . LANG . "->{$section} / " . $file_name . '->' . $key);
+
+
+
         return $file_name . ' ' . $key;
     }
+
+
+
+
 }
