@@ -40,6 +40,15 @@ class Helper_Mail
 
     private $smtp_charset;
 
+    /**
+     * Конструткор
+     *
+     * @param string $smtp_username
+     * @param string $smtp_password
+     * @param string $smtp_host
+     * @param int $smtp_port
+     * @param string $smtp_charset
+     */
     public function __construct($smtp_username, $smtp_password, $smtp_host, $smtp_port = 25, $smtp_charset = "UTF-8")
     {
         $this->smtp_username = $smtp_username;
@@ -151,6 +160,13 @@ class Helper_Mail
         return true;
     }
 
+    /**
+     * Обработчик ошибок
+     *
+     * @param $socket
+     * @param $response
+     * @return bool
+     */
     private function _parseServer($socket, $response)
     {
         $responseServer = '';
@@ -173,15 +189,18 @@ class Helper_Mail
      *
      * @param string $name краткое название сообщения для идетификации
      * @param string $description подробное описание сообщения для идетификации
-     * @param mixed $content сообщение:
-     * @sample: $content = [
-     * 'Reply' => ['Name' => '', 'Email' => 'reply@reply.ru'],
-     * 'From' => ['Name' => '', 'Email' => 'from@from.ru'],
-     * 'To' => [['Name' => '', 'Email' => 'to@to.ru']],
-     * 'Subject' => 'Тема сообщения',
-     * 'Message' => 'Текст или тело сообщения',
-     * 'Attach' => [],
-     * ];
+     * @param array $content [
+     *      'Reply' => ['Name' => 'ReplyName', 'Email' => 'reply@mail.ru'],
+     *      'From' => ['Name' => 'FromName', 'Email' => 'from@mail.ru'],
+     *      'To' => [
+     *          'Recipient@mail.ru' => 'NameRecipient',
+     *      ],
+     *      'Subject' => 'Тема сообщения',
+     *      'Message' => 'Текст или тело сообщения',
+     *      'Attach' => [
+     *          'pathFile' => 'nameFile',
+     *      ],
+     * ]
      * @param string $method метод реализующий отправку почты
      * @return int
      */
@@ -200,6 +219,9 @@ class Helper_Mail
 
     /**
      * Отправка очереди почтовых сообщений адресатам.
+     *
+     * Отправка почты ранее поставленной в очередь
+     * Через БД
      */
     public static function Send()
     {
@@ -245,6 +267,7 @@ class Helper_Mail
      *      ],
      * ]
      * @return int количесвто ошибок отправления
+     * @deprecated Sending
      */
     public static function SendMessage($data)
     {
@@ -256,9 +279,12 @@ class Helper_Mail
             'Message' => nl2br($data['Message']),
         ];
         $mailSMTP = new Helper_Mail(Zero_App::$Config->Mail_Username, Zero_App::$Config->Mail_Password, Zero_App::$Config->Mail_Host, Zero_App::$Config->Mail_Port);
-        foreach($data['To'] as $key=>$val)
+        foreach ($data['To'] as $key => $val)
         {
-            $dataT['To'] = $key;
+            if ( strlen($key) < 3 )
+                $dataT['To'] = $val{'Email'};
+            else
+                $dataT['To'] = $key;
             $result = $mailSMTP->Sending($dataT);
             if ( $result !== true )
             {
@@ -285,6 +311,7 @@ class Helper_Mail
      *      ],
      * ]
      * @return int количесвто ошибок отправления
+     * @deprecated Sending
      */
     public static function SendMessageAuth($data)
     {
@@ -296,9 +323,12 @@ class Helper_Mail
             'Message' => nl2br($data['Message']),
         ];
         $mailSMTP = new Helper_Mail(Zero_App::$Config->Mail_Username, Zero_App::$Config->Mail_Password, Zero_App::$Config->Mail_Host, Zero_App::$Config->Mail_Port);
-        foreach($data['To'] as $key=>$val)
+        foreach ($data['To'] as $key => $val)
         {
-            $dataT['To'] = $key;
+            if ( strlen($key) < 3 )
+                $dataT['To'] = $val{'Email'};
+            else
+                $dataT['To'] = $key;
             $result = $mailSMTP->Sending($dataT);
             if ( $result !== true )
             {
@@ -325,6 +355,7 @@ class Helper_Mail
      *      ],
      * ]
      * @return int количесвто ошибок отправления
+     * @deprecated Sending
      */
     public static function SendMessageAuthSsl($data)
     {
@@ -336,9 +367,12 @@ class Helper_Mail
             'Message' => nl2br($data['Message']),
         ];
         $mailSMTP = new Helper_Mail(Zero_App::$Config->Mail_Username, Zero_App::$Config->Mail_Password, Zero_App::$Config->Mail_Host, Zero_App::$Config->Mail_Port);
-        foreach($data['To'] as $key=>$val)
+        foreach ($data['To'] as $key => $val)
         {
-            $dataT['To'] = $key;
+            if ( strlen($key) < 3 )
+                $dataT['To'] = $val{'Email'};
+            else
+                $dataT['To'] = $key;
             $result = $mailSMTP->Sending($dataT);
             if ( $result !== true )
             {
