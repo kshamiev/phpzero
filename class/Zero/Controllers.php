@@ -346,6 +346,21 @@ class Zero_Controllers extends Zero_Model
     }
 
     /**
+     * Sample. The validation property
+     * May be removed
+     *
+     * @param mixed $value value to check and set
+     * @param string $scenario scenario validation
+     * @return string
+     */
+    public function VL_Controller($value, $scenario)
+    {
+        Zero_Session::Rem($this->Controller);
+        $this->Controller = $value;
+        return '';
+    }
+
+    /**
      * Фабрика по созданию объектов.
      *
      * @param integer $id идентификатор объекта
