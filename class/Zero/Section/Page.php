@@ -12,7 +12,7 @@ class Zero_Section_Page extends Zero_Controller
     /**
      * Create views.
      *
-     * @return Zero_View
+     * @return string
      */
     public function Action_Default()
     {

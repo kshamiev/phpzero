@@ -55,6 +55,7 @@ class Zero_App
      * Запрошенный uri
      *
      * @var string
+     * @todo пеработать в параметры
      */
     public static $Route = '';
 
@@ -103,7 +104,7 @@ class Zero_App
     /**
      * Configuration
      *
-     * @var Zero_Options_Value
+     * @var Zero_OptionsV
      */
     public static $Options = null;
 
@@ -139,6 +140,14 @@ class Zero_App
         $arr = explode('_', $class_name);
         $module = strtolower(array_shift($arr));
         $class = implode('/', $arr);
+
+        $path = ZERO_PATH_APP . '/class/' . str_replace('_', '/', $class_name) . '.php';
+        if ( file_exists($path) )
+        {
+            include_once $path;
+            if ( class_exists($class_name) )
+                return true;
+        }
         $path = ZERO_PATH_APPLICATION . '/' . $module . '/class/' . $class . '.php';
         if ( file_exists($path) )
         {
@@ -153,28 +162,21 @@ class Zero_App
             if ( class_exists($class_name) )
                 return true;
         }
-        $path = ZERO_PATH_APP . '/class/' . str_replace('_', '/', $class_name) . '.php';
-        if ( file_exists($path) )
-        {
-            include_once $path;
-            if ( class_exists($class_name) )
-                return true;
-        }
         //
-        $path = ZERO_PATH_ZERO . '/' . $module . '/class/' . $class . '.php';
-        if ( file_exists($path) )
-        {
-            include_once $path;
-            if ( class_exists($class_name) )
-                return true;
-        }
-        $path = ZERO_PATH_ZERO . '/' . $module . '/class' . $class . '.php'; // old
-        if ( file_exists($path) )
-        {
-            include_once $path;
-            if ( class_exists($class_name) )
-                return true;
-        }
+        //        $path = ZERO_PATH_ZERO . '/' . $module . '/class/' . $class . '.php';
+        //        if ( file_exists($path) )
+        //        {
+        //            include_once $path;
+        //            if ( class_exists($class_name) )
+        //                return true;
+        //        }
+        //        $path = ZERO_PATH_ZERO . '/' . $module . '/class' . $class . '.php'; // old
+        //        if ( file_exists($path) )
+        //        {
+        //            include_once $path;
+        //            if ( class_exists($class_name) )
+        //                return true;
+        //        }
         $path = ZERO_PATH_ZERO . '/class/' . str_replace('_', '/', $class_name) . '.php';
         if ( file_exists($path) )
         {
@@ -479,10 +481,14 @@ class Zero_App
         require_once ZERO_PATH_ZERO . '/class/Zero/Session.php';
         require_once ZERO_PATH_ZERO . '/class/Zero/Cache.php';
         require_once ZERO_PATH_ZERO . '/function.php';
-        if ( !file_exists($path = ZERO_PATH_APPLICATION . '/function.php') )
-            if ( !file_exists($path = ZERO_PATH_APP . '/function.php') )
+        if ( !file_exists($path = ZERO_PATH_APP . '/function.php') )
+            if ( !file_exists($path = ZERO_PATH_APPLICATION . '/function.php') )
                 die('функции приложения не найдены: ' . $path);
         require_once $path;
+        if ( file_exists($path = ZERO_PATH_APP . '/constant.php') )
+            require_once $path;
+        else if ( file_exists($path = ZERO_PATH_APPLICATION . '/constant.php') )
+            require_once $path;
 
         spl_autoload_register(['Zero_App', 'Autoload']);
         set_exception_handler(['Zero_App', 'Exception']);
@@ -703,6 +709,13 @@ class Zero_App
             }
         }
 
+        // инициализация действия
+        $action = 'Default';
+        if ( isset($_REQUEST['act']) && $_REQUEST['act'] )
+            $action = $_REQUEST['act'];
+        else if ( 'Api' == self::$mode )
+            $action = $_SERVER['REQUEST_METHOD'];
+
         //  ИНИЦИАЛИЗАЦИЯ Раздел - Страница и Контроллер
         self::$Section = Zero_Section::Make();
         self::$Section->Load_Url(ZERO_URL);
@@ -720,7 +733,12 @@ class Zero_App
                 throw new Exception('Page Forbidden', 403);
             // загрузка контроллера
             if ( 0 < self::$Section->Controllers_ID )
+            {
                 self::$Controller = Zero_Controllers::Make(self::$Section->Controllers_ID, true);
+                // проверка прав на авторизованный контроллер
+                if ( 1 < self::$Users->Groups_ID && 'yes' == self::$Controller->IsAuthorized && empty(self::$Controller->Get_Action_List()[$action]) )
+                    throw new Exception('Controller Forbidden', 403);
+            }
             else
                 self::$Controller = Zero_Controllers::Make();
         }
@@ -732,7 +750,7 @@ class Zero_App
             if ( 0 == self::$Controller->ID )
                 throw new Exception('Page Not Found', 404);
             // проверка прав на авторизованный контроллер
-            if ( 1 < self::$Users->Groups_ID && 'yes' == self::$Controller->IsAuthorized && 0 == count(self::$Controller->Get_Action_List()) )
+            if ( 1 < self::$Users->Groups_ID && 'yes' == self::$Controller->IsAuthorized && empty(self::$Controller->Get_Action_List()[$action]) )
                 throw new Exception('Controller Forbidden', 403);
         }
 
@@ -743,15 +761,10 @@ class Zero_App
         {
             if ( self::Autoload(self::$Controller->Controller, false) )
             {
-                // инициализация
-                $action = 'Default';
-                if ( isset($_REQUEST['act']) && $_REQUEST['act'] )
-                    $action = $_REQUEST['act'];
-                else if ( 'Api' == self::$mode )
-                    $action = $_SERVER['REQUEST_METHOD'];
+                $action = 'Action_' . $action;
 
                 self::$ControllerAction = Zero_Controller::Factories(self::$Controller->Controller);
-                if ( !method_exists(self::$ControllerAction, 'Action_' . $action) )
+                if ( !method_exists(self::$ControllerAction, $action) )
                 {
                     //                    if ( 'GET' != $action )
                     throw new Exception('Контроллер \'' . self::$Controller->Controller . '\' не имеет метода: ' . $action, 409);
@@ -759,12 +772,11 @@ class Zero_App
                 }
 
                 // доступные операции - методы контроллера с учетом прав.
-                $actionList = self::$Controller->Get_Action_List();
-                if ( !isset($actionList[$action]) )
-                    throw new Exception('Action Forbidden', 403);
+//                $actionList = self::$Controller->Get_Action_List();
+//                if ( !isset($actionList[$action]) )
+//                    throw new Exception('Action Forbidden', 403);
 
                 // выполнение контроллера
-                $action = 'Action_' . $action;
                 Zero_Logs::Start('#{CONTROLLER} ' . self::$Controller->Controller . ' -> ' . $action);
                 $view = self::$ControllerAction->$action();
                 $messageResponse = self::$ControllerAction->GetMessage();

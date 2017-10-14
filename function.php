@@ -169,16 +169,16 @@ function zero_random_string($length, $chartypes = 'all')
  *   - автоматически форматируется текст, если он содержит html код
  *   - защита от подделок типа: "<<fake>script>alert('hi')</</fake>script>"
  *
- * @param   string  $s
- * @param   array   $allowable_tags     Массив тагов, которые не будут вырезаны
+ * @param   string $s
+ * @param   array $allowable_tags Массив тагов, которые не будут вырезаны
  *                                      Пример: 'b' -- таг останется с атрибутами, '<b>' -- таг останется без атрибутов
- * @param   bool    $is_format_spaces   Форматировать пробелы и переносы строк?
+ * @param   bool $is_format_spaces Форматировать пробелы и переносы строк?
  *                                      Вид текста на выходе (plain) максимально приближеется виду текста в браузере на входе.
  *                                      Другими словами, грамотно преобразует text/html в text/plain.
  *                                      Текст форматируется только в том случае, если были вырезаны какие-либо таги.
- * @param   array   $pair_tags   массив имён парных тагов, которые будут удалены вместе с содержимым
+ * @param   array $pair_tags массив имён парных тагов, которые будут удалены вместе с содержимым
  *                               см. значения по умолчанию
- * @param   array   $para_tags   массив имён парных тагов, которые будут восприниматься как параграфы (если $is_format_spaces = true)
+ * @param   array $para_tags массив имён парных тагов, которые будут восприниматься как параграфы (если $is_format_spaces = true)
  *                               см. значения по умолчанию
  * @return  string
  *
@@ -187,21 +187,29 @@ function zero_random_string($length, $chartypes = 'all')
  * @charset  ANSI
  * @version  4.0.14
  */
-function zero_strip_tags_smart(
-    /*string*/ $s,
-    array $allowable_tags = null,
-    /*boolean*/ $is_format_spaces = true,
-    array $pair_tags = array('script', 'style', 'map', 'iframe', 'frameset', 'object', 'applet', 'comment', 'button', 'textarea', 'select'),
-    array $para_tags = array('p', 'td', 'th', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'div', 'form', 'title', 'pre')
-)
+function zero_strip_tags_smart(/*string*/
+    $s, array $allowable_tags = null, /*boolean*/
+    $is_format_spaces = true, array $pair_tags = array(
+    'script',
+    'style',
+    'map',
+    'iframe',
+    'frameset',
+    'object',
+    'applet',
+    'comment',
+    'button',
+    'textarea',
+    'select'
+), array $para_tags = array('p', 'td', 'th', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'div', 'form', 'title', 'pre'))
 {
     //return strip_tags($s);
-    static $_callback_type  = false;
+    static $_callback_type = false;
     static $_allowable_tags = array();
-    static $_para_tags      = array();
+    static $_para_tags = array();
     #regular expression for tag attributes
     #correct processes dirty and broken HTML in a singlebyte or multibyte UTF-8 charset!
-    static $re_attrs_fast_safe =  '(?![a-zA-Z\d])  #statement, which follows after a tag
+    static $re_attrs_fast_safe = '(?![a-zA-Z\d])  #statement, which follows after a tag
                                    #correct attributes
                                    (?>
                                        [^>"\']+
@@ -211,32 +219,37 @@ function zero_strip_tags_smart(
                                    #incorrect attributes
                                    [^>]*+';
 
-    if (is_array($s))
+    if ( is_array($s) )
     {
-        if ($_callback_type === 'strip_tags')
+        if ( $_callback_type === 'strip_tags' )
         {
             $tag = strtolower($s[1]);
-            if ($_allowable_tags)
+            if ( $_allowable_tags )
             {
                 #tag with attributes
-                if (array_key_exists($tag, $_allowable_tags)) return $s[0];
+                if ( array_key_exists($tag, $_allowable_tags) )
+                    return $s[0];
 
                 #tag without attributes
-                if (array_key_exists('<' . $tag . '>', $_allowable_tags))
+                if ( array_key_exists('<' . $tag . '>', $_allowable_tags) )
                 {
-                    if (substr($s[0], 0, 2) === '</') return '</' . $tag . '>';
-                    if (substr($s[0], -2) === '/>')   return '<' . $tag . ' />';
+                    if ( substr($s[0], 0, 2) === '</' )
+                        return '</' . $tag . '>';
+                    if ( substr($s[0], -2) === '/>' )
+                        return '<' . $tag . ' />';
                     return '<' . $tag . '>';
                 }
             }
-            if ($tag === 'br') return "\r\n";
-            if ($_para_tags && array_key_exists($tag, $_para_tags)) return "\r\n\r\n";
+            if ( $tag === 'br' )
+                return "\r\n";
+            if ( $_para_tags && array_key_exists($tag, $_para_tags) )
+                return "\r\n\r\n";
             return '';
         }
         trigger_error('Unknown callback type "' . $_callback_type . '"!', E_USER_ERROR);
     }
 
-    if (($pos = strpos($s, '<')) === false || strpos($s, '>', $pos) === false)  #speed improve
+    if ( ($pos = strpos($s, '<')) === false || strpos($s, '>', $pos) === false )  #speed improve
     {
         #tags are not found
         return $s;
@@ -273,10 +286,11 @@ function zero_strip_tags_smart(
            >
          /sxSX',
     );
-    if ($pair_tags)
+    if ( $pair_tags )
     {
         #парные таги вместе с содержимым:
-        foreach ($pair_tags as $k => $v) $pair_tags[$k] = preg_quote($v, '/');
+        foreach ($pair_tags as $k => $v)
+            $pair_tags[$k] = preg_quote($v, '/');
         $patterns[] = '/ <((?i:' . implode('|', $pair_tags) . '))' . $re_attrs_fast_safe . '(?<!\/)>
                          .*?
                          <\/(?i:\\1)' . $re_attrs_fast_safe . '>
@@ -286,26 +300,26 @@ function zero_strip_tags_smart(
 
     $i = 0; #защита от зацикливания
     $max = 99;
-    while ($i < $max)
+    while ( $i < $max )
     {
         $s2 = preg_replace($patterns, '', $s);
-        if (preg_last_error() !== PREG_NO_ERROR)
+        if ( preg_last_error() !== PREG_NO_ERROR )
         {
             $i = 999;
             break;
         }
 
-        if ($i == 0)
+        if ( $i == 0 )
         {
             $is_html = ($s2 != $s || preg_match($re_tags, $s2));
-            if (preg_last_error() !== PREG_NO_ERROR)
+            if ( preg_last_error() !== PREG_NO_ERROR )
             {
                 $i = 999;
                 break;
             }
-            if ($is_html)
+            if ( $is_html )
             {
-                if ($is_format_spaces)
+                if ( $is_format_spaces )
                 {
                     /*
                     В библиотеке PCRE для PHP \s - это любой пробельный символ, а именно класс символов [\x09\x0a\x0c\x0d\x20\xa0] или, по другому, [\t\n\f\r \xa0]
@@ -320,7 +334,7 @@ function zero_strip_tags_smart(
                                            <\/(?i:\\1)' . $re_attrs_fast_safe . '>
                                            \K
                                         /sxSX', ' ', $s2);
-                    if (preg_last_error() !== PREG_NO_ERROR)
+                    if ( preg_last_error() !== PREG_NO_ERROR )
                     {
                         $i = 999;
                         break;
@@ -328,32 +342,37 @@ function zero_strip_tags_smart(
                 }
 
                 #массив тагов, которые не будут вырезаны
-                if ($allowable_tags) $_allowable_tags = array_flip($allowable_tags);
+                if ( $allowable_tags )
+                    $_allowable_tags = array_flip($allowable_tags);
 
                 #парные таги, которые будут восприниматься как параграфы
-                if ($para_tags) $_para_tags = array_flip($para_tags);
+                if ( $para_tags )
+                    $_para_tags = array_flip($para_tags);
             }
         }#if
 
         #tags processing
-        if ($is_html)
+        if ( $is_html )
         {
             $_callback_type = 'strip_tags';
             $s2 = preg_replace_callback($re_tags, __FUNCTION__, $s2);
             $_callback_type = false;
-            if (preg_last_error() !== PREG_NO_ERROR)
+            if ( preg_last_error() !== PREG_NO_ERROR )
             {
                 $i = 999;
                 break;
             }
         }
 
-        if ($s === $s2) break;
-        $s = $s2; $i++;
+        if ( $s === $s2 )
+            break;
+        $s = $s2;
+        $i++;
     }#while
-    if ($i >= $max) $s = strip_tags($s); #too many cycles for replace...
+    if ( $i >= $max )
+        $s = strip_tags($s); #too many cycles for replace...
 
-    if ($is_format_spaces && strlen($s) !== $length)
+    if ( $is_format_spaces && strlen($s) !== $length )
     {
         #remove a duplicate spaces
         $s = preg_replace('/\x20\x20++/sSX', ' ', trim($s));
