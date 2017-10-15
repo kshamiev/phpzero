@@ -51,7 +51,7 @@ class Zero_I18n
         }
         else if ( 0 < $code )
         {
-            Zero_Logs::Set_Message_Warninng("I18N NOT FOUND MESSAGE: " . LANG . ' / ' . $code);
+            Zero_Logs::Set_Message_Warning("I18N NOT FOUND MESSAGE: " . LANG . ' / ' . $code);
         }
         // перевод
         return strval(zero_sprintf($params));
@@ -87,7 +87,7 @@ class Zero_I18n
         {
             return self::$_I18n[$section][$key];
         }
-        Zero_Logs::Set_Message_Warninng("I18N NOT FOUND KEY: " . LANG . "->{$section} / " . $file_name . '->' . $key);
+        Zero_Logs::Set_Message_Warning("I18N NOT FOUND KEY: " . LANG . "->{$section} / " . $file_name . '->' . $key);
         return $file_name . ' ' . $key;
     }
 }

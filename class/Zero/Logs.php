@@ -117,7 +117,7 @@ class Zero_Logs
      * @param mixed $value Сообщение об ошибке
      * @return mixed
      */
-    public static function Set_Message_Warninng($value)
+    public static function Set_Message_Warning($value)
     {
         self::$_Message[] = [print_r($value, true), 'warning'];
         if ( Zero_App::$Config->Log_Profile_Warning )
@@ -294,8 +294,7 @@ class Zero_Logs
         if ( $offset < 0 )
             $offset = 0;
         $length = isset($file_line[$line + $range_file_error]) ? $line + $range_file_error : count($file_line) - 1;
-        $View = new Zero_View(ucfirst(Zero_App::$Config->Site_DomainSub) . '_Debug_SourceCode');
-        $View->Add('Zero_Debug_SourceCode');
+        $View = new Zero_View('Zero_Debug_SourceCode');
         $View->Assign('file_line', $file_line);
         $View->Assign('offset', $offset < 0 ? 0 : $offset);
         $View->Assign('length', $length);

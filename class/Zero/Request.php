@@ -46,7 +46,7 @@ class Zero_Request
     {
         if ( empty(Zero_App::$Config->AccessOutside[$access]) )
         {
-            Zero_Logs::Set_Message_ErrorTrace("Реквизиты метода {$access} для запросов не определены");
+            Zero_Logs::Set_Message_Error("Реквизиты метода {$access} для запросов не определены");
             return new Zero_Request_Type;
         }
         $access = Zero_App::$Config->AccessOutside[$access];
@@ -92,7 +92,7 @@ class Zero_Request
         $error_subj = curl_error($ch);
         if ( 0 < $error_code )
         {
-            Zero_Logs::Set_Message_ErrorTrace('Curl error: ' . $error_code . ' - ' . $error_subj);
+            Zero_Logs::Set_Message_Error('Curl error: ' . $error_code . ' - ' . $error_subj);
             return new Zero_Request_Type;
         }
         curl_close($ch);

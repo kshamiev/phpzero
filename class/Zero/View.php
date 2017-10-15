@@ -278,7 +278,7 @@ class Zero_View
      * - /zero/view/Users/Login.html
      *
      * @param string $template imia shablona
-     * @return array найденный шаблон [0], путь до скомпилированного tpl [1] ( путь от корниа сайта )
+     * @return string найденный шаблон
      */
     protected static function Search_Template_Extension($template, $extension = '.php')
     {
