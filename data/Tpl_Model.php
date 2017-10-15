@@ -113,7 +113,6 @@ class Zero_Model_Pattern extends Zero_Model
      * May be removed
      *
      * @param array $params параметры контроллера
-     * @return string
      */
     public function AR_From($params)
     {

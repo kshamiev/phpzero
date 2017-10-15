@@ -19,7 +19,7 @@ class Zero_Content_Plugin extends Zero_Controller
     public function Action_Default()
     {
         $index = 'Content_' . $this->Params['target'] . '_' . ZERO_LANG;
-        if ( false === $Content = Zero_App::$Section->Cache->Get($index) )
+        if ( false === $Content = Zero_App::$Section->CH->Get($index) )
         {
             $Content = Zero_Content::Make();
             $Content->Load_Page($this->Params['target'], Zero_App::$Section->ID);
@@ -28,7 +28,7 @@ class Zero_Content_Plugin extends Zero_Controller
                 $Content->Load_Page($this->Params['target']);
             }
             Zero_Cache::Set_Link('Content', $Content->ID);
-            Zero_App::$Section->Cache->Set($index, $Content);
+            Zero_App::$Section->CH->Set($index, $Content);
         }
         return $Content->Content;
     }

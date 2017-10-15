@@ -182,7 +182,7 @@ class Zero_Groups_Access extends Zero_Controller
         }
         //  Reset Cache
         $Model = Zero_Model::Makes('Zero_Groups', $this->Params['obj_parent_id']);
-        $Model->Cache->Reset();
+        $Model->CH->Reset();
         return $this->SetMessage(0, ['Сохранено']);
     }
 

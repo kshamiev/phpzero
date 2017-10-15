@@ -22,7 +22,7 @@ class Zero_Section_Plugin_NavigationLine extends Zero_Controller
     public function Action_Default()
     {
         $index = __CLASS__ . '_' . Zero_App::$Section->ID;
-        if ( false === $navigation = Zero_App::$Section->Cache->Get($index) )
+        if ( false === $navigation = Zero_App::$Section->CH->Get($index) )
         {
             $navigation[] = [
                 'Url' => URL,
@@ -38,7 +38,7 @@ class Zero_Section_Plugin_NavigationLine extends Zero_Controller
                 $navigation[] = ['Url' => $Zero_Section->Url, 'NameMenu' => $Zero_Section->NameMenu, 'Title' => $Zero_Section->Title];
             }
             $navigation = array_reverse($navigation);
-            Zero_App::$Section->Cache->Set($index, $navigation);
+            Zero_App::$Section->CH->Set($index, $navigation);
         }
         $this->Chunk_Init();
         $this->View->Assign('navigation', $navigation);

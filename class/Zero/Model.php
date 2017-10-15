@@ -17,11 +17,11 @@
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  *
- * @property int ID
- * @property string Source
- * @property Zero_AR AR
- * @property Zero_Cache Cache
- * @property Zero_Validator VL
+ * @property int $ID
+ * @property string $Source
+ * @property Zero_AR $AR
+ * @property Zero_Cache $CH
+ * @property Zero_Validator $VL
  */
 abstract class Zero_Model
 {
@@ -77,7 +77,7 @@ abstract class Zero_Model
      *
      * @var Zero_Cache
      */
-    private $_Cache = null;
+    private $_CH = null;
 
     /**
      * Configuration model i ee svoi`stv
@@ -431,11 +431,11 @@ abstract class Zero_Model
      *
      * @return Zero_Cache
      */
-    protected function Get_Cache()
+    protected function Get_CH()
     {
-        if ( !is_object($this->_Cache) )
-            $this->_Cache = new Zero_Cache($this);
-        return $this->_Cache;
+        if ( !is_object($this->_CH) )
+            $this->_CH = new Zero_Cache($this);
+        return $this->_CH;
     }
 
     /**
@@ -584,7 +584,7 @@ abstract class Zero_Model
         if ( 0 == $this->ID )
             return true;
         //  Удаляем кеш
-        $this->Get_Cache()->Reset();
+        $this->Get_CH()->Reset();
         // Удаляем бинарные данные
         $path = ZERO_PATH_DATA . '/' . strtolower($this->Source) . '/' . Helper_File::Get_Path_Cache($this->ID) . '/' . $this->ID;
         if ( is_dir($path) )

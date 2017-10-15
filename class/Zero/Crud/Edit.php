@@ -200,7 +200,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         $this->Params['id'] = $this->Model->ID;
 
         //  Reset Cache
-        $this->Model->Cache->Reset();
+        $this->Model->CH->Reset();
 
         $this->SetMessage(2000, [$this->Model->Name, $this->Model->ID]);
         return true;

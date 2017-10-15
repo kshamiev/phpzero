@@ -306,7 +306,7 @@ class Zero_Controllers extends Zero_Model
 
         $controllerName = $this->Controller;
         $index_cache = 'ControllerList_' . Zero_App::$Users->Groups_ID . '_' . $controllerName;
-        if ( false !== $this->_Action_List = $this->Cache->Get($index_cache) )
+        if ( false !== $this->_Action_List = $this->CH->Get($index_cache) )
             return $this->_Action_List;
 
         $this->_Action_List = [];
@@ -328,7 +328,7 @@ class Zero_Controllers extends Zero_Model
             $this->_Action_List = Zero_Engine::Get_Method_From_Class($controllerName, 'Action');
         }
         Zero_Cache::Set_Link('Groups', Zero_App::$Users->Groups_ID);
-        $this->Cache->Set($index_cache, $this->_Action_List);
+        $this->CH->Set($index_cache, $this->_Action_List);
         return $this->_Action_List;
     }
 

@@ -26,7 +26,7 @@ class Zero_Section_Plugin_NavigationAccordion extends Zero_Controller
             $Section->Load_Url('/');
         $index = __CLASS__ . '_' . Zero_App::$Users->Groups_ID . '_' . $Section->ID;
 
-        if ( false === $navigation = $Section->Cache->Get($index) )
+        if ( false === $navigation = $Section->CH->Get($index) )
         {
             $navigation = Zero_Section::DB_Navigation_Child($Section->ID);
             foreach (array_keys($navigation) as $id)
@@ -34,7 +34,7 @@ class Zero_Section_Plugin_NavigationAccordion extends Zero_Controller
                 $navigation[$id]['child'] = Zero_Section::DB_Navigation_Child($id);
             }
             Zero_Cache::Set_Link('Section', $Section->ID);
-            $Section->Cache->Set($index, $navigation);
+            $Section->CH->Set($index, $navigation);
         }
         $this->Chunk_Init();
         $this->View->Assign('Section', Zero_App::$Section);

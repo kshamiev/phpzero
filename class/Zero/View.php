@@ -316,6 +316,12 @@ class Zero_View
     private function _Parsing($template)
     {
         //  ДИРЕКТИВЫ
+        // Literal
+        preg_match_all("~{literal}(.+?){/literal}~si", $template, $match);
+        foreach ($match[0] as $key => $val) {
+            $template = str_replace($val, "<LITERAL{$key}LITERAL>", $template);
+        }
+
         // подключение шаблонов директивой инклуде {инклуде "дирнаме/филенаме"}
         $template = preg_replace_callback(self::PATTERN_INCLUDE, [$this, '_Parsing_Include'], $template);
         // парсинг языковых конструкций
@@ -323,8 +329,10 @@ class Zero_View
         // парсинг плагинов
         $template = preg_replace_callback(self::PATTERN_PLUGIN, [$this, '_Parsing_Controller'], $template);
         //
+
         // Вырезаем служебные комментарии
         $template = preg_replace('~{#(.*?)#}~s', '', $template);
+
         //	циклы и логика
         $template = preg_replace('~{((foreach|for|while|if|switch|case|default) .+?)}~si', '<' . '?php $1 { ?' . '>', $template);
         $template = preg_replace('~{(/|/foreach|/for|/while|/if|/switch|/case|/default)}~si', '<' . '?php } ?' . '>', $template);
@@ -333,12 +341,6 @@ class Zero_View
         $template = preg_replace('~{(break|continue)}~si', '<' . '?php $1; ?' . '>', $template);
         //	переменные установка
         $template = preg_replace('~{set (\$[^}]{1,255})}~si', '<' . '?php $1; ?' . '>', $template);
-
-        // Literal
-        preg_match_all("~{literal}(.+?){/literal}~si", $template, $match);
-        foreach ($match[0] as $key => $val) {
-            $template = str_replace($val, "<LITERAL{$key}LITERAL>", $template);
-        }
 
         //	переменные вывод
         $template = preg_replace('~{(\$[^}]{1,255})}~si', '<' . '?php echo $1; ?' . '>', $template);
