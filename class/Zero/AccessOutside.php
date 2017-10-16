@@ -10,8 +10,8 @@
  * @property string $Name
  * @property string $AccessMethod
  * @property string $Url
- * @property string $ApacheLogin
- * @property string $ApachePassword
+ * @property string $Login
+ * @property string $chePassword
  * @property string $AuthUserToken
  * @property integer $IsDebu
  */
@@ -73,15 +73,15 @@ class Zero_AccessOutside extends Zero_Model
 				'Default' => '',
 				'Form' => 'Text',
 			],
-			'ApacheLogin' => [
-				'AliasDB' => 'z.ApacheLogin',
+			'Login' => [
+				'AliasDB' => 'z.Login',
 				'DB' => 'T',
 				'IsNull' => 'YES',
 				'Default' => '',
 				'Form' => 'Text',
 			],
-			'ApachePassword' => [
-				'AliasDB' => 'z.ApachePassword',
+			'Password' => [
+				'AliasDB' => 'z.Password',
 				'DB' => 'T',
 				'IsNull' => 'YES',
 				'Default' => '',
@@ -127,8 +127,8 @@ class Zero_AccessOutside extends Zero_Model
 			'Name' => ['Visible' => true, 'AR' => true],
 			'AccessMethod' => ['Visible' => true, 'AR' => true],
 			'Url' => ['Visible' => true, 'AR' => true],
-			'ApacheLogin' => ['Visible' => true, 'AR' => true],
-			'ApachePassword' => ['Visible' => true, 'AR' => true],
+			'Login' => ['Visible' => true, 'AR' => true],
+			'Password' => ['Visible' => true, 'AR' => true],
 			'AuthUserToken' => ['Visible' => true, 'AR' => true],
 			'IsDebug' => ['Visible' => true, 'AR' => true],
         ];
@@ -152,8 +152,8 @@ class Zero_AccessOutside extends Zero_Model
 			'Name' => [],
 			'AccessMethod' => [],
 			'Url' => [],
-			'ApacheLogin' => [],
-			'ApachePassword' => [],
+			'Login' => [],
+			'Password' => [],
 			'AuthUserToken' => [],
         ];
     }
@@ -176,8 +176,8 @@ class Zero_AccessOutside extends Zero_Model
             'Name' => [],
 			'AccessMethod' => [],
 			'Url' => [],
-			'ApacheLogin' => [],
-			'ApachePassword' => [],
+			'Login' => [],
+			'Password' => [],
 			'AuthUserToken' => [],
 			'IsDebug' => [],
         ];

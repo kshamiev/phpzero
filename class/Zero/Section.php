@@ -231,49 +231,6 @@ class Zero_Section extends Zero_Model
     }
 
     /**
-     * Getting a controller actions with regard to the rights section.
-     *
-     * @return array ist of actions controllers section
-     * @throws Exception
-     * @deprecated
-     */
-    public function Get_Action_List()
-    {
-        return Zero_App::$Controller->Get_Action_List();
-        if ( 0 == $this->ID )
-            return [];
-        else if ( !is_null($this->_Action_List) )
-            return $this->_Action_List;
-
-        $controllerName = $this->Controller;
-        $index_cache = 'ControllerList_' . Zero_App::$Users->Groups_ID . '_' . $controllerName;
-        if ( false !== $this->_Action_List = $this->CH->Get($index_cache) )
-            return $this->_Action_List;
-
-        $this->_Action_List = [];
-        if ( 'yes' == $this->IsAuthorized && 1 < Zero_App::$Users->Groups_ID )
-        {
-            $Model = Zero_Model::Makes('Zero_Action');
-            $Model->AR->Sql_Where('Section_ID', '=', $this->ID);
-            $Model->AR->Sql_Where('Groups_ID', '=', Zero_App::$Users->Groups_ID);
-            $this->_Action_List = $Model->AR->Select_Array_Index('Action');
-            foreach ($this->_Action_List as $action => $row)
-            {
-                $this->_Action_List[$action] = ['Name' => Zero_I18n::Controller($controllerName, 'Action_' . $action)];
-            }
-        }
-        else if ( '' != $controllerName )
-        {
-            if ( false == Zero_App::Autoload($controllerName, false) )
-                throw new Exception('Класс не найден: ' . $controllerName, 409);
-            $this->_Action_List = Zero_Engine::Get_Method_From_Class($controllerName, 'Action');
-        }
-        Zero_Cache::Set_Link('Groups', Zero_App::$Users->Groups_ID);
-        $this->CH->Set($index_cache, $this->_Action_List);
-        return $this->_Action_List;
-    }
-
-    /**
      * Getting subsections, taking into account the rights and visibility.
      *
      * @return array|mixed

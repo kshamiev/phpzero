@@ -37,7 +37,7 @@ class Zero_System_GridService extends Zero_Controller
         $this->View->Assign('Interface', $Interface_List);
         $this->View->Assign('Params', $this->Params);
         $this->View->Assign('modules_db', array_keys(Zero_App::$Config->Db));
-        $this->View->Assign('Action', Zero_App::$Section->Get_Action_List());
+        $this->View->Assign('Action', Zero_App::$Controller->Get_Action_List());
     }
 
     public function Action_EngineModulesDB()

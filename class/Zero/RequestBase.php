@@ -3,17 +3,17 @@
 /**
  * Запросы к внешним источникам (службам, сервисам)
  *
- * Компонент/ Можно переопределить и расширять.
- * Путем добавления конфигураций и указания методов ниже в комментрии
+ * Расширяемый компонент
+ * Путем добавления конфигураций и указания методов ниже в комментарии
+ * Либо чере методы геттеры
  *
  * @package Zero.Component
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2017-09-14
  *
- * @method Simple($method, $urn, $content = null, $headers = []) Прямые запросы без конфигурации
- * @method Sample($method, $uri, $content = null, $headers = []) Пример запроса с реквизитами доступа
+ * @method Zero_Request_Type Simple($method, $urn, $content = null, $headers = []) Прямые запросы без конфигурации
  */
-class Zero_Request
+class Zero_RequestBase
 {
     /**
      * Конструктор. Инициализация реквизитов доуступа к внешним ресурсам
@@ -24,7 +24,7 @@ class Zero_Request
     {
         if ( $IsDB )
         {
-            $sql = "SELECT AccessMethod, `Name`, Url, ApacheLogin, ApachePassword, AuthUserToken, IsDebug FROM AccessOutside";
+            $sql = "SELECT AccessMethod, `Name`, Url, Login, Password, AuthUserToken, IsDebug FROM AccessOutside";
             foreach (Zero_DB::Select_Array_Index($sql) as $key => $row)
             {
                 Zero_App::$Config->AccessOutside[$key] = $row;
@@ -68,9 +68,9 @@ class Zero_Request
             $headers[] = "AuthUserToken: " . $access['AuthUserToken'];
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         //	АВТОРИЗАЦИЯ МЕТОДОМ APACHE
-        if ( $access['ApacheLogin'] && $access['ApachePassword'] )
+        if ( $access['Login'] && $access['Password'] )
         {
-            curl_setopt($ch, CURLOPT_USERPWD, $access['ApacheLogin'] . ":" . $access['ApachePassword']);
+            curl_setopt($ch, CURLOPT_USERPWD, $access['Login'] . ":" . $access['Password']);
         }
         // Метод запроса и тело запроса
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
@@ -126,6 +126,21 @@ class Zero_Request
     }
 
     /**
+     * Геттер для реализации пользовательских классов - запросов
+     *
+     * @param string $prop
+     * @return mixed
+     */
+    public function __get($prop)
+    {
+        if ( method_exists($this, $method = 'Get_' . $prop) )
+            return $this->$method();
+        else
+            Zero_Logs::Set_Message_Error("обращение к нереализованному функционалу запросов '{$prop}'");
+        return null;
+    }
+
+    /**
      * Метод перегрузки
      *
      * @param string $method имя вызываемого метода
@@ -134,7 +149,11 @@ class Zero_Request
      */
     public function __call($method, $params)
     {
-        return $this->request($method, $params[0], $params[1], $params[2]);
+        if ( empty($params[2]) )
+            $params[2] = null; // $content
+        if ( empty($params[3]) )
+            $params[3] = []; // $headers
+        return $this->request($method, $params[0], $params[1], $params[2], $params[3]);
     }
 }
 

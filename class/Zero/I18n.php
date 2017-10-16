@@ -37,11 +37,11 @@ class Zero_I18n
         if ( !isset(self::$_I18n['Message']) )
         {
             self::$_I18n['Message'] = [];
-            if ( file_exists($path = ZERO_PATH_ZERO . '/i18n/' . ZERO_LANG . '/' . 'Message' . '.php') )
+            if ( file_exists($path = ZERO_PATH_SITE . '/i18n/' . ZERO_LANG . '/' . 'Message' . '.php') )
                 self::$_I18n['Message'] = self::$_I18n['Message'] + include $path;
             if ( file_exists($path = ZERO_PATH_APP . '/i18n/' . ZERO_LANG . '/' . 'Message' . '.php') )
                 self::$_I18n['Message'] = self::$_I18n['Message'] + include $path;
-            if ( file_exists($path = ZERO_PATH_SITE . '/i18n/' . ZERO_LANG . '/' . 'Message' . '.php') )
+            if ( file_exists($path = ZERO_PATH_ZERO . '/i18n/' . ZERO_LANG . '/' . 'Message' . '.php') )
                 self::$_I18n['Message'] = self::$_I18n['Message'] + include $path;
         }
         // инициализация перевода

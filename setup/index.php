@@ -128,6 +128,14 @@ while ( isset($_REQUEST['act']) && 'Install_System' == $_REQUEST['act'] && 0 == 
     file_put_contents(ZERO_PATH_SITE . '/config.php', $config);
     unlink(ZERO_PATH_SITE . '/config.blank.php');
 
+    $class = file_get_contents($path = ZERO_PATH_APP . '/class/Zero/OptionsV.php');
+    str_replace('Zero_OptionsVSample', 'Zero_OptionsV', $class);
+    file_put_contents($path, $class);
+
+    $class = file_get_contents($path = ZERO_PATH_APP . '/class/Zero/Request.php');
+    str_replace('Zero_RequestSample', 'Zero_Request', $class);
+    file_put_contents($path, $class);
+
 //    if ( !@symlink(ZERO_PATH_ZERO, ZERO_PATH_APPLICATION . '/zero') )
 //    {
 //        $message_install_list[] = "Error create symlink from module zero";

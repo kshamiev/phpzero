@@ -3,11 +3,11 @@
 /**
  * Значения опций приложения
  *
- * @package <Package>.Options
+ * @package Zero.Options
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
- * @date 2016.09.27
+ * @date 2017-10-16
  */
-class Zero_OptionsV
+class Zero_OptionsVBase
 {
     /**
      * Массив содержащий значения опций

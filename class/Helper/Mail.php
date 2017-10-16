@@ -92,7 +92,7 @@ class Helper_Mail
                 throw new Exception('Connection error', 409);
             }
 
-            $server_name = $_SERVER["SERVER_NAME"];
+            $server_name = Zero_App::$Config->Site_Domain;
             fputs($socket, "HELO $server_name\r\n");
             if ( !$this->_parseServer($socket, "250") )
             {

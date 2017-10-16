@@ -65,7 +65,7 @@ class Zero_System_FileManager extends Zero_Controller
         $this->View->Assign('Interface', Zero_App::$Section->Get_Navigation_Child());
         $this->View->Assign('Params', $this->Params);
         $this->View->Assign('path_parent', end($this->Params['obj_parent_path']));
-        $this->View->Assign('Action', Zero_App::$Section->Get_Action_List());
+        $this->View->Assign('Action', Zero_App::$Controller->Get_Action_List());
         //  array folder and files
         ksort($folder_mas);
         $this->View->Assign('folder_mas', $folder_mas);

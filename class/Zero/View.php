@@ -23,8 +23,8 @@ define('HTTPH', ZERO_HTTPH);
 /**
  * The relative url path to the project (site)
  */
-define('ZERO_URL', Zero_App::$Route);
-define('URL', Zero_App::$Route);
+define('ZERO_URL', Zero_App::$RouteParams[0]);
+define('URL', Zero_App::$RouteParams[0]);
 /**
  * The language suffix
  */

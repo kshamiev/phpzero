@@ -24,11 +24,11 @@ function app_route()
     $p = explode('.', $p)[0];
     $p = explode('_', $p);
     if ( 1 < count($p) )
-        Zero_App::$RouteParams = explode('-', $p[1]);
+        Zero_App::$RouteParams[1] = explode('-', $p[1]);
     $row[] = $p[0];
 
     // uri
-    Zero_App::$Route = '/' . implode('/', $row);
+    Zero_App::$RouteParams[0] = '/' . implode('/', $row);
     return;
 }
 

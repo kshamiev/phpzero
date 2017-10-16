@@ -2,7 +2,8 @@
 SQLyog Ultimate v12.09 (64 bit)
 MySQL - 5.5.56-MariaDB : Database - calculator
 *********************************************************************
-*/
+*/
+
 
 /*!40101 SET NAMES utf8 */;
 
@@ -21,8 +22,8 @@ CREATE TABLE `AccessOutside` (
   `Name` varchar(100) DEFAULT NULL COMMENT 'Комментарий записи',
   `AccessMethod` varchar(100) DEFAULT NULL COMMENT 'Имя метода в классе',
   `Url` varchar(100) DEFAULT NULL COMMENT 'Урл запроса к ресурсу',
-  `ApacheLogin` varchar(100) DEFAULT NULL COMMENT 'Логин (Auth Basic)',
-  `ApachePassword` varchar(100) DEFAULT NULL COMMENT 'Пароль (Auth Basic)',
+  `Login` varchar(100) DEFAULT NULL COMMENT 'Логин',
+  `Password` varchar(100) DEFAULT NULL COMMENT 'Пароль',
   `AuthUserToken` varchar(100) DEFAULT NULL COMMENT 'Авторизация по токену',
   `IsDebug` tinyint(1) DEFAULT NULL COMMENT 'Режим отладки',
   PRIMARY KEY (`ID`)

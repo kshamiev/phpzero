@@ -247,7 +247,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
         $this->View->Assign('Object', $this->Model);
         $this->View->Assign('DataLink', $data_link);
         $this->View->Assign('pid', $this->Params['obj_parent_id']);
-        $this->View->Assign('Action', Zero_App::$Section->Get_Action_List());
+        $this->View->Assign('Action', Zero_App::$Controller->Get_Action_List());
         // Page by page
         $this->View->Assign('PagerPage', $Filter->Page);
         $this->View->Assign('PagerPageItem', Zero_App::$Config->View_PageItem);

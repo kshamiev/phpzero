@@ -52,15 +52,10 @@ define('ZERO_PATH_ZERO', ZERO_PATH_SITE . '/phpzero');
 class Zero_App
 {
     /**
-     * Запрошенный uri
-     *
-     * @var string
-     * @todo пеработать в параметры
-     */
-    public static $Route = '';
-
-    /**
      * Параметры uri (после знака _ в конце запроса)
+     *
+     * 0 uri
+     * 1 после _
      *
      * @var array
      */
@@ -766,15 +761,8 @@ class Zero_App
                 self::$ControllerAction = Zero_Controller::Factories(self::$Controller->Controller);
                 if ( !method_exists(self::$ControllerAction, $action) )
                 {
-                    //                    if ( 'GET' != $action )
                     throw new Exception('Контроллер \'' . self::$Controller->Controller . '\' не имеет метода: ' . $action, 409);
-                    //                    $action = 'Default';
                 }
-
-                // доступные операции - методы контроллера с учетом прав.
-//                $actionList = self::$Controller->Get_Action_List();
-//                if ( !isset($actionList[$action]) )
-//                    throw new Exception('Action Forbidden', 403);
 
                 // выполнение контроллера
                 Zero_Logs::Start('#{CONTROLLER} ' . self::$Controller->Controller . ' -> ' . $action);
