@@ -70,43 +70,32 @@ class Helper_Mail
      *     'pathFile' => 'nameFile',
      *     ],
      * ];
-     * @param string $headers - заголовки письма
      * @return bool|string В случаи отправки вернет true, иначе текст ошибки
      */
-    public function Sending($data, $headers = '')
+    public function Sending($data)
     {
-//        $contentMail = "Date: " . date("D, d M Y H:i:s") . " UT\r\n";
-//        $contentMail .= 'Subject: =?' . $this->smtp_charset . '?B?' . base64_encode($data['Subject']) . "=?=\r\n";
-//        $contentMail .= "MIME-Version: 1.0\r\n";
-//        $contentMail .= "Content-type: text/html; charset={$this->smtp_charset}\r\n";
-//        $contentMail .= "Content-Transfer-Encoding: 8bit\r\n";
-//        $contentMail .= "From: {$data['From']['Name']} <{$data['From']['Email']}>\r\n";
-//        $contentMail .= $headers . "\r\n";
-//        $contentMail .= $data['Message'] . "\r\n";
-        // NEW
-
+        // заголовки
         $boundary = "--" . md5(uniqid(time())); // генерируем разделитель
         $contentMail = "Date: " . date("D, d M Y H:i:s") . " UT\r\n";
+        $contentMail .= "From: {$data['From']['Name']} <{$data['From']['Email']}>\r\n";
         $contentMail .= 'Subject: =?' . $this->smtp_charset . '?B?' . base64_encode($data['Subject']) . "=?=\r\n";
         $contentMail .= "MIME-Version: 1.0\r\n";
-        $contentMail .= "Content-Type: multipart/mixed; boundary=\"$boundary\"\r\n";
-        $contentMail .= "Content-Transfer-Encoding: 8bit\r\n";
-        $contentMail .= "From: {$data['From']['Name']} <{$data['From']['Email']}>\r\n";
-        $contentMail .= $headers . "\r\n";
-
-        $contentMail .= "--{$boundary}" . "\r\n";
+        $contentMail .= 'Content-Type: multipart/mixed; boundary="' . $boundary . '"' . "\r\n\r\n";
+        // сообщения
+        $contentMail .= "--" . $boundary . "\r\n";
         $contentMail .= "Content-type: text/html; charset={$this->smtp_charset}\r\n";
-        $contentMail .= "Content-Transfer-Encoding: Quot-Printed" . "\r\n\r\n";
+        $contentMail .= "Content-Transfer-Encoding: 8bit\r\n";
         $contentMail .= $data['Message'] . "\r\n\r\n";
-
-        $path = ZERO_PATH_ZERO . '/apigen.phar';
-
-        $contentMail .= "--{$boundary}" . "\r\n";
-        $contentMail .= "Content-Type: application/octet-stream" . "\r\n";
-        $contentMail .= "Content-Transfer-Encoding: base64" . "\r\n";
-        $contentMail .= "Content-Disposition: attachment; filename = \"" . basename($path) . "\"" . "\r\n\r\n";
-        $contentMail .= chunk_split(base64_encode(file_get_contents($path))) . "\r\n";
-        $contentMail .= "--{$boundary}--" . "\r\n";
+        // вложения
+        foreach ($data['Attach'] as $path => $fileName)
+        {
+            $contentMail .= "--" . $boundary . "\r\n";
+            $contentMail .= "Content-Type: application/octet-stream; name=\"" . $fileName . "\"\r\n";
+            $contentMail .= "Content-Transfer-Encoding: base64\r\n";
+            $contentMail .= "Content-Disposition: attachment; filename=\"" . $fileName . "\"\r\n\r\n";
+            $contentMail .= chunk_split(base64_encode(file_get_contents($path))) . "\r\n\r\n";
+        }
+        $contentMail .= "--" . $boundary . "--";
 
         try
         {
