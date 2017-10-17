@@ -68,7 +68,7 @@ class Helper_Kcaptcha
         ////////////////////////////////////////
 
         $fonts = array();
-        $fontsdir_absolute = ZERO_PATH_ZERO . '/assets/img/fonts/' . $fontsdir;
+        $fontsdir_absolute = ZERO_PATH_ZERO . '/assets/img/' . $fontsdir;
         if ( $handle = opendir($fontsdir_absolute) )
         {
             while ( false !== ($file = readdir($handle)) )
