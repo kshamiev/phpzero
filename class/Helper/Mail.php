@@ -66,20 +66,36 @@ class Helper_Mail
      * 'To' => 'Recipient@mail.ru',
      * 'Subject' => 'Тема сообщения',
      * 'Message' => 'Текст или тело сообщения',
+     * 'Attach' => [
+     *     'pathFile' => 'nameFile',
+     *     ],
      * ];
-     * @param string $headers - заголовки письма
      * @return bool|string В случаи отправки вернет true, иначе текст ошибки
      */
-    public function Sending($data, $headers = '')
+    public function Sending($data)
     {
+        // заголовки
+        $boundary = "--" . md5(uniqid(time())); // генерируем разделитель
         $contentMail = "Date: " . date("D, d M Y H:i:s") . " UT\r\n";
+        $contentMail .= "From: {$data['From']['Name']} <{$data['From']['Email']}>\r\n";
         $contentMail .= 'Subject: =?' . $this->smtp_charset . '?B?' . base64_encode($data['Subject']) . "=?=\r\n";
         $contentMail .= "MIME-Version: 1.0\r\n";
+        $contentMail .= 'Content-Type: multipart/mixed; boundary="' . $boundary . '"' . "\r\n\r\n";
+        // сообщения
+        $contentMail .= "--" . $boundary . "\r\n";
         $contentMail .= "Content-type: text/html; charset={$this->smtp_charset}\r\n";
         $contentMail .= "Content-Transfer-Encoding: 8bit\r\n";
-        $contentMail .= "From: {$data['From']['Name']} <{$data['From']['Email']}>\r\n";
-        $contentMail .= $headers . "\r\n";
-        $contentMail .= $data['Message'] . "\r\n";
+        $contentMail .= $data['Message'] . "\r\n\r\n";
+        // вложения
+        foreach ($data['Attach'] as $path => $fileName)
+        {
+            $contentMail .= "--" . $boundary . "\r\n";
+            $contentMail .= "Content-Type: application/octet-stream; name=\"" . $fileName . "\"\r\n";
+            $contentMail .= "Content-Transfer-Encoding: base64\r\n";
+            $contentMail .= "Content-Disposition: attachment; filename=\"" . $fileName . "\"\r\n\r\n";
+            $contentMail .= chunk_split(base64_encode(file_get_contents($path))) . "\r\n\r\n";
+        }
+        $contentMail .= "--" . $boundary . "--";
 
         try
         {
@@ -277,6 +293,7 @@ class Helper_Mail
             'To' => '',
             'Subject' => $data['Subject'],
             'Message' => nl2br($data['Message']),
+            'Attach' => $data['Attach'],
         ];
         $mailSMTP = new Helper_Mail(Zero_App::$Config->Mail_Username, Zero_App::$Config->Mail_Password, Zero_App::$Config->Mail_Host, Zero_App::$Config->Mail_Port);
         foreach ($data['To'] as $key => $val)
@@ -321,6 +338,7 @@ class Helper_Mail
             'To' => '',
             'Subject' => $data['Subject'],
             'Message' => nl2br($data['Message']),
+            'Attach' => $data['Attach'],
         ];
         $mailSMTP = new Helper_Mail(Zero_App::$Config->Mail_Username, Zero_App::$Config->Mail_Password, Zero_App::$Config->Mail_Host, Zero_App::$Config->Mail_Port);
         foreach ($data['To'] as $key => $val)
@@ -365,6 +383,7 @@ class Helper_Mail
             'To' => '',
             'Subject' => $data['Subject'],
             'Message' => nl2br($data['Message']),
+            'Attach' => $data['Attach'],
         ];
         $mailSMTP = new Helper_Mail(Zero_App::$Config->Mail_Username, Zero_App::$Config->Mail_Password, Zero_App::$Config->Mail_Host, Zero_App::$Config->Mail_Port);
         foreach ($data['To'] as $key => $val)
