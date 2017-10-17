@@ -869,7 +869,6 @@ class Zero_App
         if ( empty($codeList[$code]) )
         {
             Zero_Logs::Custom_DateTime('errorExceptionCode', [URL, $_REQUEST, $code]);
-            $code = 409;
         }
         if ( $code != 403 && $code != 404 )
         {
