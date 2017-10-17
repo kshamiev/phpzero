@@ -704,14 +704,14 @@ class Zero_App
             }
         }
 
-        // инициализация действия
+        // ИНИЦИАЛИЗАЦИЯ ДЕЙСТВИЯ
         $action = 'Default';
         if ( isset($_REQUEST['act']) && $_REQUEST['act'] )
             $action = $_REQUEST['act'];
         else if ( 'Api' == self::$mode )
             $action = $_SERVER['REQUEST_METHOD'];
 
-        //  ИНИЦИАЛИЗАЦИЯ Раздел - Страница и Контроллер
+        //  ИНИЦИАЛИЗАЦИЯ Раздел - Страница, Контроллер, Права
         self::$Section = Zero_Section::Make();
         self::$Section->Load_Url(ZERO_URL);
         if ( 0 < self::$Section->ID )
@@ -749,7 +749,7 @@ class Zero_App
                 throw new Exception('Controller Forbidden', 403);
         }
 
-        //  КОНТРОЛЛЕР
+        //  ЦЕНТРАЛЬНЫЙ КОНТРОЛЛЕР
         $view = '';
         $messageResponse = ['Code' => 0, 'Message' => ''];
         if ( 0 < self::$Controller->ID )
@@ -788,7 +788,7 @@ class Zero_App
             }
         }
 
-        //  РАЗДЕЛ - СТРАНИЦА
+        //  LAYOUT - МАКЕТ
         if ( self::$Section->Layout )
         {
             $viewLayout = new Zero_View(self::$Section->Layout);
