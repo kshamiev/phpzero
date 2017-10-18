@@ -17,6 +17,6 @@ class Zero_Users_Kcaptcha extends Zero_Controller
     {
         $Captcha = new Helper_Kcaptcha();
         Zero_App::$Users->Keystring = $Captcha->getKeyString();
-        return '';
+        exit;
     }
 }
