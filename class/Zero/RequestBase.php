@@ -64,11 +64,11 @@ class Zero_RequestBase
         //	Заголовки
         $headers[] = "Content-Type: application/json; charset=utf-8";
         $headers[] = "Content-Length: " . strlen($content);
-        if ( $access['AuthUserToken'] )
+        if ( isset($access['AuthUserToken']) && $access['AuthUserToken'] )
             $headers[] = "AuthUserToken: " . $access['AuthUserToken'];
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         //	АВТОРИЗАЦИЯ МЕТОДОМ APACHE
-        if ( $access['Login'] && $access['Password'] )
+        if ( isset($access['Login']) && $access['Login'] && isset($access['Password']) && $access['Password'] )
         {
             curl_setopt($ch, CURLOPT_USERPWD, $access['Login'] . ":" . $access['Password']);
         }
@@ -80,7 +80,7 @@ class Zero_RequestBase
         // SSL
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-        if ( $access['IsDebug'] )
+        if ( isset($access['IsDebug']) && $access['IsDebug'] )
         {
             curl_setopt($ch, CURLOPT_VERBOSE, 1);
             curl_setopt($ch, CURLOPT_STDERR, fopen(ZERO_PATH_LOG . "/curl_{$access['AccessMethod']}.log", 'a'));
