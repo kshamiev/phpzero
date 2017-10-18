@@ -98,7 +98,6 @@ class Zero_Groups extends Zero_Model
     protected static function Config_Form($Model, $scenario = '')
     {
         return [
-            'ID' => [],
             'Name' => [],
             'Status' => [],
             'Description' => [],

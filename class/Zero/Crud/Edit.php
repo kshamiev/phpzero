@@ -158,7 +158,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
             $this->Chunk_Add();
 
         //  Set to relation one to many
-        if ( isset($this->Params['obj_parent_prop']) && 0 == $this->Model->ID )
+        if ( isset($this->Params['obj_parent_prop']) )
         {
             $prop = $this->Params['obj_parent_prop'];
             if ( 0 < $this->Params['obj_parent_id'] )

@@ -480,10 +480,6 @@ class Zero_App
             if ( !file_exists($path = ZERO_PATH_APPLICATION . '/function.php') )
                 die('функции приложения не найдены: ' . $path);
         require_once $path;
-        if ( file_exists($path = ZERO_PATH_APP . '/constant.php') )
-            require_once $path;
-        else if ( file_exists($path = ZERO_PATH_APPLICATION . '/constant.php') )
-            require_once $path;
 
         spl_autoload_register(['Zero_App', 'Autoload']);
         set_exception_handler(['Zero_App', 'Exception']);

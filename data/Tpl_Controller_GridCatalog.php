@@ -34,13 +34,16 @@ class Zero_Controller_Grid extends Zero_Crud_Grid
     protected function Chunk_Init()
     {
         parent::Chunk_Init();
-        //
-        $this->Params['obj_parent_prop'] = 'TableName_ID';
-        $this->Params['obj_parent_name'] = '';
         if ( !isset($this->Params['obj_parent_prop']) )
+        {
+            $this->Params['obj_parent_prop'] = 'TableName_ID';
+            $this->Params['obj_parent_name'] = 'Название';
             $this->Params['obj_parent_path'] = ['root'];
+            $this->Params['obj_parent_id'] = 0;
+        }
         if ( isset($_REQUEST['pid']) )
         {
+            $this->Params['obj_parent_id'] = $_REQUEST['pid'];
             //  move up
             if ( isset($this->Params['obj_parent_path'][$_REQUEST['pid']]) )
             {
@@ -57,10 +60,10 @@ class Zero_Controller_Grid extends Zero_Crud_Grid
             else
             {
                 $ObjectGo = Zero_Model::Makes($this->ModelName, $_REQUEST['pid']);
-                $ObjectGo->Load('Name');
-                $this->Params['obj_parent_path'][$_REQUEST['pid']] = $ObjectGo->Name;
+                $this->Params['obj_parent_path'][$_REQUEST['pid']] = $ObjectGo->NameMenu;
                 unset($ObjectGo);
             }
+            Zero_Filter::Factory($this->Model)->Reset();
         }
         return true;
     }

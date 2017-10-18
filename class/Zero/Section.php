@@ -174,7 +174,7 @@ class Zero_Section extends Zero_Model
     {
         return [
             'Url' => [],
-            'UrlThis' => ['Form' => 'Text'],
+            'UrlThis' => [],
             'UrlRedirect' => [],
             'Layout' => [],
             'Controllers_ID' => [],

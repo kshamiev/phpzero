@@ -73,7 +73,6 @@ return [
     'Content Target' => 'Место и вид вывода',
     'Content Target options' => ['TopLeft' => 'TopLeft'],
     'NameMenu' => 'В навигации',
-    'NameSub' => 'Позаголовок',
     'Img' => 'Картинка',
     'Zero_Controllers Controller' => 'Контроллер',
     'Zero_Controllers Day' => 'Дни',

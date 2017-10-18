@@ -26,8 +26,11 @@ class Zero_Section_Edit extends Zero_Crud_Edit
 
     protected function Chunk_Init()
     {
+        //  relation transition one to many (CL)
         $this->Params['obj_parent_prop'] = 'Section_ID';
-        $this->Params['obj_parent_name'] = '';
+        $this->Params['obj_parent_name'] = 'Раздел - Страница';
+        //
         parent::Chunk_Init();
+        return true;
     }
 }

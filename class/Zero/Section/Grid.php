@@ -33,15 +33,16 @@ class Zero_Section_Grid extends Zero_Crud_Grid
     protected function Chunk_Init()
     {
         parent::Chunk_Init();
-        //
-        $this->Params['obj_parent_prop'] = 'Section_ID';
-        $this->Params['obj_parent_name'] = '';
-        if ( !isset($this->Params['obj_parent_path']) )
+        if ( !isset($this->Params['obj_parent_prop']) )
         {
+            $this->Params['obj_parent_prop'] = 'Section_ID';
+            $this->Params['obj_parent_name'] = 'Раздел - Страница';
             $this->Params['obj_parent_path'] = ['root'];
+            $this->Params['obj_parent_id'] = 0;
         }
         if ( isset($_REQUEST['pid']) )
         {
+            $this->Params['obj_parent_id'] = $_REQUEST['pid'];
             //  move up
             if ( isset($this->Params['obj_parent_path'][$_REQUEST['pid']]) )
             {
@@ -57,10 +58,11 @@ class Zero_Section_Grid extends Zero_Crud_Grid
             //  move down
             else
             {
-                $ObjectGo = Zero_Section::Make($_REQUEST['pid']);
+                $ObjectGo = Zero_Model::Makes($this->ModelName, $_REQUEST['pid']);
                 $this->Params['obj_parent_path'][$_REQUEST['pid']] = $ObjectGo->NameMenu;
                 unset($ObjectGo);
             }
+            Zero_Filter::Factory($this->Model)->Reset();
         }
         $Filter = Zero_Filter::Factory($this->Model);
         if ( false == $Filter->IsSet )
