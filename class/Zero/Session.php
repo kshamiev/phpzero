@@ -120,7 +120,8 @@ class Zero_Session extends ArrayObject
      */
     public static function Rem($index)
     {
-        if ( self::$_Session->offsetExists($index) )
+        $index = trim($index);
+        if ( $index && self::$_Session->offsetExists($index) )
             self::$_Session->offsetUnset($index);
     }
 }
