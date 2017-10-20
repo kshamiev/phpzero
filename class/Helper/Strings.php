@@ -85,7 +85,7 @@ final class Helper_Strings
         'Э' => 'E',
         'Ю' => 'Yu',
         'Я' => 'Ya',
-        ' ' => '_'
+        ' ' => '-'
     ];
 
     /**

@@ -133,7 +133,7 @@
                 </div>
 
                 {else if ( 'Textarea' == $row['Form'] )}
-                <textarea class="field" name="Prop[{$Prop}]" rows="7">{htmlspecialchars($Object->$Prop)}</textarea>
+                <textarea class="field" name="Prop[{$Prop}]" rows="5">{htmlspecialchars($Object->$Prop)}</textarea>
 
                 {else if ( 'Datetime' == $row['Form'] )}
                 <input class="field datetimepicker" type="text" id="{$Prop}" name="Prop[{$Prop}]" value="{htmlspecialchars($Object->$Prop)}">

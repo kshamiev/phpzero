@@ -15,13 +15,13 @@ class Zero_Controller_Sample extends Zero_Controller
     /**
      * Контроллер по умолчанию.
      *
-     * @return string
+     * @return Zero_View
      */
     public function Action_Default()
     {
         $this->Chunk_Init();
         $this->Chunk_View();
-        return $this->View->Fetch();
+        return $this->View;
     }
 
     //// Пример консольного контроллера
