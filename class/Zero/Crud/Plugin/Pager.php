@@ -13,7 +13,7 @@ class Zero_Crud_Plugin_Pager extends Zero_Controller
     /**
      * Create views.
      *
-     * @return Zero_View
+     * @return string
      */
     public function Action_Default()
     {

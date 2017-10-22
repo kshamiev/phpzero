@@ -25,7 +25,7 @@ class Zero_Content_GridSection extends Zero_Crud_Grid
     /**
      * Initialization of the input parameters
      *
-     * @return boolean flag stop execute of the next chunk
+     * @return boolean статус выполнения чанка
      */
     protected function Chunk_Init()
     {

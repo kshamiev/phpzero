@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Section edit.
  *
@@ -24,6 +25,11 @@ class Zero_Section_Edit extends Zero_Crud_Edit
      */
     protected $ViewName = 'Zero_Crud_Edit';
 
+    /**
+     * Initialization of the stack chunks and input parameters
+     *
+     * @return boolean статус выполнения чанка
+     */
     protected function Chunk_Init()
     {
         //  relation transition one to many (CL)

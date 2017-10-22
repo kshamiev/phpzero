@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Controller. Editing a text file.
  *
@@ -8,17 +9,22 @@
  */
 class Zero_System_FileEdit extends Zero_Controller
 {
+    /**
+     * Контроллер по умолчанию
+     *
+     * @return Zero_View
+     */
     public function Action_Default()
     {
         $this->Chunk_Init();
         $this->Chunk_View();
-        return $this->View->Fetch();
+        return $this->View;
     }
 
     /**
      * Initialization of the stack chunks and input parameters
      *
-     * @return boolean flag stop execute of the next chunk
+     * @return boolean статус выполнения чанка
      */
     protected function Chunk_Init()
     {
@@ -27,12 +33,13 @@ class Zero_System_FileEdit extends Zero_Controller
             $this->Params['obj_parent_path'] = $_REQUEST['path'];
         if ( isset($_REQUEST['file_name']) )
             $this->Params['file_name'] = $_REQUEST['file_name'];
+        return true;
     }
 
     /**
      * Create views.
      *
-     * @return boolean flag stop execute of the next chunk
+     * @return boolean статус выполнения чанка
      */
     protected function Chunk_View()
     {
@@ -42,20 +49,26 @@ class Zero_System_FileEdit extends Zero_Controller
         $this->View->Assign('name', $this->Params['file_name']);
         $this->View->Assign('data', file_get_contents($this->Params['obj_parent_path'] . '/' . $this->Params['file_name']));
         $this->View->Assign('Action', Zero_App::$Controller->Get_Action_List());
+        return true;
     }
 
+    /**
+     * Сохранение файла
+     *
+     * @return Zero_View
+     */
     public function Action_FileSave()
     {
         $this->Chunk_Init();
         $this->Chunk_FileSave();
         $this->Chunk_View();
-        return $this->View->Fetch();
+        return $this->View;
     }
 
     /**
      * Save a text file.
      *
-     * @return boolean flag stop execute of the next chunk
+     * @return boolean статус выполнения чанка
      */
     public function Chunk_FileSave()
     {

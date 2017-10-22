@@ -32,7 +32,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
     {
         $this->Chunk_Init();
         $this->Chunk_View();
-        return $this->View->Fetch();
+        return $this->View;
     }
 
     /**
@@ -45,7 +45,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
         $this->Chunk_Init();
         $this->Chunk_Remove();
         $this->Chunk_View();
-        return $this->View->Fetch();
+        return $this->View;
     }
 
     /**
@@ -101,7 +101,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
         $Filter->IsSet = true;
 
         $this->Chunk_View();
-        return $this->View->Fetch();
+        return $this->View;
     }
 
     /**
@@ -118,13 +118,13 @@ abstract class Zero_Crud_Grid extends Zero_Controller
         $Filter->Page = 1;
 
         $this->Chunk_View();
-        return $this->View->Fetch();
+        return $this->View;
     }
 
     /**
      * Initialization filters
      *
-     * @return boolean flag stop execute of the next chunk
+     * @return boolean статус выполнения чанка
      */
     protected function Chunk_Init()
     {
@@ -158,13 +158,13 @@ abstract class Zero_Crud_Grid extends Zero_Controller
     public function Action_Add()
     {
         $this->View = new Zero_View($this->ViewName);
-        return $this->View->Fetch();
+        return $this->View;
     }
 
     /**
      * Create views.
      *
-     * @return boolean flag stop execute of the next chunk
+     * @return boolean статус выполнения чанка
      */
     protected function Chunk_View()
     {
@@ -268,7 +268,7 @@ abstract class Zero_Crud_Grid extends Zero_Controller
      * - Remove binary data object
      * - Remove cross relation
      *
-     * @return boolean flag stop execute of the next chunk
+     * @return boolean статус выполнения чанка
      */
     protected function Chunk_Remove()
     {

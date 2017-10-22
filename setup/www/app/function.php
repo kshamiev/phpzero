@@ -20,12 +20,15 @@ function app_route()
     }
 
     // чпу параметры
-    $p = array_pop($row);
-    $p = explode('.', $p)[0];
-    $p = explode('_', $p);
-    if ( 1 < count($p) )
-        Zero_App::$RouteParams[1] = explode('-', $p[1]);
-    $row[] = $p[0];
+    $p = explode('-', explode('.', end($row))[0]);
+    foreach ($p as $v)
+    {
+        if ( 0 < $v )
+        {
+            Zero_App::$RouteParams[1] = $p;
+            array_pop($row);
+        }
+    }
 
     // uri
     Zero_App::$RouteParams[0] = '/' . implode('/', $row);

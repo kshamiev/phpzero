@@ -87,6 +87,7 @@ return [
     'Zero_Controllers Url' => 'Урл API контроллеров',
     'Zero_Controllers Week' => 'День недели',
     'Zero_Controllers IsAuthorized' => 'Авторизованный (для API к.)',
+    'Zero_Controllers DateExecute' => 'Последнее выполнение',
     'Zero_Controllers IsAuthorized options' => ['no' => 'нет', 'yes' => 'да'],
     'Controllers_ID' => 'Контроллер',
     'Zero_Section Name' => 'Заголовок',

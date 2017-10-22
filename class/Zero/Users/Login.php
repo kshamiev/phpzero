@@ -29,12 +29,13 @@ class Zero_Users_Login extends Zero_Controller
     /**
      * Контроллер по умолчанию
      *
-     * @return string собранный шаблон
+     * @return Zero_View
      */
     public function Action_Default()
     {
         $this->Chunk_Init();
-        return $this->Chunk_View();
+        $this->Chunk_View();
+        return $this->View;
     }
 
     /**
@@ -42,7 +43,7 @@ class Zero_Users_Login extends Zero_Controller
      *
      * Redirect referrer page
      *
-     * @return string собранный шаблон
+     * @return Zero_View
      */
     public function Action_Login()
     {
@@ -50,7 +51,10 @@ class Zero_Users_Login extends Zero_Controller
 
         // Инициализация
         if ( !$_REQUEST['Login'] || !$_REQUEST['Password'] )
-            return $this->Chunk_View();
+        {
+            $this->Chunk_View();
+            return $this->View;
+        }
 
         $this->Model->Load_Login($_REQUEST['Login']);
 
@@ -58,29 +62,32 @@ class Zero_Users_Login extends Zero_Controller
         if ( 0 == $this->Model->ID )
         {
             $this->SetMessage(-1, ["Пользователь не зарегистрирован"]);
-            return $this->Chunk_View();
+            $this->Chunk_View();
+            return $this->View;
         }
         else if ( $this->Model->Password != md5($_REQUEST['Password']) )
         {
             $this->SetMessage(-1, ["Пароль не верный"]);
-            return $this->Chunk_View();
+            $this->Chunk_View();
+            return $this->View;
         }
         else if ( !$this->Model->Groups_ID )
         {
             $this->SetMessage(-1, ["Пользователь не входит ни в одну группу"]);
-            return $this->Chunk_View();
+            $this->Chunk_View();
+            return $this->View;
         }
 
         // Авторизация
         if ( isset($_REQUEST['Memory']) && $_REQUEST['Memory'] )
         {
             $this->Model->Token = $this->Model->Get_TokenNew();
-//            setcookie(Zero_App::$Config->Site_Token, $this->Model->Token, time() + 2592000, '/');
+            //            setcookie(Zero_App::$Config->Site_Token, $this->Model->Token, time() + 2592000, '/');
         }
         else
         {
             $this->Model->Token = '';
-//            setcookie(Zero_App::$Config->Site_Token, null, 0, '/');
+            //            setcookie(Zero_App::$Config->Site_Token, null, 0, '/');
         }
         $this->Model->IsOnline = 'yes';
         $this->Model->DateOnline = date('Y-m-d H:i:s');
@@ -88,14 +95,14 @@ class Zero_Users_Login extends Zero_Controller
 
         Zero_App::$Users = $this->Model;
         Zero_App::$Users->Factory_Set();
-        Zero_App::ResponseRedirect($this->UrlRedirect);
-        return '';
+        Zero_Response::Redirect($this->UrlRedirect);
+        return $this->View;
     }
 
     /**
      * Recovery of user details.
      *
-     * @return string собранный шаблон
+     * @return Zero_View
      */
     public function Action_Reminder()
     {
@@ -104,14 +111,16 @@ class Zero_Users_Login extends Zero_Controller
         if ( $_REQUEST['Users']['Keystring'] != Zero_App::$Users->Keystring )
         {
             $this->SetMessage(-1, ['Контрольная строка не верна']);
-            return $this->Chunk_View();
+            $this->Chunk_View();
+            return $this->View;
         }
 
         $this->Model->Load_Email($_REQUEST['Users']['Email']);
         if ( 0 == $this->Model->ID )
         {
             $this->SetMessage(-1, ['Пользователь не найден']);
-            return $this->Chunk_View();
+            $this->Chunk_View();
+            return $this->View;
         }
 
         $password = substr(md5(uniqid(mt_rand())), 0, 10);
@@ -132,15 +141,15 @@ class Zero_Users_Login extends Zero_Controller
             ],
             'Subject' => "Reminder access details " . HTTP,
             'Message' => $message,
-            'Attach' => [
-            ],
+            'Attach' => [],
         ];
         $cnt = Helper_Mail::SendMessage($email);
         if ( 0 < $cnt )
             $this->SetMessageError(-1, ["Реквизиты не отправлены на почту"]);
         else
             $this->SetMessage(0, ["Реквизиты отправлены на почту"]);
-        return $this->Chunk_View();
+        $this->Chunk_View();
+        return $this->View;
     }
 
     /**
@@ -153,11 +162,13 @@ class Zero_Users_Login extends Zero_Controller
         Zero_Session::Unset_Instance();
         session_unset();
         session_destroy();
-        Zero_App::ResponseRedirect(ZERO_HTTP);
+        Zero_Response::Redirect(ZERO_HTTP);
     }
 
     /**
-     * Initialization of the action and input parameters
+     * Initialization of the stack chunks and input parameters
+     *
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_Init()
     {
@@ -174,12 +185,13 @@ class Zero_Users_Login extends Zero_Controller
         }
         $this->Model = Zero_Users::Make();
         $this->View = new Zero_View(get_class($this));
+        return true;
     }
 
     /**
      * Формирование вывода
      *
-     * @return string
+     * @return Zero_View
      */
     protected function Chunk_View()
     {

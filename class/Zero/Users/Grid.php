@@ -25,10 +25,11 @@ class Zero_Users_Grid extends Zero_Crud_Grid
      */
     protected $ViewName = 'Zero_Crud_Grid';
 
+
     /**
-     * Vy`polnenie dei`stvii`
+     * Initialization of the stack chunks and input parameters
      *
-     * @return bool
+     * @return boolean flag stop execute of the next chunk
      */
     protected function Chunk_Init()
     {
@@ -110,6 +111,7 @@ class Zero_Users_Grid extends Zero_Crud_Grid
         else
             $Object->$prop = $this->Params['obj_parent_id'];
         $Object->Save();
-        return $this->SetMessage();
+        $this->SetMessage();
+        return true;
     }
 }

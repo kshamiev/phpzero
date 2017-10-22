@@ -24,10 +24,16 @@ class Zero_Users_Edit extends Zero_Crud_Edit
      */
     protected $ViewName = 'Zero_Crud_Edit';
 
+    /**
+     * Initialization of the stack chunks and input parameters
+     *
+     * @return boolean flag stop execute of the next chunk
+     */
     protected function Chunk_Init()
     {
         $this->Params['obj_parent_prop'] = 'Users_ID';
         $this->Params['obj_parent_name'] = '';
         parent::Chunk_Init();
+        return true;
     }
 }

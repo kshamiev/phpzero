@@ -19,13 +19,13 @@ class Zero_Section_Access extends Zero_Controller
     /**
      * Vy`polnenie dei`stvii`
      *
-     * @return Zero_View or string
+     * @return Zero_View
      */
     public function Action_Default()
     {
         $this->Chunk_Init();
         $this->Chunk_View();
-        return $this->View->Fetch();
+        return $this->View;
     }
 
     /**
@@ -51,12 +51,13 @@ class Zero_Section_Access extends Zero_Controller
         }
 
         $this->Chunk_View();
-        return $this->View->Fetch();
+        return $this->View;
     }
 
     /**
      * Initialization of the stack chunks and input parameters
      *
+     * @return boolean статус выполнения чанка
      */
     protected function Chunk_Init()
     {
@@ -66,11 +67,13 @@ class Zero_Section_Access extends Zero_Controller
             $this->Params['obj_parent_id'] = 0;
         $this->View = new Zero_View(get_class($this));
         $this->Model = Zero_Section::Make($this->Params['obj_parent_id'], true);
+        return true;
     }
 
     /**
      * Create views.
      *
+     * @return boolean статус выполнения чанка
      * @throws Exception
      */
     protected function Chunk_View()
@@ -88,5 +91,6 @@ class Zero_Section_Access extends Zero_Controller
             $access[$row['Groups_ID']][$row['Action']] = 1;
         }
         $this->View->Assign('access', $access);
+        return true;
     }
 }

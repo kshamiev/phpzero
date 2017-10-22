@@ -14,7 +14,7 @@ class Zero_Content_Plugin extends Zero_Controller
     /**
      * Create views.
      *
-     * @return boolean flag stop execute of the next chunk
+     * @return string
      */
     public function Action_Default()
     {

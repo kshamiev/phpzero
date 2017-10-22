@@ -17,7 +17,7 @@ class Zero_Section_Plugin_SeoTag extends Zero_Controller
     /**
      * Create views meta tags.
      *
-     * @return boolean flag stop execute of the next chunk
+     * @return Zero_View
      */
     public function Action_Default()
     {
@@ -36,13 +36,13 @@ class Zero_Section_Plugin_SeoTag extends Zero_Controller
         {
             $this->View->Assign('seo_index', '');
         }
-        return $this->View->Fetch();
+        return $this->View;
     }
 
     /**
      * Инициализация контроллера
      *
-     * @return bool
+     * @return bool статус выполнения чанка
      */
     protected function Chunk_Init()
     {

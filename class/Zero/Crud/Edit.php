@@ -32,7 +32,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
     {
         $this->Chunk_Init();
         $this->Chunk_View();
-        return $this->View->Fetch();
+        return $this->View;
     }
 
     /**
@@ -45,7 +45,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         $this->Chunk_Init();
         $this->Chunk_Add();
         $this->Chunk_View();
-        return $this->View->Fetch();
+        return $this->View;
     }
 
     /**
@@ -58,13 +58,13 @@ abstract class Zero_Crud_Edit extends Zero_Controller
         $this->Chunk_Init();
         $this->Chunk_Save();
         $this->Chunk_View();
-        return $this->View->Fetch();
+        return $this->View;
     }
 
     /**
-     * ������������� �������� ����������� �� ��� ����������
+     * Инициализация контроллера
      *
-     * @return boolean ���� ��������
+     * @return boolean статус выполнения чанка
      */
     protected function Chunk_Init()
     {
@@ -86,9 +86,11 @@ abstract class Zero_Crud_Edit extends Zero_Controller
     }
 
     /**
-     * ����� ������ �������� ����������� � ������
+     * Визуализация выполнения контроллера.
      *
-     * @return boolean ���� ��������
+     * Вывод результата работы в шаблон
+     *
+     * @return boolean статус выполнения чанка
      * @throws Exception
      */
     protected function Chunk_View()
@@ -122,7 +124,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
     /**
      *  Adding an object
      *
-     * @return boolean ���� ��������
+     * @return boolean статус выполнения чанка
      */
     protected function Chunk_Add()
     {
@@ -147,7 +149,7 @@ abstract class Zero_Crud_Edit extends Zero_Controller
     /**
      * Save object
      *
-     * @return boolean ���� ��������
+     * @return boolean статус выполнения чанка
      */
     protected function Chunk_Save()
     {

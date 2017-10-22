@@ -8,17 +8,13 @@
  *
  * @package Zero.Section.Navigation
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
- * @version $Id$
- * @link http://www.phpzero.com/
- * @copyright <PHP_ZERO_COPYRIGHT>
- * @license http://www.phpzero.com/license/
  */
 class Zero_Section_Plugin_NavigationMain extends Zero_Controller
 {
     /**
      * Create views meta tags.
      *
-     * @return boolean flag stop execute of the next chunk
+     * @return Zero_View
      */
     public function Action_Default()
     {
@@ -27,13 +23,13 @@ class Zero_Section_Plugin_NavigationMain extends Zero_Controller
         $this->Chunk_Init();
         $this->View->Assign('Section', Zero_App::$Section);
         $this->View->Assign('navigation', $Section->Get_Navigation_Child());
-        return $this->View->Fetch();
+        return $this->View;
     }
 
     /**
      * Инициализация контроллера
      *
-     * @return bool
+     * @return bool статус выполнения чанка
      */
     protected function Chunk_Init()
     {

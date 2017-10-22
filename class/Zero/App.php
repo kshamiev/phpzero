@@ -48,6 +48,10 @@ define('ZERO_PATH_ZERO', ZERO_PATH_SITE . '/phpzero');
  * @package Zero.Component
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
+ * @todo контроль выполнения консольных контроллеров через поле фиксирующее послдний успешный запуск контроллера
+ * @todo контроль работоспособности контроллера апи интелектуальная через OPTIONS
+ *
+ *
  */
 class Zero_App
 {

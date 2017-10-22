@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Controller. File manager.
  *
@@ -14,11 +15,16 @@
  */
 class Zero_System_FileManager extends Zero_Controller
 {
+    /**
+     * Контроллер по умолчанию
+     *
+     * @return Zero_View
+     */
     public function Action_Default()
     {
         $this->Chunk_Init();
         $this->Chunk_View();
-        return $this->View->Fetch();
+        return $this->View;
     }
 
     /**
@@ -31,6 +37,7 @@ class Zero_System_FileManager extends Zero_Controller
         $this->View = new Zero_View(__CLASS__);
         if ( !isset($this->Params['obj_parent_path']) )
             $this->Params['obj_parent_path'] = array('..' => ZERO_PATH_SITE);
+        return true;
     }
 
     /**
@@ -75,14 +82,20 @@ class Zero_System_FileManager extends Zero_Controller
         $this->View->Assign('DataCount', count($folder_mas) + count($files_mas));
         //  Allowed file extensions to edit
         $this->View->Assign('file_edit_flag', array('txt', 'ini', 'log', 'php', 'htm', 'html', 'css', 'js'));
+        return true;
     }
 
+    /**
+     * Переход по каталогу
+     *
+     * @return Zero_View
+     */
     public function Action_FolderGo()
     {
         $this->Chunk_Init();
         $this->Chunk_FolderGo();
         $this->Chunk_View();
-        return $this->View->Fetch();
+        return $this->View;
     }
 
     /**
@@ -110,14 +123,20 @@ class Zero_System_FileManager extends Zero_Controller
             $path = end($this->Params['obj_parent_path']);
             $this->Params['obj_parent_path'][$_REQUEST['dir_name']] = $path . '/' . $_REQUEST['dir_name'];
         }
+        return true;
     }
 
+    /**
+     * Удаление каталога
+     *
+     * @return Zero_View
+     */
     public function Action_FolderRemove()
     {
         $this->Chunk_Init();
         $this->Chunk_FolderRemove();
         $this->Chunk_View();
-        return $this->View->Fetch();
+        return $this->View;
     }
 
     /**
@@ -134,12 +153,17 @@ class Zero_System_FileManager extends Zero_Controller
         return $this->SetMessage();
     }
 
+    /**
+     * Удаление файла
+     *
+     * @return Zero_View
+     */
     public function Action_FileRemove()
     {
         $this->Chunk_Init();
         $this->Chunk_FileRemove();
         $this->Chunk_View();
-        return $this->View->Fetch();
+        return $this->View;
     }
 
     /**
@@ -156,28 +180,25 @@ class Zero_System_FileManager extends Zero_Controller
         return $this->SetMessage();
     }
 
+    /**
+     * Скачивание файла
+     */
     public function Action_FileDownLoad()
     {
-        $this->Chunk_Init();
-        $this->Chunk_FileDownLoad();
-        $this->Chunk_View();
-        return $this->View->Fetch();
+        Zero_Response::File(end($this->Params['obj_parent_path']) . '/' . $_REQUEST['file_name']);
     }
 
     /**
-     * The download the user to the file
+     * Загрузка файла на сервер
+     *
+     * @return Zero_View
      */
-    protected function Chunk_FileDownLoad()
-    {
-        Zero_App::ResponseFile(end($this->Params['obj_parent_path']) . '/' . $_REQUEST['file_name']);
-    }
-
     public function Action_FileUpload()
     {
         $this->Chunk_Init();
         $this->Chunk_FileUpload();
         $this->Chunk_View();
-        return $this->View->Fetch();
+        return $this->View;
     }
 
     /**
@@ -204,12 +225,17 @@ class Zero_System_FileManager extends Zero_Controller
         return true;
     }
 
+    /**
+     * Добавление каьталога
+     *
+     * @return Zero_View
+     */
     public function Action_FolderAdd()
     {
         $this->Chunk_Init();
         $this->Chunk_FolderAdd();
         $this->Chunk_View();
-        return $this->View->Fetch();
+        return $this->View;
     }
 
     /**
@@ -230,10 +256,10 @@ class Zero_System_FileManager extends Zero_Controller
     /**
      * Change the file
      *
-     * @return boolean flag stop execute of the next chunk
+     * @return Zero_View
      */
     public function Action_EditFile()
     {
-        return $this->View->Fetch();
+        return $this->View;
     }
 }

@@ -17,7 +17,7 @@ class Zero_Section_Plugin_NavigationChild extends Zero_Controller
     /**
      * Vy`polnenie dei`stvii`
      *
-     * @return Zero_View or string
+     * @return Zero_View
      */
     public function Action_Default()
     {
@@ -35,13 +35,13 @@ class Zero_Section_Plugin_NavigationChild extends Zero_Controller
         $this->Chunk_Init();
         $this->View->Assign('Section', Zero_App::$Section);
         $this->View->Assign('navigation', $navigation);
-        return $this->View->Fetch();
+        return $this->View;
     }
 
     /**
      * Инициализация контроллера
      *
-     * @return bool
+     * @return bool статус выполнения чанка
      */
     protected function Chunk_Init()
     {

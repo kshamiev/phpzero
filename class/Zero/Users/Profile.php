@@ -20,7 +20,7 @@ class Zero_Users_Profile extends Zero_Controller
     protected $Model = null;
 
     /**
-     * Vy`polnenie dei`stvii`
+     * Контроллер по умолчанию
      *
      * @return Zero_View
      */
@@ -28,11 +28,11 @@ class Zero_Users_Profile extends Zero_Controller
     {
         $this->Chunk_Init();
         $this->Chunk_View();
-        return $this->View->Fetch();
+        return $this->View;
     }
 
     /**
-     * Vy`polnenie dei`stvii`
+     * Изменение профиля пользователя
      *
      * @return Zero_View
      */
@@ -41,7 +41,7 @@ class Zero_Users_Profile extends Zero_Controller
         $this->Chunk_Init();
         $this->Chunk_Profile();
         $this->Chunk_View();
-        return $this->View->Fetch();
+        return $this->View;
     }
 
     /**
@@ -85,7 +85,7 @@ class Zero_Users_Profile extends Zero_Controller
     /**
      * Create views.
      *
-     * @return Zero_View or string
+     * @return bool
      */
     protected function Chunk_View()
     {

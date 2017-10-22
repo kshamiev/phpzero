@@ -16,7 +16,7 @@ class Zero_Users_Plugin_Online extends Zero_Controller
      *
      * Update the date and time of the presence of the current user
      *
-     * @return boolean flag stop execute of the next chunk
+     * @return string
      */
     public function Action_Default()
     {

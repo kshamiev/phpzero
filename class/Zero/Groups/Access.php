@@ -26,13 +26,13 @@ class Zero_Groups_Access extends Zero_Controller
     /**
      * Vy`polnenie dei`stvii`
      *
-     * @return Zero_View or string
+     * @return Zero_View
      */
     public function Action_Default()
     {
         $this->Chunk_Init();
         $this->Chunk_View();
-        return $this->View->Fetch();
+        return $this->View;
     }
 
     /**
@@ -45,7 +45,7 @@ class Zero_Groups_Access extends Zero_Controller
         $this->Chunk_Init();
         $this->Chunk_Save();
         $this->Chunk_View();
-        return $this->View->Fetch();
+        return $this->View;
     }
 
     /**
@@ -58,13 +58,13 @@ class Zero_Groups_Access extends Zero_Controller
         $this->Chunk_Init();
         $this->Chunk_Copy();
         $this->Chunk_View();
-        return $this->View->Fetch();
+        return $this->View;
     }
 
     /**
      * Initialization of the stack chunks and input parameters
      *
-     * @return boolean flag stop execute of the next chunk
+     * @return boolean статус выполнения чанка
      */
     protected function Chunk_Init()
     {
@@ -76,11 +76,13 @@ class Zero_Groups_Access extends Zero_Controller
             $this->Params['obj_parent_id'] = 0;
         $this->View = new Zero_View($this->ViewName);
         $this->Model = Zero_Model::Makes($this->ModelName, $this->Params['obj_parent_id'], true);
+        return true;
     }
 
     /**
      * Create views.
      *
+     * @return boolean статус выполнения чанка
      * @throws Exception
      */
     protected function Chunk_View()
@@ -141,12 +143,13 @@ class Zero_Groups_Access extends Zero_Controller
         $this->View->Assign('Groups', $this->Model);
         $this->View->Assign('groups_list', $groups_list);
         $this->View->Assign('pid', $this->Params['obj_parent_id']);
+        return true;
     }
 
     /**
      * Preservation of the rights of access
      *
-     * @return boolean flag stop execute of the next chunk
+     * @return boolean статус выполнения чанка
      */
     protected function Chunk_Save()
     {
@@ -183,13 +186,14 @@ class Zero_Groups_Access extends Zero_Controller
         //  Reset Cache
         $Model = Zero_Model::Makes('Zero_Groups', $this->Params['obj_parent_id']);
         $Model->CH->Reset();
-        return $this->SetMessage(0, ['Сохранено']);
+        $this->SetMessage(0, ['Сохранено']);
+        return true;
     }
 
     /**
      * Copying permissions
      *
-     * @return boolean flag stop execute of the next chunk
+     * @return boolean статус выполнения чанка
      */
     protected function Chunk_Copy()
     {
@@ -209,6 +213,7 @@ class Zero_Groups_Access extends Zero_Controller
           `Groups_ID` = {$this->Params['obj_parent_id']}
         ";
         Zero_DB::Update($sql);
-        return $this->SetMessage(0, ['Скопировано']);
+        $this->SetMessage(0, ['Скопировано']);
+        return true;
     }
 }

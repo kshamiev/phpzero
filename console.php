@@ -18,10 +18,18 @@ if ( count($_SERVER['argv']) > 1 )
     else
         $_REQUEST['act'] = 'Action_Default';
     $Controller = Zero_Controller::Makes($arr[0]);
-    echo $Controller->$_REQUEST['act']();
+    $flag = $Controller->$_REQUEST['act']();
+
+    if ( Zero_App::$Config->Site_UseDB )
+    {
+        $sql = "UPDATE Controllers SET DateExecute = NOW() WHERE Controller = '{$arr[0]}'";
+        Zero_DB::Update($sql);
+    }
+    echo $flag;
 }
 else //  Launch Manager console task
 {
+    $flag = 0;
     $week = date('w');
     $month = date('n');
     $day = date('j');
@@ -81,8 +89,10 @@ else //  Launch Manager console task
         else
         {
             Zero_Logs::Set_Message_Error('NOT FOUND ROUTE CONSOLE: ' . $path);
+            $flag = 1;
         }
     }
+    echo $flag;
 }
 
 Zero_Response::Console();

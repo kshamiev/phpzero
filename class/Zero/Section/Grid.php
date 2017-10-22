@@ -28,7 +28,7 @@ class Zero_Section_Grid extends Zero_Crud_Grid
     /**
      * Initialization filters
      *
-     * @return boolean flag stop execute of the next chunk
+     * @return boolean статус выполнения чанка
      */
     protected function Chunk_Init()
     {
@@ -75,14 +75,14 @@ class Zero_Section_Grid extends Zero_Crud_Grid
      *
      * Moving a node or branch of a tree branch in the current parent
      *
-     * @return boolean flag stop execute of the next chunk
+     * @return Zero_View
      */
     public function Action_CatalogMove()
     {
         $this->Chunk_Init();
         $this->Chunk_CatalogMove();
         $this->Chunk_View();
-        return $this->View->Fetch();
+        return $this->View;
     }
 
     /**
@@ -90,7 +90,7 @@ class Zero_Section_Grid extends Zero_Crud_Grid
      *
      * Moving a node or branch of a tree branch in the current parent
      *
-     * @return boolean flag stop execute of the next chunk
+     * @return boolean статус выполнения чанка
      */
     protected function Chunk_CatalogMove()
     {
@@ -105,7 +105,8 @@ class Zero_Section_Grid extends Zero_Crud_Grid
         else
             $Object->$prop = $this->Params['obj_parent_id'];
         $Object->Save();
-        return $this->SetMessage();
+        $this->SetMessage();
+        return true;
     }
 
     /**
@@ -113,20 +114,20 @@ class Zero_Section_Grid extends Zero_Crud_Grid
      *
      * Moving a node or branch of a tree branch in the current parent
      *
-     * @return boolean flag stop execute of the next chunk
+     * @return Zero_View
      */
     public function Action_UpdateUrl()
     {
         $this->Chunk_Init();
         $this->Chunk_UpdateUrl();
         $this->Chunk_View();
-        return $this->View->Fetch();
+        return $this->View;
     }
 
     /**
      * Initialization of the stack chunks and input parameters
      *
-     * @return boolean flag stop execute of the next chunk
+     * @return Zero_View
      */
     public function Action_FilterReset()
     {
@@ -138,7 +139,7 @@ class Zero_Section_Grid extends Zero_Crud_Grid
         $Filter->Page = 1;
 
         $this->Chunk_View();
-        return $this->View->Fetch();
+        return $this->View;
     }
 
     /**
@@ -148,7 +149,7 @@ class Zero_Section_Grid extends Zero_Crud_Grid
      * - After changing the links, move a catalog, the new installation
      *
      * @param integer $section_id ID of the parent directory
-     * @return boolean flag stop execute of the next chunk
+     * @return boolean статус выполнения чанка
      */
     protected function Chunk_UpdateUrl($section_id = null)
     {
@@ -161,6 +162,6 @@ class Zero_Section_Grid extends Zero_Crud_Grid
         if ( true == Zero_Section::DB_Update_Url($section_id) )
             return $this->SetMessage();
         else
-            return $this->SetMessage(-1, ['Error_Update_Url']);
+            return $this->SetMessageError(-1, ['Error_Update_Url']);
     }
 }

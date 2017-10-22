@@ -140,6 +140,7 @@ class Zero_Controllers extends Zero_Model
                 'Default' => 'no',
                 'Form' => 'Radio'
             ],
+            'DateExecute' => ['AliasDB' => 'z.DateExecute', 'DB' => 'D', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Readonly'],
         ];
     }
 
@@ -193,12 +194,8 @@ class Zero_Controllers extends Zero_Model
         return [
             'ID' => [],
             'Name' => [],
-            'Url' => [],
-            'Minute' => [],
-            'Hour' => [],
-            'Day' => [],
-            'Month' => [],
-            'Week' => [],
+            'Controller' => [],
+            'DateExecute' => [],
         ];
     }
 
@@ -222,6 +219,7 @@ class Zero_Controllers extends Zero_Model
                 'Controller' => [],
                 'IsActive' => [],
                 'Typ' => [],
+                'DateExecute' => [],
             ];
         else if ( 'Api' == $Model->Typ )
             return [
@@ -231,6 +229,7 @@ class Zero_Controllers extends Zero_Model
                 'IsActive' => [],
                 'IsAuthorized' => [],
                 'Typ' => [],
+                'DateExecute' => [],
             ];
         else if ( 'Console' == $Model->Typ )
             return [
@@ -243,6 +242,7 @@ class Zero_Controllers extends Zero_Model
                 'Week' => [],
                 'IsActive' => [],
                 'Typ' => [],
+                'DateExecute' => [],
             ];
         return [
             'Name' => [],

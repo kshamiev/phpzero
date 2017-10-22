@@ -10,6 +10,8 @@ class Zero_System_Console_RemTmpFileUpload extends Zero_Controller
 {
     /**
      * Удаление старых бинарных данных загруженных через веб (ajax)
+     *
+     * @return int
      */
     public function Action_Default()
     {

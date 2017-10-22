@@ -17,7 +17,7 @@ class Zero_Section_Plugin_NavigationLine extends Zero_Controller
     /**
      * Create views meta tags.
      *
-     * @return boolean flag stop execute of the next chunk
+     * @return Zero_View
      */
     public function Action_Default()
     {
@@ -42,13 +42,13 @@ class Zero_Section_Plugin_NavigationLine extends Zero_Controller
         }
         $this->Chunk_Init();
         $this->View->Assign('navigation', $navigation);
-        return $this->View->Fetch();
+        return $this->View;
     }
 
     /**
      * Инициализация контроллера
      *
-     * @return bool
+     * @return bool статус выполнения чанка
      */
     protected function Chunk_Init()
     {

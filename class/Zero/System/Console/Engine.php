@@ -10,6 +10,8 @@ class Zero_System_Console_Engine extends Zero_Controller
 {
     /**
      * Инженеринг моделей и контроллеров CRUD по БД (первой по умолчанию)
+     *
+     * @return int
      */
     public function Action_Default()
     {

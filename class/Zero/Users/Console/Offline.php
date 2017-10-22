@@ -12,9 +12,12 @@ class Zero_Users_Console_Offline extends Zero_Controller
 {
     /**
      * Оперделение не  активных пользователей.
+     *
+     * @return int
      */
     public function Action_Default()
     {
         Zero_Users::DB_Offline(Zero_App::$Config->Site_UsersTimeoutOnline);
+        return 0;
     }
 }

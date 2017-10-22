@@ -9,9 +9,8 @@
 class Zero_Users_Kcaptcha extends Zero_Controller
 {
     /**
-     * Create views.
+     * Генерация контрольной картинки и проверочного кода.
      *
-     * @return boolean flag stop execute of the next chunk
      */
     public function Action_Default()
     {
