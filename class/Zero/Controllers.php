@@ -218,6 +218,7 @@ class Zero_Controllers extends Zero_Model
                 'Name' => [],
                 'Controller' => [],
                 'IsActive' => [],
+                'IsAuthorized' => [],
                 'Typ' => [],
                 'DateExecute' => [],
             ];

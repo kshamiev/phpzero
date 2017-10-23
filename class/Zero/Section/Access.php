@@ -6,6 +6,8 @@
  * @package Zero.Section
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2017-10-08
+ * @todo Действие Default задается здесь из прав контроллера надо убрать
+ * @todo Сделать возможно управлять правами на контроле от сюда
  */
 class Zero_Section_Access extends Zero_Controller
 {
