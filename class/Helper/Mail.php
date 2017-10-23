@@ -101,7 +101,7 @@ class Helper_Mail
         // сообщения
         $contentMail .= "--" . $boundary . "\r\n";
         $contentMail .= "Content-type: text/html; charset={$this->smtp_charset}\r\n";
-        $contentMail .= "Content-Transfer-Encoding: base64\r\n";
+        $contentMail .= "Content-Transfer-Encoding: base64\r\n\r\n";
         $contentMail .= base64_encode($data['Message']) . "\r\n\r\n";
         // вложения
         foreach ($data['Attach'] as $path => $fileName)
