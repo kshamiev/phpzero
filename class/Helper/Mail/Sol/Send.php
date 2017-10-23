@@ -19,6 +19,6 @@ class Helper_Mail_Sol_Send
      */
     public function Action_Default()
     {
-        Helper_Mail::Send();
+        Helper_Mail::SendConsole();
     }
 }

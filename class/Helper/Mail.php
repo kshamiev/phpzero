@@ -61,24 +61,41 @@ class Helper_Mail
     /**
      * Отправка письма
      *
-     * @param array $data = [
-     * 'From' => ['Name' => 'From', 'Email' => 'from@mail.ru'],
-     * 'To' => 'Recipient@mail.ru',
-     * 'Subject' => 'Тема сообщения',
-     * 'Message' => 'Текст или тело сообщения',
-     * 'Attach' => [
-     *     'pathFile' => 'nameFile',
-     *     ],
-     * ];
+     * @param array $data [
+     *      'Reply' => ['Name' => 'ReplyName', 'Email' => 'reply@mail.ru'],
+     *      'From' => ['Name' => 'FromName', 'Email' => 'from@mail.ru'],
+     *      'Subject' => 'Тема сообщения',
+     *      'Message' => 'Текст или тело сообщения',
+     *      'To' => [
+     *          'Recipient@mail.ru' => 'NameRecipient',
+     *      ],
+     *      'Attach' => [
+     *          'pathFile' => 'nameFile',
+     *      ],
+     * ]
      * @return bool|string В случаи отправки вернет true, иначе текст ошибки
      */
-    public function Sending($data)
+    public function Send($data)
     {
+        $contentMail = "";
+        // reply
+        if ( isset($data['Reply']) )
+            $contentMail .= "Reply-To: {$data['Reply']['Name']} <{$data['Reply']['Email']}>\r\n";
+        // from
+        $contentMail .= "From: {$data['From']['Name']} <{$data['From']['Email']}>\r\n";
+        // to
+        $contentMail .= "To:";
+        foreach ($data['To'] as $key => $val)
+        {
+            $contentMail .= " {$val} <{$key}>,";
+        }
+        $contentMail = rtrim($contentMail, ',');
+        $contentMail .= "\r\n";
+        // subject
+        $contentMail .= 'Subject: =?' . $this->smtp_charset . '?B?' . base64_encode($data['Subject']) . "=?=\r\n";
         // заголовки
         $boundary = "--" . md5(uniqid(time())); // генерируем разделитель
-        $contentMail = "Date: " . date("D, d M Y H:i:s") . " UT\r\n";
-        $contentMail .= "From: {$data['From']['Name']} <{$data['From']['Email']}>\r\n";
-        $contentMail .= 'Subject: =?' . $this->smtp_charset . '?B?' . base64_encode($data['Subject']) . "=?=\r\n";
+        $contentMail .= "Date: " . date("D, d M Y H:i:s") . " UT\r\n";
         $contentMail .= "MIME-Version: 1.0\r\n";
         $contentMail .= 'Content-Type: multipart/mixed; boundary="' . $boundary . '"' . "\r\n\r\n";
         // сообщения
@@ -144,13 +161,14 @@ class Helper_Mail
                 throw new Exception('Error of command sending: MAIL FROM', 409);
             }
 
-            $data['To'] = ltrim($data['To'], '<');
-            $data['To'] = rtrim($data['To'], '>');
-            fputs($socket, "RCPT TO: <" . $data['To'] . ">\r\n");
-            if ( !$this->_parseServer($socket, "250") )
+            foreach ($data['To'] as $key => $val)
             {
-                fclose($socket);
-                throw new Exception('Error of command sending: RCPT TO', 409);
+                fputs($socket, "RCPT TO: <" . $key . ">\r\n");
+                if ( !$this->_parseServer($socket, "250") )
+                {
+                    fclose($socket);
+                    throw new Exception('Error of command sending: RCPT TO', 409);
+                }
             }
 
             fputs($socket, "DATA\r\n");
@@ -239,7 +257,7 @@ class Helper_Mail
      * Отправка почты ранее поставленной в очередь
      * Через БД
      */
-    public static function Send()
+    public static function SendConsole()
     {
         $sql = "
         SELECT
@@ -273,41 +291,26 @@ class Helper_Mail
      * @param array $data [
      *      'Reply' => ['Name' => 'ReplyName', 'Email' => 'reply@mail.ru'],
      *      'From' => ['Name' => 'FromName', 'Email' => 'from@mail.ru'],
+     *      'Subject' => 'Тема сообщения',
+     *      'Message' => 'Текст или тело сообщения',
      *      'To' => [
      *          'Recipient@mail.ru' => 'NameRecipient',
      *      ],
-     *      'Subject' => 'Тема сообщения',
-     *      'Message' => 'Текст или тело сообщения',
      *      'Attach' => [
      *          'pathFile' => 'nameFile',
      *      ],
      * ]
      * @return int количесвто ошибок отправления
-     * @deprecated Sending
      */
     public static function SendMessage($data)
     {
         $errorCnt = 0;
-        $dataT = [
-            'From' => ['Name' => $data['From']['Name'], 'Email' => $data['From']['Email']],
-            'To' => '',
-            'Subject' => $data['Subject'],
-            'Message' => nl2br($data['Message']),
-            'Attach' => $data['Attach'],
-        ];
         $mailSMTP = new Helper_Mail(Zero_App::$Config->Mail_Username, Zero_App::$Config->Mail_Password, Zero_App::$Config->Mail_Host, Zero_App::$Config->Mail_Port);
-        foreach ($data['To'] as $key => $val)
+        $result = $mailSMTP->Send($data);
+        if ( $result !== true )
         {
-            if ( strlen($key) < 3 )
-                $dataT['To'] = $val{'Email'};
-            else
-                $dataT['To'] = $key;
-            $result = $mailSMTP->Sending($dataT);
-            if ( $result !== true )
-            {
-                $errorCnt++;
-                Zero_Logs::Set_Message_Error($result);
-            }
+            $errorCnt = count($data['To']);
+            Zero_Logs::Set_Message_Error($result);
         }
         return $errorCnt;
     }
@@ -318,41 +321,27 @@ class Helper_Mail
      * @param array $data [
      *      'Reply' => ['Name' => 'ReplyName', 'Email' => 'reply@mail.ru'],
      *      'From' => ['Name' => 'FromName', 'Email' => 'from@mail.ru'],
+     *      'Subject' => 'Тема сообщения',
+     *      'Message' => 'Текст или тело сообщения',
      *      'To' => [
      *          'Recipient@mail.ru' => 'NameRecipient',
      *      ],
-     *      'Subject' => 'Тема сообщения',
-     *      'Message' => 'Текст или тело сообщения',
      *      'Attach' => [
      *          'pathFile' => 'nameFile',
      *      ],
      * ]
      * @return int количесвто ошибок отправления
-     * @deprecated Sending
+     * @deprecated Send
      */
     public static function SendMessageAuth($data)
     {
         $errorCnt = 0;
-        $dataT = [
-            'From' => ['Name' => $data['From']['Name'], 'Email' => $data['From']['Email']],
-            'To' => '',
-            'Subject' => $data['Subject'],
-            'Message' => nl2br($data['Message']),
-            'Attach' => $data['Attach'],
-        ];
         $mailSMTP = new Helper_Mail(Zero_App::$Config->Mail_Username, Zero_App::$Config->Mail_Password, Zero_App::$Config->Mail_Host, Zero_App::$Config->Mail_Port);
-        foreach ($data['To'] as $key => $val)
+        $result = $mailSMTP->Send($data);
+        if ( $result !== true )
         {
-            if ( strlen($key) < 3 )
-                $dataT['To'] = $val{'Email'};
-            else
-                $dataT['To'] = $key;
-            $result = $mailSMTP->Sending($dataT);
-            if ( $result !== true )
-            {
-                $errorCnt++;
-                Zero_Logs::Set_Message_Error($result);
-            }
+            $errorCnt = count($data['To']);
+            Zero_Logs::Set_Message_Error($result);
         }
         return $errorCnt;
     }
@@ -363,41 +352,27 @@ class Helper_Mail
      * @param array $data [
      *      'Reply' => ['Name' => 'ReplyName', 'Email' => 'reply@mail.ru'],
      *      'From' => ['Name' => 'FromName', 'Email' => 'from@mail.ru'],
+     *      'Subject' => 'Тема сообщения',
+     *      'Message' => 'Текст или тело сообщения',
      *      'To' => [
      *          'Recipient@mail.ru' => 'NameRecipient',
      *      ],
-     *      'Subject' => 'Тема сообщения',
-     *      'Message' => 'Текст или тело сообщения',
      *      'Attach' => [
      *          'pathFile' => 'nameFile',
      *      ],
      * ]
      * @return int количесвто ошибок отправления
-     * @deprecated Sending
+     * @deprecated Send
      */
     public static function SendMessageAuthSsl($data)
     {
         $errorCnt = 0;
-        $dataT = [
-            'From' => ['Name' => $data['From']['Name'], 'Email' => $data['From']['Email']],
-            'To' => '',
-            'Subject' => $data['Subject'],
-            'Message' => nl2br($data['Message']),
-            'Attach' => $data['Attach'],
-        ];
         $mailSMTP = new Helper_Mail(Zero_App::$Config->Mail_Username, Zero_App::$Config->Mail_Password, Zero_App::$Config->Mail_Host, Zero_App::$Config->Mail_Port);
-        foreach ($data['To'] as $key => $val)
+        $result = $mailSMTP->Send($data);
+        if ( $result !== true )
         {
-            if ( strlen($key) < 3 )
-                $dataT['To'] = $val{'Email'};
-            else
-                $dataT['To'] = $key;
-            $result = $mailSMTP->Sending($dataT);
-            if ( $result !== true )
-            {
-                $errorCnt++;
-                Zero_Logs::Set_Message_Error($result);
-            }
+            $errorCnt = count($data['To']);
+            Zero_Logs::Set_Message_Error($result);
         }
         return $errorCnt;
     }

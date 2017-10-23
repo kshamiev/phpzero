@@ -14,11 +14,14 @@ class Helper_Mail_Api_Send extends Zero_Controller
         $_REQUEST['Email'] = [
             'Reply' => ['Name' => 'Reply', 'Email' => 'reply@mail.ru'],
             'From' => ['Name' => 'From', 'Email' => 'from@mail.ru'],
+            'Subject' => 'Тема сообщения',
+            'Message' => 'Текст или тело сообщения',
             'To' => [
                 'Recipient@mail.ru' => 'NameRecipient',
             ],
-            'Subject' => 'Тема сообщения',
-            'Message' => 'Текст или тело сообщения',
+            'Attach' => [
+                'pathFile' => 'nameFile',
+            ],
         ];
         if ( empty($_REQUEST['Email']) )
             Zero_Response::JsonRest(null, -1, ["Данные не переданы"], 409);
