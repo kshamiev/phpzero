@@ -855,10 +855,6 @@ class Zero_App
             500 => 1,
         ];
         $code = $exception->getCode();
-        if ( empty($codeList[$code]) )
-        {
-            Zero_Logs::Custom_DateTime('errorExceptionCode', [URL, $_REQUEST, $code]);
-        }
         if ( $code != 403 && $code != 404 )
         {
             self::exception_Trace($exception);
