@@ -608,37 +608,29 @@ class Zero_App
 
         // Контроллер
         self::$Controller = Zero_Controllers::Make();
+        if ( isset($route['Controller']) )
+            self::$Controller->Controller = $route['Controller'];
+
+        // ИНИЦИАЛИЗАЦИЯ ДЕЙСТВИЯ
+        $action = 'Default';
+        if ( isset($_REQUEST['act']) && $_REQUEST['act'] )
+            $action = $_REQUEST['act'];
+        else if ( 'Api' == self::$mode )
+            $action = $_SERVER['REQUEST_METHOD'];
 
         //  КОНТРОЛЛЕР
         $view = '';
         $messageResponse = ['Code' => 0, 'Message' => ''];
-        if ( $route['Controller'] )
+        if ( isset($route['Controller']) && $route['Controller'] )
         {
             if ( self::Autoload($route['Controller'], false) )
             {
-                self::$Controller->Controller = $route['Controller'];
-                // инициализация
-                $action = 'Default';
-                if ( isset($_REQUEST['act']) && $_REQUEST['act'] )
-                    $action = $_REQUEST['act'];
-                else if ( 'Api' == self::$mode )
-                    $action = $_SERVER['REQUEST_METHOD'];
-
+                $action = 'Action_' . $action;
                 self::$ControllerAction = Zero_Controller::Factories($route['Controller']);
-                if ( !method_exists(self::$ControllerAction, 'Action_' . $action) )
-                {
-                    //                    if ( 'GET' != $action )
+                if ( !method_exists(self::$ControllerAction, $action) )
                     throw new Exception("Контроллер '{$route['Controller']}' не имеет метода: " . $action, 409);
-                    //                    $action = 'Default';
-                }
-
-                // доступные операции - методы контроллера с учетом прав.
-                $actionList = Zero_Engine::Get_Method_From_Class($route['Controller'], 'Action');
-                if ( !isset($actionList[$action]) )
-                    throw new Exception('Page Forbidden', 403);
 
                 // выполнение контроллера
-                $action = 'Action_' . $action;
                 Zero_Logs::Start('#{CONTROLLER} ' . $route['Controller'] . ' -> ' . $action);
                 $view = self::$ControllerAction->$action();
                 $messageResponse = self::$ControllerAction->GetMessage();
@@ -757,12 +749,9 @@ class Zero_App
             if ( self::Autoload(self::$Controller->Controller, false) )
             {
                 $action = 'Action_' . $action;
-
                 self::$ControllerAction = Zero_Controller::Factories(self::$Controller->Controller);
                 if ( !method_exists(self::$ControllerAction, $action) )
-                {
-                    throw new Exception('Контроллер \'' . self::$Controller->Controller . '\' не имеет метода: ' . $action, 409);
-                }
+                    throw new Exception("Контроллер '" . self::$Controller->Controller . "' не имеет метода: " . $action, 409);
 
                 // выполнение контроллера
                 Zero_Logs::Start('#{CONTROLLER} ' . self::$Controller->Controller . ' -> ' . $action);

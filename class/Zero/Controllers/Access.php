@@ -40,7 +40,7 @@ class Zero_Controllers_Access extends Zero_Controller
         if ( empty($_REQUEST['access']) )
             $_REQUEST['access'] = [];
 
-        Zero_DB::Update("DELETE FROM Action WHERE Controllers_ID = {$this->Params['obj_parent_id']}");
+        Zero_DB::Update("DELETE FROM Action WHERE Action != 'Default' AND Controllers_ID = {$this->Params['obj_parent_id']}");
         foreach ($_REQUEST['access'] as $grId => $method)
         {
             foreach ($method as $m)
@@ -86,7 +86,7 @@ class Zero_Controllers_Access extends Zero_Controller
         {
             $name = $method->getName();
             $arr = explode('_', $name);
-            if ( $arr[0] == 'Action' )
+            if ( $arr[0] == 'Action' && $arr[1] != 'Default' )
             {
                 $methodList[] = $arr[1];
             }
@@ -97,7 +97,7 @@ class Zero_Controllers_Access extends Zero_Controller
         $this->View->Assign('groups', Zero_DB::Select_List_Index($sql));
 
         $access = [];
-        $sql = "SELECT Groups_ID, Action FROM Action  WHERE Controllers_ID = {$this->Params['obj_parent_id']}";
+        $sql = "SELECT Groups_ID, Action FROM Action  WHERE Action != 'Default' AND Controllers_ID = {$this->Params['obj_parent_id']}";
         $result = Zero_DB::Select_Array($sql);
         foreach ($result as $row)
         {

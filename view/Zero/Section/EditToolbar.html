@@ -1,1 +1,5 @@
+<input class="btn" type="button" value="право на раздел" onclick="location.href='{URL}/access?pid={$Model->ID}';">
+{if ( 0 < $Model->Controllers_ID )}
+<input class="btn" type="button" value="право на к. раздела" onclick="location.href='{URL}/access-controller?pid={$Model->Controllers_ID}';">
+{/if}
 <a style="vertical-align: middle;" href="{$Model->Url}" target="_blank">Просмотр</a>&nbsp;

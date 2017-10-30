@@ -6,8 +6,6 @@
  * @package Zero.Section
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2017-10-08
- * @todo Действие Default задается здесь из прав контроллера надо убрать
- * @todo Сделать возможно управлять правами на контроле от сюда
  */
 class Zero_Section_Access extends Zero_Controller
 {
@@ -48,6 +46,8 @@ class Zero_Section_Access extends Zero_Controller
             foreach ($method as $m)
             {
                 $sql = "INSERT INTO Action SET Groups_ID = {$grId}, Section_ID = {$this->Params['obj_parent_id']}, Action = '{$m}'";
+                if ( 0 < $this->Model->Controllers_ID )
+                    $sql .= ", Controllers_ID = {$this->Model->Controllers_ID}";
                 Zero_DB::Insert($sql);
             }
         }

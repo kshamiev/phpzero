@@ -1,0 +1,42 @@
+<h1>Общие проверки всех контроллеров</h1>
+<table cellspacing="0" cellpadding="2" border="0">
+    <tr valign="top">
+        <td>
+            <table class="tbledit" cellspacing="2" cellpadding="2" border="0">
+                <tr>
+                    <th>Отсутствующие контроллеры</th>
+                </tr>
+                {if ( count($controllerNotExist) )}
+                {foreach ($controllerNotExist as $cntrl)}
+                <tr>
+                    <td width="250px">{$cntrl}</td>
+                </tr>
+                {/foreach}
+                {else}
+                <tr>
+                    <td width="250px">Все контроллеры на месте</td>
+                </tr>
+                {/if}
+            </table>
+        </td>
+        <td>
+            <table class="tbledit" cellspacing="2" cellpadding="2" border="0">
+                <tr>
+                    <th colspan="2">Дублирующиеся контроллеры</th>
+                </tr>
+                {if ( count($controllerCopy) )}
+                {foreach ($controllerCopy as $cntrl=>$cnt)}
+                <tr>
+                    <td width="250px">{$cntrl}</td>
+                    <td>{$cntrl}</td>
+                </tr>
+                {/foreach}
+                {else}
+                <tr>
+                    <td colspan="2" width="300px">Нет ни одного</td>
+                </tr>
+                {/if}
+            </table>
+        </td>
+    </tr>
+</table>
