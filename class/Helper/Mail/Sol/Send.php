@@ -1,5 +1,4 @@
 <?php
-require_once ZERO_PATH_LIBRARY . '/PHPMailer/PHPMailerAutoload.php';
 
 /**
  * Отправка очереди почтовых сообщений

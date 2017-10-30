@@ -167,7 +167,7 @@ class Helper_Mail
                 if ( !$this->_parseServer($socket, "250") )
                 {
                     fclose($socket);
-                    throw new Exception('Error of command sending: RCPT TO', 409);
+                    throw new Exception('Error of command sending: RCPT TO ' . $key, 409);
                 }
             }
 
