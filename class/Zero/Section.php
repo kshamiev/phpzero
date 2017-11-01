@@ -398,7 +398,7 @@ class Zero_Section extends Zero_Model
 
     public function FL_Controllers_ID()
     {
-        $sql = "SELECT `ID`, `Name` FROM Controllers WHERE `Typ` = 'Web' AND IsActive = 1 ORDER BY `Name` ASC";
+        $sql = "SELECT `ID`, `Name` FROM Controllers WHERE `Typ` = 'Web' ORDER BY `Name` ASC";
         return Zero_DB::Select_List_Index($sql);
     }
 

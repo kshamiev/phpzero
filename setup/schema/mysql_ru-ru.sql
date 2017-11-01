@@ -1,6 +1,6 @@
 /*
 SQLyog Ultimate v12.09 (64 bit)
-MySQL - 5.5.25a-log : Database - test
+MySQL - 5.5.50-MariaDB : Database - calculator
 *********************************************************************
 */
 
@@ -93,7 +93,7 @@ CREATE TABLE `Controllers` (
   `DateExecute` datetime DEFAULT NULL COMMENT 'Дата и время последнего выполнения',
   PRIMARY KEY (`ID`),
   UNIQUE KEY `Url` (`Url`)
-) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8 COMMENT='Контроллеры';
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8 COMMENT='Контроллеры';
 
 /*Data for the table `Controllers` */
 
@@ -116,7 +116,6 @@ insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,
 insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (22,'Zero_Content_Edit','Zero_Content_Edit','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL);
 insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (23,'Zero_Users_Profile','Zero_Users_Profile','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL);
 insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (24,'Zero_System_Api_Upload','Zero_System_Api_Upload','Api','/api/v1/zero/base/upload',NULL,NULL,NULL,NULL,NULL,1,'no',NULL);
-insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (25,'Zero_Users_Api_Login','Zero_Users_Api_Login','Api','/api/v1/zero/user/login',NULL,NULL,NULL,NULL,NULL,1,'no',NULL);
 insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (27,'Helper_Mail_Api_Send','Helper_Mail_Api_Send','Api','/api/v1/mail/send',NULL,NULL,NULL,NULL,NULL,1,'no',NULL);
 insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (29,'Helper_Mail_Api_Queue','Helper_Mail_Api_Queue','Api','/api/v1/mail/queue',NULL,NULL,NULL,NULL,NULL,1,'no',NULL);
 insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (31,'Zero_System_Console_ApiGen','Zero_System_Console_ApiGen','Console',NULL,'*/10','*','*','*','*',0,'no',NULL);
@@ -133,6 +132,7 @@ insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,
 insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (42,'Zero_AccessOutside_Edit','Zero_AccessOutside_Edit','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL);
 insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (43,'Zero_Controllers_Access','Zero_Controllers_Access','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL);
 insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (44,'Zero_Section_Access','Zero_Section_Access','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL);
+insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (45,'Zero_Controllers_Check','Zero_Controllers_Check','Web',NULL,NULL,NULL,NULL,NULL,NULL,0,'yes',NULL);
 
 /*Table structure for table `Groups` */
 
@@ -215,7 +215,7 @@ CREATE TABLE `Section` (
   KEY `Controllers_ID` (`Controllers_ID`),
   CONSTRAINT `Section_ibfk_1` FOREIGN KEY (`Section_ID`) REFERENCES `Section` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `Section_ibfk_2` FOREIGN KEY (`Controllers_ID`) REFERENCES `Controllers` (`ID`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=108 DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=FIXED;
+) ENGINE=InnoDB AUTO_INCREMENT=110 DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=FIXED;
 
 /*Data for the table `Section` */
 
@@ -250,6 +250,8 @@ insert  into `Section`(`ID`,`Controllers_ID`,`Section_ID`,`Url`,`UrlThis`,`UrlRe
 insert  into `Section`(`ID`,`Controllers_ID`,`Section_ID`,`Url`,`UrlThis`,`UrlRedirect`,`Layout`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`NameMenu`,`Title`,`Keywords`,`Description`,`Content`,`Img`) values (105,42,104,'/zero/system/accessoutside/edit','edit',NULL,'Zero_Main','yes','yes','no','no',10,'Изменение','Изменение','Изменение','Изменение','Изменение',NULL,NULL);
 insert  into `Section`(`ID`,`Controllers_ID`,`Section_ID`,`Url`,`UrlThis`,`UrlRedirect`,`Layout`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`NameMenu`,`Title`,`Keywords`,`Description`,`Content`,`Img`) values (106,43,101,'/zero/system/controllers/edit/access','access',NULL,'Zero_Main','yes','yes','no','no',30,'Права','Права','Права','Права','Права',NULL,NULL);
 insert  into `Section`(`ID`,`Controllers_ID`,`Section_ID`,`Url`,`UrlThis`,`UrlRedirect`,`Layout`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`NameMenu`,`Title`,`Keywords`,`Description`,`Content`,`Img`) values (107,44,14,'/zero/site/section/edit/access','access',NULL,'Zero_Main','yes','yes','yes','no',30,'Права','Права','Права','Права','Права',NULL,NULL);
+insert  into `Section`(`ID`,`Controllers_ID`,`Section_ID`,`Url`,`UrlThis`,`UrlRedirect`,`Layout`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`NameMenu`,`Title`,`Keywords`,`Description`,`Content`,`Img`) values (108,45,100,'/zero/system/controllers/check','check',NULL,'Zero_Main','yes','yes','yes','no',30,'проверки','проверки','проверки','проверки','проверки',NULL,NULL);
+insert  into `Section`(`ID`,`Controllers_ID`,`Section_ID`,`Url`,`UrlThis`,`UrlRedirect`,`Layout`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`NameMenu`,`Title`,`Keywords`,`Description`,`Content`,`Img`) values (109,43,14,'/zero/site/section/edit/access-controller','access-controller',NULL,'Zero_Main','yes','yes','no','no',30,'право на к. раздела','право на к. раздела','право на к. раздела','право на к. раздела','право на к. раздела',NULL,NULL);
 
 /*Table structure for table `Users` */
 
@@ -282,7 +284,7 @@ CREATE TABLE `Users` (
 
 /*Data for the table `Users` */
 
-insert  into `Users`(`ID`,`Groups_ID`,`Users_ID`,`Name`,`Login`,`Password`,`IsAccess`,`Email`,`Phone`,`Skype`,`IsCondition`,`ImgAvatar`,`IsOnline`,`DateOnline`,`Date`,`Address`,`Token`) values (1,1,NULL,'Разработчик','dev','e77989ed21758e78331b20e477fc5582','open','dev@dev.ru',NULL,NULL,'no',NULL,'yes','2017-10-11 12:04:14','2005-09-01 12:00:00',NULL,NULL);
+insert  into `Users`(`ID`,`Groups_ID`,`Users_ID`,`Name`,`Login`,`Password`,`IsAccess`,`Email`,`Phone`,`Skype`,`IsCondition`,`ImgAvatar`,`IsOnline`,`DateOnline`,`Date`,`Address`,`Token`) values (1,1,NULL,'Разработчик','dev','e77989ed21758e78331b20e477fc5582','open','dev@dev.ru',NULL,NULL,'no',NULL,'yes','2017-11-01 16:43:15','2005-09-01 12:00:00',NULL,NULL);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

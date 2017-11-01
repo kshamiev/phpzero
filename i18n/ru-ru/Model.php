@@ -86,7 +86,7 @@ return [
     'Zero_Controllers Typ options' => ['Web' => 'Web','Api' => 'Api','Console' => 'Console'],
     'Zero_Controllers Url' => 'Урл API контроллеров',
     'Zero_Controllers Week' => 'День недели',
-    'Zero_Controllers IsAuthorized' => 'Авторизованный (для API к.)',
+    'Zero_Controllers IsAuthorized' => 'Авторизованный',
     'Zero_Controllers IsAuthorized options' => ['no' => 'нет', 'yes' => 'да'],
     'Zero_Controllers DateExecute' => 'Последнее выполнение',
     'Controllers_ID' => 'Контроллер',

@@ -213,13 +213,18 @@ class Zero_Controllers extends Zero_Model
      */
     protected static function Config_Form($Model, $scenario = '')
     {
-        if ( 'Web' == $Model->Typ )
+        if ( 0 == $Model->ID )
             return [
                 'Name' => [],
                 'Controller' => [],
-                'IsActive' => [],
-                'IsAuthorized' => [],
                 'Typ' => [],
+            ];
+        else if ( 'Web' == $Model->Typ )
+            return [
+                'Name' => [],
+                'Controller' => [],
+                'IsAuthorized' => [],
+                'Typ' => ['Form' => 'Readonly'],
                 'DateExecute' => [],
             ];
         else if ( 'Api' == $Model->Typ )
@@ -227,9 +232,8 @@ class Zero_Controllers extends Zero_Model
                 'Name' => [],
                 'Controller' => [],
                 'Url' => [],
-                'IsActive' => [],
                 'IsAuthorized' => [],
-                'Typ' => [],
+                'Typ' => ['Form' => 'Readonly'],
                 'DateExecute' => [],
             ];
         else if ( 'Console' == $Model->Typ )
@@ -242,13 +246,12 @@ class Zero_Controllers extends Zero_Model
                 'Month' => [],
                 'Week' => [],
                 'IsActive' => [],
-                'Typ' => [],
+                'Typ' => ['Form' => 'Readonly'],
                 'DateExecute' => [],
             ];
         return [
             'Name' => [],
             'Controller' => [],
-            'IsActive' => [],
             'Typ' => [],
         ];
     }
