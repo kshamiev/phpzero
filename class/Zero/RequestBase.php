@@ -105,6 +105,10 @@ class Zero_RequestBase
                 break;
             case '401':
                 break;
+            case '403':
+                break;
+            case '404':
+                break;
             case '409':
                 break;
             case '503':
@@ -113,8 +117,8 @@ class Zero_RequestBase
                 break;
         }
         // Данные
-        $typ = explode(' ', $head['content_type']);
-        if ( $typ[0] = 'application/json;' )
+        $typ = explode(' ', $head['content_type'])[0];
+        if ( $typ = 'application/json;' )
         {
             $body = json_decode($body, true);
         }

@@ -93,7 +93,7 @@ class Zero_Users extends Zero_Model
             'DateOnline' => ['AliasDB' => 'z.DateOnline', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Readonly'],
             'Date' => ['AliasDB' => 'z.Date', 'DB' => 'D', 'IsNull' => 'NO', 'Default' => '', 'Form' => 'Readonly'],
             'Address' => ['AliasDB' => 'z.Address', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Textarea'],
-            'Token' => ['AliasDB' => 'z.Token', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Readonly'],
+            'Token' => ['AliasDB' => 'z.Token', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'],
             /*END_CONFIG_PROP*/
         ];
     }
@@ -186,6 +186,7 @@ class Zero_Users extends Zero_Model
             'Phone' => [],
             'Skype' => [],
             'Address' => [],
+            'Token' => [],
         ];
     }
 

@@ -42,10 +42,9 @@ class Zero_Controllers_Edit extends Zero_Crud_Edit
         $Controller = Zero_Controller::Makes($this->Model->Controller);
         $flag = $Controller->Action_Default();
         if ( $flag )
-            $this->SetMessage(0, ['Успех']);
-        else
             $this->SetMessageError(-1, ['Ошибка']);
-
+        else
+            $this->SetMessage(0, ['Успех']);
         $this->Chunk_View();
         return $this->View;
     }

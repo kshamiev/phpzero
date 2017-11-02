@@ -531,8 +531,8 @@ class Zero_App
         //  Session Initialization (Zero_Session)
         if ( isset($_SERVER['HTTP_AUTHUSERTOKEN']) )
             Zero_Session::Init($_SERVER['HTTP_AUTHUSERTOKEN']);
-        else if ( isset($_REQUEST['AuthUserToken']) )
-            Zero_Session::Init($_REQUEST['AuthUserToken']);
+        else if ( isset($_REQUEST['authusertoken']) )
+            Zero_Session::Init($_REQUEST['authusertoken']);
         else
             Zero_Session::Init(self::$Config->Site_Token);
 
@@ -687,13 +687,16 @@ class Zero_App
         self::$Users = Zero_Users::Factory();
 
         // General Authorization Users
-        if ( isset($_SERVER['HTTP_AUTHUSERTOKEN']) && 0 == self::$Users->ID )
+        if ( 0 == self::$Users->ID )
         {
-            self::$Users->Load_Token($_SERVER['HTTP_AUTHUSERTOKEN']);
+            $token = '';
+            if ( isset($_SERVER['HTTP_AUTHUSERTOKEN']) )
+                $token = $_SERVER['HTTP_AUTHUSERTOKEN'];
+            if ( isset($_REQUEST['authusertoken']) )
+                $token = $_REQUEST['authusertoken'];
+            self::$Users->Load_Token($token);
             if ( 0 == self::$Users->ID )
-            {
                 throw new Exception('Page Forbidden', 403);
-            }
         }
 
         // ИНИЦИАЛИЗАЦИЯ ДЕЙСТВИЯ
@@ -787,7 +790,7 @@ class Zero_App
             $view = $viewLayout->Fetch();
         }
 
-        self::ResponseHtml($view, 200);
+        Zero_Response::Html($view);
     }
 
     /**

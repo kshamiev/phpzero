@@ -27,10 +27,6 @@ class Zero_Session extends ArrayObject
         // проверяем запущена ли сессия
         if ( !session_id() )
         {
-            if ( isset($_REQUEST['token']) )
-                session_id($_REQUEST['token']);
-            else if ( isset($_SERVER['HTTP_X_ACCESS_TOKEN']) )
-                session_id($_SERVER['HTTP_X_ACCESS_TOKEN']);
             if ( $token )
                 session_name($token);
             session_start();

@@ -3,48 +3,12 @@
 /**
  * <Comment>
  *
- * {plugin "Zero_Section_SeoTag" view="Zero_Section_SeoTag"}
- *
  * @package <Package>.<Subpackage>
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date <Date>
  */
 class Zero_Controller_Sample extends Zero_Controller
 {
-    //// Пример контроллера для WEB
-    /**
-     * Контроллер по умолчанию.
-     *
-     * @return Zero_View
-     */
-    public function Action_Default()
-    {
-        $this->Chunk_Init();
-        $this->Chunk_View();
-        return $this->View;
-    }
-
-    //// Пример консольного контроллера
-
-    /**
-     * Какой-то контроллер
-     *
-     * @return boolean flag статус выполнения
-     */
-    public function Action_DefaultRename()
-    {
-        $path = dirname(ZERO_PATH_DATA) . '/temp';
-        foreach (glob($path . '/.+') as $file)
-        {
-            $timeOutMinute = (time() - filemtime($file)) * 60;
-            if ( 60 < $timeOutMinute )
-                unlink($file);
-        }
-        return true;
-    }
-
-    //// Пример контроллера для API
-
     /**
      * Какой-то контроллер
      *
@@ -122,12 +86,10 @@ class Zero_Controller_Sample extends Zero_Controller
         return true;
     }
 
-    ////
-
     /**
      * Фабричный метод по созданию контроллера.
      *
-     * @param array $properties входные параметры плагина
+     * @param array $properties входные параметры контроллера (обычно в режиме плагина)
      * @return Zero_Controller
      */
     public static function Make($properties = [])
@@ -141,20 +103,20 @@ class Zero_Controller_Sample extends Zero_Controller
     }
 
     /**
-     * Fabrika po sozdaniiu kontrollerov.
+     * Фабричный метод по созданию контроллера.
      *
-     * Rabotaet cherez sessiiu. Indeks: $class_name
+     * Работает через сессию. Indeks: __CLASS__
      *
-     * @param array $properties vhodny`e parametry` plagina
+     * @param array $properties входные параметры контроллера (обычно в режиме плагина)
      * @return Zero_Controller
      */
     public static function Factory($properties = [])
     {
-        if ( !$result = Zero_Session::Get(__CLASS__) )
+        if ( !$Controller = Zero_Session::Get(__CLASS__) )
         {
-            $result = self::Make($properties);
-            Zero_Session::Set(__CLASS__, $result);
+            $Controller = self::Make($properties);
+            Zero_Session::Set(__CLASS__, $Controller);
         }
-        return $result;
+        return $Controller;
     }
 }
