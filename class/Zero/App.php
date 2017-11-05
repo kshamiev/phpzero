@@ -50,6 +50,7 @@ define('ZERO_PATH_ZERO', ZERO_PATH_SITE . '/phpzero');
  * @date 2015.01.01
  * @todo контроль выполнения консольных контроллеров через поле фиксирующее послдний успешный запуск контроллера
  * @todo контроль работоспособности контроллера апи интелектуальная через OPTIONS
+ * @todo доработать роутинг по алиасу в разделах (альтернативный урл)
  *
  *
  */
@@ -134,31 +135,28 @@ class Zero_App
      */
     public static function Autoload($class_name, $flagLog = true)
     {
-        if ( class_exists($class_name) )
+        if (class_exists($class_name))
             return true;
         $arr = explode('_', $class_name);
         $module = strtolower(array_shift($arr));
         $class = implode('/', $arr);
 
         $path = ZERO_PATH_APP . '/class/' . str_replace('_', '/', $class_name) . '.php';
-        if ( file_exists($path) )
-        {
+        if (file_exists($path)) {
             include_once $path;
-            if ( class_exists($class_name) )
+            if (class_exists($class_name))
                 return true;
         }
         $path = ZERO_PATH_APPLICATION . '/' . $module . '/class/' . $class . '.php';
-        if ( file_exists($path) )
-        {
+        if (file_exists($path)) {
             include_once $path;
-            if ( class_exists($class_name) )
+            if (class_exists($class_name))
                 return true;
         }
         $path = ZERO_PATH_APPLICATION . '/' . $module . '/class' . $class . '.php'; // old
-        if ( file_exists($path) )
-        {
+        if (file_exists($path)) {
             include_once $path;
-            if ( class_exists($class_name) )
+            if (class_exists($class_name))
                 return true;
         }
         //
@@ -177,14 +175,13 @@ class Zero_App
         //                return true;
         //        }
         $path = ZERO_PATH_ZERO . '/class/' . str_replace('_', '/', $class_name) . '.php';
-        if ( file_exists($path) )
-        {
+        if (file_exists($path)) {
             include_once $path;
-            if ( class_exists($class_name) )
+            if (class_exists($class_name))
                 return true;
         }
         //        if ( isset(self::$Config->Mod[$module]) )
-        if ( true == $flagLog )
+        if (true == $flagLog)
             Zero_Logs::Set_Message_Error('Класс не найден: ' . $class_name);
         return false;
     }
@@ -209,9 +206,9 @@ class Zero_App
         $content = json_encode($content, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK);
         $head = "Content-Type: application/json; charset=utf-8\r\n";
         $head .= "Content-Length: " . strlen($content) . "\r\n";
-        if ( $accessBasicHttp )
+        if ($accessBasicHttp)
             $head .= "Authorization: Basic " . base64_encode($accessBasicHttp) . "\r\n";
-        if ( $accessUser )
+        if ($accessUser)
             $head .= "AuthUser: " . md5($accessUser) . "\r\n";
         $opts = [
             'http' => [
@@ -226,8 +223,7 @@ class Zero_App
         ];
         //
         $fp = fopen($url, 'rb', false, stream_context_create($opts));
-        if ( $fp == false )
-        {
+        if ($fp == false) {
             Zero_Logs::Set_Message_Error('Обращение к не корректному ресурсу:');
             Zero_Logs::Set_Message_Error($url);
             Zero_Logs::Set_Message_Error($content);
@@ -236,7 +232,7 @@ class Zero_App
         $response = stream_get_contents($fp);
         fclose($fp);
         $data = json_decode($response, true);
-        if ( !$data )
+        if (!$data)
             return $response;
         return $data;
     }
@@ -266,11 +262,11 @@ class Zero_App
         echo $content;
 
         // закрываем соединение с браузером (работает только под нгинx)
-        if ( function_exists('fastcgi_finish_request') )
+        if (function_exists('fastcgi_finish_request'))
             fastcgi_finish_request();
 
         // Логирование в файлы
-        if ( Zero_App::$Config->Log_Output_File )
+        if (Zero_App::$Config->Log_Output_File)
             Zero_Logs::Output_File();
         exit;
     }
@@ -295,7 +291,7 @@ class Zero_App
             'ErrorStatus' => false,
         ];
 
-        if ( $content )
+        if ($content)
             $data['Content'] = $content;
 
         $data = json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK);
@@ -310,11 +306,11 @@ class Zero_App
         echo $data;
 
         // закрываем соединение с браузером (работает только под нгинx)
-        if ( function_exists('fastcgi_finish_request') )
+        if (function_exists('fastcgi_finish_request'))
             fastcgi_finish_request();
 
         // Логирование в файлы
-        if ( Zero_App::$Config->Log_Output_File )
+        if (Zero_App::$Config->Log_Output_File)
             Zero_Logs::Output_File();
         exit;
     }
@@ -348,17 +344,17 @@ class Zero_App
 
         Zero_Logs::Set_Message_Error($data['Message']);
 
-        if ( $content )
+        if ($content)
             $data['Content'] = $content;
 
         echo json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK);
 
         // закрываем соединение с браузером (работает только под нгинx)
-        if ( function_exists('fastcgi_finish_request') )
+        if (function_exists('fastcgi_finish_request'))
             fastcgi_finish_request();
 
         // Логирование в файлы
-        if ( Zero_App::$Config->Log_Output_File )
+        if (Zero_App::$Config->Log_Output_File)
             Zero_Logs::Output_File();
         exit;
     }
@@ -395,11 +391,11 @@ class Zero_App
         echo json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK);
 
         // закрываем соединение с браузером (работает только под нгинx)
-        if ( function_exists('fastcgi_finish_request') )
+        if (function_exists('fastcgi_finish_request'))
             fastcgi_finish_request();
 
         // Логирование в файлы
-        if ( Zero_App::$Config->Log_Output_File )
+        if (Zero_App::$Config->Log_Output_File)
             Zero_Logs::Output_File();
         exit;
     }
@@ -415,11 +411,11 @@ class Zero_App
         Zero_Response::Console();
 
         // закрываем соединение с браузером (работает только под нгинx)
-        if ( function_exists('fastcgi_finish_request') )
+        if (function_exists('fastcgi_finish_request'))
             fastcgi_finish_request();
 
         // Логирование в файлы
-        if ( self::$Config->Log_Output_File )
+        if (self::$Config->Log_Output_File)
             Zero_Logs::Output_File();
         exit;
     }
@@ -434,7 +430,7 @@ class Zero_App
 
         header("Content-Type: " . Helper_File::File_Type($path));
         header("Content-Length: " . filesize($path));
-        if ( file_exists($path) )
+        if (file_exists($path))
             echo file_get_contents($path);
         exit;
     }
@@ -450,7 +446,7 @@ class Zero_App
         header("Content-Type: " . Helper_File::File_Type($path));
         header("Content-Length: " . filesize($path));
         header('Content-Disposition: attachment; filename = "' . basename($path) . '"');
-        if ( file_exists($path) )
+        if (file_exists($path))
             echo file_get_contents($path);
         exit;
     }
@@ -470,7 +466,7 @@ class Zero_App
     public static function Init($suffix = '')
     {
         // Если инициализация уже произведена
-        if ( !is_null(self::$Config) )
+        if (!is_null(self::$Config))
             return;
 
         //  Include Components
@@ -480,8 +476,8 @@ class Zero_App
         require_once ZERO_PATH_ZERO . '/class/Zero/Session.php';
         require_once ZERO_PATH_ZERO . '/class/Zero/Cache.php';
         require_once ZERO_PATH_ZERO . '/function.php';
-        if ( !file_exists($path = ZERO_PATH_APP . '/function.php') )
-            if ( !file_exists($path = ZERO_PATH_APPLICATION . '/function.php') )
+        if (!file_exists($path = ZERO_PATH_APP . '/function.php'))
+            if (!file_exists($path = ZERO_PATH_APPLICATION . '/function.php'))
                 die('функции приложения не найдены: ' . $path);
         require_once $path;
 
@@ -493,28 +489,22 @@ class Zero_App
         self::$Config = new Zero_Config();
 
         // Инициализация роутинга, входных данных и логирования
-        if ( empty($_SERVER['REQUEST_URI']) )
-        {
+        if (empty($_SERVER['REQUEST_URI'])) {
             Zero_Logs::Init(ZERO_PATH_LOG . '/console' . $suffix);
             self::$mode = 'Console';
-        }
-        else if ( preg_match("~^/(api|json)/~si", $_SERVER['REQUEST_URI']) )
-        {
+        } else if (preg_match("~^/(api|json)/~si", $_SERVER['REQUEST_URI'])) {
             app_route();
             app_request_data_api();
             Zero_Logs::Init(ZERO_PATH_LOG . '/api' . $suffix);
             self::$mode = 'Api';
-        }
-        else
-        {
+        } else {
             app_route();
             Zero_Logs::Init(ZERO_PATH_LOG . '/web' . $suffix);
             self::$mode = 'Web';
         }
 
         // DB init config
-        foreach (self::$Config->Db as $name => $config)
-        {
+        foreach (self::$Config->Db as $name => $config) {
             Zero_DB::Config_Add($name, $config);
         }
 
@@ -525,13 +515,13 @@ class Zero_App
         self::$Request = new Zero_Request(self::$Config->Site_UseDB);
 
         //  Initialize cache subsystem (Zero_Cache)
-        if ( 0 < count(self::$Config->Memcache['Cache']) && class_exists('Memcache') )
+        if (0 < count(self::$Config->Memcache['Cache']) && class_exists('Memcache'))
             Zero_Cache::InitMemcache(self::$Config->Memcache['Cache']);
 
         //  Session Initialization (Zero_Session)
-        if ( isset($_SERVER['HTTP_AUTHUSERTOKEN']) )
+        if (isset($_SERVER['HTTP_AUTHUSERTOKEN']))
             Zero_Session::Init($_SERVER['HTTP_AUTHUSERTOKEN']);
-        else if ( isset($_REQUEST['authusertoken']) )
+        else if (isset($_REQUEST['authusertoken']))
             Zero_Session::Init($_REQUEST['authusertoken']);
         else
             Zero_Session::Init(self::$Config->Site_Token);
@@ -543,31 +533,27 @@ class Zero_App
     public static function Execute()
     {
         // Maintenance mode
-        if ( count(self::$Config->Site_MaintenanceIp) && empty(self::$Config->Site_MaintenanceIp[self::$Config->Ip]) )
-        {
+        if (count(self::$Config->Site_MaintenanceIp) && empty(self::$Config->Site_MaintenanceIp[self::$Config->Ip])) {
             $view = new Zero_View('Zero_Maintenance');
             $view = $view->Fetch();
             self::ResponseHtml($view, 200);
         }
 
         // Доступ с определенных IP адресов
-        if ( count(self::$Config->Site_AccessAllowIp) && empty(self::$Config->Site_AccessAllowIp[self::$Config->Ip]) )
-        {
+        if (count(self::$Config->Site_AccessAllowIp) && empty(self::$Config->Site_AccessAllowIp[self::$Config->Ip])) {
             throw new Exception('Page Forbidden', 403);
         }
 
         // General Authorization Application
-        if ( Zero_App::$Config->Site_AccessLogin )
-        {
-            if ( !isset($_SERVER['PHP_AUTH_USER']) || $_SERVER['PHP_AUTH_USER'] != Zero_App::$Config->Site_AccessLogin || $_SERVER['PHP_AUTH_PW'] != Zero_App::$Config->Site_AccessPassword )
-            {
+        if (Zero_App::$Config->Site_AccessLogin) {
+            if (!isset($_SERVER['PHP_AUTH_USER']) || $_SERVER['PHP_AUTH_USER'] != Zero_App::$Config->Site_AccessLogin || $_SERVER['PHP_AUTH_PW'] != Zero_App::$Config->Site_AccessPassword) {
                 header('WWW-Authenticate: Basic realm="Auth"');
                 header('HTTP/1.0 401 Unauthorized');
                 die('Auth Failed');
             }
         }
 
-        if ( true == Zero_App::$Config->Site_UseDB )
+        if (true == Zero_App::$Config->Site_UseDB)
             self::executeUseDB();
         else
             self::executeUseDB_Not();
@@ -580,15 +566,14 @@ class Zero_App
     {
         // Поиск по роутингу в программе
         $route = [];
-        if ( !file_exists($path = ZERO_PATH_APPLICATION . '/route' . self::$mode . '.php') )
-            if ( !file_exists($path = ZERO_PATH_APP . '/route' . self::$mode . '.php') )
+        if (!file_exists($path = ZERO_PATH_APPLICATION . '/route' . self::$mode . '.php'))
+            if (!file_exists($path = ZERO_PATH_APP . '/route' . self::$mode . '.php'))
                 die('NOT FOUND FILE ROUTE: ' . $path);
 
         $route = include $path;
-        if ( isset($route[ZERO_URL]) )
+        if (isset($route[ZERO_URL]))
             $route = $route[ZERO_URL];
-        if ( 0 == count($route) || empty($route['Controller']) )
-        {
+        if (0 == count($route) || empty($route['Controller'])) {
             throw new Exception('Page Not Found', 404);
         }
 
@@ -597,45 +582,42 @@ class Zero_App
 
         // Раздел - страница
         self::$Section = Zero_Section::Make();
-        if ( isset($route['Name']) )
+        if (isset($route['Name']))
             self::$Section->Name = $route['Name'];
-        if ( isset($route['Title']) )
+        if (isset($route['Title']))
             self::$Section->Name = $route['Title'];
-        if ( isset($route['Keywords']) )
+        if (isset($route['Keywords']))
             self::$Section->Name = $route['Keywords'];
-        if ( isset($route['Description']) )
+        if (isset($route['Description']))
             self::$Section->Name = $route['Description'];
 
         // Контроллер
         self::$Controller = Zero_Controllers::Make();
-        if ( isset($route['Controller']) )
+        if (isset($route['Controller']))
             self::$Controller->Controller = $route['Controller'];
 
         // ИНИЦИАЛИЗАЦИЯ ДЕЙСТВИЯ
         $action = 'Default';
-        if ( isset($_REQUEST['act']) && $_REQUEST['act'] )
+        if (isset($_REQUEST['act']) && $_REQUEST['act'])
             $action = $_REQUEST['act'];
-        else if ( 'Api' == self::$mode )
+        else if ('Api' == self::$mode)
             $action = $_SERVER['REQUEST_METHOD'];
 
         //  КОНТРОЛЛЕР
         $view = '';
         $messageResponse = ['Code' => 0, 'Message' => ''];
-        if ( isset($route['Controller']) && $route['Controller'] )
-        {
-            if ( self::Autoload($route['Controller'], false) )
-            {
+        if (isset($route['Controller']) && $route['Controller']) {
+            if (self::Autoload($route['Controller'], false)) {
                 $action = 'Action_' . $action;
                 self::$ControllerAction = Zero_Controller::Factories($route['Controller']);
-                if ( !method_exists(self::$ControllerAction, $action) )
+                if (!method_exists(self::$ControllerAction, $action))
                     throw new Exception("Контроллер '{$route['Controller']}' не имеет метода: " . $action, 409);
 
                 // выполнение контроллера
                 Zero_Logs::Start('#{CONTROLLER} ' . $route['Controller'] . ' -> ' . $action);
                 $view = self::$ControllerAction->$action();
                 $messageResponse = self::$ControllerAction->GetMessage();
-                if ( true == $view instanceof Zero_View )
-                {
+                if (true == $view instanceof Zero_View) {
                     /* @var $view Zero_View */
                     $view->Assign('Message', $messageResponse);
                     $view->Assign('H1', Zero_App::$Section->Name);
@@ -643,9 +625,7 @@ class Zero_App
                     $view = $view->Fetch();
                 }
                 Zero_Logs::Stop('#{CONTROLLER} ' . $route['Controller'] . ' -> ' . $action);
-            }
-            else if ( $route['Controller'] )
-            {
+            } else if ($route['Controller']) {
                 $view = new Zero_View($route['Controller']);
                 $view->Assign('Message', $messageResponse);
                 $view->Assign('H1', Zero_App::$Section->Name);
@@ -655,8 +635,7 @@ class Zero_App
         }
 
         //  РАЗДЕЛ - СТРАНИЦА
-        if ( isset($route['View']) && $route['View'] )
-        {
+        if (isset($route['View']) && $route['View']) {
             $viewLayout = new Zero_View($route['View']);
             $viewLayout->Assign('Message', $messageResponse);
             $viewLayout->Assign('H1', Zero_App::$Section->Name);
@@ -687,81 +666,74 @@ class Zero_App
         self::$Users = Zero_Users::Factory();
 
         // General Authorization Users
-        if ( 0 == self::$Users->ID )
-        {
+        if (0 == self::$Users->ID) {
             $token = '';
-            if ( isset($_SERVER['HTTP_AUTHUSERTOKEN']) )
+            if (isset($_SERVER['HTTP_AUTHUSERTOKEN']))
                 $token = $_SERVER['HTTP_AUTHUSERTOKEN'];
-            if ( isset($_REQUEST['authusertoken']) )
+            if (isset($_REQUEST['authusertoken']))
                 $token = $_REQUEST['authusertoken'];
-            self::$Users->Load_Token($token);
-            if ( 0 == self::$Users->ID )
-                throw new Exception('Page Forbidden', 403);
+            if ($token) {
+                self::$Users->Load_Token($token);
+                if (0 == self::$Users->ID)
+                    throw new Exception('Page Forbidden', 403);
+            }
         }
 
         // ИНИЦИАЛИЗАЦИЯ ДЕЙСТВИЯ
         $action = 'Default';
-        if ( isset($_REQUEST['act']) && $_REQUEST['act'] )
+        if (isset($_REQUEST['act']) && $_REQUEST['act'])
             $action = $_REQUEST['act'];
-        else if ( 'Api' == self::$mode )
+        else if ('Api' == self::$mode)
             $action = $_SERVER['REQUEST_METHOD'];
 
         //  ИНИЦИАЛИЗАЦИЯ Раздел - Страница, Контроллер, Права
         self::$Section = Zero_Section::Make();
         self::$Section->Load_Url(ZERO_URL);
-        if ( 0 < self::$Section->ID )
-        {
+        if (0 < self::$Section->ID) {
             // страница отключена, закрыта.
-            if ( 'no' == self::$Section->IsEnable )
+            if ('no' == self::$Section->IsEnable)
                 throw new Exception('Page Not Found', 404);
             // редирект
-            if ( self::$Section->UrlRedirect )
+            if (self::$Section->UrlRedirect)
                 self::ResponseRedirect(self::$Section->UrlRedirect);
             // проверка прав на авторизованную страницу
             //            if ( 1 < self::$Users->Groups_ID && 'yes' == self::$Section->IsAuthorized && false == self::$Section->Get_Access() )
-            if ( false == self::$Section->Get_Access() )
+            if (false == self::$Section->Get_Access())
                 throw new Exception('Page Forbidden', 403);
             // загрузка контроллера
-            if ( 0 < self::$Section->Controllers_ID )
-            {
+            if (0 < self::$Section->Controllers_ID) {
                 self::$Controller = Zero_Controllers::Make(self::$Section->Controllers_ID, true);
                 // проверка прав на авторизованный контроллер
-                if ( 1 < self::$Users->Groups_ID && 'yes' == self::$Controller->IsAuthorized && empty(self::$Controller->Get_Action_List()[$action]) )
+                if (1 < self::$Users->Groups_ID && 'yes' == self::$Controller->IsAuthorized && empty(self::$Controller->Get_Action_List()[$action]))
                     throw new Exception('Controller Forbidden', 403);
-            }
-            else
+            } else
                 self::$Controller = Zero_Controllers::Make();
-        }
-        else
-        {
+        } else {
             self::$Controller = Zero_Controllers::Make();
             self::$Controller->Load_Url(ZERO_URL);
             // проверка на существование контроллера по запрошенному урлу
-            if ( 0 == self::$Controller->ID )
+            if (0 == self::$Controller->ID)
                 throw new Exception('Page Not Found', 404);
             // проверка прав на авторизованный контроллер
-            if ( 1 < self::$Users->Groups_ID && 'yes' == self::$Controller->IsAuthorized && empty(self::$Controller->Get_Action_List()[$action]) )
+            if (1 < self::$Users->Groups_ID && 'yes' == self::$Controller->IsAuthorized && empty(self::$Controller->Get_Action_List()[$action]))
                 throw new Exception('Controller Forbidden', 403);
         }
 
         //  ЦЕНТРАЛЬНЫЙ КОНТРОЛЛЕР
         $view = '';
         $messageResponse = ['Code' => 0, 'Message' => ''];
-        if ( 0 < self::$Controller->ID )
-        {
-            if ( self::Autoload(self::$Controller->Controller, false) )
-            {
+        if (0 < self::$Controller->ID) {
+            if (self::Autoload(self::$Controller->Controller, false)) {
                 $action = 'Action_' . $action;
                 self::$ControllerAction = Zero_Controller::Factories(self::$Controller->Controller);
-                if ( !method_exists(self::$ControllerAction, $action) )
+                if (!method_exists(self::$ControllerAction, $action))
                     throw new Exception("Контроллер '" . self::$Controller->Controller . "' не имеет метода: " . $action, 409);
 
                 // выполнение контроллера
                 Zero_Logs::Start('#{CONTROLLER} ' . self::$Controller->Controller . ' -> ' . $action);
                 $view = self::$ControllerAction->$action();
                 $messageResponse = self::$ControllerAction->GetMessage();
-                if ( true == $view instanceof Zero_View )
-                {
+                if (true == $view instanceof Zero_View) {
                     /* @var $view Zero_View */
                     $view->Assign('Message', $messageResponse);
                     $view->Assign('H1', Zero_App::$Section->Name);
@@ -769,9 +741,7 @@ class Zero_App
                     $view = $view->Fetch();
                 }
                 Zero_Logs::Stop('#{CONTROLLER} ' . self::$Controller->Controller . ' -> ' . $action);
-            }
-            else if ( self::$Controller->Controller )
-            {
+            } else if (self::$Controller->Controller) {
                 $view = new Zero_View(self::$Controller->Controller);
                 $view->Assign('Message', $messageResponse);
                 $view->Assign('H1', Zero_App::$Section->Name);
@@ -781,8 +751,7 @@ class Zero_App
         }
 
         //  LAYOUT - МАКЕТ
-        if ( self::$Section->Layout )
-        {
+        if (self::$Section->Layout) {
             $viewLayout = new Zero_View(self::$Section->Layout);
             $viewLayout->Assign('Message', $messageResponse);
             $viewLayout->Assign('H1', Zero_App::$Section->Name);
@@ -825,16 +794,15 @@ class Zero_App
         echo $content;
 
         // Логирование (в браузер)
-        if ( self::$Config->Log_Output_Display )
+        if (self::$Config->Log_Output_Display)
             Zero_Logs::Output_Display();
 
         // закрываем соединение с браузером (работает только под нгинx)
-        if ( function_exists('fastcgi_finish_request') )
+        if (function_exists('fastcgi_finish_request'))
             fastcgi_finish_request();
 
         // Логирование в файлы
-        if ( Zero_App::$Config->Log_Output_File )
-        {
+        if (Zero_App::$Config->Log_Output_File) {
             Zero_Logs::Output_File();
         }
         exit;
@@ -858,41 +826,31 @@ class Zero_App
             500 => 1,
         ];
         $code = $exception->getCode();
-        if ( $code != 403 && $code != 404 )
-        {
+        if ($code != 403 && $code != 404) {
             self::exception_Trace($exception);
         }
         $viewLayout = new Zero_View('Zero_Exception');
         $viewLayout->Assign('code', $code);
         $viewLayout->Assign('message', $exception->getMessage());
         $controller = 'Zero_Exception_' . $code;
-        if ( self::Autoload($controller) )
-        {
+        if (self::Autoload($controller)) {
             $Controller = Zero_Controller::Makes($controller);
-            if ( method_exists($Controller, 'Action_Default') )
-            {
+            if (method_exists($Controller, 'Action_Default')) {
                 $viewController = $Controller->Action_Default();
-                if ( true == $viewController instanceof Zero_View )
-                {
+                if (true == $viewController instanceof Zero_View) {
                     /* @var $viewController Zero_View */
                     $viewController->Assign('code', $code);
                     $viewController->Assign('message', $exception->getMessage());
                     $view = $viewController->Fetch();
-                }
-                else
-                {
+                } else {
                     $view = $viewController;
                 }
-            }
-            else
-            {
+            } else {
                 Zero_Logs::Set_Message_Error("У контроллера '{$Controller}' нет метода по умолчанию");
                 $view = '';
             }
             $viewLayout->Assign('Content', $view);
-        }
-        else
-        {
+        } else {
             $view = new Zero_View($controller);
             $view->Assign('code', $code);
             $view->Assign('message', $exception->getMessage());
@@ -900,7 +858,7 @@ class Zero_App
         }
         // Логирование (в браузер)
         //        if ( self::$Config->Log_Output_Display || isset($codeList[$code]) )
-        if ( isset($codeList[$code]) )
+        if (isset($codeList[$code]))
             self::ResponseHtml($viewLayout->Fetch(), $code);
         else
             self::ResponseConsole();
@@ -916,43 +874,39 @@ class Zero_App
         $range_file_error = 10;
         $error = "#{ERROR_EXCEPTION} " . $exception->getMessage() . ' ' . $exception->getFile() . '(' . $exception->getLine() . ')';
         Zero_Logs::Set_Message_Error($error);
-        if ( Zero_App::$Config->Log_Output_Display == true )
-        {
+        if (Zero_App::$Config->Log_Output_Display == true) {
             Zero_Logs::Set_Message_ErrorTrace(Zero_Logs::Get_SourceCode($exception->getFile(), $exception->getLine(), $range_file_error));
         }
 
         $traceList = $exception->getTrace();
         array_shift($traceList);
-        foreach ($traceList as $id => $trace)
-        {
-            if ( !isset($trace['args']) )
+        foreach ($traceList as $id => $trace) {
+            if (!isset($trace['args']))
                 continue;
             $args = [];
             $range_file_error = $range_file_error - 2;
-            foreach ($trace['args'] as $arg)
-            {
-                if ( is_scalar($arg) )
+            foreach ($trace['args'] as $arg) {
+                if (is_scalar($arg))
                     $args[] = "'" . $arg . "'";
-                else if ( is_array($arg) )
+                else if (is_array($arg))
                     $args[] = print_r($arg, true);
-                else if ( is_object($arg) )
+                else if (is_object($arg))
                     $args[] = get_class($arg) . ' Object...';
             }
             $trace['args'] = join(', ', $args);
-            if ( isset($trace['class']) )
+            if (isset($trace['class']))
                 $callback = $trace['class'] . $trace['type'] . $trace['function'];
-            else if ( isset($trace['function']) )
+            else if (isset($trace['function']))
                 $callback = $trace['function'];
             else
                 $callback = '';
-            if ( !isset($trace['file']) )
+            if (!isset($trace['file']))
                 $trace['file'] = '';
-            if ( !isset($trace['line']) )
+            if (!isset($trace['line']))
                 $trace['line'] = 0;
             $error = "\t#{" . $id . "}" . $trace['file'] . '(' . $trace['line'] . '): ' . $callback . "(" . str_replace("\n", "", $trace['args']) . ");";
             Zero_Logs::Set_Message_Error($error);
-            if ( Zero_App::$Config->Log_Output_Display == true )
-            {
+            if (Zero_App::$Config->Log_Output_Display == true) {
                 Zero_Logs::Set_Message_ErrorTrace(Zero_Logs::Get_SourceCode($trace['file'], $trace['line'], $range_file_error));
             }
         }
