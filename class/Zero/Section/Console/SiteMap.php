@@ -2,7 +2,7 @@
 /**
  * Формирование карты сайта в формате xml.
  *
- * @package Zero.Console.Section
+ * @package Zero.Console
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */

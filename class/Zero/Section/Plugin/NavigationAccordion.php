@@ -6,9 +6,9 @@
  * - 2 и 3 уровень.
  * @sample {plugin "Zero_Section_Plugin_NavigationAccordion" view="" section_id="0"}
  *
- * @package Zero.Section.Navigation
+ * @package Zero.Plugin
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
- * @date 2015.01.01
+ * @date 2015-01-01
  */
 class Zero_Section_Plugin_NavigationAccordion extends Zero_Controller
 {

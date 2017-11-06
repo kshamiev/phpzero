@@ -5,7 +5,7 @@
  *
  * @package Zero
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
- * @date 2016.06.07
+ * @date 2016-06-07
  *
  * @property string $Name
  * @property string $Controller
@@ -16,7 +16,7 @@
  * @property string $Day
  * @property string $Month
  * @property string $Week
- * @property integer $IsActiv
+ * @property integer $IsActive
  * @property string $IsAuthorized
  */
 class Zero_Controllers extends Zero_Model

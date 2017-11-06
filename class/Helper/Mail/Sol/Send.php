@@ -3,7 +3,7 @@
 /**
  * Отправка очереди почтовых сообщений
  *
- * @package Zero.Console.Mail
+ * @package Helper.Mail
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */

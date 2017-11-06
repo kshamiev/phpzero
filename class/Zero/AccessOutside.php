@@ -3,9 +3,9 @@
 /**
  * AccessOutside.
  *
- * @package Zero.AccessOutside
+ * @package Zero
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
- * @date 2017.10.08
+ * @date 2017-10-08
  *
  * @property string $Name
  * @property string $AccessMethod
@@ -13,7 +13,7 @@
  * @property string $Login
  * @property string $chePassword
  * @property string $AuthUserToken
- * @property integer $IsDebu
+ * @property integer $IsDebug
  */
 class Zero_AccessOutside extends Zero_Model
 {

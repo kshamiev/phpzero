@@ -3,7 +3,7 @@
 /**
  * Контроллер изменения объекта
  *
- * @package Zero.Controllers
+ * @package Zero.Admin
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2016.06.07
  */

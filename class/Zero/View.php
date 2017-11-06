@@ -42,9 +42,9 @@ define('LANG', Zero_App::$Config->Site_Language);
  * Gathers ready-made template to the transferred data (as it executes a program.)
  * The mechanism of the multi-language templates
  *
- * @package Zero.Component Шаблонизатор
+ * @package Component
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
- * @date 2015.01.01
+ * @date 2015-01-01
  */
 class Zero_View
 {

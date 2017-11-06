@@ -7,7 +7,7 @@
  * Путем добавления конфигураций и указания методов ниже в комментарии
  * Либо чере методы геттеры
  *
- * @package Zero.Component
+ * @package Component
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2017-09-14
  *
@@ -149,7 +149,7 @@ class Zero_RequestBase
      *
      * @param string $method имя вызываемого метода
      * @param array $params массив передаваемых параметров
-     * @return array ответ
+     * @return Zero_Request_Type ответ
      */
     public function __call($method, $params)
     {
@@ -162,7 +162,9 @@ class Zero_RequestBase
 }
 
 /**
- * Тип ответа запроса
+ * Возвращаемое значение
+ *
+ * @package Component
  */
 class Zero_Request_Type
 {

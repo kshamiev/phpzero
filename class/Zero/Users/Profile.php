@@ -3,12 +3,9 @@
 /**
  * Controller. User Profile.
  *
- * @package Zero.Controller.Users
- * @author Konstantin Shamiev aka ilosa <konstantin@phpzero.com>
- * @version $Id$
- * @link http://www.phpzero.com/
- * @copyright <PHP_ZERO_COPYRIGHT>
- * @license http://www.phpzero.com/license/
+ * @package Zero.Admin
+ * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
+ * @date 2015.01.01
  */
 class Zero_Users_Profile extends Zero_Controller
 {

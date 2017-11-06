@@ -9,7 +9,7 @@
  * - Create and delete folders.
  * - Change text files.
  *
- * @package Zero.Controller.System
+ * @package Zero.Admin
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */

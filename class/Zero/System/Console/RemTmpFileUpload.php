@@ -2,7 +2,7 @@
 /**
  * Удаление старых бинарных данных загруженных через веб (ajax)
  *
- * @package Zero.Console.Base
+ * @package Zero.Console
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */

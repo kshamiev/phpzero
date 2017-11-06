@@ -4,7 +4,7 @@
  *
  * Sample: {plugin "Zero_Crud_Plugin_Pager" view="" Count=$PagerCount Page=$PagerPage PageItem=$PagerPageItem PageStep=$PagerPageStep}
  *
- * @package Zero.Plugin.Crud
+ * @package Zero.Plugin
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */

@@ -5,12 +5,9 @@
  *
  * @sample {plugin "Zero_Section_Plugin_NavigationChild" view="" section_id="0"}
  *
- * @package Zero.Section.Navigation
+ * @package Zero.Plugin
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
- * @version $Id$
- * @link http://www.phpzero.com/
- * @copyright <PHP_ZERO_COPYRIGHT>
- * @license http://www.phpzero.com/license/
+ * @date 2015-01-01
  */
 class Zero_Section_Plugin_NavigationChild extends Zero_Controller
 {

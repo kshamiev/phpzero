@@ -3,9 +3,9 @@
 /**
  * Пользователи.
  *
- * @package Zero Пользователи
+ * @package Zero
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
- * @date 2015.01.01
+ * @date 2015-01-01
  *
  * @property integer $Groups_ID
  * @property integer $Users_ID
@@ -187,6 +187,8 @@ class Zero_Users extends Zero_Model
             'Skype' => [],
             'Address' => [],
             'Token' => [],
+            'Date' => ['Form' => 'Readonly'],
+            'DateOnline' => ['Form' => 'Readonly'],
         ];
     }
 

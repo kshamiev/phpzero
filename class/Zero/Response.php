@@ -5,7 +5,7 @@
  *
  * Компонент
  *
- * @package Zero.Component
+ * @package Component
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2017-09-14
  */

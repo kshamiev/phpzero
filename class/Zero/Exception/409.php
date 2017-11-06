@@ -1,11 +1,11 @@
 <?php
 
 /**
- * <Comment>
+ * Вывод страницы для ответа с кодом 409
  *
- * @package <Package>.<Subpackage>
+ * @package Zero.Page
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
- * @date <Date>
+ * @date 2017-09-10
  */
 class Zero_Exception_409 extends Zero_Controller
 {
@@ -19,21 +19,5 @@ class Zero_Exception_409 extends Zero_Controller
         $this->Chunk_Init();
         $this->Chunk_View();
         return $this->View;
-    }
-
-    /**
-     * Фабричный метод по созданию контроллера.
-     *
-     * @param array $properties входные параметры плагина
-     * @return Zero_Exception_409
-     */
-    public static function Make($properties = [])
-    {
-        $Controller = new self();
-        foreach ($properties as $property => $value)
-        {
-            $Controller->Params[$property] = $value;
-        }
-        return $Controller;
     }
 }

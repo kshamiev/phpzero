@@ -5,7 +5,7 @@
  * Sample: {plugin "Zero_Users_Plugin_Online" time="60"}
  * Только для зарегистрированных пользователей.
  *
- * @package Zero.Plugin.Users
+ * @package Zero.Plugin
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015.01.01
  */

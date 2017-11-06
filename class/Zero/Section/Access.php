@@ -3,7 +3,7 @@
 /**
  * Controller. Management of access rights.
  *
- * @package Zero.Section
+ * @package Zero.Admin
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2017-10-08
  */

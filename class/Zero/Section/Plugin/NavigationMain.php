@@ -6,8 +6,9 @@
  * - two level
  * @sample {plugin "Zero_Section_Plugin_NavigationMain" view=""}
  *
- * @package Zero.Section.Navigation
+ * @package Zero.Plugin
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
+ * @date 2015-01-01
  */
 class Zero_Section_Plugin_NavigationMain extends Zero_Controller
 {

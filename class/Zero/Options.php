@@ -3,9 +3,9 @@
 /**
  * Options.
  *
- * @package <Package>.Options
+ * @package Zero
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
- * @date 2016.09.27
+ * @date 2016-09-27
  *
  * @property string $Name
  * @property string $Value

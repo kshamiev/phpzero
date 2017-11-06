@@ -3,9 +3,9 @@
 /**
  * Группы доступа пользователей.
  *
- * @package Zero Группы
+ * @package Zero
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
- * @date 2015.01.01
+ * @date 2015-01-01
  *
  * @property string $Name
  * @property string $Status

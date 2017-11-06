@@ -2,9 +2,9 @@
 /**
  * A helper class for working with the string.
  *
- * @package Zero.Helper
+ * @package Helper
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
- * @date 2015.01.01
+ * @date 2015-01-01
  */
 final class Helper_Strings
 {

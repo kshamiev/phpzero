@@ -3,7 +3,7 @@
 /**
  * Вспомогательный класс для обмена информацией и проведения операций с внешними ресурсами
  *
- * @package Zero.Helper
+ * @package Helper.Curl
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2016.06.15
  */
@@ -155,7 +155,7 @@ class Helper_Curl
             }
         }
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,  0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
         //	время работы
         curl_setopt($ch, CURLOPT_TIMEOUT, 300);          //	полное время сеанса
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);    //	время ожидания соединения в секундах
@@ -272,6 +272,11 @@ class Helper_Curl
     }
 }
 
+/**
+ * Возвращаемое значение
+ *
+ * @package Helper.Curl
+ */
 class Helper_Curl_Response
 {
     /**

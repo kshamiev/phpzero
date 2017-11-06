@@ -6,10 +6,9 @@
  * Поставнока в очередь на отправку.
  * Получение очереди для отправления по почте.
  *
- * @package Zero
+ * @package Helper.Mail
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
- * @date 2015.01.01
- * @link https://github.com/PHPMailer/PHPMailer
+ * @date 2015-01-01
  */
 class Helper_Mail
 {

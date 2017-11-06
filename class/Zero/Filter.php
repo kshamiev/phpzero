@@ -9,9 +9,9 @@
  * Reazlizuet fil`tratciiu pri vy`vode ob``ektov v gride.
  * V forme vy`stupaet kak spravochnik variantov znachenii` dlia svoi`stv.
  *
- * @package Zero.Component Фильтр
+ * @package Component
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
- * @date 2015.01.01
+ * @date 2015-01-01
  */
 class Zero_Filter
 {

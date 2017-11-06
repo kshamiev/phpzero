@@ -1,11 +1,13 @@
 <?php
 
 /**
- * Sistema pervodov.
+ * Интернационализация
  *
- * @package Zero.Component Интернационализация
+ * Переводы интефесой и виджетов на разные языки
+ *
+ * @package Component
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
- * @date 2015.01.01
+ * @date 2015-01-01
  */
 class Zero_I18n
 {

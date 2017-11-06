@@ -30,9 +30,9 @@
  * <li> Linkmore  - (select) Svoi`stvo sviazi s drugim ob``ektom (mnogochislenny`m - ajax)
  * </ol>
  *
- * @package Zero.Component
+ * @package Component
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
- * @date 2015.01.01
+ * @date 2015-01-01
  */
 class Zero_Engine
 {
@@ -333,7 +333,7 @@ class Zero_Engine
             $class = file_get_contents($path_pattern);
             $class = str_replace('<Comment>', $row['Name'], $class);
             $class = str_replace('<Subpackage>', $row['Name'], $class);
-            $class = str_replace('<Date>', date('Y.m.d'), $class);
+            $class = str_replace('<Date>', date('Y-m-d'), $class);
             $class = str_replace('Zero_Model_Pattern', $row['Name'], $class);
             Helper_File::File_Save($path_model, $class);
             //  Konfiguratciia modeli v tcelom
@@ -353,7 +353,7 @@ class Zero_Engine
                 $class = file_get_contents($path_pattern);
                 $class = str_replace('<Comment>', 'Контроллер просмотра списка объектов', $class);
                 $class = str_replace('<Subpackage>', $row['Name'], $class);
-                $class = str_replace('<Date>', date('Y.m.d'), $class);
+                $class = str_replace('<Date>', date('Y-m-d'), $class);
                 $class = str_replace('Zero_Controller_Grid', $row['Name'] . '_Grid', $class);
                 $class = str_replace('Zero_Model_Pattern', $row['Name'], $class);
                 Helper_File::File_Save($path_target, $class);
@@ -366,7 +366,7 @@ class Zero_Engine
                 $class = file_get_contents($path_pattern);
                 $class = str_replace('<Comment>', 'Контроллер изменения объекта', $class);
                 $class = str_replace('<Subpackage>', $row['Name'], $class);
-                $class = str_replace('<Date>', date('Y.m.d'), $class);
+                $class = str_replace('<Date>', date('Y-m-d'), $class);
                 $class = str_replace('Zero_Controller_Edit', $row['Name'] . '_Edit', $class);
                 $class = str_replace('Zero_Model_Pattern', $row['Name'], $class);
                 Helper_File::File_Save($path_target, $class);
@@ -494,7 +494,8 @@ class Zero_Engine
         }
         //        $str_props = substr(trim($str_props), 0, -1);
         $str_props = trim($str_props);
-        $str_property = substr(trim($str_property), 0, -1);
+//        $str_property = substr(trim($str_property), 0, -1);
+        $str_property = trim($str_property);
 
         /**
          * Faktoring / Refaktoring modeli po poluchennoi` konfiguratcii

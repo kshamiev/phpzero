@@ -3,7 +3,7 @@
 /**
  * Значения опций приложения
  *
- * @package Zero.Options
+ * @package Component
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2017-10-16
  */
