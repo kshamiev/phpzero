@@ -20,6 +20,7 @@
  * @property integer $Controllers_ID
  * @property string $Url
  * @property string $UrlThis
+ * @property string $UrlAlias
  * @property string $UrlRedirect
  * @property string $Layout
  * @property string $IsAuthorized
@@ -85,6 +86,7 @@ class Zero_Section extends Zero_Model
             'Controllers_ID' => ['AliasDB' => 'z.Controllers_ID', 'DB' => 'ID', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Link'],
             'Url' => ['AliasDB' => 'z.Url', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Readonly'],
             'UrlThis' => ['AliasDB' => 'z.UrlThis', 'DB' => 'T', 'IsNull' => 'NO', 'Default' => '', 'Form' => 'Text'],
+            'UrlAlias' => ['AliasDB' => 'z.UrlAlias', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'],
             'UrlRedirect' => ['AliasDB' => 'z.UrlRedirect', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'],
             'Layout' => ['AliasDB' => 'z.Layout', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Select'],
             'IsAuthorized' => ['AliasDB' => 'z.IsAuthorized', 'DB' => 'E', 'IsNull' => 'NO', 'Default' => 'no', 'Form' => 'Radio'],
@@ -175,6 +177,7 @@ class Zero_Section extends Zero_Model
         return [
             'Url' => [],
             'UrlThis' => [],
+            'UrlAlias' => [],
             'UrlRedirect' => [],
             'Layout' => [],
             'Controllers_ID' => [],
@@ -202,7 +205,8 @@ class Zero_Section extends Zero_Model
     {
         if ( $this->ID != 0 )
             return;
-        $row = Zero_DB::Select_Row("SELECT * FROM Section WHERE Url = " . Zero_DB::EscT($url));
+        $u = Zero_DB::EscT($url);
+        $row = Zero_DB::Select_Row("SELECT * FROM Section WHERE UrlAlias = {$u} OR Url = {$u}");
         if ( 0 == count($row) )
             return;
         $this->Set_Props($row);
@@ -329,19 +333,50 @@ class Zero_Section extends Zero_Model
      */
     public function VL_UrlThis($value, $scenario)
     {
-        if ( !$value )
-            return 'Error_Prop';
         if ( 0 < $this->Section_ID )
         {
-            $this->UrlThis = Helper_Strings::Transliteration_Url($value);
             $Object = Zero_Model::Makes(__CLASS__, $this->Section_ID);
-            $this->Url = rtrim($Object->Url, '/') . '/' . $this->UrlThis;
+
+            $u1 = Helper_Strings::Transliteration_Url($value);
+            $u2 = rtrim($Object->Url, '/') . '/' . ltrim($u1, '/');
+
+            $u = Zero_DB::EscT($u2);
+            $id = Zero_DB::Select_Field("SELECT ID FROM Section WHERE ( UrlAlias = {$u} OR Url = {$u} ) AND ID != {$this->ID}");
+            if ( 0 < $id )
+                return 'error_exists: ' . $id;
+
+            $this->UrlThis = $u1;
+            $this->Url = $u2;
+            return '';
         }
         else
         {
-            $this->UrlThis = '/';
-            $this->Url = '/';
+            $this->UrlThis = Helper_Strings::Transliteration_Url($value);
+            $this->Url = Helper_Strings::Transliteration_Url($value);
+            return '';
         }
+    }
+
+    /**
+     * UrlAlias Section
+     *
+     * @param mixed $value value to check
+     * @param string $scenario scenario validation
+     * @return string
+     */
+    public function VL_UrlAlias($value, $scenario)
+    {
+        if ( !$value )
+        {
+            $this->UrlAlias = '';
+            return '';
+        }
+        $u = Zero_DB::EscT($value);
+        $id = Zero_DB::Select_Field("SELECT ID FROM Section WHERE ( UrlAlias = {$u} OR Url = {$u} ) AND ID != {$this->ID}");
+        if ( 0 < $id )
+            return 'error_exists: ' . $id;
+
+        $this->UrlAlias = $value;
         return '';
     }
 

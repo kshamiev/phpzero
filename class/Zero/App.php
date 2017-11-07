@@ -529,9 +529,9 @@ class Zero_App
 
         //  Session Initialization (Zero_Session)
         if ( isset($_SERVER['HTTP_AUTHUSERTOKEN']) )
-            Zero_Session::Init($_SERVER['HTTP_AUTHUSERTOKEN']);
+            Zero_Session::Init(self::$Config->Site_Token, $_SERVER['HTTP_AUTHUSERTOKEN']);
         else if ( isset($_REQUEST['authusertoken']) )
-            Zero_Session::Init($_REQUEST['authusertoken']);
+            Zero_Session::Init(self::$Config->Site_Token, $_REQUEST['authusertoken']);
         else
             Zero_Session::Init(self::$Config->Site_Token);
 
