@@ -32,6 +32,8 @@ class Zero_Session extends ArrayObject
         {
             if ( $sessionId )
                 session_id(sha1($sessionId));
+            else
+                $sessionName = sha1($sessionName);
             session_name($sessionName);
             session_start();
         }

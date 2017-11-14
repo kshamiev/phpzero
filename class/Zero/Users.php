@@ -93,7 +93,7 @@ class Zero_Users extends Zero_Model
             'DateOnline' => ['AliasDB' => 'z.DateOnline', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Readonly'],
             'Date' => ['AliasDB' => 'z.Date', 'DB' => 'D', 'IsNull' => 'NO', 'Default' => '', 'Form' => 'Readonly'],
             'Address' => ['AliasDB' => 'z.Address', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Textarea'],
-            'Token' => ['AliasDB' => 'z.Token', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'],
+            'Token' => ['AliasDB' => 'z.Token', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Password'],
             /*END_CONFIG_PROP*/
         ];
     }
@@ -253,6 +253,20 @@ class Zero_Users extends Zero_Model
         if ( 0 < $cnt )
             return 'Error_Exists';
         $this->Login = $value;
+        return '';
+    }
+
+    /**
+     * Validatciia logina.
+     *
+     * @param mixed $value value to check
+     * @param string $scenario scenario validation
+     * @return string
+     */
+    public function VL_Token($value, $scenario)
+    {
+        if ( $value )
+            $this->Token = md5($value);
         return '';
     }
 
