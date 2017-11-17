@@ -110,7 +110,6 @@ class Zero_Content extends Zero_Model
         if ( 'Zero_Content_Edit' == $scenario )
         {
             return [
-                'ID' => [],
                 'Lang' => [],
                 'Name' => [],
                 'Content' => [],
@@ -120,7 +119,6 @@ class Zero_Content extends Zero_Model
         else
         {
             return [
-                'ID' => [],
                 'Name' => [],
                 'Content' => [],
                 'Target' => [],

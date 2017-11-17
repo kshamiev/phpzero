@@ -105,7 +105,6 @@ class Zero_Action extends Zero_Model
     {
         return [
             /*BEG_CONFIG_FORM_PROP*/
-            'ID' => [],
             'Section_ID' => [],
             'Groups_ID' => [],
             'Action' => [],
