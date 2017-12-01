@@ -518,10 +518,10 @@ class Zero_App
         }
 
         // Options
-        self::$Options = new Zero_OptionsV(self::$Config->Site_UseDB);
+        self::$Options = new Zero_Option();
 
         // Request
-        self::$Request = new Zero_Request(self::$Config->Site_UseDB);
+        self::$Request = new Zero_Request();
 
         //  Initialize cache subsystem (Zero_Cache)
         if ( 0 < count(self::$Config->Memcache['Cache']) && class_exists('Memcache') )
