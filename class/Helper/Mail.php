@@ -76,6 +76,11 @@ class Helper_Mail
      */
     public function Send($data)
     {
+        if ( empty($data['From']['Name']) )
+            $data['From']['Name'] = Zero_App::$Config->Site_Name;
+        if ( empty($data['From']['Email']) )
+            $data['From']['Email'] = Zero_App::$Config->Site_Email;
+
         $contentMail = "";
         // reply
         if ( isset($data['Reply']) )
@@ -303,6 +308,20 @@ class Helper_Mail
      */
     public static function SendMessage($data)
     {
+        // sample $data
+        $dtaSample = [
+            'Reply' => ['Name' => 'Reply', 'Email' => 'reply@mail.ru'],
+            'From' => ['Name' => 'From', 'Email' => 'from@mail.ru'],
+            'Subject' => 'Тема сообщения',
+            'Message' => 'Текст или тело сообщения',
+            'To' => [
+                'Recipient@mail.ru' => 'NameRecipient',
+            ],
+            'Attach' => [
+                'pathFile' => 'nameFile',
+            ],
+        ];
+
         $errorCnt = 0;
         $mailSMTP = new Helper_Mail(Zero_App::$Config->Mail_Username, Zero_App::$Config->Mail_Password, Zero_App::$Config->Mail_Host, Zero_App::$Config->Mail_Port);
         $result = $mailSMTP->Send($data);

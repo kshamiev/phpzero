@@ -20,7 +20,7 @@ if ( count($_SERVER['argv']) > 1 )
     $Controller = Zero_Controller::Makes($arr[0]);
     $flag = $Controller->$_REQUEST['act']();
 
-    if ( Zero_App::$Config->Site_UseDB )
+    if ( 0 === $flag && Zero_App::$Config->Site_UseDB )
     {
         $sql = "UPDATE Controllers SET DateExecute = NOW() WHERE Controller = '{$arr[0]}'";
         Zero_DB::Update($sql);
