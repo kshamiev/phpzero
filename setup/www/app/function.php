@@ -27,6 +27,7 @@ function app_route()
         {
             Zero_App::$RouteParams[1] = $p;
             array_pop($row);
+            break;
         }
     }
 
