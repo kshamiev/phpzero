@@ -6,24 +6,25 @@
  * @package Component
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2017-10-16
+ *
+ * @property string SampleParam1
+ * @property int SampleParam2
  */
-class Zero_OptionsVBase
+class Zero_OptionSetup
 {
     /**
      * Массив содержащий значения опций
      *
      * @var array
      */
-    private $options = [];
+    private $options = null;
 
     /**
-     * Конструктор
-     *
-     * @param bool $IsDB загружать ли опции из БД
+     * Инициализация
      */
-    public function __construct($IsDB = false)
+    private function init()
     {
-        if ( $IsDB )
+        if ( Zero_App::$Config->Site_UseDB )
         {
             foreach (Zero_DB::Select_Array("SELECT * FROM Options") as $row)
             {
@@ -54,6 +55,9 @@ class Zero_OptionsVBase
      */
     public function __get($prop)
     {
+        if ( is_null($this->options) )
+            $this->init();
+
         if ( isset($this->options[$prop]) )
         {
             return $this->options[$prop];

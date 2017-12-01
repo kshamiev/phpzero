@@ -78,17 +78,6 @@ class Zero_Users_Login extends Zero_Controller
             return $this->View;
         }
 
-        // Авторизация
-        if ( isset($_REQUEST['Memory']) && $_REQUEST['Memory'] )
-        {
-            $this->Model->Token = $this->Model->Get_TokenNew();
-            //            setcookie(Zero_App::$Config->Site_Token, $this->Model->Token, time() + 2592000, '/');
-        }
-        else
-        {
-            $this->Model->Token = '';
-            //            setcookie(Zero_App::$Config->Site_Token, null, 0, '/');
-        }
         $this->Model->IsOnline = 'yes';
         $this->Model->DateOnline = date('Y-m-d H:i:s');
         $this->Model->Save();
