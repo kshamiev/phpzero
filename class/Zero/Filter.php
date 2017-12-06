@@ -563,8 +563,10 @@ class Zero_Filter
         }
         if ( isset($properties['Date']) )
             $this->Set_Sort('Date', 'DESC');
-        if ( isset($properties['Sort']) )
+        else if ( isset($properties['Sort']) )
             $this->Set_Sort('Sort', 'ASC');
+        else if ( isset($properties['Name']) )
+            $this->Set_Sort('Name', 'ASC');
         return $this;
     }
 }
