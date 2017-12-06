@@ -174,7 +174,7 @@ class Zero_Users extends Zero_Model
                 'Address' => [],
             ];
         }
-        // регистрация
+        // По умолчанию
         return [
             'Groups_ID' => [],
             'Users_ID' => [],
@@ -187,8 +187,8 @@ class Zero_Users extends Zero_Model
             'Skype' => [],
             'Address' => [],
             'Token' => [],
-            'Date' => ['Form' => 'Readonly'],
-            'DateOnline' => ['Form' => 'Readonly'],
+            'Date' => [],
+            'DateOnline' => [],
         ];
     }
 
