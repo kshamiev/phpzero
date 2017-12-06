@@ -473,11 +473,16 @@ class Zero_App
             return;
 
         //  Include Components
-        require_once ZERO_PATH_ZERO . '/class/Zero/Config.php';
         require_once ZERO_PATH_ZERO . '/class/Zero/Logs.php';
         require_once ZERO_PATH_ZERO . '/class/Zero/DB.php';
         require_once ZERO_PATH_ZERO . '/class/Zero/Session.php';
         require_once ZERO_PATH_ZERO . '/class/Zero/Cache.php';
+        if ( !file_exists($path = ZERO_PATH_APP . '/class/Zero/Config.php') )
+            if ( !file_exists($path = ZERO_PATH_APPLICATION . '/zero/class/Config.php') )
+                $path = ZERO_PATH_ZERO . '/class/Zero/Config.php';
+        require_once $path;
+        //        else
+        //            require_once ZERO_PATH_ZERO . '/class/Zero/Config.php';
         require_once ZERO_PATH_ZERO . '/function.php';
         if ( !file_exists($path = ZERO_PATH_APP . '/function.php') )
             if ( !file_exists($path = ZERO_PATH_APPLICATION . '/function.php') )
