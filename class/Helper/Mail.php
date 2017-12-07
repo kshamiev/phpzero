@@ -108,14 +108,15 @@ class Helper_Mail
         $contentMail .= "Content-Transfer-Encoding: 8bit\r\n\r\n";
         $contentMail .= $data['Message'] . "\r\n\r\n";
         // вложения
-        foreach ($data['Attach'] as $path => $fileName)
-        {
-            $contentMail .= "--" . $boundary . "\r\n";
-            $contentMail .= "Content-Type: application/octet-stream; name=\"" . $fileName . "\"\r\n";
-            $contentMail .= "Content-Transfer-Encoding: base64\r\n";
-            $contentMail .= "Content-Disposition: attachment; filename=\"" . $fileName . "\"\r\n\r\n";
-            $contentMail .= chunk_split(base64_encode(file_get_contents($path))) . "\r\n\r\n";
-        }
+        if ( isset($data['Attach']) )
+            foreach ($data['Attach'] as $path => $fileName)
+            {
+                $contentMail .= "--" . $boundary . "\r\n";
+                $contentMail .= "Content-Type: application/octet-stream; name=\"" . $fileName . "\"\r\n";
+                $contentMail .= "Content-Transfer-Encoding: base64\r\n";
+                $contentMail .= "Content-Disposition: attachment; filename=\"" . $fileName . "\"\r\n\r\n";
+                $contentMail .= chunk_split(base64_encode(file_get_contents($path))) . "\r\n\r\n";
+            }
         $contentMail .= "--" . $boundary . "--";
 
         try
