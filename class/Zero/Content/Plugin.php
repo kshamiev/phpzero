@@ -14,10 +14,12 @@ class Zero_Content_Plugin extends Zero_Controller
     /**
      * Create views.
      *
-     * @return string
+     * @return Zero_View
      */
     public function Action_Default()
     {
+        $this->Chunk_Init();
+
         $index = 'Content_' . $this->Params['target'] . '_' . ZERO_LANG;
         if ( false === $Content = Zero_App::$Section->CH->Get($index) )
         {
@@ -30,6 +32,7 @@ class Zero_Content_Plugin extends Zero_Controller
             Zero_Cache::Set_Link('Content', $Content->ID);
             Zero_App::$Section->CH->Set($index, $Content);
         }
-        return $Content->Content;
+        $this->View->Assign('Content', $Content->Content);
+        return $this->View;
     }
 }

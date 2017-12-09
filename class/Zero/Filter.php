@@ -187,12 +187,18 @@ class Zero_Filter
                     $this->Filter[$prop]['List'] = $data;
                 else
                 {
+                    $i18n = "'" . get_class($this->Model) . " " . $prop . " options' => [";
                     $row = Zero_DB::Select_Row("DESCRIBE `{$this->Model->Source}` `{$prop}`");
-                    $arr = explode(',', explode(')', explode('(', $row['Type'])[1])[0]);
+                    $arr = explode(',', explode(")", explode("(", $row['Type'])[1])[0]);
                     foreach ($arr as $v)
                     {
+                        $i18n .= $v . ' => ' . $v . ', ';
+                        $v = str_replace("'", "", $v);
                         $this->Filter[$prop]['List'][$v] = $v;
                     }
+                    $i18n = substr($i18n, 0, -2);
+                    $i18n .= "],";
+                    Zero_Logs::Set_Message_Warning($i18n);
                 }
             }
         }
@@ -249,12 +255,18 @@ class Zero_Filter
                     $this->Filter[$prop]['List'] = $data;
                 else
                 {
+                    $i18n = "'" . get_class($this->Model) . " " . $prop . " options' => [";
                     $row = Zero_DB::Select_Row("DESCRIBE `{$this->Model->Source}` `{$prop}`");
-                    $arr = explode(',', explode(')', explode('(', $row['Type'])[1])[0]);
+                    $arr = explode(',', explode(")", explode("(", $row['Type'])[1])[0]);
                     foreach ($arr as $v)
                     {
+                        $i18n .= $v . ' => ' . $v . ', ';
+                        $v = str_replace("'", "", $v);
                         $this->Filter[$prop]['List'][$v] = $v;
                     }
+                    $i18n = substr($i18n, 0, -2);
+                    $i18n .= "],";
+                    Zero_Logs::Set_Message_Warning($i18n);
                 }
             }
         }
@@ -296,12 +308,18 @@ class Zero_Filter
                     $this->Filter[$prop]['List'] = $data;
                 else
                 {
+                    $i18n = "'" . get_class($this->Model) . " " . $prop . " options' => [";
                     $row = Zero_DB::Select_Row("DESCRIBE `{$this->Model->Source}` `{$prop}`");
-                    $arr = explode(',', explode(')', explode('(', $row['Type'])[1])[0]);
+                    $arr = explode(',', explode(")", explode("(", $row['Type'])[1])[0]);
                     foreach ($arr as $v)
                     {
+                        $i18n .= $v . ' => ' . $v . ', ';
+                        $v = str_replace("'", "", $v);
                         $this->Filter[$prop]['List'][$v] = $v;
                     }
+                    $i18n = substr($i18n, 0, -2);
+                    $i18n .= "],";
+                    Zero_Logs::Set_Message_Warning($i18n);
                 }
             }
         }
