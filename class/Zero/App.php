@@ -102,7 +102,7 @@ class Zero_App
     /**
      * Configuration
      *
-     * @var Zero_OptionsV
+     * @var Zero_Option
      */
     public static $Options = null;
 
@@ -120,7 +120,7 @@ class Zero_App
      *
      * @var string (api or web or console)
      */
-    private static $mode = '';
+    private static $mode = 'Web';
 
     /**
      * Connection classes
@@ -139,6 +139,25 @@ class Zero_App
         $module = strtolower(array_shift($arr));
         $class = implode('/', $arr);
 
+        // new Controllers
+//        $path = ZERO_PATH_APP . '/class' . self::$mode . '/' . str_replace('_', '/', $class_name) . '.php';
+//        if ( file_exists($path) )
+//        {
+//            include_once $path;
+//            if ( class_exists($class_name) )
+//                return true;
+//        }
+
+        // new Model & Component
+//        $path = ZERO_PATH_ZERO . '/class' . self::$mode . '/' . str_replace('_', '/', $class_name) . '.php';
+//        if ( file_exists($path) )
+//        {
+//            include_once $path;
+//            if ( class_exists($class_name) )
+//                return true;
+//        }
+
+        // new Model & Component
         $path = ZERO_PATH_APP . '/class/' . str_replace('_', '/', $class_name) . '.php';
         if ( file_exists($path) )
         {
@@ -146,6 +165,7 @@ class Zero_App
             if ( class_exists($class_name) )
                 return true;
         }
+        // old
         $path = ZERO_PATH_APPLICATION . '/' . $module . '/class/' . $class . '.php';
         if ( file_exists($path) )
         {
@@ -153,6 +173,7 @@ class Zero_App
             if ( class_exists($class_name) )
                 return true;
         }
+        // old
         $path = ZERO_PATH_APPLICATION . '/' . $module . '/class' . $class . '.php'; // old
         if ( file_exists($path) )
         {
@@ -160,21 +181,7 @@ class Zero_App
             if ( class_exists($class_name) )
                 return true;
         }
-        //
-        //        $path = ZERO_PATH_ZERO . '/' . $module . '/class/' . $class . '.php';
-        //        if ( file_exists($path) )
-        //        {
-        //            include_once $path;
-        //            if ( class_exists($class_name) )
-        //                return true;
-        //        }
-        //        $path = ZERO_PATH_ZERO . '/' . $module . '/class' . $class . '.php'; // old
-        //        if ( file_exists($path) )
-        //        {
-        //            include_once $path;
-        //            if ( class_exists($class_name) )
-        //                return true;
-        //        }
+        // new Model & Component
         $path = ZERO_PATH_ZERO . '/class/' . str_replace('_', '/', $class_name) . '.php';
         if ( file_exists($path) )
         {
@@ -183,8 +190,8 @@ class Zero_App
                 return true;
         }
         //        if ( isset(self::$Config->Mod[$module]) )
-        if ( true == $flagLog )
-            Zero_Logs::Set_Message_Error('Класс не найден: ' . $class_name);
+        //        if ( true == $flagLog )
+        //            Zero_Logs::Set_Message_Error('Класс не найден: ' . $class_name);
         return false;
     }
 
@@ -473,14 +480,14 @@ class Zero_App
             return;
 
         //  Include Components
-        require_once ZERO_PATH_ZERO . '/class/Zero/Logs.php';
-        require_once ZERO_PATH_ZERO . '/class/Zero/DB.php';
-        require_once ZERO_PATH_ZERO . '/class/Zero/Session.php';
-        require_once ZERO_PATH_ZERO . '/class/Zero/Cache.php';
-        if ( !file_exists($path = ZERO_PATH_APP . '/class/Zero/Config.php') )
-            if ( !file_exists($path = ZERO_PATH_APPLICATION . '/zero/class/Config.php') )
-                $path = ZERO_PATH_ZERO . '/class/Zero/Config.php';
-        require_once $path;
+        //require_once ZERO_PATH_ZERO . '/class/Zero/Logs.php';
+        //require_once ZERO_PATH_ZERO . '/class/Zero/DB.php';
+        //require_once ZERO_PATH_ZERO . '/class/Zero/Session.php';
+        //require_once ZERO_PATH_ZERO . '/class/Zero/Cache.php';
+        //        if ( !file_exists($path = ZERO_PATH_APP . '/class/Zero/Config.php') )
+        //            if ( !file_exists($path = ZERO_PATH_APPLICATION . '/zero/class/Config.php') )
+        //                $path = ZERO_PATH_ZERO . '/class/Zero/Config.php';
+        //        require_once $path;
         //        else
         //            require_once ZERO_PATH_ZERO . '/class/Zero/Config.php';
         require_once ZERO_PATH_ZERO . '/function.php';
@@ -490,7 +497,7 @@ class Zero_App
         require_once $path;
 
         spl_autoload_register(['Zero_App', 'Autoload']);
-        set_exception_handler(['Zero_App', 'Exception']);
+
         // register_shutdown_function(['Zero_App', 'Exit_Application']);
 
         //  Configuration
@@ -504,15 +511,15 @@ class Zero_App
         }
         else if ( preg_match("~^/(api|json)/~si", $_SERVER['REQUEST_URI']) )
         {
+            Zero_Logs::Init(ZERO_PATH_LOG . '/api' . $suffix);
             app_route();
             app_request_data_api();
-            Zero_Logs::Init(ZERO_PATH_LOG . '/api' . $suffix);
             self::$mode = 'Api';
         }
         else
         {
-            app_route();
             Zero_Logs::Init(ZERO_PATH_LOG . '/web' . $suffix);
+            app_route();
             self::$mode = 'Web';
         }
 
@@ -542,6 +549,9 @@ class Zero_App
 
         // Шаблонизатор
         require_once ZERO_PATH_ZERO . '/class/Zero/View.php';
+
+        // Исключения
+        set_exception_handler(['Zero_App', 'Exception']);
     }
 
     public static function Execute()
