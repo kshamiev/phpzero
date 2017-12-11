@@ -15,10 +15,10 @@ class Zero_System_Console_ApiGen extends Zero_Controller
      */
     public function Action_Default()
     {
-        Helper_File::Folder_Copy(ZERO_PATH_ZERO .'/data/doc', ZERO_PATH_SITE .'/doc');
-        $tpl = file_get_contents(ZERO_PATH_SITE .'/doc/.htaccess');
-        $tpl = str_replace('PATHFRILEACCESS', ZERO_PATH_SITE, $tpl);
-        file_put_contents(ZERO_PATH_SITE .'/doc/.htaccess', $tpl);
+//        Helper_File::Folder_Copy(ZERO_PATH_ZERO .'/data/doc', ZERO_PATH_SITE .'/doc');
+//        $tpl = file_get_contents(ZERO_PATH_SITE .'/doc/.htaccess');
+//        $tpl = str_replace('PATHFRILEACCESS', ZERO_PATH_SITE, $tpl);
+//        file_put_contents(ZERO_PATH_SITE .'/doc/.htaccess', $tpl);
         // ApiGen
         $command = Zero_App::$Config->Site_PathPhp . ' ' . ZERO_PATH_ZERO . '/apigen.phar generate';
         // source (источники)
