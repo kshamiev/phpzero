@@ -93,9 +93,38 @@ class Zero_Response
      * @param array $content данные
      * @param int $status http код ответа
      */
+    public static function JsonGolang($content = null, $status = 200)
+    {
+        $content = json_encode($content, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_BIGINT_AS_STRING);
+        header('Pragma: no-cache');
+        header('Last-Modified: ' . date('D, d M Y H:i:s') . 'GMT');
+        header('Expires: Mon, 26 Jul 2007 05:00:00 GMT');
+        header('Cache-Control: no-store, no-cache, must-revalidate');
+        header("Content-Type: application/json; charset=utf-8");
+        header("Content-Length: " . strlen($content));
+        // header('Access-Control-Allow-Origin: *');
+        header('HTTP/1.1 ' . $status . ' ' . $status);
+        echo $content;
+
+        // закрываем соединение с браузером (работает только под нгинx)
+        if ( function_exists('fastcgi_finish_request') )
+            fastcgi_finish_request();
+
+        // Логирование в файлы
+        if ( Zero_App::$Config->Log_Output_File )
+            Zero_Logs::Output_File();
+        exit;
+    }
+
+    /**
+     * Выдача контента в формате json
+     *
+     * @param array $content данные
+     * @param int $status http код ответа
+     */
     public static function Json($content = null, $status = 200)
     {
-        $content = json_encode($content, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK);
+        $content = json_encode($content, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_BIGINT_AS_STRING);
         header('Pragma: no-cache');
         header('Last-Modified: ' . date('D, d M Y H:i:s') . 'GMT');
         header('Expires: Mon, 26 Jul 2007 05:00:00 GMT');
@@ -134,7 +163,7 @@ class Zero_Response
         if ( $content )
             $data['Content'] = $content;
 
-        $data = json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK);
+        $data = json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_BIGINT_AS_STRING);
 
         header('Pragma: no-cache');
         header('Last-Modified: ' . date('D, d M Y H:i:s') . 'GMT');
