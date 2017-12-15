@@ -58,29 +58,37 @@ class Zero_Controller_Sample extends Zero_Controller
     {
         settype($_REQUEST['method'], 'string');
         if ( !$_REQUEST['method'] )
-            Zero_App::ResponseJson200(null, 0, ['?method=[GET,POST,PUT,DELETE]']);
+            Zero_Response::Json(['?method=[GET,POST,PUT,DELETE]']);
 
         $_REQUEST['method'] = strtolower($_REQUEST['method']);
         switch ( $_REQUEST['method'] )
         {
             case 'get':
-                $response = [];
-                Zero_Response::JsonRest($response);
+                $response = [
+                    'Uri' => '',
+                ];
+                Zero_Response::Json($response);
                 break;
             case 'post':
-                $response = [];
-                Zero_Response::JsonRest($response);
+                $response = [
+                    'Uri' => '',
+                ];
+                Zero_Response::Json($response);
                 break;
             case 'put':
-                $response = [];
-                Zero_Response::JsonRest($response);
+                $response = [
+                    'Uri' => '',
+                ];
+                Zero_Response::Json($response);
                 break;
             case 'delete':
-                $response = [];
-                Zero_Response::JsonRest($response);
+                $response = [
+                    'Uri' => '',
+                ];
+                Zero_Response::Json($response);
                 break;
             default:
-                Zero_Response::JsonRest('метод не реализован');
+                Zero_Response::Json('метод не реализован');
                 break;
         }
         return true;
