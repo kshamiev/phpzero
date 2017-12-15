@@ -50,7 +50,6 @@ return [
     'AccessOutside' => [
         'Simple' => [
             'Name' => 'Прямые запросы без конфигурации',
-            'AccessMethod' => 'Simple',
             'Url' => '',
             'Login' => '',
             'Password' => '',
@@ -59,7 +58,6 @@ return [
         ],
         'Sample' => [
             'Name' => 'Пример запроса с реквизитами доступа',
-            'AccessMethod' => 'Sample',
             'Url' => 'http://domain.ru',
             'Login' => 'login',
             'Password' => 'xxxxxxx',

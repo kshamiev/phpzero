@@ -23,6 +23,7 @@
  * @property string $Date
  * @property string $Token
  * @property string $TokenNew
+ * @property string $Address
  */
 class Zero_Users extends Zero_Model
 {

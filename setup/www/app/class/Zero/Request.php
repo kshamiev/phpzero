@@ -59,12 +59,12 @@ class Zero_RequestSetup
             Zero_Logs::Set_Message_Error("Реквизиты метода {$access} для запросов не определены");
             return new Zero_Request_Type;
         }
-        $access = Zero_App::$Config->AccessOutside[$access];
+        $accessConf = Zero_App::$Config->AccessOutside[$access];
 
         // $content = json_encode($content, JSON_PRESERVE_ZERO_FRACTION);
         $content = json_encode($content, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK);
 
-        $ch = curl_init($access['Url'] . $uri);
+        $ch = curl_init($accessConf['Url'] . $uri);
         //	время работы
         curl_setopt($ch, CURLOPT_TIMEOUT, 600);          //	полное время сеанса
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);    //	время ожидания соединения в секундах
@@ -74,13 +74,13 @@ class Zero_RequestSetup
         //	Заголовки
         $headers[] = "Content-Type: application/json; charset=utf-8";
         $headers[] = "Content-Length: " . strlen($content);
-        if ( isset($access['AuthUserToken']) && $access['AuthUserToken'] )
-            $headers[] = "AuthUserToken: " . $access['AuthUserToken'];
+        if ( isset($accessConf['AuthUserToken']) && $accessConf['AuthUserToken'] )
+            $headers[] = "AuthUserToken: " . $accessConf['AuthUserToken'];
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         //	АВТОРИЗАЦИЯ МЕТОДОМ APACHE
-        if ( isset($access['Login']) && $access['Login'] && isset($access['Password']) && $access['Password'] )
+        if ( isset($accessConf['Login']) && $accessConf['Login'] && isset($accessConf['Password']) && $accessConf['Password'] )
         {
-            curl_setopt($ch, CURLOPT_USERPWD, $access['Login'] . ":" . $access['Password']);
+            curl_setopt($ch, CURLOPT_USERPWD, $accessConf['Login'] . ":" . $accessConf['Password']);
         }
         // Метод запроса и тело запроса
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
@@ -90,10 +90,10 @@ class Zero_RequestSetup
         // SSL
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-        if ( isset($access['IsDebug']) && $access['IsDebug'] )
+        if ( isset($accessConf['IsDebug']) && $accessConf['IsDebug'] )
         {
             curl_setopt($ch, CURLOPT_VERBOSE, 1);
-            curl_setopt($ch, CURLOPT_STDERR, fopen(ZERO_PATH_LOG . "/curl_{$access['AccessMethod']}.log", 'a'));
+            curl_setopt($ch, CURLOPT_STDERR, fopen(ZERO_PATH_LOG . "/curl_{$access}.log", 'a'));
         }
         // Запрос
         $body = curl_exec($ch);

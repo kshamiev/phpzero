@@ -130,6 +130,7 @@ class Zero_Response
             'Code' => $code,
             'Message' => Zero_I18n::Message('', $code, $message),
             'ErrorStatus' => 299 < $status ? true : false,
+            'Error' => 299 < $status ? true : false,
         ];
         if ( $content )
             $data['Content'] = $content;
