@@ -7,13 +7,14 @@
  * Путем добавления конфигураций и указания методов ниже в комментарии
  * Либо чере методы геттеры
  *
- * @package Component
+ * @package Component.Zero
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2017-09-14
  *
- * @property mixed SampleCustomRequest
- * @method Zero_Request_Type Sample($method, $uri, $content = null, $headers = []) Пример запроса с реквизитами доступа
- * @method Zero_Request_Type Simple($method, $urn, $content = null, $headers = []) Прямые запросы без конфигурации
+ * @property mixed SampleCustomRequest Пользовательская реализация запросов к определенным ресурса
+ * @method Zero_Request_Type Self($method, $uri, $content = null) Запросы на себя
+ * @method Zero_Request_Type Sample($method, $uri, $content = null, $headers = []) Запросы к определенному внешнему ресурсу
+ * @method Zero_Request_Type Simple($method, $urn, $content = null, $headers = []) Запросы к неопределенному ресурсу
  */
 class Zero_RequestSetup
 {
@@ -96,14 +97,21 @@ class Zero_RequestSetup
             curl_setopt($ch, CURLOPT_STDERR, fopen(ZERO_PATH_LOG . "/curl_{$access}.log", 'a'));
         }
         // Запрос
-        $body = curl_exec($ch);
         $head = curl_getinfo($ch);
+        $body = curl_exec($ch);
         $error_code = curl_errno($ch);
         $error_subj = curl_error($ch);
         if ( 0 < $error_code )
         {
             Zero_Logs::Set_Message_Error('Curl error: ' . $error_code . ' - ' . $error_subj);
-            return new Zero_Request_Type;
+            $response = new Zero_Request_Type;
+            $response->Head = $head;
+            $response->Body = $body;
+            $response->Code = $error_code;
+            $response->Message = $error_subj;
+            $response->Content = $body;
+            $response->Error = true;
+            return $response;
         }
         curl_close($ch);
         // Заголовки
@@ -136,6 +144,16 @@ class Zero_RequestSetup
         $response = new Zero_Request_Type;
         $response->Head = $head;
         $response->Body = $body;
+        if ( isset($body['Code']) )
+            $response->Code = $body['Code'];
+        if ( isset($body['Message']) )
+            $response->Message = $body['Message'];
+        if ( isset($body['Content']) )
+            $response->Content = $body['Content'];
+        if ( isset($body['ErrorStatus']) )
+            $response->Error = $body['ErrorStatus'];
+        else if ( isset($body['Error']) )
+            $response->Error = $body['Error'];
         return $response;
     }
 
@@ -174,11 +192,19 @@ class Zero_RequestSetup
 /**
  * Возвращаемое значение
  *
- * @package Component
+ * @package Component.Zero
  */
 class Zero_Request_Type
 {
     public $Head = [];
 
     public $Body = [];
+
+    public $Code = 0;
+
+    public $Message = '';
+
+    public $Content = [];
+
+    public $Error = false;
 }

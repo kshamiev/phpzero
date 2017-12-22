@@ -49,15 +49,23 @@ return [
     // Реквизиты доступа к внешним источникам SEE Zero_Request
     'AccessOutside' => [
         'Simple' => [
-            'Name' => 'Прямые запросы без конфигурации',
+            'Name' => 'Запросы к неопределенному ресурсу',
             'Url' => '',
             'Login' => '',
             'Password' => '',
             'AuthUserToken' => '',
             'IsDebug' => true,
         ],
+        'Self' => [
+            'Name' => 'Запросы на себя',
+            'Url' => 'http://domain.ru',
+            'Login' => 'login',
+            'Password' => 'xxxxxxx',
+            'AuthUserToken' => 'xxxxxxx',
+            'IsDebug' => true,
+        ],
         'Sample' => [
-            'Name' => 'Пример запроса с реквизитами доступа',
+            'Name' => 'Запросы к определенному внешнему ресурсу',
             'Url' => 'http://domain.ru',
             'Login' => 'login',
             'Password' => 'xxxxxxx',
