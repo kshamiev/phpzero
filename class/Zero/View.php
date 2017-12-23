@@ -2,17 +2,17 @@
 /**
  * The absolute http path to the project (site)
  */
-define('ZERO_HTTP', '//' . Zero_App::$Config->Site_DomainAlias);
+define('ZERO_HTTP', Zero_App::$Config->Site_Protocol . '://' . Zero_App::$Config->Site_Domain);
 define('HTTP', ZERO_HTTP);
 /**
  * http location of static data
  */
-define('ZERO_HTTPA', '//' . Zero_App::$Config->Site_DomainAssets . '/assets');
+define('ZERO_HTTPA', Zero_App::$Config->Site_Protocol . '://' . Zero_App::$Config->Site_DomainAssets . '/assets');
 define('HTTPA', ZERO_HTTPA);
 /**
  * http location of binary data
  */
-define('ZERO_HTTPD', '//' . Zero_App::$Config->Site_DomainUpload . '/upload/data');
+define('ZERO_HTTPD', Zero_App::$Config->Site_Protocol . '://' . Zero_App::$Config->Site_DomainUpload . '/upload/data');
 define('HTTPD', ZERO_HTTPD);
 /**
  * http location of history

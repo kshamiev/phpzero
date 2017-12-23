@@ -151,8 +151,8 @@ class Zero_RequestSetup
         if ( isset($body['Content']) )
             $response->Content = $body['Content'];
         if ( isset($body['ErrorStatus']) )
-            $response->Error = $body['ErrorStatus'];
-        else if ( isset($body['Error']) )
+            $response->ErrorStatus = $body['ErrorStatus'];
+        if ( isset($body['Error']) )
             $response->Error = $body['Error'];
         return $response;
     }

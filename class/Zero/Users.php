@@ -315,6 +315,8 @@ class Zero_Users extends Zero_Model
             return '';
         if ( isset($_REQUEST['Users']['PasswordR']) && $value != $_REQUEST['Users']['PasswordR'] )
             return 'Error_PasswordValid';
+        else if ( isset($_REQUEST['User']['PasswordR']) && $value != $_REQUEST['User']['PasswordR'] )
+            return 'Error_PasswordValid';
         $this->Password = md5($value);
         return '';
     }
@@ -330,9 +332,11 @@ class Zero_Users extends Zero_Model
     {
         if ( !$value )
             return '';
-        //        if ( $value != $_REQUEST['Users']['Password'] )
-        if ( md5($value) != $this->Password )
+        if ( isset($_REQUEST['Users']['Password']) && $value != $_REQUEST['Users']['Password'] )
             return 'Error_PasswordValid';
+        else if ( isset($_REQUEST['User']['Password']) && $value != $_REQUEST['User']['Password'] )
+            return 'Error_PasswordValid';
+        $this->Password = md5($value);
         return '';
     }
 

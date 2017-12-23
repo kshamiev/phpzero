@@ -19,6 +19,6 @@ class Zero_System_Console_Engine extends Zero_Controller
         $nameConnect = key(Zero_App::$Config->Db);
         $Controller_Factory = new Zero_Engine;
         $Controller_Factory->Factory_Modules_DB($nameConnect);
-        return 0;
+        return true;
     }
 }
