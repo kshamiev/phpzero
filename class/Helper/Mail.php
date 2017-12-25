@@ -84,9 +84,11 @@ class Helper_Mail
         $contentMail = "";
         // reply
         if ( isset($data['Reply']) )
-            $contentMail .= "Reply-To: {$data['Reply']['Name']} <{$data['Reply']['Email']}>\r\n";
+            // $contentMail .= "Reply-To: {$data['Reply']['Name']} <{$data['Reply']['Email']}>\r\n";
+            $contentMail .= 'Reply-To: =?' . $this->smtp_charset . '?B?' . base64_encode("{$data['Reply']['Name']}") . "=?= <{$data['Reply']['Email']}>\r\n";
         // from
-        $contentMail .= "From: {$data['From']['Name']} <{$data['From']['Email']}>\r\n";
+        // $contentMail .= "From: {$data['From']['Name']} <{$data['From']['Email']}>\r\n";
+        $contentMail .= 'From: =?' . $this->smtp_charset . '?B?' . base64_encode("{$data['From']['Name']}") . "=?= <{$data['From']['Email']}>\r\n";
         // to
         $contentMail .= "To:";
         foreach ($data['To'] as $key => $val)

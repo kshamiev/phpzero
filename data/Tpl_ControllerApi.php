@@ -57,33 +57,44 @@ class Zero_Controller_Sample extends Zero_Controller
     public function Action_OPTIONS()
     {
         settype($_REQUEST['method'], 'string');
-        if ( !$_REQUEST['method'] )
-            Zero_Response::Json(['?method=[GET,POST,PUT,DELETE]']);
-
         $_REQUEST['method'] = strtolower($_REQUEST['method']);
+        if ( !$_REQUEST['method'] )
+        {
+            $response = [
+                'GET' => 'Описание запроса',
+                'PUT' => 'Описание запроса',
+                'POST' => 'Описание запроса',
+                'DELETE' => 'Описание запроса',
+            ];
+            Zero_Response::Json($response);
+        }
         switch ( $_REQUEST['method'] )
         {
             case 'get':
                 $response = [
-                    'Uri' => '',
-                ];
-                Zero_Response::Json($response);
-                break;
-            case 'post':
-                $response = [
-                    'Uri' => '',
+                    'Name' => 'Описание запроса',
+                    'Uri' => '?... Параметры uri',
                 ];
                 Zero_Response::Json($response);
                 break;
             case 'put':
                 $response = [
-                    'Uri' => '',
+                    'Name' => 'Описание запроса',
+                    'Uri' => '?... Параметры uri',
+                ];
+                Zero_Response::Json($response);
+                break;
+            case 'post':
+                $response = [
+                    'Name' => 'Описание запроса',
+                    'Uri' => '?... Параметры uri',
                 ];
                 Zero_Response::Json($response);
                 break;
             case 'delete':
                 $response = [
-                    'Uri' => '',
+                    'Name' => 'Описание запроса',
+                    'Uri' => '?... Параметры uri',
                 ];
                 Zero_Response::Json($response);
                 break;
@@ -92,39 +103,5 @@ class Zero_Controller_Sample extends Zero_Controller
                 break;
         }
         return true;
-    }
-
-    /**
-     * Фабричный метод по созданию контроллера.
-     *
-     * @param array $properties входные параметры контроллера (обычно в режиме плагина)
-     * @return Zero_Controller
-     */
-    public static function Make($properties = [])
-    {
-        $Controller = new self();
-        foreach ($properties as $property => $value)
-        {
-            $Controller->Params[$property] = $value;
-        }
-        return $Controller;
-    }
-
-    /**
-     * Фабричный метод по созданию контроллера.
-     *
-     * Работает через сессию. Indeks: __CLASS__
-     *
-     * @param array $properties входные параметры контроллера (обычно в режиме плагина)
-     * @return Zero_Controller
-     */
-    public static function Factory($properties = [])
-    {
-        if ( !$Controller = Zero_Session::Get(__CLASS__) )
-        {
-            $Controller = self::Make($properties);
-            Zero_Session::Set(__CLASS__, $Controller);
-        }
-        return $Controller;
     }
 }
