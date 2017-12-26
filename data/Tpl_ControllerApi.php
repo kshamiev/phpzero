@@ -3,16 +3,15 @@
 /**
  * <Comment>
  *
- * @package <Package>.<Subpackage>
+ * @package Api.<Subpackage>
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date <Date>
+ * @link /api/.../...
  */
-class Zero_Controller_Sample extends Zero_Controller
+class Api_Controller_Sample extends Zero_Controller
 {
     /**
      * Какой-то контроллер
-     *
-     * @sample /api/v1/sample?param=value...
      */
     public function Action_GET()
     {
@@ -21,8 +20,6 @@ class Zero_Controller_Sample extends Zero_Controller
 
     /**
      * Какой-то контроллер
-     *
-     * @sample /api/v1/sample?param=value...
      */
     public function Action_PUT()
     {
@@ -31,8 +28,6 @@ class Zero_Controller_Sample extends Zero_Controller
 
     /**
      * Какой-то контроллер
-     *
-     * @sample /api/v1/sample?param=value...
      */
     public function Action_POST()
     {
@@ -41,8 +36,6 @@ class Zero_Controller_Sample extends Zero_Controller
 
     /**
      * Какой-то контроллер
-     *
-     * @sample /api/v1/sample?param=value...
      */
     public function Action_DELETE()
     {
@@ -50,15 +43,45 @@ class Zero_Controller_Sample extends Zero_Controller
     }
 
     /**
-     * Опции запроса
+     * Описание реализованных запросов
      *
-     * @sample /api/v1/sample?param=value...
+     * Параметры, опции
      */
     public function Action_OPTIONS()
     {
-        settype($_REQUEST['method'], 'string');
-        $_REQUEST['method'] = strtolower($_REQUEST['method']);
-        if ( !$_REQUEST['method'] )
+        if ( isset($_REQUEST['GET']) || isset($_REQUEST['get']) )
+        {
+            $response = [
+                'Name' => 'Описание запроса',
+                'Uri' => '?... Параметры uri',
+                // ... тело запроса если есть
+            ];
+        }
+        else if ( isset($_REQUEST['PUT']) || isset($_REQUEST['put']) )
+        {
+            $response = [
+                'Name' => 'Описание запроса',
+                'Uri' => '?... Параметры uri',
+                // ... тело запроса если есть
+            ];
+        }
+        else if ( isset($_REQUEST['POST']) || isset($_REQUEST['post']) )
+        {
+            $response = [
+                'Name' => 'Описание запроса',
+                'Uri' => '?... Параметры uri',
+                // ... тело запроса если есть
+            ];
+        }
+        else if ( isset($_REQUEST['DELETE']) || isset($_REQUEST['delete']) )
+        {
+            $response = [
+                'Name' => 'Описание запроса',
+                'Uri' => '?... Параметры uri',
+                // ... тело запроса если есть
+            ];
+        }
+        else
         {
             $response = [
                 'GET' => 'Описание запроса',
@@ -66,42 +89,7 @@ class Zero_Controller_Sample extends Zero_Controller
                 'POST' => 'Описание запроса',
                 'DELETE' => 'Описание запроса',
             ];
-            Zero_Response::Json($response);
         }
-        switch ( $_REQUEST['method'] )
-        {
-            case 'get':
-                $response = [
-                    'Name' => 'Описание запроса',
-                    'Uri' => '?... Параметры uri',
-                ];
-                Zero_Response::Json($response);
-                break;
-            case 'put':
-                $response = [
-                    'Name' => 'Описание запроса',
-                    'Uri' => '?... Параметры uri',
-                ];
-                Zero_Response::Json($response);
-                break;
-            case 'post':
-                $response = [
-                    'Name' => 'Описание запроса',
-                    'Uri' => '?... Параметры uri',
-                ];
-                Zero_Response::Json($response);
-                break;
-            case 'delete':
-                $response = [
-                    'Name' => 'Описание запроса',
-                    'Uri' => '?... Параметры uri',
-                ];
-                Zero_Response::Json($response);
-                break;
-            default:
-                Zero_Response::Json('метод не реализован');
-                break;
-        }
-        return true;
+        Zero_Response::Json($response);
     }
 }

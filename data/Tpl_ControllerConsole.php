@@ -3,11 +3,11 @@
 /**
  * <Comment>
  *
- * @package <Package>.<Subpackage>
+ * @package Cron.<Subpackage>
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date <Date>
  */
-class Zero_Controller_Sample extends Zero_Controller
+class Cron_Controller_Sample extends Zero_Controller
 {
     /**
      * Какой-то контроллер
