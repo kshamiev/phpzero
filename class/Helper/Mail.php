@@ -326,7 +326,7 @@ class Helper_Mail
         ];
 
         $errorCnt = 0;
-        $mailSMTP = new Helper_Mail(Zero_App::$Config->Mail_Username, Zero_App::$Config->Mail_Password, Zero_App::$Config->Mail_Host, Zero_App::$Config->Mail_Port);
+        $mailSMTP = new self(Zero_App::$Config->Mail_Username, Zero_App::$Config->Mail_Password, Zero_App::$Config->Mail_Host, Zero_App::$Config->Mail_Port);
         $result = $mailSMTP->Send($data);
         if ( $result !== true )
         {
@@ -357,7 +357,7 @@ class Helper_Mail
     public static function SendMessageAuth($data)
     {
         $errorCnt = 0;
-        $mailSMTP = new Helper_Mail(Zero_App::$Config->Mail_Username, Zero_App::$Config->Mail_Password, Zero_App::$Config->Mail_Host, Zero_App::$Config->Mail_Port);
+        $mailSMTP = new self(Zero_App::$Config->Mail_Username, Zero_App::$Config->Mail_Password, Zero_App::$Config->Mail_Host, Zero_App::$Config->Mail_Port);
         $result = $mailSMTP->Send($data);
         if ( $result !== true )
         {
@@ -388,7 +388,7 @@ class Helper_Mail
     public static function SendMessageAuthSsl($data)
     {
         $errorCnt = 0;
-        $mailSMTP = new Helper_Mail(Zero_App::$Config->Mail_Username, Zero_App::$Config->Mail_Password, Zero_App::$Config->Mail_Host, Zero_App::$Config->Mail_Port);
+        $mailSMTP = new self(Zero_App::$Config->Mail_Username, Zero_App::$Config->Mail_Password, Zero_App::$Config->Mail_Host, Zero_App::$Config->Mail_Port);
         $result = $mailSMTP->Send($data);
         if ( $result !== true )
         {
