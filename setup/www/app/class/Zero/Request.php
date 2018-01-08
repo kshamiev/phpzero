@@ -7,7 +7,7 @@
  * Путем добавления конфигураций и указания методов ниже в комментарии
  * Либо чере методы геттеры
  *
- * @package Component.Zero
+ * @package Zero.Component
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2017-09-14
  *
