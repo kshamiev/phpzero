@@ -5,7 +5,7 @@
  *
  * Расширяемый компонент
  * Путем добавления конфигураций и указания методов ниже в комментарии
- * Либо чере методы геттеры
+ * Либо через методы геттеры (паттерн композиция)
  *
  * @package Zero.Component
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
@@ -192,19 +192,57 @@ class Zero_RequestSetup
 /**
  * Возвращаемое значение
  *
- * @package Component.Zero
+ * @package Zero.Component
  */
 class Zero_Request_Type
 {
+    /**
+     * Заголовки
+     *
+     * @var array
+     */
     public $Head = [];
 
+    /**
+     * Тело
+     *
+     * @var array
+     */
     public $Body = [];
 
+    /**
+     * Код ответа (phpzero)
+     *
+     * @var int
+     */
     public $Code = 0;
 
+    /**
+     * Информационное сообщение (phpzero)
+     *
+     * @var string
+     */
     public $Message = '';
 
-    public $Content = [];
+    /**
+     * Тело ответа (phpzero)
+     *
+     * @var null
+     */
+    public $Content = null;
 
+    /**
+     * Признак ошибки (phpzero)
+     *
+     * @var bool
+     */
     public $Error = false;
+
+    /**
+     * Признак ошибки (phpzero)
+     *
+     * @var bool
+     * @deprecated
+     */
+    public $ErrorStatus = false;
 }
