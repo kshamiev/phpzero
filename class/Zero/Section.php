@@ -303,8 +303,8 @@ class Zero_Section extends Zero_Model
     public static function DB_Update_Url($section_id)
     {
         $sql = "SELECT Url FROM Section WHERE ID = {$section_id}";
-        $url = Zero_DB::Select_Row($sql);
-        if ( !isset($url['Url']) )
+        $url = Zero_DB::Select_Field($sql);
+        if ( !$url )
             return false;
         // Update absolute reference in child partitions
         $sql = "
