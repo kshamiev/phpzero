@@ -45,9 +45,10 @@ class Zero_Section_Access extends Zero_Controller
         {
             foreach ($method as $m)
             {
-                $sql = "INSERT INTO Action SET Groups_ID = {$grId}, Section_ID = {$this->Params['obj_parent_id']}, Action = '{$m}'";
+                $sql = "INSERT INTO Action SET Groups_ID = {$grId}, Section_ID = {$this->Params['obj_parent_id']}";
                 if ( 0 < $this->Model->Controllers_ID )
                     $sql .= ", Controllers_ID = {$this->Model->Controllers_ID}";
+                $sql .= ", Action = '{$m}'";
                 Zero_DB::Insert($sql);
             }
         }

@@ -226,7 +226,7 @@ class Zero_Section extends Zero_Model
             $this->_Access = true;
             return $this->_Access;
         }
-        $sql = "SELECT COUNT(*) FROM Action WHERE Section_ID = {$this->ID} AND Groups_ID = " . Zero_App::$Users->Groups_ID;
+        $sql = "SELECT COUNT(*) FROM Action WHERE `Action` = 'Default' AND Section_ID = {$this->ID} AND Groups_ID = " . Zero_App::$Users->Groups_ID;
         if ( 0 < Zero_DB::Select_Field($sql) )
             $this->_Access = true;
         else

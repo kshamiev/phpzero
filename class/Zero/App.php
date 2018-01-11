@@ -733,9 +733,8 @@ class Zero_App
                 throw new Exception('Page Not Found', 404);
             // редирект
             if ( self::$Section->UrlRedirect )
-                self::ResponseRedirect(self::$Section->UrlRedirect);
+                Zero_Response::Redirect(self::$Section->UrlRedirect);
             // проверка прав на авторизованную страницу
-            //            if ( 1 < self::$Users->Groups_ID && 'yes' == self::$Section->IsAuthorized && false == self::$Section->Get_Access() )
             if ( false == self::$Section->Get_Access() )
                 throw new Exception('Page Forbidden', 403);
             // загрузка контроллера
@@ -743,7 +742,7 @@ class Zero_App
             {
                 self::$Controller = Zero_Controllers::Make(self::$Section->Controllers_ID, true);
                 // проверка прав на авторизованный контроллер
-                if ( 1 < self::$Users->Groups_ID && 'yes' == self::$Controller->IsAuthorized && empty(self::$Controller->Get_Action_List()[$action]) )
+                if ( empty(self::$Controller->Get_Action_List()[$action]) )
                     throw new Exception('Controller Forbidden', 403);
             }
             else
@@ -757,7 +756,7 @@ class Zero_App
             if ( 0 == self::$Controller->ID )
                 throw new Exception('Page Not Found', 404);
             // проверка прав на авторизованный контроллер
-            if ( 1 < self::$Users->Groups_ID && 'yes' == self::$Controller->IsAuthorized && empty(self::$Controller->Get_Action_List()[$action]) )
+            if ( empty(self::$Controller->Get_Action_List()[$action]) )
                 throw new Exception('Controller Forbidden', 403);
         }
 
