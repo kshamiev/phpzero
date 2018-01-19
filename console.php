@@ -7,7 +7,6 @@
 
 //  Connecting application
 require_once __DIR__ . '/class/Zero/App.php';
-Zero_App::Init();
 
 //  Work console task
 if ( count($_SERVER['argv']) > 1 )
@@ -17,6 +16,9 @@ if ( count($_SERVER['argv']) > 1 )
         $_REQUEST['act'] = 'Action_' . $arr[1];
     else
         $_REQUEST['act'] = 'Action_Default';
+
+    Zero_App::Init($arr[0]);
+
     $Controller = Zero_Controller::Makes($arr[0]);
     $flag = $Controller->$_REQUEST['act']();
 
@@ -29,6 +31,8 @@ if ( count($_SERVER['argv']) > 1 )
 }
 else //  Launch Manager console task
 {
+    Zero_App::Init();
+
     $flag = 0;
     $week = date('w');
     $month = date('n');

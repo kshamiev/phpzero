@@ -312,7 +312,7 @@ class Helper_Mail
     public static function SendMessage($data)
     {
         // sample $data
-        $dtaSample = [
+        $dataSample = [
             'Reply' => ['Name' => 'Reply', 'Email' => 'reply@mail.ru'],
             'From' => ['Name' => 'From', 'Email' => 'from@mail.ru'],
             'Subject' => 'Тема сообщения',
