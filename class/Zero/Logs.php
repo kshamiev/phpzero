@@ -278,6 +278,74 @@ class Zero_Logs
     }
 
     /**
+     * Vy`vod vsei` profilirovannoi` informatcii v log fai`ly`
+     *
+     */
+    public static function Output_File_DebugBackground()
+    {
+        $result = [];
+        foreach (self::$_CurrentTime as $description => $time)
+        {
+            $limit = -1;
+            if ( isset($time['stop']) )
+            {
+                $limit = round($time['stop'] - $time['start'], 4);
+            }
+            $description = str_replace("\r", "", $description);
+            $description = preg_replace("~(\s+\n){1,}~si", "\n", $description);
+            $description = preg_replace('~[ ]{2,}~', ' ', $description);
+            if ( strpos($description, '#{SQL}') === 0 )
+                $description = str_replace("\n", "\n\t\t", $description);
+            $indent = '';
+            for ($i = 0; $i < $time['level']; $i++)
+            {
+                $indent .= "\t";
+            }
+            $result[] = $indent . '{' . $limit . '} ' . trim($description);
+        }
+        self::$_CurrentTime = [];
+        $output = join("\n", $result) . "\n";
+
+        if ( 0 < count(self::$_Message) )
+        {
+            $errors = [];
+            $warnings = [];
+            $notice = [];
+            foreach (self::$_Message as $row)
+            {
+                if ( 'error' == $row[1] )
+                    $errors[] = str_replace(["\r", "\t"], " ", $row[0]);
+                else if ( 'warning' == $row[1] )
+                    $warnings[] = str_replace(["\r", "\t"], " ", $row[0]);
+                else if ( 'notice' == $row[1] )
+                    $notice[] = str_replace(["\r", "\t"], " ", $row[0]);
+            }
+            // логирование ошибки в файл
+            if ( Zero_App::$Config->Log_Profile_Error && 0 < count($errors) )
+            {
+                array_unshift($errors, str_replace(["\r", "\t"], " ", $output));
+                $errors = 'ERROR: ' . preg_replace('![ ]{2,}!', ' ', join("\n", $errors));
+                Helper_File::File_Save_After(self::$_FileLog . '_debug.log', $errors);
+            }
+            // логирование предупреждений в файл
+            if ( Zero_App::$Config->Log_Profile_Warning && 0 < count($warnings) )
+            {
+                array_unshift($warnings, str_replace(["\r", "\t"], " ", $output));
+                $warnings = 'WARNING: ' . preg_replace('![ ]{2,}!', ' ', join("\n", $warnings));
+                Helper_File::File_Save_After(self::$_FileLog . '_debug.log', $warnings);
+            }
+            // логирование сообщений в файл
+            if ( Zero_App::$Config->Log_Profile_Notice && 0 < count($notice) )
+            {
+                array_unshift($notice, str_replace(["\r", "\t"], " ", $output));
+                $notice = 'NOTICE: ' . preg_replace('![ ]{2,}!', ' ', join("\n", $notice));
+                Helper_File::File_Save_After(self::$_FileLog . '_debug.log', $notice);
+            }
+        }
+        self::$_Message = [];
+    }
+
+    /**
      * Poluchenie ishodnogo kuska koda v oblasti oshibki fai`la
      *
      * @param string $file put` do fai`la
@@ -342,7 +410,6 @@ class Zero_Logs
             }
             self::$_OutputApplication[] = "#{System.Full} " . self::Get_FullTime();
             self::$_OutputApplication[] = "#{MEMORY} " . memory_get_usage();
-            self::$_CurrentTime = [];
         }
         return self::$_OutputApplication;
     }
