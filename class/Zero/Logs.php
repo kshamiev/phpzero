@@ -71,7 +71,7 @@ class Zero_Logs
         self::$_Message = [];
         self::$_StartTime = microtime(1);
         self::$_CurrentTime = [];
-        self::$_FileLog = $fileLog;
+        self::$_FileLog = $fileLog ? $fileLog . '_' : $fileLog;
     }
 
     /**
@@ -208,7 +208,7 @@ class Zero_Logs
         if ( Zero_App::$Config->Log_Profile_Application )
         {
             $output = join("\n", self::Get_Usage_MemoryAndTime()) . "\n";
-            Helper_File::File_Save_After(self::$_FileLog . '_info.log', $output);
+            Helper_File::File_Save_After(self::$_FileLog . 'info.log', $output);
         }
         if ( 0 < count(self::$_Message) )
         {
@@ -220,7 +220,7 @@ class Zero_Logs
                     $output[] = str_replace(["\r", "\t"], " ", $row[0]);
             }
             $output = preg_replace('![ ]{2,}!', ' ', join("\n", $output));
-            Helper_File::File_Save_After(self::$_FileLog . '_message.log', $output);
+            Helper_File::File_Save_After(self::$_FileLog . 'message.log', $output);
         }
         // логирование операций пользователиа в файл
         if ( Zero_App::$Config->Log_Profile_Action && isset($_REQUEST['act']) && 'Action_Default' != $_REQUEST['act'] )
@@ -231,7 +231,7 @@ class Zero_Logs
                 if ( Zero_App::$Controller->Controller )
                     $act .= Zero_App::$Controller->Controller . " -> " . $_REQUEST['act'] . "\t";
                 $act .= ZERO_HTTP . $_SERVER['REQUEST_URI'];
-                Helper_File::File_Save_After(self::$_FileLog . '_action.log', $act);
+                Helper_File::File_Save_After(self::$_FileLog . 'action.log', $act);
             }
     }
 

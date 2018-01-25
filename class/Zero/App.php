@@ -511,19 +511,19 @@ class Zero_App
         // Инициализация роутинга, входных данных и логирования
         if ( empty($_SERVER['REQUEST_URI']) )
         {
-            Zero_Logs::Init(ZERO_PATH_LOG . '/console' . $suffix);
+            Zero_Logs::Init(ZERO_PATH_LOG . '/console/' . $suffix);
             self::$mode = 'Console';
         }
         else if ( preg_match("~^/(api|json)/~si", $_SERVER['REQUEST_URI']) )
         {
-            Zero_Logs::Init(ZERO_PATH_LOG . '/api' . $suffix);
+            Zero_Logs::Init(ZERO_PATH_LOG . '/api/' . $suffix);
             app_route();
             app_request_data_api();
             self::$mode = 'Api';
         }
         else
         {
-            Zero_Logs::Init(ZERO_PATH_LOG . '/web' . $suffix);
+            Zero_Logs::Init(ZERO_PATH_LOG . '/web/' . $suffix);
             app_route();
             self::$mode = 'Web';
         }
