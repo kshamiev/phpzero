@@ -51,6 +51,11 @@ define('ZERO_PATH_ZERO', ZERO_PATH_SITE . '/phpzero');
  * @todo контроль выполнения консольных контроллеров через поле фиксирующее послдний успешный запуск контроллера
  * @todo контроль работоспособности контроллера апи интелектуальная через OPTIONS
  * @todo доработать роутинг по алиасу в разделах (альтернативный урл)
+ * @todo реализовать логирование даты и времени работы всех контроллеров
+ * @todo оптимизировать Zero_Logs (особенно для консольных контроллеров)
+ * @todo
+ * @todo
+ * @todo
  */
 class Zero_App
 {
@@ -140,22 +145,22 @@ class Zero_App
         $class = implode('/', $arr);
 
         // new Controllers
-//        $path = ZERO_PATH_APP . '/class' . self::$mode . '/' . str_replace('_', '/', $class_name) . '.php';
-//        if ( file_exists($path) )
-//        {
-//            include_once $path;
-//            if ( class_exists($class_name) )
-//                return true;
-//        }
+        //        $path = ZERO_PATH_APP . '/class' . self::$mode . '/' . str_replace('_', '/', $class_name) . '.php';
+        //        if ( file_exists($path) )
+        //        {
+        //            include_once $path;
+        //            if ( class_exists($class_name) )
+        //                return true;
+        //        }
 
         // new Model & Component
-//        $path = ZERO_PATH_ZERO . '/class' . self::$mode . '/' . str_replace('_', '/', $class_name) . '.php';
-//        if ( file_exists($path) )
-//        {
-//            include_once $path;
-//            if ( class_exists($class_name) )
-//                return true;
-//        }
+        //        $path = ZERO_PATH_ZERO . '/class' . self::$mode . '/' . str_replace('_', '/', $class_name) . '.php';
+        //        if ( file_exists($path) )
+        //        {
+        //            include_once $path;
+        //            if ( class_exists($class_name) )
+        //                return true;
+        //        }
 
         // new Model & Component
         $path = ZERO_PATH_APP . '/class/' . str_replace('_', '/', $class_name) . '.php';
@@ -677,6 +682,7 @@ class Zero_App
             $viewLayout->Assign('Content', $view);
             $view = $viewLayout->Fetch();
         }
+
         self::ResponseHtml($view, 200);
     }
 
@@ -831,18 +837,18 @@ class Zero_App
     {
         Zero_Response::Html($content, $status);
 
+        // Логирование (в браузер)
+        if ( self::$Config->Log_Output_Display )
+            $content .= Zero_Logs::Output_Display();
+
         header('Pragma: no-cache');
         header('Last-Modified: ' . date('D, d M Y H:i:s') . 'GMT');
         header('Expires: Mon, 26 Jul 2007 05:00:00 GMT');
         header('Cache-Control: no-store, no-cache, must-revalidate');
         header("Content-Type: text/html; charset=utf-8");
-        header('Access-Control-Allow-Origin: *');
+//        header('Access-Control-Allow-Origin: *');
         header('HTTP/1.1 ' . $status . ' ' . $status);
         echo $content;
-
-        // Логирование (в браузер)
-        if ( self::$Config->Log_Output_Display )
-            Zero_Logs::Output_Display();
 
         // закрываем соединение с браузером (работает только под нгинx)
         if ( function_exists('fastcgi_finish_request') )

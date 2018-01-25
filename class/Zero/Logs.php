@@ -93,11 +93,6 @@ class Zero_Logs
     public static function Set_Message_Error($value)
     {
         self::$_Message[] = [print_r($value, true), 'error'];
-        if ( Zero_App::$Config->Log_Profile_Error )
-        {
-            self::Start(print_r($value, true));
-            self::Stop(print_r($value, true));
-        }
         return $value;
     }
 
@@ -120,11 +115,6 @@ class Zero_Logs
     public static function Set_Message_Warning($value)
     {
         self::$_Message[] = [print_r($value, true), 'warning'];
-        if ( Zero_App::$Config->Log_Profile_Warning )
-        {
-            self::Start(print_r($value, true));
-            self::Stop(print_r($value, true));
-        }
         return $value;
     }
 
@@ -137,8 +127,6 @@ class Zero_Logs
     public static function Set_Message_Info($value)
     {
         self::$_Message[] = [print_r($value, true), 'info'];
-        self::Start(print_r($value, true));
-        self::Stop(print_r($value, true));
         return $value;
     }
 
@@ -151,11 +139,6 @@ class Zero_Logs
     public static function Set_Message_Notice($value)
     {
         self::$_Message[] = [print_r($value, true), 'notice'];
-        if ( Zero_App::$Config->Log_Profile_Notice )
-        {
-            self::Start(print_r($value, true));
-            self::Stop(print_r($value, true));
-        }
         return $value;
     }
 
@@ -212,7 +195,7 @@ class Zero_Logs
         $View->Assign('output', self::Get_Usage_MemoryAndTime());
         $View->Assign('message', self::$_Message);
         $View->Assign('iterator_list', $iterator_list);
-        echo $View->Fetch();
+        return $View->Fetch();
     }
 
     /**
@@ -230,39 +213,14 @@ class Zero_Logs
         if ( 0 < count(self::$_Message) )
         {
             $output = self::Get_Usage_MemoryAndTime()[0];
-            $errors = [];
-            $warnings = [];
-            $notice = [];
+            $output = [str_replace(["\r", "\t"], " ", $output)];
             foreach (self::$_Message as $row)
             {
-                if ( 'error' == $row[1] )
-                    $errors[] = str_replace(["\r", "\t"], " ", $row[0]);
-                else if ( 'warning' == $row[1] )
-                    $warnings[] = str_replace(["\r", "\t"], " ", $row[0]);
-                else if ( 'notice' == $row[1] )
-                    $notice[] = str_replace(["\r", "\t"], " ", $row[0]);
+                if ( 'notice' == $row[1] || 'warning' == $row[1] || 'error' == $row[1] )
+                    $output[] = str_replace(["\r", "\t"], " ", $row[0]);
             }
-            // логирование ошибки в файл
-            if ( Zero_App::$Config->Log_Profile_Error && 0 < count($errors) )
-            {
-                array_unshift($errors, str_replace(["\r", "\t"], " ", $output));
-                $errors = preg_replace('![ ]{2,}!', ' ', join("\n", $errors));
-                Helper_File::File_Save_After(self::$_FileLog . '_error.log', $errors);
-            }
-            // логирование предупреждений в файл
-            if ( Zero_App::$Config->Log_Profile_Warning && 0 < count($warnings) )
-            {
-                array_unshift($warnings, str_replace(["\r", "\t"], " ", $output));
-                $warnings = preg_replace('![ ]{2,}!', ' ', join("\n", $warnings));
-                Helper_File::File_Save_After(self::$_FileLog . '_warning.log', $warnings);
-            }
-            // логирование сообщений в файл
-            if ( Zero_App::$Config->Log_Profile_Notice && 0 < count($notice) )
-            {
-                array_unshift($notice, str_replace(["\r", "\t"], " ", $output));
-                $notice = preg_replace('![ ]{2,}!', ' ', join("\n", $notice));
-                Helper_File::File_Save_After(self::$_FileLog . '_notice.log', $notice);
-            }
+            $output = preg_replace('![ ]{2,}!', ' ', join("\n", $output));
+            Helper_File::File_Save_After(self::$_FileLog . '_message.log', $output);
         }
         // логирование операций пользователиа в файл
         if ( Zero_App::$Config->Log_Profile_Action && isset($_REQUEST['act']) && 'Action_Default' != $_REQUEST['act'] )

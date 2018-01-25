@@ -63,6 +63,10 @@ class Zero_Response
      */
     public static function Html($content, $status = 200)
     {
+        // Логирование (в браузер)
+        if ( Zero_App::$Config->Log_Output_Display )
+            $content .= Zero_Logs::Output_Display();
+
         header('Pragma: no-cache');
         header('Last-Modified: ' . date('D, d M Y H:i:s') . 'GMT');
         header('Expires: Mon, 26 Jul 2007 05:00:00 GMT');
@@ -72,10 +76,6 @@ class Zero_Response
         // header('Access-Control-Allow-Origin: *');
         header('HTTP/1.1 ' . $status . ' ' . $status);
         echo $content;
-
-        // Логирование (в браузер)
-        if ( Zero_App::$Config->Log_Output_Display )
-            Zero_Logs::Output_Display();
 
         // закрываем соединение с браузером (работает только под нгинx)
         if ( function_exists('fastcgi_finish_request') )
