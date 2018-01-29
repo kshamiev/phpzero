@@ -45,6 +45,17 @@
     <tr>
       <td width="200px">{$row['Comment']}</td>
       <td>
+          <div style="max-height: 200px; overflow-y: auto;" data-checkbox-prop="{$prop}">
+            {foreach ($row['List'] as $key => $name)}
+            <div id="blocklevel33"><div id="blocklevel2"><input type="checkbox" name="Filter[{$prop}][]" value="{$key}"{if ( is_array($row['Value']) && in_array($key, $row['Value']) )} checked{/if}>&nbsp;{$name}</div></div>
+            {/foreach}
+        </div>
+      </td>
+    </tr>
+    {else if ( 'Checkbox' == $row['Form'] )}
+    <tr>
+      <td width="200px">{$row['Comment']}</td>
+      <td>
         <div id="blockroot">
             {foreach ($row['List'] as $key => $name)}
             <div id="blocklevel33"><div id="blocklevel2"><input type="checkbox" name="Filter[{$prop}][]" value="{$key}"{if ( is_array($row['Value']) && in_array($key, $row['Value']) )} checked{/if}>&nbsp;{$name}</div></div>

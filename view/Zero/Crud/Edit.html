@@ -113,7 +113,7 @@
                 </select>
 
                 {else if ( 'Checkbox' == $row['Form'] )}
-                <div style="max-height: 400px; overflow-y: auto;" data-checkbox-prop="{$Prop}">
+                <div style="max-height: 200px; overflow-y: auto;" data-checkbox-prop="{$Prop}">
                     <input type="hidden" name="Prop[{$Prop}]" value="">
                     {foreach ($Filter[$Prop]['List'] as $key => $name)}
                     <div>
