@@ -22,7 +22,8 @@ class Zero_System_Console_ApiGen extends Zero_Controller
         // ApiGen
         $command = Zero_App::$Config->Site_PathPhp . ' ' . ZERO_PATH_ZERO . '/apigen.phar generate';
         // source (источники)
-        $command .= ' -s '. ZERO_PATH_ZERO .'/class -s '. ZERO_PATH_APP . '/class';
+//        $command .= ' -s '. ZERO_PATH_ZERO .'/class -s '. ZERO_PATH_APP . '/class';
+        $command .= ' -s '. ZERO_PATH_APP . '/class';
         // exclude (исключения)
 //        $command .= ' --exclude="setup/*" --exclude="i18n/*" --exclude="data/* --exclude="assets/* --exclude="view/*"';
         // target (куда)
@@ -31,6 +32,6 @@ class Zero_System_Console_ApiGen extends Zero_Controller
         $command .= ' --title="'. Zero_App::$Config->Site_Name. '" --access-levels="public" --groups="packages" --todo --deprecated --download';
         //
         exec($command);
-        return 0;
+        return true;
      }
 }
