@@ -50,12 +50,6 @@ define('ZERO_PATH_ZERO', ZERO_PATH_SITE . '/phpzero');
  * @date 2015-01-01
  * @todo контроль выполнения консольных контроллеров через поле фиксирующее послдний успешный запуск контроллера
  * @todo контроль работоспособности контроллера апи интелектуальная через OPTIONS
- * @todo доработать роутинг по алиасу в разделах (альтернативный урл)
- * @todo реализовать логирование даты и времени работы всех контроллеров
- * @todo оптимизировать Zero_Logs (особенно для консольных контроллеров)
- * @todo
- * @todo
- * @todo
  */
 class Zero_App
 {
@@ -476,9 +470,9 @@ class Zero_App
      * - Processing incoming request (GET). Component Zero_Route
      * - Session Initialization. Component Zero_Session
      *
-     * @param string $suffix суффикс
+     * @param string $fileLog суффикс
      */
-    public static function Init($suffix = '')
+    public static function Init($fileLog = '')
     {
         // Если инициализация уже произведена
         if ( !is_null(self::$Config) )
@@ -511,19 +505,19 @@ class Zero_App
         // Инициализация роутинга, входных данных и логирования
         if ( empty($_SERVER['REQUEST_URI']) )
         {
-            Zero_Logs::Init(ZERO_PATH_LOG . '/console/' . $suffix);
+            Zero_Logs::Init(ZERO_PATH_LOG . '/console/', $fileLog);
             self::$mode = 'Console';
         }
         else if ( preg_match("~^/(api|json)/~si", $_SERVER['REQUEST_URI']) )
         {
-            Zero_Logs::Init(ZERO_PATH_LOG . '/api/' . $suffix);
+            Zero_Logs::Init(ZERO_PATH_LOG . '/api/', $fileLog);
             app_route();
             app_request_data_api();
             self::$mode = 'Api';
         }
         else
         {
-            Zero_Logs::Init(ZERO_PATH_LOG . '/web/' . $suffix);
+            Zero_Logs::Init(ZERO_PATH_LOG . '/web/', $fileLog);
             app_route();
             self::$mode = 'Web';
         }

@@ -44,7 +44,12 @@ class Zero_Controllers_Edit extends Zero_Crud_Edit
         if ( !$flag )
             $this->SetMessageError(-1, ['Error']);
         else
+        {
+            $this->Model->DateExecute = date('Y-m-d H:i:s');
+            $this->Model->Save();
             $this->SetMessage(0, ['Done']);
+        }
+
         $this->Chunk_View();
         return $this->View;
     }

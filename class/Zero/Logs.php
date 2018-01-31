@@ -66,11 +66,12 @@ class Zero_Logs
      *
      * @param string $fileLog имя файллога
      */
-    public static function Init($fileLog)
+    public static function Init($path, $fileLog)
     {
         self::$_Message = [];
         self::$_StartTime = microtime(1);
         self::$_CurrentTime = [];
+        self::$_FileLog = $path;
         self::$_FileLog = $fileLog ? $fileLog . '_' : $fileLog;
     }
 

@@ -95,6 +95,11 @@ class Zero_Response
      */
     public static function JsonGolang($content = null, $status = 200)
     {
+        if ( Zero_App::$Config->Site_UseDB && 200 == $status && 0 < Zero_App::$Controller->ID )
+        {
+            Zero_App::$Controller->DateExecute = date('Y-m-d H:i:s');
+            Zero_App::$Controller->Model->Save();
+        }
         $content = json_encode($content, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_BIGINT_AS_STRING);
         header('Pragma: no-cache');
         header('Last-Modified: ' . date('D, d M Y H:i:s') . 'GMT');
@@ -124,6 +129,11 @@ class Zero_Response
      */
     public static function Json($content = null, $status = 200)
     {
+        if ( Zero_App::$Config->Site_UseDB && 200 == $status && 0 < Zero_App::$Controller->ID )
+        {
+            Zero_App::$Controller->DateExecute = date('Y-m-d H:i:s');
+            Zero_App::$Controller->Model->Save();
+        }
         $content = json_encode($content, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_BIGINT_AS_STRING);
         header('Pragma: no-cache');
         header('Last-Modified: ' . date('D, d M Y H:i:s') . 'GMT');
@@ -155,6 +165,11 @@ class Zero_Response
      */
     public static function JsonRest($content = null, $code = 0, $message = [], $status = 200)
     {
+        if ( Zero_App::$Config->Site_UseDB && 200 == $status && 0 < Zero_App::$Controller->ID )
+        {
+            Zero_App::$Controller->DateExecute = date('Y-m-d H:i:s');
+            Zero_App::$Controller->Model->Save();
+        }
         $data = [
             'Code' => $code,
             'Message' => Zero_I18n::Message('', $code, $message),
