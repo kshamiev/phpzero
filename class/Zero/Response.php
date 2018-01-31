@@ -98,7 +98,7 @@ class Zero_Response
         if ( Zero_App::$Config->Site_UseDB && 200 == $status && 0 < Zero_App::$Controller->ID )
         {
             Zero_App::$Controller->DateExecute = date('Y-m-d H:i:s');
-            Zero_App::$Controller->Model->Save();
+            Zero_App::$Controller->Save();
         }
         $content = json_encode($content, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_BIGINT_AS_STRING);
         header('Pragma: no-cache');
@@ -132,7 +132,7 @@ class Zero_Response
         if ( Zero_App::$Config->Site_UseDB && 200 == $status && 0 < Zero_App::$Controller->ID )
         {
             Zero_App::$Controller->DateExecute = date('Y-m-d H:i:s');
-            Zero_App::$Controller->Model->Save();
+            Zero_App::$Controller->Save();
         }
         $content = json_encode($content, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_BIGINT_AS_STRING);
         header('Pragma: no-cache');
@@ -168,7 +168,7 @@ class Zero_Response
         if ( Zero_App::$Config->Site_UseDB && 200 == $status && 0 < Zero_App::$Controller->ID )
         {
             Zero_App::$Controller->DateExecute = date('Y-m-d H:i:s');
-            Zero_App::$Controller->Model->Save();
+            Zero_App::$Controller->Save();
         }
         $data = [
             'Code' => $code,
