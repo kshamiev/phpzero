@@ -133,7 +133,7 @@ class Zero_Validator
         }
 
         //  udalenie starogo fai`la
-        if ( isset($value['Rem']) && $value['Rem'] )
+        if ( isset($value['Rem']) && $value['Rem'] && $this->Model->$prop )
         {
             $_FILES[$prop]['rem'] = true;
             if ( file_exists($filename = ZERO_PATH_DATA . '/' . $this->Model->$prop) )
