@@ -194,7 +194,7 @@ class Zero_RequestSetup
  *
  * @package Zero.Component
  */
-class Zero_Request_Type
+class Zero_Request_TypeSetup
 {
     /**
      * Заголовки
