@@ -418,6 +418,11 @@ class Zero_Section extends Zero_Model
                 $arr[$index] = $index;
             }
         }
+        foreach (glob(ZERO_PATH_APP . "/view/*.html") as $r)
+        {
+                $index = substr(basename($r), 0, -5);
+                $arr[$index] = $index;
+        }
         foreach (glob(ZERO_PATH_APPLICATION . "/*", GLOB_ONLYDIR) as $dir)
         {
             $mod = ucfirst(basename($dir));

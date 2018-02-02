@@ -218,7 +218,7 @@ class Zero_Logs
             foreach (self::$_Message as $row)
             {
                 if ( 'notice' == $row[1] || 'warning' == $row[1] || 'error' == $row[1] )
-                    $output[] = str_replace(["\r", "\t"], " ", $row[0]);
+                    $output[] = '[' . $row[1] . '] ' . str_replace(["\r", "\t"], " ", $row[0]);
             }
             $output = preg_replace('![ ]{2,}!', ' ', join("\n", $output));
             Helper_File::File_Save_After(self::$_FileLog . 'message.log', $output);
@@ -239,8 +239,9 @@ class Zero_Logs
     /**
      * Vy`vod vsei` profilirovannoi` informatcii v log fai`ly`
      *
+     * @deprecated не используется
      */
-    public static function Output_File_DebugBackground()
+    private static function Output_File_DebugBackground()
     {
         $result = [];
         foreach (self::$_CurrentTime as $description => $time)
