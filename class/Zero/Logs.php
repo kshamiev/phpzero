@@ -72,7 +72,7 @@ class Zero_Logs
         self::$_StartTime = microtime(1);
         self::$_CurrentTime = [];
         self::$_FileLog = $path;
-        self::$_FileLog = $fileLog ? $fileLog . '_' : $fileLog;
+        self::$_FileLog .= $fileLog ? $fileLog . '_' : $fileLog;
     }
 
     /**
