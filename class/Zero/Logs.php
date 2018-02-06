@@ -217,7 +217,7 @@ class Zero_Logs
             $output = [str_replace(["\r", "\t"], " ", $output)];
             foreach (self::$_Message as $row)
             {
-                if ( 'notice' == $row[1] || 'warning' == $row[1] || 'error' == $row[1] )
+                if ( 'info' == $row[1] || 'notice' == $row[1] || 'warning' == $row[1] || 'error' == $row[1] )
                     $output[] = '[' . $row[1] . '] ' . str_replace(["\r", "\t"], " ", $row[0]);
             }
             $output = preg_replace('![ ]{2,}!', ' ', join("\n", $output));
