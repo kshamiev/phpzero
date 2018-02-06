@@ -48,8 +48,9 @@ define('ZERO_PATH_ZERO', ZERO_PATH_SITE . '/phpzero');
  * @package Component
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015-01-01
- * @todo контроль выполнения консольных контроллеров через поле фиксирующее послдний успешный запуск контроллера
+ * @todo контроль выполнения консольных контроллеров через поле фиксирующее последний успешный запуск контроллера
  * @todo контроль работоспособности контроллера апи интелектуальная через OPTIONS
+ * @todo организация деплоя и последующий запуск автотестов апи
  */
 class Zero_App
 {
@@ -915,11 +916,10 @@ class Zero_App
             $viewLayout->Assign('Content', $view->Fetch());
         }
         // Логирование (в браузер)
-        //        if ( self::$Config->Log_Output_Display || isset($codeList[$code]) )
         if ( isset($codeList[$code]) )
-            self::ResponseHtml($viewLayout->Fetch(), $code);
+            Zero_Response::Html($viewLayout->Fetch(), $code);
         else
-            self::ResponseConsole();
+            Zero_Response::Console();
     }
 
     /**
