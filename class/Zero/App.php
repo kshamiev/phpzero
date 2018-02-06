@@ -473,7 +473,7 @@ class Zero_App
      *
      * @param string $fileLog суффикс
      */
-    public static function Init($fileLog = '')
+    public static function Init($fileLog = 'app')
     {
         // Если инициализация уже произведена
         if ( !is_null(self::$Config) )
@@ -506,19 +506,19 @@ class Zero_App
         // Инициализация роутинга, входных данных и логирования
         if ( empty($_SERVER['REQUEST_URI']) )
         {
-            Zero_Logs::Init(ZERO_PATH_LOG . '/console/', $fileLog);
+            Zero_Logs::Init(ZERO_PATH_LOG . '/console/' . $fileLog);
             self::$mode = 'Console';
         }
         else if ( preg_match("~^/(api|json)/~si", $_SERVER['REQUEST_URI']) )
         {
-            Zero_Logs::Init(ZERO_PATH_LOG . '/api/', $fileLog);
+            Zero_Logs::Init(ZERO_PATH_LOG . '/api/' . $fileLog);
             app_route();
             app_request_data_api();
             self::$mode = 'Api';
         }
         else
         {
-            Zero_Logs::Init(ZERO_PATH_LOG . '/web/', $fileLog);
+            Zero_Logs::Init(ZERO_PATH_LOG . '/web/' . $fileLog);
             app_route();
             self::$mode = 'Web';
         }
@@ -841,7 +841,7 @@ class Zero_App
         header('Expires: Mon, 26 Jul 2007 05:00:00 GMT');
         header('Cache-Control: no-store, no-cache, must-revalidate');
         header("Content-Type: text/html; charset=utf-8");
-//        header('Access-Control-Allow-Origin: *');
+        //        header('Access-Control-Allow-Origin: *');
         header('HTTP/1.1 ' . $status . ' ' . $status);
         echo $content;
 
