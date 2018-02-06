@@ -471,38 +471,20 @@ class Zero_Config
     }
 
     /**
-     * Getting the module configuration
+     * Получение абстрактных пользовательских конфигураций приложеня
      *
-     * @param string $module module
-     * @param string $fileConfig config file
-     * @return array Массив конфигурации указанного модуля и файла
-     * @deprecated not use
+     * @param string $prop
+     * @return object
+     * @throws Exception
      */
-    public static function Get_Config($module)
+    public function __get($prop)
     {
-        $configuration = [];
-        $path = ZERO_PATH_APPLICATION . '/' . $module . '/config.php';
-        if ( file_exists($path) )
+        //  Personal`ny`i` ili algoritmichny`i` getter
+        if ( method_exists($this, $method = 'Get_' . $prop) )
+            return $this->$method();
+        else
         {
-            $configuration = include $path;
+            throw new Exception('Not Found Config: ' . $prop, 409);
         }
-        return $configuration;
-    }
-
-    /**
-     * Получение списка существующий модулей в приложении
-     *
-     * @return array
-     * @deprecated
-     */
-    public static function Get_Modules()
-    {
-        $result = [];
-        foreach (glob(ZERO_PATH_APPLICATION . '/*', GLOB_ONLYDIR) as $path)
-        {
-            $result[basename($path)] = basename($path);
-        }
-        $result['zero'] = 'zero';
-        return $result;
     }
 }

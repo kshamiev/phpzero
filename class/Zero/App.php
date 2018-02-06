@@ -916,11 +916,10 @@ class Zero_App
             $viewLayout->Assign('Content', $view->Fetch());
         }
         // Логирование (в браузер)
-        //        if ( self::$Config->Log_Output_Display || isset($codeList[$code]) )
         if ( isset($codeList[$code]) )
-            self::ResponseHtml($viewLayout->Fetch(), $code);
+            Zero_Response::Html($viewLayout->Fetch(), $code);
         else
-            self::ResponseConsole();
+            Zero_Response::Console();
     }
 
     /**
