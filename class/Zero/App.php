@@ -48,8 +48,9 @@ define('ZERO_PATH_ZERO', ZERO_PATH_SITE . '/phpzero');
  * @package Component
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015-01-01
- * @todo контроль выполнения консольных контроллеров через поле фиксирующее послдний успешный запуск контроллера
+ * @todo контроль выполнения консольных контроллеров через поле фиксирующее последний успешный запуск контроллера
  * @todo контроль работоспособности контроллера апи интелектуальная через OPTIONS
+ * @todo организация деплоя и последующий запуск автотестов апи
  */
 class Zero_App
 {
@@ -472,7 +473,7 @@ class Zero_App
      *
      * @param string $fileLog суффикс
      */
-    public static function Init($fileLog = '')
+    public static function Init($fileLog = 'app')
     {
         // Если инициализация уже произведена
         if ( !is_null(self::$Config) )
@@ -505,19 +506,19 @@ class Zero_App
         // Инициализация роутинга, входных данных и логирования
         if ( empty($_SERVER['REQUEST_URI']) )
         {
-            Zero_Logs::Init(ZERO_PATH_LOG . '/console/', $fileLog);
+            Zero_Logs::Init(ZERO_PATH_LOG . '/console/' . $fileLog);
             self::$mode = 'Console';
         }
         else if ( preg_match("~^/(api|json)/~si", $_SERVER['REQUEST_URI']) )
         {
-            Zero_Logs::Init(ZERO_PATH_LOG . '/api/', $fileLog);
+            Zero_Logs::Init(ZERO_PATH_LOG . '/api/' . $fileLog);
             app_route();
             app_request_data_api();
             self::$mode = 'Api';
         }
         else
         {
-            Zero_Logs::Init(ZERO_PATH_LOG . '/web/', $fileLog);
+            Zero_Logs::Init(ZERO_PATH_LOG . '/web/' . $fileLog);
             app_route();
             self::$mode = 'Web';
         }
@@ -840,7 +841,7 @@ class Zero_App
         header('Expires: Mon, 26 Jul 2007 05:00:00 GMT');
         header('Cache-Control: no-store, no-cache, must-revalidate');
         header("Content-Type: text/html; charset=utf-8");
-//        header('Access-Control-Allow-Origin: *');
+        //        header('Access-Control-Allow-Origin: *');
         header('HTTP/1.1 ' . $status . ' ' . $status);
         echo $content;
 
@@ -915,11 +916,10 @@ class Zero_App
             $viewLayout->Assign('Content', $view->Fetch());
         }
         // Логирование (в браузер)
-        //        if ( self::$Config->Log_Output_Display || isset($codeList[$code]) )
         if ( isset($codeList[$code]) )
-            self::ResponseHtml($viewLayout->Fetch(), $code);
+            Zero_Response::Html($viewLayout->Fetch(), $code);
         else
-            self::ResponseConsole();
+            Zero_Response::Console();
     }
 
     /**

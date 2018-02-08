@@ -97,8 +97,8 @@ class Zero_RequestSetup
             curl_setopt($ch, CURLOPT_STDERR, fopen(ZERO_PATH_LOG . "/curl_{$access}.log", 'a'));
         }
         // Запрос
-        $head = curl_getinfo($ch);
         $body = curl_exec($ch);
+        $head = curl_getinfo($ch);
         $error_code = curl_errno($ch);
         $error_subj = curl_error($ch);
         if ( 0 < $error_code )
@@ -136,7 +136,7 @@ class Zero_RequestSetup
         }
         // Данные
         $typ = explode(' ', $head['content_type'])[0];
-        if ( $typ = 'application/json;' )
+        if ( 'application/json;' == $typ )
         {
             $body = json_decode($body, true);
         }
