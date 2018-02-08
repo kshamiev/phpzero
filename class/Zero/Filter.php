@@ -565,7 +565,7 @@ class Zero_Filter
             else if ( isset($row['DB']) )
             {
                 $method = '';
-                if ( $row['DB'] == 'I' || $row['DB'] == 'F' )
+                if ( $row['DB'] == 'ID' || $row['DB'] == 'I' || $row['DB'] == 'F' )
                     $method = 'Add_Search_Number';
                 else if ( $row['DB'] == 'T' )
                     $method = 'Add_Search_Text';
