@@ -466,7 +466,7 @@ class Zero_Section extends Zero_Model
      */
     public static function Factory($id = 0, $flagLoad = false)
     {
-        $index = __CLASS__ . (0 < $id ? '_' . $id : '');
+        $index = 'Main_Section' . (0 < $id ? '_' . $id : '');
         if ( !$result = Zero_Session::Get($index) )
         {
             $result = self::Make($id, $flagLoad);
