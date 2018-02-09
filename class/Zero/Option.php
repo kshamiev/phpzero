@@ -6,11 +6,8 @@
  * @package Zero.Component
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2017-10-16
- *
- * @property string SampleParam1
- * @property int SampleParam2
  */
-class Zero_OptionSetup
+class Zero_Option
 {
     /**
      * Массив содержащий значения опций

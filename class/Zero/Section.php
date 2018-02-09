@@ -451,7 +451,7 @@ class Zero_Section extends Zero_Model
      */
     public static function Make($id = 0, $flagLoad = false)
     {
-        return new self($id, $flagLoad);
+        return new Main_Section($id, $flagLoad);
     }
 
     /**

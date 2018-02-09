@@ -414,7 +414,7 @@ class Zero_Users extends Zero_Model
      */
     public static function Make($id = 0, $flagLoad = false)
     {
-        $obj = new self($id, $flagLoad);
+        $obj = new Main_Users($id, $flagLoad);
         return $obj;
     }
 

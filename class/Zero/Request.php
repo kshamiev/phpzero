@@ -7,41 +7,36 @@
  * Путем добавления конфигураций и указания методов ниже в комментарии
  * Либо через методы геттеры (паттерн композиция)
  *
- * @package Zero.Component
+ * @package Zero
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2017-09-14
  *
- * @property mixed SampleCustomRequest Пользовательская реализация запросов к определенным ресурса
- * @method Zero_Request_Type Self($method, $uri, $content = null) Запросы на себя
- * @method Zero_Request_Type Sample($method, $uri, $content = null, $headers = []) Запросы к определенному внешнему ресурсу
- * @method Zero_Request_Type Simple($method, $urn, $content = null, $headers = []) Запросы к неопределенному ресурсу
+ * @method Zero_Request_Type Simple($method, $uri, $content = null, $headers = []) Запросы к неопределенному ресурсу
  */
-class Zero_RequestSetup
+class Zero_Request
 {
     /**
      * Обертка запросов к внешнему источнику
      *
      * @var mixed
      */
-    private $sampleCustomRequest = null;
+    //    private $sampleCustomRequest = null;
 
     /**
      * Обертка запросов к внешнему источнику
      *
      * @return mixed
      */
-    protected function Get_SampleCustomRequest()
-    {
-        if ( is_null($this->sampleCustomRequest) )
-        {
-            $access = Zero_App::$Config->AccessOutside['SampleCustomRequest'];
-            // Инициализация ранее реализованного функционала для реализации запросов к нужному ресурсу
-
-        }
-        return $this->sampleCustomRequest;
-    }
-
-    ////////////////////
+    //    protected function Get_SampleCustomRequest()
+    //    {
+    //        if ( is_null($this->sampleCustomRequest) )
+    //        {
+    //            $access = Zero_App::$Config->AccessOutside['SampleCustomRequest'];
+    //            // Инициализация ранее реализованного функционала для реализации запросов к нужному ресурсу
+    //
+    //        }
+    //        return $this->sampleCustomRequest;
+    //    }
 
     /**
      * API запрос к внешнему ресурсу
@@ -194,7 +189,7 @@ class Zero_RequestSetup
  *
  * @package Zero.Component
  */
-class Zero_Request_TypeSetup
+class Zero_Request_Type
 {
     /**
      * Заголовки

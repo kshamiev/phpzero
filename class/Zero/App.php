@@ -501,7 +501,7 @@ class Zero_App
         // register_shutdown_function(['Zero_App', 'Exit_Application']);
 
         //  Configuration
-        self::$Config = new Zero_Config();
+        self::$Config = new Main_Config();
 
         // Инициализация роутинга, входных данных и логирования
         if ( empty($_SERVER['REQUEST_URI']) )
@@ -530,10 +530,10 @@ class Zero_App
         }
 
         // Options
-        self::$Options = new Zero_Option();
+        self::$Options = new Main_Option();
 
         // Request
-        self::$Request = new Zero_Request();
+        self::$Request = new Main_Request();
 
         //  Initialize cache subsystem (Zero_Cache)
         if ( 0 < count(self::$Config->Memcache['Cache']) && class_exists('Memcache') )
