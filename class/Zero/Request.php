@@ -106,6 +106,7 @@ class Zero_Request
             $response->Message = $error_subj;
             $response->Content = $body;
             $response->Error = true;
+            $response->ErrorStatus = true;
             return $response;
         }
         curl_close($ch);
