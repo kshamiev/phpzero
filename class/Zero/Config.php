@@ -304,6 +304,20 @@ class Zero_Config
     public $Ip = '';
 
     /**
+     * Хранилище объектов конфигурации приложения
+     *
+     * @var array
+     */
+    private $config = [];
+
+    /**
+     * Загруженная конфигурация из файла
+     *
+     * @var array
+     */
+    private $configLoad = [];
+
+    /**
      * Configuration
      */
     public function __construct()
@@ -314,6 +328,7 @@ class Zero_Config
                     die('Конфигурационный файл не найден: ' . $path);
 
         $Config = require $path;
+        $this->configLoad = $Config;
 
         // IP the source address of the request
         if ( isset($_SERVER["HTTP_X_FORWARDED_FOR"]) )
@@ -484,7 +499,14 @@ class Zero_Config
             return $this->$method();
         else
         {
-            throw new Exception('Not Found Config: ' . $prop, 409);
+            if ( empty($this->config[$prop]) )
+            {
+                $class = 'Config_' . $prop;
+                if ( !Zero_App::Autoload($class) )
+                    throw new Exception('Not Found Class: ' . $prop, 409);
+                $this->config[$prop] = new $class($this->configLoad[$prop]);
+            }
+            return $this->config[$prop];
         }
     }
 }

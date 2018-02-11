@@ -51,6 +51,8 @@ define('ZERO_PATH_ZERO', ZERO_PATH_SITE . '/phpzero');
  * @todo контроль выполнения консольных контроллеров через поле фиксирующее последний успешный запуск контроллера
  * @todo контроль работоспособности контроллера апи интелектуальная через OPTIONS
  * @todo организация деплоя и последующий запуск автотестов апи
+ * @todo интелектулаьный роутинг апи контроллеров ()
+ * @todo Избавится от алиасов. Перевести их в урл роот  и разрешить пустое значение thisUrl для таких разделов и не обновлять роутинг если он пустой.
  */
 class Zero_App
 {
@@ -67,14 +69,14 @@ class Zero_App
     /**
      * User
      *
-     * @var Zero_Users
+     * @var Main_Users
      */
     public static $Users = null;
 
     /**
      * Section (page)
      *
-     * @var Zero_Section
+     * @var Main_Section
      */
     public static $Section = null;
 
@@ -86,7 +88,7 @@ class Zero_App
     public static $Controller = null;
 
     /**
-     * Controller
+     * Controller Action
      *
      * @var Zero_Controller
      */
@@ -95,14 +97,14 @@ class Zero_App
     /**
      * Configuration
      *
-     * @var Zero_Config
+     * @var Main_Config
      */
     public static $Config = null;
 
     /**
      * Configuration
      *
-     * @var Zero_Option
+     * @var Main_Option
      */
     public static $Options = null;
 
@@ -111,7 +113,7 @@ class Zero_App
      *
      * API запросы, получение контента страниц сайта
      *
-     * @var Zero_Request
+     * @var Main_Request
      */
     public static $Request = null;
 
