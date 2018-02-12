@@ -128,24 +128,24 @@ while ( isset($_REQUEST['act']) && 'Install_System' == $_REQUEST['act'] && 0 == 
     file_put_contents(ZERO_PATH_SITE . '/config.php', $config);
     unlink(ZERO_PATH_SITE . '/config.blank.php');
 
-    $class = file_get_contents($path = ZERO_PATH_APP . '/class/Main/Config.php');
-    str_replace('Main_ConfigTemplate', 'Main_Config', $class);
+    $class = file_get_contents($path = ZERO_PATH_APP . '/class/Site/Config.php');
+    str_replace('Site_ConfigTemplate', 'Site_Config', $class);
     file_put_contents($path, $class);
 
-    $class = file_get_contents($path = ZERO_PATH_APP . '/class/Main/Option.php');
-    str_replace('Main_OptionTemplate', 'Main_Option', $class);
+    $class = file_get_contents($path = ZERO_PATH_APP . '/class/Site/Option.php');
+    str_replace('Site_OptionTemplate', 'Site_Option', $class);
     file_put_contents($path, $class);
 
-    $class = file_get_contents($path = ZERO_PATH_APP . '/class/Main/Request.php');
-    str_replace('Main_RequestTemplate', 'Main_Request', $class);
+    $class = file_get_contents($path = ZERO_PATH_APP . '/class/Site/Request.php');
+    str_replace('Site_RequestTemplate', 'Site_Request', $class);
     file_put_contents($path, $class);
 
-    $class = file_get_contents($path = ZERO_PATH_APP . '/class/Main/Section.php');
-    str_replace('Main_SectionTemplate', 'Main_Section', $class);
+    $class = file_get_contents($path = ZERO_PATH_APP . '/class/Site/Section.php');
+    str_replace('Site_SectionTemplate', 'Site_Section', $class);
     file_put_contents($path, $class);
 
-    $class = file_get_contents($path = ZERO_PATH_APP . '/class/Main/Users.php');
-    str_replace('Main_UsersTemplate', 'Main_Users', $class);
+    $class = file_get_contents($path = ZERO_PATH_APP . '/class/Site/Users.php');
+    str_replace('Site_UsersTemplate', 'Site_Users', $class);
     file_put_contents($path, $class);
 
 //    if ( !@symlink(ZERO_PATH_ZERO, ZERO_PATH_APPLICATION . '/zero') )

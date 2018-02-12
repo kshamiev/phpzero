@@ -69,14 +69,14 @@ class Zero_App
     /**
      * User
      *
-     * @var Main_Users
+     * @var Site_Users
      */
     public static $Users = null;
 
     /**
      * Section (page)
      *
-     * @var Main_Section
+     * @var Site_Section
      */
     public static $Section = null;
 
@@ -97,14 +97,14 @@ class Zero_App
     /**
      * Configuration
      *
-     * @var Main_Config
+     * @var Site_Config
      */
     public static $Config = null;
 
     /**
      * Configuration
      *
-     * @var Main_Option
+     * @var Site_Option
      */
     public static $Options = null;
 
@@ -113,7 +113,7 @@ class Zero_App
      *
      * API запросы, получение контента страниц сайта
      *
-     * @var Main_Request
+     * @var Site_Request
      */
     public static $Request = null;
 
@@ -503,7 +503,7 @@ class Zero_App
         // register_shutdown_function(['Zero_App', 'Exit_Application']);
 
         //  Configuration
-        self::$Config = new Main_Config();
+        self::$Config = new Site_Config();
 
         // Инициализация роутинга, входных данных и логирования
         if ( empty($_SERVER['REQUEST_URI']) )
@@ -532,10 +532,10 @@ class Zero_App
         }
 
         // Options
-        self::$Options = new Main_Option();
+        self::$Options = new Site_Option();
 
         // Request
-        self::$Request = new Main_Request();
+        self::$Request = new Site_Request();
 
         //  Initialize cache subsystem (Zero_Cache)
         if ( 0 < count(self::$Config->Memcache['Cache']) && class_exists('Memcache') )

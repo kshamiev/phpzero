@@ -33,6 +33,8 @@ else //  Launch Manager console task
 {
     Zero_App::Init();
 
+    unlink(ZERO_PATH_LOG . '/console/app.log');
+
     $flag = 0;
     $week = date('w');
     $month = date('n');

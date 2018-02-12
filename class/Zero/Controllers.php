@@ -345,7 +345,16 @@ class Zero_Controllers extends Zero_Model
             return;
         $row = Zero_DB::Select_Row("SELECT * FROM Controllers WHERE Url = " . Zero_DB::EscT($url));
         if ( 0 == count($row) )
-            return;
+        {
+            $arr = explode('/', ZERO_URL);
+            array_shift($arr);
+            array_shift($arr);
+            array_shift($arr);
+            $class = implode('_', $arr);
+            $row = Zero_DB::Select_Row("SELECT * FROM Controllers WHERE Controller = " . Zero_DB::EscT($class));
+            if ( 0 == count($row) )
+                return;
+        }
         $this->Set_Props($row);
     }
 

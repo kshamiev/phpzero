@@ -16,27 +16,11 @@
 class Zero_Request
 {
     /**
-     * Обертка запросов к внешнему источнику
+     * Хранилище оберток запросов к внешним ресурсам
      *
-     * @var mixed
+     * @var array
      */
-    //    private $sampleCustomRequest = null;
-
-    /**
-     * Обертка запросов к внешнему источнику
-     *
-     * @return mixed
-     */
-    //    protected function Get_SampleCustomRequest()
-    //    {
-    //        if ( is_null($this->sampleCustomRequest) )
-    //        {
-    //            $access = Zero_App::$Config->AccessOutside['SampleCustomRequest'];
-    //            // Инициализация ранее реализованного функционала для реализации запросов к нужному ресурсу
-    //
-    //        }
-    //        return $this->sampleCustomRequest;
-    //    }
+    private $request = [];
 
     /**
      * API запрос к внешнему ресурсу
@@ -157,15 +141,24 @@ class Zero_Request
      * Геттер для реализации пользовательских классов - запросов
      *
      * @param string $prop
-     * @return mixed
+     * @return object обертка запросов к внешнему ресурсу
+     * @throws Exception
      */
     public function __get($prop)
     {
         if ( method_exists($this, $method = 'Get_' . $prop) )
             return $this->$method();
         else
-            Zero_Logs::Set_Message_Error("обращение к нереализованному функционалу запросов '{$prop}'");
-        return null;
+        {
+            if ( empty($this->request[$prop]) )
+            {
+                $class = 'Request_' . $prop;
+                if ( !Zero_App::Autoload($class) )
+                    throw new Exception('Not Found Class: ' . $class, 409);
+                $this->request[$prop] = new $class(Zero_App::$Config->AccessOutside[$prop]);
+            }
+            return $this->request[$prop];
+        }
     }
 
     /**

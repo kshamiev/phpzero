@@ -414,7 +414,7 @@ class Zero_Users extends Zero_Model
      */
     public static function Make($id = 0, $flagLoad = false)
     {
-        $obj = new Main_Users($id, $flagLoad);
+        $obj = new Site_Users($id, $flagLoad);
         return $obj;
     }
 
@@ -430,7 +430,7 @@ class Zero_Users extends Zero_Model
      */
     public static function Factory($id = 0, $flagLoad = false)
     {
-        $index = 'Main_Users' . (0 < $id ? '_' . $id : '');
+        $index = 'Site_Users' . (0 < $id ? '_' . $id : '');
         if ( !$result = Zero_Session::Get($index) )
         {
             $result = self::Make($id, $flagLoad);

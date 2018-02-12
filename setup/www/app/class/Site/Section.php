@@ -12,10 +12,10 @@
  * - Visibility in the navigation
  * - Seo
  *
- * @package Main
+ * @package Site
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015-01-01
  */
-class Main_SectionTemplate extends Zero_Section
+class Site_SectionTemplate extends Zero_Section
 {
 }

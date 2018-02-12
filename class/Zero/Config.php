@@ -489,7 +489,7 @@ class Zero_Config
      * Получение абстрактных пользовательских конфигураций приложеня
      *
      * @param string $prop
-     * @return object
+     * @return object конфигурация
      * @throws Exception
      */
     public function __get($prop)
@@ -503,7 +503,7 @@ class Zero_Config
             {
                 $class = 'Config_' . $prop;
                 if ( !Zero_App::Autoload($class) )
-                    throw new Exception('Not Found Class: ' . $prop, 409);
+                    throw new Exception('Not Found Class: ' . $class, 409);
                 $this->config[$prop] = new $class($this->configLoad[$prop]);
             }
             return $this->config[$prop];

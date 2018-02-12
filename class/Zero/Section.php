@@ -451,7 +451,7 @@ class Zero_Section extends Zero_Model
      */
     public static function Make($id = 0, $flagLoad = false)
     {
-        return new Main_Section($id, $flagLoad);
+        return new Site_Section($id, $flagLoad);
     }
 
     /**
@@ -466,7 +466,7 @@ class Zero_Section extends Zero_Model
      */
     public static function Factory($id = 0, $flagLoad = false)
     {
-        $index = 'Main_Section' . (0 < $id ? '_' . $id : '');
+        $index = 'Site_Section' . (0 < $id ? '_' . $id : '');
         if ( !$result = Zero_Session::Get($index) )
         {
             $result = self::Make($id, $flagLoad);
