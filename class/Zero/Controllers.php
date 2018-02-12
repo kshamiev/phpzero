@@ -195,6 +195,7 @@ class Zero_Controllers extends Zero_Model
             'ID' => [],
             'Name' => [],
             'Controller' => [],
+            'Url' => [],
             'DateExecute' => [],
         ];
     }
