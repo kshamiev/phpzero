@@ -29,7 +29,8 @@ class Zero_System_Console_ApiGen extends Zero_Controller
         // target (куда)
         $command .= ' -d '. ZERO_PATH_SITE .'/doc';
         // advanced
-        $command .= ' --title="'. Zero_App::$Config->Site_Name. '" --access-levels="public" --groups="packages" --todo --deprecated --download';
+        $command .= ' --title="'. Zero_App::$Config->Site_Name. '" --access-levels="public" --groups="packages" --todo --deprecated --download --no-source-code';
+        $command .= ' --base-url="'. ZERO_HTTP. '" --template-theme="bootstrap" --tree';
         //
         exec($command);
         return true;

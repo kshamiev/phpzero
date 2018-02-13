@@ -33,7 +33,8 @@ else //  Launch Manager console task
 {
     Zero_App::Init();
 
-    unlink(ZERO_PATH_LOG . '/console/app.log');
+    if ( file_exists($path = ZERO_PATH_LOG . '/console/app.log') )
+        unlink($path);
 
     $flag = 0;
     $week = date('w');
