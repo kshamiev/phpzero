@@ -159,6 +159,17 @@ function zero_random_string($length, $chartypes = 'all')
 }
 
 /**
+ * Кодирование в json в контексте системы phpzero
+ *
+ * @param mixed $data
+ * @return string
+ */
+function zero_json($data)
+{
+    return json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK);
+}
+
+/**
  * Более продвинутый аналог strip_tags() для корректного вырезания тагов из html кода.
  * Функция strip_tags(), в зависимости от контекста, может работать некорректно.
  * Возможности:
@@ -290,7 +301,9 @@ function zero_strip_tags_smart(/*string*/
     {
         #парные таги вместе с содержимым:
         foreach ($pair_tags as $k => $v)
+        {
             $pair_tags[$k] = preg_quote($v, '/');
+        }
         $patterns[] = '/ <((?i:' . implode('|', $pair_tags) . '))' . $re_attrs_fast_safe . '(?<!\/)>
                          .*?
                          <\/(?i:\\1)' . $re_attrs_fast_safe . '>
