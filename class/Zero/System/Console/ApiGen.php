@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Формирование этой документации
  *
@@ -15,24 +16,30 @@ class Zero_System_Console_ApiGen extends Zero_Controller
      */
     public function Action_Default()
     {
-//        Helper_File::Folder_Copy(ZERO_PATH_ZERO .'/data/doc', ZERO_PATH_SITE .'/doc');
-//        $tpl = file_get_contents(ZERO_PATH_SITE .'/doc/.htaccess');
-//        $tpl = str_replace('PATHFRILEACCESS', ZERO_PATH_SITE, $tpl);
-//        file_put_contents(ZERO_PATH_SITE .'/doc/.htaccess', $tpl);
         // ApiGen
         $command = Zero_App::$Config->Site_PathPhp . ' ' . ZERO_PATH_ZERO . '/apigen.phar generate';
         // source (источники)
-//        $command .= ' -s '. ZERO_PATH_ZERO .'/class -s '. ZERO_PATH_APP . '/class';
-        $command .= ' -s '. ZERO_PATH_APP . '/class';
+        //        $command .= ' -s '. ZERO_PATH_ZERO .'/class -s '. ZERO_PATH_APP . '/class';
+        $command .= ' -s ' . ZERO_PATH_APP . '/class';
         // exclude (исключения)
-//        $command .= ' --exclude="setup/*" --exclude="i18n/*" --exclude="data/* --exclude="assets/* --exclude="view/*"';
+        //        $command .= ' --exclude="setup/*" --exclude="i18n/*" --exclude="data/* --exclude="assets/* --exclude="view/*"';
         // target (куда)
-        $command .= ' -d '. ZERO_PATH_SITE .'/doc';
+        $command .= ' -d ' . ZERO_PATH_SITE . '/doc';
         // advanced
-        $command .= ' --title="'. Zero_App::$Config->Site_Name. '" --access-levels="public" --groups="packages" --todo --deprecated --download --no-source-code';
-        $command .= ' --base-url="'. ZERO_HTTP. '" --template-theme="bootstrap" --tree';
+        $command .= ' --title="' . Zero_App::$Config->Site_Name . '" --access-levels="public" --groups="packages" --todo --deprecated --download --no-source-code';
+        $command .= ' --base-url="' . ZERO_HTTP . '" --template-theme="bootstrap" --tree';
         //
         exec($command);
+
+        Helper_File::Folder_Copy(ZERO_PATH_ZERO . '/data/doc', ZERO_PATH_SITE . '/doc');
+        $tpl = file_get_contents(ZERO_PATH_SITE . '/doc/.htaccess');
+        $tpl = str_replace('PATHFRILEACCESS', ZERO_PATH_SITE, $tpl);
+        file_put_contents(ZERO_PATH_SITE . '/doc/.htaccess', $tpl);
+
+        //
+        //        $tpl = file_get_contents(ZERO_PATH_SITE . '/doc/.htaccess');
+        //        $tpl = str_replace('PATHFRILEACCESS', ZERO_PATH_SITE, $tpl);
+        //        file_put_contents(ZERO_PATH_SITE . '/doc/.htaccess', $tpl);
         return true;
-     }
+    }
 }
