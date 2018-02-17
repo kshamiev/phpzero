@@ -29,13 +29,13 @@ if ( Zero_App::$Config->Deploy->Branch != explode('/', $deploy['ref'])[2] )
     Zero_Response::Console();
 }
 // Пользователь
-if ( empty(Zero_App::$Config->Deploy->Users[$deploy['pusher']['name']]) )
+if ( empty(Zero_App::$Config->Deploy->Users[trim($deploy['pusher']['name'])]) )
 {
     Zero_Logs::Set_Message_Error('deploy user access denied from: ' . $deploy['pusher']['name']);
     Zero_Response::Console();
 }
 // Ключевое сообщение
-if ( strpos($deploy['head_commit']['message'], Zero_App::$Config->Deploy->CommitMessage) )
+if ( strpos(trim($deploy['head_commit']['message']), Zero_App::$Config->Deploy->CommitMessage) )
 {
     Zero_Logs::Set_Message_Error('deploy key message not valid: ' . $deploy['head_commit']['message']);
     Zero_Response::Console();
