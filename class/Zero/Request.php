@@ -138,6 +138,22 @@ class Zero_Request
     }
 
     /**
+     * Метод перегрузки
+     *
+     * @param string $method имя вызываемого метода
+     * @param array $params массив передаваемых параметров
+     * @return Zero_Request_Type ответ
+     */
+    public function __call($method, $params)
+    {
+        if ( empty($params[2]) )
+            $params[2] = null; // $content
+        if ( empty($params[3]) )
+            $params[3] = []; // $headers
+        return $this->request($method, $params[0], $params[1], $params[2], $params[3]);
+    }
+
+    /**
      * Геттер для реализации пользовательских классов - запросов
      *
      * @param string $prop
@@ -152,29 +168,13 @@ class Zero_Request
         {
             if ( empty($this->request[$prop]) )
             {
-                $class = 'Request_' . $prop;
+                $class = 'Site_Request_' . $prop;
                 if ( !Zero_App::Autoload($class) )
                     throw new Exception('Not Found Class: ' . $class, 409);
                 $this->request[$prop] = new $class(Zero_App::$Config->AccessOutside[$prop]);
             }
             return $this->request[$prop];
         }
-    }
-
-    /**
-     * Метод перегрузки
-     *
-     * @param string $method имя вызываемого метода
-     * @param array $params массив передаваемых параметров
-     * @return Zero_Request_Type ответ
-     */
-    public function __call($method, $params)
-    {
-        if ( empty($params[2]) )
-            $params[2] = null; // $content
-        if ( empty($params[3]) )
-            $params[3] = []; // $headers
-        return $this->request($method, $params[0], $params[1], $params[2], $params[3]);
     }
 }
 

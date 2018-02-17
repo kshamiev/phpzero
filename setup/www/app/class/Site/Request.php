@@ -10,6 +10,7 @@
  * @package Site
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2017-09-14
+ * @see Site_Config (Как расширять смотри в указзанном классе)
  */
 class Site_RequestTemplate extends Zero_Request
 {
