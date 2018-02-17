@@ -4,6 +4,9 @@
  * Initialize and run.
  */
 
+if ( empty($_REQUEST['payload']) )
+    die('not param payload');
+
 require __DIR__ . '/class/Zero/App.php';
 Zero_App::Init('deploy');
 
