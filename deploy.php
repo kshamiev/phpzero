@@ -50,6 +50,10 @@ if ( !is_array($buffer) || 0 == count($buffer) )
     Zero_Logs::Set_Message_Error("error git pull ({$path})");
     Zero_Response::Console();
 }
+else
+{
+    Zero_Logs::Set_Message_Notice("git pull ({$path})");
+}
 
 // Выкладываем проект
 foreach (Zero_App::$Config->Deploy->PathDeploy as $p)
@@ -62,6 +66,10 @@ foreach (Zero_App::$Config->Deploy->PathDeploy as $p)
     {
         Zero_Logs::Set_Message_Error("error git pull ({$path})");
         Zero_Response::Console();
+    }
+    else
+    {
+        Zero_Logs::Set_Message_Notice("git pull ({$path})");
     }
 }
 
