@@ -57,7 +57,7 @@ foreach (Zero_App::$Config->Deploy->PathDeploy as $p)
     exec('git pull', $buffer);
     if ( !is_array($buffer) || 0 == count($buffer) )
     {
-        Zero_Logs::Set_Message_Error("error git pull ({$path})");
+        Zero_Logs::Set_Message_Error("error git pull ({$path}{$p})");
         Zero_Response::Console();
     }
     else
@@ -70,6 +70,6 @@ foreach (Zero_App::$Config->Deploy->PathDeploy as $p)
 Helper_File::Folder_Remove($path . '/cache');
 
 // Завершение
-Zero_Logs::Set_Message_Notice('deploy successFull ' . $_REQUEST['pusher']['name']);
+Zero_Logs::Set_Message_Notice('deploy successFull ' . $deploy['pusher']['name']);
 Zero_Response::Console();
 
