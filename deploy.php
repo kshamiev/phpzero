@@ -43,24 +43,11 @@ if ( strpos($deploy['head_commit']['message'], Zero_App::$Config->Deploy->Commit
  */
 $path = dirname(dirname(__DIR__));
 
-// Выкладываем основной проект
-exec("cd {$path}");
-exec('git checkout -f');
-exec('git clean -f -d');
-exec('git pull', $buffer);
-if ( !is_array($buffer) || 0 == count($buffer) )
-{
-    Zero_Logs::Set_Message_Error("error git pull ({$path})");
-    Zero_Response::Console();
-}
-else
-{
-    Zero_Logs::Set_Message_Notice("git pull ({$path})");
-}
-
 // Выкладываем проект
 foreach (Zero_App::$Config->Deploy->PathDeploy as $p)
 {
+    if ( '/' == $p || '.' == $p || '/.' == $p || './' == $p )
+        $p = '';
     exec("cd {$path}{$p}");
     exec('git checkout -f');
     exec('git clean -f -d');
