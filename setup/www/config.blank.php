@@ -56,22 +56,6 @@ return [
             'AuthUserToken' => '',
             'IsDebug' => true,
         ],
-        'Self' => [
-            'Name' => 'Запросы на себя',
-            'Url' => 'http://domain.ru',
-            'Login' => 'login',
-            'Password' => 'xxxxxxx',
-            'AuthUserToken' => 'xxxxxxx',
-            'IsDebug' => true,
-        ],
-        'Sample' => [
-            'Name' => 'Запросы к определенному внешнему ресурсу',
-            'Url' => 'http://domain.ru',
-            'Login' => 'login',
-            'Password' => 'xxxxxxx',
-            'AuthUserToken' => 'xxxxxxx',
-            'IsDebug' => true,
-        ],
     ],
     //  Access for DB (Mysql)
     'Db' => [
@@ -148,6 +132,18 @@ return [
         //  Session storage
         'Session' => [
             //  'localhost:11211'
+        ],
+    ],
+    //  Deploy
+    'Deploy' => [
+        'Branch' => '',
+        'Users' => [
+            'userNickNameGit' => 1,
+        ],
+        'CommitMessage' => '',
+        'PathDeploy' => [
+            '/',
+            '/www/phpzero',
         ],
     ],
 ];
