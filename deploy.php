@@ -62,7 +62,7 @@ foreach (Zero_App::$Config->Deploy->PathDeploy as $p)
     }
     else
     {
-        Zero_Logs::Set_Message_Notice("git pull ({$path})");
+        Zero_Logs::Set_Message_Notice("git pull ({$path}{$p})");
     }
 }
 
