@@ -4,25 +4,28 @@
  * Initialize and run.
  */
 
-if ( empty($_REQUEST['payload']) )
-    die('not param payload');
-
 require __DIR__ . '/class/Zero/App.php';
 Zero_App::Init('deploy');
 
 /**
  * Проверки
  */
+if ( empty($_REQUEST['payload']) )
+{
+    Zero_Logs::Set_Message_Error('not param payload');
+    Zero_Response::Console();
+}
 $deploy = json_decode($_REQUEST['payload'], true);
-Zero_Logs::Custom('deploy', $deploy);
+file_put_contents(ZERO_PATH_LOG . '/deployRequest.log', date("[d.m.Y H:i:s]\n") . print_r($deploy, true));
 // branch
-if ( !isset($deploy['ref']) )
+if ( empty($deploy['ref']) )
 {
     Zero_Logs::Set_Message_Error('empty ref');
     Zero_Response::Console();
 }
 if ( Zero_App::$Config->Deploy->Branch != explode('/', $deploy['ref'])[2] )
 {
+    Zero_Logs::Set_Message_Error('branch not valid: ' . Zero_App::$Config->Deploy->Branch . ' != ' . explode('/', $deploy['ref'])[2]);
     Zero_Response::Console();
 }
 // Пользователь
