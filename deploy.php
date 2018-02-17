@@ -13,8 +13,8 @@ Zero_App::Init('deploy');
 /**
  * Проверки
  */
-// Zero_Logs::Custom('deploy', $_REQUEST);
 $deploy = json_decode($_REQUEST['payload'], true);
+Zero_Logs::Custom('deploy', $deploy);
 // branch
 if ( !isset($deploy['ref']) )
 {
