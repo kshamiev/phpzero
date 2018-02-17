@@ -51,18 +51,21 @@ foreach (Zero_App::$Config->Deploy->PathDeploy as $p)
 {
     if ( '/' == $p || '.' == $p || '/.' == $p || './' == $p )
         $p = '';
-    exec("cd {$path}{$p}");
+    $p = $path . $p;
+
+    exec("cd {$p}");
     exec('git checkout -f');
     exec('git clean -f -d');
-    exec('git pull', $buffer);
+    exec('git pull', $buffer, $code);
+    Zero_Logs::Custom_DateTime('AAAAAA', [$buffer, $code]);
     if ( !is_array($buffer) || 0 == count($buffer) )
     {
-        Zero_Logs::Set_Message_Error("error git pull ({$path}{$p})");
+        Zero_Logs::Set_Message_Error("error git pull '{$p}'");
         Zero_Response::Console();
     }
     else
     {
-        Zero_Logs::Set_Message_Notice("git pull ({$path}{$p})");
+        Zero_Logs::Set_Message_Notice("git pull '{$p}'");
     }
 }
 
