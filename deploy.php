@@ -54,10 +54,10 @@ foreach (Zero_App::$Config->Deploy->PathDeploy as $p)
     $p = $path . $p;
 
     exec("cd {$p}");
-    exec('git checkout -f');
-    exec('git clean -f -d');
+//    exec('git checkout -f');
+//    exec('git clean -f -d');
     exec('git pull', $buffer, $code);
-    Zero_Logs::Custom_DateTime('AAAAAA', [$buffer, $code]);
+    Zero_Logs::Custom_DateTime('AAAAAA', [$buffer, $code, $p]);
     if ( !is_array($buffer) || 0 == count($buffer) )
     {
         Zero_Logs::Set_Message_Error("error git pull '{$p}'");
