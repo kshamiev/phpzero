@@ -30,11 +30,9 @@ class Zero_Session extends ArrayObject
         // проверяем запущена ли сессия
         if ( !session_id() )
         {
-            if ( $sessionId )
-                session_id(sha1($sessionId));
-            else
-                $sessionName = sha1($sessionName);
-            session_name($sessionName);
+            session_name(sha1($sessionName));
+//            if ( $sessionId )
+//                session_id(sha1($sessionId));
             session_start();
         }
         if ( !isset($_SESSION['Session']) || !$_SESSION['Session'] instanceof Zero_Session )

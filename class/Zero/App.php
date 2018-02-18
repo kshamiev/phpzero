@@ -544,10 +544,18 @@ class Zero_App
             Zero_Cache::InitMemcache(self::$Config->Memcache['Cache']);
 
         //  Session Initialization (Zero_Session)
+        //        if ( isset($_SERVER['HTTP_AUTHUSERTOKEN']) )
+        //            Zero_Session::Init(self::$Config->Site_Token, $_SERVER['HTTP_AUTHUSERTOKEN']);
+        //        else if ( isset($_REQUEST['authusertoken']) )
+        //            Zero_Session::Init(self::$Config->Site_Token, $_REQUEST['authusertoken']);
+        //        else
+        //            Zero_Session::Init(self::$Config->Site_Token);
+
+        //  Session Initialization (Zero_Session)
         if ( isset($_SERVER['HTTP_AUTHUSERTOKEN']) )
-            Zero_Session::Init(self::$Config->Site_Token, $_SERVER['HTTP_AUTHUSERTOKEN']);
+            Zero_Session::Init($_SERVER['HTTP_AUTHUSERTOKEN']);
         else if ( isset($_REQUEST['authusertoken']) )
-            Zero_Session::Init(self::$Config->Site_Token, $_REQUEST['authusertoken']);
+            Zero_Session::Init($_REQUEST['authusertoken']);
         else
             Zero_Session::Init(self::$Config->Site_Token);
 
@@ -717,7 +725,7 @@ class Zero_App
             {
                 self::$Users->Load_Token($token);
                 if ( 0 == self::$Users->ID )
-                    throw new Exception('Page Forbidden', 403);
+                    throw new Exception('User Auth Fail', 403);
             }
         }
 
@@ -748,7 +756,7 @@ class Zero_App
                 self::$Controller = Zero_Controllers::Make(self::$Section->Controllers_ID, true);
                 // проверка прав на авторизованный контроллер
                 if ( empty(self::$Controller->Get_Action_List()[$action]) )
-                    throw new Exception('Controller Forbidden', 403);
+                    throw new Exception('Controller Forbidden or Not Found Method ' . $action, 403);
             }
             else
                 self::$Controller = Zero_Controllers::Make();
@@ -759,10 +767,10 @@ class Zero_App
             self::$Controller->Load_Url(ZERO_URL);
             // проверка на существование контроллера по запрошенному урлу
             if ( 0 == self::$Controller->ID )
-                throw new Exception('Page Not Found', 404);
+                throw new Exception('Controller Not Found', 404);
             // проверка прав на авторизованный контроллер
             if ( empty(self::$Controller->Get_Action_List()[$action]) )
-                throw new Exception('Controller Forbidden', 403);
+                throw new Exception('Controller Forbidden or Not Found Method ' . $action, 403);
         }
 
         //  ЦЕНТРАЛЬНЫЙ КОНТРОЛЛЕР
@@ -883,6 +891,15 @@ class Zero_App
         {
             self::exception_Trace($exception);
         }
+
+        if ( 'Api' == self::$mode )
+        {
+            $status = $code;
+            if ( empty($codeList[$code]) )
+                $status = 409;
+            Zero_Response::JsonRest(null, $code, [$exception->getMessage()], $status);
+        }
+
         $viewLayout = new Zero_View('Zero_Exception');
         $viewLayout->Assign('code', $code);
         $viewLayout->Assign('message', $exception->getMessage());
