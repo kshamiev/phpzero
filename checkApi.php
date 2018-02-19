@@ -16,32 +16,35 @@ $tpl = '
     </tr>
 ';
 
-$controllers = Zero_DB::Select_Array("SELECT `ID`, `Name`, `Controller`, `Url` FROM `Controllers` WHERE `Typ` = 'Api'");
+$controllers = Zero_DB::Select_Array("SELECT `ID`, `Name`, `Controller`, `Url` FROM `Controllers` WHERE `Typ` = 'Api' ORDER BY 3 ASC");
 foreach ($controllers as $con)
 {
     $response = Zero_App::$Request->Test('OPTIONS', $con['Url']);
-
-    $tpl .= "<tr>\n";
     if ( 200 != $response->Head['http_code'] )
     {
+        $tpl .= "<tr bgcolor='#FFCCCC'>\n";
         $tpl .= "<td>{$response->Code}</td>\n";
         $tpl .= "<td>{$response->Message}</td>\n";
         $tpl .= "<td>{$con['Controller']}</td>\n";
         $tpl .= "<td>[OPTIONS] {$response->Head['url']}</td>\n";
+        $tpl .= "</tr>\n";
     }
     else
     {
         $message = '';
         foreach ($response->Body as $met => $desc)
         {
+            $response = Zero_App::$Request->Test('OPTIONS', $con['Url']);
+
             $message .= "[{$met}] {$desc}\n<br>";
         }
+        $tpl .= "<tr>\n";
         $tpl .= "<td>{$response->Code}</td>\n";
         $tpl .= "<td>{$message}</td>\n";
         $tpl .= "<td>{$con['Controller']}</td>\n";
-        $tpl .= "<td>[OPTIONS] {$response->Head['url']}</td>\n";
+        $tpl .= "<td>{$response->Head['url']}</td>\n";
+        $tpl .= "</tr>\n";
     }
-    $tpl .= "</tr>\n";
 }
 $tpl .= '
 </table>
