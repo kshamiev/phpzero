@@ -57,6 +57,14 @@ class Zero_Request
         if ( isset($accessConf['AuthUserToken']) && $accessConf['AuthUserToken'] )
             $headers[] = "AuthUserToken: " . $accessConf['AuthUserToken'];
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        //	Cookie
+        if ( isset($accessConf['AuthUserToken']) && $accessConf['AuthUserToken'] )
+        {
+            if ( !is_dir(ZERO_PATH_CACHE . '/session') )
+                mkdir(ZERO_PATH_CACHE . '/session');
+            curl_setopt($ch, CURLOPT_COOKIEFILE, ZERO_PATH_CACHE . '/session/' . $accessConf['AuthUserToken'] . '.txt'); //	посылка
+            curl_setopt($ch, CURLOPT_COOKIEJAR, ZERO_PATH_CACHE . '/session/' . $accessConf['AuthUserToken'] . '.txt'); //	получение
+        }
         //	АВТОРИЗАЦИЯ МЕТОДОМ APACHE
         if ( isset($accessConf['Login']) && $accessConf['Login'] && isset($accessConf['Password']) && $accessConf['Password'] )
         {

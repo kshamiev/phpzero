@@ -23,16 +23,13 @@ class Zero_Session extends ArrayObject
      * Инициализация сессии в виде реестра (одиночка).
      *
      * @param $sessionName
-     * @param string $sessionId
      */
-    public static function Init($sessionName, $sessionId = '')
+    public static function Init($sessionName)
     {
         // проверяем запущена ли сессия
         if ( !session_id() )
         {
-            session_name(sha1($sessionName));
-//            if ( $sessionId )
-//                session_id(sha1($sessionId));
+            session_name(md5($sessionName));
             session_start();
         }
         if ( !isset($_SESSION['Session']) || !$_SESSION['Session'] instanceof Zero_Session )

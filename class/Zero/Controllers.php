@@ -141,6 +141,13 @@ class Zero_Controllers extends Zero_Model
                 'Form' => 'Radio'
             ],
             'DateExecute' => ['AliasDB' => 'z.DateExecute', 'DB' => 'D', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Readonly'],
+            'Sort' => [
+                'AliasDB' => 'z.Sort',
+                'DB' => 'I',
+                'IsNull' => 'YES',
+                'Default' => '',
+                'Form' => 'Number',
+            ],
         ];
     }
 
@@ -175,6 +182,7 @@ class Zero_Controllers extends Zero_Model
             'Week' => ['Visible' => true, 'AR' => true],
             'IsActive' => ['Visible' => true, 'AR' => true],
             'IsAuthorized' => ['Visible' => true, 'AR' => true],
+            'Sort' => ['Visible' => true, 'AR' => true],
         ];
     }
 
@@ -234,6 +242,7 @@ class Zero_Controllers extends Zero_Model
                 'Controller' => [],
                 'Url' => [],
                 'IsAuthorized' => [],
+                'Sort' => [],
                 'Typ' => ['Form' => 'Readonly'],
                 'DateExecute' => [],
             ];

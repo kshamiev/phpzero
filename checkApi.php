@@ -16,27 +16,52 @@ $tpl = '
     </tr>
 ';
 
-$controllers = Zero_DB::Select_Array("SELECT `ID`, `Name`, `Controller`, `Url` FROM `Controllers` WHERE `Typ` = 'Api' ORDER BY 3 ASC");
+$controllers = Zero_DB::Select_Array("SELECT `ID`, `Name`, `Controller`, `Url`, Sort FROM `Controllers` WHERE `Typ` = 'Api' ORDER BY 5, 3 ASC");
 foreach ($controllers as $con)
 {
     $response = Zero_App::$Request->Test('OPTIONS', $con['Url']);
     if ( 200 != $response->Head['http_code'] )
     {
-        $tpl .= "<tr bgcolor='#FFCCCC'>\n";
+        $tpl .= "<tr>\n";
         $tpl .= "<td>{$response->Code}</td>\n";
-        $tpl .= "<td>{$response->Message}</td>\n";
+        $tpl .= "<td><font color='#996600'>{$response->Message}</font></td>\n";
         $tpl .= "<td>{$con['Controller']}</td>\n";
         $tpl .= "<td>[OPTIONS] {$response->Head['url']}</td>\n";
         $tpl .= "</tr>\n";
+
+        Zero_Logs::Set_Message_Error("ERROR [OPTIONS] {$con['Controller']}");
     }
     else
     {
         $message = '';
-        foreach ($response->Body as $met => $desc)
+        foreach ($response->Body as $method => $desc)
         {
-            $response = Zero_App::$Request->Test('OPTIONS', $con['Url']);
+            $res = Zero_App::$Request->Test('OPTIONS', $con['Url'] . "?{$method}=1");
+            if ( 200 != $res->Head['http_code'] || !isset($res->Body['Uri']) || !isset($res->Body['Name']) )
+            {
+                $message .= "<font color='#996600'>[{$method}] {$desc}</font>\n<br>";
+                $message .= "options error\n<br>";
 
-            $message .= "[{$met}] {$desc}\n<br>";
+                Zero_Logs::Set_Message_Error("ERROR [OPTIONS] [{$method}] {$con['Controller']}");
+            }
+            else
+            {
+                $res = Zero_App::$Request->Test($method, $con['Url'] . $res->Body['Uri'], $res->Body);
+                if ( 200 != $res->Head['http_code'] )
+                {
+                    $message .= "<font color='#FF0000'>[{$method}] {$desc}</font>\n<br>";
+                    $message .= "[{$res->Code}] {$res->Message}\n<br>";
+
+                    Zero_Logs::Set_Message_Error("ERROR [{$method}] {$con['Controller']}");
+                }
+                else
+                {
+                    $message .= "[{$method}] {$desc}\n<br>";
+
+                    Zero_Logs::Set_Message_Error("OK [{$method}] {$con['Controller']}");
+                }
+            }
+            //            pre($response->Body);
         }
         $tpl .= "<tr>\n";
         $tpl .= "<td>{$response->Code}</td>\n";

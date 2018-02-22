@@ -90,6 +90,7 @@ return [
     'Zero_Controllers IsAuthorized' => 'Авторизованный',
     'Zero_Controllers IsAuthorized options' => ['no' => 'нет', 'yes' => 'да'],
     'Zero_Controllers DateExecute' => 'Последнее выполнение',
+    'Zero_Controllers Sort' => 'Сортировка',
     'Controllers_ID' => 'Контроллер',
     'Zero_Section Name' => 'Заголовок',
     'Token' => 'Токен',
