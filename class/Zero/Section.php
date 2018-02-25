@@ -84,8 +84,8 @@ class Zero_Section extends Zero_Model
             'ID' => ['AliasDB' => 'z.ID', 'DB' => 'ID', 'IsNull' => 'NO', 'Default' => '', 'Form' => ''],
             'Section_ID' => ['AliasDB' => 'z.Section_ID', 'DB' => 'ID', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Link'],
             'Controllers_ID' => ['AliasDB' => 'z.Controllers_ID', 'DB' => 'ID', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Link'],
-            'Url' => ['AliasDB' => 'z.Url', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Readonly'],
-            'UrlThis' => ['AliasDB' => 'z.UrlThis', 'DB' => 'T', 'IsNull' => 'NO', 'Default' => '', 'Form' => 'Text'],
+            'Url' => ['AliasDB' => 'z.Url', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'],
+            'UrlThis' => ['AliasDB' => 'z.UrlThis', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'],
             'UrlAlias' => ['AliasDB' => 'z.UrlAlias', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'],
             'UrlRedirect' => ['AliasDB' => 'z.UrlRedirect', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'],
             'Layout' => ['AliasDB' => 'z.Layout', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Select'],
@@ -177,7 +177,6 @@ class Zero_Section extends Zero_Model
         return [
             'Url' => [],
             'UrlThis' => [],
-            'UrlAlias' => [],
             'UrlRedirect' => [],
             'Layout' => [],
             'Controllers_ID' => [],
@@ -194,22 +193,6 @@ class Zero_Section extends Zero_Model
             'Content' => [],
             'Img' => [],
         ];
-    }
-
-    /**
-     * Иициализация раздела по указанному url
-     *
-     * @param string $url
-     */
-    public function Load_Url($url = ZERO_URL)
-    {
-        if ( $this->ID != 0 )
-            return;
-        $u = Zero_DB::EscT($url);
-        $row = Zero_DB::Select_Row("SELECT * FROM Section WHERE UrlAlias = {$u} OR Url = {$u}");
-        if ( 0 == count($row) )
-            return;
-        $this->Set_Props($row);
     }
 
     /**
@@ -312,7 +295,8 @@ class Zero_Section extends Zero_Model
         SET
           Url = CONCAT('" . rtrim($url, '/') . "', '/', UrlThis)
         WHERE
-            Section_ID = {$section_id}
+          Section_ID = {$section_id}
+          AND UrlThis IS NOT NULL
         ";
         Zero_DB::Update($sql);
         //  recurses
@@ -322,6 +306,22 @@ class Zero_Section extends Zero_Model
             self::DB_Update_Url($section_id);
         }
         return true;
+    }
+
+    /**
+     * Иициализация раздела по указанному url
+     *
+     * @param string $url
+     */
+    public function Load_Url($url = ZERO_URL)
+    {
+        if ( $this->ID != 0 )
+            return;
+        $u = Zero_DB::EscT($url);
+        $row = Zero_DB::Select_Row("SELECT * FROM Section WHERE Url = {$u}");
+        if ( 0 == count($row) )
+            return;
+        $this->Set_Props($row);
     }
 
     /**
@@ -335,26 +335,28 @@ class Zero_Section extends Zero_Model
     {
         if ( 0 < $this->Section_ID )
         {
-            $Object = Zero_Model::Makes(__CLASS__, $this->Section_ID);
-
             $u1 = Helper_Strings::Transliteration_Url($value);
-            $u2 = rtrim($Object->Url, '/') . '/' . ltrim($u1, '/');
-
-            $u = Zero_DB::EscT($u2);
-            $id = Zero_DB::Select_Field("SELECT ID FROM Section WHERE ( UrlAlias = {$u} OR Url = {$u} ) AND ID != {$this->ID}");
-            if ( 0 < $id )
-                return 'error_exists: ' . $id;
-
+            $u1 = rtrim(ltrim($u1, '/'), '/');
+            if ( $u1 )
+            {
+                $Object = Zero_Model::Makes(__CLASS__, $this->Section_ID);
+                $u2 = rtrim($Object->Url, '/') . '/' . $u1;
+                $id = Zero_DB::Select_Field("SELECT ID FROM Section WHERE Url = " . Zero_DB::EscT($u2) . " AND ID != {$this->ID}");
+                if ( 0 < $id )
+                    return 'данный адрес уже занят';
+                $this->Url = $u2;
+            }
+            else if ( !$this->Url  )
+            {
+                return 'абсолютный и текущий урл не могут быть пустыми';
+            }
             $this->UrlThis = $u1;
-            $this->Url = $u2;
-            return '';
         }
         else
         {
-            $this->UrlThis = Helper_Strings::Transliteration_Url($value);
-            $this->Url = Helper_Strings::Transliteration_Url($value);
-            return '';
+            $this->UrlThis = '/';
         }
+        return '';
     }
 
     /**
@@ -364,19 +366,18 @@ class Zero_Section extends Zero_Model
      * @param string $scenario scenario validation
      * @return string
      */
-    public function VL_UrlAlias($value, $scenario)
+    public function VL_Url($value, $scenario)
     {
-        if ( !$value )
+        $this->Url = '/';
+        if ( 0 < $this->Section_ID )
         {
-            $this->UrlAlias = '';
-            return '';
+            $u1 = Helper_Strings::Transliteration_Url($value);
+            $u1 = rtrim($u1, '/');
+            $id = Zero_DB::Select_Field("SELECT ID FROM Section WHERE Url = " . Zero_DB::EscT($u1) . " AND ID != {$this->ID}");
+            if ( 0 < $id )
+                return 'данный адрес уже занят';
+            $this->Url = $value;
         }
-        $u = Zero_DB::EscT($value);
-        $id = Zero_DB::Select_Field("SELECT ID FROM Section WHERE ( UrlAlias = {$u} OR Url = {$u} ) AND ID != {$this->ID}");
-        if ( 0 < $id )
-            return 'error_exists: ' . $id;
-
-        $this->UrlAlias = $value;
         return '';
     }
 
@@ -420,8 +421,8 @@ class Zero_Section extends Zero_Model
         }
         foreach (glob(ZERO_PATH_APP . "/view/*.html") as $r)
         {
-                $index = substr(basename($r), 0, -5);
-                $arr[$index] = $index;
+            $index = substr(basename($r), 0, -5);
+            $arr[$index] = $index;
         }
         foreach (glob(ZERO_PATH_APPLICATION . "/*", GLOB_ONLYDIR) as $dir)
         {

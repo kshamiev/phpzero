@@ -369,8 +369,25 @@ class Zero_Controllers extends Zero_Model
     }
 
     /**
-     * Sample. The validation property
-     * May be removed
+     * Проверка на уникальность urn
+     *
+     * @param mixed $value value to check and set
+     * @param string $scenario scenario validation
+     * @return string
+     */
+    public function VL_Url($value, $scenario)
+    {
+        $sql = "SELECT COUNT(*) FROM Controllers WHERE `Url` = " . Zero_DB::EscT($value) . " AND ID != " . $this->ID;
+        if ( 0 < count(Zero_DB::Select_Field($sql)) )
+        {
+            return 'данный адрес уже занят';
+        }
+        $this->Url = $value;
+        return '';
+    }
+
+    /**
+     * Удаление контроллера из сессии при изменении
      *
      * @param mixed $value value to check and set
      * @param string $scenario scenario validation

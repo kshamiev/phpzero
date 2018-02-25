@@ -91,6 +91,6 @@ class Zero_I18n
         }
 
         Zero_Logs::Set_Message_Warning("I18N NOT FOUND KEY: " . LANG . "->{$section} / '" . $file_name . " " . $key . "'");
-        return $file_name . ' ' . $key;
+        return $key;
     }
 }

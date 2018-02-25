@@ -88,12 +88,12 @@ class Zero_Logs
      * Инициализация входиащего системного сообщения.
      *
      * @param mixed $value Сообщение об ошибке
-     * @return mixed
      */
     public static function Set_Message_Error($value)
     {
+        if ( !Zero_App::$Config->Log_Profile_Error )
+            return;
         self::$_Message[] = [print_r($value, true), 'error'];
-        return $value;
     }
 
     /**
@@ -103,6 +103,8 @@ class Zero_Logs
      */
     public static function Set_Message_ErrorTrace($value)
     {
+        if ( !Zero_App::$Config->Log_Profile_Error )
+            return;
         self::$_Message[] = [print_r($value, true), 'errorTrace'];
     }
 
@@ -110,36 +112,36 @@ class Zero_Logs
      * Инициализация входиащего системного сообщения.
      *
      * @param mixed $value Сообщение об ошибке
-     * @return mixed
      */
     public static function Set_Message_Warning($value)
     {
+        if ( !Zero_App::$Config->Log_Profile_Warning )
+            return;
         self::$_Message[] = [print_r($value, true), 'warning'];
-        return $value;
     }
 
     /**
      * Инициализация входиащего системного сообщения.
      *
      * @param mixed $value Сообщение об ошибке
-     * @return mixed
      */
     public static function Set_Message_Info($value)
     {
+        if ( !Zero_App::$Config->Log_Profile_Application )
+            return;
         self::$_Message[] = [print_r($value, true), 'info'];
-        return $value;
     }
 
     /**
      * Инициализация входиащего системного сообщения.
      *
      * @param mixed $value Сообщение об ошибке
-     * @return mixed
      */
     public static function Set_Message_Notice($value)
     {
+        if ( !Zero_App::$Config->Log_Profile_Notice )
+            return;
         self::$_Message[] = [print_r($value, true), 'notice'];
-        return $value;
     }
 
     public static function Get_Message()
@@ -154,6 +156,8 @@ class Zero_Logs
      */
     public static function Start($key)
     {
+        if ( !Zero_App::$Config->Log_Profile_Application )
+            return;
         self::$_CurrentTime[$key]['start'] = microtime(true);
         self::$_CurrentTime[$key]['level'] = self::$_CurrentTimeLevel;
         self::$_CurrentTimeLevel++;
@@ -166,6 +170,8 @@ class Zero_Logs
      */
     public static function Stop($key)
     {
+        if ( !Zero_App::$Config->Log_Profile_Application )
+            return;
         self::$_CurrentTime[$key]['stop'] = microtime(true);
         self::$_CurrentTimeLevel--;
     }
@@ -199,37 +205,21 @@ class Zero_Logs
     }
 
     /**
-     * Vy`vod vsei` profilirovannoi` informatcii v log fai`ly`
+     * Логируем работу приложения в целом
      *
      */
     public static function Output_File()
     {
-        // Логируем работу приложения в целом
-        if ( Zero_App::$Config->Log_Profile_Application )
+        $output = self::Get_Usage_MemoryAndTime();
+        //            $output = [str_replace(["\r", "\t"], " ", $output)];
+        foreach (self::$_Message as $row)
         {
-            //            $output = join("\n", self::Get_Usage_MemoryAndTime()) . "\n";
-            //            Helper_File::File_Save_After(self::$_FileLog . 'info.log', $output);
-            //        }
-            //        if ( 0 < count(self::$_Message) )
-            //        {
-            //            $output = self::Get_Usage_MemoryAndTime()[0];
-            $output = self::Get_Usage_MemoryAndTime();
-            //            $output = [str_replace(["\r", "\t"], " ", $output)];
-            foreach (self::$_Message as $row)
-            {
-                if ( false == Zero_App::$Config->Log_Profile_Notice && 'notice' == $row[1] )
-                    continue;
-                if ( false == Zero_App::$Config->Log_Profile_Warning && 'warning' == $row[1] )
-                    continue;
-                if ( false == Zero_App::$Config->Log_Profile_Error && 'error' == $row[1] )
-                    continue;
-                //                if ( 'info' == $row[1] || 'notice' == $row[1] || 'warning' == $row[1] || 'error' == $row[1] )
-                if ( 'errorTrace' != $row[1] )
-                    $output[] = '[' . strtoupper($row[1]) . '] ' . str_replace(["\r", "\t"], " ", $row[0]);
-            }
-            $output = preg_replace('![ ]{2,}!', ' ', join("\n", $output));
-            Helper_File::File_Save_After(self::$_FileLog . '.log', $output);
+            if ( 'errorTrace' != $row[1] )
+                $output[] = '[' . strtoupper($row[1]) . '] ' . str_replace(["\r", "\t"], " ", $row[0]);
         }
+        $output = preg_replace('![ ]{2,}!', ' ', join("\n", $output));
+        Helper_File::File_Save_After(self::$_FileLog . '.log', $output);
+
         // логирование операций пользователиа в файл
         if ( Zero_App::$Config->Log_Profile_Action && isset($_REQUEST['act']) && 'Action_Default' != $_REQUEST['act'] )
             if ( is_object(Zero_App::$Users) && is_object(Zero_App::$Section) )
@@ -292,8 +282,6 @@ class Zero_Logs
                 {
                     $limit = round($time['stop'] - $time['start'], 4);
                 }
-                //                if ( $limit != -1 )
-                //                    continue;
                 $description = str_replace("\r", "", $description);
                 $description = preg_replace("~(\s+\n){1,}~si", "\n", $description);
                 $description = preg_replace('~[ ]{2,}~', ' ', $description);

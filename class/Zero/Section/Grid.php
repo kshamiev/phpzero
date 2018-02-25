@@ -98,13 +98,17 @@ class Zero_Section_Grid extends Zero_Crud_Grid
             return $this->SetMessage(5303);
         $prop = $this->Params['obj_parent_prop'];
         $Object = Zero_Model::Makes($this->ModelName, $_REQUEST['id']);
-        if ( 0 == count($Object->Load('ID')) )
-            return $this->SetMessage(5303);
-        if ( 'NULL' == $this->Params['obj_parent_id'] )
+        if ( 'NULL' == $this->Params['obj_parent_id'] || !$this->Params['obj_parent_id'] )
+        {
             $Object->$prop = null;
+            $Object->Save();
+        }
         else
+        {
             $Object->$prop = $this->Params['obj_parent_id'];
-        $Object->Save();
+            $Object->Save();
+            $this->Chunk_UpdateUrl();
+        }
         $this->SetMessage();
         return true;
     }
