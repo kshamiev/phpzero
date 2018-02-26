@@ -19,11 +19,11 @@ class Zero_Crud_Plugin_Pager extends Zero_Controller
     {
         if ( null === $this->Params['PageItem'] )
         {
-            $this->Params['PageItem'] = Zero_App::$Config->View_PageItem;
+            $this->Params['PageItem'] = Zero_App::$Config->Site_PageItem;
         }
         if ( null === $this->Params['PageStep'] )
         {
-            $this->Params['PageStep'] = Zero_App::$Config->View_PageStep;
+            $this->Params['PageStep'] = Zero_App::$Config->Site_PageStep;
         }
         if ( 0 == $this->Params['Count'] )
         {

@@ -11,10 +11,10 @@ function app_route()
         return;
 
     // инициализация
-    $row = explode('/', strtolower(rtrim(ltrim(explode('?', $_SERVER['REQUEST_URI'])[0], '/'), '/')));
+    $row = explode('/', rtrim(ltrim(explode('?', $_SERVER['REQUEST_URI'])[0], '/'), '/'));
 
     // язык
-    if ( Zero_App::$Config->Site_Language != $row[0] && isset(Zero_App::$Config->Language[$row[0]]) )
+    if ( Zero_App::$Config->Site_Language != $row[0] && isset(Zero_App::$Config->Site_Languages[$row[0]]) )
     {
         Zero_App::$Config->Site_Language = array_shift($row);
     }

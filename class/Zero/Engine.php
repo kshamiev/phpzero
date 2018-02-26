@@ -382,7 +382,7 @@ class Zero_Engine
         //        $str = substr(trim($str), 0, -1);
         $str = trim($str);
         $path1 = ZERO_PATH_ZERO . '/data/Tpl_I18n.php';
-        foreach (array_keys(Zero_App::$Config->Language) as $lang)
+        foreach (array_keys(Zero_App::$Config->Site_Languages) as $lang)
         {
             $path2 = self::$path . '/i18n/' . $lang . '/Model.php';
             //        echo 'CONFIG I18N MODEL ' . $path2 . '<br>';

@@ -27,6 +27,11 @@ return [
         'TemplateParsing' => true,
         //  Language of the site by default
         'Language' => "<SITE_LANGDEFAULT>",
+        //  Languages
+        'Languages' => [
+            'en-en' => 'English',
+            'ru-ru' => 'Русский',
+        ],
         //  Protocol
         'Protocol' => 'http',
         //  Domain of the site by default
@@ -45,11 +50,15 @@ return [
         'MaintenanceIp' => [],
         // Список разрешенных ip адресов для запросов
         'AccessAllowIp' => [],
+        //  Number of items per page
+        'PageItem' => 50,
+        //  The range of visible pages
+        'PageStep' => 21,
     ],
     // Реквизиты доступа к внешним источникам SEE Zero_Request
     'AccessOutside' => [
         'Simple' => [
-            'Name' => 'Запросы к неопределенному ресурсу',
+            'Name' => 'Прямые запросы без конфигурации',
             'Url' => '',
             'Login' => '',
             'Password' => '',
@@ -86,13 +95,6 @@ return [
         // Кодировка
         'CharSet' => 'utf-8',
     ],
-    //  The settings of the presentation of data
-    'View' => [
-        //  Number of items per page
-        'PageItem' => "20",
-        //  The range of visible pages
-        'PageStep' => "11",
-    ],
     //  Monitoring
     'Log' => [
         //  Profiling
@@ -117,11 +119,6 @@ return [
             //  Display
             'Display' => true,
         ],
-    ],
-    //  Languages
-    'Language' => [
-        'en-en' => 'English',
-        'ru-ru' => 'Русский',
     ],
     //  Servers Memcache
     'Memcache' => [

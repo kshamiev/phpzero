@@ -16,7 +16,7 @@ $tpl = '
     </tr>
 ';
 
-$controllers = Zero_DB::Select_Array("SELECT `ID`, `Name`, `Controller`, `Url`, Sort FROM `Controllers` WHERE `Typ` = 'Api' ORDER BY 5, 3 ASC");
+$controllers = Zero_DB::Select_Array("SELECT `ID`, `Name`, `Controller`, `Url`, `Sort` FROM `Controllers` WHERE `Typ` = 'Api' AND 0 < `Sort` ORDER BY 5 ASC");
 foreach ($controllers as $con)
 {
     $response = Zero_App::$Request->Test('OPTIONS', $con['Url']);

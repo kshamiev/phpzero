@@ -250,8 +250,8 @@ abstract class Zero_Crud_Grid extends Zero_Controller
         $this->View->Assign('Action', Zero_App::$Controller->Get_Action_List());
         // Page by page
         $this->View->Assign('PagerPage', $Filter->Page);
-        $this->View->Assign('PagerPageItem', Zero_App::$Config->View_PageItem);
-        $this->View->Assign('PagerPageStep', Zero_App::$Config->View_PageStep);
+        $this->View->Assign('PagerPageItem', Zero_App::$Config->Site_PageItem);
+        $this->View->Assign('PagerPageStep', Zero_App::$Config->Site_PageStep);
         $this->View->Assign('PagerCount', $pager_count);
         //  Filter
         $this->View->Assign('Filter', $Filter->Get_Filter());

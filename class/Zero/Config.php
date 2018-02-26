@@ -73,6 +73,13 @@ class Zero_Config
     public $Site_Language = '';
 
     /**
+     * Languages
+     *
+     * @var array
+     */
+    public $Site_Languages = [];
+
+    /**
      * Protocol
      *
      * @var string
@@ -141,6 +148,20 @@ class Zero_Config
      * @var array
      */
     public $Site_AccessAllowIp = [];
+
+    /**
+     * Number of items per page
+     *
+     * @var int
+     */
+    public $Site_PageItem = [];
+
+    /**
+     * The range of visible pages
+     *
+     * @var int
+     */
+    public $Site_PageStep = [];
 
     /**
      * Реквизиты доступа к внешним источникам
@@ -213,20 +234,6 @@ class Zero_Config
     public $Mail_CharSet = '';
 
     /**
-     * Number of items per page
-     *
-     * @var string
-     */
-    public $View_PageItem = '';
-
-    /**
-     * The range of visible pages
-     *
-     * @var string
-     */
-    public $View_PageStep = '';
-
-    /**
      * Monitoring. Fatal errors
      *
      * @var bool
@@ -281,13 +288,6 @@ class Zero_Config
      * @var bool
      */
     public $Log_Output_Display = true;
-
-    /**
-     * Languages
-     *
-     * @var array
-     */
-    public $Language = [];
 
     /**
      * Servers Memcache
@@ -367,6 +367,8 @@ class Zero_Config
         $this->Site_TemplateParsing = $Config['Site']['TemplateParsing'];
         //  Default language
         $this->Site_Language = $Config['Site']['Language'];
+        // Languages
+        $this->Site_Languages = $Config['Site']['Languages'];
         //  Protocol
         if ( isset($Config['Site']['Protocol']) )
             $this->Site_Protocol = $Config['Site']['Protocol'];
@@ -412,6 +414,16 @@ class Zero_Config
         // Безопасность
         if ( isset($Config['Site']['AccessAllowIp']) && is_array($Config['Site']['AccessAllowIp']) )
             $this->Site_AccessAllowIp = array_keys($Config['Site']['AccessAllowIp']);
+
+        //  Number of items per page
+        $this->Site_PageItem = array_keys($Config['Site']['PageItem']);
+        //  The range of visible pages
+        $this->Site_PageStep = array_keys($Config['Site']['PageStep']);
+
+        // Безопасность
+        if ( isset($Config['Site']['AccessAllowIp']) && is_array($Config['Site']['AccessAllowIp']) )
+            $this->Site_AccessAllowIp = array_keys($Config['Site']['AccessAllowIp']);
+
         // Реквизиты доступа к внешним источникам
         if ( isset($Config['AccessOutside']) && is_array($Config['AccessOutside']) )
             $this->AccessOutside = $Config['AccessOutside'];
@@ -429,11 +441,6 @@ class Zero_Config
         $this->Mail_ApiQueue = $Config['Mail']['ApiQueue'];
         $this->Mail_CharSet = $Config['Mail']['CharSet'];
 
-        //  Number of items per page
-        $this->View_PageItem = $Config['View']['PageItem'];
-        //  The range of visible pages
-        $this->View_PageStep = $Config['View']['PageStep'];
-
         // Monitoring. Fatal errors
         $this->Log_Profile_Error = $Config['Log']['Profile']['Error'];
         // Monitoring. Warning
@@ -450,9 +457,6 @@ class Zero_Config
         $this->Log_Output_File = $Config['Log']['Output']['File'];
         // Output Display
         $this->Log_Output_Display = $Config['Log']['Output']['Display'];
-
-        // Languages
-        $this->Language = $Config['Language'];
 
         // Servers Memcache
         $this->Memcache = $Config['Memcache'];

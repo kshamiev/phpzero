@@ -213,7 +213,7 @@ class Zero_Filter
     public static function FL_Lang()
     {
         $result = [];
-        foreach (Zero_App::$Config->Language as $key => $name)
+        foreach (Zero_App::$Config->Site_Languages as $key => $name)
         {
             $result[$key] = $name;
         }
@@ -543,7 +543,7 @@ class Zero_Filter
         $this->Sort = ['List' => [], 'Value' => []];
         //
         $this->Page = 0;
-        $this->Page_Item = Zero_App::$Config->View_PageItem;
+        $this->Page_Item = Zero_App::$Config->Site_PageItem;
         $this->IsSet = false;
 
         // Инициализация фильтра
