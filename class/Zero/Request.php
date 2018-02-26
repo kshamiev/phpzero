@@ -11,6 +11,7 @@
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2017-09-14
  *
+ * @method Zero_Request_Type Test($method, $urn, $content = null, $headers = []) Запросы для тестирования
  * @method Zero_Request_Type Simple($method, $uri, $content = null, $headers = []) Запросы к неопределенному ресурсу
  */
 class Zero_Request
