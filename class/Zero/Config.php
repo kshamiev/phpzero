@@ -154,14 +154,14 @@ class Zero_Config
      *
      * @var int
      */
-    public $Site_PageItem = [];
+    public $Site_PageItem = 10;
 
     /**
      * The range of visible pages
      *
      * @var int
      */
-    public $Site_PageStep = [];
+    public $Site_PageStep = 11;
 
     /**
      * Реквизиты доступа к внешним источникам
@@ -416,9 +416,9 @@ class Zero_Config
             $this->Site_AccessAllowIp = array_keys($Config['Site']['AccessAllowIp']);
 
         //  Number of items per page
-        $this->Site_PageItem = array_keys($Config['Site']['PageItem']);
+        $this->Site_PageItem = $Config['Site']['PageItem'];
         //  The range of visible pages
-        $this->Site_PageStep = array_keys($Config['Site']['PageStep']);
+        $this->Site_PageStep = $Config['Site']['PageStep'];
 
         // Безопасность
         if ( isset($Config['Site']['AccessAllowIp']) && is_array($Config['Site']['AccessAllowIp']) )
