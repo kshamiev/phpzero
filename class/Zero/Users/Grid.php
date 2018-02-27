@@ -16,7 +16,7 @@ class Zero_Users_Grid extends Zero_Crud_Grid
      *
      * @var string
      */
-    protected $ModelName = 'Zero_Users';
+    protected $ModelName = 'Site_Users';
 
     /**
      * Template view
