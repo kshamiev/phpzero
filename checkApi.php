@@ -52,13 +52,13 @@ foreach ($controllers as $con)
                     $message .= "<font color='#FF0000'>[{$method}] {$desc}</font>\n<br>";
                     $message .= "[{$res->Code}] {$res->Message}\n<br>";
 
-                    Zero_Logs::Set_Message_Error("ERROR [{$method}] {$con['Controller']}");
+                    Zero_Logs::Set_Message_Error("[{$method}] {$con['Controller']}");
                 }
                 else
                 {
                     $message .= "[{$method}] {$desc}\n<br>";
 
-                    Zero_Logs::Set_Message_Error("OK [{$method}] {$con['Controller']}");
+                    Zero_Logs::Set_Message_Info("OK [{$method}] {$con['Controller']}");
                 }
             }
             //            pre($response->Body);

@@ -1,49 +1,42 @@
 <div style="padding: 4px;">
-    <h3>Системные сообщения</h3>
-    {foreach ($message as $row)}
-    {if ( $row[1] == 'error' )}
+    <h3>Системные сообщения. Время выполнения. Расход памяти</h3>
+    {foreach ($output as $str)}
+    {if ( false !== strpos($str, '[ERROR]') )}
     <div style="margin: 2px; background: #fadadd; padding: 4px;">
-        <pre>{print_r($row[0], true)}</pre>
+        <pre>{$str}</pre>
     </div>
-    {else if ( $row[1] == 'errorTrace' )}
-    <div style="margin: 2px; background: #fadadd; padding: 4px;">
-        <pre>{print_r($row[0], true)}</pre>
-    </div>
-    {else if ( $row[1] == 'warning' )}
+    {else if ( false !== strpos($str, '[WARNING]') )}
     <div style="margin: 2px; background: #d0f0c0; padding: 4px;">
-        <pre>{print_r($row[0], true)}</pre>
+        <pre>{$str}</pre>
     </div>
-    {else if ( $row[1] == 'notice' )}
+    {else if ( false !== strpos($str, '[NOTICE]') )}
     <div style="margin: 2px; background: #cccccc; padding: 4px;">
-        <pre>{print_r($row[0], true)}</pre>
+        <pre>{$str}</pre>
     </div>
-    {else if ( $row[1] == 'info' )}
+    {else if ( false !== strpos($str, '[INFO]') )}
     <div style="margin: 2px; background: #eeeeee; padding: 4px;">
-        <pre>{print_r($row[0], true)}</pre>
+        <pre>{$str}</pre>
     </div>
-    {/}
-    {/}
-    <br>
-    <h3>Время выполнения и расход памяти</h3>
-    {foreach ($output as $row)}
-    <div style="margin: 2px;background: #eeeeee; padding: 4px;">
-        <pre>{$row}</pre>
+    {else}
+    <div style="margin: 2px; background: #ffffff; padding: 4px;">
+        <pre>{$str}</pre>
     </div>
-    {/}
+    {/if}
+    {/foreach}
     <br>
-    <h3>Массив $_REQUEST</h3>
 
+    <h3>Массив $_REQUEST</h3>
     <div style="margin: 2px;background: #eeeeee; padding: 4px;">
         <pre>{$r = print_r($_REQUEST, true)}</pre>
     </div>
     <br>
 
     <h3>Массив $_FILES</h3>
-
     <div style="margin: 2px;background: #eeeeee; padding: 4px;">
         <pre>{$r = print_r($_FILES, true)}</pre>
     </div>
     <br>
+
     <h3>РЕЕСТОР (Сессия)</h3>
     {foreach ( $iterator_list as $key => $value )}
     <div>&nbsp;&nbsp;&nbsp;{$key} => {$value['type']} - {$value['name']} </div>

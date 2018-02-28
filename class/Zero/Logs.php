@@ -93,7 +93,13 @@ class Zero_Logs
     {
         if ( !Zero_App::$Config->Log_Profile_Error )
             return;
-        self::$_Message[] = [print_r($value, true), 'error'];
+        self::$_CurrentTime[] = [
+            'start' => 0,
+            'level' => self::$_CurrentTimeLevel,
+            'typ' => 'ERROR',
+            'message' => print_r($value, true),
+            'stop' => 0,
+        ];
     }
 
     /**
@@ -105,7 +111,7 @@ class Zero_Logs
     {
         if ( !Zero_App::$Config->Log_Profile_Error )
             return;
-        self::$_Message[] = [print_r($value, true), 'errorTrace'];
+        // self::$_Message[] = [print_r($value, true), 'errorTrace'];
     }
 
     /**
@@ -117,7 +123,13 @@ class Zero_Logs
     {
         if ( !Zero_App::$Config->Log_Profile_Warning )
             return;
-        self::$_Message[] = [print_r($value, true), 'warning'];
+        self::$_CurrentTime[] = [
+            'start' => 0,
+            'level' => self::$_CurrentTimeLevel,
+            'typ' => 'WARNING',
+            'message' => print_r($value, true),
+            'stop' => 0,
+        ];
     }
 
     /**
@@ -129,7 +141,13 @@ class Zero_Logs
     {
         if ( !Zero_App::$Config->Log_Profile_Application )
             return;
-        self::$_Message[] = [print_r($value, true), 'info'];
+        self::$_CurrentTime[] = [
+            'start' => 0,
+            'level' => self::$_CurrentTimeLevel,
+            'typ' => 'INFO',
+            'message' => print_r($value, true),
+            'stop' => 0,
+        ];
     }
 
     /**
@@ -141,7 +159,13 @@ class Zero_Logs
     {
         if ( !Zero_App::$Config->Log_Profile_Notice )
             return;
-        self::$_Message[] = [print_r($value, true), 'notice'];
+        self::$_CurrentTime[] = [
+            'start' => 0,
+            'level' => self::$_CurrentTimeLevel,
+            'typ' => 'NOTICE',
+            'message' => print_r($value, true),
+            'stop' => 0,
+        ];
     }
 
     public static function Get_Message()
@@ -158,9 +182,11 @@ class Zero_Logs
     {
         if ( !Zero_App::$Config->Log_Profile_Application )
             return;
-        self::$_CurrentTime[$key]['start'] = microtime(true);
-        self::$_CurrentTime[$key]['level'] = self::$_CurrentTimeLevel;
-        self::$_CurrentTime[$key]['typ'] = 'info';
+        $k = sha1($key);
+        self::$_CurrentTime[$k]['start'] = microtime(true);
+        self::$_CurrentTime[$k]['level'] = self::$_CurrentTimeLevel;
+        self::$_CurrentTime[$k]['typ'] = 'info';
+        self::$_CurrentTime[$k]['message'] = $key;
         self::$_CurrentTimeLevel++;
     }
 
@@ -173,7 +199,8 @@ class Zero_Logs
     {
         if ( !Zero_App::$Config->Log_Profile_Application )
             return;
-        self::$_CurrentTime[$key]['stop'] = microtime(true);
+        $k = sha1($key);
+        self::$_CurrentTime[$k]['stop'] = microtime(true);
         self::$_CurrentTimeLevel--;
     }
 
@@ -200,7 +227,7 @@ class Zero_Logs
         unset($iterator_list['Session']);
         $View = new Zero_View('Zero_Debug_Info');
         $View->Assign('output', self::Get_Usage_MemoryAndTime());
-        $View->Assign('message', self::$_Message);
+        //        $View->Assign('message', self::$_Message);
         $View->Assign('iterator_list', $iterator_list);
         return $View->Fetch();
     }
@@ -213,12 +240,13 @@ class Zero_Logs
     {
         $output = self::Get_Usage_MemoryAndTime();
         //            $output = [str_replace(["\r", "\t"], " ", $output)];
-        foreach (self::$_Message as $row)
-        {
-            if ( 'errorTrace' != $row[1] )
-                $output[] = '[' . strtoupper($row[1]) . '] ' . str_replace(["\r", "\t"], " ", $row[0]);
-        }
-        $output = preg_replace('![ ]{2,}!', ' ', join("\n", $output));
+        //        foreach (self::$_Message as $row)
+        //        {
+        //            if ( 'errorTrace' != $row[1] )
+        //                $output[] = '[' . strtoupper($row[1]) . '] ' . str_replace(["\r", "\t"], " ", $row[0]);
+        //        }
+        //        $output = preg_replace('![ ]{2,}!', ' ', join("\n", $output));
+        $output = join("\n", $output);
         Helper_File::File_Save_After(self::$_FileLog . '.log', $output);
 
         // логирование операций пользователиа в файл
@@ -276,14 +304,15 @@ class Zero_Logs
             else
                 self::$_OutputApplication = [date('[d.m.Y H:i:s]')];
             // Sobiraem tai`mery` v kuchu
-            foreach (self::$_CurrentTime as $description => $time)
+            foreach (self::$_CurrentTime as $time)
             {
                 $limit = -1;
+                $description = $time['message'];
                 if ( isset($time['stop']) )
                 {
                     $limit = round($time['stop'] - $time['start'], 4);
                 }
-                $description = str_replace("\r", "", $description);
+                $description = str_replace(["\r", "\t"], " ", $description);
                 $description = preg_replace("~(\s+\n){1,}~si", "\n", $description);
                 $description = preg_replace('~[ ]{2,}~', ' ', $description);
                 if ( strpos($description, '#{SQL}') === 0 )
@@ -293,7 +322,7 @@ class Zero_Logs
                 {
                     $indent .= "\t";
                 }
-                self::$_OutputApplication[] = $indent . '{' . $limit . '} ' . trim($description);
+                self::$_OutputApplication[] = "[" . strtoupper($time['typ']) . "]" . $indent . ' {' . $limit . '} ' . trim($description);
             }
             self::$_OutputApplication[] = "#{System.Full} " . self::Get_FullTime();
             self::$_OutputApplication[] = "#{MEMORY} " . memory_get_usage();
