@@ -8,9 +8,9 @@
  * @date 2015-01-01
  *
  * @property string $Branch Выкладываемая ветка
- * @property array $Users Пользователи
+ * @property array $Users Пользователи которым разрешен deploy
  * @property string $CommitMessage Ключевое сообщение
- * @property array $PathDeploy Выкладываемые зависимые репозитории
+ * @property array $PathDeploy Выкладываемые репозитории
  */
 class Site_Config_DeployTemplate
 {

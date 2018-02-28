@@ -160,6 +160,7 @@ class Zero_Logs
             return;
         self::$_CurrentTime[$key]['start'] = microtime(true);
         self::$_CurrentTime[$key]['level'] = self::$_CurrentTimeLevel;
+        self::$_CurrentTime[$key]['typ'] = 'info';
         self::$_CurrentTimeLevel++;
     }
 
