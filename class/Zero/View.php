@@ -358,7 +358,7 @@ class Zero_View
         $template = preg_replace('~{else}~si', '<' . '?php } else { ?' . '>', $template);
         $template = preg_replace('~{(break|continue)}~si', '<' . '?php $1; ?' . '>', $template);
         //	переменные установка
-        $template = preg_replace('~{set (\$[^}]{1,255})}~si', '<' . '?php $1; ?' . '>', $template);
+        $template = preg_replace('~{set ([^}]{1,255})}~si', '<' . '?php $1; ?' . '>', $template);
 
         //	переменные вывод
         $template = preg_replace('~{(\$[^}]{1,255})}~si', '<' . '?php echo $1; ?' . '>', $template);
