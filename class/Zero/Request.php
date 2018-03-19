@@ -180,6 +180,12 @@ class Zero_Request
                 $class = 'Site_Request_' . $prop;
                 if ( !Zero_App::Autoload($class) )
                     throw new Exception('Not Found Class: ' . $class, 409);
+                //
+                if ( empty(Zero_App::$Config->AccessOutside[$prop]) )
+                {
+                    Zero_Logs::Set_Message_Error("Реквизиты и конфигурация '{$prop}' для запросов не определены");
+                    $this->request[$prop] = null;
+                }
                 $this->request[$prop] = new $class(Zero_App::$Config->AccessOutside[$prop]);
             }
             return $this->request[$prop];
