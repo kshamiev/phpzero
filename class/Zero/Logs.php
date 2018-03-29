@@ -75,6 +75,18 @@ class Zero_Logs
     }
 
     /**
+     * Переопределие файл лога
+     *
+     * @param string $fileLog файл лог
+     */
+    public static function Set_FileLog($fileLog = 'app')
+    {
+        $arr = explode('/', self::$_FileLog);
+        array_pop($arr);
+        self::$_FileLog = implode('/', $arr) . '/' . $fileLog;
+    }
+
+    /**
      * Получение полного времени выполнения на момент запроса этого метода
      *
      * @return string

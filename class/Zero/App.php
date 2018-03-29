@@ -645,6 +645,7 @@ class Zero_App
         {
             if ( self::Autoload($route['Controller'], false) )
             {
+                Zero_Logs::Set_FileLog(self::$Controller->Controller);
                 $action = 'Action_' . $action;
                 self::$ControllerAction = Zero_Controller::Factories($route['Controller']);
                 if ( !method_exists(self::$ControllerAction, $action) )
@@ -774,6 +775,7 @@ class Zero_App
         {
             if ( self::Autoload(self::$Controller->Controller, false) )
             {
+                Zero_Logs::Set_FileLog(self::$Controller->Controller);
                 $action = 'Action_' . $action;
                 self::$ControllerAction = Zero_Controller::Factories(self::$Controller->Controller);
                 if ( !method_exists(self::$ControllerAction, $action) )
