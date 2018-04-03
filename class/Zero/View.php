@@ -169,7 +169,7 @@ class Zero_View
      * - E`ksport daneny`kh
      * - Vy`polnenie shablona i vozvrat rezul`tata
      *
-     * @return string sobranny`i` shablon so vstavlenny`mi danny`mi
+     * @return string Собранный шаблон со вставленными данными.
      */
     public function Fetch()
     {

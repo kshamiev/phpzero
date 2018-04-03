@@ -674,6 +674,16 @@ class Zero_App
             }
         }
 
+        // Ответ на api запрос в формате json
+        if ( self::$mode == 'Api' && is_array($view) )
+        {
+            /* @var $view array */
+            if ( 2 == count($view) )
+                Zero_Response::Json($view[0], $view[1]);
+            else if ( 4 == count($view) )
+                Zero_Response::JsonRest($view[0], $view[1], $view[2], $view[3]);
+        }
+
         //  РАЗДЕЛ - СТРАНИЦА
         if ( isset($route['View']) && $route['View'] )
         {
@@ -804,9 +814,14 @@ class Zero_App
             }
         }
 
-        if ( self::$mode == 'Api' )
+        // Ответ на api запрос в формате json
+        if ( self::$mode == 'Api' && is_array($view) )
         {
-            Zero_Response::JsonRest($view[0], $view[1], $view[2], $view[3]);
+            /* @var $view array */
+            if ( 2 == count($view) )
+                Zero_Response::Json($view[0], $view[1]);
+            else if ( 4 == count($view) )
+                Zero_Response::JsonRest($view[0], $view[1], $view[2], $view[3]);
         }
 
         //  LAYOUT - МАКЕТ
