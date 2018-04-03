@@ -48,7 +48,6 @@ define('ZERO_PATH_ZERO', ZERO_PATH_SITE . '/phpzero');
  * @package Component
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015-01-01
- * @todo доработать деплой и тестирование контроллеров
  */
 class Zero_App
 {

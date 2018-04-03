@@ -14,7 +14,7 @@ Zero_App::$Config->Log_Output_Display = true;
 if ( empty($_REQUEST['key']) || Zero_App::$Config->Site_Token != $_REQUEST['key'] )
 {
     Zero_Logs::Set_Message_Error('access denied');
-    Zero_Response::Html('');
+    Zero_Response::Html('access denied');
 }
 
 /**
@@ -37,7 +37,7 @@ foreach (Zero_App::$Config->Deploy->PathDeploy as $p)
     if ( 0 < $code )
     {
         Zero_Logs::Set_Message_Error("error git pull '{$p}'");
-        Zero_Response::Html('');
+        Zero_Response::Html("error git pull '{$p}'");
     }
     else
     {
@@ -50,5 +50,5 @@ Helper_File::Folder_Remove($path . '/cache');
 
 // Завершение
 Zero_Logs::Set_Message_Notice('deploy successFull ' . $deploy['pusher']['name']);
-Zero_Response::Html('');
+Zero_Response::Html('deploy successFull ' . $deploy['pusher']['name']);
 
