@@ -805,6 +805,11 @@ class Zero_App
             }
         }
 
+        if ( self::$mode == 'Api' )
+        {
+            Zero_Response::JsonRest($view[0], $view[1], $view[2], $view[3]);
+        }
+
         //  LAYOUT - МАКЕТ
         if ( self::$Section->Layout )
         {
