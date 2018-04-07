@@ -378,7 +378,7 @@ class Zero_Controllers extends Zero_Model
     public function VL_Url($value, $scenario)
     {
         $sql = "SELECT COUNT(*) FROM Controllers WHERE `Url` = " . Zero_DB::EscT($value) . " AND ID != " . $this->ID;
-        if ( 0 < count(Zero_DB::Select_Field($sql)) )
+        if ( 0 < Zero_DB::Select_Field($sql) )
         {
             return 'данный адрес уже занят';
         }
