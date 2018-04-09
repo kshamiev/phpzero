@@ -48,7 +48,6 @@ define('ZERO_PATH_ZERO', ZERO_PATH_SITE . '/phpzero');
  * @package Component
  * @author Konstantin Shamiev aka ilosa <konstantin@shamiev.ru>
  * @date 2015-01-01
- * @todo доработать деплой и тестирование контроллеров
  */
 class Zero_App
 {
@@ -675,6 +674,16 @@ class Zero_App
             }
         }
 
+        // Ответ на api запрос в формате json
+        if ( self::$mode == 'Api' && is_array($view) )
+        {
+            /* @var $view array */
+            if ( 2 == count($view) )
+                Zero_Response::Json($view[0], $view[1]);
+            else if ( 4 == count($view) )
+                Zero_Response::JsonRest($view[0], $view[1], $view[2], $view[3]);
+        }
+
         //  РАЗДЕЛ - СТРАНИЦА
         if ( isset($route['View']) && $route['View'] )
         {
@@ -805,9 +814,14 @@ class Zero_App
             }
         }
 
-        if ( self::$mode == 'Api' )
+        // Ответ на api запрос в формате json
+        if ( self::$mode == 'Api' && is_array($view) )
         {
-            Zero_Response::JsonRest($view[0], $view[1], $view[2], $view[3]);
+            /* @var $view array */
+            if ( 2 == count($view) )
+                Zero_Response::Json($view[0], $view[1]);
+            else if ( 4 == count($view) )
+                Zero_Response::JsonRest($view[0], $view[1], $view[2], $view[3]);
         }
 
         //  LAYOUT - МАКЕТ
