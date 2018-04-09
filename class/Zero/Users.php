@@ -190,6 +190,10 @@ class Zero_Users extends Zero_Model
             'Token' => [],
             'Date' => [],
             'DateOnline' => [],
+            'IsOnline' => [],
+            'IsCondition' => [],
+            'IsAccess' => [],
+            'ImgAvatar' => [],
         ];
     }
 
