@@ -162,6 +162,7 @@ class Zero_App
             if ( class_exists($class_name) )
                 return true;
         }
+
         // old
         $path = ZERO_PATH_APPLICATION . '/' . $module . '/class/' . $class . '.php';
         if ( file_exists($path) )
@@ -476,17 +477,7 @@ class Zero_App
         if ( !is_null(self::$Config) )
             return;
 
-        //  Include Components
-        //require_once ZERO_PATH_ZERO . '/class/Zero/Logs.php';
-        //require_once ZERO_PATH_ZERO . '/class/Zero/DB.php';
-        //require_once ZERO_PATH_ZERO . '/class/Zero/Session.php';
-        //require_once ZERO_PATH_ZERO . '/class/Zero/Cache.php';
-        //        if ( !file_exists($path = ZERO_PATH_APP . '/class/Zero/Config.php') )
-        //            if ( !file_exists($path = ZERO_PATH_APPLICATION . '/zero/class/Config.php') )
-        //                $path = ZERO_PATH_ZERO . '/class/Zero/Config.php';
-        //        require_once $path;
-        //        else
-        //            require_once ZERO_PATH_ZERO . '/class/Zero/Config.php';
+        //  Include permanent class
         require_once ZERO_PATH_ZERO . '/function.php';
         if ( !file_exists($path = ZERO_PATH_APP . '/function.php') )
             if ( !file_exists($path = ZERO_PATH_APPLICATION . '/function.php') )
@@ -494,6 +485,17 @@ class Zero_App
         require_once $path;
 
         spl_autoload_register(['Zero_App', 'Autoload']);
+
+        if ( !self::Autoload('Site_Config') )
+            die('class not found "Site_Config"');
+        if ( !self::Autoload('Site_Option') )
+            die('class not found "Site_Option"');
+        if ( !self::Autoload('Site_Request') )
+            die('class not found "Site_Request"');
+        if ( !self::Autoload('Site_Users') )
+            die('class not found "Site_Users"');
+        if ( !self::Autoload('Site_Section') )
+            die('class not found "Site_Section"');
 
         // register_shutdown_function(['Zero_App', 'Exit_Application']);
 
@@ -642,7 +644,7 @@ class Zero_App
         $messageResponse = ['Code' => 0, 'Message' => ''];
         if ( isset($route['Controller']) && $route['Controller'] )
         {
-            if ( self::Autoload($route['Controller'], false) )
+            if ( self::Autoload($route['Controller']) )
             {
                 Zero_Logs::Set_FileLog(self::$Controller->Controller);
                 $action = 'Action_' . $action;
@@ -782,7 +784,7 @@ class Zero_App
         $messageResponse = ['Code' => 0, 'Message' => ''];
         if ( 0 < self::$Controller->ID )
         {
-            if ( self::Autoload(self::$Controller->Controller, false) )
+            if ( self::Autoload(self::$Controller->Controller) )
             {
                 Zero_Logs::Set_FileLog(self::$Controller->Controller);
                 $action = 'Action_' . $action;
