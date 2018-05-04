@@ -337,7 +337,7 @@ class Zero_Controllers extends Zero_Model
         }
         else if ( '' != $controllerName )
         {
-            if ( false == Zero_App::Autoload($controllerName, false) )
+            if ( false == Zero_App::Autoload($controllerName) )
                 throw new Exception('Класс не найден: ' . $controllerName, 409);
             $this->_Action_List = Zero_Engine::Get_Method_From_Class($controllerName, 'Action');
         }

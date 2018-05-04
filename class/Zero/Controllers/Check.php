@@ -41,7 +41,7 @@ class Zero_Controllers_Check extends Zero_Controller
         $sql = "SELECT Controller FROM Controllers ORDER BY Controller ASC";
         foreach(Zero_DB::Select_Array($sql) as $row)
         {
-            if ( false == Zero_App::Autoload($row['Controller'], false) )
+            if ( false == Zero_App::Autoload($row['Controller']) )
                 $controllerNotExist[] = $row['Controller'];
         }
         $this->View->Assign('controllerNotExist', $controllerNotExist);
