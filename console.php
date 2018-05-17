@@ -73,7 +73,10 @@ else //  Launch Manager console task
     }
     else
     {
-        if ( file_exists($path = ZERO_PATH_APPLICATION . '/routeConsole.php') )
+        $path = ZERO_PATH_APPLICATION . '/routeConsole.php';
+        if ( !file_exists($path) )
+            $path = ZERO_PATH_APP . '/routeConsole.php';
+        if ( file_exists($path) )
             foreach (require $path as $sys_demon => $sys_cron)
             {
                 if ( !$sys_cron['IsActive'] || false !== strpos($result, Zero_App::$Config->Site_PathPhp . ' ' . ZERO_PATH_SITE . '/console.php ' . $sys_demon) )
