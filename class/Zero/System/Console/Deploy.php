@@ -33,13 +33,13 @@ class Zero_System_Console_Deploy extends Zero_Controller
             if ( 0 < $code )
             {
                 Zero_Logs::Set_Message_Error("error git pull '{$p}'");
-                return 1;
+                return false;
             }
             else
             {
                 Zero_Logs::Set_Message_Notice("git pull '{$p}'");
             }
         }
-        return 0;
+        return true;
     }
 }
