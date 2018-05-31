@@ -115,7 +115,7 @@ while ( isset($_REQUEST['act']) && 'Install_System' == $_REQUEST['act'] && 0 == 
         $isUseDb = 'true';
     else
         $isUseDb = 'false';
-    $config = file_get_contents(ZERO_PATH_SITE . '/config.blank.php');
+    $config = file_get_contents(ZERO_PATH_SITE . '/config.php');
     $config = str_replace('<SITE_NAME>', $_REQUEST['site_name'], $config);
     $config = str_replace('<SITE_EMAIL>', $_REQUEST['site_email'], $config);
     $config = str_replace('<DOMAIN>', $_REQUEST['domain_www'], $config);
@@ -126,26 +126,25 @@ while ( isset($_REQUEST['act']) && 'Install_System' == $_REQUEST['act'] && 0 == 
     $config = str_replace('<SITE_LANGDEFAULT>', $_REQUEST['lang'], $config);
     $config = str_replace('ISUSEDB', $isUseDb, $config);
     file_put_contents(ZERO_PATH_SITE . '/config.php', $config);
-    unlink(ZERO_PATH_SITE . '/config.blank.php');
 
     $class = file_get_contents($path = ZERO_PATH_APP . '/class/Site/Config.php');
-    str_replace('Site_ConfigTemplate', 'Site_Config', $class);
+    $class = str_replace('Site_ConfigTemplate', 'Site_Config', $class);
     file_put_contents($path, $class);
 
     $class = file_get_contents($path = ZERO_PATH_APP . '/class/Site/Option.php');
-    str_replace('Site_OptionTemplate', 'Site_Option', $class);
+    $class = str_replace('Site_OptionTemplate', 'Site_Option', $class);
     file_put_contents($path, $class);
 
     $class = file_get_contents($path = ZERO_PATH_APP . '/class/Site/Request.php');
-    str_replace('Site_RequestTemplate', 'Site_Request', $class);
+    $class = str_replace('Site_RequestTemplate', 'Site_Request', $class);
     file_put_contents($path, $class);
 
     $class = file_get_contents($path = ZERO_PATH_APP . '/class/Site/Section.php');
-    str_replace('Site_SectionTemplate', 'Site_Section', $class);
+    $class = str_replace('Site_SectionTemplate', 'Site_Section', $class);
     file_put_contents($path, $class);
 
     $class = file_get_contents($path = ZERO_PATH_APP . '/class/Site/Users.php');
-    str_replace('Site_UsersTemplate', 'Site_Users', $class);
+    $class = str_replace('Site_UsersTemplate', 'Site_Users', $class);
     file_put_contents($path, $class);
 
 //    if ( !@symlink(ZERO_PATH_ZERO, ZERO_PATH_APPLICATION . '/zero') )

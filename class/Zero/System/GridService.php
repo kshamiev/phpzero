@@ -62,6 +62,27 @@ class Zero_System_GridService extends Zero_Controller
     }
 
     /**
+     * Контроллер по умолчанию
+     *
+     * @return Zero_View
+     */
+    public function Action_Deploy()
+    {
+        Zero_App::$Config->Deploy->PathDeploy = explode("\n", $_REQUEST['deploy']);
+
+        $control = new Zero_System_Console_Deploy();
+        $flag = $control->Action_Default();
+        if ( $flag )
+            $this->SetMessage(0, ['успешно']);
+        else
+            $this->SetMessageError(-1, ['ошибка']);
+
+        $this->Chunk_Init();
+        $this->Chunk_View();
+        return $this->View;
+    }
+
+    /**
      * Engineering models.
      *
      * @return boolean flag stop execute of the next chunk
