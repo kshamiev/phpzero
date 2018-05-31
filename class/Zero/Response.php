@@ -145,6 +145,8 @@ class Zero_Response
         ];
         if ( $content )
             $data['Content'] = $content;
+        if ( 400 < $status )
+            Zero_Logs::Set_Message_Error($data['Message']);
 
         $data = json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_BIGINT_AS_STRING);
         //        $data = json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_BIGINT_AS_STRING);
