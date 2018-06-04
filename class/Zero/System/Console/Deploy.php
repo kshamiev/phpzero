@@ -47,6 +47,7 @@ class Zero_System_Console_Deploy extends Zero_Controller
                 Zero_Logs::Set_Message_Notice("git pull '{$p}'");
             }
         }
+        Helper_File::Folder_Remove(ZERO_PATH_CACHE);
         return true;
     }
 }
