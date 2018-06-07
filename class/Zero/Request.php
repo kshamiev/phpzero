@@ -133,6 +133,8 @@ class Zero_Request
         $response = new Zero_Request_Type;
         $response->Head = $head;
         $response->Body = $body;
+        $response->Error = true;
+        $response->ErrorStatus = true;
         if ( isset($body['Code']) )
             $response->Code = $body['Code'];
         if ( isset($body['Message']) )
