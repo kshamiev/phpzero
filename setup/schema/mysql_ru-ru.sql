@@ -1,6 +1,6 @@
 /*
 SQLyog Ultimate v12.09 (64 bit)
-MySQL - 5.5.25a-log : Database - test
+MySQL - 5.5.25a-log : Database - ataman
 *********************************************************************
 */
 
@@ -12,24 +12,6 @@ MySQL - 5.5.25a-log : Database - test
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-/*Table structure for table `AccessOutside` */
-
-DROP TABLE IF EXISTS `AccessOutside`;
-
-CREATE TABLE `AccessOutside` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Идентификатор',
-  `Name` varchar(100) DEFAULT NULL COMMENT 'Комментарий записи',
-  `AccessMethod` varchar(100) DEFAULT NULL COMMENT 'Имя метода в классе',
-  `Url` varchar(100) DEFAULT NULL COMMENT 'Урл запроса к ресурсу',
-  `Login` varchar(100) DEFAULT NULL COMMENT 'Логин',
-  `Password` varchar(100) DEFAULT NULL COMMENT 'Пароль',
-  `AuthUserToken` varchar(100) DEFAULT NULL COMMENT 'Авторизация по токену',
-  `IsDebug` tinyint(1) DEFAULT NULL COMMENT 'Режим отладки',
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Настройки для запросов к внешним ресурсам';
-
-/*Data for the table `AccessOutside` */
-
 /*Table structure for table `Action` */
 
 DROP TABLE IF EXISTS `Action`;
@@ -91,48 +73,50 @@ CREATE TABLE `Controllers` (
   `IsActive` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Контроллер активен',
   `IsAuthorized` enum('no','yes') NOT NULL DEFAULT 'no' COMMENT 'Авторизованный',
   `DateExecute` datetime DEFAULT NULL COMMENT 'Дата и время последнего выполнения',
+  `Sort` smallint(6) DEFAULT NULL COMMENT 'Сортировка для тестов',
   PRIMARY KEY (`ID`),
   UNIQUE KEY `Url` (`Url`)
-) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8 COMMENT='Контроллеры';
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8 COMMENT='Контроллеры';
 
 /*Data for the table `Controllers` */
 
-insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (1,'Zero_Section_Page','Zero_Section_Page','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL);
-insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (2,'Zero_Users_Login','Zero_Users_Login','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL);
-insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (5,'Zero_Users_Kcaptcha','Zero_Users_Kcaptcha','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL);
-insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (6,'Zero_Users_Grid','Zero_Users_Grid','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL);
-insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (7,'Zero_Users_Edit','Zero_Users_Edit','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL);
-insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (8,'Zero_Groups_Grid','Zero_Groups_Grid','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL);
-insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (9,'Zero_Groups_Edit','Zero_Groups_Edit','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL);
-insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (11,'Zero_Section_Grid','Zero_Section_Grid','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL);
-insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (12,'Zero_Section_Edit','Zero_Section_Edit','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL);
-insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (13,'Zero_Groups_Access','Zero_Groups_Access','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL);
-insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (14,'Zero_Content_EditSection','Zero_Content_EditSection','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL);
-insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (16,'Zero_System_GridService','Zero_System_GridService','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL);
-insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (17,'Zero_System_FileManager','Zero_System_FileManager','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL);
-insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (18,'Zero_System_FileEdit','Zero_System_FileEdit','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL);
-insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (19,'Zero_Content_GridSection','Zero_Content_GridSection','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL);
-insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (21,'Zero_Content_Grid','Zero_Content_Grid','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL);
-insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (22,'Zero_Content_Edit','Zero_Content_Edit','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL);
-insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (23,'Zero_Users_Profile','Zero_Users_Profile','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL);
-insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (24,'Zero_System_Api_Upload','Zero_System_Api_Upload','Api','/api/v1/zero/system/upload',NULL,NULL,NULL,NULL,NULL,1,'no',NULL);
-insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (27,'Helper_Mail_Api_Send','Helper_Mail_Api_Send','Api','/api/v1/mail/send',NULL,NULL,NULL,NULL,NULL,1,'no',NULL);
-insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (29,'Helper_Mail_Api_Queue','Helper_Mail_Api_Queue','Api','/api/v1/mail/queue',NULL,NULL,NULL,NULL,NULL,1,'no',NULL);
-insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (31,'Zero_System_Console_ApiGen','Zero_System_Console_ApiGen','Console',NULL,'*/10','*','*','*','*',0,'no',NULL);
-insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (32,'Zero_System_Console_RemTmpFileUpload','Zero_System_Console_RemTmpFileUpload','Console',NULL,'0','*','*','*','*',0,'no',NULL);
-insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (33,'Zero_Section_Console_SiteMap','Zero_Section_Console_SiteMap','Console',NULL,'0','0','*','*','*',0,'no',NULL);
-insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (34,'Zero_Users_Console_Offline','Zero_Users_Console_Offline','Console',NULL,'*/10','*','*','*','*',0,'no',NULL);
-insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (35,'Zero_System_Console_Engine','Zero_System_Console_Engine','Console',NULL,'*/10','*','*','*','*',0,'no',NULL);
-insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (36,'Helper_Mail_Sol_Send','Helper_Mail_Sol_Send','Console',NULL,'*/30','*','*','*','*',0,'no',NULL);
-insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (37,'Zero_Controllers_Grid','Zero_Controllers_Grid','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL);
-insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (38,'Zero_Controllers_Edit','Zero_Controllers_Edit','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL);
-insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (39,'Zero_Options_Grid','Zero_Options_Grid','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL);
-insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (40,'Zero_Options_Edit','Zero_Options_Edit','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL);
-insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (41,'Zero_AccessOutside_Grid','Zero_AccessOutside_Grid','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL);
-insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (42,'Zero_AccessOutside_Edit','Zero_AccessOutside_Edit','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL);
-insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (43,'Zero_Controllers_Access','Zero_Controllers_Access','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL);
-insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (44,'Zero_Section_Access','Zero_Section_Access','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL);
-insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`) values (45,'Zero_Controllers_Check','Zero_Controllers_Check','Web',NULL,NULL,NULL,NULL,NULL,NULL,0,'yes',NULL);
+insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`,`Sort`) values (1,'Zero_Section_Page','Zero_Section_Page','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL,NULL);
+insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`,`Sort`) values (2,'Zero_Users_Login','Zero_Users_Login','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL,NULL);
+insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`,`Sort`) values (5,'Zero_Users_Kcaptcha','Zero_Users_Kcaptcha','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL,NULL);
+insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`,`Sort`) values (6,'Zero_Users_Grid','Zero_Users_Grid','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL,NULL);
+insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`,`Sort`) values (7,'Zero_Users_Edit','Zero_Users_Edit','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL,NULL);
+insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`,`Sort`) values (8,'Zero_Groups_Grid','Zero_Groups_Grid','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL,NULL);
+insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`,`Sort`) values (9,'Zero_Groups_Edit','Zero_Groups_Edit','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL,NULL);
+insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`,`Sort`) values (11,'Zero_Section_Grid','Zero_Section_Grid','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL,NULL);
+insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`,`Sort`) values (12,'Zero_Section_Edit','Zero_Section_Edit','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL,NULL);
+insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`,`Sort`) values (13,'Zero_Groups_Access','Zero_Groups_Access','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL,NULL);
+insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`,`Sort`) values (14,'Zero_Content_EditSection','Zero_Content_EditSection','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL,NULL);
+insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`,`Sort`) values (16,'Zero_System_GridService','Zero_System_GridService','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL,NULL);
+insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`,`Sort`) values (17,'Zero_System_FileManager','Zero_System_FileManager','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL,NULL);
+insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`,`Sort`) values (18,'Zero_System_FileEdit','Zero_System_FileEdit','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL,NULL);
+insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`,`Sort`) values (19,'Zero_Content_GridSection','Zero_Content_GridSection','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL,NULL);
+insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`,`Sort`) values (21,'Zero_Content_Grid','Zero_Content_Grid','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL,NULL);
+insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`,`Sort`) values (22,'Zero_Content_Edit','Zero_Content_Edit','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL,NULL);
+insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`,`Sort`) values (23,'Zero_Users_Profile','Zero_Users_Profile','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL,NULL);
+insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`,`Sort`) values (24,'Zero_System_Api_Upload','Zero_System_Api_Upload','Api','/api/v1/zero/system/upload',NULL,NULL,NULL,NULL,NULL,1,'no',NULL,NULL);
+insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`,`Sort`) values (27,'Helper_Mail_Api_Send','Helper_Mail_Api_Send','Api','/api/v1/mail/send',NULL,NULL,NULL,NULL,NULL,1,'no',NULL,NULL);
+insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`,`Sort`) values (29,'Helper_Mail_Api_Queue','Helper_Mail_Api_Queue','Api','/api/v1/mail/queue',NULL,NULL,NULL,NULL,NULL,1,'no',NULL,NULL);
+insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`,`Sort`) values (31,'Zero_System_Console_ApiGen','Zero_System_Console_ApiGen','Console',NULL,'*/10','*','*','*','*',0,'no',NULL,NULL);
+insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`,`Sort`) values (32,'Zero_System_Console_RemTmpFileUpload','Zero_System_Console_RemTmpFileUpload','Console',NULL,'0','*','*','*','*',0,'no',NULL,NULL);
+insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`,`Sort`) values (33,'Zero_Section_Console_SiteMap','Zero_Section_Console_SiteMap','Console',NULL,'0','0','*','*','*',0,'no',NULL,NULL);
+insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`,`Sort`) values (34,'Zero_Users_Console_Offline','Zero_Users_Console_Offline','Console',NULL,'*/10','*','*','*','*',0,'no',NULL,NULL);
+insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`,`Sort`) values (35,'Zero_System_Console_Engine','Zero_System_Console_Engine','Console',NULL,'*/10','*','*','*','*',0,'no',NULL,NULL);
+insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`,`Sort`) values (36,'Helper_Mail_Sol_Send','Helper_Mail_Sol_Send','Console',NULL,'*/30','*','*','*','*',0,'no',NULL,NULL);
+insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`,`Sort`) values (37,'Zero_Controllers_Grid','Zero_Controllers_Grid','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL,NULL);
+insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`,`Sort`) values (38,'Zero_Controllers_Edit','Zero_Controllers_Edit','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL,NULL);
+insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`,`Sort`) values (39,'Zero_Options_Grid','Zero_Options_Grid','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL,NULL);
+insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`,`Sort`) values (40,'Zero_Options_Edit','Zero_Options_Edit','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL,NULL);
+insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`,`Sort`) values (41,'Zero_AccessOutside_Grid','Zero_AccessOutside_Grid','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL,NULL);
+insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`,`Sort`) values (42,'Zero_AccessOutside_Edit','Zero_AccessOutside_Edit','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL,NULL);
+insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`,`Sort`) values (43,'Zero_Controllers_Access','Zero_Controllers_Access','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL,NULL);
+insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`,`Sort`) values (44,'Zero_Section_Access','Zero_Section_Access','Web',NULL,NULL,NULL,NULL,NULL,NULL,1,'no',NULL,NULL);
+insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`,`Sort`) values (45,'Zero_Controllers_Check','Zero_Controllers_Check','Web',NULL,NULL,NULL,NULL,NULL,NULL,0,'yes',NULL,NULL);
+insert  into `Controllers`(`ID`,`Name`,`Controller`,`Typ`,`Url`,`Minute`,`Hour`,`Day`,`Month`,`Week`,`IsActive`,`IsAuthorized`,`DateExecute`,`Sort`) values (46,'Zero_System_Console_Deploy','Zero_System_Console_Deploy','Console',NULL,'*/5','*','*','*','*',0,'no',NULL,NULL);
 
 /*Table structure for table `Groups` */
 
@@ -239,7 +223,7 @@ insert  into `Section`(`ID`,`Controllers_ID`,`Section_ID`,`Url`,`UrlAlias`,`UrlT
 insert  into `Section`(`ID`,`Controllers_ID`,`Section_ID`,`Url`,`UrlAlias`,`UrlThis`,`UrlRedirect`,`Layout`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`NameMenu`,`Title`,`Keywords`,`Description`,`Content`,`Img`) values (21,17,19,'/zero/system/file',NULL,'file',NULL,'Zero_Main','yes','yes','yes','yes',10,'Файловый менеджер','Файловый менеджер','Файловый менеджер','Файловый менеджер','Файловый менеджер',NULL,NULL);
 insert  into `Section`(`ID`,`Controllers_ID`,`Section_ID`,`Url`,`UrlAlias`,`UrlThis`,`UrlRedirect`,`Layout`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`NameMenu`,`Title`,`Keywords`,`Description`,`Content`,`Img`) values (22,18,21,'/zero/system/file/edit',NULL,'edit',NULL,'Zero_Main','yes','yes','no','yes',10,'Редактирование файла','Редактирование файла','Редактирование файла','Редактирование файла','Редактирование файла',NULL,NULL);
 insert  into `Section`(`ID`,`Controllers_ID`,`Section_ID`,`Url`,`UrlAlias`,`UrlThis`,`UrlRedirect`,`Layout`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`NameMenu`,`Title`,`Keywords`,`Description`,`Content`,`Img`) values (29,19,14,'/zero/site/section/edit/content',NULL,'content',NULL,'Zero_Main','yes','yes','yes','yes',10,'Контент','Контент','Контент','Контент','Контент',NULL,NULL);
-insert  into `Section`(`ID`,`Controllers_ID`,`Section_ID`,`Url`,`UrlAlias`,`UrlThis`,`UrlRedirect`,`Layout`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`NameMenu`,`Title`,`Keywords`,`Description`,`Content`,`Img`) values (33,1,1,'/zero',NULL,'admin',NULL,'Zero_Main','yes','yes','yes','yes',800,'CP','CP','Административная часть','Административная часть','Административная часть',NULL,NULL);
+insert  into `Section`(`ID`,`Controllers_ID`,`Section_ID`,`Url`,`UrlAlias`,`UrlThis`,`UrlRedirect`,`Layout`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`NameMenu`,`Title`,`Keywords`,`Description`,`Content`,`Img`) values (33,1,1,'/zero',NULL,'zero',NULL,'Zero_Main','yes','yes','yes','yes',20,'CP','CP','Административная часть','Административная часть','Административная часть',NULL,NULL);
 insert  into `Section`(`ID`,`Controllers_ID`,`Section_ID`,`Url`,`UrlAlias`,`UrlThis`,`UrlRedirect`,`Layout`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`NameMenu`,`Title`,`Keywords`,`Description`,`Content`,`Img`) values (40,21,12,'/zero/site/content',NULL,'content',NULL,'Zero_Main','yes','yes','yes','yes',10,'Контент','Контент','Контент','Контент','Контент',NULL,NULL);
 insert  into `Section`(`ID`,`Controllers_ID`,`Section_ID`,`Url`,`UrlAlias`,`UrlThis`,`UrlRedirect`,`Layout`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`NameMenu`,`Title`,`Keywords`,`Description`,`Content`,`Img`) values (41,22,40,'/zero/site/content/edit',NULL,'edit',NULL,'Zero_Main','yes','yes','no','yes',10,'Контент изменение','Контент изменение','Контент изменение','Контент изменение','Контент изменение',NULL,NULL);
 insert  into `Section`(`ID`,`Controllers_ID`,`Section_ID`,`Url`,`UrlAlias`,`UrlThis`,`UrlRedirect`,`Layout`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`NameMenu`,`Title`,`Keywords`,`Description`,`Content`,`Img`) values (42,23,2,'/user/profile',NULL,'profile',NULL,'Zero_Main','yes','yes','no','no',50,'Профиль','Профиль','Профиль','Профиль','Профиль',NULL,NULL);
@@ -247,8 +231,6 @@ insert  into `Section`(`ID`,`Controllers_ID`,`Section_ID`,`Url`,`UrlAlias`,`UrlT
 insert  into `Section`(`ID`,`Controllers_ID`,`Section_ID`,`Url`,`UrlAlias`,`UrlThis`,`UrlRedirect`,`Layout`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`NameMenu`,`Title`,`Keywords`,`Description`,`Content`,`Img`) values (101,38,100,'/zero/system/controllers/edit',NULL,'edit',NULL,'Zero_Main','yes','yes','no','no',10,'Изменение','Изменение','Изменение','Изменение','Изменение',NULL,NULL);
 insert  into `Section`(`ID`,`Controllers_ID`,`Section_ID`,`Url`,`UrlAlias`,`UrlThis`,`UrlRedirect`,`Layout`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`NameMenu`,`Title`,`Keywords`,`Description`,`Content`,`Img`) values (102,39,19,'/zero/system/options',NULL,'options',NULL,'Zero_Main','yes','yes','yes','no',40,'Опции','Опции','Опции','Опции','Опции',NULL,NULL);
 insert  into `Section`(`ID`,`Controllers_ID`,`Section_ID`,`Url`,`UrlAlias`,`UrlThis`,`UrlRedirect`,`Layout`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`NameMenu`,`Title`,`Keywords`,`Description`,`Content`,`Img`) values (103,40,102,'/zero/system/options/edit',NULL,'edit',NULL,'Zero_Main','yes','yes','no','no',10,'Изменение','Изменение','Изменение','Изменение','Изменение',NULL,NULL);
-insert  into `Section`(`ID`,`Controllers_ID`,`Section_ID`,`Url`,`UrlAlias`,`UrlThis`,`UrlRedirect`,`Layout`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`NameMenu`,`Title`,`Keywords`,`Description`,`Content`,`Img`) values (104,41,19,'/zero/system/accessoutside',NULL,'accessoutside',NULL,'Zero_Main','yes','yes','yes','no',50,'Реквизиты квнешних API','Реквизиты квнешних API','Реквизиты квнешних API','Реквизиты квнешних API','Реквизиты квнешних API',NULL,NULL);
-insert  into `Section`(`ID`,`Controllers_ID`,`Section_ID`,`Url`,`UrlAlias`,`UrlThis`,`UrlRedirect`,`Layout`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`NameMenu`,`Title`,`Keywords`,`Description`,`Content`,`Img`) values (105,42,104,'/zero/system/accessoutside/edit',NULL,'edit',NULL,'Zero_Main','yes','yes','no','no',10,'Изменение','Изменение','Изменение','Изменение','Изменение',NULL,NULL);
 insert  into `Section`(`ID`,`Controllers_ID`,`Section_ID`,`Url`,`UrlAlias`,`UrlThis`,`UrlRedirect`,`Layout`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`NameMenu`,`Title`,`Keywords`,`Description`,`Content`,`Img`) values (106,43,101,'/zero/system/controllers/edit/access',NULL,'access',NULL,'Zero_Main','yes','yes','no','no',30,'Права','Права','Права','Права','Права',NULL,NULL);
 insert  into `Section`(`ID`,`Controllers_ID`,`Section_ID`,`Url`,`UrlAlias`,`UrlThis`,`UrlRedirect`,`Layout`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`NameMenu`,`Title`,`Keywords`,`Description`,`Content`,`Img`) values (107,44,14,'/zero/site/section/edit/access',NULL,'access',NULL,'Zero_Main','yes','yes','yes','no',30,'Права','Права','Права','Права','Права',NULL,NULL);
 insert  into `Section`(`ID`,`Controllers_ID`,`Section_ID`,`Url`,`UrlAlias`,`UrlThis`,`UrlRedirect`,`Layout`,`IsAuthorized`,`IsEnable`,`IsVisible`,`IsIndex`,`Sort`,`Name`,`NameMenu`,`Title`,`Keywords`,`Description`,`Content`,`Img`) values (108,45,100,'/zero/system/controllers/check',NULL,'check',NULL,'Zero_Main','yes','yes','yes','no',30,'проверки','проверки','проверки','проверки','проверки',NULL,NULL);
@@ -285,7 +267,7 @@ CREATE TABLE `Users` (
 
 /*Data for the table `Users` */
 
-insert  into `Users`(`ID`,`Groups_ID`,`Users_ID`,`Name`,`Login`,`Password`,`IsAccess`,`Email`,`Phone`,`Skype`,`IsCondition`,`ImgAvatar`,`IsOnline`,`DateOnline`,`Date`,`Address`,`Token`) values (1,1,NULL,'Разработчик','dev','e77989ed21758e78331b20e477fc5582','open','dev@dev.ru',NULL,NULL,'no',NULL,'yes','2017-11-01 16:43:15','2005-09-01 12:00:00',NULL,NULL);
+insert  into `Users`(`ID`,`Groups_ID`,`Users_ID`,`Name`,`Login`,`Password`,`IsAccess`,`Email`,`Phone`,`Skype`,`IsCondition`,`ImgAvatar`,`IsOnline`,`DateOnline`,`Date`,`Address`,`Token`) values (1,1,NULL,'Разработчик','dev','e77989ed21758e78331b20e477fc5582','open','dev@dev.ru',NULL,NULL,'no',NULL,'yes','2018-05-27 00:53:39','2005-09-01 12:00:00',NULL,NULL);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

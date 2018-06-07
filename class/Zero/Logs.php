@@ -106,6 +106,7 @@ class Zero_Logs
         if ( !Zero_App::$Config->Log_Profile_Error )
             return;
         self::$_CurrentTime[] = [
+            'datetime' => date("Y-m-d H:i:s"),
             'start' => 0,
             'level' => self::$_CurrentTimeLevel,
             'typ' => 'ERROR',
@@ -136,6 +137,7 @@ class Zero_Logs
         if ( !Zero_App::$Config->Log_Profile_Warning )
             return;
         self::$_CurrentTime[] = [
+            'datetime' => date("Y-m-d H:i:s"),
             'start' => 0,
             'level' => self::$_CurrentTimeLevel,
             'typ' => 'WARNING',
@@ -154,6 +156,7 @@ class Zero_Logs
         if ( !Zero_App::$Config->Log_Profile_Application )
             return;
         self::$_CurrentTime[] = [
+            'datetime' => date("Y-m-d H:i:s"),
             'start' => 0,
             'level' => self::$_CurrentTimeLevel,
             'typ' => 'INFO',
@@ -172,6 +175,7 @@ class Zero_Logs
         if ( !Zero_App::$Config->Log_Profile_Notice )
             return;
         self::$_CurrentTime[] = [
+            'datetime' => date("Y-m-d H:i:s"),
             'start' => 0,
             'level' => self::$_CurrentTimeLevel,
             'typ' => 'NOTICE',
@@ -195,6 +199,7 @@ class Zero_Logs
         if ( !Zero_App::$Config->Log_Profile_Application )
             return;
         $k = sha1($key);
+        self::$_CurrentTime[$k]['datetime'] = date("Y-m-d H:i:s");
         self::$_CurrentTime[$k]['start'] = microtime(true);
         self::$_CurrentTime[$k]['level'] = self::$_CurrentTimeLevel;
         self::$_CurrentTime[$k]['typ'] = 'info';
@@ -310,11 +315,11 @@ class Zero_Logs
         {
             // initcializatciia logov
             if ( isset($_SERVER['REQUEST_URI']) )
-                self::$_OutputApplication = [date('[d.m.Y H:i:s]') . ' [' . $_SERVER['REQUEST_METHOD'] . '] ' . ZERO_HTTP . $_SERVER['REQUEST_URI']];
+                self::$_OutputApplication = ['START [' . $_SERVER['REQUEST_METHOD'] . '] ' . ZERO_HTTP . $_SERVER['REQUEST_URI']];
             else if ( isset($_SERVER['argv'][1]) )
-                self::$_OutputApplication = [date('[d.m.Y H:i:s]') . ' ' . $_SERVER['argv'][1]];
+                self::$_OutputApplication = ['START ' . $_SERVER['argv'][1]];
             else
-                self::$_OutputApplication = [date('[d.m.Y H:i:s]')];
+                self::$_OutputApplication = ['START'];
             // Sobiraem tai`mery` v kuchu
             foreach (self::$_CurrentTime as $time)
             {
@@ -334,7 +339,7 @@ class Zero_Logs
                 {
                     $indent .= "\t";
                 }
-                self::$_OutputApplication[] = "[" . strtoupper($time['typ']) . "]" . $indent . ' {' . $limit . '} ' . trim($description);
+                self::$_OutputApplication[] = "[" . strtoupper($time['typ']) . "] [{$time['datetime']}]" . $indent . ' {' . $limit . '} ' . trim($description);
             }
             self::$_OutputApplication[] = "#{System.Full} " . self::Get_FullTime();
             self::$_OutputApplication[] = "#{MEMORY} " . memory_get_usage();

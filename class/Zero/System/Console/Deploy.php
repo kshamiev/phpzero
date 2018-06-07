@@ -19,7 +19,14 @@ class Zero_System_Console_Deploy extends Zero_Controller
         $path = dirname(ZERO_PATH_SITE);
 
         // Выкладываем проект
-        foreach (Zero_App::$Config->Deploy->PathDeploy as $p)
+        foreach (Zero_App::$Config->Deploy->PathDeploy as $k => $p)
+        {
+            if ( !$p = trim($p) )
+                unset(Zero_App::$Config->Deploy->PathDeploy[$k]);
+            else
+                Zero_App::$Config->Deploy->PathDeploy[$k] = $p;
+        }
+        foreach (Zero_App::$Config->Deploy->PathDeploy as $k => $p)
         {
             if ( '/' == $p || '.' == $p || '/.' == $p || './' == $p )
                 $p = '';
