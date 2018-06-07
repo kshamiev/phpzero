@@ -95,9 +95,20 @@ class Zero_Response
      */
     public static function Json($content = null, $status = 200)
     {
-        if ( Zero_App::$Config->Site_UseDB && 200 == $status && is_object(Zero_App::$Controller) && 0 < Zero_App::$Controller->ID )
+        if ( Zero_App::$Config->Site_UseDB && is_object(Zero_App::$Controller) && 0 < Zero_App::$Controller->ID )
         {
             Zero_App::$Controller->DateExecute = date('Y-m-d H:i:s');
+            if ( $status < 300 )
+            {
+                Zero_App::$Controller->IsError = 0;
+                Zero_App::$Controller->MsgError = '';
+            }
+            else
+            {
+                $data = Zero_App::$ControllerAction->GetMessage();
+                Zero_App::$Controller->IsError = 1;
+                Zero_App::$Controller->MsgError = $data['Message'];
+            }
             Zero_App::$Controller->Save();
         }
         $content = json_encode($content, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_BIGINT_AS_STRING);
@@ -130,13 +141,21 @@ class Zero_Response
      * @param array $message
      * @param int $status http код ответа
      */
+    public static function Rest($content = null, $code = 0, $message = [], $status = 200)
+    {
+        self::JsonRest($content, $code, $message, $status);
+    }
+
+    /**
+     * Выдача структурного контента в формате json
+     *
+     * @param array $content данные
+     * @param int $code внутренний код ответа приложения
+     * @param array $message
+     * @param int $status http код ответа
+     */
     public static function JsonRest($content = null, $code = 0, $message = [], $status = 200)
     {
-        if ( Zero_App::$Config->Site_UseDB && 200 == $status && is_object(Zero_App::$Controller) && 0 < Zero_App::$Controller->ID )
-        {
-            Zero_App::$Controller->DateExecute = date('Y-m-d H:i:s');
-            Zero_App::$Controller->Save();
-        }
         $data = [
             'Code' => $code,
             'Message' => Zero_I18n::Message('', $code, $message),
@@ -145,7 +164,23 @@ class Zero_Response
         ];
         if ( $content )
             $data['Content'] = $content;
-        if ( 400 < $status )
+
+        if ( Zero_App::$Config->Site_UseDB && is_object(Zero_App::$Controller) && 0 < Zero_App::$Controller->ID )
+        {
+            Zero_App::$Controller->DateExecute = date('Y-m-d H:i:s');
+            if ( $status < 300 )
+            {
+                Zero_App::$Controller->IsError = 0;
+                Zero_App::$Controller->MsgError = '';
+            }
+            else
+            {
+                Zero_App::$Controller->IsError = 1;
+                Zero_App::$Controller->MsgError = $data['Message'];
+            }
+            Zero_App::$Controller->Save();
+        }
+        if ( 299 < $status )
             Zero_Logs::Set_Message_Error($data['Message']);
 
         $data = json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_BIGINT_AS_STRING);

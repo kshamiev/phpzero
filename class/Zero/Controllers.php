@@ -18,6 +18,10 @@
  * @property string $Week
  * @property integer $IsActive
  * @property string $IsAuthorized
+ * @property string $DateExecute
+ * @property int $Sort
+ * @property string $MsgError
+ * @property int $IsError
  */
 class Zero_Controllers extends Zero_Model
 {
@@ -148,6 +152,20 @@ class Zero_Controllers extends Zero_Model
                 'Default' => '',
                 'Form' => 'Number',
             ],
+            'IsError' => [
+                'AliasDB' => 'z.IsError',
+                'DB' => 'I',
+                'IsNull' => 'NO',
+                'Default' => '0',
+                'Form' => 'Check',
+            ],
+            'MsgError' => [
+                'AliasDB' => 'z.MsgError',
+                'DB' => 'T',
+                'IsNull' => 'YES',
+                'Default' => '',
+                'Form' => 'Readonly',
+            ],
         ];
     }
 
@@ -183,6 +201,8 @@ class Zero_Controllers extends Zero_Model
             'IsActive' => ['Visible' => true, 'AR' => true],
             'IsAuthorized' => ['Visible' => true, 'AR' => true],
             'Sort' => ['Visible' => true, 'AR' => true],
+            'IsError' => ['Visible' => true, 'AR' => true],
+            'MsgError' => ['Visible' => true, 'AR' => true],
         ];
     }
 
@@ -235,6 +255,8 @@ class Zero_Controllers extends Zero_Model
                 'IsAuthorized' => [],
                 'Typ' => ['Form' => 'Readonly'],
                 'DateExecute' => [],
+                'IsError' => ['Form' => 'Readonly'],
+                'MsgError' => ['Form' => 'Readonly'],
             ];
         else if ( 'Api' == $Model->Typ )
             return [
@@ -245,6 +267,8 @@ class Zero_Controllers extends Zero_Model
                 'Sort' => [],
                 'Typ' => ['Form' => 'Readonly'],
                 'DateExecute' => [],
+                'IsError' => ['Form' => 'Readonly'],
+                'MsgError' => ['Form' => 'Readonly'],
             ];
         else if ( 'Console' == $Model->Typ )
             return [
@@ -258,6 +282,8 @@ class Zero_Controllers extends Zero_Model
                 'IsActive' => [],
                 'Typ' => ['Form' => 'Readonly'],
                 'DateExecute' => [],
+                'IsError' => ['Form' => 'Readonly'],
+                'MsgError' => ['Form' => 'Readonly'],
             ];
         return [
             'Name' => [],

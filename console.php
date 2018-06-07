@@ -22,9 +22,17 @@ if ( count($_SERVER['argv']) > 1 )
     $Controller = Zero_Controller::Makes($arr[0]);
     $flag = $Controller->$_REQUEST['act']();
 
-    if ( Zero_App::$Config->Site_UseDB && true === $flag )
+    if ( Zero_App::$Config->Site_UseDB )
     {
-        $sql = "UPDATE Controllers SET DateExecute = NOW() WHERE Controller = '{$arr[0]}'";
+        if ( true === $flag )
+        {
+            $sql = "UPDATE Controllers SET DateExecute = NOW() WHERE Controller = '{$arr[0]}'";
+        }
+        else
+        {
+            $data = Zero_App::$ControllerAction->GetMessage();
+            $sql = "UPDATE Controllers SET DateExecute = NOW(), MsgError = '{$data['Message']}', IsError = 1 WHERE Controller = '{$arr[0]}'";
+        }
         Zero_DB::Update($sql);
     }
     echo $flag;

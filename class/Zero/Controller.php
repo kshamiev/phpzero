@@ -69,6 +69,7 @@ abstract class Zero_Controller
             'Code' => $code,
             'Message' => Zero_I18n::Message(get_class($this), $code, $params),
             'ErrorStatus' => false,
+            'Error' => false,
         ];
         return true;
     }
@@ -86,6 +87,7 @@ abstract class Zero_Controller
             'Code' => $code,
             'Message' => Zero_I18n::Message(get_class($this), $code, $params),
             'ErrorStatus' => true,
+            'Error' => true,
         ];
         return false;
     }
