@@ -52,12 +52,6 @@ class Zero_Request
         //	Передаем и возвращаем Заголовки и тело страницы
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_NOBODY, 0);
-        //	Заголовки
-        $headers[] = "Content-Type: application/json; charset=utf-8";
-        $headers[] = "Content-Length: " . strlen($content);
-        if ( isset($accessConf['AuthUserToken']) && $accessConf['AuthUserToken'] )
-            $headers[] = "AuthUserToken: " . $accessConf['AuthUserToken'];
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         //	Cookie
         if ( isset($accessConf['AuthUserToken']) && $accessConf['AuthUserToken'] )
         {
@@ -65,7 +59,12 @@ class Zero_Request
                 mkdir(ZERO_PATH_CACHE . '/session');
             curl_setopt($ch, CURLOPT_COOKIEFILE, ZERO_PATH_CACHE . '/session/' . $accessConf['AuthUserToken'] . '.txt'); //	посылка
             curl_setopt($ch, CURLOPT_COOKIEJAR, ZERO_PATH_CACHE . '/session/' . $accessConf['AuthUserToken'] . '.txt'); //	получение
+            $headers[] = "AuthUserToken: " . $accessConf['AuthUserToken'];
         }
+        //	Заголовки
+        $headers[] = "Content-Type: application/json; charset=utf-8";
+        $headers[] = "Content-Length: " . strlen($content);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         //	АВТОРИЗАЦИЯ МЕТОДОМ APACHE
         if ( isset($accessConf['Login']) && $accessConf['Login'] && isset($accessConf['Password']) && $accessConf['Password'] )
         {
