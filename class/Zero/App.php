@@ -559,6 +559,12 @@ class Zero_App
 
         // Исключения
         set_exception_handler(['Zero_App', 'Exception']);
+
+        // Инициализация хуков
+        foreach (glob(ZERO_PATH_APP . '/hooks/*.php') as $path)
+        {
+            include $path;
+        }
     }
 
     public static function Execute()
@@ -639,6 +645,9 @@ class Zero_App
         else if ( 'Api' == self::$mode )
             $action = $_SERVER['REQUEST_METHOD'];
 
+        // Хуки
+        Zero_Hooks::Run_Before();
+
         //  КОНТРОЛЛЕР
         $view = '';
         $messageResponse = ['Code' => 0, 'Message' => ''];
@@ -679,24 +688,29 @@ class Zero_App
         // Ответ на api запрос в формате json
         if ( self::$mode == 'Api' && is_array($view) )
         {
+            // Хуки
+            Zero_Hooks::Run_After();
             /* @var $view array */
             if ( 2 == count($view) )
                 Zero_Response::Json($view[0], $view[1]);
             else if ( 4 == count($view) )
-                Zero_Response::JsonRest($view[0], $view[1], $view[2], $view[3]);
+                Zero_Response::Rest($view[0], $view[1], $view[2], $view[3]);
         }
-
-        //  РАЗДЕЛ - СТРАНИЦА
-        if ( isset($route['View']) && $route['View'] )
+        else
         {
-            $viewLayout = new Zero_View($route['View']);
-            $viewLayout->Assign('Message', $messageResponse);
-            $viewLayout->Assign('H1', Zero_App::$Section->Name);
-            $viewLayout->Assign('Content', $view);
-            $view = $viewLayout->Fetch();
+            //  РАЗДЕЛ - СТРАНИЦА
+            if ( isset($route['View']) && $route['View'] )
+            {
+                $viewLayout = new Zero_View($route['View']);
+                $viewLayout->Assign('Message', $messageResponse);
+                $viewLayout->Assign('H1', Zero_App::$Section->Name);
+                $viewLayout->Assign('Content', $view);
+                $view = $viewLayout->Fetch();
+            }
+            // Хуки
+            Zero_Hooks::Run_After();
+            Zero_Response::Html($view);
         }
-
-        self::ResponseHtml($view, 200);
     }
 
     /**
@@ -779,6 +793,9 @@ class Zero_App
                 throw new Exception('Controller Forbidden or Not Found Method ' . $action, 403);
         }
 
+        // Хуки
+        Zero_Hooks::Run_Before();
+
         //  ЦЕНТРАЛЬНЫЙ КОНТРОЛЛЕР
         $view = '';
         $messageResponse = ['Code' => 0, 'Message' => ''];
@@ -819,24 +836,29 @@ class Zero_App
         // Ответ на api запрос в формате json
         if ( self::$mode == 'Api' && is_array($view) )
         {
+            // Хуки
+            Zero_Hooks::Run_After();
             /* @var $view array */
             if ( 2 == count($view) )
                 Zero_Response::Json($view[0], $view[1]);
             else if ( 4 == count($view) )
-                Zero_Response::JsonRest($view[0], $view[1], $view[2], $view[3]);
+                Zero_Response::Rest($view[0], $view[1], $view[2], $view[3]);
         }
-
-        //  LAYOUT - МАКЕТ
-        if ( self::$Section->Layout )
+        else
         {
-            $viewLayout = new Zero_View(self::$Section->Layout);
-            $viewLayout->Assign('Message', $messageResponse);
-            $viewLayout->Assign('H1', Zero_App::$Section->Name);
-            $viewLayout->Assign('Content', $view);
-            $view = $viewLayout->Fetch();
+            //  LAYOUT - МАКЕТ
+            if ( self::$Section->Layout )
+            {
+                $viewLayout = new Zero_View(self::$Section->Layout);
+                $viewLayout->Assign('Message', $messageResponse);
+                $viewLayout->Assign('H1', Zero_App::$Section->Name);
+                $viewLayout->Assign('Content', $view);
+                $view = $viewLayout->Fetch();
+            }
+            // Хуки
+            Zero_Hooks::Run_After();
+            Zero_Response::Html($view);
         }
-
-        Zero_Response::Html($view);
     }
 
     /**
