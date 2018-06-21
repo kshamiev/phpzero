@@ -19,6 +19,28 @@ function pre()
 }
 
 /**
+ * Добавление хука
+ *
+ * @param string $nameFunc
+ * @param int $sort
+ */
+function zero_hook_before($nameFunc, $sort)
+{
+    Zero_Hooks::Add_Before($nameFunc, $sort);
+}
+
+/**
+ * Добавление хука
+ *
+ * @param string $nameFunc
+ * @param int $sort
+ */
+function zero_hook_after($nameFunc, $sort)
+{
+    Zero_Hooks::Add_After($nameFunc, $sort);
+}
+
+/**
  * Getting source on the property due
  *
  * @param string $prop свойство связи
