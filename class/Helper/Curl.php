@@ -157,8 +157,8 @@ class Helper_Curl
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
         //	время работы
-        curl_setopt($ch, CURLOPT_TIMEOUT, 300);          //	полное время сеанса
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);    //	время ожидания соединения в секундах
+        curl_setopt($ch, CURLOPT_TIMEOUT, 600);          //	полное время сеанса
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);    //	время ожидания соединения в секундах
         //	Передаем и возвращаем Заголовки и тело страницы
         curl_setopt($ch, CURLOPT_HEADER, 1);
         curl_setopt($ch, CURLOPT_NOBODY, 0);
@@ -243,8 +243,8 @@ class Helper_Curl
             curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, 1);
         }
         //	время работы
-        curl_setopt($ch, CURLOPT_TIMEOUT, 10);          //	полное время сеанса
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);    //	время ожидания соединения в секундах
+        curl_setopt($ch, CURLOPT_TIMEOUT, 600);          //	полное время сеанса
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);    //	время ожидания соединения в секундах
         //	Cookie
         curl_setopt($ch, CURLOPT_COOKIEFILE, $this->cookie_file);   //	посылка
         curl_setopt($ch, CURLOPT_COOKIEJAR, $this->cookie_file);    //	получение
