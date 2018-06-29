@@ -123,8 +123,8 @@ class Zero_Request
                 break;
         }
         // Данные
-        $typ = explode(' ', $head['content_type'])[0];
-        if ( 'application/json;' == $typ )
+        $typ = rtrim(explode(' ', $head['content_type'])[0], ';');
+        if ( 'application/json' == $typ )
         {
             $body = json_decode($body, true);
         }
@@ -140,6 +140,8 @@ class Zero_Request
             $response->Message = $body['Message'];
         if ( isset($body['Content']) )
             $response->Content = $body['Content'];
+        else if ( isset($body['Data']) )
+            $response->Content = $body['Data'];
         if ( isset($body['ErrorStatus']) )
             $response->ErrorStatus = $body['ErrorStatus'];
         if ( isset($body['Error']) )
