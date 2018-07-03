@@ -119,7 +119,7 @@ class Zero_Response
         header('Cache-Control: no-store, no-cache, must-revalidate');
         header("Content-Type: application/json; charset=utf-8");
         header("Content-Length: " . strlen($content));
-        // header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Origin: *');
         header('HTTP/1.1 ' . $status . ' ' . $status);
         echo $content;
 
@@ -192,7 +192,7 @@ class Zero_Response
         header('Cache-Control: no-store, no-cache, must-revalidate');
         header("Content-Type: application/json; charset=utf-8");
         header("Content-Length: " . strlen($data));
-        // header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Origin: *');
         header('HTTP/1.1 ' . $status . ' ' . $status);
         echo $data;
 
