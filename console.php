@@ -27,17 +27,13 @@ if ( count($_SERVER['argv']) > 1 )
         if ( true === $flag )
         {
             $sql = "UPDATE Controllers SET DateExecute = NOW() WHERE Controller = '{$arr[0]}'";
-            Zero_DB::Update($sql);
         }
         else
         {
-            if ( !is_null(Zero_App::$ControllerAction) )
-            {
-                $data = Zero_App::$ControllerAction->GetMessage();
-                $sql = "UPDATE Controllers SET DateExecute = NOW(), MsgError = '{$data['Message']}', IsError = 1 WHERE Controller = '{$arr[0]}'";
-                Zero_DB::Update($sql);
-            }
+            $data = $Controller->GetMessage();
+            $sql = "UPDATE Controllers SET DateExecute = NOW(), MsgError = '{$data['Message']}', IsError = 1 WHERE Controller = '{$arr[0]}'";
         }
+        Zero_DB::Update($sql);
     }
     echo $flag;
 }
