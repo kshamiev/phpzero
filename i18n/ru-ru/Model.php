@@ -89,6 +89,8 @@ return [
     'Zero_Controllers IsAuthorized options' => ['no' => 'нет', 'yes' => 'да'],
     'Zero_Controllers DateExecute' => 'Последнее выполнение',
     'Zero_Controllers Sort' => 'Сортировка',
+    'Zero_Controllers IsError' => 'Признак ошибки',
+    'Zero_Controllers MsgError' => 'Сообщение об ошибке',
     'Controllers_ID' => 'Контроллер',
     'Zero_Section Name' => 'Заголовок',
     'Token' => 'Токен',
