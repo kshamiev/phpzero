@@ -74,7 +74,7 @@ class Helper_Mail
      * ]
      * @return bool|string В случаи отправки вернет true, иначе текст ошибки
      */
-    public function Send($data)
+    private function sending($data)
     {
         if ( empty($data['From']['Name']) )
             $data['From']['Name'] = Zero_App::$Config->Site_Name;
@@ -178,13 +178,27 @@ class Helper_Mail
                 }
             }
 
+            //            fputs($socket, "\r\n");
+
+            //                        $rcpt_to = '';
+            //                        foreach ($data['To'] as $key => $val)
+            //                        {
+            //                            $rcpt_to .= " <" . $key . ">,";
+            //                        }
+            //                        $rcpt_to = rtrim($rcpt_to, ',');
+            //                        fputs($socket, "RCPT TO:{$rcpt_to}\r\n");
+            //                        if ( !$this->_parseServer($socket, "250") )
+            //                        {
+            //                            fclose($socket);
+            //                            throw new Exception('Error of command sending: RCPT TO ' . $key, 409);
+            //                        }
+
             fputs($socket, "DATA\r\n");
             if ( !$this->_parseServer($socket, "354") )
             {
                 fclose($socket);
                 throw new Exception('Error of command sending: DATA', 409);
             }
-
             fputs($socket, $contentMail . "\r\n.\r\n");
             if ( !$this->_parseServer($socket, "250") )
             {
@@ -327,7 +341,7 @@ class Helper_Mail
 
         $errorCnt = 0;
         $mailSMTP = new self(Zero_App::$Config->Mail_Username, Zero_App::$Config->Mail_Password, Zero_App::$Config->Mail_Host, Zero_App::$Config->Mail_Port);
-        $result = $mailSMTP->Send($data);
+        $result = $mailSMTP->sending($data);
         if ( $result !== true )
         {
             $errorCnt = count($data['To']);
@@ -352,49 +366,33 @@ class Helper_Mail
      *      ],
      * ]
      * @return int количесвто ошибок отправления
-     * @deprecated Send
      */
-    public static function SendMessageAuth($data)
+    public static function Send($data)
     {
-        $errorCnt = 0;
-        $mailSMTP = new self(Zero_App::$Config->Mail_Username, Zero_App::$Config->Mail_Password, Zero_App::$Config->Mail_Host, Zero_App::$Config->Mail_Port);
-        $result = $mailSMTP->Send($data);
-        if ( $result !== true )
+        $mailSMTP = new Helper_SendMailSmtpClass(Zero_App::$Config->Mail_Username, Zero_App::$Config->Mail_Password, Zero_App::$Config->Mail_Host, Zero_App::$Config->Mail_Port, Zero_App::$Config->Mail_CharSet);
+        // от кого
+        $from = array(
+            $data['From']['Name'], // Имя отправителя
+            $data['From']['Email'] // почта отправителя
+        );
+        // кому отправка. Можно указывать несколько получателей через запятую
+        $to = implode(', ', array_keys($data['To']));
+        // добавляем файлы
+        if ( isset($data['Attach']) )
+            foreach (array_keys($data['Attach']) as $path)
+            {
+                $mailSMTP->addFile($path);
+            }
+        // отправляем письмо
+        $result = $mailSMTP->send($to, $data['Subject'], $data['Message'], $from);
+        if ( $result === true )
         {
-            $errorCnt = count($data['To']);
-            Zero_Logs::Set_Message_Error($result);
+            return true;
         }
-        return $errorCnt;
-    }
-
-    /**
-     * Отправка сообщения
-     *
-     * @param array $data [
-     *      'Reply' => ['Name' => 'ReplyName', 'Email' => 'reply@mail.ru'],
-     *      'From' => ['Name' => 'FromName', 'Email' => 'from@mail.ru'],
-     *      'Subject' => 'Тема сообщения',
-     *      'Message' => 'Текст или тело сообщения',
-     *      'To' => [
-     *          'Recipient@mail.ru' => 'NameRecipient',
-     *      ],
-     *      'Attach' => [
-     *          'pathFile' => 'nameFile',
-     *      ],
-     * ]
-     * @return int количесвто ошибок отправления
-     * @deprecated Send
-     */
-    public static function SendMessageAuthSsl($data)
-    {
-        $errorCnt = 0;
-        $mailSMTP = new self(Zero_App::$Config->Mail_Username, Zero_App::$Config->Mail_Password, Zero_App::$Config->Mail_Host, Zero_App::$Config->Mail_Port);
-        $result = $mailSMTP->Send($data);
-        if ( $result !== true )
+        else
         {
-            $errorCnt = count($data['To']);
             Zero_Logs::Set_Message_Error($result);
+            return $result;
         }
-        return $errorCnt;
     }
 }
