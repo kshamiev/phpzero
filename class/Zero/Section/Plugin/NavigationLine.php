@@ -31,8 +31,10 @@ class Zero_Section_Plugin_NavigationLine extends Zero_Controller
             {
                 $Zero_Section = Zero_Section::Make($id);
                 $Zero_Section->Load("NameMenu, Title, SUBSTRING(Url, POSITION('/' IN Url)) as Url, Section_ID");
-                $id = $Zero_Section->Section_ID;
                 $navigation[] = ['Url' => $Zero_Section->Url, 'NameMenu' => $Zero_Section->NameMenu, 'Title' => $Zero_Section->Title];
+                if ( $id == $Zero_Section->Section_ID )
+                    break;
+                $id = $Zero_Section->Section_ID;
             }
             $navigation = array_reverse($navigation);
             Zero_App::$Section->CH->Set($index, $navigation);
