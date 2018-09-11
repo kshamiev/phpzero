@@ -60,10 +60,16 @@ class Zero_View
      * Reguliarnoe vy`razhenie dlia obrabotki direktiv plugin
      */
     const PATTERN_PLUGIN = '~\{(?:plugin|bar)[ ]+[\'"]+([\w\d_]+)[\'"]+(\s+[^\{\}]+)?\}~si';
+
     /**
      * Reguliarnoe vy`razhenie dlia obrabotki direktiv translation
      */
-    const PATTERN_TRANSLATION = '~\{(?:translation|lang)[ ]+[\'"]+([\w\d_]+)[\'"]+[ ]+[\'"]+([^"\']+)[\'"]+\}~si';
+    const PATTERN_TRANSLATION1 = '~\{(?:translation|lang)[ ]+[\'"]+([\w\d_]+)[\'"]+\}~si';
+
+    /**
+     * Reguliarnoe vy`razhenie dlia obrabotki direktiv translation
+     */
+    const PATTERN_TRANSLATION2 = '~\{(?:translation|lang)[ ]+[\'"]+([\w\d_]+)[\'"]+[ ]+[\'"]+([^"\']+)[\'"]+\}~si';
 
     /**
      * Danny`e vstavliaemy`e v shablon
@@ -343,7 +349,8 @@ class Zero_View
         // подключение шаблонов директивой инклуде {инклуде "дирнаме/филенаме"}
         $template = preg_replace_callback(self::PATTERN_INCLUDE, [$this, '_Parsing_Include'], $template);
         // парсинг языковых конструкций
-        $template = preg_replace_callback(self::PATTERN_TRANSLATION, [$this, '_Parsing_Translation'], $template);
+        $template = preg_replace_callback(self::PATTERN_TRANSLATION1, [$this, '_Parsing_Translation1'], $template);
+        $template = preg_replace_callback(self::PATTERN_TRANSLATION2, [$this, '_Parsing_Translation2'], $template);
         // парсинг плагинов
         $template = preg_replace_callback(self::PATTERN_PLUGIN, [$this, '_Parsing_Controller'], $template);
         //
@@ -405,7 +412,24 @@ class Zero_View
      * @param array $matches parametry` tega, vziaty`e iz shablona
      * @return string
      */
-    private function _Parsing_Translation($matches)
+    private function _Parsing_Translation1($matches)
+    {
+        /*
+        $default = str_replace('model prop ', '', $matches[2]);
+        $default = str_replace('model ', '', $default);
+        $default = str_replace('controller ', '', $default);
+        return Zero_I18n::T($matches[1], $matches[2], $default);
+        */
+        return Zero_I18n::View($matches[1]);
+    }
+
+    /**
+     * Obrabotka direktivy` translation v shablonakh (rekursivnaia)
+     *
+     * @param array $matches parametry` tega, vziaty`e iz shablona
+     * @return string
+     */
+    private function _Parsing_Translation2($matches)
     {
         /*
         $default = str_replace('model prop ', '', $matches[2]);

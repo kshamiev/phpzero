@@ -18,14 +18,42 @@ class Zero_I18n
      */
     private static $_I18n = [];
 
+    /**
+     * Massiv soderzhashchii` danny`e iazy`kovy`kh fai`lov perevoda
+     *
+     * @var array
+     */
+    private static $_I18nNEW = [];
+
     public static function Model($file_name, $key)
     {
         return self::T($file_name, 'Model', $key);
     }
 
-    public static function View($file_name, $key)
+    public static function View($key, $lang = ZERO_LANG)
     {
-        return self::T($file_name, 'View', $key);
+        pre($key, $lang);
+        //return self::T($file_name, 'View', $key);
+        $section = 'View';
+
+        // инициализация файла перевода
+        if ( !isset(self::$_I18nNEW[$lang][$section]) )
+        {
+            self::$_I18nNEW[$lang][$section] = [];
+            if ( file_exists($path = ZERO_PATH_ZERO . '/i18n/' . $lang . '/' . $section . '.php') )
+                self::$_I18nNEW[$lang][$section] = array_merge(self::$_I18nNEW[$lang][$section], include $path);
+            if ( file_exists($path = ZERO_PATH_APP . '/i18n/' . $lang . '/' . $section . '.php') )
+                self::$_I18nNEW[$lang][$section] = array_merge(self::$_I18nNEW[$lang][$section], include $path);
+            if ( file_exists($path = ZERO_PATH_SITE . '/i18n/' . $lang . '/' . $section . '.php') )
+                self::$_I18nNEW[$lang][$section] = array_merge(self::$_I18nNEW[$lang][$section], include $path);
+        }
+        // перевод
+        if ( isset(self::$_I18nNEW[$lang][$section][$key]) )
+        {
+            return self::$_I18nNEW[$lang][$section][$key];
+        }
+        Zero_Logs::Set_Message_Warning("I18N NOT FOUND KEY: " . LANG . "->{$section} / '" . $key . "'");
+        return $key;
     }
 
     public static function Controller($file_name, $key)
