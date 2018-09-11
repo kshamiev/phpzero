@@ -420,7 +420,7 @@ class Zero_View
         $default = str_replace('controller ', '', $default);
         return Zero_I18n::T($matches[1], $matches[2], $default);
         */
-        return Zero_I18n::View($matches[1]);
+        return Zero_I18n::View($matches[1], Zero_App::$Config->Site_Language);
     }
 
     /**
