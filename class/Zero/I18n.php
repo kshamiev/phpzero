@@ -32,10 +32,7 @@ class Zero_I18n
 
     public static function View($key, $lang = ZERO_LANG)
     {
-        pre($key, $lang);
-        //return self::T($file_name, 'View', $key);
         $section = 'View';
-
         // инициализация файла перевода
         if ( !isset(self::$_I18nNEW[$lang][$section]) )
         {
