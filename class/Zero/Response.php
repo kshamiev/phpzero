@@ -11,6 +11,8 @@
  */
 class Zero_Response
 {
+    public static $Status = 200;
+
     /**
      * Завершение консольного приложения
      */
@@ -59,9 +61,8 @@ class Zero_Response
      * Выдача контента в формате html
      *
      * @param string $content
-     * @param int $status
      */
-    public static function Html($content, $status = 200)
+    public static function Html($content)
     {
         // Логирование (в браузер)
         if ( Zero_App::$Config->Log_Output_Display )
@@ -74,7 +75,7 @@ class Zero_Response
         header("Content-Type: text/html; charset=utf-8");
         header("Content-Length: " . strlen($content));
         // header('Access-Control-Allow-Origin: *');
-        header('HTTP/1.1 ' . $status . ' ' . $status);
+        header('HTTP/1.1 ' . self::$Status . ' ' . self::$Status);
         echo $content;
 
         // закрываем соединение с браузером (работает только под нгинx)
