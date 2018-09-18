@@ -18,25 +18,18 @@
 class Zero_Logs
 {
     /**
-     * Massiv soobshchenii` sistemy`
-     *
-     * @var array
-     */
-    private static $_Message = [];
-
-    /**
      * Data i vremia v formate timestamp
      *
      * @var integer
      */
-    private static $_StartTime;
+    private static $_StartTime = 0;
 
     /**
      * Massiv vremenny`kh metok
      *
      * @var array
      */
-    private static $_CurrentTime;
+    private static $_CurrentTime = [];
 
     /**
      * Uroven` vlozhennosti vremenny`kh metok
@@ -52,7 +45,7 @@ class Zero_Logs
      *
      * @var array
      */
-    private static $_OutputApplication;
+    private static $_OutputApplication = [];
 
     /**
      * Osnovnoe imia log fai`lov
@@ -68,7 +61,6 @@ class Zero_Logs
      */
     public static function Init($path)
     {
-        self::$_Message = [];
         self::$_StartTime = microtime(1);
         self::$_CurrentTime = [];
         self::$_FileLog = $path;
@@ -182,11 +174,6 @@ class Zero_Logs
             'message' => print_r($value, true),
             'stop' => 0,
         ];
-    }
-
-    public static function Get_Message()
-    {
-        return self::$_Message;
     }
 
     /**
