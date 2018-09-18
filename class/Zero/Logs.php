@@ -231,7 +231,6 @@ class Zero_Logs
         unset($iterator_list['Session']);
         $View = new Zero_View('Zero_Debug_Info');
         $View->Assign('output', self::Get_Usage_MemoryAndTime());
-        //        $View->Assign('message', self::$_Message);
         $View->Assign('iterator_list', $iterator_list);
         return $View->Fetch();
     }
@@ -243,13 +242,6 @@ class Zero_Logs
     public static function Output_File()
     {
         $output = self::Get_Usage_MemoryAndTime();
-        //            $output = [str_replace(["\r", "\t"], " ", $output)];
-        //        foreach (self::$_Message as $row)
-        //        {
-        //            if ( 'errorTrace' != $row[1] )
-        //                $output[] = '[' . strtoupper($row[1]) . '] ' . str_replace(["\r", "\t"], " ", $row[0]);
-        //        }
-        //        $output = preg_replace('![ ]{2,}!', ' ', join("\n", $output));
         $output = join("\n", $output);
         Helper_File::File_Save_After(self::$_FileLog . '.log', $output);
 
@@ -298,7 +290,7 @@ class Zero_Logs
      */
     protected static function Get_Usage_MemoryAndTime()
     {
-        if ( null === self::$_OutputApplication )
+        if ( !count(self::$_OutputApplication) )
         {
             // initcializatciia logov
             if ( isset($_SERVER['REQUEST_URI']) )
