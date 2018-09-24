@@ -67,7 +67,7 @@ abstract class Zero_Controller
     {
         self::$_Message = [
             'Code' => $code,
-            'Message' => Zero_I18n::Message(get_class($this), $code, $params),
+            'Message' => Zero_I18n::Message($code, $params),
             'ErrorStatus' => false,
             'Error' => false,
         ];
@@ -85,7 +85,7 @@ abstract class Zero_Controller
     {
         self::$_Message = [
             'Code' => $code,
-            'Message' => Zero_I18n::Message(get_class($this), $code, $params),
+            'Message' => Zero_I18n::Message($code, $params),
             'ErrorStatus' => true,
             'Error' => true,
         ];

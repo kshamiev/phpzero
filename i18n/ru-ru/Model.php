@@ -101,12 +101,4 @@ return [
     'Zero_Options Typ' => 'Тип опции',
     'Zero_Options Typ options' => ['string' => 'строка','int' => 'число','float' => 'пл. число','array' => 'массив'],
     'Zero_Options Value' => 'Значение опции',
-    'Zero_AccessOutside AccessMethod' => 'Метод запроса в программе',
-    'Zero_AccessOutside Login' => 'Логин (Auth Basic)',
-    'Zero_AccessOutside Password' => 'Пароль (Auth Basic)',
-    'Zero_AccessOutside AuthUserToken' => 'Авторизация по токену',
-    'Zero_AccessOutside ID' => 'Идентификатор',
-    'Zero_AccessOutside IsDebug' => 'Режим отладки',
-    'Zero_AccessOutside Name' => 'Название',
-    'Zero_AccessOutside Url' => 'Урл запроса к ресурсу',
 ];

@@ -45,5 +45,4 @@ return [
     'Error_Validate' => 'Ошибка валидации',
     'Error_NotParam' => 'Параметры операции не определены',
     'Error_NotFound' => 'Объект не найден',
-
 ];

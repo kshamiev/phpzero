@@ -295,7 +295,7 @@ class Zero_App
 
         $data = [
             'Code' => $code,
-            'Message' => Zero_I18n::Message('', $code, $params),
+            'Message' => Zero_I18n::Message($code, $params),
             'ErrorStatus' => false,
         ];
 
@@ -346,7 +346,7 @@ class Zero_App
 
         $data = [
             'Code' => $code,
-            'Message' => Zero_I18n::Message('', $code, $params),
+            'Message' => Zero_I18n::Message($code, $params),
             'ErrorStatus' => true,
         ];
 
@@ -390,7 +390,7 @@ class Zero_App
 
         $data = [
             'Code' => $code,
-            'Message' => Zero_I18n::Message('', $code, $params),
+            'Message' => Zero_I18n::Message($code, $params),
             'ErrorStatus' => true,
         ];
 

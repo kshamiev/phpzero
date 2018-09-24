@@ -18,104 +18,85 @@ class Zero_I18n
      */
     private static $_I18n = [];
 
-    /**
-     * Massiv soderzhashchii` danny`e iazy`kovy`kh fai`lov perevoda
-     *
-     * @var array
-     */
-    private static $_I18nNEW = [];
-
-    public static function Model($file_name, $key)
-    {
-        return self::T($file_name, 'Model', $key);
-    }
-
     public static function View($key, $lang = ZERO_LANG)
     {
-        $section = 'View';
-        // инициализация файла перевода
-        if ( !isset(self::$_I18nNEW[$lang][$section]) )
+        return self::T('View', $key, $lang);
+    }
+
+    public static function Model($key, $key1)
+    {
+        $res = self::T('Model', $key . ' ' . $key1);
+        if ( $res == $key . ' ' . $key1 )
         {
-            self::$_I18nNEW[$lang][$section] = [];
+            $res = self::T('Model', $key1);
+        }
+        return $res;
+    }
+
+    public static function Controller($key, $key1)
+    {
+        $res = self::T('Controller', $key . ' ' . $key1);
+        if ( $res == $key . ' ' . $key1 )
+        {
+            $res = self::T('Controller', $key1);
+        }
+        return $res;
+    }
+
+    /**
+     * Перевод по ключу
+     *
+     * @param $section string
+     * @param $key string
+     * @param $lang string
+     * @return string|array найденный перевод
+     */
+    protected static function T($section, $key, $lang = ZERO_LANG)
+    {
+        // инициализация файла перевода
+        if ( !isset(self::$_I18n[$lang][$section]) )
+        {
+            self::$_I18n[$lang][$section] = [];
             if ( file_exists($path = ZERO_PATH_ZERO . '/i18n/' . $lang . '/' . $section . '.php') )
-                self::$_I18nNEW[$lang][$section] = array_merge(self::$_I18nNEW[$lang][$section], include $path);
+                self::$_I18n[$lang][$section] = array_merge(self::$_I18n[$lang][$section], include $path);
             if ( file_exists($path = ZERO_PATH_APP . '/i18n/' . $lang . '/' . $section . '.php') )
-                self::$_I18nNEW[$lang][$section] = array_merge(self::$_I18nNEW[$lang][$section], include $path);
+                self::$_I18n[$lang][$section] = array_merge(self::$_I18n[$lang][$section], include $path);
             if ( file_exists($path = ZERO_PATH_SITE . '/i18n/' . $lang . '/' . $section . '.php') )
-                self::$_I18nNEW[$lang][$section] = array_merge(self::$_I18nNEW[$lang][$section], include $path);
+                self::$_I18n[$lang][$section] = array_merge(self::$_I18n[$lang][$section], include $path);
         }
         // перевод
-        if ( isset(self::$_I18nNEW[$lang][$section][$key]) )
+        if ( isset(self::$_I18n[$lang][$section][$key]) )
         {
-            return self::$_I18nNEW[$lang][$section][$key];
+            return self::$_I18n[$lang][$section][$key];
         }
-        Zero_Logs::Set_Message_Warning("I18N NOT FOUND KEY: " . LANG . "->{$section} / '" . $key . "'");
+        Zero_Logs::Set_Message_Warning("I18N NOT FOUND KEY: " . $lang . "->{$section} / '" . $key . "'");
         return $key;
     }
 
-    public static function Controller($file_name, $key)
+    public static function Message($code, $params = [])
     {
-        return self::T($file_name, 'Controller', $key);
-    }
-
-    public static function Message($file_name, $code, $params = [])
-    {
+        $lang = Zero_App::$Config->Site_Language;
         // инициализация файла перевода
-        if ( !isset(self::$_I18n['Message']) )
+        if ( !isset(self::$_I18n[$lang]['Message']) )
         {
-            self::$_I18n['Message'] = [];
-            if ( file_exists($path = ZERO_PATH_SITE . '/i18n/' . ZERO_LANG . '/' . 'Message' . '.php') )
-                self::$_I18n['Message'] = self::$_I18n['Message'] + include $path;
-            if ( file_exists($path = ZERO_PATH_APP . '/i18n/' . ZERO_LANG . '/' . 'Message' . '.php') )
-                self::$_I18n['Message'] = self::$_I18n['Message'] + include $path;
-            if ( file_exists($path = ZERO_PATH_ZERO . '/i18n/' . ZERO_LANG . '/' . 'Message' . '.php') )
-                self::$_I18n['Message'] = self::$_I18n['Message'] + include $path;
+            self::$_I18n[$lang]['Message'] = [];
+            if ( file_exists($path = ZERO_PATH_SITE . '/i18n/' . $lang . '/' . 'Message' . '.php') )
+                self::$_I18n[$lang]['Message'] = self::$_I18n[$lang]['Message'] + include $path;
+            if ( file_exists($path = ZERO_PATH_APP . '/i18n/' . $lang . '/' . 'Message' . '.php') )
+                self::$_I18n[$lang]['Message'] = self::$_I18n[$lang]['Message'] + include $path;
+            if ( file_exists($path = ZERO_PATH_ZERO . '/i18n/' . $lang . '/' . 'Message' . '.php') )
+                self::$_I18n[$lang]['Message'] = self::$_I18n[$lang]['Message'] + include $path;
         }
         // инициализация перевода
-        if ( isset(self::$_I18n['Message'][$code]) )
+        if ( isset(self::$_I18n[$lang]['Message'][$code]) )
         {
-            array_unshift($params, self::$_I18n['Message'][$code]);
+            array_unshift($params, self::$_I18n[$lang]['Message'][$code]);
         }
         else if ( 0 < $code )
         {
-            Zero_Logs::Set_Message_Warning("I18N NOT FOUND MESSAGE: " . LANG . ' / ' . $code);
+            Zero_Logs::Set_Message_Warning("I18N NOT FOUND MESSAGE: " . $lang . ' / ' . $code);
         }
         // перевод
         return strval(zero_sprintf($params));
-    }
-
-    /**
-     * Perevod po cliuchevoi` stroke
-     *
-     * @param $file_name string Имиа языкового файла (имиа модели, контроллера)
-     * @param $section string
-     * @param $key string
-     * @return string|array найденный перевод
-     */
-    protected static function T($file_name, $section, $key)
-    {
-        // инициализация файла перевода
-        if ( !isset(self::$_I18n[$section]) )
-        {
-            self::$_I18n[$section] = [];
-            if ( file_exists($path = ZERO_PATH_ZERO . '/i18n/' . ZERO_LANG . '/' . $section . '.php') )
-                self::$_I18n[$section] = array_merge(self::$_I18n[$section], include $path);
-            if ( file_exists($path = ZERO_PATH_APP . '/i18n/' . ZERO_LANG . '/' . $section . '.php') )
-                self::$_I18n[$section] = array_merge(self::$_I18n[$section], include $path);
-            if ( file_exists($path = ZERO_PATH_SITE . '/i18n/' . ZERO_LANG . '/' . $section . '.php') )
-                self::$_I18n[$section] = array_merge(self::$_I18n[$section], include $path);
-        }
-        // перевод
-        if ( isset(self::$_I18n[$section][$file_name . ' ' . $key]) )
-        {
-            return self::$_I18n[$section][$file_name . ' ' . $key];
-        }
-        else if ( isset(self::$_I18n[$section][$key]) )
-        {
-            return self::$_I18n[$section][$key];
-        }
-
-        Zero_Logs::Set_Message_Warning("I18N NOT FOUND KEY: " . LANG . "->{$section} / '" . $file_name . " " . $key . "'");
-        return $key;
     }
 }

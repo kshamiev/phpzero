@@ -414,12 +414,6 @@ class Zero_View
      */
     private function _Parsing_Translation1($matches)
     {
-        /*
-        $default = str_replace('model prop ', '', $matches[2]);
-        $default = str_replace('model ', '', $default);
-        $default = str_replace('controller ', '', $default);
-        return Zero_I18n::T($matches[1], $matches[2], $default);
-        */
         return Zero_I18n::View($matches[1], Zero_App::$Config->Site_Language);
     }
 
@@ -431,12 +425,6 @@ class Zero_View
      */
     private function _Parsing_Translation2($matches)
     {
-        /*
-        $default = str_replace('model prop ', '', $matches[2]);
-        $default = str_replace('model ', '', $default);
-        $default = str_replace('controller ', '', $default);
-        return Zero_I18n::T($matches[1], $matches[2], $default);
-        */
         return Zero_I18n::View($matches[1], $matches[2]);
     }
 

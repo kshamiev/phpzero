@@ -159,7 +159,7 @@ class Zero_Response
     {
         $data = [
             'Code' => $code,
-            'Message' => Zero_I18n::Message('', $code, $message),
+            'Message' => Zero_I18n::Message($code, $message),
             'ErrorStatus' => 299 < $status ? true : false,
             'Error' => 299 < $status ? true : false,
         ];
