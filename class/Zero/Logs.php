@@ -18,25 +18,18 @@
 class Zero_Logs
 {
     /**
-     * Massiv soobshchenii` sistemy`
-     *
-     * @var array
-     */
-    private static $_Message = [];
-
-    /**
      * Data i vremia v formate timestamp
      *
      * @var integer
      */
-    private static $_StartTime;
+    private static $_StartTime = 0;
 
     /**
      * Massiv vremenny`kh metok
      *
      * @var array
      */
-    private static $_CurrentTime;
+    private static $_CurrentTime = [];
 
     /**
      * Uroven` vlozhennosti vremenny`kh metok
@@ -52,7 +45,7 @@ class Zero_Logs
      *
      * @var array
      */
-    private static $_OutputApplication;
+    private static $_OutputApplication = [];
 
     /**
      * Osnovnoe imia log fai`lov
@@ -68,7 +61,6 @@ class Zero_Logs
      */
     public static function Init($path)
     {
-        self::$_Message = [];
         self::$_StartTime = microtime(1);
         self::$_CurrentTime = [];
         self::$_FileLog = $path;
@@ -184,11 +176,6 @@ class Zero_Logs
         ];
     }
 
-    public static function Get_Message()
-    {
-        return self::$_Message;
-    }
-
     /**
      * Start tai`mera po cliuchu
      *
@@ -244,7 +231,6 @@ class Zero_Logs
         unset($iterator_list['Session']);
         $View = new Zero_View('Zero_Debug_Info');
         $View->Assign('output', self::Get_Usage_MemoryAndTime());
-        //        $View->Assign('message', self::$_Message);
         $View->Assign('iterator_list', $iterator_list);
         return $View->Fetch();
     }
@@ -256,13 +242,6 @@ class Zero_Logs
     public static function Output_File()
     {
         $output = self::Get_Usage_MemoryAndTime();
-        //            $output = [str_replace(["\r", "\t"], " ", $output)];
-        //        foreach (self::$_Message as $row)
-        //        {
-        //            if ( 'errorTrace' != $row[1] )
-        //                $output[] = '[' . strtoupper($row[1]) . '] ' . str_replace(["\r", "\t"], " ", $row[0]);
-        //        }
-        //        $output = preg_replace('![ ]{2,}!', ' ', join("\n", $output));
         $output = join("\n", $output);
         Helper_File::File_Save_After(self::$_FileLog . '.log', $output);
 
@@ -311,7 +290,7 @@ class Zero_Logs
      */
     protected static function Get_Usage_MemoryAndTime()
     {
-        if ( null === self::$_OutputApplication )
+        if ( !count(self::$_OutputApplication) )
         {
             // initcializatciia logov
             if ( isset($_SERVER['REQUEST_URI']) )
