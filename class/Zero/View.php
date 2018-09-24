@@ -64,12 +64,12 @@ class Zero_View
     /**
      * Reguliarnoe vy`razhenie dlia obrabotki direktiv translation
      */
-    const PATTERN_TRANSLATION1 = '~\{(?:translation|lang)[ ]+[\'"]+([\w\d_]+)[\'"]+\}~si';
+    const PATTERN_TRANSLATION1 = '~\{(?:translation|lang)[ ]+[\'"]+([^"\']+)[\'"]+\}~si';
 
     /**
      * Reguliarnoe vy`razhenie dlia obrabotki direktiv translation
      */
-    const PATTERN_TRANSLATION2 = '~\{(?:translation|lang)[ ]+[\'"]+([\w\d_]+)[\'"]+[ ]+[\'"]+([^"\']+)[\'"]+\}~si';
+    const PATTERN_TRANSLATION2 = '~\{(?:translation|lang)[ ]+[\'"]+([^"\']+)[\'"]+[ ]+[\'"]+([^"\']+)[\'"]+\}~si';
 
     /**
      * Danny`e vstavliaemy`e v shablon

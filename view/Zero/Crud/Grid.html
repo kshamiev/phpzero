@@ -2,13 +2,13 @@
   <input type="hidden" name="act">
   <table class="tbledit" width="600px" cellspacing="1" cellpadding="0" border="0">
     <tr>
-      <th width="200px">{translation "Zero" "Filters"}</th>
+      <th width="200px">{translation "Filters"}</th>
       <th>-</th>
     </tr>
       <tr>
-          <td>{translation "Zero" "Search"}</td>
+          <td>{translation "Search"}</td>
           <td>
-              <select name="Search[Prop]" style="width: 50%;"><option value="">{translation "Zero" "Not selected"}</option>
+              <select name="Search[Prop]" style="width: 50%;"><option value="">{translation "Not selected"}</option>
                   {set $value = ''}
                   {foreach ($Search['List'] as $prop => $row)}
                   <option value="{$prop}"{if ( $Search['Value'][$prop] )} selected{set $value = $Search['Value'][$prop]}{/if}>{$row['Comment']}</option>
@@ -23,9 +23,9 @@
     <tr>
       <td width="200px">{$row['Comment']}</td>
       <td>
-        <select class="field" name="Filter[{$prop}]" data-link-prop="{$prop}"><option value="">{translation "Zero" "All"}</option>
-          <option value="NULL"{if ( 'NULL' === $row['Value'] )} selected{/if}>{translation "Zero" "Undefined"}</option>
-          <option value="NOTNULL"{if ( 'NOTNULL' === $row['Value'] )} selected{/if}>{translation "Zero" "Defined"}</option>
+        <select class="field" name="Filter[{$prop}]" data-link-prop="{$prop}"><option value="">{translation "All"}</option>
+          <option value="NULL"{if ( 'NULL' === $row['Value'] )} selected{/if}>{translation "Undefined"}</option>
+          <option value="NOTNULL"{if ( 'NOTNULL' === $row['Value'] )} selected{/if}>{translation "Defined"}</option>
           {foreach ($row['List'] as $id => $name)}<option value="{$id}"{if ( $id == $row['Value'] )} selected{/if}>{$name}</option>{/foreach}
         </select>
       </td>
@@ -67,9 +67,9 @@
     <tr>
       <td width="200px">{$row['Comment']}</td>
       <td>
-        <select class="field" name="Filter[{$prop}]" data-select-prop="{$prop}"><option value="">{translation "Zero" "All"}</option>
-          <option value="NULL"{if ( 'NULL' === $row['Value'] )} selected{/if}>{translation "Zero" "Undefined"}</option>
-          <option value="NOTNULL"{if ( 'NOTNULL' === $row['Value'] )} selected{/if}>{translation "Zero" "Defined"}</option>
+        <select class="field" name="Filter[{$prop}]" data-select-prop="{$prop}"><option value="">{translation "All"}</option>
+          <option value="NULL"{if ( 'NULL' === $row['Value'] )} selected{/if}>{translation "Undefined"}</option>
+          <option value="NOTNULL"{if ( 'NOTNULL' === $row['Value'] )} selected{/if}>{translation "Defined"}</option>
           {foreach ($row['List'] as $key => $name)}<option value="{$key}"{if ( $key == $row['Value'] )} selected{/if}>{$name}</option>{/foreach}
         </select>
       </td>
@@ -114,9 +114,9 @@
     {/if}
     {/foreach}
     <tr>
-        <td>{translation "Zero" "Sorting"}</td>
+        <td>{translation "Sorting"}</td>
       <td>
-        <select name="Sort[Prop]" style="width: 50%;"><option value="">{translation "Zero" "Not selected"}</option>
+        <select name="Sort[Prop]" style="width: 50%;"><option value="">{translation "Not selected"}</option>
           {set $value = ''}
           {foreach ($Sort['List'] as $prop => $row)}<option value="{$prop}"{if ( $Sort['Value'][$prop] )} selected{set $value = $Sort['Value'][$prop]}{/if}>{$row['Comment']}</option>{/foreach}
         </select>
@@ -128,8 +128,8 @@
     </tr>
     <tr>
       <td colspan="2" align="center">
-        <input class="btn" type="button" value="{translation "Zero" "Apply"}" onclick="button_form(this.form, '{URL}', 'FilterSet', 0);">
-        <input class="btn" type="button" value="{translation "Zero" "Reset"}" onclick="button_form(this.form, '{URL}', 'FilterReset', 0);">
+        <input class="btn" type="button" value="{translation "Apply"}" onclick="button_form(this.form, '{URL}', 'FilterSet', 0);">
+        <input class="btn" type="button" value="{translation "Reset"}" onclick="button_form(this.form, '{URL}', 'FilterReset', 0);">
       </td>
     </tr>
   </table>
@@ -150,7 +150,7 @@
             <br><br>
             {/if}
             {if ( isset($Action['Add']) )}
-            <input class="btn" type="button" value="{translation "Zero" "Add"}" onclick="location.href='{URL}/edit?pid={$pid}&act=Add';">
+            <input class="btn" type="button" value="{translation "Add"}" onclick="location.href='{URL}/edit?pid={$pid}&act=Add';">
             {/if}
             {if ( isset($Action['CatalogMove']) )}
             ID: <input type="text" id="catalog_move1" style="width: 50px;">
@@ -164,7 +164,7 @@
             <a href="{URL}/{$row['UrlThis']}" style="vertical-align: middle;">{$row['Name']}</a>&nbsp;&nbsp;
             {/foreach}
         </td>
-        <td width="140px" align="right">{translation "Zero" "Count"}: {$PagerCount}</td>
+        <td width="140px" align="right">{translation "Count"}: {$PagerCount}</td>
     </tr>
 </table>
 </form>
@@ -172,7 +172,7 @@
 {if ( 0 < count($DataGrid) )}
 <table class="tbllist" width="100%" cellspacing="1" cellpadding="0" border="0">
   <tr>
-    <th>{translation "Zero" "Action"}</th>
+    <th>{translation "Action"}</th>
     {foreach ($PropsGrid as $prop => $row)}
     <th>{$row['Comment']}</th>
     {/foreach}

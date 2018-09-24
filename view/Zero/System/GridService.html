@@ -20,7 +20,7 @@
             </td>
             <td width="500">
                 <select class="field" name="connectDb">
-                    <option value="">{translation "Zero" "Not selected"}</option>
+                    <option value="">{translation "Not selected"}</option>
                     {foreach ($modules_db as $name)}
                     <option value="{$name}">{$name}</option>
                     {/foreach}
@@ -29,7 +29,7 @@
                 <input type="checkbox" name="flag_edit" value="1">&nbsp;Controller - Edit<br>
             </td>
             <td>
-                {translation "Zero_System" "model factory"}
+                {translation "model factory"}
             </td>
         </tr>
     </form>
@@ -42,7 +42,7 @@
                 <input type="image" src="/phpzero/assets/img/button/button_hammer.gif" onclick="button_form(this.form, '{URL}', 'CacheReset', 0);">
             </td>
             <td colspan="2">
-                {translation "Zero_System" "controller Zero_System_GridService action Cache_Reset"}<br>
+                {translation "controller Zero_System_GridService action Cache_Reset"}<br>
             </td>
         </tr>
     </form>
@@ -55,7 +55,7 @@
                 <input type="image" src="/phpzero/assets/img/button/button_hammer.gif" onclick="button_form(this.form, '{URL}', 'SessionReset', 0);">
             </td>
             <td colspan="2">
-                {translation "Zero_System" "controller Zero_System_GridService action Session_Reset"}<br>
+                {translation "controller Zero_System_GridService action Session_Reset"}<br>
             </td>
         </tr>
     </form>
