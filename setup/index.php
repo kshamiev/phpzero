@@ -147,6 +147,10 @@ while ( isset($_REQUEST['act']) && 'Install_System' == $_REQUEST['act'] && 0 == 
     $class = str_replace('Site_UsersTemplate', 'Site_Users', $class);
     file_put_contents($path, $class);
 
+    $class = file_get_contents($path = ZERO_PATH_APP . '/class/Site/Config/Deploy.php');
+    $class = str_replace('Site_Config_DeployTemplate', 'Site_Config_Deploy', $class);
+    file_put_contents($path, $class);
+
 //    if ( !@symlink(ZERO_PATH_ZERO, ZERO_PATH_APPLICATION . '/zero') )
 //    {
 //        $message_install_list[] = "Error create symlink from module zero";

@@ -20,7 +20,6 @@
  * @property integer $Controllers_ID
  * @property string $Url
  * @property string $UrlThis
- * @property string $UrlAlias
  * @property string $UrlRedirect
  * @property string $Layout
  * @property string $IsAuthorized
@@ -86,7 +85,6 @@ class Zero_Section extends Zero_Model
             'Controllers_ID' => ['AliasDB' => 'z.Controllers_ID', 'DB' => 'ID', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Link'],
             'Url' => ['AliasDB' => 'z.Url', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'],
             'UrlThis' => ['AliasDB' => 'z.UrlThis', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'],
-            'UrlAlias' => ['AliasDB' => 'z.UrlAlias', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'],
             'UrlRedirect' => ['AliasDB' => 'z.UrlRedirect', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Text'],
             'Layout' => ['AliasDB' => 'z.Layout', 'DB' => 'T', 'IsNull' => 'YES', 'Default' => '', 'Form' => 'Select'],
             'IsAuthorized' => ['AliasDB' => 'z.IsAuthorized', 'DB' => 'E', 'IsNull' => 'NO', 'Default' => 'no', 'Form' => 'Radio'],
@@ -325,7 +323,7 @@ class Zero_Section extends Zero_Model
     }
 
     /**
-     * Url Section
+     * UrlThis Section
      *
      * @param mixed $value value to check
      * @param string $scenario scenario validation
@@ -360,7 +358,7 @@ class Zero_Section extends Zero_Model
     }
 
     /**
-     * UrlAlias Section
+     * Url Section
      *
      * @param mixed $value value to check
      * @param string $scenario scenario validation
