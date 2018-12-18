@@ -70,7 +70,10 @@ return [
     'Address' => 'Address',
     'Error_NotNull' => 'Field is empty',
     'Error_PasswordValid' => 'Password is incorrect (does not match)',
+    'Content Target' => 'Place and type of output',
+    'Content Target options' => ['TopLeft' => 'TopLeft'],
     'NameMenu' => 'In the navigation menu',
+    'NameSub' => 'Heading',
     'Img' => 'Image',
     'Zero_Controllers Controller' => 'Controller',
     'Zero_Controllers Day' => 'Days',
@@ -109,6 +112,7 @@ return [
     'Zero_Options Name' => 'Option name',
     'Zero_Options Typ' => 'Option type',
     'Zero_Options Typ options' => ['string' => 'string', 'int' => 'integral', 'float' => 'floating-point number', 'array' => 'array'],
+
     'Zero_Options Value' => 'Option value',
     'Site_Section ID' => 'Identifier',
     'Site_Section Section_ID' => 'Section',
