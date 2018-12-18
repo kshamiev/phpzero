@@ -21,7 +21,7 @@ class Zero_Request
      *
      * @var array
      */
-    private $request = [];
+    protected $request = [];
 
     /**
      * API запрос к внешнему ресурсу
@@ -142,6 +142,8 @@ class Zero_Request
             $response->Content = $body['Content'];
         else if ( isset($body['Data']) )
             $response->Content = $body['Data'];
+        else
+            $response->Content = $body;
         if ( isset($body['ErrorStatus']) )
             $response->ErrorStatus = $body['ErrorStatus'];
         if ( isset($body['Error']) )
