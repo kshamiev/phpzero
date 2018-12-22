@@ -487,7 +487,7 @@ class Zero_DB
         /* @var $res mysqli_result */
         $row = $res->fetch_row();
         $res->close();
-        return isset($row[0]) ? $row[0] : null;
+        return isset($row[0]) ? trim($row[0]) : null;
     }
 
     /**
